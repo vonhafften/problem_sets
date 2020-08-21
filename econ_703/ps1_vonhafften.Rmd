@@ -1,0 +1,214 @@
+---
+title: "ECON 703 - PS 1"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "8/20/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## (1) Consider $n$ straight lines. They divide the plane onto segments. Prove that it is always possible to paint those segments in two colors such that adjacent segments have different colors. (Hint: Use induction)
+
+Proof (by induction): For the base step, the plane is divided into two segments by one straight line. Paint one segment blue and one segment green.  The two segments are adjacent at the single line and they are painted different colors.
+
+For the induction step, assume that the plane is divided by $n$ straight lines and adjacent segments are painted different colors.  Add another straight line.  Leave the segments on one side of the new line painted as they are.  Switch the colors of the segments on the other side of the new line - every blue segment is repainted green and every green segment is repainted blue.
+
+Now let us verify that all adjacent segments are painted different colors.  First, consider only the segments whose color did not change.  By construction, the adjacent segments on this side are painted with different colors.  Now, consider only the segments whose color did change.  Similarly, we initially assumed that the adjacent segments are painted with different color. We then switched the colors, so adjacent segments are still painted with different colors. Finally consider adjacent segments that are on either side of the newly drawn line.  Before we drew the line, each pair of these adjacent segments were the same segment and therefore the same color.  After we drew the line, for each bisected segment, one subsegment remained the same color and the other subsegment changed to the other color.  Thus, all adjacent segments are different colors and only two colors are used. $\square$
+
+## (2) Suppose that $a_1 = 1$ and $a_{n+1} = 2a_n + 1$ for any $n \ge 1$. Find the value of $a_n$. Hint: Calculate the first values $a_1, a_2, a_3...$ and try to guess the general formula. Then use induction.
+
+First values:
+
+$$a_1 = 1$$
+$$a_2 = 2a_1 + 1 = 2*1+1 = 3$$
+$$a_3 = 2a_2 + 1 = 2*3+1 = 7$$
+$$a_4 = 2a_3 + 1 = 2*7+1 = 15$$
+\pagebreak
+
+General formula guess:
+
+$$f(n) = 2^n - 1$$
+
+
+Proof (by induction): For the base step, we show that $f(1) = a_1 = 1$:
+
+$$f(1) = 2^1 -1 = 2 - 1 = 1$$
+
+For the induction step, we assume that $f(n)$ holds for $a_n$ and show that $f(n+1) = a_{n+1}$:
+
+\begin{align*}
+f(n+1) &= 2^{n+1}-1 \\
+       &= 2*2^n - 1 \\
+       &= 2*2^n - 2 +1 \\ 
+       &= 2(2^n-1)+1 \\
+       &= 2f(n)+1 \\
+       &= 2a_n+1 
+\end{align*}
+
+$\square$
+
+## (3) Prove the second De Morgan's Law: $(A \cup B)^c = A^c \cap B^c$.
+
+Proof: Consider $x \in (A \cup B)^c$. Since $x \in (A \cup B)^c$, $x \notin A \cup B$.  Thus, $x \notin A$ and $x \notin B$, so $x \in A^c$ and $x \in B^c$.  Since $x \in A^c$ and $x \in B^c$, $x \in A^c \cap B^c$.  Thus, $(A \cup B)^c \subseteq A^c \cap B^c$.
+
+Consider $x \in A^c \cap B^c$.  If $x \in A^c \cap B^c$, then $x \in A^c$ and $x \in B^c$, or  $x \notin A$ and $x \notin B$.  If $x \notin A$ and $x \notin B$, then $x \notin A \cup B$, so $x \in (A \cup B)^c$.  Thus, $A^c \cap B^c \subseteq (A \cup B)^c$.
+
+Since $(A \cup B)^c \subseteq A^c \cap B^c$ and $A^c \cap B^c \subseteq (A \cup B)^c$, $A^c \cap B^c = (A \cup B)^c$. $\square$ 
+
+## (4) Suppose $A = \{2k +1 | k \in \mathbb{Z}\}, B = \{3k |k \in \mathbb{Z}\}$ (i.e., $A$ is the set of odd numbers and $B$ is the set of numbers divisible by 3). Find $A \cap B$ and $B \setminus A$.
+
+$C := A \cap B$ is the set of odd numbers that are divisible by 3:
+
+\begin{align*}
+C &= A \cap B \\
+&= \{2k +1 | k \in \mathbb{Z}\} \cap \{3k | k \in \mathbb{Z}\} \\
+&= \{3(2k +1) | k \in \mathbb{Z}\} \\
+&= \{6k + 3 | k \in \mathbb{Z} \}
+\end{align*}
+
+Proof: To prove that $C$ equals $A \cap B$, I (i) take an arbitrary element from $C$ and show that it is in both $A$ and $B$ and then (ii) take an arbitrary element in both $A$ and $B$ and show that it is in $C$. 
+
+For (i), consider $x = 6k + 3 \in C$ where $k \in \mathbb{Z}$. Because $6k$ is even for all $k$ and 3 is odd, $x$ is odd because the sum of an even number and an odd number is odd.  Furthermore, $x$ is divisible by 3, $x/3 = (6k+3)/3=2k+1$.  Thus, $x \in A \cap B$ and $C \subseteq A \cap B$.
+
+For (ii), consider $x \in A \cap B$. Since $x$ is odd, we know that it is a product of two odd numbers and $x=3*(2k+1)=6k*3$ for some $k \in \mathbb{Z}$ because $x$ is divisible by 3. Thus, $x \in C$ and $A \cap B \subseteq C$. Therefore, $C = A \cap B$. $\square$
+
+\pagebreak
+
+$D := B \setminus A$ is the set of even numbers that are divisible by 3:
+
+\begin{align*}
+D &= B \setminus A \\
+&= B \cap A^c \\
+&= \{3k | k \in \mathbb{Z}\} \cap \{2k +1 | k \in \mathbb{Z}\}^c \\
+&= \{3k | k \in \mathbb{Z}\} \cap \{2k | k \in \mathbb{Z}\} \\
+&= \{2(3k) | k \in \mathbb{Z} \} \\
+&= \{6k | k \in \mathbb{Z} \}
+\end{align*}
+
+Proof: I use the same procedure as above. Consider $x \in D$. $x$ is divisible by 2 because $x/2=6k/2=3k$ where $k\in \mathbb{Z}$, so $x \in A^c$. $x$ is also divisible by 3 because $x/3=6k/3=2k$ where $k \in \mathbb{Z}$, so $x \in B$.  If $x \in B \cap A^c \Rightarrow x \in B \setminus A$. Thus, $D \subseteq B \setminus A$.
+
+Consider $x \in B \setminus A$. Since $x$ must be divisible both by 3 and 2, it must be a product of some $k \in \mathbb{Z}$ and 6, which is the least common multiple of 2 and 3.  Thus, $x=6k$ is an element of $D$.  Thus, $B \setminus A \subseteq D$.  Therefore, $D = B \setminus A$. $\square$
+
+## (5) Prove that the following are metric functions on $R^n$.
+## (a) $d_1(x, y) = \Sigma_{k=1}^n | x_k - y_k|$, where $x=(x_1, ..., x_n), y = (y_1, ..., y_n)$.
+
+Proof: To show that $d_1$ is a metric function, we show that (i) $d_1(x, y) \ge 0$ and $d_1(x, y) = 0$ iff $x = y$, (ii) $d_1(x, y) = d_1(y, x)$, and (iii) $d_1(x, y) \le d_1(x, z) + d_1(z, y)$.
+
+For (i), $d_1(x, y) \ge 0$ clearly follows from $|z| \ge 0 \forall z \in \mathbb{R}$ and that the sum of nonnegative numbers is nonnegative. Further, $d_1(x, x) = \Sigma_{k=1}^n | x_k - x_k| = \Sigma_{k=1}^n 0 = 0$. And if $d_1(x, y)=0$, $x$ must equal $y$ because $d_1(x, y)$ is a sum of nonnegative numbers and such a sum is only zero if all numbers are themselves zero.
+
+For (ii), 
+
+\begin{align*}
+d_1(x, y) &= \Sigma_{k=1}^n | x_k - y_k| \\
+&= \Sigma_{k=1}^n | - y_k + x_k | \\
+&= \Sigma_{k=1}^n | (-1)* (y_k - x_k) | \\
+&= \Sigma_{k=1}^n |-1||y_k - x_k | \\
+&= \Sigma_{k=1}^n |y_k - x_k | \\
+&= d_1(y, x)
+\end{align*}
+
+For (iii),
+
+\begin{align*}
+d_1(x, y) &= \Sigma_{k=1}^n | x_k - y_k| \\
+&= \Sigma_{k=1}^n | x_k - z_k + z_k - y_k|
+\end{align*}
+
+Notice that the triangle inequality $| x_j - z_j + z_j - y_j| \le | x_j - z_j| + |z_j - y_j|$ holds for every $j \in \{1, ..., n\}$. Thus, it holds for the sum from 1 to $n$.
+
+\begin{align*}
+&\le \Sigma_{k=1}^n | x_k - z_k| + |z_k - y_k| \\
+&= \Sigma_{k=1}^n | x_k - z_k| + \Sigma_{k=1}^n |z_k - y_k| \\
+&= d_1(x, z) + d_1(z, y) 
+\end{align*}
+
+Thus, $d_1$ is a metric function. $\square$
+
+## (b) $d_\infty (x, y) = \max_{1 \le k \le n} | x_k - y_k |$, where  $x=(x_1, ..., x_n), y = (y_1, ..., y_n)$.
+
+Proof: To show that $d_\infty$ is a metric function, we show that (i) $d_\infty(x, y) \ge 0$ and $d_\infty(x, y) = 0$ iff $x = y$, (ii) $d_\infty(x, y) = d_\infty(y, x)$, and (iii) $d_\infty(x, y) \le d_\infty(x, z) + d_\infty(z, y)$.
+
+For (i), for each $k \in \{1,..., n\}$, $|x_k - y_k| \ge 0$. Further, the maximum of nonnegative numbers is also nonnegative, so $d_\infty(x, y) \ge 0$.  If $x = y$, 
+
+\begin{align*}
+d_\infty (x, y) &= d_\infty (x, x) \\
+&= \max_{1 \le k \le n} | x_k - x_k | \\
+&= \max_{1 \le k \le n} | 0 | \\
+&= 0 \\
+\end{align*}
+
+If $d_\infty (x, y) = 0$, it means the maximum of $|x_k - y_k|$ equals zeros for $k \in \{1,..., n\}$.  Since $|x_k - y_k| \le 0$, it means that $|x_k - y_k|=0$. Thus, $x_k=y_k$ for all $k$.
+
+For (ii), 
+
+\begin{align*}
+d_\infty (x, y) 
+&= \max_{1 \le k \le n} | x_k - y_k | \\
+&= \max_{1 \le k \le n} | -y_k + x_k | \\
+&= \max_{1 \le k \le n} | (-1)*(y_k - x_k) | \\
+&= \max_{1 \le k \le n} |-1||y_k - x_k | \\
+&= \max_{1 \le k \le n} |y_k - x_k | \\
+&= d_\infty (y, x) 
+\end{align*}
+
+For (iii), notice that there must exist some $j \in \{1,..., n\}$ such that $\max_{1 \le k \le n} | x_k - y_k | = |x_j - y_j|$.  Furthermore, by the triangle inequality, $|x_j - y_j| \le |x_j - z_j|+|z_j - y_j|$.  There must also exist some $l, m \in \{1, ..., n\}$ such that $\max_{1 \le k \le n} | x_k - z_k | = | x_l - z_l | \ge |x_j-z_j|$ and $\max_{1 \le k \le n} | z_k - y_k | = | z_m - y_m | \ge |z_j-y_j|$. Thus,
+
+\begin{align*}
+\max_{1 \le k \le n} | x_k - y_k | &= |x_j - y_j| \\
+&\le |x_j - z_j|+|z_j - y_j| \\
+&\le |x_l - z_l|+|z_m - y_m| \\
+&= \max_{1 \le k \le n} | x_k - z_k | + \max_{1 \le k \le n} | z_k - y_k |
+\end{align*}
+
+Thus, $d_\infty$ is a metric function. $\square$
+
+## (6) Suppose that $\lim_{n \to \infty} x_n = x$ and $\lim_{n \to \infty} y_n = y$ in a metric space $(X, d)$.  Is it true that $\lim_{n \to \infty} d(x_n, y_n) = d(x, y)$?
+
+Yes.
+
+Proof: Based on iteratively applying the triangle property of metric functions,
+
+\begin{align*}
+d(x_n, y_n) &\le d(x_n, x) + d(x, y_n) \\
+d(x_n, y_n) &\le d(x_n, x) + d(x, y) + d(y, y_n) \\
+d(x_n, y_n) - d(x, y) &\le d(x_n, x) + d(y, y_n)
+\end{align*}
+
+\begin{align*}
+d(x, y) &\le d(x, x_n) + d(x_n, y) \\
+d(x, y) &\le d(x, x_n) + d(x_n, y_n) + d(y_n, y) \\
+-d(x_n, y_n) + d(x, y) &\le d(x, x_n) + d(y_n, y) \\
+(-1)*(d(x_n, y_n) - d(x, y)) &\le d(x, x_n) + d(y_n, y)
+\end{align*}
+
+Thus, $|d(x_n, y_n) - d(x, y)| \le d(x, x_n) + d(y, y_n)$.
+
+Given $\varepsilon > 0$, choose $N_1$ such that $d(x, x_n) < \frac{\varepsilon}{2}$ for all $n > N_1$.  Choose $N_2$ such that $d(y, y_n) < \frac{\varepsilon}{2}$ for all $n > N_2$. Let $N=\max(N_1, N_2)$. Then, for $n > N$,
+
+\begin{align*}
+|d(x_n, y_n) - d(x, y)| &\le d(x, x_n) + d(y, y_n) \\
+&< \frac{\varepsilon}{2} + \frac{\varepsilon}{2} \\
+&= \varepsilon
+\end{align*}
+
+$\square$
+
+## (7) Let $\{x_n\}, \{y_n\}$, and $\{z_n\}$ be sequences of real numbers. Suppose that $x_n \to A$, $z_n \to A$ and, for any $n$, $x_n \le y_n \le z_n$.  Prove that $y_n$ converges and $\lim_{n \to \infty} y_n = A$.
+
+Proof: For $\varepsilon > 0$, choose $N_1$ such that, for $n > N_1$, $|x_n - A | < \varepsilon$. So,
+
+\begin{align*}
+-\varepsilon &< x_n - A < \varepsilon \\
+A-\varepsilon &< x_n < A+\varepsilon \\
+\end{align*}
+
+Similarly, we choose $N_2$ such that, for $n > N_2$, $|z_n - A| < \varepsilon$. So,
+
+\begin{align*}
+-\varepsilon &< z_n - A < \varepsilon \\
+A-\varepsilon &< z_n < A+\varepsilon \\
+\end{align*}
+
+Define $N = \max(N_1, N_2)$.  Thus, for $n > N$, $A - \varepsilon < x_n \le y_n \le z_n <A +\varepsilon$, or $|y_n - A| < \varepsilon$. $\square$
