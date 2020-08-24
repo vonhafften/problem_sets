@@ -39,28 +39,28 @@ Proof: By the extreme value theorem, we know that $f(x)$ attains its maximum and
 
 ### - if $f(m_n) > 0$, then set $l_{n+1} = l_n, u_{n+1} = m_n$;
 ### - if $f(m_n) < 0$, then set $l_{n+1} = m_n, u_{n+1} = u_n$;
-### - if $f(m_n) = 0$, then stop.
+### - if $f(m_n) = 0$, then stop and set $l_k = u_k = m_n$ for all $k \ge n.$
  
 ## Using what you have learned about the limits of real sequences, prove
  
 ## (a) Sequences $\{l_n\}$ and $\{u_n\}$ both converge.
 
-Proof: To prove that $\{l_n\}$ and $\{u_n\}$ both converge, we show that $l_n < u_n$, $l_n \le l_{n+1}$, and $u_n \ge u_{n+1}$ $\forall n \in \{1, 2, ..., N\}$ by induction where $f(m_N) = 0$.  If these three conditions hold, both sequences converge by the monotone convergence theorem because $\{l_n\}$ is an increasing sequence bounded from above by $b$ and $\{u_n\}$ is a decreasing sequence bounded from below by $a$.
+Proof: To prove that $\{l_n\}$ and $\{u_n\}$ both converge, we show that $l_n \le u_n$, $l_n \le l_{n+1}$, and $u_n \ge u_{n+1}$ $\forall n \in \mathbb{N}$ by induction.  If these three conditions hold, both sequences converge by the monotone convergence theorem because $\{l_n\}$ is an increasing sequence bounded from above by $b$ and $\{u_n\}$ is a decreasing sequence bounded from below by $a$.
 
 For the base step, $l_1 = a < b = u_1$ by assumption.
 
-For the induction step, assume $l_n < u_n$. Furthermore, 
+For the induction step, assume $l_n \le u_n$. Furthermore, 
 
 \begin{align*}
-m_n - l_n = (l_n+u_n)/2 - l_n = (u_n - l_n)/2 >0 &\implies m_n > l_n \\
-u_n - m_n = u_n - (l_n+u_n)/2 = (u_n - l_n)/2 >0 &\implies u_n > m_n
+m_n - l_n = (l_n+u_n)/2 - l_n = (u_n - l_n)/2 \ge 0 &\implies m_n \le l_n \\
+u_n - m_n = u_n - (l_n+u_n)/2 = (u_n - l_n)/2 \ge 0 &\implies u_n \ge m_n
 \end{align*}
 
-Thus, $l_n < m_n < u_n$. If $f(m_n) > 0$, $l_{n+1} = l_n < m_n = u_{n+1} < u_n$. If $f(m_n) < 0$, $l_n < m_n = l_{n+1} < u_n = u_{n+1}$. If $f(m_n) = 0$, we stop and the sequences ends. Clearly, $\min\{l_n\}=l_1=a$ and $\max\{u_n\}=u_1=b$.  Hence, $\{l_n\}$ is an increasing sequence bounded from above by $b$ and $\{u_n\}$ is a decreasing sequence bounded from below by $a$, so both sequences converge. $\square$
+Thus, $l_n \le m_n \le u_n$. If $f(m_n) > 0$, $l_{n+1} = l_n \le m_n = u_{n+1} \le u_n$. If $f(m_n) < 0$, $l_n \le m_n = l_{n+1} \le u_n = u_{n+1}$. If $f(m_n) = 0$, we stop and the sequences ends. Clearly, $\min\{l_n\}=l_1=a$ and $\max\{u_n\}=u_1=b$.  Hence, $\{l_n\}$ is an increasing sequence bounded from above by $b$ and $\{u_n\}$ is a decreasing sequence bounded from below by $a$, so both sequences converge. $\square$
 
 ## (b) Both sequences converge to the same limit, i.e. $\lim_{n \to \infty} l_n = \lim_{n \to \infty} u_n$. (Hint: Show that  $\{u_n - l_n\} \to 0$).
 
-Proof: Notice $u_{n+1} - l_{n+1} = m_n - l_n = (l_n+u_n)/2 - l_n = (u_n - l_n)/2$ for $f(m_n) > 0$.  Similarly, for $f(m_n) < 0$, notice $u_{n+1} - l_{n+1} = u_n - m_n = u_n - (l_n+u_n)/2 = (u_n - l_n)/2$. So, if $u_{n+1}$ and $l_{n+1}$ exist, $u_{n+1} - l_{n+1} = (u_n - l_n)/2$.
+Proof: Notice that, for $f(m_n) > 0$, $u_{n+1} - l_{n+1} = m_n - l_n = (l_n+u_n)/2 - l_n = (u_n - l_n)/2$.  Similarly, for $f(m_n) < 0$, notice $u_{n+1} - l_{n+1} = u_n - m_n = u_n - (l_n+u_n)/2 = (u_n - l_n)/2$. So, for $n < N$ such that $f(m_N) = 0$, $u_{n+1} - l_{n+1} = (u_n - l_n)/2$.
 
 I will now show by induction that $u_{n+1} - l_{n+1} = \frac{b - a}{2^n}$.  For the base step, $u_{2} - l_{2} = \frac{b - a}{2}$.  For the induction step, assume $u_{n+1} - l_{n+1} = \frac{b - a}{2^n}$:
 
@@ -70,13 +70,13 @@ u_{n+2} - l_{n+2} &= \frac{b - a}{2^{n+1}} \\
 &= \frac{u_{n+1} - l_{n+1}}{2} \\
 \end{align*}
 
-For $\varepsilon > 0$, choose $N$ such that $\forall n > N$, $|\frac{b - a}{2^n}| < \varepsilon \implies \{u_n - l_n\} \to 0$. Since from (a), we know $u_n \to u$ and $l_n \to l$, this result implies that $u=l$. $\square$
+For $\varepsilon > 0$, choose $N$ such that $\forall n > N$, $|\frac{b - a}{2^n} - 0| < \varepsilon \implies \{u_n - l_n\} \to 0$. Since from (a), we know $u_n \to u$ and $l_n \to l$, this result implies that $u=l$. $\square$
 
 ## (c) Define the common limit of two sequences $c$ and show that $f(c)=0$.  (Hint: Use the continuity of $f$ and the fact that taking limits preserves weak inequalities).
 
 Proof: Define $c$ as the limit of $u_n$ and $l_n$. Because $f$ is continuous, $f(u_n) \to f(c)$ and $f(u_n) \to f(c)$.
 
-Now, I will show that $f(l_n) < 0 < f(u_n)$ for all $n \in \{1, ..., N\}$ where $f(m_N)=0$ using induction. For the base step, $f(l_1) =f(a) < 0 < f(b) = f(u_1)$. For the induction step, assume that $f(l_n) < 0 < f(u_n)$.  If $f(m_n) > 0$, then $f(l_n) = f(l_{n+1}) < 0 < f(m_n) = f(u_{n+1})$.  If $f(m_n) < 0$, then $f(l_{n+1}) = f(m_n) < 0 < f(u_n) = f(u_{n+1})$. Thus, $f(l_n) < 0 < f(u_n)$.  Since taking limits preserve weak inequalities: $f(l) \le 0 \le f(u) \implies f(c) \le 0 \le f(c) \implies f(c) = 0$. $\square$
+Now, I will show that $f(l_n) < 0 < f(u_n)$ for all $n \in \mathbb{N}$ using induction. For the base step, $f(l_1) =f(a) < 0 < f(b) = f(u_1)$. For the induction step, assume that $f(l_n) < 0 < f(u_n)$.  If $f(m_n) > 0$, then $f(l_n) = f(l_{n+1}) < 0 < f(m_n) = f(u_{n+1})$.  If $f(m_n) < 0$, then $f(l_{n+1}) = f(m_n) < 0 < f(u_n) = f(u_{n+1})$. Thus, $f(l_n) < 0 < f(u_n)$.  Since taking limits preserve weak inequalities: $f(l) \le 0 \le f(u) \implies f(c) \le 0 \le f(c) \implies f(c) = 0$. $\square$
 
 ## (5) Prove that at any time there are two antipodal points (diametrically opposite) on Earth that share the same temperature. (Hint: Use the Intermediate Value Theorem).
 
