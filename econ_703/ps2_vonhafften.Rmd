@@ -25,9 +25,13 @@ Proof: Let $\varepsilon = 1$.  Define $x = \sqrt{(2k+1)\pi}$ and $y = \sqrt{2k\p
 &= \frac{\pi}{|\sqrt{(2k+1)\pi}+\sqrt{2k\pi}|}
 \end{align*}
 
-For any $\delta > 0$, consider all $k > K$ where $K = \frac{(\pi/\delta)^2}{2\pi}$...............
+For any $\delta > 0$, choose $K = \frac{(\pi/\delta)^2}{2\pi}$, so for all $k > K$.
 
-Thus, $k \to \infty$, $|x-y| \to 0 \implies |x-y|<\delta$ .  Thus, $f(x) = \cos x^2$ is not uniformly continuous on $\mathbb{R}$. $\square$
+$$ \frac{\pi}{\sqrt{(2k+1)\pi}+\sqrt{2k\pi}} < \frac{\pi}{\sqrt{2k\pi}} =  \frac{\pi}{\sqrt{2\frac{(\pi/\delta)^2}{2\pi}\pi}}=\delta$$
+
+Thus, $f(x) = \cos x^2$ is not uniformly continuous on $\mathbb{R}$. $\square$
+
+\pagebreak
 
 ## (3) Show that if the function $f:\mathbb{R} \rightarrow \mathbb{R}_{++}$ is continuous on an interval $[a, b]$, where $\mathbb{R}_{++}=\{x\in\mathbb{R}|x>0\}$, then the reciprocal of this function ($\frac{1}{f}$) is bounded on this same interval.
 
@@ -60,6 +64,8 @@ u_n - m_n = u_n - (l_n+u_n)/2 = (u_n - l_n)/2 \ge 0 &\implies u_n \ge m_n
 
 Thus, $l_n \le m_n \le u_n$. If $f(m_n) > 0$, $l_{n+1} = l_n \le m_n = u_{n+1} \le u_n$. If $f(m_n) < 0$, $l_n \le m_n = l_{n+1} \le u_n = u_{n+1}$. If $f(m_n) = 0$, we stop and the sequences ends. Clearly, $\min\{l_n\}=l_1=a$ and $\max\{u_n\}=u_1=b$.  Hence, $\{l_n\}$ is an increasing sequence bounded from above by $b$ and $\{u_n\}$ is a decreasing sequence bounded from below by $a$, so both sequences converge. $\square$
 
+\pagebreak
+
 ## (b) Both sequences converge to the same limit, i.e. $\lim_{n \to \infty} l_n = \lim_{n \to \infty} u_n$. (Hint: Show that  $\{u_n - l_n\} \to 0$).
 
 Proof: First, I show that $u_{n} - l_{n} \le \frac{b - a}{2^{n-1}}$ by induction.  Notice that, 
@@ -78,15 +84,19 @@ u_{n+1} - l_{n+1} &= \frac{b - a}{2^{n}} \\
 &= (u_{n} - l_{n})/2
 \end{align*}
 
-ADD WRAP UP OF INDUCTION
+Thus, $u_{n} - l_{n} \le \frac{b - a}{2^{n-1}}$. For $\varepsilon > 0$, choose $N=\log_2{(\frac{b-a}{\varepsilon})}+1$. For $n > N$, 
 
-For $\varepsilon > 0$, choose $N=\log_2{\frac{b-a}{\varepsilon}}+1$, $|\frac{b - a}{2^{n-1}} - 0| < \varepsilon$ for $n \ge N$.  $\implies \{u_n - l_n\} \to 0$. Since from (a), we know $u_n \to u$ and $l_n \to l$, this result implies that $u=l$. SQUEEEEEEEEZE $\square$
+$$|\frac{b - a}{2^{n-1}} - 0| < |\frac{b - a}{2^{\log_2{(\frac{b-a}{\varepsilon}})+1-1}} - 0| = \varepsilon$$
+
+Thus, $\{u_n - l_n\} \to 0$ by the squeeze theorem. Since from (a), we know $u_n \to u$ and $l_n \to l$, this result implies that $u=l$. $\square$
 
 ## (c) Define the common limit of two sequences $c$ and show that $f(c)=0$.  (Hint: Use the continuity of $f$ and the fact that taking limits preserves weak inequalities).
 
 Proof: Define $c$ as the limit of $u_n$ and $l_n$. Because $f$ is continuous, $f(u_n) \to f(c)$ and $f(l_n) \to f(c)$.
 
 Now, I will show that $f(l_n) \le 0 \le f(u_n)$ for all $n \in \mathbb{N}$ using induction. For the base step, $f(l_1) =f(a) < 0 < f(b) = f(u_1)$. For the induction step, assume that $f(l_n) \le 0 \le f(u_n)$.  If $f(m_n) > 0$, then $f(l_n) = f(l_{n+1}) \le 0 \le f(m_n) = f(u_{n+1})$.  If $f(m_n) < 0$, then $f(l_{n+1}) = f(m_n) \le 0 \le f(u_n) = f(u_{n+1})$. Thus, $f(l_n) \le 0 \le f(u_n)$.  Since taking limits preserve weak inequalities: $f(l) \le 0 \le f(u) \implies f(c) \le 0 \le f(c) \implies f(c) = 0$. $\square$
+
+\pagebreak
 
 ## (5) Prove that at any time there are two antipodal points (diametrically opposite) on Earth that share the same temperature. (Hint: Use the Intermediate Value Theorem).
 
