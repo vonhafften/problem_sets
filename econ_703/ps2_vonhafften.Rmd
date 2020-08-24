@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 No.
 
-Proof: For the sake of a contradiction, assume that $\exists S \subset \mathbb{R}$ such that the set of $S$'s limit points, called $B$, equals $A= \{ \frac{1}{n} \}_{n \in \mathbb{N}}$.  For $\varepsilon > 0$, choose $n \in \mathbb{N}$ to be the smallest number to satisfy $\frac{1}{n} < \varepsilon$. Notice that there must exist an $s \in S$ such that $s \in B_{\frac{1}{4n}}(\frac{1}{2n})=(\frac{1}{2n} - \frac{1}{4n}, \frac{1}{2n} + \frac{1}{4n})$. Furthermore, $|s-0|<\frac{1}{2n} + \frac{1}{4n} < \frac{1}{n} < \varepsilon$, so 0 must be a limit point of $S$ and therefore $0 \in B$. However, $A \cap \{0\} = \emptyset$, so $A \neq B$. $\Rightarrow \Leftarrow$. No such $S \subset \mathbb{R}$ exists. $\square$
+Proof: For the sake of a contradiction, assume that $\exists S \subset \mathbb{R}$ such that the set of $S$'s limit points, called $B$, equals $A= \{ \frac{1}{n} \}_{n \in \mathbb{N}}$.  For $\varepsilon > 0$, choose $N \in \mathbb{N}$ such that $n > \frac{1}{\varepsilon}$ for all $n \ge N$. Notice that there must exist an $s \in S$ such that $s \in B_{\frac{1}{4n}}(\frac{1}{2n})=(\frac{1}{2n} - \frac{1}{4n}, \frac{1}{2n} + \frac{1}{4n})$. Furthermore, $|s-0|<\frac{1}{2n} + \frac{1}{4n} < \frac{1}{n} < \varepsilon$, so 0 must be a limit point of $S$ and therefore $0 \in B$. However, $A \cap \{0\} = \emptyset$, so $A \neq B$. $\Rightarrow \Leftarrow$. No such $S \subset \mathbb{R}$ exists. $\square$
 
 ## (2) Prove that $f(x) = \cos x^2$ is not uniformly continuous on $\mathbb{R}$.
 
@@ -25,7 +25,9 @@ Proof: Let $\varepsilon = 1$.  Define $x = \sqrt{(2k+1)\pi}$ and $y = \sqrt{2k\p
 &= \frac{\pi}{|\sqrt{(2k+1)\pi}+\sqrt{2k\pi}|}
 \end{align*}
 
-As $k \to \infty$, $|x-y| \to 0 \implies |x-y|<\delta$ for any $\delta > 0$.  Thus, $f(x) = \cos x^2$ is not uniformly continuous on $\mathbb{R}$. $\square$
+For any $\delta > 0$, consider all $k > K$ where $K = \frac{(\pi/\delta)^2}{2\pi}$...............
+
+Thus, $k \to \infty$, $|x-y| \to 0 \implies |x-y|<\delta$ .  Thus, $f(x) = \cos x^2$ is not uniformly continuous on $\mathbb{R}$. $\square$
 
 ## (3) Show that if the function $f:\mathbb{R} \rightarrow \mathbb{R}_{++}$ is continuous on an interval $[a, b]$, where $\mathbb{R}_{++}=\{x\in\mathbb{R}|x>0\}$, then the reciprocal of this function ($\frac{1}{f}$) is bounded on this same interval.
 
@@ -60,23 +62,31 @@ Thus, $l_n \le m_n \le u_n$. If $f(m_n) > 0$, $l_{n+1} = l_n \le m_n = u_{n+1} \
 
 ## (b) Both sequences converge to the same limit, i.e. $\lim_{n \to \infty} l_n = \lim_{n \to \infty} u_n$. (Hint: Show that  $\{u_n - l_n\} \to 0$).
 
-Proof: Notice that, for $f(m_n) > 0$, $u_{n+1} - l_{n+1} = m_n - l_n = (l_n+u_n)/2 - l_n = (u_n - l_n)/2$.  Similarly, for $f(m_n) < 0$, notice $u_{n+1} - l_{n+1} = u_n - m_n = u_n - (l_n+u_n)/2 = (u_n - l_n)/2$. So, for $n < N$ such that $f(m_N) = 0$, $u_{n+1} - l_{n+1} = (u_n - l_n)/2$.
-
-I will now show by induction that $u_{n+1} - l_{n+1} = \frac{b - a}{2^n}$.  For the base step, $u_{2} - l_{2} = \frac{b - a}{2}$.  For the induction step, assume $u_{n+1} - l_{n+1} = \frac{b - a}{2^n}$:
+Proof: First, I show that $u_{n} - l_{n} \le \frac{b - a}{2^{n-1}}$ by induction.  Notice that, 
 
 \begin{align*}
-u_{n+2} - l_{n+2} &= \frac{b - a}{2^{n+1}} \\
-&= \frac{b - a}{2n}\frac{1}{2} \\
-&= \frac{u_{n+1} - l_{n+1}}{2} \\
+f(m_n) > 0 &\implies u_{n+1} - l_{n+1} = m_n - l_n = (l_n+u_n)/2 - l_n = (u_n - l_n)/2 \\
+f(m_n) < 0 &\implies u_{n+1} - l_{n+1} = u_n - m_n = u_n - (l_n+u_n)/2 = (u_n - l_n)/2 \\
+f(m_n) = 0 &\implies u_{n+1} - l_{n+1} = m_n - m_n = 0
 \end{align*}
 
-For $\varepsilon > 0$, choose $N$ such that $\forall n > N$, $|\frac{b - a}{2^n} - 0| < \varepsilon \implies \{u_n - l_n\} \to 0$. Since from (a), we know $u_n \to u$ and $l_n \to l$, this result implies that $u=l$. $\square$
+For the base step, $u_1 - l_1= b - a = \frac{b - a}{2^{1-1}}$.  For the induction step, if $f(m_n) = 0$, then $l_k=u_k \implies u_k -l_k=0$ for all $k > n$. If $f(m_n) \neq 0$, assume $u_{n} - l_{n} = \frac{b - a}{2^{n-1}}$:
+
+\begin{align*}
+u_{n+1} - l_{n+1} &= \frac{b - a}{2^{n}} \\
+&= \frac{b - a}{2^{n-1}}\frac{1}{2} \\
+&= (u_{n} - l_{n})/2
+\end{align*}
+
+ADD WRAP UP OF INDUCTION
+
+For $\varepsilon > 0$, choose $N=\log_2{\frac{b-a}{\varepsilon}}+1$, $|\frac{b - a}{2^{n-1}} - 0| < \varepsilon$ for $n \ge N$.  $\implies \{u_n - l_n\} \to 0$. Since from (a), we know $u_n \to u$ and $l_n \to l$, this result implies that $u=l$. SQUEEEEEEEEZE $\square$
 
 ## (c) Define the common limit of two sequences $c$ and show that $f(c)=0$.  (Hint: Use the continuity of $f$ and the fact that taking limits preserves weak inequalities).
 
-Proof: Define $c$ as the limit of $u_n$ and $l_n$. Because $f$ is continuous, $f(u_n) \to f(c)$ and $f(u_n) \to f(c)$.
+Proof: Define $c$ as the limit of $u_n$ and $l_n$. Because $f$ is continuous, $f(u_n) \to f(c)$ and $f(l_n) \to f(c)$.
 
-Now, I will show that $f(l_n) < 0 < f(u_n)$ for all $n \in \mathbb{N}$ using induction. For the base step, $f(l_1) =f(a) < 0 < f(b) = f(u_1)$. For the induction step, assume that $f(l_n) < 0 < f(u_n)$.  If $f(m_n) > 0$, then $f(l_n) = f(l_{n+1}) < 0 < f(m_n) = f(u_{n+1})$.  If $f(m_n) < 0$, then $f(l_{n+1}) = f(m_n) < 0 < f(u_n) = f(u_{n+1})$. Thus, $f(l_n) < 0 < f(u_n)$.  Since taking limits preserve weak inequalities: $f(l) \le 0 \le f(u) \implies f(c) \le 0 \le f(c) \implies f(c) = 0$. $\square$
+Now, I will show that $f(l_n) \le 0 \le f(u_n)$ for all $n \in \mathbb{N}$ using induction. For the base step, $f(l_1) =f(a) < 0 < f(b) = f(u_1)$. For the induction step, assume that $f(l_n) \le 0 \le f(u_n)$.  If $f(m_n) > 0$, then $f(l_n) = f(l_{n+1}) \le 0 \le f(m_n) = f(u_{n+1})$.  If $f(m_n) < 0$, then $f(l_{n+1}) = f(m_n) \le 0 \le f(u_n) = f(u_{n+1})$. Thus, $f(l_n) \le 0 \le f(u_n)$.  Since taking limits preserve weak inequalities: $f(l) \le 0 \le f(u) \implies f(c) \le 0 \le f(c) \implies f(c) = 0$. $\square$
 
 ## (5) Prove that at any time there are two antipodal points (diametrically opposite) on Earth that share the same temperature. (Hint: Use the Intermediate Value Theorem).
 
