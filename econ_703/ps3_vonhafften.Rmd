@@ -13,7 +13,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 I prove that $T$ has a fixed point.
 
-Proof: Define $\beta_{xy} := \frac{d(T(x), T(y))}{d(x, y)}$ and $\beta := \max{\beta_{xy}}$ for all $x \neq y, x, y \in X$. Notice that $d(T(x), T(y)) < d(x, y) \implies \beta_{xy} < 1$. Thus, $d(T(x), T(y)) = \beta_{xy} d(x, y) \le \beta d(x, y)$.  By the convergence mapping theorem, $T$ has a fixed point.
+Proof: Define $\beta_{xy} := \frac{d(T(x), T(y))}{d(x, y)}$ and $\beta := \max{\beta_{xy}}$ for all $x \neq y, x, y \in X$. Notice that $d(T(x), T(y)) < d(x, y) \implies \beta_{xy} < 1$. Thus, $d(T(x), T(y)) = \beta_{xy} d(x, y) \le \beta d(x, y)$.  By the convergence mapping theorem, $T$ has a fixed point.  $\square$
+
+(2) Does there exist a countable set, which is compact?
+
+Yes.
+
+Proof: By definition, $\mathbb{N}$ is countable. $\mathbb{N}$ is a finite open cover for $\mathbb{N}$ in metric space $(\mathbb{N}, d_E)$ because $\mathbb{N}$ is open in $(\mathbb{N}, d_E)$ and $\mathbb{N} \subset \mathbb{N}$. Thus, $\mathbb{N}$ is compact in $(\mathbb{N}, d_E)$. $\square$
 
 (3) Prove that the function $f(x) = \cos^2(x)e^{5-x-x^2}$ has a maximum on $\mathbb{R}$.
 
@@ -23,4 +29,4 @@ Proof: Define $g(x) = \cos^2(x)$ and $h(x) = e^{5-x-x^2}$.  Notice that, since $
 
 Proof: Draw Cartesian planes on both maps such that the Wisconsin Capital Building in Madison is at the origin.  For the larger map, scale the $x$ coordinate such that moving one unit right cooresponds to the point on the map that is one inch east of the Capital Building on the map and scale the $y$ coordinate such that moving one unit up cooresponds to the point on the map that is one inch north of the Capital Building on the map. Scale the Cartesian plane on the smaller map similarly. 
 
-Define $\beta$ as the the ratio of the miles between geographical points per inch on the larger map to the miles between geographical points per inch on the smaller map. Notice that $\beta < 1$. Define $A \subset \mathbb{R}\times\mathbb{R}$ as the closed set of points on the larger map that are on or within Wisconsin's borders. Notice that the metric space $(A, d_E)$ is complete because $A$ is closed. Define operator $T: A \to \mathbb{R} \times \mathbb{R}$ such that, for $x \in A$, $(x_1, x_2)$ on the larger map and $(T(x_1), T(x_2))$ on the smaller map represent the same geographical point.  Notice that, for all $x, y \in A, x \neq y$, $d_E(x, y) = \beta d_E(T(x), T(y))$. Thus, $T$ is a contraction with modulus $\beta < 1$.  Thus, $T$ has a fixed point where $x^* = T(x^*)$, when you can pierce the stack of maps at the same geographical point.
+Define $\beta$ as the the ratio of the miles between geographical points per inch on the larger map to the miles between geographical points per inch on the smaller map. Notice that $\beta < 1$. Define $A \subset \mathbb{R}\times\mathbb{R}$ as the closed set of points on the larger map that are on or within Wisconsin's borders. Notice that the metric space $(A, d_E)$ is complete because $A$ is closed. Define operator $T: A \to \mathbb{R} \times \mathbb{R}$ such that, for $x \in A$, $(x_1, x_2)$ on the larger map and $(T(x_1), T(x_2))$ on the smaller map represent the same geographical point.  Notice that, for all $x, y \in A, x \neq y$, $d_E(x, y) = \beta d_E(T(x), T(y))$. Thus, $T$ is a contraction with modulus $\beta < 1$.  Thus, $T$ has a fixed point where $x^* = T(x^*)$, when you can pierce the stack of maps at the same geographical point.  $\square$
