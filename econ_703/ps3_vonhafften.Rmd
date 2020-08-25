@@ -9,6 +9,12 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+(1) Let $(X, d)$ be a nonempty complete metric space.  Suppose an operator $T: X \to X$ satisfies $d(T(x), T(y)) < d(x, y)$ for all $x \neq y, x, y \in X$.  Prove or disprove that $T$ has a fixed point.  Compare with the Contraction Mapping Theorem.
+
+I prove that $T$ has a fixed point.
+
+Proof: Define $\beta_{xy} := \frac{d(T(x), T(y))}{d(x, y)}$ and $\beta := \max{\beta_{xy}}$ for all $x \neq y, x, y \in X$. Notice that $d(T(x), T(y)) < d(x, y) \implies \beta_{xy} < 1$. Thus, $d(T(x), T(y)) = \beta_{xy} d(x, y) \le \beta d(x, y)$.  By the convergence mapping theorem, $T$ has a fixed point.
+
 (3) Prove that the function $f(x) = \cos^2(x)e^{5-x-x^2}$ has a maximum on $\mathbb{R}$.
 
 Proof: Define $g(x) = \cos^2(x)$ and $h(x) = e^{5-x-x^2}$.  Notice that, since $-1 \le \cos(x) \le 1$, $0 \le g(x) \le 1$. Thus, $f(x) \le h(x)$.  $h(x) < 1$ on $(-\infty, -\sqrt{21}/2-1/2) \cup (\sqrt{21}/2-1/2, \infty)$, so $\max h(x)$ is at $x \in A = [\sqrt{21}/2-1/2, \sqrt{21}/2-1/2]$. Similarly, $\max f(x)$ is at an $y \in A$. $A$ is a closed subset of $\mathbb{R}$. Since $g$ and $h$ are continuous, $f$ is continuous.  Since $A$ is closed and $f$ is continous, $f(x)$ is bounded on $A$. Thus, $A$ is compact.  By the extreme value theorem, $f$ reaches its maximum on $A$ and therefore on $\mathbb{R}$. $\square$
