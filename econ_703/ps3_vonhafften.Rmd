@@ -1,0 +1,14 @@
+---
+title: "ECON 703 - PS 3"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "8/28/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+(3) Prove that the function $f(x) = \cos^2(x)e^{5-x-x^2}$ has a maximum on $\mathbb{R}$.
+
+Proof: Define $g(x) = \cos^2(x)$ and $h(x) = e^{5-x-x^2}$.  Notice that, since $-1 \le \cos(x) \le 1$, $0 \le g(x) \le 1$. Thus, $f(x) \le h(x)$.  $h(x) < 1$ on $(-\infty, -\sqrt{21}/2-1/2) \cup (\sqrt{21}/2-1/2, \infty)$, so $\max h(x)$ is at $x \in A = [\sqrt{21}/2-1/2, \sqrt{21}/2-1/2]$. Similarly, $\max f(x)$ is at an $y \in A$. $A$ is a closed subset of $\mathbb{R}$. Since $g$ and $h$ are continuous, $f$ is continuous.  Since $A$ is closed and $f$ is continous, $f(x)$ is bounded on $A$. Thus, $A$ is compact.  By the extreme value theorem, $f$ reaches its maximum on $A$ and therefore on $\mathbb{R}$. $\square$
