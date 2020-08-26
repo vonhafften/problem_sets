@@ -53,7 +53,7 @@ Proof: Using the extreme value theorem, I show that $f$ attains a maximum on $\m
 
 For (i), define $C = [(-\sqrt{21}-1)/2, (\sqrt{21}-1)/2]$. As a closed interval of $\mathbb{R}$, $C$ is compact by the Heine-Borel theorem. For $0 \in C$, $f(0)=\cos^2(0)e^{5-0-0^2}=e^5>1$. Since $0 \le \cos^2(x) \le 1$, $f(x) \le h_1(h_2(x))$ for all $x \in \mathbb{R}$. Furthermore, if $h_2(x) < 0 \implies h_1(h_2(x))<1$. Because $h_2(0) = 5-0-0^2= 5$ and the quadratic roots of $h_2$ are $x = (\sqrt{21}-1)/2$ and $x = (-\sqrt{21}-1)/2$, $f(x) \le h_1(h_2(x)) < 1$ for all $x \in C^c$. Thus, the maximum of $f(x)$ on $\mathbb{R}$ must occur on $C$.
 
-For (ii), since $g$, $h_1$, and $h_2$ are continuous functions, $f$ is a continuous function.\footnote{For $\varepsilon > 0$,...}
+For (ii), since $g$, $h_1$, and $h_2$ are continuous functions on $\mathbb{R}$, $f$ is a continuous function on $\mathbb{R}$.\footnote{Proof that the products of two continuous functions is continuous.}
 
 Thus, by the extreme value theorem, $f$ attains a maximum on $C$ and therefore on $\mathbb{R}$. $\square$
 
@@ -65,13 +65,35 @@ Define $\beta$ as the the ratio of the miles between geographical points per inc
 
 \pagebreak
 
-## (5) Consider the set $X = \{-1, 0, 1\}$ and the space of all funcitons on $X$, $F_X = \{f: X \to \mathbb{R}\}$.
+## (5) Consider the set $X = \{-1, 0, 1\}$ and the space of all functions on $X$, $F_X = \{f: X \to \mathbb{R}\}$.
 
 ## (a) Show that $F_X$ is a vector space.
 
+Proof: To show that $X$ is a vector space, I satisfy the eight properties of vector space with $X$:
+
+* Let $a, b, c \in F_X$. $\forall x \in X$, $(a(x)+b(x))+c(x) = a(x)+(b(x)+c(x))$.
+
+* Let $a, b \in F_X$. $\forall x \in X$, $a(x)+b(x) = b(x)+a(x)$.
+
+* Let $a, \bar{0} \in F_X$ where $\bar{0}(x)=0$ $\forall x \in X$, so $a(x)+\bar{0}(x) = \bar{0}(x)+a(x) = a(x)$.
+
+* Let $a, (-a) \in F_X$ where $(-a)(x) = -a(x)$ $\forall x \in X$, so $a(x) + (-a)(x) = a(x) -a(x) = 0 = \bar{0}(x)$.
+
+* Let $a, b \in F_X$ and $\alpha \in \mathbb{R}$. $\forall x \in X$, $\alpha ( a(x) + b(x))=\alpha a(x) + \alpha b(x)$.
+
+* Let $a \in F_X$ and $\alpha, \beta \in \mathbb{R}$. $\forall x \in X$, $(\alpha + \beta)  a(x) =\alpha a(x) +  \beta  a(x)$.
+
+* Let $a \in F_X$ and $\alpha, \beta \in \mathbb{R}$. $\forall x \in X$, $(\alpha * \beta)  a(x) =\alpha ( \beta*  a(x))$.
+
+* Let $a \in F_X$. $\forall x \in X$, $1 *  a(x) = a(x)$. $\square$
+
 ## (b) Show that the operator $T: F_X \to F_X$ defined by $T(f)(x)=f(x^2), x \in \{-1, 0, 1\}$ is linear.
 
+
+
 ## (c) Calculate ker $T$, Im $T$, and rank $T$.
+
+
 
 \pagebreak
 
