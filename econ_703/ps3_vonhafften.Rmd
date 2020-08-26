@@ -18,7 +18,7 @@ Proof: Consider the metric space $([1, \infty), d_E)$ and the operator $T(x)=x +
 Consider $x \neq y, x, y \in [1, \infty)$. If $x>y \implies 0>\frac{1}{x} - \frac{1}{y}$, then\footnote{I show that $(x + \frac{1}{x}) - (y+\frac{1}{y}) > 0$ for $x>y\ge1$.  Rewrite $x=y+\varepsilon$ where $\varepsilon > 0$:
 
 \begin{align*}
--(\frac{1}{x} - \frac{1}{y}) = \frac{1}{y} - \frac{1}{y+\varepsilon} = \frac{\varepsilon}{y(y+\varepsilon)} < \varepsilon
+-(\frac{1}{x} - \frac{1}{y}) = \frac{1}{y} - \frac{1}{y+\varepsilon} = \frac{\varepsilon}{y(y+\varepsilon)} < \varepsilon = (y+\varepsilon) - y = x - y
 \end{align*}
 
 Because $y(y+\varepsilon) > 1$.}
@@ -39,9 +39,13 @@ If $x<y$, switch $x$ for $y$ and $y$ for $x$ in the logic above. For the sake of
 
 ## (2) Does there exist a countable set, which is compact?
 
-Yes.
+Yes, there exists a countable compact set.
 
-Proof: Consider $A = \{\frac{1}{n}: n \in \mathbb{N}\} \cup \{0\}$. $A$ is a countable set because the union of countable sets is countable. Using the Heine-Borel theorem, I show that $A \subset \mathbb{R}$ is compact because it is bounded and closed. First, $A$ is bounded between 0 and 1. Second, let $\{a_{n_k}\}$ be an arbitrary convergent subsequence. I will show $\{a_{n_k}\} \to 0 \in A$, so $A$ is closed. Note that $a_{n_k} \le b_{n_k}$ where $b_{n_k} \in \{\frac{1}{n}: n \in \mathbb{N}\}$. For $\varepsilon > 0$, choose $N = 1/\varepsilon$ such that, for all $n_k > N$, $|b_{n_k} - 0| = |1/n_k - 0 | < \varepsilon$. Thus, $b_{n_k} \to 0$ and, by the squeeze theorem, $a_{n_k}\to 0$.  Thus, $A$ is closed. $\square$
+Proof: Consider $A = \{\frac{1}{n}: n \in \mathbb{N}\} \cup \{0\}$. $A$ is a countable set because the union of countable sets is countable. Using the Heine-Borel theorem, I show that $A \subset \mathbb{R}$ is compact because it is bounded and closed. 
+
+First, $A$ is bounded between 0 and 1. Second, let $\{a_{n_k}\}$ be an arbitrary convergent subsequence.
+
+Second, I show $\{a_{n_k}\} \to 0 \in A$, so $A$ is closed. Define sequence $b_{n_k} = 1/n_k$. Notice that, for all $n_k$, $a_{n_k} \le b_{n_k}$. For $\varepsilon > 0$, choose $N = 1/\varepsilon$ such that, for all $n_k > N$, $|b_{n_k} - 0| < |1/N - 0 | = \varepsilon$. Thus, $b_{n_k} \to 0$ and, by the squeeze theorem, $a_{n_k}\to 0$.  Thus, $A$ is closed. $\square$
 
 ## (3) Prove that the function $f(x) = \cos^2(x)e^{5-x-x^2}$ has a maximum on $\mathbb{R}$.
 
@@ -49,16 +53,25 @@ Proof: Using the extreme value theorem, I show that $f$ attains a maximum on $\m
 
 For (i), define $C = [(-\sqrt{21}-1)/2, (\sqrt{21}-1)/2]$. As a closed interval of $\mathbb{R}$, $C$ is compact by the Heine-Borel theorem. For $0 \in C$, $f(0)=\cos^2(0)e^{5-0-0^2}=e^5>1$. Since $0 \le \cos^2(x) \le 1$, $f(x) \le h_1(h_2(x))$ for all $x \in \mathbb{R}$. Furthermore, if $h_2(x) < 0 \implies h_1(h_2(x))<1$. Because $h_2(0) = 5-0-0^2= 5$ and the quadratic roots of $h_2$ are $x = (\sqrt{21}-1)/2$ and $x = (-\sqrt{21}-1)/2$, $f(x) \le h_1(h_2(x)) < 1$ for all $x \in C^c$. Thus, the maximum of $f(x)$ on $\mathbb{R}$ must occur on $C$.
 
-For (ii), since $g$, $h_1$, and $h_2$ are continuous functions, $f$ is a continuous function.
+For (ii), since $g$, $h_1$, and $h_2$ are continuous functions, $f$ is a continuous function.\footnote{For $\varepsilon > 0$,...}
 
 Thus, by the extreme value theorem, $f$ attains a maximum on $C$ and therefore on $\mathbb{R}$. $\square$
 
 ## (4) Suppose you have two maps of Wisconsin: one large and one small.  You put the large one on top of the small one, so that the small one is completely covered by the large one.  Prove that it is possible to pierce the stack of those two maps in a way that the needle will go through exactly the same (geographical) points on both maps.
 
-Proof: Draw Cartesian planes on both maps such that the Wisconsin Capital Building in Madison is at the origin.  For the larger map, scale the $x$ coordinate such that moving one unit right cooresponds to the point on the map that is one inch east of the Capital Building on the map and scale the $y$ coordinate such that moving one unit up cooresponds to the point on the map that is one inch north of the Capital Building on the map. Scale the Cartesian plane on the smaller map similarly. 
+Proof: Draw Cartesian planes on both maps such that the Wisconsin Capital Building in Madison is at the origin.  For the larger map, scale the $x$ coordinate such that moving one unit right corresponds to the point on the map that is one inch east of the Capital Building on the map and scale the $y$ coordinate such that moving one unit up corresponds to the point on the map that is one inch north of the Capital Building on the map. Scale the Cartesian plane on the smaller map similarly. 
 
 Define $\beta$ as the the ratio of the miles between geographical points per inch on the larger map to the miles between geographical points per inch on the smaller map. Notice that $\beta < 1$. Define $A \subset \mathbb{R}\times\mathbb{R}$ as the closed set of points on the larger map that are on or within Wisconsin's borders. Notice that the metric space $(A, d_E)$ is complete because $A$ is closed. Define operator $T: A \to \mathbb{R} \times \mathbb{R}$ such that, for $x \in A$, $(x_1, x_2)$ on the larger map and $(T(x_1), T(x_2))$ on the smaller map represent the same geographical point.  Notice that, for all $x, y \in A, x \neq y$, $d_E(x, y) = \beta d_E(T(x), T(y))$. Thus, $T$ is a contraction with modulus $\beta < 1$.  Thus, $T$ has a fixed point where $x^* = T(x^*)$, where you can pierce the stack of maps at the same geographical point.  $\square$
 
+\pagebreak
+
+## (5) Consider the set $X = \{-1, 0, 1\}$ and the space of all funcitons on $X$, $F_X = \{f: X \to \mathbb{R}\}$.
+
+## (a) Show that $F_X$ is a vector space.
+
+## (b) Show that the operator $T: F_X \to F_X$ defined by $T(f)(x)=f(x^2), x \in \{-1, 0, 1\}$ is linear.
+
+## (c) Calculate ker $T$, Im $T$, and rank $T$.
 
 \pagebreak
 
@@ -79,9 +92,12 @@ I first find a basis for $X$:
 \begin{align*}
 (1) + (2) \implies 4x_1 + 3x_3 &= 0 \\
 x_1 &= (-3/4)x_3 \\
-(1) \implies x_2+ (5/4)x_3 +x_4 &= 0\\
+\end{align*}
+\begin{align*}
 (3)-3*(1) \implies 5(-3/4x_3) + 3x_2+ (3/4)x_3 &= 0\\
 x_2 &= x_3 \\
+\end{align*}
+\begin{align*}
 (2) \implies -x_3-(5/4)x_3-x_4 &= 0 \\
 x_4 &= (-9/4)x_3
 \end{align*}
