@@ -140,29 +140,64 @@ x_1 + x_2+2x_3+x_4 &= 0 \\
 
 ## (a) Show that $X$ is a vector space.
 
-I first find a basis for $X$:
+Proof: First I find a basis for $X$:
+
+\begin{align}
+(3) \implies 5x_1 &= 3x_2+3x_4
+\end{align}
 
 \begin{align*}
-(1) + (2) \implies 4x_1 + 3x_3 &= 0 \\
-x_1 &= (-3/4)x_3 \\
+(3) & (4) \implies \frac{3}{5}(x_2 + x_4) + x_2+2x_3+x_4 &= 0\\
+2x_3 &= -\frac{8}{5}(x_2 + x_4)\\
+5x_3 &= -4(x_2 + x_4)
 \end{align*}
+
+Letting $x_2 = a$ and $x_3 = b$, all elements of $X$ can be represented by 
+
 \begin{align*}
-(3)-3*(1) \implies 5(-3/4x_3) + 3x_2+ (3/4)x_3 &= 0\\
-x_2 &= x_3 \\
+y &= \begin{bmatrix}
+           3(a + b) \\
+           5a \\
+           -4(a + b) \\
+           5b
+         \end{bmatrix} \\
+ &= a \begin{bmatrix}
+           3 \\
+           5 \\
+           -4 \\
+           0
+         \end{bmatrix}
++ b \begin{bmatrix}
+           3 \\
+           0 \\
+           -4 \\
+           5
+         \end{bmatrix}\\
+ &=a \vec{u} + b \vec{v}
 \end{align*}
-\begin{align*}
-(2) \implies -x_3-(5/4)x_3-x_4 &= 0 \\
-x_4 &= (-9/4)x_3
-\end{align*}
 
-Letting $x_3 = \alpha$, all elements of $X$ can be represented by $(-3/4 \alpha, \alpha, \alpha, -9/4 \alpha)$ for some $\alpha \in \mathbb{R}$. Thus, $\mathfrak{B} = \{(-3, 4, 4, -9)\}$ forms a basis for $X$ because it spans $X$ and it (having one element) is linearly independent, so any $x \in X$ can be written as $x = a * v$ where $v =(-3, 4, 4, -9)$ and $a \in \mathbb{R}$.
+Thus, $\{\vec{u}, \vec{v}\}$ forms a basis for $X$ because they span $X$ and they are linearly independent. 
 
-For $x, y, z \in X$, we know that $x = a * v$, $y = b * v$, $z = c * v$ for some $a, b, c \in \mathbb{R}$.
+For $x, y, z \in X$, $\exists o, p, q, r, s, t \in \mathbb{R}$ such that $x = o \vec{u} + p \vec{v}$, $y = q \vec{u} + r \vec{v}$, and $y = s \vec{u} + t \vec{v}$.  Vector spaces have eight properties:
 
-Associativity of + in $X$:
+* $(x+y)+z = (o \vec{u} + p \vec{v}+ q \vec{u} + r \vec{v}) + s \vec{u} + t \vec{v}  = o \vec{u} + p \vec{v}+ (q \vec{u} + r \vec{v} + s \vec{u} + t \vec{v}) = x+(y+z)$.
 
-....
+* $x+y = o \vec{u} + p \vec{v}+ q \vec{u} + r \vec{v} = q \vec{u} + r \vec{v} + o \vec{u} + p \vec{v} = y+x$.
+
+* Let $\bar{0} \in X$ be $0 * \vec{u} + 0 * \vec{v}$. $x+\bar{0} = o \vec{u} + p \vec{v} + 0 * \vec{u} + 0 * \vec{v} =(o+0) \vec{u} + (p+) \vec{v}=o \vec{u} + p \vec{v}=x$.
+
+* Let $(-x)= (-o) \vec{u} + (-p) \vec{v}$. $x + (-x) = o \vec{u} + p \vec{v}+(-o) \vec{u} + (-p) \vec{v} = (o-o) \vec{u} + (p-p) \vec{v} = 0 * \vec{u} + 0 * \vec{v} = \bar{0}$.
+
+* Let $\alpha \in \mathbb{R}$. $\alpha(x+y) = \alpha(o \vec{u} + p \vec{v}+ q \vec{u} + r \vec{v}) = \alpha(o \vec{u} + p \vec{v})+ \alpha(q \vec{u} + r \vec{v}) = \alpha x + \alpha y$.
+
+* Let $\alpha, \beta \in \mathbb{R}$. $(\alpha + \beta) x = (\alpha + \beta) (o \vec{u} + p \vec{v}) = \alpha (o \vec{u} + p \vec{v}) + \beta (o \vec{u} + p \vec{v}) = \alpha x + \beta y$.
+
+* Let $\alpha, \beta \in \mathbb{R}$. $(\alpha * \beta) x = (\alpha * \beta) (o \vec{u} + p \vec{v}) = \alpha  (\beta (o \vec{u} + p \vec{v})) =  \alpha  (\beta x)$.
+
+* $1 * x = 1 * (o \vec{u} + p \vec{v}) = 1 * o \vec{u} + 1 * p \vec{v} = o \vec{u} + p \vec{v} = x$.
+
+Thus, $X$ is a vector space. $\square$
 
 ## (b) Calculate dim $X$.
 
-From (a), we found that $\mathfrak{B} = \{(-3, 4, 4, -9)\}$.  The dimension of $X$ is the cardinality of $\mathfrak{B}$, so dim $X = 1$.
+From (a), we found that $\{(3, 5, -4, 0), (3, 0, -4, 5)\}$ form a basis for $X$.  Since the dimension of $X$ is the cardinality of a basis for $X$, dim $X = 2$.
