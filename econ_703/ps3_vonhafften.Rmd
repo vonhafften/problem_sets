@@ -41,11 +41,18 @@ If $x<y$, switch $x$ for $y$ and $y$ for $x$ in the logic above. For the sake of
 
 Yes, there exists a countable compact set.
 
-Proof: Consider $A = \{\frac{1}{n}: n \in \mathbb{N}\} \cup \{0\}$. $A$ is a countable set because the union of countable sets is countable. Using the Heine-Borel theorem, I show that $A \subset \mathbb{R}$ is compact because it is bounded and closed. 
+Proof: Consider $A = \{\frac{1}{n}: n \in \mathbb{N}\} \cup \{0\}$ and
 
-First, $A$ is bounded between 0 and 1. Second, let $\{a_{n_k}\}$ be an arbitrary convergent subsequence.
+\begin{align*}
+f(x) = \begin{cases}
+0,& n = 1 \\
+\frac{1}{n-1},& n>1
+\end{cases}
+\end{align*}
 
-Second, I show $\{a_{n_k}\} \to 0 \in A$, so $A$ is closed. Define sequence $b_{n_k} = 1/n_k$. Notice that, for all $n_k$, $a_{n_k} \le b_{n_k}$. For $\varepsilon > 0$, choose $N = 1/\varepsilon$ such that, for all $n_k > N$, $|b_{n_k} - 0| < |1/N - 0 | = \varepsilon$. Thus, $b_{n_k} \to 0$ and, by the squeeze theorem, $a_{n_k}\to 0$.  Thus, $A$ is closed. $\square$
+Since $f$ is a one-to-one mapping between $\mathbb{N}$ and $A$, $A$ is countable.
+
+Let $\mathcal{U}$ be an arbitrary open cover of $A$. $\exists U_{\lambda^*} \in \mathcal{U}$ such that $U_{\lambda^*} \supset B_\varepsilon(0)$ for some $\varepsilon > 0$. Let $\{a_n\} = 1/n$ for $n \in \mathbb{N}$. Since $a_n \to 0$, $\exists N$ such that, for all $n \ge N$, $a_n \in B_\varepsilon(0) \implies a_n \in U_{\lambda^*}$. Thus, we can construct a finite subcover of $A$ as the union of $U_{\lambda^*}$ and a finite number of $U_{\lambda_i} \in \mathcal{U}$, which each contain a $a_n \notin U_{\lambda^*}$ where $n=1, ..., N$. $\square$
 
 ## (3) Prove that the function $f(x) = \cos^2(x)e^{5-x-x^2}$ has a maximum on $\mathbb{R}$.
 
