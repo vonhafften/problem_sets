@@ -76,7 +76,7 @@ Proof: Define $A \subset \mathbb{R}^2$ as the closed set of points on the smalle
 
 Define mapping $f: A \to B$ such that $f(x)$ is the point on the larger map would be pierce if $x$ on the smaller map is pierced.  Define mapping $g: B \to A$ such that $x$ and $g(x)$ represent the same geographical points.  Thus, define $T = f \circ g : A \to A$. Intuitively, $T(x)$ is the point on the smaller map representing the same geographical point as the hole on the larger map when $x$ on the small map is pierced.
 
-For $x, y \in A, x \neq y$, $d_E(x, y) = d_E(f(x), f(y))$ because piercing the small map at $x$ creates a hole on the large map at $f(x)$ (same for $y$ and $f(y)$). For $w, z \in B, w \neq z$, $d_E(w, z) = \beta d_E(g(w), g(z))$  where $\beta < 1$ is the ratio of the miles per inch on the larger map to the miles per inch on the smaller map. $w$ and $g(w)$ represent the same geographical point and $z$ and $g(z)$ represent the same geographical point  with $w$ and $z$ on the larger map and $g(w)$ and $g(z)$ on the smaller map.  Thus, $d_E(x, y) = d_E(f(x), f(y)) = \beta d_E(g(f(x)), g(f(y))) = \beta d_E(T(x), T(y))$, so $T$ is a contraction with modulus $\beta < 1$.  Thus, $T$ has a fixed point where $T(x^*) = x^*$. You can pierce the stack of maps at $x^*$ on the smaller map and pierce the same geographical point on the larger map.  $\square$
+For $x, y \in A, x \neq y$, $d_E(x, y) = d_E(f(x), f(y))$ because piercing the small map at $x$ creates a hole on the large map at $f(x)$ (same for $y$ and $f(y)$). For $w, z \in B, w \neq z$, $d_E(w, z) = \beta d_E(g(w), g(z))$  where $\beta < 1$ is the ratio of the miles per inch on the larger map to the miles per inch on the smaller map. $w$ and $g(w)$ represent the same geographical point and $z$ and $g(z)$ represent the same geographical point  with $w$ and $z$ on the larger map and $g(w)$ and $g(z)$ on the smaller map.  Thus, $d_E(x, y) = d_E(f(x), f(y)) = \beta d_E(g(f(x)), g(f(y))) = \beta d_E(T(x), T(y))$, so $T$ is a contraction with modulus $\beta < 1$.  Thus, $T$ has a fixed point where $T(x^*) = x^*$ by the Contraction Mappng Theorem. You can pierce the stack of maps at $x^*$ on the smaller map and pierce the same geographical point on the larger map.  $\square$
 
 \pagebreak
 
@@ -154,7 +154,15 @@ g_1 &= \begin{cases} 1, x=\{-1, 1 \} \\ 0, x=0 \end{cases}\\
 g_2 &= \begin{cases} 0, x=\{-1, 1 \} \\ 1, x=0. \end{cases}
 \end{align*}
 
-Since an arbitrary $f \in$ Im $T$ can be written as $f(x) = ag_1(x)+bg_2(x)$, $\mathcal{B}$ spans Im $T$. $\mathcal{B}$ is also linearly independent because, if $c, d \in \mathbb{R}$, $cg_1(x)+dg_2(x)=0 \iff c=d=0$.  Thus, $\mathcal{B}$ is a basis for Im $T$. The rank of $T$ is the dimension of the image of $T$:
+Since an arbitrary $f \in$ Im $T$ can be written as $f(x) = ag_1(x)+bg_2(x)$, $\mathcal{B}$ spans Im $T$. $\mathcal{B}$ is also linearly independent because, for $c, d \in \mathbb{R}$,
+
+\begin{align*}
+cg_1(1)+dg_2(1) = c = 0 &\iff c = 0\\
+cg_1(0)+dg_2(0) = d = 0 &\iff d = 0\\
+cg_1(-1)+dg_2(-1) = c = 0 &\iff c = 0\\
+\end{align*}
+
+Thus, $\mathcal{B}$ is a basis for Im $T$. The rank of $T$ is the dimension of the image of $T$:
 
 rank $T=$ dim $($Im $T)=$ dim $(\mathcal{B}) = 2$.
 
@@ -250,8 +258,14 @@ a \begin{bmatrix}
            5a \\
            -4(a + b) \\
            5b
-  \end{bmatrix} = \bar{0} \implies
-  a = b = 0
+  \end{bmatrix} = 
+  \begin{bmatrix}
+  0\\
+  0\\
+  0\\
+  0 
+  \end{bmatrix} \implies
+  5a = 5b = 0 \implies a = b = 0
 \end{align*}
 
 Spanning $X$ and being linearly independent, $\{\vec{u}, \vec{v}\}$ forms a basis for $X$. Since the dimension of $X$ is the cardinality of a basis for $X$, dim $X = 2$.
