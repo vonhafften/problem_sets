@@ -60,7 +60,7 @@ Proof: Using the extreme value theorem, I show that $f$ attains a maximum on $\m
 
 For (i), define $C = [(-\sqrt{21}-1)/2, (\sqrt{21}-1)/2]$. As a closed interval of $\mathbb{R}$, $C$ is compact by the Heine-Borel theorem. For $0 \in C$, $f(0)=\cos^2(0)e^{5-0-0^2}=e^5>1$. Since $0 \le \cos^2(x) \le 1$, $f(x) \le h_1(h_2(x))$ for all $x \in \mathbb{R}$. Furthermore, if $h_2(x) < 0 \implies h_1(h_2(x))<1$. Because $h_2(0) = 5-0-0^2= 5$ and the quadratic roots of $h_2$ are $x = (\sqrt{21}-1)/2$ and $x = (-\sqrt{21}-1)/2$, $f(x) \le h_1(h_2(x)) < 1$ for all $x \in C^c$. Thus, the maximum of $f(x)$ on $\mathbb{R}$ must occur on $C$.
 
-For (ii), since $g$, $h_1$, and $h_2$ are continuous functions on $\mathbb{R}$, $f$ is a continuous function on $\mathbb{R}$.\footnote{Proof that the products of two continuous functions is continuous.}
+For (ii), since $g$, $h_1$, and $h_2$ are continuous functions on $\mathbb{R}$, $f$ is a continuous function on $\mathbb{R}$.
 
 Thus, by the extreme value theorem, $f$ attains a maximum on $C$ and therefore on $\mathbb{R}$. $\square$
 
@@ -84,27 +84,7 @@ For $x, y \in A, x \neq y$, $d_E(x, y) = d_E(f(x), f(y))$ because $x$ and $y$ si
 
 ## (a) Show that $F_X$ is a vector space.
 
-Proof: To show that $X$ is a vector space, I satisfy the eight properties of vector space with $X$:
-
-* Let $a, b, c \in F_X$. $\forall x \in X$, $(a(x)+b(x))+c(x) = a(x)+(b(x)+c(x))$.
-
-* Let $a, b \in F_X$. $\forall x \in X$, $a(x)+b(x) = b(x)+a(x)$.
-
-* Let $a, \bar{0} \in F_X$ where $\bar{0}(x)=0$ $\forall x \in X$, so $a(x)+\bar{0}(x) = \bar{0}(x)+a(x) = a(x)$.
-
-* Let $a, (-a) \in F_X$ where $(-a)(x) = -a(x)$ $\forall x \in X$, so $a(x) + (-a)(x) = a(x) -a(x) = 0 = \bar{0}(x)$.
-
-* Let $a, b \in F_X$ and $\alpha \in \mathbb{R}$. $\forall x \in X$, $\alpha ( a(x) + b(x))=\alpha a(x) + \alpha b(x)$.
-
-* Let $a \in F_X$ and $\alpha, \beta \in \mathbb{R}$. $\forall x \in X$, $(\alpha + \beta)  a(x) =\alpha a(x) +  \beta  a(x)$.
-
-* Let $a \in F_X$ and $\alpha, \beta \in \mathbb{R}$. $\forall x \in X$, $(\alpha * \beta)  a(x) =\alpha ( \beta*  a(x))$.
-
-* Let $a \in F_X$. $\forall x \in X$, $1 *  a(x) = a(x)$. $\square$
-
-## (b) Show that the operator $T: F_X \to F_X$ defined by $T(f)(x)=f(x^2), x \in \{-1, 0, 1\}$ is linear.
-
-An arbitrary $f \in F_X$ is
+Proof: An arbitrary $f \in F_X$ is
 
 \begin{align*}
 f(x) = \begin{cases} 
@@ -114,14 +94,25 @@ f(x) = \begin{cases}
    \end{cases}
 \end{align*}
 
-where $a, b, c \in \mathbb{R}$.  Applying $T$ to $f$,
+where $a, b, c \in \mathbb{R}$. Thus, $\forall x \in X$ and $\forall f \in F_X$, $f(x) \in \mathbb{R}$.  Thus, $F_X$ being a vector space flow from the properties of $\mathbb{R}$:
 
-\begin{align*}
-T(f)(x) = f(x^2) = \begin{cases} 
-      a & x = \{-1, 1\} \\
-      b & x = 0.
-   \end{cases}
-\end{align*}
+* Let $a, b, c \in F_X$. $\forall x \in X$, $a(x),b(x),c(x) \in \mathbb{R}$, so $(a(x)+b(x))+c(x) = a(x)+(b(x)+c(x))$.
+
+* Let $a, b \in F_X$. $\forall x \in X$, $a(x),b(x) \in \mathbb{R}$, so $a(x)+b(x) = b(x)+a(x)$.
+
+* Let $a, \bar{0} \in F_X$ where $\bar{0}(x)=0$. $\forall x \in X$, $a(x) \in \mathbb{R}$, so $a(x)+\bar{0}(x) = a(x) + 0 = a(x)$ and $\bar{0}(x)+a(x) = 0+a(x) = a(x)$.
+
+* Let $a, (-a) \in F_X$ where $(-a)(x) = -a(x)$. $\forall x \in X$, $a(x), (-a)(x) \in \mathbb{R}$, so $a(x) + (-a)(x) = a(x) -a(x) = 0 = \bar{0}(x)$.
+
+* Let $a, b \in F_X$ and $\alpha \in \mathbb{R}$. $\forall x \in X$, $a(x),b(x) \in \mathbb{R}$, so $\alpha ( a(x) + b(x))=\alpha a(x) + \alpha b(x)$.
+
+* Let $a \in F_X$ and $\alpha, \beta \in \mathbb{R}$. $\forall x \in X$, $a(x) \in \mathbb{R}$, so $(\alpha + \beta)  a(x) =\alpha a(x) +  \beta  a(x)$.
+
+* Let $a \in F_X$ and $\alpha, \beta \in \mathbb{R}$. $\forall x \in X$, $a(x) \in \mathbb{R}$, so $(\alpha * \beta)  a(x) =\alpha ( \beta*  a(x))$.
+
+* Let $a \in F_X$. $\forall x \in X$, $a(x) \in \mathbb{R}$, so $1 *  a(x) = a(x)$. $\square$
+
+## (b) Show that the operator $T: F_X \to F_X$ defined by $T(f)(x)=f(x^2), x \in \{-1, 0, 1\}$ is linear.
 
 Proof: Let $a, b \in F_X$ and $\alpha, \beta \in \mathbb{R}$. $\exists c \in F_X$, such that $c(x) = \alpha a(x) + \beta b(x)$ $\forall x \in X$.  Apply $T$ to $c(x)$:
 
@@ -133,13 +124,47 @@ T(c)(x) &= c(x^2) \\
 
 Thus, $T$ is linear. $\square$
 
+\pagebreak
+
 ## (c) Calculate ker $T$, Im $T$, and rank $T$.
 
-ker $T = \{f \in F_X | T(f) = \bar{0}\}= \{f \in F_X | f(0)=f(1)=0\}$.
+A basis of $F_X$ is $\mathcal{B}_1 =\{f_1, f_2, f_3\}$ where
 
-Im $T = \{T(f) | f \in F_X\}= \{ f(x^2)|f \in F_X\} = \{(a, b)| a, b \in \mathbb{R}\} = \mathbb{R}^2$.
+\begin{align*}
+f_1 &= \begin{cases} 1, x=1\\ 0, x=0\\ 0, x=-1 \end{cases}\\
+f_2 &= \begin{cases} 0, x=1\\ 1, x=0\\ 0, x=-1 \end{cases}\\
+f_3 &= \begin{cases} 0, x=1\\ 0, x=0\\ 1, x=-1 \end{cases}
+\end{align*}
 
-rank $T=$ dim $($Im $T)=$ dim $(\mathbb{R}^2) = 2$.
+Applying $T$ to an arbitrary $f \in F_X$,
+
+\begin{align*}
+T(f)(x) = f(x^2) = \begin{cases} 
+      a & x = \{-1, 1\} \\
+      b & x = 0
+   \end{cases}
+\end{align*}
+
+where $a, b \in \mathbb{R}$.
+
+The kernel of $T$ is all functions on $X$ that map to 0 for $x \in \{0, 1\}$ and maps to some $a \in \mathbb{R}$ for $x=-1$.
+
+ker $T = \{f \in F_X | T(f) = \bar{0}\} = \Bigg\{f \in F_X \Bigg| f(x)= \begin{cases} 0, x \in \{0, 1\} \\ a, x = -1 \end{cases}, a \in \mathbb{R} \Bigg\}$.
+
+The image of $T$ is all functions on $X$ that map to the same $a \in \mathbb{R}$ for $x=\{-1, 1\}$ and maps to some $b \in \mathbb{R}$ for $x=0$.
+
+Im $T = \{T(f) | f \in F_X\}= \Bigg\{f \in F_X \Bigg| f(x)= \begin{cases} a, x \in \{-1, 1\} \\ b, x = 0 \end{cases}, a, b \in \mathbb{R} \Bigg\}$.
+
+A basis of Im $T$ is $\mathcal{B}_2 =\{f_4, f_5\}$ where
+
+\begin{align*}
+f_4 &= \begin{cases} 1, x=\{-1, 1 \} \\ 0, x=0 \end{cases}\\
+f_5 &= \begin{cases} 0, x=\{-1, 1 \} \\ 1, x=0 \end{cases}\\
+\end{align*}
+
+Thus, the rank of $T$ is the dimension of the image of $T$:
+
+rank $T=$ dim $($Im $T)=$ dim $(\mathcal{B}_2) = 2$.
 
 \pagebreak
 
@@ -155,28 +180,28 @@ x_1 + x_2+2x_3+x_4 &= 0 \\
 
 ## (a) Show that $X$ is a vector space.
 
-Proof: First I find a basis for $X$:
+Proof: First, we find a set of vectors that span $X$:
 
 \begin{align}
 (3) \implies 5x_1 &= 3x_2+3x_4
 \end{align}
 
 \begin{align*}
-(3) & (4) \implies \frac{3}{5}(x_2 + x_4) + x_2+2x_3+x_4 &= 0\\
+(3) and (4) \implies \frac{3}{5}(x_2 + x_4) + x_2+2x_3+x_4 &= 0\\
 2x_3 &= -\frac{8}{5}(x_2 + x_4)\\
 5x_3 &= -4(x_2 + x_4)
 \end{align*}
 
-Letting $x_2 = a$ and $x_3 = b$, all elements of $X$ can be represented by 
+Letting $x_2 = 5a$ and $x_3 = 5b$, $\forall y \in X$ can be represented by 
 
 \begin{align*}
-y &= \begin{bmatrix}
+y = \begin{bmatrix}
            3(a + b) \\
            5a \\
            -4(a + b) \\
            5b
-         \end{bmatrix} \\
- &= a \begin{bmatrix}
+         \end{bmatrix}
+ = a \begin{bmatrix}
            3 \\
            5 \\
            -4 \\
@@ -187,13 +212,11 @@ y &= \begin{bmatrix}
            0 \\
            -4 \\
            5
-         \end{bmatrix}\\
- &=a \vec{u} + b \vec{v}
+         \end{bmatrix}
+ = a \vec{u} + b \vec{v}
 \end{align*}
 
-Thus, $\{\vec{u}, \vec{v}\}$ forms a basis for $X$ because they span $X$ and they are linearly independent. 
-
-For $x, y, z \in X$, $\exists o, p, q, r, s, t \in \mathbb{R}$ such that $x = o \vec{u} + p \vec{v}$, $y = q \vec{u} + r \vec{v}$, and $y = s \vec{u} + t \vec{v}$.  Vector spaces have eight properties:
+Since $\{\vec{u}, \vec{v}\}$ span $X$, for $x, y, z \in X$, $\exists o, p, q, r, s, t \in \mathbb{R}$ such that $x = o \vec{u} + p \vec{v}$, $y = q \vec{u} + r \vec{v}$, and $y = s \vec{u} + t \vec{v}$.  Vector spaces have eight properties:
 
 * $(x+y)+z = (o \vec{u} + p \vec{v}+ q \vec{u} + r \vec{v}) + s \vec{u} + t \vec{v}  = o \vec{u} + p \vec{v}+ (q \vec{u} + r \vec{v} + s \vec{u} + t \vec{v}) = x+(y+z)$.
 
@@ -215,4 +238,28 @@ Thus, $X$ is a vector space. $\square$
 
 ## (b) Calculate dim $X$.
 
-From (a), we found that $\{(3, 5, -4, 0), (3, 0, -4, 5)\}$ form a basis for $X$.  Since the dimension of $X$ is the cardinality of a basis for $X$, dim $X = 2$.
+In (a), we found that $\{\vec{u}, \vec{v}\} = \{(3, 5, -4, 0)^T, (3, 0, -4, 5)^T\}$ spans vector space $X$, so any $x \in X$ $\exists a, b \in \mathbb{R}$ such that $x = a\vec{u} + b \vec{v}$.
+
+\begin{align*}
+a \begin{bmatrix}
+           3 \\
+           5 \\
+           -4 \\
+           0
+         \end{bmatrix}
++ b \begin{bmatrix}
+           3 \\
+           0 \\
+           -4 \\
+           5
+         \end{bmatrix} = \bar{0} \implies
+  \begin{bmatrix}
+           3(a + b) \\
+           5a \\
+           -4(a + b) \\
+           5b
+  \end{bmatrix} = \bar{0} \implies
+  a = b = 0
+\end{align*}
+
+Thus, $\vec{u}$ and $\vec{v}$ are linearly independent.  Thus, $\{\vec{u}, \vec{v}\}$ forms a basis for $X$. Since the dimension of $X$ is the cardinality of a basis for $X$, dim $X = 2$.
