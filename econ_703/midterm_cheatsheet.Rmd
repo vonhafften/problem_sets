@@ -1,0 +1,128 @@
+---
+title: "ECON 703 - Midterm Cheatsheet"
+author: "Alex von Hafften"
+date: "8/29/2020"
+output: pdf_document
+geometry: margin=1cm
+header-includes:
+  \AtBeginDocument{\let\maketitle\relax}
+  \newcommand{\N}{\mathbb{N}}
+  \newcommand{\Z}{\mathbb{Z}}
+  \newcommand{\R}{\mathbb{R}}
+  \newcommand{\Q}{\mathbb{Q}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lecture 1
+
+## Lecture 2
+
+## Lecture 3
+
+## Lecture 4
+
+Let $(x, d)$ and $(Y, \rho)$ be two metric spaces. A function $f: X \to Y$ is \textbf{continuous} at a point $x^0$ if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $d(x, x^0) < \delta$, then $\rho(f(x), f(x^0)) < \varepsilon$.
+
+\textbf{Continuity at} $x^0$ requires $f(x^0)$ is defined and either $x^0$ is an isolated point of $X$ ($\exists x^0$ s.t. $B_\varepsilon(x^0) = \{x^0\}$) or $\lim_{x \to x^0} f(x)$ exists and equals $f(x^0)$.
+
+Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f: X \to Y$. Then $f$ is continuous at $x^0$ iff either (1) $f(x)$ is defined and either $x^0$ is an isolated point or $x^0$ is a limit point of $X$ and $\lim_{x \to x^0} = f(X^0)$ or (2) for any sequence $\{x_n\}$ s.t. $x_n \to x^0$, the sequence $\{f(x_n)\}$ converges to $f(x^0)$.
+
+A function $f$ is continuous if it is continuous at every point of its domain.
+
+$f^{-1}(A) = \{x \in X|f(x) \to A\}$
+
+Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f:x \to Y$. Then $f$ is continuous iff for any closed set $C$ in $(Y, \rho)$, the set $f^{-1}(C)$ is closed in $(X, d)$.
+
+Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f:x \to Y$. Then $f$ is continuous iff for any open set $C$ in $(Y, \rho)$, the set $f^{-1}(C)$ is open in $(X, d)$.
+
+Let $(X, d)$ and $(Y, \rho)$ be two metric spaces. A function $f:X \to Y$ is uniformly continuous if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $d(x, x^0) < \delta$, then $\rho(f(x), f(x^0)) < \varepsilon$ ($\delta$ depends only on $\varepsilon$ not on $x^0$).
+
+Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f: X \to Y, E \subset X$. Then $f$ is Lipschitz on $E$ if $\exists K > 0$ s.t. $\rho(f(x), f(y)) \le K d(x, y) \forall x,y \in E$.
+
+Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f: X \to Y, E \subset X$. Then $f$ is locally Lipschitz on $E$ if $\forall x \in E \exists \varepsilon > 0$ s.t. $f$ is Lipschitz on $B_\varepsilon(x) \cap E$.
+
+Lipschitz continuity $\implies$ uniform continuity $\implies$ continuity
+
+## Lecture 5
+
+Let $X \subset \R$. Then $u \in \R$ is an upper bound for $X$ if $x\le u$ for all $x\in X$.
+
+Let $X \subset \R$. Then $l \in \R$ is an lower bound for $X$ if $x \ge l$ for all $x\in X$.
+
+Suppose $X$ is bounded above. The \textbf{supremum} of $X$, $\sup X$, is the smallest upper bound for $X$. That is, $\sup X$ satisfies $\sup X \ge x \forall x \in X$ and $\forall y < \sup X \exists x \in X$ s.t. $x>y$.
+
+Suppose $X$ is bounded below. The \textbf{infimum} of $X$, $\inf X$, is the largest lower bound for $X$. That is, $\inf X$ satisfies $\inf X \le x \forall x \in X$ and $\forall y > \inf X \exists x \in X$ s.t. $x<y$.
+
+\textbf{Supremum Property:} Every nonempty set of real numbers that is bounded above has a supremum.  This supremum is a real number.
+
+\textbf{EVT:} Let $f:[a, b] \to \R$ be a continuous function. Then $f$ attains its maximum and minimum on $[a, b]$: $f(x_M)=\sup_{x \in [a, b]} f(x), f(x_m) = inf_{x \in [a, b]}f(x), x_M, x_m \in [a, b]$.
+
+\textbf{IVT:} Let $f:[a, b] \to \R$ be a continuous function. Then for any $\gamma \in [f(a), f(b)]$ there exists $c \in [a, b]$ s.t. $f(c) = \gamma$.
+
+$f: \R \to \R$ is monotonically increasing if $\forall x, y, x < y$ implies $f(x) < f(y)$.
+
+Let $f:(a, b) \to \R$ be monotonically increasing. Then one-sided limits $f(x^+):= \lim_{x \to x^+} f(y)$ and $f(x^-):= \lim_{x \to x^-} f(y)$ exist $\forall x \in (a, b)$.  Moreover, $\sup\{f(s)|a<s<x\} = f(x^-) \le f(x) \le f(x^+)= \inf\{f(s)|x < s < b\}$.
+
+## Lecture 6
+
+A sequence $\{x_n\}$ in a metric space $(X, d)$ is \textbf{Cauchy} if $\forall \varepsilon > 0 \exists N > 0$ s.t. if $m, n > N$, then $d(x_n, x_m) < \varepsilon$.
+
+Every \textbf{convergent} sequence in a metric space is \textbf{Cauchy}.
+
+A metric space $(X, d)$ is \textbf{complete} if every Cauchy sequence contained in $X$ converges to some point in $X$.
+
+Euclidean space $(\R^m, d_E)$ is complete for any $m$.
+
+If $(X, d)$ is a complete metric space and $Y \subset X$, then $(Y, d)$ is complete iff $Y$ is closed.
+
+A function $T: X \to X$ from a metric space to itself is called and \textbf{operator}.
+
+An operator $T: X \to X$ is a \textbf{contraction of modulus $\beta$} if $\beta < 1$ and $d(T(x), T(y)) \le \beta d(x, y) \forall x, y \in X$.
+
+Every contraction is uniformly continuous.
+
+A fixed point of an operator $T$ is an element $x^* \in X$ s.t. $T(x^*) = x^*$.
+
+\textbf{Contraction Mapping Theorem:} Let $(X, d)$ be a nonempty complete metric space and $T:X \to X$ a contraction with modulus $\beta < 1$.  Then $T$ has a unique fixed point $x^*$ and $\forall x_0 \in X$ the sequence $\{x_n\}$, where $x_n = T^n(x_0)=T(T(...T(x_0)))$ converges to $x^*$.
+
+\textbf{Continuous Dependence of the Fixed Point on Parameters}: Let $(X, d)$ and $(\Omega, \rho)$ be two metric spaces and $T: X \times \Omega \to X$.  For each $\omega \in \Omega$, let $T_\omega:X \to X$ be defined by $T_\omega(x) = T(x, \omega)$. Suppose $(X, d)$ is complete, $T$ is continuous in $\omega$, and $\exists \beta < 1$ s.t. $T_\omega$ is a contraction of modulus $\beta$ for all $\omega \in \Omega$.  Then the fixed point function $x^*: \Omega \to X$ defined by $x^*(\omega)=T_\omega(x^*(\omega))$ is continuous.
+
+\textbf{Blackwell's Sufficient Conditions:} Let $B(X)$ be the set of all bounded functions from $X$ to $\R$ with metric $d_\infty(f, g) = \sup_{x \in X}|f(x) - g(x)|$. Let $T:B(X) \to B(X)$ satisfy monotonicity (if $f(x) \le g(x) \forall x \in X$, then $(T(f))(x)\le (T(g))(x)$ for all $x \in X$) and discounting ($\exists \beta \in (0, 1)$ s.t. for every $\alpha \ge 0$ and $x \in X$, $(T(f+a))(x) \le (T(f))(x) + \beta \alpha$), then $T$ is a contraction with modulus $\beta$.
+
+## Lecture 7
+
+A collection of sets $\mathcal{U} = \{ U_\lambda  |\lambda \in \Lambda\}$ in a metric space $(X, d)$ is an \textbf{open cover} of the set $A$ if $U_\lambda$ is open for all $\lambda \in \Lambda$ and $A \subset \bigcup_{\lambda \in \Lambda} U_\lambda$.
+
+A set $A$ in a metric space is \textbf{compact} if every open cover of $A$ contains a \textbf{finite subcover} of $A$.  That is, if $\{ U_\lambda | \lambda \in \Lambda\}$ is an open cover of $A$, then $\exists n \in \N$ and $\lambda_1, ..., \lambda_n \in \Lambda$ such that $A \subset U_{\lambda_1} \cup ... \cup U_{\lambda_n}$.
+
+Any closed subset of a compact space is compact.
+
+If $A$ is a compact subset of a metric space, then $A$ is closed and bounded.
+
+Heine-Borel Theorem: If $A \subset \R^m$, then $A$ is compact iff $A$ is closed and bounded.
+
+Closed interval $[a, b] = \{a \in \R^m | a_i \le x_i \le b_i, i=1, ..., m \}$ is compact in $(\R^m, d_E)$ for any $a, b, \in \R^m$.
+
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces. If $f:X \to Y$ is continuous and $C$ is a compact set in $(X, d)$, then $f(C)$ is compact in $(Y, \rho)$.
+
+EVT: If $C$ is a compact set in a metric space $(X, d)$ and $f:C \to \R$ is continuous, then $f$ is bounded on $C$ and attains its maximum and minimum.
+
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $C \subset X$ compact, $f:C \to Y$ continuous.  Then $f$ is uniformly continuous on $C$. 
+
+## Lecture 8
+
+A \textbf{vector space} $V$ is a collection of obejcts called vectors, which may be added together and multiplied by real numbers, called scalars, satisfying $\forall x, y, z \in V$, $\forall \alpha, \beta \in \R$: 
+(1) $(x+y)+z = x+(y+z)$, 
+(2) $x+y=y+x$, 
+(3) $\exists \bar{0} \in V$ s.t. $x + \bar{0} = \bar{0} + x = x$, 
+(4) $\exists (-x) \in V$ s.t. $x + (-x)=\bar{0}$, 
+(5) $\alpha(x+y)=\alpha x + \alpha y$, 
+(6) $(\alpha + \beta) x = \alpha x + \beta x$, 
+(7) $(\alpha \cdot \beta)x = \alpha (\beta \cdot x)$, 
+(8) $1 \cdot x = x$.
+
+## Lecture 9
+
