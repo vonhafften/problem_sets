@@ -6,6 +6,7 @@ output: pdf_document
 geometry: margin=1cm
 header-includes:
 - \AtBeginDocument{\let\maketitle\relax}
+- \pagenumbering{gobble}
 - \newcommand{\N}{\mathbb{N}}
 - \newcommand{\Z}{\mathbb{Z}}
 - \newcommand{\R}{\mathbb{R}}
@@ -17,8 +18,6 @@ classoption:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-### Lecture 1
 
 Methods of proof: direct, contradiction, contraposition, induction.
 
@@ -37,7 +36,9 @@ Set $A$ is finite if it is numerically equivalent to ${1, ..., n}$ for some $n$.
 
 An infinite set is either countable (it is numerically equivalent to $\N$) or uncountable.
 
-### Lecture 2
+\begin{center}
+\line(1,0){250}
+\end{center}
 
 Metric (distance) on a set $X$ is a function $d: X \times X \to \R_+$ s.t. $\forall x, y, z \in X$,
 
@@ -79,7 +80,9 @@ Every real sequence contains either a decreasing subsequence or increasing subse
 
 Given a real sequence $\{x_n\}$, the infinite sum of its terms is well-defined if the sequence of partial sums $\{S_n\}$ converges, $S_n = \sum_{i=1}^n x_i$.  If $S_n \to S$, we write $\sum_{i=1}^\infty x_i = S$.
 
-### Lecture 3
+\begin{center}
+\line(1,0){250}
+\end{center}
 
 Let $(X, d)$ be a metric space. A set $A \subset X$ is \textbf{open} if $\forall x \in A \exists \varepsilon > 0$ s.t. $B_\varepsilon \subset A$.
 
@@ -105,7 +108,9 @@ Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f:X \to Y$, $x^0 = $ limit p
 
 Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f:X \to Y$, $x^0 = $ limit point of $X$. Then the limit of $f$ as $x \to x^0$, when it exists, is unique.
 
-### Lecture 4
+\begin{center}
+\line(1,0){250}
+\end{center}
 
 Let $(X, d)$ and $(Y, \rho)$ be two metric spaces. A function $f: X \to Y$ is \textbf{continuous} at a point $x^0$ if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $d(x, x^0) < \delta$, then $\rho(f(x), f(x^0)) < \varepsilon$.
 
@@ -129,7 +134,9 @@ Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f: X \to Y, E \subset X$. Th
 
 Lipschitz continuity $\implies$ uniform continuity $\implies$ continuity
 
-### Lecture 5
+\begin{center}
+\line(1,0){250}
+\end{center}
 
 Let $X \subset \R$. Then $u \in \R$ is an upper bound for $X$ if $x\le u$ for all $x\in X$.
 
@@ -149,7 +156,9 @@ $f: \R \to \R$ is monotonically increasing if $\forall x, y, x < y$ implies $f(x
 
 Let $f:(a, b) \to \R$ be monotonically increasing. Then one-sided limits $f(x^+):= \lim_{x \to x^+} f(y)$ and $f(x^-):= \lim_{x \to x^-} f(y)$ exist $\forall x \in (a, b)$.  Moreover, $\sup\{f(s)|a<s<x\} = f(x^-) \le f(x) \le f(x^+)= \inf\{f(s)|x < s < b\}$.
 
-### Lecture 6
+\begin{center}
+\line(1,0){250}
+\end{center}
 
 A sequence $\{x_n\}$ in a metric space $(X, d)$ is \textbf{Cauchy} if $\forall \varepsilon > 0 \exists N > 0$ s.t. if $m, n > N$, then $d(x_n, x_m) < \varepsilon$.
 
@@ -175,7 +184,9 @@ A fixed point of an operator $T$ is an element $x^* \in X$ s.t. $T(x^*) = x^*$.
 
 \textbf{Blackwell's Sufficient Conditions:} Let $B(X)$ be the set of all bounded functions from $X$ to $\R$ with metric $d_\infty(f, g) = \sup_{x \in X}|f(x) - g(x)|$. Let $T:B(X) \to B(X)$ satisfy monotonicity (if $f(x) \le g(x) \forall x \in X$, then $(T(f))(x)\le (T(g))(x)$ for all $x \in X$) and discounting ($\exists \beta \in (0, 1)$ s.t. for every $\alpha \ge 0$ and $x \in X$, $(T(f+a))(x) \le (T(f))(x) + \beta \alpha$), then $T$ is a contraction with modulus $\beta$.
 
-### Lecture 7
+\begin{center}
+\line(1,0){250}
+\end{center}
 
 A collection of sets $\mathcal{U} = \{ U_\lambda  |\lambda \in \Lambda\}$ in a metric space $(X, d)$ is an \textbf{open cover} of the set $A$ if $U_\lambda$ is open for all $\lambda \in \Lambda$ and $A \subset \bigcup_{\lambda \in \Lambda} U_\lambda$.
 
@@ -195,7 +206,9 @@ EVT: If $C$ is a compact set in a metric space $(X, d)$ and $f:C \to \R$ is cont
 
 Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $C \subset X$ compact, $f:C \to Y$ continuous.  Then $f$ is uniformly continuous on $C$. 
 
-### Lecture 8
+\begin{center}
+\line(1,0){250}
+\end{center}
 
 A \textbf{vector space} $V$ is a collection of objects called vectors, which may be added together and multiplied by real numbers, called scalars, satisfying $\forall x, y, z \in V$, $\forall \alpha, \beta \in \R$: 
 
@@ -208,5 +221,22 @@ A \textbf{vector space} $V$ is a collection of objects called vectors, which may
 - $(\alpha \cdot \beta)x = \alpha (\beta \cdot x)$, 
 - $1 \cdot x = x$.
 
-### Lecture 9
+Let $V$ be a vector space. A linear combination of $x_1, ..., x_n \in V$ equals $y = \sum_{i=1}^n \alpha_i x_i$, where $\alpha_i \in \R$. $\alpha_i$ is called the coefficient of $x_i$ in the linear combination.
+
+Let $W$ be a subset of $V$. A span of $W$ is the set of all linear combinations of elements of $W$, span $W = \{\sum_{i=1}{n} \alpha_i x_i | n \in \N, \alpha_i \in \R, x_i \in W\}$.  The set $W \subset V$ spans $V$ if $V =$ span $W$.
+
+A set $X \subset V$ is linearly dependent if $\exists x_1, ..., x_n \in X, \alpha_1, ..., \alpha_n \in \R$, s.t. $\sum_{i=1}^n \alpha_i^2 \neq 0$ and $\sum_{i=1}^n \alpha_i x_i  \bar{0}$.
+
+A set $X \subset V$ is linearly independent if $\nexists x_1, ..., x_n \in X, \alpha_1, ..., \alpha_n \in \R$, s.t. $\sum_{i=1}^n \alpha_i^2 \neq 0$ and $\sum_{i=1}^n \alpha_i x_i  \bar{0}$ ($\alpha_1=...=\alpha_n=0$).
+
+A basis of a vector space $V$ is a linearly independent set of vectors in $V$ that spans $V$.
+
+Let $B = \{v_\lambda | \lambda \in \Lambda\}$ be a basis for $V$. Then every vector $x \in V$ has a unique representation as a linear combination of elements of $B$ with finitely many nonzero coefficients.
+
+Every vector space has a basis. Any two bases of a vector space $V$ have the same cardinality.
+
+
+\begin{center}
+\line(1,0){250}
+\end{center}
 
