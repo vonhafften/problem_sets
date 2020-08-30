@@ -235,6 +235,47 @@ Let $B = \{v_\lambda | \lambda \in \Lambda\}$ be a basis for $V$. Then every vec
 
 Every vector space has a basis. Any two bases of a vector space $V$ have the same cardinality.
 
+If $V$ is a vector space and $W \subset V$ is linearly independent, then there exists a linearly independent set $B$ s.t. $W \subset B \subset$ span$B = V$.
+
+Let $V$ be a vector space.  The dimension of $V$, denoted dim$V$, is the cardinality of any basis of $V$. If dim$V=n$ for some $n \in \N$ then $V$ is finite-dimenional. Otherwise $V$ is infinite-dimensional.
+
+Suppose dim$V=n \in \N$. If $W \subset V$ and $|W|>n$, then $W$ is linearly dependent.
+
+Suppose dim$V=n$ and $W \subset V$, $|W|=n$. Then
+
+- If $W$ is linearly independent, then span$W=V$, so $W$ is a basis of $V$.
+- If span$W=V$, then $W$ is linearly independent, so $W$ is a basis of $V$.
+
+Let $X$ and $Y$ be two vector spaces.  We say that $T:X \to Y$ is a linear transformation if for all $x_1, x_2 \in X$, $\alpha_1, \alpha_2 \in \R$, $T(\alpha_1 x_1 + \alpha_2 x_2) = \alpha_1 T (x_1) + \alpha_2 T(x_2)$.
+
+$L(X, Y)$ is the set of all linear transformations from $X$ to $Y$.
+
+$L(X, Y)$ is a vector space.
+
+If $R:X \to Y$ and $S:Y \to Z$ are linear transformations, then $S \circ R : X \to Z$ is a linear transformation.
+
+Let $X \in L(X, Y)$.  The image of $T$ is Im$T:=T(X)=\{T(x)|x\in X\}$, the kernal of $T$ is ker$T := \{x \in X | T(x) =\bar{0}\}$, and the rank of $T$ is rank$T:=$ dim(Im$T$).
+
+If $T \in L(X, Y)$, then Im$T$ and ker$T$ are vector subspaces of $Y$ and $X$, respectively.
+
+Let $X$ be a finite-dimenional vector space and $T \in L(X, Y)$. Then dim $X=$ dim(ker$T$) + rank$T$ = dim(ker$T$) + dim(Im$T$).
+
+$T \in L(X, Y)$ is invertible if there exists a function $S:Y \to X$ s.t. $S(T(x)) =x \forall x \in X$ and $T(S(y)) = y \forall y \in Y$.  The transformation $S$ is called the inverse of $T$ and is denoted $T^{-1}$.
+
+$T$ is invertible means (1) $T$ is one-to-one ($\forall x_1 \neq x_2, T(x_1) \neq T(x_2)$) and (2) $T$ is onto ($\forall y \in Y \exists x \in X$ s.t. $T(x)=y$).
+
+If $T \in L(X, Y)$ is invertible, then $T^{-1} \in L(Y, X)$.
+
+If $T \in L(X, Y)$ is one-to-one iff ker$T \equiv \{ \bar{0} \}$.
+
+Two vector spaces $X$ and $Y$ are isomorphic if there exists an invertible linear function from $X$ to $Y$. A function with these properties is called an isomorphism.
+
+Let $X$ and $Y$ be two vector spaces, and let $V = \{v_\lambda | \lambda \in \Lambda}$ be a basis for $X$. Then a linear transformation $T: X \to Y$ is completely defined by its value on $V$, that is:
+
+- Given any set $\{y_\lambda|\lambda \in \Lambda} \subset Y$, $\exists T \in L(X, Y)$ s.t. $T(v_\lambda)=y_\lambda$ for all $\lambda \in \Lambda$.
+- If $S, T \in L(X, Y)$ and $S(v_\lambda) = T(v_\lambda)$ for all $\lambda \in \Lambda$, then $S=T$.
+
+Two vector spaces $X$ and $Y$ are isomorphic iff dim$X=$dim$Y$.
 
 \begin{center}
 \line(1,0){250}
