@@ -19,6 +19,8 @@ classoption:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+
 Methods of proof: direct, contradiction, contraposition, induction.
 
 Set operations ($A, B \subset X$):
@@ -270,9 +272,9 @@ If $T \in L(X, Y)$ is one-to-one iff ker$T \equiv \{ \bar{0} \}$.
 
 Two vector spaces $X$ and $Y$ are isomorphic if there exists an invertible linear function from $X$ to $Y$. A function with these properties is called an isomorphism.
 
-Let $X$ and $Y$ be two vector spaces, and let $V = \{v_\lambda | \lambda \in \Lambda}$ be a basis for $X$. Then a linear transformation $T: X \to Y$ is completely defined by its value on $V$, that is:
+Let $X$ and $Y$ be two vector spaces, and let $V = \{v_\lambda | \lambda \in \Lambda\}$ be a basis for $X$. Then a linear transformation $T: X \to Y$ is completely defined by its value on $V$, that is:
 
-- Given any set $\{y_\lambda|\lambda \in \Lambda} \subset Y$, $\exists T \in L(X, Y)$ s.t. $T(v_\lambda)=y_\lambda$ for all $\lambda \in \Lambda$.
+- Given any set $\{y_\lambda|\lambda \in \Lambda\} \subset Y$, $\exists T \in L(X, Y)$ s.t. $T(v_\lambda)=y_\lambda$ for all $\lambda \in \Lambda$.
 - If $S, T \in L(X, Y)$ and $S(v_\lambda) = T(v_\lambda)$ for all $\lambda \in \Lambda$, then $S=T$.
 
 Two vector spaces $X$ and $Y$ are isomorphic iff dim$X=$dim$Y$.
@@ -281,3 +283,25 @@ Two vector spaces $X$ and $Y$ are isomorphic iff dim$X=$dim$Y$.
 \line(1,0){250}
 \end{center}
 
+$V = \{v_1, ..., v_n\} \in X$ is a basis of $X \implies \forall x \in X$ has a unique representation $x=\sum_{i=1}^n \alpha_i v_i$.
+
+crd$_V(x)=\begin{bmatrix} \alpha_1 \\ \vdots \\ \alpha_n \end{bmatrix} \in \R$
+
+$V = \{v_1, ..., v_n\} \in X$ is a basis of $X$ and $W = \{w_1, ..., w_n\} \in Y$ is a basis of $Y$. $\forall y \in Y$ has a unique representation $y = \sum_{i=1}^m \alpha_i w_i$.
+
+mtx$_{W, V}(T)=\begin{bmatrix}
+\alpha_{11} & \alpha_{12} & ... & \alpha_{1n} \\
+\vdots & \vdots & & \vdots \\
+\alpha_{m1} & \alpha_{m2} & ... & \alpha_{mn} \\
+\end{bmatrix} \in M_{m \times n}$
+
+$U \subset X$ is a basis of $X$, $V \subset Y$ is a basis of $Y$, and $W \subset Z$ is a basis of $Z$.  $S \in L(X, Y), T \in L(Y, Z)$.  mtx$_{W, V}(T) \cdot$ mtx$_{V, U}(S)=$ mtx$_{W, U}(T \circ S)$.
+
+dim $X = n, T \in L(X, X)$. mtx$_V(T) \equiv$ mtx$_{V, V}(T)$. To change basis from $V$ to $W$, mtx$_V(T)=P^{-1} \cdot$mtx$_W(T)\cdot P$ where $P=$mtx$_{W, V}(id)$.
+
+$A, B \in M_{n \times n}$ are similar if $A = P^{-1}BP$ for some invertible matrix $P$.
+
+If dim$X=n$, then
+
+- If $T \in L(X, X)$, then any two matrix representations of $T$ are similar.
+- Two similar matrices represent the same linear transformation $T$, relative to suitable bases.
