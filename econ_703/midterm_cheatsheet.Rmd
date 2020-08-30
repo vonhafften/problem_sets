@@ -5,26 +5,109 @@ date: "8/29/2020"
 output: pdf_document
 geometry: margin=1cm
 header-includes:
-  \AtBeginDocument{\let\maketitle\relax}
-  \newcommand{\N}{\mathbb{N}}
-  \newcommand{\Z}{\mathbb{Z}}
-  \newcommand{\R}{\mathbb{R}}
-  \newcommand{\Q}{\mathbb{Q}}
+- \AtBeginDocument{\let\maketitle\relax}
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+classoption:
+- twocolumn
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Lecture 1
+### Lecture 1
 
-## Lecture 2
+Methods of proof: direct, contradiction, contraposition, induction.
 
-## Lecture 3
+Set operations ($A, B \subset X$):
 
-## Lecture 4
+- Union: $A \cup B = \{x|x \in A$ or $x\in B\}$
+- Intersection: $A \cap B = \{x|x \in A$ and $x\in B\}$ 
+- Difference: $A \setminus B = \{x \in A | x \notin B\}$ 
+- Complement: $A^C=\{x \in X|x\notin A\}$
 
-Let $(x, d)$ and $(Y, \rho)$ be two metric spaces. A function $f: X \to Y$ is \textbf{continuous} at a point $x^0$ if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $d(x, x^0) < \delta$, then $\rho(f(x), f(x^0)) < \varepsilon$.
+DeMorgan's Laws: $(A \cap B)^C=A^C \cup B^C$ and $(A \cup B)^C=A^C \cap B^C$.
+
+Cardinality is the size of the set.  Sets $A$ and $B$ are numerically equivalent (have the same cardinality) if their elements can be uniquely matched up and paired off.
+
+Set $A$ is finite if it is numerically equivalent to ${1, ..., n}$ for some $n$. Then $A$'s cardinality $= n$. A set that is not finite is infinite.
+
+An infinite set is either countable (it is numerically equivalent to $\N$) or uncountable.
+
+### Lecture 2
+
+Metric (distance) on a set $X$ is a function $d: X \times X \to \R_+$ s.t. $\forall x, y, z \in X$,
+
+- $d(x, y) \ge 0$, with equality iff $x = y$,
+- $d(x, y) = d(y, x)$,
+- $d(x, z) \le d(x, y) + d(y, x)$
+
+Metric space is a pair $(X, d)$, where $X$ is a set and $d$ is a metric on $X$.
+
+Euclidean space $(\R^m, d_E(x, y)) = (\{(x_1, ..., x_m)|x_i \in \R, i=1, ..., m\}, \sqrt{\sum_{i=1}^m (x_i, y_i)^2})$.
+
+In metric space $(X, d)$, open ball with center $x$ and radius $\varepsilon$ is $B_\varepsilon(x)=\{y \in X | d(x, y) < \varepsilon\}$.
+
+In metric space $(X, d)$, closed ball with center $x$ and radius $\varepsilon$ is $B_\varepsilon(x)=\{y \in X | d(x, y) \le \varepsilon\}$.
+
+Sequence in a set $X$ is a function $s: \N \to X$, which we write as $\{s_n\}$, where $s_n=s(n)$.
+
+Sequence $\{x_n\}$ in a metric space $(X, d)$ converges to $x \in X$ if $\forall \varepsilon>0 \exists N(\varepsilon)>0$ s.t. $\forall n > N(\varepsilon)$, $d(x_n, x) < \varepsilon$ (written as $x_n \to x$ or $\lim_{n \to \infty} x_n = x$).
+
+A sequence $\{x_n\}$ in a metric space $(X, d)$ has at most one limit.
+
+Consider a sequence $\{x_n\}$ and a rule that assigns to each $k \in \N$ a value $n_k \in \N$ s.t. $n_k < n_{k+1 }\forall k$. Then $\{x_{n_k}\}$ is called a subsequence.
+
+If $\{x_n\}$ converges to $x$ as $n \to \infty$, then any subsequence $\{x_{n_k}\}$ also converges to $x$ as $k \to \infty$.
+
+A subset $S \subset X$ in a metric space $(X, d)$ is bounded if $\exists x \in X, \beta \in \R$ s.t. $\forall s \in S, d(x, s) < \beta$.
+
+Every convergent sequence in a metric space is bounded.
+
+In $(\R, d_E)$, if $x_n \to x \in \R, y_n \to y \in \R$, and $x_n \le y_n \forall n \in \N$, then $x \le y$ (limits preserve weak inequality).
+
+In $(\R, d_E)$, if $x_n \to x \in \R$ and $y_n \to y \in \R$, then $x_n + y_n \to x + y$, $x_n - y_n \to x - y$, $x_ny_n \to xy$, and $x_n/y_n \to x/y$ if $y \neq 0$ and $y_n \neq 0 \forall n$ (limits preserve algebraic operations).
+
+Bolzano-Weierstrass Theorem: Every bounded real sequence contains at least one convergent subsequence.
+
+Monotone Convergence Theorem: Every increasing sequence of real numbers that is bounded above converges. Every decreasing sequence of real numbers that is bounded below converges.
+
+Every real sequence contains either a decreasing subsequence or increasing subsequence (and possibly both).
+
+Given a real sequence $\{x_n\}$, the infinite sum of its terms is well-defined if the sequence of partial sums $\{S_n\}$ converges, $S_n = \sum_{i=1}^n x_i$.  If $S_n \to S$, we write $\sum_{i=1}^\infty x_i = S$.
+
+### Lecture 3
+
+Let $(X, d)$ be a metric space. A set $A \subset X$ is \textbf{open} if $\forall x \in A \exists \varepsilon > 0$ s.t. $B_\varepsilon \subset A$.
+
+A set $C \subset X$ is \textbf{closed} id its complement, $C^c = X \setminus C$, is open.
+
+Open ball $B_\varepsilon(x)$ is an open set. Closed ball $B_\varepsilon[x]$ is a closed set.
+
+Let $(X, d)$ be a metric space. Then 
+
+- $\emptyset$ and $X$ are simultaneously open and closed in $X$, 
+- the union of an arbitrary collection of open sets is open,
+- the intersection of a finite collection of open sets is open,
+- the union of a finite collection of closed sets is closed, 
+- the intersection of an arbitrary collection of closed sets is closed.
+
+A set $A$ in a metric space $(X, d)$ is closed iff every convergent sequence $\{x_n\}$ contained in $A$ has its limit in $A$.
+
+Let $(X, d)$ be a metric space and $A$ a set in $X$. A point $x_L \in X$ is a \textbf{limit point} of A if $\forall \varepsilon > 0$, $(B_\varepsilon(x_L)\setminus\{x_l\}) \cap A \neq \emptyset$. ($A$ has points that are arbitrarily close to $x_L$)
+
+Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $A \subset X$, $f:A \to Y$, $x^0 = $ limit point of $A$.  A function $f$ has a limit $y^0$ as $x$ approaches $x^0$ if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $x \in A$ and $0 < d(x, x^0) < \delta$, then $\rho(f(X), y^0) < \varepsilon$ (written as $\lim_{x \to x^0} f(x) = y^0$).
+
+Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f:X \to Y$, $x^0 = $ limit point of $X$. Then $\lim_{x \to x^0} f(x) = y^0$ iff for any sequence $\{x_n\} \in X$ s.t. $x_n \to x^0$ and $x_n \neq x^0$, the sequence $\{f_n\}$ converges to $y^0$.
+
+Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f:X \to Y$, $x^0 = $ limit point of $X$. Then the limit of $f$ as $x \to x^0$, when it exists, is unique.
+
+### Lecture 4
+
+Let $(X, d)$ and $(Y, \rho)$ be two metric spaces. A function $f: X \to Y$ is \textbf{continuous} at a point $x^0$ if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $d(x, x^0) < \delta$, then $\rho(f(x), f(x^0)) < \varepsilon$.
 
 \textbf{Continuity at} $x^0$ requires $f(x^0)$ is defined and either $x^0$ is an isolated point of $X$ ($\exists x^0$ s.t. $B_\varepsilon(x^0) = \{x^0\}$) or $\lim_{x \to x^0} f(x)$ exists and equals $f(x^0)$.
 
@@ -46,7 +129,7 @@ Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f: X \to Y, E \subset X$. Th
 
 Lipschitz continuity $\implies$ uniform continuity $\implies$ continuity
 
-## Lecture 5
+### Lecture 5
 
 Let $X \subset \R$. Then $u \in \R$ is an upper bound for $X$ if $x\le u$ for all $x\in X$.
 
@@ -66,7 +149,7 @@ $f: \R \to \R$ is monotonically increasing if $\forall x, y, x < y$ implies $f(x
 
 Let $f:(a, b) \to \R$ be monotonically increasing. Then one-sided limits $f(x^+):= \lim_{x \to x^+} f(y)$ and $f(x^-):= \lim_{x \to x^-} f(y)$ exist $\forall x \in (a, b)$.  Moreover, $\sup\{f(s)|a<s<x\} = f(x^-) \le f(x) \le f(x^+)= \inf\{f(s)|x < s < b\}$.
 
-## Lecture 6
+### Lecture 6
 
 A sequence $\{x_n\}$ in a metric space $(X, d)$ is \textbf{Cauchy} if $\forall \varepsilon > 0 \exists N > 0$ s.t. if $m, n > N$, then $d(x_n, x_m) < \varepsilon$.
 
@@ -92,7 +175,7 @@ A fixed point of an operator $T$ is an element $x^* \in X$ s.t. $T(x^*) = x^*$.
 
 \textbf{Blackwell's Sufficient Conditions:} Let $B(X)$ be the set of all bounded functions from $X$ to $\R$ with metric $d_\infty(f, g) = \sup_{x \in X}|f(x) - g(x)|$. Let $T:B(X) \to B(X)$ satisfy monotonicity (if $f(x) \le g(x) \forall x \in X$, then $(T(f))(x)\le (T(g))(x)$ for all $x \in X$) and discounting ($\exists \beta \in (0, 1)$ s.t. for every $\alpha \ge 0$ and $x \in X$, $(T(f+a))(x) \le (T(f))(x) + \beta \alpha$), then $T$ is a contraction with modulus $\beta$.
 
-## Lecture 7
+### Lecture 7
 
 A collection of sets $\mathcal{U} = \{ U_\lambda  |\lambda \in \Lambda\}$ in a metric space $(X, d)$ is an \textbf{open cover} of the set $A$ if $U_\lambda$ is open for all $\lambda \in \Lambda$ and $A \subset \bigcup_{\lambda \in \Lambda} U_\lambda$.
 
@@ -112,17 +195,18 @@ EVT: If $C$ is a compact set in a metric space $(X, d)$ and $f:C \to \R$ is cont
 
 Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $C \subset X$ compact, $f:C \to Y$ continuous.  Then $f$ is uniformly continuous on $C$. 
 
-## Lecture 8
+### Lecture 8
 
-A \textbf{vector space} $V$ is a collection of obejcts called vectors, which may be added together and multiplied by real numbers, called scalars, satisfying $\forall x, y, z \in V$, $\forall \alpha, \beta \in \R$: 
-(1) $(x+y)+z = x+(y+z)$, 
-(2) $x+y=y+x$, 
-(3) $\exists \bar{0} \in V$ s.t. $x + \bar{0} = \bar{0} + x = x$, 
-(4) $\exists (-x) \in V$ s.t. $x + (-x)=\bar{0}$, 
-(5) $\alpha(x+y)=\alpha x + \alpha y$, 
-(6) $(\alpha + \beta) x = \alpha x + \beta x$, 
-(7) $(\alpha \cdot \beta)x = \alpha (\beta \cdot x)$, 
-(8) $1 \cdot x = x$.
+A \textbf{vector space} $V$ is a collection of objects called vectors, which may be added together and multiplied by real numbers, called scalars, satisfying $\forall x, y, z \in V$, $\forall \alpha, \beta \in \R$: 
 
-## Lecture 9
+- $(x+y)+z = x+(y+z)$, 
+- $x+y=y+x$, 
+- $\exists \bar{0} \in V$ s.t. $x + \bar{0} = \bar{0} + x = x$, 
+- $\exists (-x) \in V$ s.t. $x + (-x)=\bar{0}$, 
+- $\alpha(x+y)=\alpha x + \alpha y$, 
+- $(\alpha + \beta) x = \alpha x + \beta x$, 
+- $(\alpha \cdot \beta)x = \alpha (\beta \cdot x)$, 
+- $1 \cdot x = x$.
+
+### Lecture 9
 
