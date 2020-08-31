@@ -19,9 +19,9 @@ classoption:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# ECON 703 Midterm Cheatsheet
 
-
-Methods of proof: direct, contradiction, contraposition, induction.
+Proof methods: direct, contradiction, contrapositive, induction.
 
 Set operations ($A, B \subset X$):
 
@@ -30,53 +30,49 @@ Set operations ($A, B \subset X$):
 - Difference: $A \setminus B = \{x \in A | x \notin B\}$ 
 - Complement: $A^C=\{x \in X|x\notin A\}$
 
-DeMorgan's Laws: $(A \cap B)^C=A^C \cup B^C$ and $(A \cup B)^C=A^C \cap B^C$.
+$(A \cap B)^C=A^C \cup B^C$ and $(A \cup B)^C=A^C \cap B^C$.
 
-Cardinality is the size of the set.  Sets $A$ and $B$ are numerically equivalent (have the same cardinality) if their elements can be uniquely matched up and paired off.
+Sets $A$ and $B$ are \textbf{numerically equivalent} (same cardinality) if their elements can be uniquely matched up and paired off.
 
-Set $A$ is finite if it is numerically equivalent to ${1, ..., n}$ for some $n$. Then $A$'s cardinality $= n$. A set that is not finite is infinite.
+Set $A$ is \textbf{finite} if it is numerically equivalent to ${1, ..., n}$ for some $n$. Then $A$'s cardinality $= n$. A set that is not finite is \textbf{infinite}.
 
-An infinite set is either countable (it is numerically equivalent to $\N$) or uncountable.
+An infinite set is either \textbf{countable} (it is numerically equivalent to $\N$) or \textbf{uncountable}.
 
-\begin{center}
-\line(1,0){250}
-\end{center}
+## Real Analysis
 
-Metric (distance) on a set $X$ is a function $d: X \times X \to \R_+$ s.t. $\forall x, y, z \in X$,
+\textbf{Metric (distance)} on a set $X$ is a function $d: X \times X \to \R_+$ s.t. $\forall x, y, z \in X$,
 
 - $d(x, y) \ge 0$, with equality iff $x = y$,
 - $d(x, y) = d(y, x)$,
 - $d(x, z) \le d(x, y) + d(y, x)$
 
-Metric space is a pair $(X, d)$, where $X$ is a set and $d$ is a metric on $X$.
+\textbf{Metric space} is a pair $(X, d)$, where $X$ is a set and $d$ is a metric on $X$.
 
-Euclidean space $(\R^m, d_E(x, y)) = (\{(x_1, ..., x_m)|x_i \in \R, i=1, ..., m\}, \sqrt{\sum_{i=1}^m (x_i, y_i)^2})$.
+\textbf{Euclidean space} is $(\R^m, d_E)$, where $d_E(x, y) = \sqrt{\sum_{i=1}^m (x_i, y_i)^2}$.
 
-In metric space $(X, d)$, open ball with center $x$ and radius $\varepsilon$ is $B_\varepsilon(x)=\{y \in X | d(x, y) < \varepsilon\}$.
+\textbf{Open ball} with center $x$ and radius $\varepsilon$ is $B_\varepsilon(x)=\{y \in X | d(x, y) < \varepsilon\}$. \textbf{Closed ball} is $B_\varepsilon[x]=\{y \in X | d(x, y) \le \varepsilon\}$.
 
-In metric space $(X, d)$, closed ball with center $x$ and radius $\varepsilon$ is $B_\varepsilon(x)=\{y \in X | d(x, y) \le \varepsilon\}$.
+\textbf{Sequence} in a set $X$ is a function $s: \N \to X$, which we write as $\{s_n\}$, where $s_n=s(n)$.
 
-Sequence in a set $X$ is a function $s: \N \to X$, which we write as $\{s_n\}$, where $s_n=s(n)$.
+$\{x_n\}$ in $(X, d)$ \textbf{converges} to $x \in X$ if $\forall \varepsilon>0 \exists N(\varepsilon)>0$ s.t. $\forall n > N(\varepsilon)$, $d(x_n, x) < \varepsilon$.
 
-Sequence $\{x_n\}$ in a metric space $(X, d)$ converges to $x \in X$ if $\forall \varepsilon>0 \exists N(\varepsilon)>0$ s.t. $\forall n > N(\varepsilon)$, $d(x_n, x) < \varepsilon$ (written as $x_n \to x$ or $\lim_{n \to \infty} x_n = x$).
+$\{x_n\}$ in $(X, d)$ has at most one limit.
 
-A sequence $\{x_n\}$ in a metric space $(X, d)$ has at most one limit.
+Consider $\{x_n\}$ and a rule that assigns to each $k \in \N$ a value $n_k \in \N$ s.t. $n_k < n_{k+1 }\forall k$. Then $\{x_{n_k}\}$ is a \textbf{subsequence}.
 
-Consider a sequence $\{x_n\}$ and a rule that assigns to each $k \in \N$ a value $n_k \in \N$ s.t. $n_k < n_{k+1 }\forall k$. Then $\{x_{n_k}\}$ is called a subsequence.
+If $\{x_n\}$ converges to $x$ as $n \to \infty$, then any $\{x_{n_k}\}$ also converges to $x$ as $k \to \infty$.
 
-If $\{x_n\}$ converges to $x$ as $n \to \infty$, then any subsequence $\{x_{n_k}\}$ also converges to $x$ as $k \to \infty$.
+A subset $S \subset X$ in $(X, d)$ is \textbf{bounded} if $\exists x \in X, \beta \in \R$ s.t. $\forall s \in S, d(x, s) < \beta$.
 
-A subset $S \subset X$ in a metric space $(X, d)$ is bounded if $\exists x \in X, \beta \in \R$ s.t. $\forall s \in S, d(x, s) < \beta$.
+Every convergent sequence is bounded.
 
-Every convergent sequence in a metric space is bounded.
+Limits preserve \textbf{weak inequality}. In $(\R, d_E)$, if $x_n \to x \in \R, y_n \to y \in \R$, and $x_n \le y_n \forall n \in \N$, then $x \le y$.
 
-In $(\R, d_E)$, if $x_n \to x \in \R, y_n \to y \in \R$, and $x_n \le y_n \forall n \in \N$, then $x \le y$ (limits preserve weak inequality).
+Limits preserve \textbf{algebraic operations}. In $(\R, d_E)$, if $x_n \to x \in \R$ and $y_n \to y \in \R$, then $x_n + y_n \to x + y$, $x_n - y_n \to x - y$, $x_ny_n \to xy$, and $x_n/y_n \to x/y$ if $y \neq 0$ and $y_n \neq 0 \forall n$.
 
-In $(\R, d_E)$, if $x_n \to x \in \R$ and $y_n \to y \in \R$, then $x_n + y_n \to x + y$, $x_n - y_n \to x - y$, $x_ny_n \to xy$, and $x_n/y_n \to x/y$ if $y \neq 0$ and $y_n \neq 0 \forall n$ (limits preserve algebraic operations).
+\textbf{Bolzano-Weierstrass Theorem}: Every bounded real sequence contains at least one convergent subsequence.
 
-Bolzano-Weierstrass Theorem: Every bounded real sequence contains at least one convergent subsequence.
-
-Monotone Convergence Theorem: Every increasing sequence of real numbers that is bounded above converges. Every decreasing sequence of real numbers that is bounded below converges.
+\textbf{Monotone Convergence Theorem}: Every increasing (decreasing) sequence of real numbers that is bounded above (below) converges.
 
 Every real sequence contains either a decreasing subsequence or increasing subsequence (and possibly both).
 
@@ -86,15 +82,13 @@ Given a real sequence $\{x_n\}$, the infinite sum of its terms is well-defined i
 \line(1,0){250}
 \end{center}
 
-Let $(X, d)$ be a metric space. A set $A \subset X$ is \textbf{open} if $\forall x \in A \exists \varepsilon > 0$ s.t. $B_\varepsilon \subset A$.
+Let $(X, d)$ be a metric space. $A \subset X$ is \textbf{open} if $\forall x \in A$ $\exists \varepsilon > 0$ s.t. $B_\varepsilon(x) \subset A$. $C \subset X$ is \textbf{closed} if $C^C$, is open.
 
-A set $C \subset X$ is \textbf{closed} id its complement, $C^c = X \setminus C$, is open.
-
-Open ball $B_\varepsilon(x)$ is an open set. Closed ball $B_\varepsilon[x]$ is a closed set.
+Open ball $B_\varepsilon(x)$ is open. Closed ball $B_\varepsilon[x]$ is closed.
 
 Let $(X, d)$ be a metric space. Then 
 
-- $\emptyset$ and $X$ are simultaneously open and closed in $X$, 
+- $\emptyset$ and $X$ are \textbf{simultaneously open and closed} in $X$, 
 - the union of an arbitrary collection of open sets is open,
 - the intersection of a finite collection of open sets is open,
 - the union of a finite collection of closed sets is closed, 
@@ -102,37 +96,35 @@ Let $(X, d)$ be a metric space. Then
 
 A set $A$ in a metric space $(X, d)$ is closed iff every convergent sequence $\{x_n\}$ contained in $A$ has its limit in $A$.
 
-Let $(X, d)$ be a metric space and $A$ a set in $X$. A point $x_L \in X$ is a \textbf{limit point} of A if $\forall \varepsilon > 0$, $(B_\varepsilon(x_L)\setminus\{x_l\}) \cap A \neq \emptyset$. ($A$ has points that are arbitrarily close to $x_L$)
+Let $(X, d)$ be a metric space and $A$ a set in $X$. A point $x_L \in X$ is a \textbf{limit point} of A if $\forall \varepsilon > 0$, $(B_\varepsilon(x_L)\setminus\{x_l\}) \cap A \neq \emptyset$.
 
-Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $A \subset X$, $f:A \to Y$, $x^0 = $ limit point of $A$.  A function $f$ has a limit $y^0$ as $x$ approaches $x^0$ if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $x \in A$ and $0 < d(x, x^0) < \delta$, then $\rho(f(X), y^0) < \varepsilon$ (written as $\lim_{x \to x^0} f(x) = y^0$).
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $A \subset X$, $f:A \to Y$, $x^0 =$ limit point of $A$.  A function $f$ has a limit $y^0$ as $x$ approaches $x^0$ if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $x \in A$ and $0 < d(x, x^0) < \delta$, then $\rho(f(X), y^0) < \varepsilon$ (written as $\lim_{x \to x^0} f(x) = y^0$).
 
-Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f:X \to Y$, $x^0 = $ limit point of $X$. Then $\lim_{x \to x^0} f(x) = y^0$ iff for any sequence $\{x_n\} \in X$ s.t. $x_n \to x^0$ and $x_n \neq x^0$, the sequence $\{f_n\}$ converges to $y^0$.
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $f:X \to Y$, $x^0 =$ limit point of $X$. Then $\lim_{x \to x^0} f(x) = y^0$ iff for any sequence $\{x_n\} \in X$ s.t. $x_n \to x^0$ and $x_n \neq x^0$, the sequence $\{f_n\}$ converges to $y^0$.
 
-Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f:X \to Y$, $x^0 = $ limit point of $X$. Then the limit of $f$ as $x \to x^0$, when it exists, is unique.
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $f:X \to Y$, $x^0 =$ limit point of $X$. Then the limit of $f$ as $x \to x^0$, when it exists, is unique.
 
 \begin{center}
 \line(1,0){250}
 \end{center}
 
-Let $(X, d)$ and $(Y, \rho)$ be two metric spaces. A function $f: X \to Y$ is \textbf{continuous} at a point $x^0$ if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $d(x, x^0) < \delta$, then $\rho(f(x), f(x^0)) < \varepsilon$.
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces. A function $f: X \to Y$ is \textbf{continuous} at a point $x^0$ if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $d(x, x^0) < \delta$, then $\rho(f(x), f(x^0)) < \varepsilon$.
 
-\textbf{Continuity at} $x^0$ requires $f(x^0)$ is defined and either $x^0$ is an isolated point of $X$ ($\exists x^0$ s.t. $B_\varepsilon(x^0) = \{x^0\}$) or $\lim_{x \to x^0} f(x)$ exists and equals $f(x^0)$.
+Continuity at $x^0$ requires $f(x^0)$ is defined and either $x^0$ is an isolated point of $X$ ($\exists x^0$ s.t. $B_\varepsilon(x^0) = \{x^0\}$) or $\lim_{x \to x^0} f(x)$ exists and equals $f(x^0)$.
 
-Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f: X \to Y$. Then $f$ is continuous at $x^0$ iff either (1) $f(x)$ is defined and either $x^0$ is an isolated point or $x^0$ is a limit point of $X$ and $\lim_{x \to x^0} = f(X^0)$ or (2) for any sequence $\{x_n\}$ s.t. $x_n \to x^0$, the sequence $\{f(x_n)\}$ converges to $f(x^0)$.
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $f: X \to Y$. Then $f$ is \textbf{continuous} at $x^0$ iff either (1) $f(x)$ is defined and either $x^0$ is an isolated point or $x^0$ is a limit point of $X$ and $\lim_{x \to x^0} = f(X^0)$ or (2) for any sequence $\{x_n\}$ s.t. $x_n \to x^0$, the sequence $\{f(x_n)\}$ converges to $f(x^0)$.
 
-A function $f$ is continuous if it is continuous at every point of its domain.
+A function $f$ is \textbf{continuous} if it is continuous at every point of its domain.
 
 $f^{-1}(A) = \{x \in X|f(x) \to A\}$
 
-Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f:x \to Y$. Then $f$ is continuous iff for any closed set $C$ in $(Y, \rho)$, the set $f^{-1}(C)$ is closed in $(X, d)$.
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $f:X \to Y$. Then $f$ is \textbf{continuous} iff for any closed (open) set $C$ in $(Y, \rho)$, the set $f^{-1}(C)$ is closed (open) in $(X, d)$.
 
-Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f:x \to Y$. Then $f$ is continuous iff for any open set $C$ in $(Y, \rho)$, the set $f^{-1}(C)$ is open in $(X, d)$.
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces. A function $f:X \to Y$ is \textbf{uniformly continuous} if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $d(x, x^0) < \delta$, then $\rho(f(x), f(x^0)) < \varepsilon$ ($\delta$ depends only on $\varepsilon$ not on $x^0$).
 
-Let $(X, d)$ and $(Y, \rho)$ be two metric spaces. A function $f:X \to Y$ is uniformly continuous if $\forall \varepsilon > 0 \exists \delta > 0$ s.t. if $d(x, x^0) < \delta$, then $\rho(f(x), f(x^0)) < \varepsilon$ ($\delta$ depends only on $\varepsilon$ not on $x^0$).
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $f: X \to Y, E \subset X$. Then $f$ is \textbf{Lipschitz} on $E$ if $\exists K > 0$ s.t. $\rho(f(x), f(y)) \le K d(x, y) \forall x,y \in E$.
 
-Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f: X \to Y, E \subset X$. Then $f$ is Lipschitz on $E$ if $\exists K > 0$ s.t. $\rho(f(x), f(y)) \le K d(x, y) \forall x,y \in E$.
-
-Let $(X, d)$ and $(Y, \rho)$ be two metric spaces, $f: X \to Y, E \subset X$. Then $f$ is locally Lipschitz on $E$ if $\forall x \in E \exists \varepsilon > 0$ s.t. $f$ is Lipschitz on $B_\varepsilon(x) \cap E$.
+Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $f: X \to Y, E \subset X$. Then $f$ is \textbf{locally Lipschitz} on $E$ if $\forall x \in E \exists \varepsilon > 0$ s.t. $f$ is Lipschitz on $B_\varepsilon(x) \cap E$.
 
 Lipschitz continuity $\implies$ uniform continuity $\implies$ continuity
 
@@ -140,79 +132,79 @@ Lipschitz continuity $\implies$ uniform continuity $\implies$ continuity
 \line(1,0){250}
 \end{center}
 
-Let $X \subset \R$. Then $u \in \R$ is an upper bound for $X$ if $x\le u$ for all $x\in X$.
+Let $X \subset \R$. Then $u \in \R$ is an \textbf{upper (lower) bound} for $X$ if $x\le u$ ($x \ge l$) for all $x\in X$.
 
-Let $X \subset \R$. Then $l \in \R$ is an lower bound for $X$ if $x \ge l$ for all $x\in X$.
+Suppose $X$ is bounded above. The \textbf{supremum} of $X$, $\sup X$, is the smallest upper bound for $X$. That is, $\sup X$ satisfies $\sup X \ge x \forall x \in X$ and $\forall y < \sup X$ $\exists x \in X$ s.t. $x>y$.
 
-Suppose $X$ is bounded above. The \textbf{supremum} of $X$, $\sup X$, is the smallest upper bound for $X$. That is, $\sup X$ satisfies $\sup X \ge x \forall x \in X$ and $\forall y < \sup X \exists x \in X$ s.t. $x>y$.
-
-Suppose $X$ is bounded below. The \textbf{infimum} of $X$, $\inf X$, is the largest lower bound for $X$. That is, $\inf X$ satisfies $\inf X \le x \forall x \in X$ and $\forall y > \inf X \exists x \in X$ s.t. $x<y$.
+Suppose $X$ is bounded below. The \textbf{infimum} of $X$, $\inf X$, is the largest lower bound for $X$. That is, $\inf X$ satisfies $\inf X \le x \forall x \in X$ and $\forall y > \inf X$ $\exists x \in X$ s.t. $x<y$.
 
 \textbf{Supremum Property:} Every nonempty set of real numbers that is bounded above has a supremum.  This supremum is a real number.
 
-\textbf{EVT:} Let $f:[a, b] \to \R$ be a continuous function. Then $f$ attains its maximum and minimum on $[a, b]$: $f(x_M)=\sup_{x \in [a, b]} f(x), f(x_m) = inf_{x \in [a, b]}f(x), x_M, x_m \in [a, b]$.
+\textbf{EVT:} Let $f:[a, b] \to \R$ be a continuous function. Then $f$ attains its maximum and minimum on $[a, b]$: $f(x_M)=\sup_{x \in [a, b]} f(x), f(x_m) = \inf_{x \in [a, b]}f(x)$ with $x_M, x_m \in [a, b]$.
 
-\textbf{IVT:} Let $f:[a, b] \to \R$ be a continuous function. Then for any $\gamma \in [f(a), f(b)]$ there exists $c \in [a, b]$ s.t. $f(c) = \gamma$.
+\textbf{IVT:} Let $f:[a, b] \to \R$ be a continuous function. Then for any $\gamma \in [f(a), f(b)]$, there exists $c \in [a, b]$ s.t. $f(c) = \gamma$.
 
-$f: \R \to \R$ is monotonically increasing if $\forall x, y, x < y$ implies $f(x) < f(y)$.
+$f: \R \to \R$ is \textbf{monotonically increasing} if $\forall x, y, x < y$ implies $f(x) < f(y)$.
 
-Let $f:(a, b) \to \R$ be monotonically increasing. Then one-sided limits $f(x^+):= \lim_{x \to x^+} f(y)$ and $f(x^-):= \lim_{x \to x^-} f(y)$ exist $\forall x \in (a, b)$.  Moreover, $\sup\{f(s)|a<s<x\} = f(x^-) \le f(x) \le f(x^+)= \inf\{f(s)|x < s < b\}$.
+Let $f:(a, b) \to \R$ be monotonically increasing. Then \textbf{one-sided limits} $f(x^+):= \lim_{x \to x^+} f(y)$ and $f(x^-):= \lim_{x \to x^-} f(y)$ exist $\forall x \in (a, b)$.
+
+Moreover, $\sup\{f(s)|a<s<x\} = f(x^-) \le f(x) \le f(x^+)= \inf\{f(s)|x < s < b\}$.
 
 \begin{center}
 \line(1,0){250}
 \end{center}
 
-A sequence $\{x_n\}$ in a metric space $(X, d)$ is \textbf{Cauchy} if $\forall \varepsilon > 0 \exists N > 0$ s.t. if $m, n > N$, then $d(x_n, x_m) < \varepsilon$.
+$\{x_n\}$ in $(X, d)$ is \textbf{Cauchy} if $\forall \varepsilon > 0$ $\exists N > 0$ s.t. if $m, n > N$, then $d(x_n, x_m) < \varepsilon$.
 
-Every \textbf{convergent} sequence in a metric space is \textbf{Cauchy}.
+Every \textbf{convergent} sequence is \textbf{Cauchy}.
 
-A metric space $(X, d)$ is \textbf{complete} if every Cauchy sequence contained in $X$ converges to some point in $X$.
+A metric space $(X, d)$ is \textbf{complete} iff every Cauchy sequence contained in $X$ converges to some point in $X$.
 
 Euclidean space $(\R^m, d_E)$ is complete for any $m$.
 
 If $(X, d)$ is a complete metric space and $Y \subset X$, then $(Y, d)$ is complete iff $Y$ is closed.
 
-A function $T: X \to X$ from a metric space to itself is called and \textbf{operator}.
+A function $T: X \to X$ is called an \textbf{operator}.
 
-An operator $T: X \to X$ is a \textbf{contraction of modulus $\beta$} if $\beta < 1$ and $d(T(x), T(y)) \le \beta d(x, y) \forall x, y \in X$.
+An operator $T: X \to X$ is a \textbf{contraction of modulus $\beta$} if $\beta < 1$ and $d(T(x), T(y)) \le \beta d(x, y)$ $\forall x, y \in X$.
 
 Every contraction is uniformly continuous.
 
-A fixed point of an operator $T$ is an element $x^* \in X$ s.t. $T(x^*) = x^*$.
+A \textbf{fixed point} of operator $T$ is $x^* \in X$ s.t. $T(x^*) = x^*$.
 
-\textbf{Contraction Mapping Theorem:} Let $(X, d)$ be a nonempty complete metric space and $T:X \to X$ a contraction with modulus $\beta < 1$.  Then $T$ has a unique fixed point $x^*$ and $\forall x_0 \in X$ the sequence $\{x_n\}$, where $x_n = T^n(x_0)=T(T(...T(x_0)))$ converges to $x^*$.
+\textbf{Contraction Mapping Theorem:} Let $(X, d)$ be a nonempty complete metric space and $T:X \to X$ a contraction with modulus $\beta < 1$.  Then $T$ has a unique fixed point $x^*$ and $\forall x_0 \in X$ the sequence $\{x_n\}$, where $x_n = T^n(x_0)=T(T(...T(x_0)...))$ converges to $x^*$.
 
-\textbf{Continuous Dependence of the Fixed Point on Parameters}: Let $(X, d)$ and $(\Omega, \rho)$ be two metric spaces and $T: X \times \Omega \to X$.  For each $\omega \in \Omega$, let $T_\omega:X \to X$ be defined by $T_\omega(x) = T(x, \omega)$. Suppose $(X, d)$ is complete, $T$ is continuous in $\omega$, and $\exists \beta < 1$ s.t. $T_\omega$ is a contraction of modulus $\beta$ for all $\omega \in \Omega$.  Then the fixed point function $x^*: \Omega \to X$ defined by $x^*(\omega)=T_\omega(x^*(\omega))$ is continuous.
+\textbf{Continuous Dependence of the Fixed Point on Parameters}: Let $(X, d)$ and $(\Omega, \rho)$ be metric spaces and $T: X \times \Omega \to X$.  For each $\omega \in \Omega$, let $T_\omega:X \to X$ be defined by $T_\omega(x) = T(x, \omega)$. Suppose $(X, d)$ is complete, $T$ is continuous in $\omega$, and $\exists \beta < 1$ s.t. $T_\omega$ is a contraction of modulus $\beta$ for all $\omega \in \Omega$.  Then the fixed point function $x^*: \Omega \to X$ defined by $x^*(\omega)=T_\omega(x^*(\omega))$ is continuous.
 
-\textbf{Blackwell's Sufficient Conditions:} Let $B(X)$ be the set of all bounded functions from $X$ to $\R$ with metric $d_\infty(f, g) = \sup_{x \in X}|f(x) - g(x)|$. Let $T:B(X) \to B(X)$ satisfy monotonicity (if $f(x) \le g(x) \forall x \in X$, then $(T(f))(x)\le (T(g))(x)$ for all $x \in X$) and discounting ($\exists \beta \in (0, 1)$ s.t. for every $\alpha \ge 0$ and $x \in X$, $(T(f+a))(x) \le (T(f))(x) + \beta \alpha$), then $T$ is a contraction with modulus $\beta$.
+\textbf{Blackwell's Sufficient Conditions:} Let $B(X)$ be the set of all bounded functions from $X$ to $\R$ with metric $d_\infty(f, g) = \sup_{x \in X}|f(x) - g(x)|$. Let $T:B(X) \to B(X)$ satisfy monotonicity [if $f(x) \le g(x)$ $\forall x \in X$, then $(T(f))(x)\le (T(g))(x)$ $\forall x \in X$] and discounting [$\exists \beta \in (0, 1)$ s.t. for every $\alpha \ge 0$ and $x \in X$, $(T(f+a))(x) \le (T(f))(x) + \beta \alpha$], then $T$ is a contraction with modulus $\beta$.
 
 \begin{center}
 \line(1,0){250}
 \end{center}
 
-A collection of sets $\mathcal{U} = \{ U_\lambda  |\lambda \in \Lambda\}$ in a metric space $(X, d)$ is an \textbf{open cover} of the set $A$ if $U_\lambda$ is open for all $\lambda \in \Lambda$ and $A \subset \bigcup_{\lambda \in \Lambda} U_\lambda$.
+A collection of sets $\mathcal{U} = \{ U_\lambda  |\lambda \in \Lambda\}$ in $(X, d)$ is an \textbf{open cover} of the set $A$ if $U_\lambda$ is open for all $\lambda \in \Lambda$ and $A \subset \bigcup_{\lambda \in \Lambda} U_\lambda$.
 
-A set $A$ in a metric space is \textbf{compact} if every open cover of $A$ contains a \textbf{finite subcover} of $A$.  That is, if $\{ U_\lambda | \lambda \in \Lambda\}$ is an open cover of $A$, then $\exists n \in \N$ and $\lambda_1, ..., \lambda_n \in \Lambda$ such that $A \subset U_{\lambda_1} \cup ... \cup U_{\lambda_n}$.
+$A$ is \textbf{compact} if every open cover of $A$ contains a \textbf{finite subcover} of $A$.  That is, if $\{ U_\lambda | \lambda \in \Lambda\}$ is an open cover of $A$, then $\exists n \in \N$ and $\lambda_1, ..., \lambda_n \in \Lambda$ such that $A \subset U_{\lambda_1} \cup ... \cup U_{\lambda_n}$.
 
 Any closed subset of a compact space is compact.
 
 If $A$ is a compact subset of a metric space, then $A$ is closed and bounded.
 
-Heine-Borel Theorem: If $A \subset \R^m$, then $A$ is compact iff $A$ is closed and bounded.
+\textbf{Heine-Borel Theorem}: If $A \subset \R^m$, then $A$ is compact iff $A$ is closed and bounded.
 
-Closed interval $[a, b] = \{a \in \R^m | a_i \le x_i \le b_i, i=1, ..., m \}$ is compact in $(\R^m, d_E)$ for any $a, b, \in \R^m$.
+Closed interval $[a, b]$ is compact in $(\R^m, d_E)$ for any $a, b, \in \R^m$.
 
 Let $(X, d)$ and $(Y, \rho)$ be metric spaces. If $f:X \to Y$ is continuous and $C$ is a compact set in $(X, d)$, then $f(C)$ is compact in $(Y, \rho)$.
 
-EVT: If $C$ is a compact set in a metric space $(X, d)$ and $f:C \to \R$ is continuous, then $f$ is bounded on $C$ and attains its maximum and minimum.
+\textbf{EVT}: If $C$ is a compact set in a metric space $(X, d)$ and $f:C \to \R$ is continuous, then $f$ is bounded on $C$ and attains its maximum and minimum.
 
 Let $(X, d)$ and $(Y, \rho)$ be metric spaces, $C \subset X$ compact, $f:C \to Y$ continuous.  Then $f$ is uniformly continuous on $C$. 
 
-\begin{center}
-\line(1,0){250}
-\end{center}
+\newpage
 
-A \textbf{vector space} $V$ is a collection of objects called vectors, which may be added together and multiplied by real numbers, called scalars, satisfying $\forall x, y, z \in V$, $\forall \alpha, \beta \in \R$: 
+## Linear Algebra
+
+A \textbf{vector space} $V$ is a collection of vectors, which may be added together and multiplied by scalars, satisfying $\forall x, y, z \in V$, $\forall \alpha, \beta \in \R$: 
 
 - $(x+y)+z = x+(y+z)$, 
 - $x+y=y+x$, 
@@ -223,15 +215,15 @@ A \textbf{vector space} $V$ is a collection of objects called vectors, which may
 - $(\alpha \cdot \beta)x = \alpha (\beta \cdot x)$, 
 - $1 \cdot x = x$.
 
-Let $V$ be a vector space. A linear combination of $x_1, ..., x_n \in V$ equals $y = \sum_{i=1}^n \alpha_i x_i$, where $\alpha_i \in \R$. $\alpha_i$ is called the coefficient of $x_i$ in the linear combination.
+Let $V$ be a vector space. A \textbf{linear combination} of $x_1, ..., x_n \in V$ equals $y = \sum_{i=1}^n \alpha_i x_i$, where $\alpha_i \in \R$. $\alpha_i$ is called the coefficient of $x_i$ in the linear combination.
 
-Let $W$ be a subset of $V$. A span of $W$ is the set of all linear combinations of elements of $W$, span $W = \{\sum_{i=1}{n} \alpha_i x_i | n \in \N, \alpha_i \in \R, x_i \in W\}$.  The set $W \subset V$ spans $V$ if $V =$ span $W$.
+Let $W$ be a subset of $V$. A span of $W$ is the set of all linear combinations of elements of $W$, span$W = \{\sum_{i=1}{n} \alpha_i x_i | n \in \N, \alpha_i \in \R, x_i \in W\}$.  The set $W \subset V$ \textbf{spans} $V$ if $V =$ span $W$.
 
-A set $X \subset V$ is linearly dependent if $\exists x_1, ..., x_n \in X, \alpha_1, ..., \alpha_n \in \R$, s.t. $\sum_{i=1}^n \alpha_i^2 \neq 0$ and $\sum_{i=1}^n \alpha_i x_i  \bar{0}$.
+A set $X \subset V$ is \textbf{linearly dependent} if $\exists x_1, ..., x_n \in X, \alpha_1, ..., \alpha_n \in \R$, s.t. $\sum_{i=1}^n \alpha_i^2 \neq 0$ and $\sum_{i=1}^n \alpha_i x_i  \bar{0}$.
 
-A set $X \subset V$ is linearly independent if $\nexists x_1, ..., x_n \in X, \alpha_1, ..., \alpha_n \in \R$, s.t. $\sum_{i=1}^n \alpha_i^2 \neq 0$ and $\sum_{i=1}^n \alpha_i x_i  \bar{0}$ ($\alpha_1=...=\alpha_n=0$).
+A set $X \subset V$ is \textbf{linearly independent} if $\nexists x_1, ..., x_n \in X, \alpha_1, ..., \alpha_n \in \R$, s.t. $\sum_{i=1}^n \alpha_i^2 \neq 0$ and $\sum_{i=1}^n \alpha_i x_i  \bar{0}$ ($\alpha_1=...=\alpha_n=0$).
 
-A basis of a vector space $V$ is a linearly independent set of vectors in $V$ that spans $V$.
+A \textbf{basis} of a vector space $V$ is a linearly independent set of vectors in $V$ that spans $V$.
 
 Let $B = \{v_\lambda | \lambda \in \Lambda\}$ be a basis for $V$. Then every vector $x \in V$ has a unique representation as a linear combination of elements of $B$ with finitely many nonzero coefficients.
 
@@ -248,7 +240,7 @@ Suppose dim$V=n$ and $W \subset V$, $|W|=n$. Then
 - If $W$ is linearly independent, then span$W=V$, so $W$ is a basis of $V$.
 - If span$W=V$, then $W$ is linearly independent, so $W$ is a basis of $V$.
 
-Let $X$ and $Y$ be two vector spaces.  We say that $T:X \to Y$ is a linear transformation if for all $x_1, x_2 \in X$, $\alpha_1, \alpha_2 \in \R$, $T(\alpha_1 x_1 + \alpha_2 x_2) = \alpha_1 T (x_1) + \alpha_2 T(x_2)$.
+Let $X$ and $Y$ be two vector spaces.  We say that $T:X \to Y$ is a \textbf{linear transformation} if for all $x_1, x_2 \in X$, $\alpha_1, \alpha_2 \in \R$, $T(\alpha_1 x_1 + \alpha_2 x_2) = \alpha_1 T (x_1) + \alpha_2 T(x_2)$.
 
 $L(X, Y)$ is the set of all linear transformations from $X$ to $Y$.
 
@@ -256,21 +248,25 @@ $L(X, Y)$ is a vector space.
 
 If $R:X \to Y$ and $S:Y \to Z$ are linear transformations, then $S \circ R : X \to Z$ is a linear transformation.
 
-Let $X \in L(X, Y)$.  The image of $T$ is Im$T:=T(X)=\{T(x)|x\in X\}$, the kernal of $T$ is ker$T := \{x \in X | T(x) =\bar{0}\}$, and the rank of $T$ is rank$T:=$ dim(Im$T$).
+Let $X \in L(X, Y)$.  
 
-If $T \in L(X, Y)$, then Im$T$ and ker$T$ are vector subspaces of $Y$ and $X$, respectively.
+- The \textbf{image} of $T$ is Im$T:=T(X)=\{T(x)|x\in X\}$
+- The \textbf{kernal} of $T$ is ker$T := \{x \in X | T(x) =\bar{0}\}$
+- The \textbf{rank} of $T$ is rank$T:=$ dim(Im$T$).
 
-Let $X$ be a finite-dimenional vector space and $T \in L(X, Y)$. Then dim $X=$ dim(ker$T$) + rank$T$ = dim(ker$T$) + dim(Im$T$).
+If $T \in L(X, Y)$, then Im$T$ and ker$T$ are \textbf{vector subspaces} of $Y$ and $X$, respectively.
 
-$T \in L(X, Y)$ is invertible if there exists a function $S:Y \to X$ s.t. $S(T(x)) =x \forall x \in X$ and $T(S(y)) = y \forall y \in Y$.  The transformation $S$ is called the inverse of $T$ and is denoted $T^{-1}$.
+Let $X$ be a finite-dimenional vector space and $T \in L(X, Y)$. Then dim$X=$ dim(ker$T$) + rank$T$ = dim(ker$T$) + dim(Im$T$).
 
-$T$ is invertible means (1) $T$ is one-to-one ($\forall x_1 \neq x_2, T(x_1) \neq T(x_2)$) and (2) $T$ is onto ($\forall y \in Y \exists x \in X$ s.t. $T(x)=y$).
+$T \in L(X, Y)$ is \textbf{invertible} if there exists a function $S:Y \to X$ s.t. $S(T(x)) =x$ $\forall x \in X$ and $T(S(y)) = y$ $\forall y \in Y$.  The transformation $S$ is called the \textbf{inverse} of $T$ and is denoted $T^{-1}$.
+
+$T$ is invertible means (1) $T$ is \textbf{one-to-one} ($\forall x_1 \neq x_2, T(x_1) \neq T(x_2)$) and (2) $T$ is \textbf{onto} ($\forall y \in Y \exists x \in X$ s.t. $T(x)=y$).
 
 If $T \in L(X, Y)$ is invertible, then $T^{-1} \in L(Y, X)$.
 
 If $T \in L(X, Y)$ is one-to-one iff ker$T \equiv \{ \bar{0} \}$.
 
-Two vector spaces $X$ and $Y$ are isomorphic if there exists an invertible linear function from $X$ to $Y$. A function with these properties is called an isomorphism.
+Two vector spaces $X$ and $Y$ are \textbf{isomorphic} if there exists an invertible linear function from $X$ to $Y$. A function with these properties is called an \textbf{isomorphism}.
 
 Let $X$ and $Y$ be two vector spaces, and let $V = \{v_\lambda | \lambda \in \Lambda\}$ be a basis for $X$. Then a linear transformation $T: X \to Y$ is completely defined by its value on $V$, that is:
 
@@ -295,11 +291,13 @@ mtx$_{W, V}(T)=\begin{bmatrix}
 \alpha_{m1} & \alpha_{m2} & ... & \alpha_{mn} \\
 \end{bmatrix} \in M_{m \times n}$
 
-$U \subset X$ is a basis of $X$, $V \subset Y$ is a basis of $Y$, and $W \subset Z$ is a basis of $Z$.  $S \in L(X, Y), T \in L(Y, Z)$.  mtx$_{W, V}(T) \cdot$ mtx$_{V, U}(S)=$ mtx$_{W, U}(T \circ S)$.
+Let $U \subset X$ be a basis of $X$, $V \subset Y$ be a basis of $Y$, $W \subset Z$ be a basis of $Z$, $S \in L(X, Y)$, and $T \in L(Y, Z)$.
 
-dim $X = n, T \in L(X, X)$. mtx$_V(T) \equiv$ mtx$_{V, V}(T)$. To change basis from $V$ to $W$, mtx$_V(T)=P^{-1} \cdot$mtx$_W(T)\cdot P$ where $P=$mtx$_{W, V}(id)$.
+mtx$_{W, V}(T) \cdot$ mtx$_{V, U}(S)=$ mtx$_{W, U}(T \circ S)$.
 
-$A, B \in M_{n \times n}$ are similar if $A = P^{-1}BP$ for some invertible matrix $P$.
+\textbf{Change of Basis}: dim$X = n$, $T \in L(X, X)$. mtx$_V(T) \equiv$ mtx$_{V, V}(T)$. To change basis from $V$ to $W$, mtx$_V(T)=P^{-1} \cdot$mtx$_W(T)\cdot P$ where $P=$mtx$_{W, V}(id)$.
+
+$A, B \in M_{n \times n}$ are \textbf{similar} if $A = P^{-1}BP$ for some invertible matrix $P$.
 
 If dim$X=n$, then
 
