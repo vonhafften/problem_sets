@@ -1,0 +1,95 @@
+---
+title: "ECON 703 - PS 4"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "9/11/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+(1) Let $X, Y$ be two vector spaces such that dim $X = n$, dim $Y = m$.  Construct a basis of $L(X, Y)$.
+
+(2) Suppose that $T \in L(X, X)$ and $\lambda$ is $T$'s eigenvalue.
+
+(a) Prove that $\lambda^k$ is an eigenvalue of $T^k$, $k\in \N$.
+
+(b) Prove that if $T$ is invertible, then $\lambda^{-1}$ is an eigenvalue of $T^{-1}$.
+
+(c) Define an operator $S:X \to X$, such that $S(x) = T(x) - \lambda x$ for all $x \in X$. Is $S$ linear? Prove that ker $:=\{x \in X | S(x) = \bar{0}\}$ is a vector space.
+
+(3) Let $T : \R^2 \to \R^2$ be given by $T(x, y) = (x-y, 2x+3y)$.  Let $W$ be the standard basis of $\R^2$ and let $V$ be another basis of $\R^2, V = \{ (1, -4), (-2, 7)\}$ in the coordinates of $W$.
+
+(a) Find mtx$_W(T)$.
+
+(b) Find mtx$_V(T)$.
+
+(c) Find $T(1, -2)$ in the basis $V$.
+
+(4) In this exercise you will learn to solve first order linear difference equations in $n$ variables.  We want to find an $n$-dimensional process $\{\mathbf{x}_1, \mathbf{x}_2, ...\}$ such that each $\mathbf{x}_i$ is an $n$-dimensional vector and 
+
+\begin{align}
+\mathbf{x}_t = A\mathbf{x}_{t-1}, t=1, 2,...,
+\end{align}
+
+|         where $A \in M_{n \times n}$ and $\mathbf{x}_0 \in \R^n$ are given. Then
+
+$$
+\mathbf{x}_1 = A \mathbf{x}_0, \mathbf{x}_2 = A \mathbf{x}_1 = A(A \mathbf{x}_0)= A^2 \mathbf{x}_0, \mathbf{x}_t = A^t \mathbf{x}_0 \forall t \in \N,
+$$
+
+|         where $A^t = A \cdot A \cdot ... \cdot A$ ($t$ times). Thus, we need to calculate $A^t$.  
+|         To do this, we diagonalize $A$, $A = PDP^{-1}$, where $D$ is diagonal, $D = diag\{\lambda_1, ..., \lambda_n\}$. 
+|         Hence we can rewrite
+
+$$
+A^t = PDP^{-1}PDP^{-1}...PDP^{-1}=PD^tP^{-1}=Pdiag\{\lambda_1, ..., \lambda_n\}P^{-1},
+$$
+
+|         which is now easy to compute. Thus, what you is
+
+|         Step 1: Calculate $A$'s eigenvalues $\lambda_1,...,\lambda_n$ and eigenvectors $\mathbf{v}_1, ..., \mathbf{v}_n$.  
+|         Remember that we need to independent eigenvectors (this holds if all eigenvalues are distinct).
+
+|         Step 2: Set $D =diag\{\lambda_1, ..., \lambda_n\}$ and $P = \{\mathbf{v}_1, ..., \mathbf{v}_n\}$ (eigenvectors are columns of $P$).
+
+|         Step 3: Calculate $P^{-1}$ and $Pdiag\{\lambda_1^t, ..., \lambda_n^t\}P^{-1}$.
+
+|         Step 4: Plug $A^t$ from Step 3 to get $\mathbf{x}_t = A^t\mathbf{x}_0$.
+
+|         Implement the above approach to solve for $\mathbf{x}_t \in \R^2$:
+
+$$
+\mathbf{x}_t = \begin{bmatrix} 1 & 4 \\ 2 & -1 \end{bmatrix}\mathbf{x}_{t-1}, \mathbf{x}_0 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}
+$$
+
+|         Simplify your answer as much as possible.
+
+(5) In this exercise you will learn to to solve $n$th order linear difference equations in one variable.  We want to find a sequence of real numbers $\{z_t\}_{t=1}^\infty$, which satisfies
+
+\begin{align}
+z_t = a_1 z_{t-1} + a_2 z_{t-2} + ... + a_n z_{t-n},
+\end{align}
+
+|         where $a_1, ..., a_n \in \R$ and $z_0, z_{-1}, ..., z_{-n+1} \in \R$ are given.
+
+(a) Define $\mathbf{x}_t := (z_t,z_{t-1},...,z_{t-n+1})'$ and rewrite Eq. (2) in the form of Eq. (1). What is $A$?
+
+(b) Notice that if you find the function form of $z_t = f(t)$, then you do not need to find a similar form for $z_{t-1},...,z_{t-n+1}$ (you use the same function $f(\cdot)$ and evaluate it at a different time).  Thus, you actually do not need to calculate $Pdiag\{\lambda_1^t, ..., \lambda_n^t\}P^{-1}\mathbf{x}_0$. You only need the first coordinate of that $n$-dimensional vector.  The first coordinate takes the form
+
+\begin{align}
+\mathbf{x}_{t1} \equiv z_t = c_1\lambda_1^t + c_2\lambda_2^t + ... + c_n \lambda_n^t,
+\end{align}
+
+|         where coefficient $c_1, ..., c_n$ depend on $P$ and $\mathbf{x}_0$.  
+|         Given Eq. (3) which holds for any $t$ and initial values $z_0, ..., z_{-n+1}$, which equations must $c_1, ..., c_n$ 
+|         solve?
+
+(c) Suppose that $n=3$, $a_1 = 2$, $a_2 = 1$, $a_3 = -2$, and $z_0 = 2$, $z_{-1}=2$, $z_{-2}=1$.  Find the expression for $a_t$ as a function of $t$.
