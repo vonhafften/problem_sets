@@ -168,10 +168,14 @@ $\square$
 
 (7) Show that the function $F_X(x) = \begin{cases} 0, & x <0 \\ 1-\exp(-x),  & x \ge 0\end{cases}$ is a CDF, and find $f_X(x)$ and $F^{-1}_X(y)$.
 
-Proof: CDFs have three unique properties: (1) $\lim_{x \to \infty} F(X) = 1, \lim_{x \to -\infty} F(X) = 0$, (2) $F(x)$ is non-decreasing, (3), $F(x)$ is right-continuous, that is $\lim_{x \to x_0^+}$.
+$$f_X(x) = \begin{cases} 0, & x <0 \\ \exp(-x),  & x \ge 0\end{cases}$$
 
-For (1),
+$$F_X^{-1}(y) = -\ln(1-y), y \in [0, 1)$$
 
-For (2),
+Proof: CDFs have three unique properties: (1) $\lim_{x \to \infty} F_X(X) = 1, \lim_{x \to -\infty} F_X(X) = 0$, (2) $F_X(x)$ is non-decreasing, (3), $F_X(x)$ is right-continuous, that is $\lim_{x \to x_0^+}$.
 
-For (3),
+For (1), since $\lim_{x \to \infty} \exp(-x) = 0$, $\lim_{x \to \infty} (1-\exp(-x)) = 1$ and $\lim_{x \to -\infty} (0) = 0$.
+
+For (2), $F_X$ is nondecreasing because its derivative, $f_X$, is nonnegative.
+
+For (3), $F_X(x) = 0$ is continuous for $x < 0$ and $x> 0$ because both a constant function and $1-\exp(-x)$ is continuous.  Finally, at $x = 0$, $\lim_{x \to 0^+} F_X(x) = \lim_{x \to 0^+} (1-\exp(-x)) = 1-\exp(-0) = 0$. $\square$

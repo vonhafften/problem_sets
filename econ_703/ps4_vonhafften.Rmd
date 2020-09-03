@@ -23,13 +23,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (b) Prove that if $T$ is invertible, then $\lambda^{-1}$ is an eigenvalue of $T^{-1}$.
 
-(c) Define an operator $S:X \to X$, such that $S(x) = T(x) - \lambda x$ for all $x \in X$. Is $S$ linear? Prove that ker $:=\{x \in X | S(x) = \bar{0}\}$ is a vector space.
+(c) Define an operator $S:X \to X$, such that $S(x) = T(x) - \lambda x$ for all $x \in X$. Is $S$ linear? Prove that ker $S :=\{x \in X | S(x) = \bar{0}\}$ is a vector space.
 
 (3) Let $T : \R^2 \to \R^2$ be given by $T(x, y) = (x-y, 2x+3y)$.  Let $W$ be the standard basis of $\R^2$ and let $V$ be another basis of $\R^2, V = \{ (1, -4), (-2, 7)\}$ in the coordinates of $W$.
 
 (a) Find mtx$_W(T)$.
 
+Big hint during TA section.
+
 (b) Find mtx$_V(T)$.
+
+Slide 8 of lecture 9.
 
 (c) Find $T(1, -2)$ in the basis $V$.
 
