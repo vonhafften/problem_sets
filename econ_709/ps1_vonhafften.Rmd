@@ -47,13 +47,83 @@ $\square$
 
 (3) Suppose that the unconditional probability of a disease is 0.0025.  A screening test for this disease has a detection rate of 0.9, and has a false positive rate of 0.01.  Given that the screening test returns positive, what is the conditional probability of having the disease?
 
+Proof: Define $A$ the event that you have the the disease, so $P(A)=0.0025$ and $P(A^C)=0.9975$.  Define $B$ as the event you test positive, so $P(B|A) = 0.9$ and $P(B|A^C) = 0.01$.  We want to know the probability you have the disease conditional on a positive test result, or $P(A|B)$. Thus, using Bayes Rule:
+
+$$P(A | B) = \frac{P(B|A)P(A)}{P(B|A)P(A)+P(B|A^C)P(A^C)} = \frac{(0.9)(0.0025)}{(0.9)(0.0025)+(0.01)(0.9975)} \approx 0.184$$.
+
+$\square$
+
 (4) Suppose that a pair of events $A$ and $B$ are mutually exclusive, i.e., $A \cap B = \emptyset$, and that $P(A) > 0$ and $P(B)>0$.  Prove that $A$ and $B$ are not independent.
+
+Proof: Assume for the sake of a contradiction that $A$ and $B$ are mutually exclusive events that independently occur with nonzero probabilities. Since they are independent, we know $P(A)P(B) = P(A\cap B)$.  Since $P(B)$ is nonzero, $P(A) = P(A\cap B)/P(B)$.  Since $A$ and $B$ are mutually exclusive, $P(A) = P(\emptyset)/P(B)=0/P(B)=0$.  $\Rightarrow \Leftarrow$. $A$ and $B$ cannot be independent. $\square$
 
 (5) (Conditional Independence) Sometimes, we may also use the concept of conditional independence.  The definition is as follows: let $A, B, C$ be three events with positive probabilities. Then $A$ and $B$ are independent given $C$ if $P(A \cap B | C)=P(A|C) P(B|C)$. Consider the experiment of tossing two dice.  Let $A =$ {First die is 6}, $B =$ {Second die is 6}, and $C =$ {Both dice are the same}.
 
 (a) Show that $A$ and $B$ are independent (unconditionally), but $A$ and $B$ are dependent given $C$.
 
+Proof: Define $(x, y)$ where $x = \{1, 2, 3, 4, 5, 6\}$ equals the number rolled on the first die and $y = \{1, 2, 3, 4, 5, 6\}$ equals the number rolled on the second die. Thus, 
+
+\begin{align*}
+A &= \{(6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6)\} \\
+B &= \{(1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6)\} \\
+C &= \{(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6)\} \\
+A \cap B = A \cap C = B \cap C = A \cap B \cap C &= \{(6, 6)\}
+\end{align*}
+
+If the dice are fair, each $(x, y)$ has probability of 1/36, so
+
+\begin{align*}
+P(A) = P(B) = P(C) = 6/36 &= 1/6 \\
+P(A \cap B) = P(A \cap C) = P(B \cap C) =  P(A \cap B \cap C) &= 1/36
+\end{align*}
+
+Since $P(A \cap B) = 1/36 = (1/6)(1/6) = P(A)P(B)$, $A$ and $B$ are independent. 
+
+\begin{align*}
+P(A|C) = P(A \cap C) / P(C) = (1/36)/(1/6) &= 1/6\\
+P(B|C) = P(B \cap C) / P(C) = (1/36)/(1/6) &= 1/6\\
+P(A|C)P(B|C) = (1/6)(1/6) &= 1/36\\
+P(A \cap B|C) = P(A \cap B \cap C) / P(C) = (1/36)/(1/6) &= 1/6
+\end{align*}
+
+Since $P(A \cap B|C) \neq P(A|C) P(B|C)$, $A$ and $B$ are dependent given $C$. $\square$
+
+\pagebreak
+
 (b) Consider the following experiment: let there be two urns, one with 9 black balls and 1 white balls and the other with 1 black ball and 9 white balls.  First randomly (with equal probability) select one urn.  Then take two draws with replacement from the selected urn.  Let $A$ and $B$ be drawing a black ball in the first and the second draw, respectively, and let $C$ be the event urn 1 is selected. Show that $A$ and $B$ are not independent, but are conditionally independent given $C$.
+
+Proof:  First, notice that since we are drawing with replacement, the ball drawn first does not affect the probability of which color of the ball drawn second, so $P(A|C)=P(B|C)=9/10$ and $P(A \cap B|C)=P(A|C)P(B|C)$. Thus, conditional on $C$, $A$ and $B$ are independent.  Now, let's find $P(A)$, $P(B)$, and $P(A \cap B)$ using the partition rule and the definition of conditional probability:
+
+\begin{align*}
+P(A) &= P((A\cap C) \cup (A \cap C^C)) \\
+&= P(A\cap C) + P(A \cap C^C) \\
+&= P(A|C)P(C) + P(A|C^C)P(C^C) \\
+&= (9/10)(1/2)+(1/10)(1/2) \\
+&= 9/20+1/20 \\
+&= 1/2
+\end{align*}
+
+\begin{align*}
+P(B) &= P((B\cap C) \cup (B \cap C^C)) \\
+&= P(B\cap C) + P(B \cap C^C) \\
+&= P(B|C)P(C) + P(B|C^C)P(C^C) \\
+&= (9/10)(1/2)+(1/10)(1/2) \\
+&= 9/20+1/20 \\
+&= 1/2
+\end{align*}
+
+\begin{align*}
+P(A \cap B) &= P(((A \cap B)\cap C) \cup ((A \cap B) \cap C^C)) \\
+&= P((A \cap B)\cap C) + P((A \cap B) \cap C^C) \\
+&= P(A \cap B| C) P(C) + P(A \cap B| C^C) P(C^C)  \\
+&= P(A| C) P(B| C) P(C) + P(A| C^C) P(B| C^C)  P(C^C)  \\
+&= (9/10) (9/10) (1/2) + (1/10)(1/10)(1/2)\\
+&= 82/200
+\end{align*}
+
+Since $P(A)P(B) \neq P(A\cap B)$, $A$ and $B$ are not independent. $\square$
+
+\pagebreak
 
 (6) A CDF $F_X$ is stochastically greater than a CDF $F_Y$ if $F_X(t) \le F_Y(t)$ for all $t$ and $F_X(t) < F_Y(t)$ for some $t$.  Prove that if $X \sim F_X$ and $Y \sim F_Y$, then 
 
@@ -69,4 +139,39 @@ $$
 
 |        that is, $X$ tends to be bigger than $Y$.
 
-(7) Show that the function $F_X(x) = \begin{cases} 0, & x <0 \\ 1-\exp(-x),  & x \ge 0\end{cases}$ is a CDF, and $f_X(x)$ and $F^{-1}_X(y)$.
+Proof: If $X \sim F_X$ and $Y \sim F_Y$, then, for every $t$,
+
+\begin{align*}
+F_X(t) &= P(X \le t) = 1-P(X > t)\\
+F_Y(t) &= P(Y \le t) = 1-P(Y > t)
+\end{align*}
+
+Furthermore, for every $t$, we know that
+
+\begin{align*}
+F_X(t) &\le F_Y(t) \\
+1-P(X > t) &\le 1-P(Y > t) \\ 
+P(X > t) &\ge P(Y > t).
+\end{align*}
+
+In addition, we know for some $t$,
+
+\begin{align*}
+F_X(t) &< F_Y(t) \\
+1-P(X > t) &< 1-P(Y > t) \\
+P(X > t) &> P(Y > t).
+\end{align*}
+
+$\square$
+
+\pagebreak
+
+(7) Show that the function $F_X(x) = \begin{cases} 0, & x <0 \\ 1-\exp(-x),  & x \ge 0\end{cases}$ is a CDF, and find $f_X(x)$ and $F^{-1}_X(y)$.
+
+Proof: CDFs have three unique properties: (1) $\lim_{x \to \infty} F(X) = 1, \lim_{x \to -\infty} F(X) = 0$, (2) $F(x)$ is non-decreasing, (3), $F(x)$ is right-continuous, that is $\lim_{x \to x_0^+}$.
+
+For (1),
+
+For (2),
+
+For (3),
