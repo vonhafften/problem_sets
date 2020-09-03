@@ -17,6 +17,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (1) For two events $A, B \in S$, prove that $A \cup B = (A \cap B) \cup ((A \cap B^C)\cup(B \cap A^C))$.
 
+Proof: Applying the partition rule and the properties of set operators,
+
+\begin{align*}
+A \cup B 
+&= ((A \cap B) \cup (A \cap B^C)) \cup B \\
+&= ((A \cap B) \cup (A \cap B^C)) \cup ((B \cap A)\cup(B \cap A^C)) \\
+&= ((A \cap B) \cup (B \cap A)) \cup ((A \cap B^C)\cup(B \cap A^C)) \\
+&= (A \cap B) \cup ((A \cap B^C)\cup(B \cap A^C)) \\
+\end{align*}
+
+$\square$
+
 (2) Prove that $P(A \cup B) = P(A) + P(B) - P(A \cap B)$.
 
 Proof: Applying the partition rule and axoims of the probability measure,
