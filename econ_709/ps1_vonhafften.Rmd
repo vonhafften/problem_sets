@@ -19,6 +19,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (2) Prove that $P(A \cup B) = P(A) + P(B) - P(A \cap B)$.
 
+Proof: Applying the partition rule and axoims of the probability measure,
+
+\begin{align*}
+P(A \cup B) 
+&= P(((A \cap B)\cup(A \cap B^C)) \cup ((B \cap A)\cup(B \cap A^C))) \\
+&= P((A \cap B)\cup(A \cap B^C) \cup (B \cap A^C)) \\
+&= P(A \cap B) + P(A \cap B^C) + P(B \cap A^C) \\
+&= P(A \cap B) + P(A \cap B^C) + P(B \cap A^C) + P(A \cap B) - P(A \cap B) \\
+&= P((A \cap B)\cup(A \cap B^C)) + P(B \cap A^C)\cup(A \cap B)) - P(A \cap B) \\
+&=P(A) + P(B) - P(A \cap B)
+\end{align*}
+
+$\square$
+
 (3) Suppose that the unconditional probability of a disease is 0.0025.  A screening test for this disease has a detection rate of 0.9, and has a false positive rate of 0.01.  Given that the screening test returns positive, what is the conditional probability of having the disease?
 
 (4) Suppose that a pair of events $A$ and $B$ are mutually exclusive, i.e., $A \cap B = \emptyset$, and that $P(A) > 0$ and $P(B)>0$.  Prove that $A$ and $B$ are not independent.
