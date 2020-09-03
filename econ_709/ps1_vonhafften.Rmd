@@ -1,0 +1,46 @@
+---
+title: "ECON 709 - PS 1"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "9/14/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+(1) For two events $A, B \in S$, prove that $A \cup B = (A \cap B) \cup ((A \cap B^C)\cup(B \cap A^C))$.
+
+(2) Prove that $P(A \cup B) = P(A) + P(B) - P(A \cap B)$.
+
+(3) Suppose that the unconditional probability of a disease is 0.0025.  A screening test for this disease has a detection rate of 0.9, and has a false positive rate of 0.01.  Given that the screening test returns positive, what is the conditional probability of having the disease?
+
+(4) Suppose that a pair of events $A$ and $B$ are mutually exclusive, i.e., $A \cap B = \emptyset$, and that $P(A) > 0$ and $P(B)>0$.  Prove that $A$ and $B$ are not independent.
+
+(5) (Conditional Independence) Sometimes, we may also use the concept of conditional independence.  The definition is as follows: let $A, B, C$ be three events with positive probabilities. Then $A$ and $B$ are independent given $C$ if $P(A \cap B | C)=P(A|C) P(B|C)$. Consider the experiment of tossing two dice.  Let $A =$ {First die is 6}, $B =$ {Second die is 6}, and $C =$ {Both dice are the same}.
+
+(a) Show that $A$ and $B$ are independent (unconditionally), but $A$ and $B$ are dependent given $C$.
+
+(b) Consider the following experiment: let there be two urns, one with 9 black balls and 1 white balls and the other with 1 black ball and 9 white balls.  First randomly (with equal probability) select one urn.  Then take two draws with replacement from the selected urn.  Let $A$ and $B$ be drawing a black ball in the first and the second draw, respectively, and let $C$ be the event urn 1 is selected. Show that $A$ and $B$ are not independent, but are conditionally independent given $C$.
+
+(6) A CDF $F_X$ is stochastically greater than a CDF $F_Y$ if $F_X(t) \le F_Y(t)$ for all $t$ and $F_X(t) < F_Y(t)$ for some $t$.  Prove that if $X \sim F_X$ and $Y \sim F_Y$, then 
+
+$$
+P(X > t) \ge P(Y > t) \text{ for every }t,
+$$
+
+|        and 
+
+$$
+P(X > t) > P(Y > t) \text{ for some }t,
+$$
+
+|        that is, $X$ tends to be bigger than $Y$.
+
+(7) Show that the function $F_X(x) = \begin{cases} 0, & x <0 \\ 1-\exp(-x),  & x \ge 0\end{cases}$ is a CDF, and $f_X(x)$ and $F^{-1}_X(y)$.
