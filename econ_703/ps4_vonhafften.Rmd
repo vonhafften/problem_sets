@@ -63,11 +63,11 @@ Thus ker$S$ is a vector space. $\square$
 
 (a) Find mtx$_W(T)$.
 
-Big hint during TA section.
+mtx$_W(T) = \begin{bmatrix} 1 & -1 \\ 2 & 3 \end{bmatrix}$.
 
 (b) Find mtx$_V(T)$.
 
-Slide 8 of lecture 9.
+mtx$_{W,V}(id)=\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
 
 (c) Find $T(1, -2)$ in the basis $V$.
 
