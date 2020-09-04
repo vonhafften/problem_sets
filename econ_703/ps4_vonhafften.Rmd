@@ -17,6 +17,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (1) Let $X, Y$ be two vector spaces such that dim $X = n$, dim $Y = m$.  Construct a basis of $L(X, Y)$.
 
+\pagebreak
+
 (2) Suppose that $T \in L(X, X)$ and $\lambda$ is $T$'s eigenvalue.
 
 (a) Prove that $\lambda^k$ is an eigenvalue of $T^k$, $k\in \N$.
@@ -59,6 +61,8 @@ For property 8, for $x \in$ ker$S$, $S(1 \cdot x) = 1\cdot S(x) = 1\cdot \bar{0}
 
 Thus ker$S$ is a vector space. $\square$
 
+\pagebreak
+
 (3) Let $T : \R^2 \to \R^2$ be given by $T(x, y) = (x-y, 2x+3y)$.  Let $W$ be the standard basis of $\R^2$ and let $V$ be another basis of $\R^2, V = \{ (1, -4), (-2, 7)\}$ in the coordinates of $W$.
 
 (a) Find mtx$_W(T)$.
@@ -68,19 +72,21 @@ T(x, y) &= (x-y)w_1+(2x+3y)w_2 \\
 &= (w_1+2w_2)x +(-w_1+3w_2)y
 \end{align*}
 
-mtx$_W(T) = \begin{bmatrix} 1 & -1 \\ 2 & 3 \end{bmatrix}$.
+mtx$_W(T) = \begin{pmatrix} 1 & -1 \\ 2 & 3 \end{pmatrix}$.
 
 (b) Find mtx$_V(T)$.
 
-$P =$ mtx$_{W,V}(id)=\begin{bmatrix} 1 & -2 \\ -4 & 7 \end{bmatrix}$
+$P =$ mtx$_{W,V}(id)=\begin{pmatrix} 1 & -2 \\ -4 & 7 \end{pmatrix}$
 
-$P^{-1} = \begin{bmatrix} -7 & -2 \\ -4 & -1 \end{bmatrix}$
+$P^{-1} = \begin{pmatrix} -7 & -2 \\ -4 & -1 \end{pmatrix}$
 
-mtx$_V(T) = P^{-1}$mtx$_W(T)P = \begin{bmatrix} -7 & -2 \\ -4 & -1 \end{bmatrix}\begin{bmatrix} 1 & -1 \\ 2 & 3 \end{bmatrix}\begin{bmatrix} 1 & -2 \\ -4 & 7 \end{bmatrix} = \begin{bmatrix} -15 & 29 \\ -10 & 19 \end{bmatrix}$
+mtx$_V(T) = P^{-1}$mtx$_W(T)P = \begin{pmatrix} -7 & -2 \\ -4 & -1 \end{pmatrix}\begin{pmatrix} 1 & -1 \\ 2 & 3 \end{pmatrix}\begin{pmatrix} 1 & -2 \\ -4 & 7 \end{pmatrix} = \begin{pmatrix} -15 & 29 \\ -10 & 19 \end{pmatrix}$
 
 (c) Find $T(1, -2)$ in the basis $V$.
 
-mtx$_V(T)\begin{bmatrix} 1 \\ -2 \end{bmatrix} = \begin{bmatrix} -15 & 29 \\ -10 & 19 \end{bmatrix}\begin{bmatrix} 1 \\ -2 \end{bmatrix}=\begin{bmatrix} -73 \\ -48 \end{bmatrix}$
+mtx$_V(T)\begin{pmatrix} 1 \\ -2 \end{pmatrix} = \begin{pmatrix} -15 & 29 \\ -10 & 19 \end{pmatrix}\begin{pmatrix} 1 \\ -2 \end{pmatrix}=\begin{pmatrix} -73 \\ -48 \end{pmatrix}$
+
+\pagebreak
 
 (4) In this exercise you will learn to solve first order linear difference equations in $n$ variables.  We want to find an $n$-dimensional process $\{\mathbf{x}_1, \mathbf{x}_2, ...\}$ such that each $\mathbf{x}_i$ is an $n$-dimensional vector and 
 
@@ -99,7 +105,7 @@ $$
 |         Hence we can rewrite
 
 $$
-A^t = PDP^{-1}PDP^{-1}...PDP^{-1}=PD^tP^{-1}=Pdiag\{\lambda_1, ..., \lambda_n\}P^{-1},
+A^t = PDP^{-1}PDP^{-1}...PDP^{-1}=PD^tP^{-1}=Pdiag\{\lambda^t_1, ..., \lambda^t_n\}P^{-1},
 $$
 
 |         which is now easy to compute. Thus, what you is
@@ -116,10 +122,42 @@ $$
 |         Implement the above approach to solve for $\mathbf{x}_t \in \R^2$:
 
 $$
-\mathbf{x}_t = \begin{bmatrix} 1 & 4 \\ 2 & -1 \end{bmatrix}\mathbf{x}_{t-1}, \mathbf{x}_0 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}
+\mathbf{x}_t = \begin{pmatrix} 1 & 4 \\ 2 & -1 \end{pmatrix}\mathbf{x}_{t-1}, \mathbf{x}_0 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}
 $$
 
 |         Simplify your answer as much as possible.
+
+The characteristic polynomial is $(1-\lambda)(-1-\lambda)-4(2)=\lambda^2-9=(\lambda-3)(\lambda+3)$, so the eigenvalues are $\lambda_1 = 3$ and $\lambda_2 = -3$. The eigenvectors are thus solutions to:
+
+\begin{align*}
+\begin{pmatrix} -2 & 4 \\ 2 & -4 \end{pmatrix}\mathbf{v}_1 &= \bar{0} \\
+\begin{pmatrix} 4 & 4 \\ 2 & 2 \end{pmatrix}\mathbf{v}_2 &= \bar{0}
+\end{align*}
+
+Thus, the eigenvectors are $\Bigg\{ \begin{pmatrix} 2 \\ 1 \end{pmatrix}, \begin{pmatrix} -1 \\ 1\end{pmatrix}\Bigg\}$. Thus,
+
+\begin{align*}
+D &= \begin{pmatrix} 3 & 0 \\ 0 & -3 \end{pmatrix} \\
+P &= \begin{pmatrix} 2 & -1 \\ 1 & 1 \end{pmatrix} \\
+P^{-1} &= \begin{pmatrix} 1/3 & 1/3 \\ -1/3 & 2/3 \end{pmatrix}
+\end{align*}
+
+Thus,
+
+\begin{align*}
+\mathbf{x}_t &= PD^tP^{-1}\mathbf{x}_0 \\
+&= \begin{pmatrix} 2 & -1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} 3^t & 0 \\ 0 & (-3)^t \end{pmatrix} 
+\begin{pmatrix} 1/3 & 1/3 \\ -1/3 & 2/3 \end{pmatrix} 
+\begin{pmatrix} 1 \\ 1 \end{pmatrix} \\
+&= \begin{pmatrix} 2 & -1 \\ 1 & 1 \end{pmatrix} 
+\begin{pmatrix} 3^t & 0 \\ 0 & (-3)^t \end{pmatrix} 
+\begin{pmatrix} 2/3 \\ 1/3 \end{pmatrix} \\
+&= \begin{pmatrix} 2 & -1 \\ 1 & 1 \end{pmatrix} 
+\begin{pmatrix} 2*3^{t-1} \\ -(-3)^{t-1} \end{pmatrix} \\
+&= \begin{pmatrix} 4*3^{t-1} + (-3)^{t-1} \\ 2*3^{t-1} - (-3)^{t-1} \end{pmatrix}
+\end{align*}
+
+Below is R code verifying the answer:
 
 ```{r}
 library(matlib)
@@ -127,20 +165,22 @@ library(matlib)
 A <- matrix(c(1, 2, 4, -1), ncol=2)
 print(A)
 ev <- eigen(A)
-p <- ev$vectors
-lambda <- diag(ev$values)
+p <- t(t(ev$vectors))
+d <- diag(ev$values)
 print(p)
-print(lambda)
-print(p %*% lambda %*% inv(p))
+print(d)
+print(p %*% d %*% inv(p))
 
 # for first ten x_t
 x_0 <- c(1, 1)
 
 for (t in 1:10) {
   print(paste("t =", t))
-  print(p %*% lambda^t %*% inv(p) %*% x_0)
+  print(p %*% d^t %*% inv(p) %*% x_0)
 }
 ```
+
+\pagebreak
 
 (5) In this exercise you will learn to to solve $n$th order linear difference equations in one variable.  We want to find a sequence of real numbers $\{z_t\}_{t=1}^\infty$, which satisfies
 
