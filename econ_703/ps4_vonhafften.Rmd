@@ -121,6 +121,27 @@ $$
 
 |         Simplify your answer as much as possible.
 
+```{r}
+library(matlib)
+
+A <- matrix(c(1, 2, 4, -1), ncol=2)
+print(A)
+ev <- eigen(A)
+p <- ev$vectors
+lambda <- diag(ev$values)
+print(p)
+print(lambda)
+print(p %*% lambda %*% inv(p))
+
+# for first ten x_t
+x_0 <- c(1, 1)
+
+for (t in 1:10) {
+  print(paste("t =", t))
+  print(p %*% lambda^t %*% inv(p) %*% x_0)
+}
+```
+
 (5) In this exercise you will learn to to solve $n$th order linear difference equations in one variable.  We want to find a sequence of real numbers $\{z_t\}_{t=1}^\infty$, which satisfies
 
 \begin{align}
