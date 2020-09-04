@@ -1,7 +1,7 @@
 ---
 title: "ECON 703 - PS 4"
 author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
-date: "9/11/2020"
+date: "9/9/2020"
 output: pdf_document
 header-includes:
 - \newcommand{\N}{\mathbb{N}}
@@ -49,7 +49,7 @@ S(\alpha_1 x_1 + \alpha_2 x_2) &= T(\alpha_1 x_1 + \alpha_2 x_2) - \lambda(\alph
 
 Yes, $S$ is linear.
 
-Proof: Let $x, y \in$ ker $S$ and $\alpha, \beta \in \R$. We know that $S(x) = S(y) = \bar{0}$. As a linear transformation, $S(\alpha x + \beta y) = \alpha S(x) + \beta S(y) =\alpha \bar{0} + \beta \bar{0} = \bar{0}$, so properties 1, 2, 5, 6, 7 of the definition of a vector space are satisfied.
+Proof: For a fixed $\lambda$, let $x, y \in$ ker $S$ and $\alpha, \beta \in \R$. We know that $S(x) = S(y) = \bar{0}$. As a linear transformation, $S(\alpha x + \beta y) = \alpha S(x) + \beta S(y) =\alpha \bar{0} + \beta \bar{0} = \bar{0}$, so properties 1, 2, 5, 6, 7 of the definition of a vector space are satisfied.
 
 For property 3, note that $S(\bar{0}) = T(\bar{0})-\lambda \bar{0}=T(\bar{0})=\bar{0}$, so $\bar{0} \in$ ker$S$.\footnote{For any linear transformation $T:X\to Y$, $T(\bar{0}_X) = T(\bar{0}_X+\bar{0}_X) = T(\bar{0}_X) + T(\bar{0}_X) \implies T(\bar{0}_X)=T(\bar{0}_X)-T(\bar{0}_X)=\bar{0}_Y$.} Furthermore, $x + \bar{0} = \bar{0} + x = x$ for $x \in$ ker$S$.
 
@@ -63,13 +63,24 @@ Thus ker$S$ is a vector space. $\square$
 
 (a) Find mtx$_W(T)$.
 
+\begin{align*}
+T(x, y) &= (x-y)w_1+(2x+3y)w_2 \\
+&= (w_1+2w_2)x +(-w_1+3w_2)y
+\end{align*}
+
 mtx$_W(T) = \begin{bmatrix} 1 & -1 \\ 2 & 3 \end{bmatrix}$.
 
 (b) Find mtx$_V(T)$.
 
-mtx$_{W,V}(id)=\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+$P =$ mtx$_{W,V}(id)=\begin{bmatrix} 1 & -2 \\ -4 & 7 \end{bmatrix}$
+
+$P^{-1} = \begin{bmatrix} -7 & -2 \\ -4 & -1 \end{bmatrix}$
+
+mtx$_V(T) = P^{-1}$mtx$_W(T)P = \begin{bmatrix} -7 & -2 \\ -4 & -1 \end{bmatrix}\begin{bmatrix} 1 & -1 \\ 2 & 3 \end{bmatrix}\begin{bmatrix} 1 & -2 \\ -4 & 7 \end{bmatrix} = \begin{bmatrix} -15 & 29 \\ -10 & 19 \end{bmatrix}$
 
 (c) Find $T(1, -2)$ in the basis $V$.
+
+mtx$_V(T)\begin{bmatrix} 1 \\ -2 \end{bmatrix} = \begin{bmatrix} -15 & 29 \\ -10 & 19 \end{bmatrix}\begin{bmatrix} 1 \\ -2 \end{bmatrix}=\begin{bmatrix} -73 \\ -48 \end{bmatrix}$
 
 (4) In this exercise you will learn to solve first order linear difference equations in $n$ variables.  We want to find an $n$-dimensional process $\{\mathbf{x}_1, \mathbf{x}_2, ...\}$ such that each $\mathbf{x}_i$ is an $n$-dimensional vector and 
 
