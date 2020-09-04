@@ -21,9 +21,43 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (a) Prove that $\lambda^k$ is an eigenvalue of $T^k$, $k\in \N$.
 
+Proof: If $\lambda$ is $T$'s eigenvalue $\implies T(v)=\lambda v$ for eigenvector $v \neq \bar{0}$.  Applying $T$ again, we get $T(T(v)) = \lambda(\lambda v) \implies T^2(v)=\lambda^2v$.  Similarly, applying $T$ $k$ times to $v$, we get $T^k(v) = \lambda^k v$.  Thus, $\lambda^k$ is an eigenvalue for $T^k$ where $k \in \N$.
+
 (b) Prove that if $T$ is invertible, then $\lambda^{-1}$ is an eigenvalue of $T^{-1}$.
 
+Proof: If $T$ is invertible, $T^{-1} \in L(X, X)$. Thus, for eigvenvector $v$ of $T$,
+
+\begin{align*}
+T(v) = \lambda v 
+&\implies T^{-1}(T(v))=T^{-1}(\lambda v) \\ 
+&\implies v=\lambda T^{-1}(v) \\
+&\implies T^{-1}(v) = \lambda^{-1}v.
+\end{align*}
+
+Therefore, $\lambda^{-1}$ is an eigenvalue of $T^{-1}$.
+
 (c) Define an operator $S:X \to X$, such that $S(x) = T(x) - \lambda x$ for all $x \in X$. Is $S$ linear? Prove that ker $S :=\{x \in X | S(x) = \bar{0}\}$ is a vector space.
+
+For $x_1, x_2 \in X$ and $\alpha_1, \alpha_2 \in \R$,
+
+\begin{align*}
+S(\alpha_1 x_1 + \alpha_2 x_2) &= T(\alpha_1 x_1 + \alpha_2 x_2) - \lambda(\alpha_1 x_1 + \alpha_2 x_2) \\
+&= \alpha_1 T(x_1) + \alpha_2 T(x_2) - \lambda\alpha_1 x_1 - \lambda\alpha_2 x_2\\
+&= \alpha_1 (T(x_1) - \lambda x_1)  + \alpha_2 (T(x_2) - \lambda x_2)\\
+&= \alpha_1 S(x_1) + \alpha_2 S(x_2)
+\end{align*}
+
+Yes, $S$ is linear.
+
+Proof: Let $x, y \in$ ker $S$ and $\alpha, \beta \in \R$. We know that $S(x) = S(y) = \bar{0}$. As a linear transformation, $S(\alpha x + \beta y) = \alpha S(x) + \beta S(y) =\alpha \bar{0} + \beta \bar{0} = \bar{0}$, so properties 1, 2, 5, 6, 7 of the definition of a vector space are satisfied.
+
+For property 3, note that $S(\bar{0}) = T(\bar{0})-\lambda \bar{0}=T(\bar{0})=\bar{0}$, so $\bar{0} \in$ ker$S$.\footnote{For any linear transformation $T:X\to Y$, $T(\bar{0}_X) = T(\bar{0}_X+\bar{0}_X) = T(\bar{0}_X) + T(\bar{0}_X) \implies T(\bar{0}_X)=T(\bar{0}_X)-T(\bar{0}_X)=\bar{0}_Y$.} Furthermore, $x + \bar{0} = \bar{0} + x = x$ for $x \in$ ker$S$.
+
+For property 4, for $x \in$ ker$S$, $S(-x)=(-1)S(x) =(-1)\bar{0}=\bar{0}$ where $x+(-x)=\bar{0}$.
+
+For property 8, for $x \in$ ker$S$, $S(1 \cdot x) = 1\cdot S(x) = 1\cdot \bar{0}=\bar{0}$.
+
+Thus ker$S$ is a vector space. $\square$
 
 (3) Let $T : \R^2 \to \R^2$ be given by $T(x, y) = (x-y, 2x+3y)$.  Let $W$ be the standard basis of $\R^2$ and let $V$ be another basis of $\R^2, V = \{ (1, -4), (-2, 7)\}$ in the coordinates of $W$.
 
