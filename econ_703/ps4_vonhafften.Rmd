@@ -1,6 +1,6 @@
 ---
 title: "ECON 703 - PS 4"
-author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
 date: "9/9/2020"
 output: pdf_document
 header-includes:
@@ -16,6 +16,26 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 (1) Let $X, Y$ be two vector spaces such that dim $X = n$, dim $Y = m$.  Construct a basis of $L(X, Y)$.
+
+Let $B_X = \{u_1, ..., u_n\}$ be a basis for $X$. Consider $x \in X$ such that $x=c_1u_1+...+c_nu_n$ for $c_1, ..., c_n\in \R$. Let $B_Y = \{v_1, ..., v_m\}$ be a basis for $Y$, so for any $T \in L(X, Y)$, $T(u_i)=b_{i1}v_1+...+b_{im}v_m$ for $i \in \{1, ..., n\}, b_{i1}, ..., b_{im}\in \R$.  Thus,
+
+\begin{align*}
+T(x) &= T(c_1u_1+...+c_nu_n) \\
+&= c_1T(u_1)+...+c_nT(u_n) \\
+&= c_1(b_{11}v_1+...+b_{1m}v_m)+...+c_n(b_{n1}v_1+...+b_{nm}v_m) \\
+&= c_1b_{11}v_1+...+c_1b_{1m}v_m+...+c_nb_{n1}v_1+...+c_nb_{nm}v_m \\
+&= \begin{pmatrix} v_1 & ... & v_m \end{pmatrix} \begin{pmatrix} b_{11} & ... & b_{n1} \\ \vdots &  & \vdots \\ b_{1m} & ... & b_{nm} \end{pmatrix} \begin{pmatrix} c_1 \\ \vdots \\ c_n \end{pmatrix}  \\
+\end{align*}
+
+Therefore, $B_{L(X, Y)}$ forms a basis for $L(X, Y)$:
+
+\begin{align*}
+B_{L(X, Y)}
+&= \Bigg\{ \begin{pmatrix} 1 & ... & 0 \\ \vdots &  & \vdots \\ 0 & ... & 0 \end{pmatrix}_{n\times m}, ..., \begin{pmatrix} 0 & ... & 0 \\ \vdots &  & \vdots \\ 0 & ... & 1 \end{pmatrix}_{n\times m}\Bigg\} \\
+&=\{ A_{n\times_m} | a_{ij} = 1 \text{ and }a_{lk}=0 \forall i \in \{1,..., n\},j \in\{1, ..., m\}, l\neq i, k \neq j \} 
+\end{align*}
+
+$B_{L(X, Y)}$ spans $L(X, Y)$ where $b_{ij}$ is the coefficient on the element of $B_{L(X, Y)}$ with a one in the $i$th column and the $j$th row.  $B_{L(X, Y)}$ is also linear independent because each element has a single nonzero cell whose location is to unique to the nonzero cells in other elements. Since no element of $B_{L(X, Y)}$ has the same nonzero cell as another element, any linear combination of the elements that equals an $n \times m$ matrix of zeros implies that all coefficients on elements of $B_{L(X, Y)}$ are zero.
 
 \pagebreak
 
@@ -261,11 +281,3 @@ c_1 + c_2 +c_3 \\ -c_1 +c_2 + (1/2)c_3 \\ c_1 + c_2 + (1/4)c_3
 \end{align*}
 
 Thus, $c_1 = -1/3, c_2 = 1, c_3 = 4/3 \implies z_t = (-1)^t(-1/3)+1+2^t(4/3)$.
-
-
-
-
-
-
-
-
