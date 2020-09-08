@@ -31,7 +31,11 @@ Therefore, $B_{L(X, Y)}$ forms a basis for $L(X, Y)$:
 
 \begin{align*}
 B_{L(X, Y)}
-&= \Bigg\{ \begin{pmatrix} 1 & ... & 0 \\ \vdots &  & \vdots \\ 0 & ... & 0 \end{pmatrix}_{n\times m}, ..., \begin{pmatrix} 0 & ... & 0 \\ \vdots &  & \vdots \\ 0 & ... & 1 \end{pmatrix}_{n\times m}\Bigg\} \\
+&= \Bigg\{ 
+\begin{pmatrix} 1 & ... & 0 \\ \vdots &  & \vdots \\ 0 & ... & 0 \end{pmatrix}_{n\times m}, ..., 
+\begin{pmatrix} 0 & ... & 1 \\ \vdots &  & \vdots \\ 0 & ... & 0 \end{pmatrix}_{n\times m}, ..., 
+\begin{pmatrix} 0 & ... & 0 \\ \vdots &  & \vdots \\ 1 & ... & 0 \end{pmatrix}_{n\times m},..., 
+\begin{pmatrix} 0 & ... & 0 \\ \vdots &  & \vdots \\ 0 & ... & 1 \end{pmatrix}_{n\times m}\Bigg\} \\
 &=\{ A_{n\times_m} | a_{ij} = 1 \text{ and }a_{lk}=0 \forall i \in \{1,..., n\},j \in\{1, ..., m\}, l\neq i, k \neq j \} 
 \end{align*}
 
@@ -214,7 +218,7 @@ z_t = a_1 z_{t-1} + a_2 z_{t-2} + ... + a_n z_{t-n},
 
 (a) Define $\mathbf{x}_t := (z_t,z_{t-1},...,z_{t-n+1})'$ and rewrite Eq. (2) in the form of Eq. (1). What is $A$?
 
-$$A_{n \times n} = \begin{pmatrix} a_1 & a_2 & ... & a_{n-1} & a_n \\ 1 & 0 & ... & 0 & 0 \\ 0 & 1 & ... & 0 & 0 \\ \vdots &  \vdots & & \vdots & \vdots \\ 0 & 0 & ... & 1 & 0 \end{pmatrix}$$
+$$A = \begin{pmatrix} a_1 & a_2 & ... & a_{n-1} & a_n \\ 1 & 0 & ... & 0 & 0 \\ 0 & 1 & ... & 0 & 0 \\ \vdots &  \vdots & & \vdots & \vdots \\ 0 & 0 & ... & 1 & 0 \end{pmatrix}_{n \times n}$$
 
 \begin{align*}
 A\mathbf{x}_{t-1}
@@ -251,13 +255,13 @@ A = \begin{pmatrix} 2 & 1 & -2 \\ 1 & 0 & 0 \\ 0 & 1 & 0\end{pmatrix}
 $$
 
 \begin{align*}
-\det(A - \lambda I) &= 0 \\
+0 &= \det(A - \lambda I)\\
 \implies 
-\det \begin{pmatrix} 2-\lambda & 1 & -2 \\ 1 & -\lambda & 0 \\ 0 & 1 & -\lambda \end{pmatrix} &= 0 \\
+0 &= \det \begin{pmatrix} 2-\lambda & 1 & -2 \\ 1 & -\lambda & 0 \\ 0 & 1 & -\lambda \end{pmatrix} \\
 \implies 
-(2-\lambda)(-\lambda)(-\lambda)+(-2)(1)(1)-(1)(1)(-\lambda)&=0 \\
+0 &= (2-\lambda)(-\lambda)(-\lambda)+(-2)(1)(1)-(1)(1)(-\lambda) \\
 \implies 
--\lambda^3 + 2 \lambda^2 + \lambda - 2 &=0 \\
+0 &= -\lambda^3 + 2 \lambda^2 + \lambda - 2 \\
 \end{align*}
 
 Roots at $\lambda_1 = -1, \lambda_2 = 1, \lambda_3 = 2$. Thus,
