@@ -1,0 +1,36 @@
+---
+title: "ECON 711 - PS 1"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "9/14/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1: The Law of Supply
+
+Suppose $k=3$, and a firm uses goods one and two as inputs and produces good three as output. (Formally, $y \in Y$ requires $y_1,y_2 \le 0$.)  For each of the following, either give an example showing it's possible or prove that it's impossible. (Feel free to use examples where $Y$ contains only a few points.)
+
+(a) If $p_3$ falls and $p_1$ and $p_2$ stay the same, can the firm's output $y_3$ go up?
+
+Proof: Let $p=(p_1, p_2, p_3)$ and $p'=(p_1, p_2, p_3 + \delta)$, so $\Delta p=(p_1-p_1, p_2-p_2, p_3+\delta-p_3)=(0, 0, \delta)$ where $\delta > 0$. Furthermore, let $y=(y_1, y_2, y_3)$, $y'=(y'_1, y'_2, y'_3)$ $\Delta y = (y'_1-y_1, y'_2-y_2, y'_3-y_3)=(\Delta y_1, \Delta y_2, \Delta y_3)$. By the law of supply, 
+
+\begin{align*}
+\Delta p \cdot \Delta y &\ge 0 \\
+\implies (0, 0, \delta) \cdot (\Delta y_1, \Delta y_2, \Delta y_3) &\ge 0 \\
+\implies (0) \Delta y_1 + (0)\Delta y_2 + (\delta)\Delta y_3 &\ge 0 \\
+\implies (\delta)\Delta y_3 &\ge 0 \\
+\implies \Delta y_3 &\ge 0 \\
+\end{align*}
+
+So, yes, the firms output $y_3$ can increase or stay the same.
+
+
