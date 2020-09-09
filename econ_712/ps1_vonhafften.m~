@@ -20,9 +20,8 @@ clc;
 r = 0.01; % interest rate
 d = 1; % constant dividend
 p0 = d/r; % initial price
-shock = 10
-p0_neg = d/r-shock; % initial price with negative shock
-p0_pos = d/r+shock; % initial price with positive shock
+p0_neg = d/r-10; % initial price
+p0_pos = d/r+10; % initial price
 dim = 99; % terminal period t = 99
 
 %%%%%%%%%%%%%%%%%
@@ -44,10 +43,9 @@ pvector_pos(1) = p0_pos;
 %%%%%%%%%%%
 
 for n = 2:dim+1 % starting from t = 1 to t = 100 
-    % updating the price in the 
-    % next period with the first-
-    % order difference equation
-    pvector(n) = (1+r)*pvector(n-1)-d;
+    pvector(n) = (1+r)*pvector(n-1)-d; % updating the price in the 
+                                             % next period with the first-
+                                             % order difference equation
     pvector_neg(n) = (1+r)*pvector_neg(n-1)-d;
     pvector_pos(n) = (1+r)*pvector_pos(n-1)-d;
 end
@@ -56,8 +54,8 @@ end
 % PLOTS
 %%%%%%%%
 figure();
-hold on;
 plot(tvector(:),pvector_pos(:), '--');
+hold on;
 plot(tvector(:),pvector(:));
 plot(tvector(:),pvector_neg(:), '-.');
 title('Price Dynamics');
@@ -77,28 +75,25 @@ clc;
 % PARAMETERS
 %%%%%%%%%%%%%
 d = 1; % constant dividend
-fomc_annc = 20; % period of FOMC announcement
-fomc_chng = 50; % period of rate change
+fomc_annc = 20;
+fomc_chng = 50;
 dim = 99; % terminal period t = 99
-r_pre = 0.01; % risk-free rate before FOMC
-r_post = 0.02; % risk-free rate after FOMC
+r_pre = 0.01;
+r_post = 0.02;
 
 
 %%%%%%%%%%%%%%%%%
 % INITIALIZATION
 %%%%%%%%%%%%%%%%%
-rvector = [r_pre*ones(1, fomc_chng-1) r_post*ones(1, dim-fomc_chng+1)];
+rvector = [r_pre*ones(1, fomc_chng-1) r_post*ones(1, dim-fomc_chng+1)]
 
 pvector = zeros(dim+1,1); % creating a vector of price from t=0 to t=99
 
 tvector = linspace(0,dim,dim+1)'; % creating a vector for time from 0 to 99
 
-pvector(1) = d/rvector(1); 
-                       % giving value to the first element of the price 
+pvector(1) = d/rvector(1);
+pvector(fomc_chng) = d/rvector(fomc_chng); % giving value to the first element of the price 
                        % vector with the initial price
-pvector(fomc_chng) = d/rvector(fomc_chng);
-                       % giving the steady state price on the day of the 
-                       % rate change
 
 %%%%%%%%%%%
 % DYNAMICS
@@ -128,5 +123,5 @@ plot(tvector(:),pvector(:));
 hold on;
 title('Price Dynamics');
 xlabel('Time t'); ylabel('Price P_t');
-legend('P_0 = 100, P_{50}=50','Location','Northeast');
+legend('P_0 = 100 P_{5}','Location','Northeast');
 axis([0 dim 0 120])
