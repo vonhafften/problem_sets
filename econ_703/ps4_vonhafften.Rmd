@@ -36,7 +36,7 @@ B_{L(X, Y)}
 \begin{pmatrix} 0 & ... & 1 \\ \vdots &  & \vdots \\ 0 & ... & 0 \end{pmatrix}_{n\times m}, ..., 
 \begin{pmatrix} 0 & ... & 0 \\ \vdots &  & \vdots \\ 1 & ... & 0 \end{pmatrix}_{n\times m},..., 
 \begin{pmatrix} 0 & ... & 0 \\ \vdots &  & \vdots \\ 0 & ... & 1 \end{pmatrix}_{n\times m}\Bigg\} \\
-&=\{ A_{n\times_m} | a_{ij} = 1 \text{ and }a_{lk}=0 \forall i \in \{1,..., n\},j \in\{1, ..., m\}, l\neq i, k \neq j \} 
+&=\{ A_{n\times_m} | a_{ij} = 1 \text{ for each } (i, j) \in \{1,..., n\} \times \{1, ..., m\} \text{ and } a_{lk}=0 \forall  l\neq i, k \neq j \} 
 \end{align*}
 
 $B_{L(X, Y)}$ spans $L(X, Y)$ where $b_{ij}$ is the coefficient on the element of $B_{L(X, Y)}$ with a one in the $i$th column and the $j$th row.  $B_{L(X, Y)}$ is also linear independent because each element has a single nonzero cell whose location is to unique to the nonzero cells in other elements. Since no element of $B_{L(X, Y)}$ has the same nonzero cell as another element, any linear combination of the elements that equals an $n \times m$ matrix of zeros implies that all coefficients on elements of $B_{L(X, Y)}$ are zero.
@@ -51,7 +51,9 @@ Proof: If $\lambda$ is $T$'s eigenvalue $\implies T(v)=\lambda v$ for eigenvecto
 
 (b) Prove that if $T$ is invertible, then $\lambda^{-1}$ is an eigenvalue of $T^{-1}$.
 
-Proof: If $T$ is invertible, $T^{-1} \in L(X, X)$. Thus, for eigvenvector $v$ of $T$,
+Proof: First, I show that if $T$ is invertible then $\lambda \neq 0$.  For sake of a contradiction, assume $T$ is invertible and $\lambda = 0$.  Then $T(v)=\lambda v = 0v=\bar{0} \implies T^{-1}(T(v))=T^{-1}(\bar{0}) \implies v=\bar{0}$. This is a contradiction because eigenvectors cannot be $\bar{0}$. Thus, if $T$ is invertible, $\lambda \neq 0$.
+
+If $T$ is invertible, $T^{-1} \in L(X, X)$. Thus, for eigvenvector $v$ of $T$,
 
 \begin{align*}
 T(v) = \lambda v 
