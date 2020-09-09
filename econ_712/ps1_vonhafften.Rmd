@@ -80,7 +80,7 @@ p_t_eq <- (p_0_eq-p_star)*(1+r)^t+p_star
 p_t_pos <- (p_0_pos-p_star)*(1+r)^t+p_star 
 p_t_neg <- (p_0_neg-p_star)*(1+r)^t+p_star 
 
-plot(1, type="n", xlim=c(0, 10), ylim=c(0, 10), ylab = "p_t", xlab = "t", xaxs="i", yaxs="i", yaxt='n', main = "Price at t against t")
+plot(1, type="n", xlim=c(0, 10), ylim=c(0, 10), ylab = "p_t", xlab = "t", xaxs="i", yaxs="i", yaxt='n', main = "Price Dynamics")
 
 axis(2, at=5, labels="p*")
 
@@ -103,6 +103,8 @@ text(x=8, y=6, labels = "p_0 = p*")
 
 See included the Matlab file, ps1_vonhafften.m.
 
+![Matlab output for problem 3.](problem3.png)
+
 4. [Analytical and Matlab] Suppose the Federal Reserve announces at $t=20$ to raise the federal funds rate from 1% to 2% at $t=50$ and remain at the new level forever.  Using (1) with $d=1$, how does the price respond to the policy announcement and the interest rate change over time?  Plot the price dynamics from $t=0$ to $t=99$. Please assume that we rule out rational bubbles (i.e., agents know and believe that prices will be at its fundamental value, the steady state, at $t=50$).
 
 First, modify (1), so that $r$ can be different in different periods:
@@ -116,3 +118,5 @@ Thus, the steady state price, $p^*_t$, also depends on the period.
 For $t \in \{1, ..., 49\}$, the risk-free rate is 1% and $p_t^*=1/.01=100$.  For $t \in \{50, ..., 99\}$, the risk-free rate is 2% and $p_t^*=1/.02=50$.  Similar to problem (3), prices above the steady state price diverge upward and prices below the steady state price diverge downward.
 
 For example, in the Matlab code, I plotted two lines illustrating the steady states in each half of the periods.  The first line starts at $p_0=100$. For the first 49 periods, this line stays at the steady state price.  Then, in period 50, this line starts to move upward because 100 is above the steady state price based on the higher risk-free rate.  The second line starts at $p_0 \approx 70$ so that $p_50 = 50$.  In periods 0 through 49, since this line is below the steady state price of 100 and it  steadily falls.  At period $t=50$, this line equals the new steady state price of 50, so the line stays at 50 for the next 50 periods.
+
+![Matlab output for problem 4.](problem4.png)

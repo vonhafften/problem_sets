@@ -5,6 +5,7 @@
 %
 % Prepared by Fu Tan
 % Last update: 09/08/15
+% Modified by Alex von Hafften on 09/08/2020
 
 clear;
 clc;
@@ -86,13 +87,11 @@ rvector = repmat(x, 1, 50)';
 rvector = rvector(:);
 
 pvector_eq = zeros(dim+1,1); % creating a vector of price from t=0 to t=99
-pvector_eqq = zeros(dim+1,1);
 
 tvector = linspace(0,dim,dim+1)'; % creating a vector for time from 0 to 99
 
 pvector_eq(1) = p0_eq; % giving value to the first element of the price 
                        % vector with the initial price
-pvector_eqq(1) = p0_eqq;
 
 %%%%%%%%%%%
 % DYNAMICS
@@ -102,7 +101,6 @@ for n = 2:dim+1 % starting from t = 1 to t = 100
     pvector_eq(n) = (1+rvector(n-1))*pvector_eq(n-1)-d; % updating the price in the 
                                              % next period with the first-
                                              % order difference equation
-    pvector_eqq(n) = (1+rvector(n-1))*pvector_eqq(n-1)-d;
 end
 
 %%%%%%%%
@@ -111,8 +109,7 @@ end
 figure();
 plot(tvector(:),pvector_eq(:));
 hold on;
-plot(tvector(:),pvector_eqq(:), '-.');
 title('Price Dynamics');
 xlabel('Time t'); ylabel('Price P_t');
-legend('P_0 = 100','P_{50} = 50','Location','Northeast');
+legend('P_0 = 100','Location','Northeast');
 axis([0 dim 0 220])

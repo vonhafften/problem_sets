@@ -47,7 +47,7 @@ $B_{L(X, Y)}$ spans $L(X, Y)$ where $b_{ij}$ is the coefficient on the element o
 
 (a) Prove that $\lambda^k$ is an eigenvalue of $T^k$, $k\in \N$.
 
-Proof: If $\lambda$ is $T$'s eigenvalue $\implies T(v)=\lambda v$ for eigenvector $v \neq \bar{0}$.  Applying $T$ again, we get $T(T(v)) = \lambda(\lambda v) \implies T^2(v)=\lambda^2v$.  Similarly, applying $T$ $k$ times to $v$, we get $T^k(v) = \lambda^k v$.  Thus, $\lambda^k$ is an eigenvalue for $T^k$ where $k \in \N$.
+Proof: If $\lambda$ is $T$'s eigenvalue $\implies T(v)=\lambda v$ for eigenvector $v \neq \bar{0}$.  I prove that $\lambda^k$ is an eigenvalue of $T^k$ using induction.  For $k=1$, $T(v)=\lambda^1 v=\lambda v$. Assume $\lambda^k$ is an eigenvalue for $T^k$, $T^{k+1}(v)=T(T^{k}(v))=\lambda(\lambda^kv)=\lambda^{k+1}v$.  Thus, $\lambda^k$ is an eigenvalue for $T^k$ where $k \in \N$. $\square$
 
 (b) Prove that if $T$ is invertible, then $\lambda^{-1}$ is an eigenvalue of $T^{-1}$.
 
