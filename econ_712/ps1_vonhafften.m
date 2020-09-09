@@ -20,7 +20,7 @@ clc;
 r = 0.01; % interest rate
 d = 1; % constant dividend
 p0 = d/r; % initial price
-shock = 10
+shock = 10;
 p0_neg = d/r-shock; % initial price with negative shock
 p0_pos = d/r+shock; % initial price with positive shock
 dim = 99; % terminal period t = 99
@@ -111,7 +111,7 @@ end
 
 % Transition period between announcement and rate change
 for n = fomc_chng-1:-1:fomc_annc
-    pvector(n) = (d+pvector(n+1))/(1+rvector(n))
+    pvector(n) = (d+pvector(n+1))/(1+rvector(n));
 end
 
 % Steady state after rate change
