@@ -21,6 +21,8 @@ Suppose $k=3$, and a firm uses goods one and two as inputs and produces good thr
 
 (a) If $p_3$ falls and $p_1$ and $p_2$ stay the same, can the firm's output $y_3$ go up?
 
+No.
+
 Proof: Let $p=(p_1, p_2, p_3)$ and $p'=(p_1, p_2, p_3 + \delta)$, so $\Delta p=(p_1-p_1, p_2-p_2, p_3-\delta-p_3)=(0, 0, -\delta)$ where $\delta > 0$. Furthermore, let $y=(y_1, y_2, y_3)$, $y'=(y'_1, y'_2, y'_3)$, and $\Delta y = (y'_1-y_1, y'_2-y_2, y'_3-y_3)=(\Delta y_1, \Delta y_2, \Delta y_3)$. The general producer framework implies that the law of supply holds:
 
 \begin{align*}
@@ -35,11 +37,30 @@ Therefore, the firm's output $y_3$ cannot increase. $\square$
 
 (b) If $p_1$ rises and $p_2$ and $p_3$ stay the same, can the firm's output $y_3$ go up?
 
-Consider price vectors $p=(1, 1, 1)$ and $p'=(2, 1, 1)$ as well as production set $Y=\{y, z\}$ where $y=(-5, -1, 10)$ and $z=(-1, -7, 11)$.  Notice that $\Delta p_1 = 1$, $\Delta p_2 = \Delta p_3 = 0$, and $\Delta y_3 = 1$. When the firm faces prices $p$, it chooses production plan $y$ because $p \cdot y < p \cdot z$ ($p \cdot y = -5-1+10=4$ and $p \cdot z = -1-7+11=3$).  When the firm faces prices $p'$, it chooses production plan $z$ because $p' \cdot y > p' \cdot z$ ($p' \cdot y = -10-1+10=-1$ and $p \cdot z = -2-7+11=2$).
+Yes.
+
+Consider price vectors $p=(1, 1, 1)$ and $p'=(2, 1, 1)$ as well as production set $Y=\{y, z\}$ where $y=(-5, -1, 10)$ and $z=(-1, -7, 11)$.  Notice that $\Delta p_1 = 1$, $\Delta p_2 = \Delta p_3 = 0$, and $\Delta y_3 = 1$. When the firm faces prices $p$, it chooses production plan $y$ because $p \cdot y < p \cdot z$ with $p \cdot y = -5-1+10=4$ and $p \cdot z = -1-7+11=3$.  When the firm faces prices $p'$, it chooses production plan $z$ because $p' \cdot y > p' \cdot z$ with $p' \cdot y = -10-1+10=-1$ and $p' \cdot z = -2-7+11=2$.
+
+\pagebreak
 
 (c)  If $p_1$ and $p_2$ both increase and $p_3$ stays the same, can the firm's output $y_3$ go up? What if $p_1$ and $p_2$ both increase by 10%?
 
-Need to do...
+Yes.
+
+Consider price vectors $p=(1, 1, 1)$ and $p'=(2, 1.1, 1)$ as well as production set $Y=\{y, z\}$ where $y=(-5, -1, 10)$ and $z=(-1, -7, 11)$.  Notice that $\Delta p_1 = 1, \Delta p_2 = 0.1, \Delta p_3 = 0$, and $\Delta y_3 = 1$. When the firm faces prices $p$, it chooses production plan $y$ because $p \cdot y < p \cdot z$ (with $p \cdot y = -5-1+10=4$ and $p \cdot z = -1-7+11=3$).  When the firm faces prices $p'$, it chooses production plan $z$ because $p' \cdot y > p' \cdot z$ (with $p' \cdot y = -10-1.1+10=-1.1$ and $p' \cdot z = -2-7.7+11=1.3$).
+
+If $p_1, p_2$ both increase by 10%, $y_3$ cannot increase. Below I prove this if $p_1, p_2$ increase to $\alpha p_1,\alpha p_2$ for any $\alpha > 1$.
+
+Proof: Define $p=(p_1, p_2, p_3)$, $p'=(\alpha p_1, \alpha p_2, p_3)$, and $p''=(p_1, p_2, (1/\alpha)p_3)$ where $\alpha > 1$.  Because the optimal supply coorespondence is homogeneous of order 0:
+
+\begin{align*}
+Y^*((\alpha p_1, \alpha p_2, p_3)) 
+&= Y^*(\alpha (p_1, p_2, (1/\alpha)p_3))\\
+&= Y^*(p_1, p_2, (1/\alpha)p_3)\\
+&= Y^*(p'')
+\end{align*}
+
+Thus, the firm's profit-maximizing production plan is the same under $p'$ and $p''$.  Define $\Delta p=p''-p=(0, 0, \frac{1-\alpha}{\alpha}p_3)$. Becuase $\alpha > 1$, $\Delta p_3 < 0$.  By the law of supply, $\Delta p \cdot \Delta y \ge 0 \implies \Delta y_3 \Delta p_3 \ge 0 \implies \Delta y_3 \le 0$. $\square$
 
 \pagebreak
 
@@ -215,3 +236,15 @@ abline(h = 0, v = 0)
 # Question 3. Aggregate Production
 
 Suppose an industry consists of $n$ profit-maximizing, price-taking firms, each with its own production set $Y_1, Y_2, ..., Y_n$. You observe industry-level data at several price vectors: instead of observing individual firm production $(y_1(p), y_2(p), ..., y_n(p))$, you observe only the sum $y_1(p)+...+y_n(p)$. Will this aggregate data satisfy the Weak Axiom? Can industry be rationalized as if it were the choice of a single profit-maximizing firm? Explain. (You may find it helpful to use an example.)
+
+Proof: For $p, p' \in P$, let $y_i \in Y_i^*(p)$ and $y_i' \in Y_i^*(p')$ be the production of firm $i$ under $p$ and $p'$, respectively. Since each firm $i$ is profit-maximizing, the weak axiom of profit maximization holds at the firm level, $p \cdot y_i \ge p \cdot y'_i$.  Let $z=y_1+...+y_n$ and $z'=y_1'+...+y_n'$ be aggregate production under $p$ and $p'$, respectively. To prove that aggregate data satisfy the weak axiom, we need to show that $p \cdot z \ge p \cdot z'$:
+
+\begin{align*}
+p \cdot z'
+&= p \cdot (y_1' + ... + y_n) \\
+&= p \cdot y_1' + ... + p \cdot y_n' \\
+&\le p \cdot y_1 + ... + p \cdot y_n \\
+&= p \cdot z
+\end{align*}
+
+Thus, the aggregate data satisfies the Weak Axiom and is rationalizable. $\square$
