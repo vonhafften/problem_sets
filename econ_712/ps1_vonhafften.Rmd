@@ -103,7 +103,7 @@ text(x=8, y=6, labels = "p_0 = p*")
 
 See included Matlab file (ps1_vonhafften.m).
 
-![Matlab output for problem 3.](problem3.png)
+![Matlab output for problem 3.](ps1_problem3.png)
 
 \pagebreak
 
@@ -111,5 +111,5 @@ See included Matlab file (ps1_vonhafften.m).
 
 Let $r_{pre}$ be the risk-free rate before the interest rate change and $r_{post}$ be the risk-free rate after the change.  Before the announcement, as assumed, the price is at the steady state price of $d/r_{pre}=1/0.01=100$.  After the rates change in $t=50$, the new steady state price is $d/r_{post}=1/0.02=50$.  Since we assume that agents believe that the price will be at its steady state in $t=50$, we can use (1) to find the price in $t=49$: $p_{49} = \frac{d+p_{50}}{(1+r_{pre})}=\frac{1+50}{(1+0.01)} \approx 50.495$. Similarly, we can use (1) to find the price in $t=48$ based on the price in $t=49$. Thus, we can iterate back until the announcement date.  Putting everything together, the price is at the steady state associated with a risk-free rate of 0.01 until $t=20$.  In $t=20$, the price drops so that over the next thirty periods, it will reach the steady state price associated with a risk-free rate of 0.02 based on (1).
 
-![Matlab output for problem 4.](problem4.png)
+![Matlab output for problem 4.](ps1_problem4.png)
 
