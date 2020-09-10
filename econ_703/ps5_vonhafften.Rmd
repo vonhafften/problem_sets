@@ -15,4 +15,55 @@ header-includes:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-1. 
+(1) In this exercise you will prove the following theorem.  Suppose $X$ and $Y$ are normed vector spaces and $T \in L(X, Y)$.  The inverse function $T^{-1}(\cdot)$ exists and is a continuous linear operator on $T(X)$ if and only if there exists some $m > 0$ such that $m ||x|| \le||T(x)||$ for all $x \in X$.
+
+(a) Show that if there exists some $m > 0$ such that $m ||x|| \le ||T(x)||$, then $T$ is one-to-one (and therefore invertible on $T(X)$). Hint: Think about the norm of elements which are glued together if $T$ is not one-to-one.
+
+(b) Use theorem with five equivalent properties (various continuity notions and boundedness) from the lecture notes to show that $T^{-1}(\cdot)$ is continuous on $T(X)$.
+
+(c) Use the same theorem from the lecture notes to show that if $T^{-1}$ is continuous on $T(X)$, then there exists some $m >0$ such that $m||x|| \le ||T(x)||$.
+
+(2) Consider a linear operator $T: \R^2 \to \R^2$ defined by $T(x, y)=(x+5y, 8x+7y)$.
+
+(a) Calculate $||T||$ given the norm $||(x, y)||_1=|x|+|y|$ in $\R^2$.
+
+(b) Calculate $||T||$ given the norm $||(x, y)||_\infty = \max\{|x|, |y|\}$ in $\R^2$.
+
+(3) Consider the standard basis in $\R^2$, $W$, and another orthonormal basis $V = \{(a_1, a_2), (b_1, b_2)\}$ (written in coordinates of $W$). Prove that Euclidean norm (length) of any vector $(x, y) \in \R^2$ is the same in $W$ and $V$. (Thus, length of a vector does not depend on a choice of orthonormal basis.)  Reminder: Orthonormal basis means that $a_1^2+a_2^2=b_1^2+b_2^2=1, a_1b_1+a_2b_2=0$.
+
+(4) In this exercise you will learn to solve first order linear differential equations in $n$ variables.  We want to find an $n$-dimensional process $y(t)$, such that 
+
+\begin{align}
+\frac{d}{dt}y(t)=Ay(t)
+\end{align}
+
+where $A \in M_{n \times n}$ and $y(0) \in \R^n$ are given. When $n=1$ we know that solution to Eq. (1) is $y(t)=e^{At}y(0)$. Turns out, it remains the same when $n > 1$, thus, it involves exponent of a matrix, which we have not defined before. To properly define $e^{At}, A \in M_{n \times n}$ we use Taylor expansion and say that
+
+$$
+e^{At} = I+A+\frac{1}{2}A^2t^2+\frac{1}{6}A^3t^3+...=\sum_{k=0}^{\infty} \frac{1}{k!}A^kt^k.
+$$
+
+To calculate $e^{At}$ we will use diagonalization. Suppose that $A=Pdiag\{\lambda_1, ..., \lambda_n\}P^{_1}$, so that $A^k=Pdiag\{\lambda^k_1, ..., \lambda^k_n\}P^{_1}$ and
+
+\begin{align}
+e^{At} = 
+P \Big ( \sum_{k=0}^{\infty} \frac{1}{k!}diag\{t^k\lambda^k_1, ..., t^k\lambda^k_n\} \Big ) P^{-1} = 
+P \Big ( diag \Big \{\sum_{k=0}^{\infty} \frac{1}{k!}t^k\lambda^k_1, ..., \sum_{k=0}^{\infty} \frac{1}{k!}t^k\lambda^k_n \Big \} \Big ) P^{-1} = Pdiag\{e^{t\lambda_1}, ..., e^{t\lambda_n}\}P{-1}
+\end{align}
+
+Thus, solution to Eq. 1 is
+
+$$
+y(t)=Pdiag\{e^{t\lambda_1}, ..., e^{t\lambda_n}\}P{-1}y(0)
+$$
+Implement the above approach to solve for $y(t) \in \R^2$
+
+$$
+\frac{d}{dt} y(t)=\begin{pmatrix} 1 & 1 \\ 3 & -1 \end{pmatrix}y(t), y(0) = \begin{pmatrix} 1 \\ 3 \end{pmatrix}.
+$$
+
+Simplify you answer as much as possible.
+
+(5) Solution to different equation (1) is stable if small perturbation of the initial condition $y(0)$ does not significantly change the solution $y(t)$.  Formally, it means that $\forall \varepsilon > 0$ there exists $\delta > 0$ such that if $||y(0) - \tilde{y}(0)|| < \delta$, then $||y(t) - \tilde{y}(t)|| < \varepsilon$, where $\tilde{y}(t)$ is the solution with initial condition $\tilde{y}(0)$. Notice that if one of the eigenvalues $\lambda_i$ is positive (has positive real part if they are complex), then the solution will have a term $c(y(0))e^{\lambda_i t}$, $\lambda_i >0$ where $c( \cdot)$ is a constant which depends on the initial condition. Hence, $||y(t) - \tilde{y}(t)|| \ge |c(y(0))-c(\tilde{y}(0))|e^{\lambda_i t} \to \infty$ as $t \to \infty$. Thus, the solution is not stable.  In constrast, if all eigenvalues are negative (have negative real part if they are complex), then for all $i=1, ..., n, e^{\lambda_i t} \to 0$ as $t \to \infty$, and solutions do not diverge, i.e. are stable.  Check whether your solution to Problem 4 is stable.
+
+
