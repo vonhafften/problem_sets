@@ -47,9 +47,9 @@ $$
 p_t = (p_0-p^*)a^t+p^* \text{ where } a=1+r \text{ and } p^*=d/r.
 $$
 
-Because $|a| = |1+r| > 1$, the price diverges unless $p_0 = p^*$.  If $p_0 < p^*$, $p_t \to -\infty$ as $t \to \infty$ and, if $p_0 > p^*$, $p_t \to \infty$ as $t \to \infty$.
+Because $|a| = |1+r| > 1$, the price diverges unless $p_0 = p^*$.  If $p_0 < p^*$, $p_t \to -\infty$ as $t \to \infty$ and, if $p_0 > p^*$, $p_t \to \infty$ as $t \to \infty$.  Thus, the steady state price is an unstable equilibrium.  Plotting the phase diagram, we see that if $p_0 = p^*$, then we stay at $p_1=p^*$. This relationship holds for subsequent periods, so $p_{t+1}=p_t=p^*$. If $p_0 > p^*$, then $p_1>p_0>p^*$.  Price continue to rise in subsequent periods, or $p_{t+1}>p_t$, so the price diverges toward $\infty$.  If $p_0 < p^*$, then $p_1<p_0<p^*$.  Price continue to drop in subsequent periods, or $p_{t+1}<p_t$, so the price diverges toward $-\infty$. These dynamics are born out when plotting the price for $p_0 = p^*, p_0>p^*$, and $p_0 < p^*$ in the first ten periods (second figure).
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width =5, fig.height=4}
 plot(1, type="n", xlim=c(0, 1), ylim=c(0, 1), xlab = "p_t", ylab = "p_(t+1)", xaxs="i", yaxs="i", xaxt='n', yaxt='n', main = "Phase Diagram")
 
 axis(1, at=.5, labels="p*")
@@ -61,11 +61,11 @@ abline(a=-.2, b=1.4, col ="blue")
 segments(x0 = 0.5, x1=0.5, y0=0, y1=0.5, lty = 2)
 segments(x0 = 0, x1=0.5, y0=0.5, y1=0.5, lty = 2)
 
-text(x=.9, y=.7, labels = "p_(t+1)=p_t", col = "red")
+text(x=.8, y=.6, labels = "p_(t+1)=p_t", col = "red")
 text(x=.6, y=.9, labels = "p_(t+1)=f(p_t)", col = "blue")
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width =5, fig.height=4}
 r <- 0.2
 d <- 1
 p_star <- d/r
