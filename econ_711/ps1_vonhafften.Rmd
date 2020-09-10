@@ -21,16 +21,197 @@ Suppose $k=3$, and a firm uses goods one and two as inputs and produces good thr
 
 (a) If $p_3$ falls and $p_1$ and $p_2$ stay the same, can the firm's output $y_3$ go up?
 
-Proof: Let $p=(p_1, p_2, p_3)$ and $p'=(p_1, p_2, p_3 + \delta)$, so $\Delta p=(p_1-p_1, p_2-p_2, p_3+\delta-p_3)=(0, 0, \delta)$ where $\delta > 0$. Furthermore, let $y=(y_1, y_2, y_3)$, $y'=(y'_1, y'_2, y'_3)$ $\Delta y = (y'_1-y_1, y'_2-y_2, y'_3-y_3)=(\Delta y_1, \Delta y_2, \Delta y_3)$. By the law of supply, 
+Proof: Let $p=(p_1, p_2, p_3)$ and $p'=(p_1, p_2, p_3 + \delta)$, so $\Delta p=(p_1-p_1, p_2-p_2, p_3-\delta-p_3)=(0, 0, -\delta)$ where $\delta > 0$. Furthermore, let $y=(y_1, y_2, y_3)$, $y'=(y'_1, y'_2, y'_3)$, and $\Delta y = (y'_1-y_1, y'_2-y_2, y'_3-y_3)=(\Delta y_1, \Delta y_2, \Delta y_3)$. The general producer framework implies that the law of supply holds:
 
 \begin{align*}
 \Delta p \cdot \Delta y &\ge 0 \\
-\implies (0, 0, \delta) \cdot (\Delta y_1, \Delta y_2, \Delta y_3) &\ge 0 \\
+\implies (0, 0, -\delta) \cdot (\Delta y_1, \Delta y_2, \Delta y_3) &\ge 0 \\
 \implies (0) \Delta y_1 + (0)\Delta y_2 + (\delta)\Delta y_3 &\ge 0 \\
-\implies (\delta)\Delta y_3 &\ge 0 \\
-\implies \Delta y_3 &\ge 0 \\
+\implies (-\delta)\Delta y_3 &\ge 0 \\
+\implies \Delta y_3 &\le 0 \\
 \end{align*}
 
-So, yes, the firms output $y_3$ can increase or stay the same.
+Therefore, the firm's output $y_3$ cannot increase. $\square$
 
+(b) If $p_1$ rises and $p_2$ and $p_3$ stay the same, can the firm's output $y_3$ go up?
 
+Consider price vectors $p=(1, 1, 1)$ and $p'=(2, 1, 1)$ as well as production set $Y=\{y, z\}$ where $y=(-5, -1, 10)$ and $z=(-1, -7, 11)$.  Notice that $\Delta p_1 = 1$, $\Delta p_2 = \Delta p_3 = 0$, and $\Delta y_3 = 1$. When the firm faces prices $p$, it chooses production plan $y$ because $p \cdot y < p \cdot z$ ($p \cdot y = -5-1+10=4$ and $p \cdot z = -1-7+11=3$).  When the firm faces prices $p'$, it chooses production plan $z$ because $p' \cdot y > p' \cdot z$ ($p' \cdot y = -10-1+10=-1$ and $p \cdot z = -2-7+11=2$).
+
+(c)  If $p_1$ and $p_2$ both increase and $p_3$ stays the same, can the firm's output $y_3$ go up? What if $p_1$ and $p_2$ both increase by 10%?
+
+Need to do...
+
+\pagebreak
+
+# Question 2: Rationalizability
+
+Consider the following two "datasets":
+
+Dataset 1
+
++----------+---------+
+| $p$      | $y(p)$  |
++==========+=========+
+| (7, 4)   |(-20, 40)|
++----------+---------+
+| (5, 5)   |(-50, 60)|
++----------+---------+
+| (4, 8)   |(-70, 90)|
++----------+---------+
+
+Dataset 2
+
++--------+---------+
+| $p$    | $y(p)$  |
++========+=========+
+| (7, 4) |(-20, 40)|
++--------+---------+
+| (5, 5) |(-40, 70)|
++--------+---------+
+| (4, 8) |(-70, 90)|
++--------+---------+
+
+For each one, determine whether the three observations are consistent with a profit-maximizing firm.  If not, explain why not.  If so, draw or describe:
+
+(a) the smallest production set that can rationalize the data
+(b) the smallest convex production set with free disposal and the shutdown property that can rationalize the data
+(c) the largest production set that can rationalize the data
+
+Data are consistent with a profit-maximizing firm iff the weak axiom of profit maximization holds.
+
+The weak axiom of profit maximization fails to hold for Dataset 1.  When $p=(5,5)$, the firm chose production plan $(-50, 60)$.  The profit associated with these prices and this production plan is 50 whereas the profit associated with the other two production plans in the data, $(-20, 40)$ and $(-70, 90)$, would have resulted in a profit of 100.  Dot products of prices and production plans in the production set of Dataset 1 are below:
+
++------------+---------------+---------------+---------------+
+|$y \cdot p=$| $y=(-20, 40)$ | $y=(-50, 60)$ | $y=(-70, 90)$ | 
++============+===============+===============+===============+
+| $p=(7, 4)$ | 20            | -110          | -130          |
++------------+---------------+---------------+---------------+
+| $p=(5, 5)$ | 100           | 50            | 100           |
++------------+---------------+---------------+---------------+
+| $p=(4, 8)$ | 240           | 280           | 440           |
++------------+---------------+---------------+---------------+
+
+Proof: Define 
+
+\begin{align*}
+Y^I &= \{(-20, 40),(-50, 60),(-70, 90)\} \\
+Y^O &= \{y \in \R^k : (7, 4) \cdot y \le 20, (5, 5) \cdot y \le 50  \text{, and } (4, 8) \cdot y \le 440\}.
+\end{align*}
+
+Consider $y' = (-20, 40) \in Y^I$, but $y' \notin Y^O$ because $y' \cdot (5, 5) =-20(5)+40(4)=100 > 50$.  The weak axiom of profit maximization does not hold. Thus, Dataset 1 cannot be rationalized. $\square$
+
+\pagebreak
+
+The weak axiom of profit maximatization holds for Dataset 2.  In Dataset 2, for each set of prices faced by the firm, there was no feasible production plan in the inner bound that would have been more profitable than the one the firm chose.
+
++------------+---------------+---------------+---------------+
+|$y \cdot p=$| $y=(-20, 40)$ | $y=(-50, 70)$ | $y=(-70, 90)$ | 
++============+===============+===============+===============+
+| $p=(7, 4)$ | 20            | -110          | -130          |
++------------+---------------+---------------+---------------+
+| $p=(5, 5)$ | 100           | 150           | 100           |
++------------+---------------+---------------+---------------+
+| $p=(4, 8)$ | 240           | 280           | 440           |
++------------+---------------+---------------+---------------+
+
+Proof: Define
+
+\begin{align*}
+Y^I &= \{(-20, 40),(-50, 70),(-70, 90)\} \\
+Y^O &= \{y \in \R^k : (7, 4) \cdot y \le 20, (5, 5) \cdot y \le 150  \text{, and }(4, 8) \cdot y \le 440\}.
+\end{align*}
+
+For $(-20, 40) \in Y^I$, $(-20, 40) \in Y^O$ because $(7, 4) \cdot (-20, 40)=20, (5, 5) \cdot (-20, 40) = 100 < 150$, and $(4, 8) \cdot (-20, 40) = 240 < 440$. For $(-50, 70) \in Y^I$, $(-50, 70) \in Y^O$ because $(7, 4) \cdot (-50, 70) =-110 <20, (5, 5) \cdot (-50, 70) = 150$, and $(4, 8) \cdot (-50, 70) = 280 < 440$. For $(-70, 90) \in Y^I$, $(-70, 90) \in Y^O$ because $(7, 4) \cdot (-70, 90) =-130 <20, (5, 5) \cdot (-70, 90) = 100 < 150$, and $(4, 8) \cdot (-70, 90) = 440$.  Thus, for all $y \in Y^I$, $y \in Y^O$. The weak axiom of profit-maximization holds, so the data is rationalizable. $\square$
+
+\pagebreak
+
+(a) The smallest production set that can rationalize the data is $Y^I$.
+
+```{r inner_bound, echo = FALSE, fig.width=6, fig.height=6}
+# plot 1
+
+y_1 <- c(-20, -50, -70)
+y_2 <- c(40, 70, 90)
+
+plot(1, type = "n", ylim = c(-20, 120), xlim = c(-120, 20), xaxs="i", yaxs="i", ylab = "y_2", xlab="y_1", main = "Inner Bound")
+
+points(x=y_1, y=y_2, pch=16, col = "red")
+abline(h = 0, v = 0)
+```
+
+\pagebreak
+
+(b) The smallest convex production set with free disposal and the shutdown property that can rationalize the data is $\{z \in \R^k : z = yt+(1-t)y, t \in(0,1), y \in \{x \in \R^k : x \le w$ for some $w \in Y^I \cup \{(0,0)\}\}\}$.
+
+```{r inner_bound_fd_shutdown, echo = FALSE, fig.width=6, fig.height=6}
+# plot 2
+
+y_1 <- c(0, -20, -50, -70)
+y_2 <- c(0, 40, 70, 90)
+
+plot(1, type = "n", ylim = c(-20, 120), xlim = c(-120, 20), xaxs="i", yaxs="i", ylab = "y_2", xlab="y_1", main = "Inner Bound with Shutdown, Free Disposal, and Convexity")
+
+# free disposal
+for (i in 1:length(y_1)) {
+  polygon(x = c(y_1[i], y_1[i], -200, -200),
+          y = c(y_2[i], -20, -20, y_2[i]),
+          col = "red",
+          border = NA)
+}
+
+# convex
+polygon(x = c(-70, -70, -20), 
+        y = c(90, 40, 40),
+        col = "red",
+        border = NA)
+
+polygon(x = c(-20, -20, 0), 
+        y = c(40, 0, 0),
+        col = "red",
+        border = NA)
+
+points(x=y_1, y=y_2)
+abline(h = 0, v = 0)
+
+```
+
+\pagebreak
+
+(c) The largest production set that can rationalize the data is $Y^O$.
+
+```{r outer_bound, echo = FALSE, fig.width=6, fig.height=6}
+# plot 3
+library(shape)
+
+y_1 <- c(-20, -50, -70)
+y_2 <- c(40, 70, 90)
+p_1 <- c(7, 5, 4)
+p_2 <- c(4, 5, 8)
+
+b <- (-1) * p_1 / p_2
+a <- y_2 - b * y_1
+
+plot(1, type = "n", ylim = c(-20, 120), xlim = c(-120, 20), xaxs="i", yaxs="i", ylab = "y_2", xlab="y_1", main = "Outer Bound")
+
+polygon(x = c(-120, -70, -20, 25/1.75, -120),
+        y = c(115, 90, 40, -20, -20),
+        col = "red",
+        border = NA)
+
+points(x=y_1, y=y_2)
+
+Arrows(x0=y_1, x1=y_1+p_1, 
+       y0=y_2, y1=y_2+p_2,
+       arr.type = "triangle")
+
+for (i in 1:length(a)) abline(a = a[i], b = b[i], lty = 2)
+
+abline(h = 0, v = 0)
+
+```
+
+\pagebreak
+
+# Question 3. Aggregate Production
+
+Suppose an industry consists of $n$ profit-maximizing, price-taking firms, each with its own production set $Y_1, Y_2, ..., Y_n$. You observe industry-level data at several price vectors: instead of observing individual firm production $(y_1(p), y_2(p), ..., y_n(p))$, you observe only the sum $y_1(p)+...+y_n(p)$. Will this aggregate data satisfy the Weak Axiom? Can industry be rationalized as if it were the choice of a single profit-maximizing firm? Explain. (You may find it helpful to use an example.)
