@@ -19,9 +19,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (a) Show that if there exists some $m > 0$ such that $m ||x|| \le ||T(x)||$, then $T$ is one-to-one (and therefore invertible on $T(X)$). Hint: Think about the norm of elements which are glued together if $T$ is not one-to-one.
 
+Proof: A theorem on slide 11 of lecture 8 states that $T \in L(X, Y)$ is one-to-one iff $\ker T \equiv \{\bar{0}\}$.  Consider $x \in \ker\{ T \}$, $m ||x|| \le ||T(x)|| \implies m||x|| \le 0$.  Since $m > 0$, $||x|| = 0$ because norms cannot be negative. By definition of a norm, $||x|| = 0 \iff x =\bar{0}$.  Thus, $T$ is one-to-one. $\square$
+
 (b) Use theorem with five equivalent properties (various continuity notions and boundedness) from the lecture notes to show that $T^{-1}(\cdot)$ is continuous on $T(X)$.
 
-(c) Use the same theorem from the lecture notes to show that if $T^{-1}$ is continuous on $T(X)$, then there exists some $m >0$ such that $m||x|| \le ||T(x)||$.
+Proof: By (a), $T$ is invertible.  Thus, for all $x \in X$, $m ||x|| \le ||T(x)|| \implies ||T^{-1}(y)|| \le m^{-1}||y||$ where $y = T(x) \in T(X)$. Thus, because $m>0 \implies m^{-1}\in \R$, $T^{-1}$ is bounded on $T(X)$. By a theorem on slide 5 of lecture 11, $T^{-1}$ is continuous on $T(X)$. $\square$
+
+(c) Use the same theorem from the lecture notes to show that if $T^{-1}$ is continuous on $T(X)$, then there exists some $m > 0$ such that $m||x|| \le ||T(x)||$.
+
+Proof: If $T^{-1}$ is continuous on $T(X)$, then $T^{-1}$ is bounded on $T(X)$.  Thus, we can choose $\beta$ such that $||T^{-1}(y)|| \le \beta ||y||$ $\forall y \in T(X)$. Note that, since norms are nonnegative, we can choose $\beta > 0$, so $\beta^{-1}$ is positive and finite.  Thus, $\beta^{-1} ||x|| \le  ||T(x)||$ where $x = T^{-1}(y) \in X$. Define $m = \beta^{-1}$, so $m ||x|| \le  ||T(x)||$ for $m > 0$. $\square$
 
 \pagebreak
 
