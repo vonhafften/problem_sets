@@ -51,16 +51,27 @@ Consider price vectors $p=(1, 1, 1)$ and $p'=(2, 1.1, 1)$ as well as production 
 
 If $p_1, p_2$ both increase by 10%, $y_3$ cannot increase. Below I prove this if $p_1, p_2$ increase to $\alpha p_1,\alpha p_2$ for any $\alpha > 1$.
 
-Proof: Define $p=(p_1, p_2, p_3)$, $p'=(\alpha p_1, \alpha p_2, p_3)$, and $p''=(p_1, p_2, (1/\alpha)p_3)$ where $\alpha > 1$.  Because the optimal supply coorespondence is homogeneous of order 0:
+Proof: Define $p=(p_1, p_2, p_3)$ and $p'=(\alpha p_1, \alpha p_2, p_3)$ where $\alpha > 1$. Consider $p_3 = 0$. Optimal supply coorespondences are homogeneous of order 0, so
 
 \begin{align*}
-Y^*((\alpha p_1, \alpha p_2, p_3)) 
+Y^*(p)=
+&= Y^*((p_1, p_2, 0))  \\
+&= Y^*((1/\alpha)(\alpha p_1, \alpha p_2, 0))  \\
+&= Y^*((\alpha p_1, \alpha p_2, 0))  \\
+&= Y^*(p')
+\end{align*}
+
+Thus, $y_3$ cannot increase.  Consider $p_3 > 0$. Again, based on the optimal supply coorespondences being homogeneous of order 0,
+
+\begin{align*}
+Y^*(p')
+&= Y^*((\alpha p_1, \alpha p_2, p_3))  \\
 &= Y^*(\alpha (p_1, p_2, (1/\alpha)p_3))\\
 &= Y^*(p_1, p_2, (1/\alpha)p_3)\\
 &= Y^*(p'')
 \end{align*}
 
-Thus, the firm's profit-maximizing production plan is the same under $p'$ and $p''$.  Define $\Delta p=p''-p=(0, 0, \frac{1-\alpha}{\alpha}p_3)$. Becuase $\alpha > 1$, $\Delta p_3 < 0$.  By the law of supply, $\Delta p \cdot \Delta y \ge 0 \implies \Delta y_3 \Delta p_3 \ge 0 \implies \Delta y_3 \le 0$. $\square$
+where $p''=(p_1, p_2, (1/\alpha)p_3)$.  Thus, the set of optimal production plans is the same under $p'$ and $p''$.  Define $\Delta p=p''-p=(0, 0, \frac{1-\alpha}{\alpha}p_3)$. Because $\alpha > 1$, $\Delta p_3 < 0$.  By the law of supply, $\Delta p \cdot \Delta y \ge 0 \implies \Delta y_3 \Delta p_3 \ge 0 \implies \Delta y_3 \le 0$. $\square$
 
 \pagebreak
 
