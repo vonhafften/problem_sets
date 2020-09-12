@@ -1,0 +1,81 @@
+---
+title: "ECON 712 - PS 2"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "9/17/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 1: Two-dimensional non-linear system
+
+Consider the Ramsey model of consumption $c_t$ and capital $k_t$:
+
+\begin{align}
+k_{t+1} &= f(k_t) + (1 - \delta)k_t - c_t \\
+\beta u' (c_{t+1}) &= \frac{u'(c_t)}{1-\delta + f'(k_{t+1})}
+\end{align}
+
+parametrized by: $f(k) = zk^\alpha, z=1, \alpha=0.3, \delta = 0.1, \beta = 0.97, u(c) = \log(c)$.
+
+1. Solve for steady state $(\bar{k}, \bar{c})$.
+
+2. Linearize the system around its steady state.
+
+(a) Rewrite equations (1) and (2) as 
+
+\begin{align*}
+k_{t+1}&=g(k_t, c_t) \\
+c_{t+1}&=h(k_t, c_t)
+\end{align*}
+
+(b) Analytically calculate Jacobian $J = \begin{pmatrix} dk_{t+1}/dk_t & dk_{t+1}/dc_t \\ dc_{t+1}/dk_t & dc_{t+1}/dc_t \end{pmatrix}$ (use provided functional forms, but don't plug in parameters yet).
+
+(c) Using Taylor expansion (first-order approximation here), systems can be written in terms of deviations from steady state $\bar{k}_t = k_t - \bar{k}$ and $\bar{c}_t = c_t - \bar{c}$:
+
+$$
+\begin{pmatrix} \bar{k}_{t+1} \\ \bar{c}_{t+1} \end{pmatrix} = J\begin{pmatrix} \bar{k}_{t} \\ \bar{c}_{t} \end{pmatrix}
+$$
+
+3. Compute numerically eigenvalues and eigenvectors of the Jacobian at the steady state. Verify that the system has a saddle path.  What is the slope of the saddle path at the steady state?
+
+4. On a phase diagram in $(k_t, c_t)$ show how the system evolves after an unexpected permanent positive productivity shock at $t_0, z'>z$. (You don't need to plot lines precisely - do this by hand, but pay attention to vector field (arrows), relative position of old and new steady states, directions of saddle paths and system trajectory after the shock.)
+
+5. (continuing from 4) Compute numerically and plot trajectories of $k_t$ and $c_t$ for $t=1, 2, ..., 20$ if the productivity shock occurs at $t_0=5$ and $z=z+0.1$. For this question, we will be looking at the linearized version of the nonlinear system around the new steady state.
+
+(a) Compute the new steady state $(\bar{k}', \bar{c}')$ and Jacobian matrix at that point.
+
+(b) Diagonalize the system using eigenvectors and rewrite it in terms of $\hat{k}_t$ and $\hat{c}_t$.
+
+(c) Write down non-explosive solution for $(\hat{k}_t, \hat{c}_t)$, rewrite in terms of original variables $(k_t, c_t)$.
+
+(d) Pin down a particular saddle path trajectory using a boundary condition $k_{t_0}=\bar{k}$ (capital can't jump from the old steady state at the time of the stock, so pick suitable $c_{t_0}$).
+
+(e) Use the particular solution to compute and graph $k_t$ and $c_t$ after the shock.
+
+6. For this question, we explore the nonlinear nature of the system and numerically solve the actual transition path using the "shooting method".
+
+(a) In the previous question, you solve $c_{t_0}$ under the linear system.  Put $(k_{t_0}, c_{t_0}$ into the nonlinear system (1) and (2). Compute and graph how the system evolves.  Does it converge to a steady state?
+
+(b) Use "shooting method" to find the actual $c_{t_0}$ needed.  The method is to try different values of $c_{t_0}$ such that after long enough time, the system will converge to the new steady state.
+
+# Problem 2: Setting up a model
+
+* For the problems below, state the Social Planner Problem (SPP), the Consumer Problem (CP), and define the Competitive Equilibrium (CE).  (Don't solve).
+
+1. Consider an overlapping generations economy of 2-period-lived agents. There is a constant measure of $N$ agents in each generation.  New young agents enter the economy at each date $t\ge 1$.  Half of the young agents are endowed with $w_1$ when young and 0 when old.  The other half are endowed with 0 when young and $w_2$ when old.  There is no savings technology.  Agents order their consumption stead by $U(c_t^t, c_{t+1}^t) = \ln c_t^t + \ln c_{t+1}^t$. There is a measure $N$ of initial old agents. Half of them are endowed with $w_2$ and the other half endowed with 0. Each old agent order their consumption by $c_1^0$. Each old agent is endowed with $M$ units of fiat currency. No other generation is endowed with fiat currency, and the stock of fiat currency is fixed over time.
+
+2. Consider an overlapping generations economy with 3-period-lived agents. Denote these periods as young, mid, and old.  At each date $t \ge 1$, $N_t$ new young agents enter the economy, each endowed with $w_1$ units of the consumption good when young, $w_2$ units when mid, and $w_3$ units when old.  The consumption good is non-storable.  The population is described by $N_{t+1}=n * N_t$, where $n >0$. Consumption preference is described by $\ln c_t^t + \ln c_{t+1}^t + \ln c_{t+2}^t$. At time $t = 1$, there is a measure $N_{-1}$ of old agents, each endowed with $w_3$ units of the consumption good, and a measure of $N_0$ mid agents, each endowed with $w_2$ units of the consumption good at $t=1$ and $w_3$ units at $t=2$.  Additionally, each initial old agent is endowed with 1 unit of a fiat currency.
+
+* (Cake eating problem) Consider a single infinitely lived agent with preference over their consumption stream $\textbf{c}=\{c_t\}$, given by $U(\textbf{c}) = \sum_{t=1}^\infty \beta u(c_t), where $\beta < 1$ and $u(\cdot)$ is increasing and concave.  Consumption cannot be negative in any period. The agent is endowed with $k_1$ units of the consumption good in period $t=1$. There is a perfect storage technology, such that the consumption good is effectively infinity durable. State the agent's problem (don't solve).
+
+
+
