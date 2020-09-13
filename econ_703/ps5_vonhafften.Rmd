@@ -44,11 +44,10 @@ By the theorem on slide 5 of lecture 11, since dim$\R^2=2$, $T$ is bounded. So,
 Since $|x|, |y| \ge 0$, we can assume that $x, y \ge 0$ without loss of generality.  Further, we can rewrite $y=1-x$, so
 
 \begin{align*}
-||T|| &= \sup_{x \in [0, 1]}\{ |x+5(1-x)|, |8x+7(1-x)| \} \\
-&= \sup_{x \in [0, 1]}\{ |5-4x|, |x+7| \} \\
-&= \sup_{x \in [0, 1]}\{ |x+7| \} \\
-&= 1+7\\
-&= 8
+||T|| &= \sup_{x \in [0, 1]}\{ |x+5(1-x)| + |8x+7(1-x)| \} \\
+&= \sup_{x \in [0, 1]}\{ |5-4x| + |x+7| \} \\
+&= 5+7 \\
+&= 12
 \end{align*}
 
 (b) Calculate $||T||$ given the norm $||(x, y)||_\infty = \max\{|x|, |y|\}$ in $\R^2$.
