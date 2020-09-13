@@ -28,6 +28,34 @@ parametrized by: $f(k) = zk^\alpha, z=1, \alpha=0.3, \delta = 0.1, \beta = 0.97,
 
 1. Solve for steady state $(\bar{k}, \bar{c})$.
 
+The functional forms provided imply:
+
+\begin{align*}
+f(k) = zk^\alpha &\implies f'(k) = z \alpha k^{\alpha - 1} \\
+u(c) = \log(c) &\implies u(c) = c^{-1}
+\end{align*}
+
+Setting $\bar{c}:=c_t=c_{t+1}, \bar{k}:=k_t=k_{t+1}$:
+
+\begin{align*}
+(2)
+\implies c_{t+1} &= \beta c_t(1-\delta + z \alpha k_{t+1}^{\alpha - 1}) \\
+\implies 1 &= \beta (1-\delta + z \alpha \bar{k}^{\alpha - 1}) \\
+\implies \bar{k} &= \Bigg( \frac{\beta^{-1}-1+\delta}{z\alpha} \Bigg)^{\frac{1}{\alpha-1}} \\
+\implies \bar{k} &\approx 3.269
+\end{align*}
+
+\begin{align*}
+(1) 
+&\implies \bar{c} = z \bar{k}^\alpha + (1 - \delta)\bar{k} - \bar{k} \\
+&\implies \bar{c} = z \Bigg( \frac{\beta^{-1}-1+\delta}{z\alpha} \Bigg)^{\frac{\alpha}{\alpha-1}} + \delta \Bigg( \frac{\beta^{-1}-1+\delta}{z\alpha} \Bigg)^{\frac{1}{\alpha-1}} \\
+&\implies \bar{c} \approx 1.100
+\end{align*}
+
+The steady state is $(\bar{k}, \bar{c})=(3.269, 1.100)$.
+
+\pagebreak
+
 2. Linearize the system around its steady state.
 
 (a) Rewrite equations (1) and (2) as 
@@ -37,15 +65,50 @@ k_{t+1}&=g(k_t, c_t) \\
 c_{t+1}&=h(k_t, c_t)
 \end{align*}
 
+\begin{align*}
+(1) \implies k_{t+1} &= zk_t^\alpha + (1 - \delta)k_t - c_t \\
+(2) \implies c_{t+1} &= \beta c_t(1-\delta + z \alpha k_{t+1}^{\alpha - 1}) \\
+\implies c_{t+1} &= \beta c_t(1-\delta + z \alpha (zk_t^\alpha + (1 - \delta)k_t - c_t)^{\alpha - 1}) \\
+\end{align*}
+
 (b) Analytically calculate Jacobian $J = \begin{pmatrix} dk_{t+1}/dk_t & dk_{t+1}/dc_t \\ dc_{t+1}/dk_t & dc_{t+1}/dc_t \end{pmatrix}$ (use provided functional forms, but don't plug in parameters yet).
 
-(c) Using Taylor expansion (first-order approximation here), systems can be written in terms of deviations from steady state $\bar{k}_t = k_t - \bar{k}$ and $\bar{c}_t = c_t - \bar{c}$:
+The elements of the Jacobian:
+
+\begin{align*}
+dk_{t+1}/dk_t &= z \alpha k_t^{\alpha-1} + 1 - \delta \\
+dk_{t+1}/dc_t &= -1\\ 
+dc_{t+1}/dk_t &= z \alpha \beta c_t (\alpha - 1)(zk_t^\alpha+(1-\delta)k_t-c_t)^{\alpha - 2}(z \alpha k_t^{\alpha-1} + 1 - \delta)\\
+dc_{t+1}/dc_t &= (1 - \delta)\beta + z \alpha \beta [(zk_t^\alpha + (1 - \delta)k_t-c_t)^{\alpha-1}-c_t(\alpha - 1)(zk_t^\alpha + (1 - \delta)k_t - c_t)^{\alpha-2}]
+\end{align*}
+
+(c) Using Taylor expansion (first-order approximation here), systems can be written in terms of deviations from steady state $\tilde{k}_t = k_t - \bar{k}$ and $\tilde{c}_t = c_t - \bar{c}$:
 
 $$
-\begin{pmatrix} \bar{k}_{t+1} \\ \bar{c}_{t+1} \end{pmatrix} = J\begin{pmatrix} \bar{k}_{t} \\ \bar{c}_{t} \end{pmatrix}
+\begin{pmatrix} \tilde{k}_{t+1} \\ \tilde{c}_{t+1} \end{pmatrix} = J\begin{pmatrix} \tilde{k}_{t} \\ \tilde{c}_{t} \end{pmatrix}
 $$
 
 3. Compute numerically eigenvalues and eigenvectors of the Jacobian at the steady state. Verify that the system has a saddle path.  What is the slope of the saddle path at the steady state?
+
+At $(\bar{k}, \bar{c})=(3.269, 1.100)$ and the above parameters (from Matlab).
+
+$$
+J = \begin{pmatrix} 1.0309 & -1 \\-0.0308 & 1.0299 \end{pmatrix}
+$$
+
+From Matlab, the eigenvectors and eigenvalues for $J$ are:
+
+\begin{align*}
+J &= V D V^{-1} \\
+&= 
+\begin{pmatrix} 0.9850 & 0.9848 \\-0.1725 & 0.1734 \end{pmatrix} 
+\begin{pmatrix} 1.2060 & 0 \\ 0 & 0.8548 \end{pmatrix} 
+\begin{pmatrix} 0.5091 & -2.8908 \\ 0.5062 & 2.8913 \end{pmatrix}
+\end{align*}
+
+The system has a saddle path because the absolute value of one eignevalue is greater than one and the absolute value of the other eigenvalue is less than one.  The slope of the saddle path at the steady state is ..........?????????????
+
+\pagebreak
 
 4. On a phase diagram in $(k_t, c_t)$ show how the system evolves after an unexpected permanent positive productivity shock at $t_0, z'>z$. (You don't need to plot lines precisely - do this by hand, but pay attention to vector field (arrows), relative position of old and new steady states, directions of saddle paths and system trajectory after the shock.)
 
@@ -75,7 +138,7 @@ $$
 
 2. Consider an overlapping generations economy with 3-period-lived agents. Denote these periods as young, mid, and old.  At each date $t \ge 1$, $N_t$ new young agents enter the economy, each endowed with $w_1$ units of the consumption good when young, $w_2$ units when mid, and $w_3$ units when old.  The consumption good is non-storable.  The population is described by $N_{t+1}=n * N_t$, where $n >0$. Consumption preference is described by $\ln c_t^t + \ln c_{t+1}^t + \ln c_{t+2}^t$. At time $t = 1$, there is a measure $N_{-1}$ of old agents, each endowed with $w_3$ units of the consumption good, and a measure of $N_0$ mid agents, each endowed with $w_2$ units of the consumption good at $t=1$ and $w_3$ units at $t=2$.  Additionally, each initial old agent is endowed with 1 unit of a fiat currency.
 
-* (Cake eating problem) Consider a single infinitely lived agent with preference over their consumption stream $\textbf{c}=\{c_t\}$, given by $U(\textbf{c}) = \sum_{t=1}^\infty \beta u(c_t), where $\beta < 1$ and $u(\cdot)$ is increasing and concave.  Consumption cannot be negative in any period. The agent is endowed with $k_1$ units of the consumption good in period $t=1$. There is a perfect storage technology, such that the consumption good is effectively infinity durable. State the agent's problem (don't solve).
+* (Cake eating problem) Consider a single infinitely lived agent with preference over their consumption stream $\textbf{c}=\{c_t\}$, given by $U(\textbf{c}) = \sum_{t=1}^\infty \beta u(c_t)$, where $\beta < 1$ and $u(\cdot)$ is increasing and concave.  Consumption cannot be negative in any period. The agent is endowed with $k_1$ units of the consumption good in period $t=1$. There is a perfect storage technology, such that the consumption good is effectively infinity durable. State the agent's problem (don't solve).
 
 
 
