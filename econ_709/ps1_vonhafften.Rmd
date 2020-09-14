@@ -181,11 +181,12 @@ To find the PDF, take the derivative of the CDF:
 \begin{align*}
 f_X(x) 
 &= \frac{d}{dx}F_X(x) \\
+&= \begin{cases} \frac{d}{dx}(0), & x <0 \\ \frac{d}{dx}(1-\exp(-x)),  & x \ge 0\end{cases} \\
 &= \begin{cases} (0), & x <0 \\ 0-\exp(-x)(-1),  & x \ge 0\end{cases}\\
 &= \begin{cases} 0, & x <0 \\ \exp(-x),  & x \ge 0\end{cases}
 \end{align*}
 
-Notice that $F_X^{-1}(y)$ is defined over $y \in [0, 1)$ because $F_X(x)$ is a CDF and it asymptotically converges to $1$ as $x \to \infty$.  So, for $x \ge 0$,
+Notice that $F_X^{-1}(y)$ is defined over $y \in [0, 1)$ because of the properties of CDFs (i.e., $G(x)\in[0, 1] \forall x \in \R$ for any CDF $G$) and $F_X(x)$ asymptotically converges to $1$ as $x \to \infty$.  So, for $x \ge 0$,
 
 \begin{align*}
 y &= 1-\exp(-x)\\
@@ -195,3 +196,5 @@ y &= 1-\exp(-x)\\
 Thus, 
 
 $$F_X^{-1}(y) = -\ln(1-y), y \in [0, 1)$$
+
+Therefore, $F_X^{-1}(F_X(x))=-\ln(1-(1-\exp(-x)))=x$ for $x \ge 0$.
