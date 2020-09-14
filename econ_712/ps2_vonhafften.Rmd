@@ -221,9 +221,9 @@ From Matlab:
 
 $$(\bar{k}', \bar{c}') \approx (3.7458, 1.2424)$$
 
-The new Jacobian, $K$, is
+The new Jacobian equals
 
-$$K \approx \begin{pmatrix} 1.0440 & -1 \\ -0.0319 & 1.0392 \end{pmatrix}$$
+$$J = \begin{pmatrix} 1.0440 & -1 \\ -0.0319 & 1.0392 \end{pmatrix}$$
 
 (b) Diagonalize the system using eigenvectors and rewrite it in terms of $\hat{k}_t$ and $\hat{c}_t$.
 

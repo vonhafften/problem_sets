@@ -58,20 +58,9 @@ By the theorem on slide 5 of lecture 11, since dim$\R^2=2$, $T$ is bounded. So,
 ||T|| &= \sup_{||(x, y)||_\infty=1}\{||T(x, y)||_\infty\}
 \end{align*}
 
-Define $X = \{(x, y) \in \R^2 : ||(x, y)||_\infty=1\}=\{(1, -1), (1, 0), (1, 1), (0, -1), (0, 1), (-1, -1), (-1, 0), (-1, 1)\}$
+Define $X = \{(x, y) \in \R^2 : ||(x, y)||_\infty=1\}=\{(1, w), (x, 1), (-1, y), (-1, z) : w, x, y, z \in [-1, 1]\}$.  Since the linear transformation is increase in $x, y$, it is maximized at $(1, 1)$.
 
-\begin{align*}
-||T(1, -1)||_\infty &= ||(-4, 1)||_\infty = 4\\
-||T(1, 0)||_\infty &= ||(1, 8)||_\infty = 8\\
-||T(1, 1)||_\infty &= ||(6, 15)||_\infty = 15\\
-||T(0, -1)||_\infty &=||(-5, -7)||_\infty  = 7\\
-||T(0, 1)||_\infty &= ||(5, 7)||_\infty =7\\
-||T(-1, -1)||_\infty &= ||(-6, -15)||_\infty =15\\
-||T(-1, 0)||_\infty &= ||(-1, -8)||_\infty =8\\
-||T(-1, 1)||_\infty &= ||(4, -1)||_\infty =4\\
-\end{align*}
-
-Thus, $||T|| = \sup\{4, 7, 8, 15\}=15$.
+Thus, $||T|| = \sup\{X\}=\max\{6, 15\}=15$.
 
 \pagebreak
 
