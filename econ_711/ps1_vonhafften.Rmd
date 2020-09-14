@@ -28,7 +28,7 @@ Proof: Let $p=(p_1, p_2, p_3)$ and $p'=(p_1, p_2, p_3 + \delta)$, so $\Delta p=(
 \begin{align*}
 \Delta p \cdot \Delta y &\ge 0 \\
 \implies (0, 0, -\delta) \cdot (\Delta y_1, \Delta y_2, \Delta y_3) &\ge 0 \\
-\implies (0) \Delta y_1 + (0)\Delta y_2 + (\delta)\Delta y_3 &\ge 0 \\
+\implies (0) \Delta y_1 + (0)\Delta y_2 + (-\delta)\Delta y_3 &\ge 0 \\
 \implies (-\delta)\Delta y_3 &\ge 0 \\
 \implies \Delta y_3 &\le 0 \\
 \end{align*}
@@ -49,7 +49,7 @@ Yes.
 
 Consider price vectors $p=(1, 1, 1)$ and $p'=(2, 1.1, 1)$ as well as production set $Y=\{y, z\}$ where $y=(-5, -1, 10)$ and $z=(-1, -7, 11)$.  Notice that $\Delta p_1 = 1, \Delta p_2 = 0.1, \Delta p_3 = 0$, and $\Delta y_3 = 1$. When the firm faces prices $p$, it chooses production plan $y$ because $p \cdot y > p \cdot z$ (with $p \cdot y = -5-1+10=4$ and $p \cdot z = -1-7+11=3$).  When the firm faces prices $p'$, it chooses production plan $z$ because $p' \cdot y < p' \cdot z$ (with $p' \cdot y = -10-1.1+10=-1.1$ and $p' \cdot z = -2-7.7+11=1.3$).
 
-If $p_1, p_2$ both increase by 10% and $p_3>0$, $y_3$ cannot increase.\footnote{If $p_3 = 0$, the optimal supply coorespondences are homogeneous of order 0 implies that
+If $p_1, p_2$ both increase by 10% and $p_3>0$, $y_3$ cannot increase.\footnote{If $p_3 = 0$, the optimal supply correspondences are homogeneous of order 0 implies that
 
 \begin{align*}
 Y^*((p_1, p_2, 0))
@@ -59,7 +59,7 @@ Y^*((p_1, p_2, 0))
 
 So, if $Y^*((p_1, p_2, 0))$ contains multiple elements, the firm may switch to a production plan with higher $y_3$ when faced by $(\alpha p_1, \alpha p_2, 0)$.} Below I prove this if $p_1, p_2$ increase to $\alpha p_1,\alpha p_2$ for any $\alpha > 1$.
 
-Proof: Define $p=(p_1, p_2, p_3)$ and $p'=(\alpha p_1, \alpha p_2, p_3)$ where $\alpha > 1$ and $p_3 > 0$. Based on the optimal supply coorespondences being homogeneous of order 0,
+Proof: Define $p=(p_1, p_2, p_3)$ and $p'=(\alpha p_1, \alpha p_2, p_3)$ where $\alpha > 1$ and $p_3 > 0$. Based on the optimal supply correspondences being homogeneous of order 0,
 
 \begin{align*}
 Y^*(p')
@@ -132,7 +132,7 @@ Consider $y' = (-20, 40) \in Y^I$, but $y' \notin Y^O$ because $y' \cdot (5, 5) 
 
 \pagebreak
 
-The weak axiom of profit maximatization holds for Dataset 2.  In Dataset 2, for each set of prices faced by the firm, there was no feasible production plan in the inner bound that would have been more profitable than the one the firm chose.
+The weak axiom of profit maximization holds for Dataset 2.  In Dataset 2, for each set of prices faced by the firm, there was no feasible production plan in the inner bound that would have been more profitable than the one the firm chose.
 
 +------------+---------------+---------------+---------------+
 |$y \cdot p=$| $y=(-20, 40)$ | $y=(-50, 70)$ | $y=(-70, 90)$ | 

@@ -106,7 +106,7 @@ E
 \begin{pmatrix} e_{11} & e_{12} \\ e_{21} & e_{22} \end{pmatrix}  \begin{pmatrix} x_1 \lambda_1^t \\ x_2 \lambda_2^t \end{pmatrix}
 \end{align*}
 
-The system has a saddle path because the absolute value of one eignevalue is greater than one and the absolute value of the other eigenvalue is less than one. The saddle path is $(k_t, c_t)$ where $x_1 = 0$.
+The system has a saddle path because the absolute value of one eigenvalue is greater than one and the absolute value of the other eigenvalue is less than one. The saddle path is $(k_t, c_t)$ where $x_1 = 0$.
 
 \begin{align*}
 \begin{pmatrix} k_t \\ c_t \end{pmatrix} = 

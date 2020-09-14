@@ -31,7 +31,7 @@ $\square$
 
 (2) Prove that $P(A \cup B) = P(A) + P(B) - P(A \cap B)$.
 
-Proof: Applying the partition rule and axoims of the probability measure,
+Proof: Applying the partition rule and axioms of the probability measure,
 
 \begin{align*}
 P(A \cup B) 
@@ -39,7 +39,7 @@ P(A \cup B)
 &= P((A \cap B)\cup(A \cap B^C) \cup (B \cap A^C)) \\
 &= P(A \cap B) + P(A \cap B^C) + P(B \cap A^C) \\
 &= P(A \cap B) + P(A \cap B^C) + P(B \cap A^C) + P(A \cap B) - P(A \cap B) \\
-&= P((A \cap B)\cup(A \cap B^C)) + P(B \cap A^C)\cup(A \cap B)) - P(A \cap B) \\
+&= P((A \cap B)\cup(A \cap B^C)) + P((B \cap A^C)\cup(A \cap B)) - P(A \cap B) \\
 &=P(A) + P(B) - P(A \cap B)
 \end{align*}
 
@@ -168,14 +168,30 @@ $\square$
 
 (7) Show that the function $F_X(x) = \begin{cases} 0, & x <0 \\ 1-\exp(-x),  & x \ge 0\end{cases}$ is a CDF, and find $f_X(x)$ and $F^{-1}_X(y)$.
 
-$$f_X(x) = \begin{cases} 0, & x <0 \\ \exp(-x),  & x \ge 0\end{cases}$$
-
-$$F_X^{-1}(y) = -\ln(1-y), y \in [0, 1)$$
-
 Proof: CDFs have three unique properties: (1) $\lim_{x \to \infty} F_X(X) = 1, \lim_{x \to -\infty} F_X(X) = 0$, (2) $F_X(x)$ is non-decreasing, (3), $F_X(x)$ is right-continuous, that is $\lim_{x \to x_0^+}$.
 
 For (1), since $\lim_{x \to \infty} \exp(-x) = 0$, $\lim_{x \to \infty} (1-\exp(-x)) = 1$ and $\lim_{x \to -\infty} (0) = 0$.
 
-For (2), $F_X$ is nondecreasing because its derivative, $f_X$, is nonnegative.
+For (2), we show that $x_1 \le x_2 \implies F_X(x_1) \le F_X(x_2)$. If $x_1 < 0$, then $F_X(x_1)=0$. Since $F_X(x_2) \ge 0$, then $F_X(x_1)=0 \le F_X(x_2)$. If $x_1 \ge 0$, then $F_X(x_1)=1-\exp(-x_1)$ and $F_X(x_2)=1-\exp(-x_2)$.  $x_1 \le x_2 \implies 1-\exp(-x_1) \le 1-\exp(-x_2) \implies F_X(x_1) \le F_X(x_2)$. Thus, $F_X$ is nondecreasing.
 
 For (3), $F_X(x) = 0$ is continuous for $x < 0$ and $x> 0$ because both a constant function and $1-\exp(-x)$ is continuous.  Finally, at $x = 0$, $\lim_{x \to 0^+} F_X(x) = \lim_{x \to 0^+} (1-\exp(-x)) = 1-\exp(-0) = 0$. $\square$
+
+To find the PDF, take the derivative of the CDF:
+
+\begin{align*}
+f_X(x) 
+&= \frac{d}{dx}F_X(x) \\
+&= \begin{cases} (0), & x <0 \\ 0-\exp(-x)(-1),  & x \ge 0\end{cases}\\
+&= \begin{cases} 0, & x <0 \\ \exp(-x),  & x \ge 0\end{cases}
+\end{align*}
+
+Notice that $F_X^{-1}(y)$ is defined over $y \in [0, 1)$ because $F_X(x)$ is a CDF and it asymptotically converges to $1$ as $x \to \infty$.  So, for $x \ge 0$,
+
+\begin{align*}
+y &= 1-\exp(-x)\\
+-\ln(1-y) &= x
+\end{align*}
+
+Thus, 
+
+$$F_X^{-1}(y) = -\ln(1-y), y \in [0, 1)$$
