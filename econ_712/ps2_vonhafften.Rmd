@@ -103,18 +103,18 @@ E
 =
 \begin{pmatrix} 0.9850 & 0.9848 \\-0.1725 & 0.1734 \end{pmatrix} \\
 \begin{pmatrix} k_t \\ c_t \end{pmatrix} &= 
-\begin{pmatrix} e_{11} & e_{12} \\ e_{21} & e_{22} \end{pmatrix}  \begin{pmatrix} x_1 \lambda_1^t \\ x_2 \lambda_2^t \end{pmatrix}
+\begin{pmatrix} e_{11} & e_{12} \\ e_{21} & e_{22} \end{pmatrix}  \begin{pmatrix} a_1 \lambda_1^t \\ a_2 \lambda_2^t \end{pmatrix}
 \end{align*}
 
-The system has a saddle path because the absolute value of one eigenvalue is greater than one and the absolute value of the other eigenvalue is less than one. The saddle path is $(k_t, c_t)$ where $x_1 = 0$.
+The system has a saddle path because the absolute value of one eigenvalue is greater than one and the absolute value of the other eigenvalue is less than one. The saddle path is $(k_t, c_t)$ where $a_1 = 0$.
 
 \begin{align*}
 \begin{pmatrix} k_t \\ c_t \end{pmatrix} = 
-\begin{pmatrix} e_{11} & e_{12} \\ e_{21} & e_{22} \end{pmatrix}  \begin{pmatrix} 0 \\ x_2 \lambda_2^t \end{pmatrix}
-= \begin{pmatrix} e_{12}x_2 \lambda_2^t \\ e_{22}x_2 \lambda_2^t \end{pmatrix}
+\begin{pmatrix} e_{11} & e_{12} \\ e_{21} & e_{22} \end{pmatrix}  \begin{pmatrix} 0 \\ a_2 \lambda_2^t \end{pmatrix}
+= \begin{pmatrix} e_{12}a_2 \lambda_2^t \\ e_{22}a_2 \lambda_2^t \end{pmatrix}
 \end{align*}
 
-So, the slope of the saddle path at the steady state is $\frac{e_{22}x_2 \lambda_2^t}{e_{12}x_2 \lambda_2^t} = \frac{e_{22}}{e_{12}}=\frac{0.1734}{0.9848}=0.1761$.
+So, the slope of the saddle path at the steady state is $\frac{e_{22}a_2 \lambda_2^t}{e_{12}a_2 \lambda_2^t} = \frac{e_{22}}{e_{12}}=\frac{0.1734}{0.9848}=0.1761$.
 
 \pagebreak
 
@@ -208,8 +208,17 @@ lines(y=delta_c_zero2, x=k, lty=2, col = "blue")
 text(x = 2.5, y = 2, labels = "k_t = k_(t+1)")
 text(x = 2, y = -2, labels = "c_t = c_(t+1)", col="blue")
 
-points(x=k_bar, y=c_bar, pch = 4, col = "red")
-points(x=k_bar2, y=c_bar2, pch = 8, col = "red")
+points(x=k_bar, y=c_bar, pch = 4, col = "red", cex=2)
+points(x=k_bar2, y=c_bar2, pch = 8, col = "red", cex=2)
+
+sd_slope <- 0.1761
+
+abline(a= c_bar-k_bar*sd_slope, b=sd_slope, col = "green")
+abline(a= c_bar2-k_bar2*sd_slope, b=sd_slope, lty=2, col = "green")
+
+segments(x0=k_bar, x1=k_bar2, y0=c_bar2-k_bar2*sd_slope+k_bar*sd_slope, y1=c_bar2, col ="red", lwd=3)
+segments(x0=k_bar, x1=k_bar, y0=c_bar2-k_bar2*sd_slope+k_bar*sd_slope, y1=c_bar, col ="red", lwd=3, lty=3)
+
 
 ```
 
@@ -221,7 +230,7 @@ From Matlab:
 
 $$(\bar{k}', \bar{c}') \approx (3.7458, 1.2424)$$
 
-The new Jacobian equals
+The new Jacobian is
 
 $$J = \begin{pmatrix} 1.0440 & -1 \\ -0.0319 & 1.0392 \end{pmatrix}$$
 
