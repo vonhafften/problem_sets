@@ -338,9 +338,59 @@ No, the system does not converge to the steady state (see figure 2).  The level 
 
 * For the problems below, state the Social Planner Problem (SPP), the Consumer Problem (CP), and define the Competitive Equilibrium (CE).  (Don't solve).
 
-1. Consider an overlapping generations economy of 2-period-lived agents. There is a constant measure of $N$ agents in each generation.  New young agents enter the economy at each date $t\ge 1$.  Half of the young agents are endowed with $w_1$ when young and 0 when old.  The other half are endowed with 0 when young and $w_2$ when old.  There is no savings technology.  Agents order their consumption stead by $U(c_t^t, c_{t+1}^t) = \ln c_t^t + \ln c_{t+1}^t$. There is a measure $N$ of initial old agents. Half of them are endowed with $w_2$ and the other half endowed with 0. Each old agent order their consumption by $c_1^0$. Each old agent is endowed with $M$ units of fiat currency. No other generation is endowed with fiat currency, and the stock of fiat currency is fixed over time.
+1. Consider an overlapping generations economy of 2-period-lived agents. There is a constant measure of $N$ agents in each generation.  New young agents enter the economy at each date $t\ge 1$.  Half of the young agents are endowed with $w_1$ when young and 0 when old.  The other half are endowed with 0 when young and $w_2$ when old.  There is no savings technology.  Agents order their consumption stream by $U(c_t^t, c_{t+1}^t) = \ln c_t^t + \ln c_{t+1}^t$. There is a measure $N$ of initial old agents. Half of them are endowed with $w_2$ and the other half endowed with 0. Each old agent order their consumption by $c_1^0$. Each old agent is endowed with $M$ units of fiat currency. No other generation is endowed with fiat currency, and the stock of fiat currency is fixed over time.
+
+Social Planner Problem:
+
+In any period $t$, the social planner weights generations alive equally and optimally allocates resources between them given preferences and technologies. The resource constraint in period $t$ is
+
+$$
+Nc_t^t + Nc_t^{t-1} \le \frac{N}{2}w_1+\frac{N}{2}w_2
+$$
+
+Thus, the social planner's problem is
+
+\begin{align*}
+\max_{(c_t^t, c_t^{t-1}) \in \R^2_+} \ln (c_t^t) + \ln (c_t^{t-1}) \\
+\text{s.t. } c_t^t + c_t^{t-1} \le \frac{w_1+w_2}{2}
+\end{align*}
+
+Consumer Problem:
+
+For the consumer problem, I break it up into the problem of four different types of agents laid out in the model setup: an initial old person that does not recieve an endowment, an initial old person that does receive an endowment, an agent in any generation $t > 0$ that recieves an endowment when young, and an agent in any generation $t > 0$.
+
+First, let us consider the problem of an initial old person without an endowment.  This agent's problem is
+
+\begin{align*}
+\max_{c_1^0} \ln (c_1^0) \\
+\text{s.t. } p_1c_1^0 \le M 
+\end{align*}
+
+Second, let us consider the problem of an initial old person that recieves an endowment.  This agent's problem is
+
+\begin{align*}
+\max_{c_1^0} \ln (c_1^0) \\
+\text{s.t. } p_1c_1^0 \le M + p_1w_2
+\end{align*}
+
+Now, let us turn to agents in generations $t > 0$.  Notice that it is possible for an agent in the same generation to agree to an IOU between. Define $m_{t+1}^t$ as the holding of fiat currency between periods $t$ and $t+1$.
+
+\begin{align*}
+\max_{asdfas} \ln (c_t^t) + \ln (c_{t+1}^t) \\
+\text{s.t. } 
+\end{align*}
+
+Competitive Equilibrium:
+
+\pagebreak
 
 2. Consider an overlapping generations economy with 3-period-lived agents. Denote these periods as young, mid, and old.  At each date $t \ge 1$, $N_t$ new young agents enter the economy, each endowed with $w_1$ units of the consumption good when young, $w_2$ units when mid, and $w_3$ units when old.  The consumption good is non-storable.  The population is described by $N_{t+1}=n * N_t$, where $n >0$. Consumption preference is described by $\ln c_t^t + \ln c_{t+1}^t + \ln c_{t+2}^t$. At time $t = 1$, there is a measure $N_{-1}$ of old agents, each endowed with $w_3$ units of the consumption good, and a measure of $N_0$ mid agents, each endowed with $w_2$ units of the consumption good at $t=1$ and $w_3$ units at $t=2$.  Additionally, each initial old agent is endowed with 1 unit of a fiat currency.
+
+Social Planner Problem:
+
+Consumer Problem:
+
+Competitive Equilibrium:
 
 * (Cake eating problem) Consider a single infinitely lived agent with preference over their consumption stream $\textbf{c}=\{c_t\}$, given by $U(\textbf{c}) = \sum_{t=1}^\infty \beta^t u(c_t)$, where $\beta < 1$ and $u(\cdot)$ is increasing and concave.  Consumption cannot be negative in any period. The agent is endowed with $k_1$ units of the consumption good in period $t=1$. There is a perfect storage technology, such that the consumption good is effectively infinity durable. State the agent's problem (don't solve).
 

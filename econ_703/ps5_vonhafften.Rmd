@@ -58,15 +58,13 @@ By the theorem on slide 5 of lecture 11, since dim$\R^2=2$, $T$ is bounded. So,
 ||T|| &= \sup_{||(x, y)||_\infty=1}\{||T(x, y)||_\infty\}
 \end{align*}
 
-Define $X = \{(x, y) \in \R^2 : ||(x, y)||_\infty=1\}=\{(1, w), (x, 1), (-1, y), (-1, z) : w, x, y, z \in [-1, 1]\}$.  Since the linear transformation is increase in $x, y$, it is maximized at $(1, 1)$.
-
-Thus, $||T|| = \sup\{X\}=\max\{6, 15\}=15$.
+Define $X = \{(x, y) \in \R^2 : ||(x, y)||_\infty=1\}=\{(1, w), (x, 1), (-1, y), (-1, z) : w, x, y, z \in [-1, 1]\}$.  Since the linear transformation is increasing in $x, y$, it is maximized at $(1, 1)$. Thus, $||T|| = \sup\{X\}=\max\{6, 15\}=15$.
 
 \pagebreak
 
 (3) Consider the standard basis in $\R^2$, $W$, and another orthonormal basis $V = \{(a_1, a_2), (b_1, b_2)\}$ (written in coordinates of $W$). Prove that Euclidean norm (length) of any vector $(x, y) \in \R^2$ is the same in $W$ and $V$. (Thus, length of a vector does not depend on a choice of orthonormal basis.)  Reminder: Orthonormal basis means that $a_1^2+a_2^2=b_1^2+b_2^2=1, a_1b_1+a_2b_2=0$.
 
-Proof: Define $M = \begin{pmatrix} a_1 & b_1 \\ a_2 & b_2 \end{pmatrix}$. Consider $(x, y)'$ in the standard basis for $\R^2$.  For $(w, z)' \in \R^2$,
+Proof: Define $M = \begin{pmatrix} a_1 & b_1 \\ a_2 & b_2 \end{pmatrix}$. Consider $(x, y)'$ in the standard basis for $\R^2$. There exists $(w, z)' \in \R^2$ such that
 
 \begin{align*}
 \begin{pmatrix} x \\ y \end{pmatrix} 

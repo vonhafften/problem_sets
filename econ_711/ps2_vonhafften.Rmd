@@ -1,0 +1,48 @@
+---
+title: "ECON 711 - PS 2"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "9/21/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1. Convex production sets, concave production functions, convex costs
+
+Consider a production function $f : \R^m_+ \to \R_+$ for a single-output firm.
+
+(a) Prove that if the production set $Y = \{(q, -z) : f(z) \ge q\} \subset \R^{m+1}$ is convex, the production function $f$ is concave.
+
+Proof: 
+
+(b) Prove that if $f$ concave, the cost function
+
+$$
+c(q, w) = \min w \cdot z \text{ subject to } f(z) \ge q
+$$
+
+is convex in $q$.
+
+Proof:
+
+# Question 2. Solving for the profit function given technology...
+
+Let $k=2$, and let the production set be
+
+$$
+Y = \{(y_1, y_2) : y_1 \le 0 \text{ and } y_2 \le B(-y_1)^{\frac{2}{3}}\}
+$$
+
+where $B > 0$ is a known constant.  Assume both prices are strictly positive.
+
+(a) Draw $Y$, or describe it clearly.
+
+(b) Solve the firm's profit maximization problem to find $\pi(p)$ and $Y^*(p)$. (It may help to set $z=-y_1$ as the amount of input used, explain why a profit-maximizing firm will set )
