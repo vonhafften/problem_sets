@@ -340,7 +340,7 @@ No, the system does not converge to the steady state (see figure 2).  The level 
 
 1. Consider an overlapping generations economy of 2-period-lived agents. There is a constant measure of $N$ agents in each generation.  New young agents enter the economy at each date $t\ge 1$.  Half of the young agents are endowed with $w_1$ when young and 0 when old.  The other half are endowed with 0 when young and $w_2$ when old.  There is no savings technology.  Agents order their consumption stream by $U(c_t^t, c_{t+1}^t) = \ln c_t^t + \ln c_{t+1}^t$. There is a measure $N$ of initial old agents. Half of them are endowed with $w_2$ and the other half endowed with 0. Each old agent order their consumption by $c_1^0$. Each old agent is endowed with $M$ units of fiat currency. No other generation is endowed with fiat currency, and the stock of fiat currency is fixed over time.
 
-Social Planner Problem:
+### Social Planner Problem
 
 In any period $t$, the social planner weights generations alive equally and optimally allocates resources between them given preferences and technologies. The resource constraint in period $t$ is
 
@@ -351,36 +351,59 @@ $$
 Thus, the social planner's problem is
 
 \begin{align*}
-\max_{(c_t^t, c_t^{t-1}) \in \R^2_+} \ln (c_t^t) + \ln (c_t^{t-1}) \\
-\text{s.t. } c_t^t + c_t^{t-1} \le \frac{w_1+w_2}{2}
+\max_{(c_t^t, c_t^{t-1}) \in \R^2_+} & \ln (c_t^t) + \ln (c_t^{t-1}) \\
+\text{s.t. } &c_t^t + c_t^{t-1} \le  \frac{w_1+w_2}{2}
 \end{align*}
 
-Consumer Problem:
+### Consumer Problem
 
-For the consumer problem, I break it up into the problem of four different types of agents laid out in the model setup: an initial old person that does not recieve an endowment, an initial old person that does receive an endowment, an agent in any generation $t > 0$ that recieves an endowment when young, and an agent in any generation $t > 0$.
+For the consumer problem, I break it up into the problem facing four different types of agents: an initial old agent that does not receive an endowment, an initial old agent that does receive an endowment, an agent born in generation $t > 0$ that receives an endowment when young, and an agent born in generation $t > 0$ that receives an endowment when old.  Let $p_t$ be the number of dollar for 1 unit of the consumption good in period $t$.
 
-First, let us consider the problem of an initial old person without an endowment.  This agent's problem is
+First, the problem of an initial old person without an endowment is
 
 \begin{align*}
-\max_{c_1^0} \ln (c_1^0) \\
-\text{s.t. } p_1c_1^0 \le M 
+\max_{c_1^0 \in \R_+} & \ln (c_1^0) \\
+\text{s.t. } & p_1c_1^0 \le M 
 \end{align*}
 
-Second, let us consider the problem of an initial old person that recieves an endowment.  This agent's problem is
+Second, the problem of an initial old person that receives an endowment
 
 \begin{align*}
-\max_{c_1^0} \ln (c_1^0) \\
-\text{s.t. } p_1c_1^0 \le M + p_1w_2
+\max_{c_1^0 \in \R_+} & \ln (c_1^0) \\
+\text{s.t. } &p_1c_1^0 \le M + p_1w_2
 \end{align*}
 
-Now, let us turn to agents in generations $t > 0$.  Notice that it is possible for an agent in the same generation to agree to an IOU between. Define $m_{t+1}^t$ as the holding of fiat currency between periods $t$ and $t+1$.
+Now, let us turn to agents born in generations $t > 0$. Define $m_{t+1}^t \in \R$ as the monetary holding by agents born in generation $t$ that recieves an endowment while young between periods $t$ and $t+1$.\footnote{I am interpreting "there is no savings technology" to mean that agents cannot save the consumption between periods, but that they can save the fiat currency.} If $m_{t+1}^t > 0$, then $m_{t+1}^t$ represents the holding of fiat currency. Assuming there is a commitment technology that enforces agents paying back IOUs to other agents, then $m_{t+1}^t < 0$ represents inside money. Thus, the problem facing agents born in generation $t > 0$ that are endowed when young is
 
 \begin{align*}
-\max_{asdfas} \ln (c_t^t) + \ln (c_{t+1}^t) \\
-\text{s.t. } 
+\max_{(c_t^t, c_{t+1}^t) \in \R^2_+; m_{t+1}^t \in \R} & \ln (c_t^t) + \ln (c_{t+1}^t) \\
+\text{s.t. } & p_t c_t^t \le p_t w_1- m_{t+1}^t \\ 
+             & p_{t+1} c_{t+1}^t \le m_{t+1}^t \\
 \end{align*}
 
-Competitive Equilibrium:
+Similarly, define $b_{t+1}^t \in \R$ as the monetary holding by agents born in generation $t$ that recieves an endowment while old between periods $t$ and $t+1$.  The problem facing agents born in generation $t > 0$ that are endowed when old is
+
+\begin{align*}
+\max_{(c_t^t, c_{t+1}^t) \in \R^2_+; b_{t+1}^t \in \R} & \ln (c_t^t) + \ln (c_{t+1}^t) \\
+\text{s.t. } & p_t c_t^t \le -b_{t+1}^t \\ 
+             & p_{t+1}c_{t+1}^t \le p_{t+1}w_2 + b_{t+1}^t \\
+\end{align*}
+
+### Competitive Equilibrium:
+
+A competitive equilibrium is the allocation $\{(c_t^t, c_t^{t-1}\}_{\forall t}$ and prices $\{p_t\}_{\forall t}$ such that agents optimize:
+
+\begin{align*}
+\max_{m_{t+1}^t \in \R} & \ln \Bigg(w_1- \frac{m_{t+1}^t}{p_t}\Bigg) + \ln \Bigg(\frac{m_{t+1}^t}{p_{t+1}} \Bigg)\\
+\max_{b_{t+1}^t \in \R} & \ln \Bigg(- \frac{b_{t+1}^t}{p_t}\Bigg) + \ln \Bigg(w_2+\frac{b_{t+1}^t}{p_{t+1}} \Bigg)
+\end{align*}
+
+and markets clear:
+
+\begin{align*}
+c_t^t+c_t^{t-1} &= w_1 + w_2 \\
+m_{t+1}^t + b_{t+1}^t &= M.
+\end{align*}
 
 \pagebreak
 
