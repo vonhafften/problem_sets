@@ -342,7 +342,7 @@ No, the system does not converge to the steady state (see figure 2).  The level 
 
 ### Social Planner Problem
 
-In any period $t$, the social planner weights generations alive equally and optimally allocates resources between them given preferences and technologies. The resource constraint in period $t$ is
+In any period $t$, the social planner weights agents alive equally and optimally allocates resources between them given preferences and technologies. The resource constraint in period $t$ is
 
 $$
 Nc_t^t + Nc_t^{t-1} \le \frac{N}{2}w_1+\frac{N}{2}w_2
@@ -409,13 +409,75 @@ m_{t+1}^t + b_{t+1}^t &= M.
 
 2. Consider an overlapping generations economy with 3-period-lived agents. Denote these periods as young, mid, and old.  At each date $t \ge 1$, $N_t$ new young agents enter the economy, each endowed with $w_1$ units of the consumption good when young, $w_2$ units when mid, and $w_3$ units when old.  The consumption good is non-storable.  The population is described by $N_{t+1}=n * N_t$, where $n >0$. Consumption preference is described by $\ln c_t^t + \ln c_{t+1}^t + \ln c_{t+2}^t$. At time $t = 1$, there is a measure $N_{-1}$ of old agents, each endowed with $w_3$ units of the consumption good, and a measure of $N_0$ mid agents, each endowed with $w_2$ units of the consumption good at $t=1$ and $w_3$ units at $t=2$.  Additionally, each initial old agent is endowed with 1 unit of a fiat currency.
 
-Social Planner Problem:
+### Social Planner Problem:
 
-Consumer Problem:
+In any period $t$, the social planner weights agents alive equally and optimally allocates resources between them given preferences and technologies. The resource constraint in period $t$ is
 
-Competitive Equilibrium:
+\begin{align*}
+N_tc_t^t + N_{t-1}c_t^{t-1} + N_{t-2}c_t^{t-2} &\le N_tw_1 + N_{t-1}w_2 + N_{t-2}w_3 \\
+n^2N_{t-2}c_t^t + nN_{t-2}c_t^{t-1} + N_{t-2}c_t^{t-2} &\le n^2N_{t-2}w_1 + nN_{t-2}w_2 + N_{t-2}w_3 \\
+n^2c_t^t + nc_t^{t-1} + c_t^{t-2} &\le n^2 w_1 + nw_2 + w_3 \\
+\end{align*}
+
+Thus, the social planner's problem is
+
+\begin{align*}
+\max_{(c_t^t, c_t^{t-1}, c_t^{t-2}) \in \R^3_+} & n^2\ln (c_t^t) + n \ln (c_t^{t-1})+ \ln (c_t^{t-2}) \\
+\text{s.t. } & n^2c_t^t + nc_t^{t-1} + c_t^{t-2} \le n^2 w_1 + nw_2 + w_3
+\end{align*}
+
+### Consumer Problem:
+
+For the consumer problem, I break it into the three problems: the problem facing an initial old agent, the problem facing an initial mid agent, and the problem facing all agents born in generation $t > 0$.  Let $p_t$ be the number of dollar per unit of consumption good in period $t$.  Define $m_{t+1}^t \in \R$ as the monetary holdings of the generation born in $t$ between periods $t$ and $t+1$ and define $m_{t+1}^t \in \R$ as the monetary holdings of the generation born in $t$ between periods $t+1$ and $t+2$.
+
+The problem of the initial old agent is
+
+\begin{align*}
+\max_{c_1^{-1} \in \R_+} & \ln (c_1^{-1}) \\
+\text{s.t. } & p_1c_1^{-1} \le p_1w_3 + M
+\end{align*}
+
+The problem of the initial mid agent is
+
+\begin{align*}
+\max_{(c_1^0, c_2^0) \in \R^2_+; m_2^0 \in \R} & \ln (c_1^0) + \ln (c_2^0) \\
+\text{s.t. } & p_1c_1^0 \le p_1w_2 - m_2^0 \\
+             & p_2c_2^0 \le p_2w_3 + m_2^0 \\
+\end{align*}
+
+The problem of agents born in period $t>0$ is
+
+\begin{align*}
+\max_{(c_t^t, c_{t+1}^t, c_{t+2}^t) \in \R^3_+; (m_{t+1}^t, m_{t+2}^t) \in \R^2} & \ln (c_t^t) + \ln (c_{t+1}^t)+ \ln (c_{t+2}^t) \\
+\text{s.t. } & p_t c_t^t \le p_t w_1 - m_{t+1}^t \\
+             & p_{t+1}c_{t+1}^t \le p_{t+1}w_2 + m_{t+1}^t - m_{t+2}^t \\
+             & p_{t+2}c_{t+2}^t \le p_{t+2}w_3 + m_{t+2}^t \\
+\end{align*}
+
+### Competitive Equilibrium:
+
+
+A competitive equilibrium is the allocation $\{(c_t^t, c_t^{t-1}, c_t^{t-2}\}_{\forall t}$ and prices $\{p_t\}_{\forall t}$ such that agents optimize:
+
+\begin{align*}
+\max_{(m_{t+1}^t, m_{t+2}^t) \in \R^2} & \ln \Bigg( w_1- \frac{m_{t+1}^t}{p_t} \Bigg) + \ln \Bigg(w_2 + \frac{m_{t+1}^t-m_{t+2}^t}{p_{t+1}}  \Bigg) + \ln \Bigg( w_3 + \frac{m_{t+2}^t}{p_{t+2}} \Bigg) 
+\end{align*}
+
+and markets clear:
+
+\begin{align*}
+n^2c_t^t + nc_t^{t-1} + c_t^{t-2} &= n^2 w_1 + nw_2 + w_3 \\
+n m_{t}^{t-1} + m_{t}^{t-2} &= \frac{N_{-1}}{N_{t-2}}.
+\end{align*}
+
+\pagebreak
 
 * (Cake eating problem) Consider a single infinitely lived agent with preference over their consumption stream $\textbf{c}=\{c_t\}$, given by $U(\textbf{c}) = \sum_{t=1}^\infty \beta^t u(c_t)$, where $\beta < 1$ and $u(\cdot)$ is increasing and concave.  Consumption cannot be negative in any period. The agent is endowed with $k_1$ units of the consumption good in period $t=1$. There is a perfect storage technology, such that the consumption good is effectively infinity durable. State the agent's problem (don't solve).
 
+The agent's problem is
 
+\begin{align*}
+\max_{\{c_t\}} & \sum_{t=1}^\infty \beta^t u(c_t) \\
+\text{s.t. } & \sum_{t=1}^\infty c_t = k_1.
+\end{align*}
 
