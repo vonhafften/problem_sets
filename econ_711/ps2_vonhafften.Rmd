@@ -8,6 +8,7 @@ header-includes:
 - \newcommand{\Z}{\mathbb{Z}}
 - \newcommand{\R}{\mathbb{R}}
 - \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\bd}{\text{ bd}}
 - \usepackage{bm}
 ---
 
@@ -21,7 +22,7 @@ Consider a production function $f : \R^m_+ \to \R_+$ for a single-output firm.
 
 (a) Prove that if the production set $Y = \{(q, -z) : f(z) \ge q\} \subset \R^{m+1}$ is convex, the production function $f$ is concave.
 
-Proof: 
+Proof: Choose $(q, -z), (q', -z') \in Y$ such that $f(z)=q$ and $f(z')=q'$. The convexity of $Y$ implies that $t(q, -z) + (1-t) (q', -z') \in Y$ for $t \in (0, 1)$. Thus, $f(tz + (1-t)z') \ge tq+(1-t)q'$ by the definition of $Y$. Our choice of $(q, -z), (q', -z') \implies f(tz + (1-t)z') \ge tf(z)+(1-t)f(z')$.  Therefore, $f$ is concave. $\square$
 
 (b) Prove that if $f$ concave, the cost function
 
@@ -31,7 +32,19 @@ $$
 
 is convex in $q$.
 
-Proof:
+Proof:  Fixing $w$, choose $q, q'$ from the domain of $c$.  Define $z \in Z^*(q)$, $z' \in Z^*(q')$, and $\tilde{z} \in Z^*(tq+(1-t)q')$ for $t \in (0, 1)$.  By the concavity of $f$,
+
+\begin{align*}
+\tilde{z} &\le tz+(1-t)z' \\
+\implies w\tilde{z} &\le w(tz+(1-t)z') \\
+\implies w\tilde{z} &\le twz+(1-t)wz') \\
+\implies c(f(\tilde{z}), w) &\le tc(f(z), w)+(1-t)c(f(z'), w) \\
+\implies c(tq+(1-t)q', w) &\le tc(q, w)+(1-t)c(q', w)
+\end{align*}
+
+Therefore, $c$ is concave. $\square$
+
+\pagebreak
 
 # Question 2. Solving for the profit function given technology...
 
@@ -45,4 +58,44 @@ where $B > 0$ is a known constant.  Assume both prices are strictly positive.
 
 (a) Draw $Y$, or describe it clearly.
 
-(b) Solve the firm's profit maximization problem to find $\pi(p)$ and $Y^*(p)$. (It may help to set $z=-y_1$ as the amount of input used, explain why a profit-maximizing firm will set )
+```{r, echo=FALSE}
+plot(1, type="n", ylim=c(-10, 10), xlim=c(-10, 10), xaxs="i", yaxs="i", xlab="y_1", ylab="y_2", axes = FALSE)
+
+B <- 2
+
+y_1 <- ((-10*100):0)/100
+y_2 <- 2*(-y_1)^(2/3)
+
+polygon(x = c(y_1, 0, -10, -10), y=c(y_2, -10, -10, 10), col="red", border = "red")
+
+lines(x=y_1, y=y_2)
+
+abline(h=0, v=0)
+
+abline(v=-1, h=B, lty=2)
+text("y_2 = B", x=5, y=3)
+text("y_1 = -1", x=-2.5, y=7)
+
+box()
+
+```
+
+(b) Solve the firm's profit maximization problem to find $\pi(p)$ and $Y^*(p)$. (It may help to set $z=-y_1$ as the amount of input used, explain why a profit-maximizing firm will set $y_2 = Bz^{\frac{2}{3}}$, and solve a single-dimensional maximization problem for $z$, but be sure to state your solution $Y^*(p) \in R^2$.)
+
+(c) Since $Y*(p)$ is single-valued, I'll refer to it below as $y(p)$.  Verify that $\pi(\cdot)$ is homogeneous of degree 1, and $y(\cdot)$ is homogeneous of degree 0.
+
+(d) Verify that $y_1(p) = \frac{\partial\pi}{\partial p_1}(p)$ and $y_2(p) = \frac{\partial\pi}{\partial p_2}(p)$.
+
+(e) Calculate $D_p y(p)$, and verify it is symmetric, positive semidefinite, and $[D_p y]p = 0$
+
+\pagebreak
+
+# Question 3 ...and recovering technology from the profit function
+
+Finally, suppose we didn't know a firm's production set $Y$, but did know its profit function was
+
+$$
+\pi(p) Ap_1^{-2}p_2^3
+$$
+for all $p_1, p_2 > 0$ and $A > 0$ a known constant.
+
