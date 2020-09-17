@@ -32,7 +32,7 @@ $$
 
 is convex in $q$.
 
-Proof:  Fixing $w$, choose $q, q'$ from the domain of $c$.  Define $z \in Z^*(q)$, $z' \in Z^*(q')$, and $\tilde{z} \in Z^*(tq+(1-t)q')$ for $t \in (0, 1)$.  By the concavity of $f$,
+Proof:  Fixing $w \in \R^k_+$, choose $q, q' \in \R$.  Define $z \in Z^*(q, w)$, $z' \in Z^*(q', w)$, and $\tilde{z} \in Z^*(tq+(1-t)q', w)$ for $t \in (0, 1)$.  By the concavity of $f$,
 
 \begin{align*}
 \tilde{z} &\le tz+(1-t)z' \\
@@ -42,7 +42,7 @@ Proof:  Fixing $w$, choose $q, q'$ from the domain of $c$.  Define $z \in Z^*(q)
 \implies c(tq+(1-t)q', w) &\le tc(q, w)+(1-t)c(q', w)
 \end{align*}
 
-Therefore, $c$ is concave. $\square$
+Therefore, $c$ is convex. $\square$
 
 \pagebreak
 

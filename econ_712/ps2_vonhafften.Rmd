@@ -395,7 +395,7 @@ A competitive equilibrium is the allocation $\{(a_t^t, a_t^{t-1}, b_t^t, b_t^{t-
 
 \begin{align*}
 a_t^t+a_t^{t-1} +b_t^t+b_t^{t-1} &= \frac{w_1 + w_2}{2} & \text{(Goods Market)} \\
-m_{t+1}^t + l_{t+1}^t &= M & \text{(Money Market)}
+m_{t+1}^t - l_{t+1}^t &= M & \text{(Money Market)}
 \end{align*}
 
 \pagebreak
@@ -457,8 +457,6 @@ n^2c_t^t + nc_t^{t-1} + c_t^{t-2} &= n^2 w_1 + nw_2 + w_3  & \text{(Goods Market
 n m_{t}^{t-1} + m_{t}^{t-2} &= \frac{N_{-1}}{N_{t-2}} & \text{(Money Market)}.
 \end{align*}
 
-\pagebreak
-
 * (Cake eating problem) Consider a single infinitely lived agent with preference over their consumption stream $\textbf{c}=\{c_t\}$, given by $U(\textbf{c}) = \sum_{t=1}^\infty \beta^t u(c_t)$, where $\beta < 1$ and $u(\cdot)$ is increasing and concave.  Consumption cannot be negative in any period. The agent is endowed with $k_1$ units of the consumption good in period $t=1$. There is a perfect storage technology, such that the consumption good is effectively infinity durable. State the agent's problem (don't solve).
 
 The agent's problem is
@@ -466,6 +464,6 @@ The agent's problem is
 \begin{align*}
 \max_{\{c_t\}} & \sum_{t=1}^\infty \beta^t u(c_t) \\
 \text{s.t. } & \sum_{t=1}^\infty c_t = k_1 \\
-             & c_t > 0 \forall t
+             & c_t > 0 \forall t \in \N
 \end{align*}
 
