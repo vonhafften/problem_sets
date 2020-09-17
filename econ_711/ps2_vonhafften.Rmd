@@ -80,7 +80,49 @@ box()
 
 ```
 
-(b) Solve the firm's profit maximization problem to find $\pi(p)$ and $Y^*(p)$. (It may help to set $z=-y_1$ as the amount of input used, explain why a profit-maximizing firm will set $y_2 = Bz^{\frac{2}{3}}$, and solve a single-dimensional maximization problem for $z$, but be sure to state your solution $Y^*(p) \in R^2$.)
+(b) Solve the firm's profit maximization problem to find $\pi(p)$ and $Y^*(p)$.
+
+The firm's profit is
+
+$$
+\pi(p) = \max_{y_1, y_2 \in Y}\{p_1y_1+p_2y_2\}
+$$
+
+Define $z = -y_1$.  Notice that the firm will produce $y_2 = Bz^{2/3}$ because it is the maximum output given $z$ units of input.  Thus, we can rewrite the firm's profit function as 
+
+$$
+\pi(p) = \max_{z}\{p_1(-z)+p_2Bz^{2/3}\} = \max_{z}\{p_2Bz^{2/3}-p_1z\}
+$$
+
+Setting the first order condition of the profit function to zero:
+
+\begin{align*}
+\frac{\partial\pi}{\partial z} &= p_2(2/3)Bz^{-1/3}-p_1 \\
+z^* &= \Bigg(\frac{2p_2B}{3p_1}\Bigg)^3 \\
+\end{align*}
+
+Plugging $z^*$ into transformations for $y_1, y_2$:
+
+\begin{align*}
+y^*_1 &= -\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3 \\
+y^*_2 &= B\Bigg(\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3\Bigg)^{2/3} \\
+ &= B^3\Bigg(\frac{2p_2}{3p_1}\Bigg)^2 \\
+\end{align*}
+
+Notice that $Y^*(p)$ is single-valued:
+
+\begin{align*}
+Y^*(p) = \Bigg\{(y_1, y_2) : y_1 = -\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3, y_2 = B^3\Bigg(\frac{2p_2}{3p_1}\Bigg)^2 \Bigg \} \implies y(p) = \Bigg(-\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3, B^3\Bigg(\frac{2p_2}{3p_1}\Bigg)^2\Bigg)
+\end{align*}
+
+Thus, the profit function is
+
+\begin{align*}
+\pi(p) &= p_1\Bigg(-\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3\Bigg) + p_2\Bigg( B^3\Bigg(\frac{2p_2}{3p_1}\Bigg)^2\Bigg)\\
+&= \frac{3 * 2^2 p_2^3 B^3 - 2^3 p_1^2p_2^3 B}{3^3p_1^2} \\
+&= \frac{4B^3p_2^3}{3^3 p_1^2}(3-2p_1^2)
+\end{align*}
+
 
 (c) Since $Y*(p)$ is single-valued, I'll refer to it below as $y(p)$.  Verify that $\pi(\cdot)$ is homogeneous of degree 1, and $y(\cdot)$ is homogeneous of degree 0.
 
