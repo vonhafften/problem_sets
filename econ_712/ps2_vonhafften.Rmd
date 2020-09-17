@@ -357,52 +357,45 @@ Thus, the social planner's problem is
 
 ### Consumer Problem
 
-For the consumer problem, I break it up into the problem facing four different types of agents: an initial old agent that does not receive an endowment, an initial old agent that does receive an endowment, an agent born in generation $t > 0$ that receives an endowment when young, and an agent born in generation $t > 0$ that receives an endowment when old.  Let $p_t$ be the number of dollar for 1 unit of the consumption good in period $t$.
+For the consumer problem, I break it up into the problem facing four different types of agents: an initial old agent that does not receive an endowment, an initial old agent that does receive an endowment, an agent born in generation $t > 0$ that receives an endowment when young, and an agent born in generation $t > 0$ that receives an endowment when old.  Define $a_t^{t'}$ to be the consumption in period $t$ of an agent born in $t'$ that receives an endowment when young and $b_t^{t'}$ to be the consumption in period $t$ of an agent born in $t'$ that recieves an endowment when old.  Notice that $a_t^{t'}+b_t^{t'}=c_t^{t'}$.  Let $p_t$ be the number of dollar for 1 unit of the consumption good in period $t$.
 
 First, the problem of an initial old person without an endowment is
 
 \begin{align*}
-\max_{c_1^0 \in \R_+} & \ln (c_1^0) \\
-\text{s.t. } & p_1c_1^0 \le M 
+\max_{c_1^0 \in \R_+} & \ln (a_1^0) \\
+\text{s.t. } & p_1a_1^0 \le M 
 \end{align*}
 
 Second, the problem of an initial old person that receives an endowment
 
 \begin{align*}
-\max_{c_1^0 \in \R_+} & \ln (c_1^0) \\
-\text{s.t. } &p_1c_1^0 \le M + p_1w_2
+\max_{c_1^0 \in \R_+} & \ln (b_1^0) \\
+\text{s.t. } &p_1b_1^0 \le M + p_1w_2
 \end{align*}
 
-Now, let us turn to agents born in generations $t > 0$. Define $m_{t+1}^t \in \R$ as the monetary holding by agents born in generation $t$ that recieves an endowment while young between periods $t$ and $t+1$.\footnote{I am interpreting "there is no savings technology" to mean that agents cannot save the consumption between periods, but that they can save the fiat currency.} If $m_{t+1}^t > 0$, then $m_{t+1}^t$ represents the holding of fiat currency. Assuming there is a commitment technology that enforces agents paying back IOUs to other agents, then $m_{t+1}^t < 0$ represents inside money. Thus, the problem facing agents born in generation $t > 0$ that are endowed when young is
+Now, let us turn to agents born in generations $t > 0$. Define $m_{t}^{t'} \in \R$ as the monetary holding by agents born in generation $t'$ that recieves an endowment while young between periods $t-1$ and $t$.\footnote{I am interpreting "there is no savings technology" to mean that agents cannot save the consumption between periods, but that they can save the fiat currency.} If $m_{t}^{t'} > 0$, then $m_{t}^{t'}$ represents the holding of fiat currency. Assuming there is a commitment technology that enforces agents paying back IOUs to other agents, then $m_{t}^{t'} < 0$ represents inside money. Thus, the problem facing agents born in generation $t > 0$ that are endowed when young is
 
 \begin{align*}
-\max_{(c_t^t, c_{t+1}^t) \in \R^2_+; m_{t+1}^t \in \R} & \ln (c_t^t) + \ln (c_{t+1}^t) \\
-\text{s.t. } & p_t c_t^t \le p_t w_1- m_{t+1}^t \\ 
-             & p_{t+1} c_{t+1}^t \le m_{t+1}^t \\
+\max_{(a_t^t, a_{t+1}^t) \in \R^2_+; m_{t+1}^t \in \R} & \ln (a_t^t) + \ln (a_{t+1}^t) \\
+\text{s.t. } & p_t a_t^t \le p_t w_1- m_{t+1}^t \\ 
+             & p_{t+1} a_{t+1}^t \le m_{t+1}^t \\
 \end{align*}
 
-Similarly, define $b_{t+1}^t \in \R$ as the monetary holding by agents born in generation $t$ that recieves an endowment while old between periods $t$ and $t+1$.  The problem facing agents born in generation $t > 0$ that are endowed when old is
+Similarly, define $l_{t}^{t'} \in \R$ as the monetary holding by agents born in generation $t'$ that recieves an endowment while old between periods $t-1$ and $t$.  The problem facing agents born in generation $t > 0$ that are endowed when old is
 
 \begin{align*}
-\max_{(c_t^t, c_{t+1}^t) \in \R^2_+; b_{t+1}^t \in \R} & \ln (c_t^t) + \ln (c_{t+1}^t) \\
-\text{s.t. } & p_t c_t^t \le -b_{t+1}^t \\ 
-             & p_{t+1}c_{t+1}^t \le p_{t+1}w_2 + b_{t+1}^t \\
+\max_{(b_t^t, b_{t+1}^t) \in \R^2_+; l_{t+1}^t \in \R} & \ln (b_t^t) + \ln (b_{t+1}^t) \\
+\text{s.t. } & p_t b_t^t \le -l_{t+1}^t \\ 
+             & p_{t+1}b_{t+1}^t \le p_{t+1}w_2 + l_{t+1}^t \\
 \end{align*}
 
 ### Competitive Equilibrium:
 
-A competitive equilibrium is the allocation $\{(c_t^t, c_t^{t-1}\}_{\forall t}$ and prices $\{p_t\}_{\forall t}$ such that agents optimize:
+A competitive equilibrium is the allocation $\{(a_t^t, a_t^{t-1}, b_t^t, b_t^{t-1})\}_{\forall t}$ and prices $\{p_t\}_{\forall t}$ such that agents optimize and markets clear:
 
 \begin{align*}
-\max_{m_{t+1}^t \in \R} & \ln \Bigg(w_1- \frac{m_{t+1}^t}{p_t}\Bigg) + \ln \Bigg(\frac{m_{t+1}^t}{p_{t+1}} \Bigg)\\
-\max_{b_{t+1}^t \in \R} & \ln \Bigg(- \frac{b_{t+1}^t}{p_t}\Bigg) + \ln \Bigg(w_2+\frac{b_{t+1}^t}{p_{t+1}} \Bigg)
-\end{align*}
-
-and markets clear:
-
-\begin{align*}
-c_t^t+c_t^{t-1} &= w_1 + w_2 \\
-m_{t+1}^t + b_{t+1}^t &= M.
+a_t^t+a_t^{t-1} +b_t^t+b_t^{t-1} &= \frac{w_1 + w_2}{2} & \text{(Goods Market)} \\
+m_{t+1}^t + l_{t+1}^t &= M & \text{(Money Market)}
 \end{align*}
 
 \pagebreak
@@ -428,13 +421,13 @@ Thus, the social planner's problem is
 
 ### Consumer Problem:
 
-For the consumer problem, I break it into the three problems: the problem facing an initial old agent, the problem facing an initial mid agent, and the problem facing all agents born in generation $t > 0$.  Let $p_t$ be the number of dollar per unit of consumption good in period $t$.  Define $m_{t+1}^t \in \R$ as the monetary holdings of the generation born in $t$ between periods $t$ and $t+1$ and define $m_{t+1}^t \in \R$ as the monetary holdings of the generation born in $t$ between periods $t+1$ and $t+2$.
+For the consumer problem, I break it into the three problems: the problem facing an initial old agent, the problem facing an initial mid agent, and the problem facing all agents born in generation $t > 0$.  Let $p_t$ be the number of dollar per unit of consumption good in period $t$.  Define $m_{t+1}^t \in \R$ as the monetary holdings of the generation born in $t$ between periods $t$ and $t+1$ and define $m_{t+2}^t \in \R$ as the monetary holdings of the generation born in $t$ between periods $t+1$ and $t+2$.
 
 The problem of the initial old agent is
 
 \begin{align*}
 \max_{c_1^{-1} \in \R_+} & \ln (c_1^{-1}) \\
-\text{s.t. } & p_1c_1^{-1} \le p_1w_3 + M
+\text{s.t. } & p_1c_1^{-1} \le p_1w_3 + 1
 \end{align*}
 
 The problem of the initial mid agent is
@@ -457,17 +450,11 @@ The problem of agents born in period $t>0$ is
 ### Competitive Equilibrium:
 
 
-A competitive equilibrium is the allocation $\{(c_t^t, c_t^{t-1}, c_t^{t-2}\}_{\forall t}$ and prices $\{p_t\}_{\forall t}$ such that agents optimize:
+A competitive equilibrium is the allocation $\{(c_t^t, c_t^{t-1}, c_t^{t-2})\}_{\forall t}$ and prices $\{p_t\}_{\forall t}$ such that agents optimize and markets clear:
 
 \begin{align*}
-\max_{(m_{t+1}^t, m_{t+2}^t) \in \R^2} & \ln \Bigg( w_1- \frac{m_{t+1}^t}{p_t} \Bigg) + \ln \Bigg(w_2 + \frac{m_{t+1}^t-m_{t+2}^t}{p_{t+1}}  \Bigg) + \ln \Bigg( w_3 + \frac{m_{t+2}^t}{p_{t+2}} \Bigg) 
-\end{align*}
-
-and markets clear:
-
-\begin{align*}
-n^2c_t^t + nc_t^{t-1} + c_t^{t-2} &= n^2 w_1 + nw_2 + w_3 \\
-n m_{t}^{t-1} + m_{t}^{t-2} &= \frac{N_{-1}}{N_{t-2}}.
+n^2c_t^t + nc_t^{t-1} + c_t^{t-2} &= n^2 w_1 + nw_2 + w_3  & \text{(Goods Market)}\\
+n m_{t}^{t-1} + m_{t}^{t-2} &= \frac{N_{-1}}{N_{t-2}} & \text{(Money Market)}.
 \end{align*}
 
 \pagebreak
@@ -478,6 +465,7 @@ The agent's problem is
 
 \begin{align*}
 \max_{\{c_t\}} & \sum_{t=1}^\infty \beta^t u(c_t) \\
-\text{s.t. } & \sum_{t=1}^\infty c_t = k_1.
+\text{s.t. } & \sum_{t=1}^\infty c_t = k_1 \\
+             & c_t > 0 \forall t
 \end{align*}
 

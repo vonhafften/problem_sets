@@ -99,3 +99,7 @@ $$
 $$
 for all $p_1, p_2 > 0$ and $A > 0$ a known constant.
 
+(a) What conditions must hold for this profit function to be rationalizable?  (You don't need to check them.)
+
+(b) Recall that the outer bound was defined
+
