@@ -1,0 +1,85 @@
+---
+title: "ECON 709 - PS 1"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "9/14/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1.  Suppose that $Y = X^3$ and $f_X(x)=42x^5(1-x), x \in (0,1)$.  Find the PDF of $Y$, and show that the PDF integrates to 1.
+
+Notice that $Y = X^3$ is a monotone transformation, so we can use the following theorem from the lecture notes:
+
+\begin{align*}
+f_Y(y) 
+&= \begin{cases} f_X(g^{-1}(y))|\frac{d}{dy}g^{-1}(y)|, y \in Y \\  0, \text{ otherwise} \end{cases} \\
+&= \begin{cases} 42(y^{1/3})^5 (1-y^{1/3})|(1/3)y^{-2/3}|, y \in (0, 1) \\  0, \text{ otherwise} \end{cases} \\
+&= \begin{cases} 14y(1-y^{1/3}), y \in (0, 1) \\ 0, \text{ otherwise} \end{cases}
+\end{align*}
+
+where $g^{-1}(y) = y^{1/3}$ and $Y=\{0^3, 1^3\}=\{0, 1\}$.
+
+$f_Y(y)$ integrates to 1:
+
+\begin{align*}
+\int_0^1 14t(1-t^{1/3})dt 
+&= 14\Bigg[y^2/2 - \frac{y^{7/3}}{7/3}\Bigg]_0^1\\
+&= 14\Bigg[\frac{1}{2} - \frac{3}{7}\Bigg]\\
+&= 1
+\end{align*}
+
+\pagebreak
+
+2. For the following CDF and PDF, show that $f_X$ is the density function of $F_X$ as long as $a \ge 0$.  That is, show that for all $x \in [0, 1], F_X(x)=\int_0^xf_X(t)dt$.
+
+\begin{align*}
+F_X(x) &= \begin{cases} 1.2x, x \in [0,0.5) \\ 0.2+0.8x, x \in [0.5,1] \end{cases} \\
+f_X(x) &= \begin{cases} 1.2, x \in [0, 0.5) \\ a, x = 0.5 \\ 0.8, x \in (0.5, 1] \end{cases}
+\end{align*}
+
+Case 1: $x < 0.5$
+
+\begin{align*}
+\int_0^x f_X(t) dt &= \int_0^x 1.2 dt \\
+&= 1.2x \\
+&= F_X(x)
+\end{align*}
+
+Case 2: $x = 0.5$
+
+\begin{align*}
+\int_0^x f_X(t) dt &= \int_0^{0.5} 1.2 dt + \int_{0.5}^{0.5} a dt \\
+&= 1.2(0.5) + 0 \\
+&= 0.6 \\
+&= 0.2 + 0.8 (0.5) \\
+&= F_X(0.5)
+\end{align*}
+
+Case 3: $x > 0.5$
+
+\begin{align*}
+\int_0^x f_X(t) dt &= \int_0^{0.5} 1.2 dt + \int_{0.5}^{0.5} a dt + \int_{0.5}^x 0.8 dt \\
+&= 1.2 (0.5) + 0 + 0.8x - 0.8(0.5) \\
+&= 0.6 + 0.8x - 0.4 \\
+&= 0.2 + 0.8x \\
+&= F_X(x)
+\end{align*}
+
+\pagebreak
+
+3.
+
+4.
+
+5.
+
+6.
