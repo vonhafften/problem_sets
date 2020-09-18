@@ -191,8 +191,34 @@ Finally, suppose we didn't know a firm's production set $Y$, but did know its pr
 
 (a) What conditions must hold for this profit function to be rationalizable?  (You don't need to check them.)
 
+Since $\pi$ is differentiable, it is rationalizable if and only if it is homogeneous of degree 1 and convex (Lecture 3 Notes).
+
 (b) Recall that the outer bound was defined as $Y^O = \{y : p \cdot y \le \pi(p) \text{ for all } p\in P\}$. In this case, this is $Y^O = \{(y_1, y_2) : p_1y_1+p_2y_2 \le Ap_1^{-2}p_2^3 \text{ for all } (p_1, p_2) \in \R^2_{++}\}$.  Show that any $y \in Y^O$ must have $y_1 \le 0$, i.e., that good 1 must be an input only.
+
+
 
 (c) Dividing both sides by $p_2$ and moving $\frac{p_1}{p_2}y_1$ to the right-hand side, we can rewrite $Y^O$ as $Y^O=\{(y_1, y_2) : y_2 \le  Ap_1^{-2}p_2^3 - \frac{p_1}{p_2}y_1$ for all $(p_1, p_2) \in \R^2_{++}\}$. Since the expression on the right depends only on the price ratio $\frac{p_2}{p_1}$ rather than the two individual prices, we can let $r \equiv \frac{p_2}{p_1} > 0$ denote this ratio, and write $Y^O$ as $Y_O=\{(y_1, y_2) : y_2 \le  Ar^2 - \frac{y_1}{r}$ for all $r \in \R_{++}\}=\{(y_1, y_2) : y_2 \le  \min_{r>0}(Ar^2 - \frac{y_1}{r})\}$.  Solve this minimization problem, and describe the production set $Y^O$.
 
-(d) Verify that a production set $Y$ equal to the set $Y^O$ you just calculated would generate the "data" $\pi(p)=Ap_1^{-2}p_2^3$ that we started with.  [Hint:$2^{-2/3}+2^{1/3}=\frac{27}{4}$].
+Setting the first order condition of $Ar^2 - \frac{y_1}{r}$ equal to zero:
+
+\begin{align*}
+2Ar-\frac{y_1}{r^2}(-1) & =0\\
+2Ar &= \frac{-y_1}{r^2} \\
+2Ar^3 &= -y_1\\
+r^* &= \Bigg( \frac{-y_1}{2A} \Bigg)^\frac{1}{3}
+\end{align*}
+
+Plugging it back into $Ar^2 - \frac{y_1}{r}$:
+
+\begin{align*}
+A\Bigg(\Bigg( \frac{-y_1}{2A} \Bigg)^\frac{1}{3}\Bigg)^2 - y_1\Bigg( \frac{2A}{-y_1} \Bigg)^\frac{1}{3}
+&= \frac{A^{1/3}(-y_1)^{2/3}}{2^{2/3}} + (-y_1)^{2/3} 2^{1/3}A^{1/3} \\
+&= A^{1/3} (-y_1)^{2/3}(2^{-2/3}+2^{1/3}) \\
+&= \frac{27}{4}A^{1/3} (-y_1)^{2/3} \\
+\end{align*}
+
+Thus,
+
+$$Y_O=\{(y_1, y_2) : y_2 \le  \frac{27}{4}A^{1/3}(-y_1)^{2/3}\}$$
+
+(d) Verify that a production set $Y$ equal to the set $Y^O$ you just calculated would generate the "data" $\pi(p)=Ap_1^{-2}p_2^3$ that we started with.  [Hint: $2^{-2/3}+2^{1/3}=\frac{27}{4}$].
