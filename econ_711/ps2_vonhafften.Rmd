@@ -187,7 +187,7 @@ Therefore, $D_p y(p)$ is positive semidefinite.
 
 # Question 3 ...and recovering technology from the profit function
 
-Finally, suppose we didn't know a firm's production set $Y$, but did know its profit function was $\pi(p) Ap_1^{-2}p_2^3$ for all $p_1, p_2 > 0$ and $A > 0$ a known constant.
+Finally, suppose we didn't know a firm's production set $Y$, but did know its profit function was $\pi(p) = Ap_1^{-2}p_2^3$ for all $p_1, p_2 > 0$ and $A > 0$ a known constant.
 
 (a) What conditions must hold for this profit function to be rationalizable?  (You don't need to check them.)
 
@@ -195,7 +195,7 @@ Since $\pi$ is differentiable, it is rationalizable if and only if it is homogen
 
 (b) Recall that the outer bound was defined as $Y^O = \{y : p \cdot y \le \pi(p) \text{ for all } p\in P\}$. In this case, this is $Y^O = \{(y_1, y_2) : p_1y_1+p_2y_2 \le Ap_1^{-2}p_2^3 \text{ for all } (p_1, p_2) \in \R^2_{++}\}$.  Show that any $y \in Y^O$ must have $y_1 \le 0$, i.e., that good 1 must be an input only.
 
-
+Proof: Assume for sake of a contradiction that $y_1 > 0$.  Fixing $y_1, y_2$, and $p_3$, notice that increasing $p_1$ increases the right-hand side of the inequality and decreases the left-hand side.  Thus, there exists a sufficiently large $p_1'$ such that $p_1y_1+p_2y_2 > Ap_1^{-2}p_2^3$. $\Rightarrow \Leftarrow$ Therefore, $y_1$ must be nonpositive. $\square$
 
 (c) Dividing both sides by $p_2$ and moving $\frac{p_1}{p_2}y_1$ to the right-hand side, we can rewrite $Y^O$ as $Y^O=\{(y_1, y_2) : y_2 \le  Ap_1^{-2}p_2^3 - \frac{p_1}{p_2}y_1$ for all $(p_1, p_2) \in \R^2_{++}\}$. Since the expression on the right depends only on the price ratio $\frac{p_2}{p_1}$ rather than the two individual prices, we can let $r \equiv \frac{p_2}{p_1} > 0$ denote this ratio, and write $Y^O$ as $Y_O=\{(y_1, y_2) : y_2 \le  Ar^2 - \frac{y_1}{r}$ for all $r \in \R_{++}\}=\{(y_1, y_2) : y_2 \le  \min_{r>0}(Ar^2 - \frac{y_1}{r})\}$.  Solve this minimization problem, and describe the production set $Y^O$.
 
@@ -213,12 +213,23 @@ Plugging it back into $Ar^2 - \frac{y_1}{r}$:
 \begin{align*}
 A\Bigg(\Bigg( \frac{-y_1}{2A} \Bigg)^\frac{1}{3}\Bigg)^2 - y_1\Bigg( \frac{2A}{-y_1} \Bigg)^\frac{1}{3}
 &= \frac{A^{1/3}(-y_1)^{2/3}}{2^{2/3}} + (-y_1)^{2/3} 2^{1/3}A^{1/3} \\
-&= A^{1/3} (-y_1)^{2/3}(2^{-2/3}+2^{1/3}) \\
-&= \frac{27}{4}A^{1/3} (-y_1)^{2/3} \\
+&= A^{1/3} (-y_1)^{2/3}(2^{-2/3}+2^{1/3})
 \end{align*}
 
 Thus,
 
-$$Y_O=\{(y_1, y_2) : y_2 \le  \frac{27}{4}A^{1/3}(-y_1)^{2/3}\}$$
+$$Y_O=\Bigg\{(y_1, y_2) : y_2 \le  (2^{-2/3}+2^{1/3})A^{1/3}(-y_1)^{2/3}\Bigg\}$$
 
-(d) Verify that a production set $Y$ equal to the set $Y^O$ you just calculated would generate the "data" $\pi(p)=Ap_1^{-2}p_2^3$ that we started with.  [Hint: $2^{-2/3}+2^{1/3}=\frac{27}{4}$].
+\pagebreak
+
+(d) Verify that a production set $Y$ equal to the set $Y^O$ you just calculated would generate the "data" $\pi(p)=Ap_1^{-2}p_2^3$ that we started with.  [Hint: $(2^{-2/3}+2^{1/3})^3=\frac{27}{4}$].
+
+Fix $p_1, p_2 \in \R_{++}$.  Since the profit function are increase in $y_2$, we know that the firm will produce at the boundary of its production set, so $y_2 =  (2^{-2/3}+2^{1/3})A^{1/3}(-y_1)^{2/3}$.  Notice that $Y_0$ is equivalent to the production set outlined in Question 2 with $B=(2^{-2/3}+2^{1/3})A^{1/3}$.  Thus, from my answer to Question 2, we know that
+
+\begin{align*}
+\pi(p) 
+ &= \frac{4B^3p_2^3}{27p_1^2}\\
+ &= \frac{4((2^{-2/3}+2^{1/3})A^{1/3})^3p_2^3}{27p_1^2} \\
+ &= \frac{4(27/4)Ap_2^3}{27p_1^2} \\
+ &= \frac{Ap_2^3}{p_1^2}
+\end{align*}
