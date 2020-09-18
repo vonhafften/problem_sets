@@ -233,6 +233,61 @@ Therefore, the skewness of $X$ is zero: $\alpha_3 = \frac{0}{\mu_2^{3/2}}=0$. $\
 
 (b) Calculate $\alpha_3$ for $f(x) = \exp(-x), x \ge 0$, a density function that is skewed to the right.
 
+\begin{align*}
+M_X(t) &= E[e^{tx}] \\
+       &= \int_0^\infty e^{tx}e^{-x} dx\\
+       &= \int_0^\infty e^{-x(1-t)} dx\\
+       &= \Bigg[ \frac{e^{-x(1-t)}}{1-t}(-1) \Bigg]_0^\infty\\
+       &= \frac{0}{1-t}(-1)-\frac{1}{1-t}(-1)\\
+       &= (1-t)^{-1}\\
+\end{align*}
+
+where $0\le t<1$.
+
+\begin{align*}
+M_X^{(1)}(t) &= (-1)(1-t)^{-2}(-1)\\
+             &= (1-t)^{-2}\\
+M_X^{(2)}(t) &= (-2)(1-t)^{-3}(-1)\\
+             &= 2(1-t)^{-3}\\
+M_X^{(3)}(t) &= (-3)2(1-t)^{-4}(-1) \\
+             &= 6(1-t)^{-4} \\
+\end{align*}
+
+The first, second, and third moments of $X$ are:
+
+\begin{align*}
+E[X] &= M_X^{(1)}(0)=1 \\
+E[X^2] &= M_X^{(2)}(0)=2 \\
+E[X^3] &= M_X^{(3)}(0)=6 \\
+\end{align*}
+
+The second and third central moments of $X$ are:
+
+\begin{align*}
+\mu_2 
+&= E[(X-E(X))^2] \\
+&= E(X^2)-E(X)^2 \\
+&= 2 - 1 \\
+&= 1\\
+\mu_3 
+&= E[(X-E(X))^3] \\
+&= E[(X-E(X))(X^2-2XE(X)+E(X)^2)]\\
+&= E[X^3-2X^2E(X)+XE(X)^2-E(X)X^2+2XE(X)^2-E(X)^3]\\
+&= E(X^3)-2E(X^2)E(X)+E(X)E(X)^2-E(X)E(X^2)+2E(X)E(X)^2-E(X)^3\\
+&= (6)-2(2)(1)+(1)(1)^2-(1)(2)+2(1)(1)^2-(1)^3\\
+&= 6-4+1-2+2-1\\
+&= 2
+\end{align*}
+
+Skewness of $X$ is
+
+\begin{align*}
+\alpha_3 
+&= \frac{\mu_3}{\mu_2^{3/2}}\\
+&= \frac{2}{1^{3/2}}\\
+&= 2\\
+\end{align*}
+
 (c) Calculate $\alpha_4$ for the following density functions and comment on the peakedness of each:
 
 \begin{align}
