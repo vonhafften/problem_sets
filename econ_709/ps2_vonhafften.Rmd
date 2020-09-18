@@ -175,6 +175,68 @@ P(X \ge 0)
 
 Thus, $m=0$.
 
-5.
+5. Show that if $X$ is a continuous random variable, then $\min_a E|X - a| = E|x-m|$, where $m$ is the median of $X$.
 
-6.
+\begin{align*}
+E|X - a| 
+&= \int_{-\infty}^{\infty}|t-a|f(t)dt \\
+&= \int_{-\infty}^{a}(a-t)f(t)dt + \int_{a}^{\infty}(t-a)f(t)dt \\
+&= \int_{-\infty}^{a}af(t)dt - \int_{-\infty}^{a}tf(t)dt + \int_{a}^{\infty}tf(t)dt - \int_{a}^{\infty}af(t)dt \\
+&= a \Bigg( \int_{-\infty}^{a}f(t)dt - \int_{a}^{\infty}f(t)dt \Bigg)  - \Bigg(\int_{-\infty}^{a}tf(t)dt - \int_{a}^{\infty}tf(t)dt \Bigg)\\
+&= a \Bigg( F(a) - (1-F(a)) \Bigg)  - \Bigg(\int_{-\infty}^{a}tf(t)dt - \int_{a}^{\infty}tf(t)dt \Bigg)\\
+&= a \Bigg( 2F(a) - 1 \Bigg)  - \Bigg(\int_{-\infty}^{a}tf(t)dt - \int_{a}^{\infty}tf(t)dt \Bigg)\\
+\end{align*}
+
+Notice that this expression for $E|X - a|$ is differentiable by $a$.  Consider first the second half:
+
+\begin{align*}
+\frac{d}{da}\Bigg(\int_{-\infty}^{a}tf(t)dt - \int_{a}^{\infty}tf(t)dt \Bigg) 
+&= af(a)-af(a) 
+&=0
+\end{align*}
+
+Then the full expression:
+
+\begin{align*}
+\frac{d}{da}E|X - a| 
+&= \frac{d}{da}a\Bigg( 2F(a) - 1 \Bigg) + 0 \\
+&= \Bigg( 2F(a) - 1 \Bigg)
+\end{align*}
+
+Setting the derivative equal to zero:
+
+\begin{align*}
+2F(a) - 1 &= 0 \\
+F(a) &= \frac{1}{2}
+\end{align*}
+
+Thus, $a = m$ where $P(X \ge m)=P(X \le m)=F(m)=\frac{1}{2}$.
+
+\pagebreak
+
+6. Let $\mu_n$ denote the $n$th central moment of a random variable $X$.  Two quantities of interest in addition to the mean and variance are $\alpha_3 = \frac{\mu_3}{\mu_2^{3/2}}$ and $\alpha_4 = \frac{\mu_4}{\mu_2^2}$.  The value $\alpha_3$ is called the skewness and $\alpha_4$ is called the kurtosis. The skewness measures the lack of symmetry in the density function.  The kurtosis, although harder to interpret, measures the peakedness or flatness of the density function.
+
+(a) Show that if a density function is symmetric about a point $a$, then $\alpha_3 = 0$.
+
+Proof: Define $Y=X-a$.  $Y$ has a symmetric distribution about zero $\implies E[Y^3]=E[(-Y)^3]=-E[Y^3]=0$ and $E[Y]=0$.  Thus, the 3rd central moment of $X$ is zero:
+
+\begin{align*}
+\mu_3 &= E[(X-E(X))^3] \\
+      &= E[(Y+a-E(Y+a))^3] \\
+      &= E[(Y+a-E(Y)-a)^3] \\
+      &= E[(Y-E(Y))^3] \\
+      &= E[Y^3] \\
+      &= 0 \\
+\end{align*}
+
+Therefore, the skewness of $X$ is zero: $\alpha_3 = \frac{0}{\mu_2^{3/2}}=0$. $\square$
+
+(b) Calculate $\alpha_3$ for $f(x) = \exp(-x), x \ge 0$, a density function that is skewed to the right.
+
+(c) Calculate $\alpha_4$ for the following density functions and comment on the peakedness of each:
+
+\begin{align}
+f(x) &= \frac{1}{\sqrt{2 \pi}}\exp(-x^2/2), x \in \R \\
+f(x) &= 1/2, x \in (-1, 1) \\
+f(x) &= \frac{1}{2}\exp(-|x|), x \in \R
+\end{align}
