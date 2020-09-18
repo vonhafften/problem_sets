@@ -112,7 +112,8 @@ y^*_2 &= B\Bigg(\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3\Bigg)^{2/3} \\
 Notice that $Y^*(p)$ is single-valued:
 
 \begin{align*}
-Y^*(p) = \Bigg\{(y_1, y_2) : y_1 = -\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3, y_2 = B^3\Bigg(\frac{2p_2}{3p_1}\Bigg)^2 \Bigg \} \implies y(p) = \Bigg(-\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3, B^3\Bigg(\frac{2p_2}{3p_1}\Bigg)^2\Bigg)
+Y^*(p) = \Bigg\{(y_1, y_2) : y_1 = -\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3, y_2 = B^3\Bigg(\frac{2p_2}{3p_1}\Bigg)^2 \Bigg \} \implies 
+y(p) = \Bigg(-\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3, B^3\Bigg(\frac{2p_2}{3p_1}\Bigg)^2\Bigg)
 \end{align*}
 
 Thus, the profit function is
@@ -126,9 +127,61 @@ Thus, the profit function is
 
 (c) Since $Y^*(p)$ is single-valued, I'll refer to it below as $y(p)$.  Verify that $\pi(\cdot)$ is homogeneous of degree 1, and $y(\cdot)$ is homogeneous of degree 0.
 
+For $\alpha \in \R$:
+
+\begin{align*}
+\pi(\alpha p) 
+&= \frac{4B^3(\alpha p_2)^3}{27(\alpha p_1)^2} \\
+&= \alpha \frac{4B^3(p_2)^3}{27(p_1)^2} \\
+y(\alpha p) &= \Bigg(-\Bigg(\frac{2(\alpha p_2)B}{3(\alpha p_1)}\Bigg)^3, B^3\Bigg(\frac{2(\alpha p_2)}{3(\alpha p_1)}\Bigg)^2\Bigg) \\
+&= \Bigg(-\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3, B^3\Bigg(\frac{2p_2}{3p_1}\Bigg)^2\Bigg)
+\end{align*}
+
+\pagebreak
+
 (d) Verify that $y_1(p) = \frac{\partial\pi}{\partial p_1}(p)$ and $y_2(p) = \frac{\partial\pi}{\partial p_2}(p)$.
 
+\begin{align*}
+\frac{\partial\pi}{\partial p_1}(p) 
+&= \frac{4B^3p_2^3}{27p_1^3}(-2)\\
+&= -\frac{8B^3p_2^3}{27p_1^3}\\
+&= -\Bigg(\frac{2p_2B}{3p_1}\Bigg)^3\\
+&= y_1(p) \\
+\frac{\partial\pi}{\partial p_2}(p) &= \frac{4B^3p_2^2}{27p_1^2}(3)\\
+&= \frac{4B^3p_2^2}{9p_1^2}\\
+&= B^3\Bigg(\frac{2p_2}{3p_1}\Bigg)^2 \\
+&= y_2(p)
+\end{align*}
+
 (e) Calculate $D_p y(p)$, and verify it is symmetric, positive semidefinite, and $[D_p y]p = 0$
+
+\begin{align*}
+D_p y(p) &= \begin{pmatrix} \frac{\partial y_1}{\partial p_1}(p) & \frac{\partial y_2}{\partial p_1}(p) \\ 
+                            \frac{\partial y_1}{\partial p_2}(p) & \frac{\partial y_2}{\partial p_2}(p) \end{pmatrix} \\
+         &= \begin{pmatrix} \frac{8 p_2^3 B^3}{9 p_1^4}  & \frac{-8 p_2^2 B^3}{9 p_1^3} \\ 
+                            \frac{-8 p_2^2 B^3}{9 p_1^3} & \frac{8p_2B^3}{9p_1^2} \end{pmatrix} \\
+\end{align*}
+
+Since both off diagonal elements of $D_p y(p)$ equal $\frac{-8 p_2^2 B^3}{9 p_1^3}$, $D_p y(p)$ is symmetric.
+
+$$B > 0, p_1 > 0, p_2 > 0 \implies \frac{8 p_2^3 B^3}{9 p_1^4} > 0$$
+
+\begin{align*}
+\det D_p y(p) &= \frac{8 p_2^3 B^3}{9 p_1^4}\frac{8p_2B^3}{9p_1^2} - \frac{-8 p_2^2 B^3}{9 p_1^3}\frac{-8 p_2^2 B^3}{9 p_1^3}\\
+              &= \frac{64 p_2^4 B^6}{81 p_1^6} - \frac{64 p_2^4 B^6}{81 p_1^6}\\
+              &= 0
+\end{align*}
+
+Therefore, $D_p y(p)$ is positive semidefinite.
+
+\begin{align*}
+[D_p y]p &=  \begin{pmatrix} \frac{8 p_2^3 B^3}{9 p_1^4}  & \frac{-8 p_2^2 B^3}{9 p_1^3} \\ 
+                            \frac{-8 p_2^2 B^3}{9 p_1^3} & \frac{8p_2B^3}{9p_1^2} \end{pmatrix}
+             \begin{pmatrix} p_1 \\ p_2 \end{pmatrix} =
+             \begin{pmatrix} \frac{8 p_2^3 B^3}{9 p_1^3}  + \frac{-8 p_2^3 B^3}{9 p_1^3} \\ 
+                            \frac{-8 p_2^2 B^3}{9 p_1^2}  + \frac{8p_2^2B^3}{9p_1^2} \end{pmatrix} =
+             \begin{pmatrix} 0 \\ 0 \end{pmatrix} 
+\end{align*}
 
 \pagebreak
 
