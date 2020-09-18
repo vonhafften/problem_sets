@@ -76,9 +76,104 @@ Case 3: $x > 0.5$
 
 \pagebreak
 
-3.
+3. Let $X$ have PDF $f_X(x) = \frac{2}{9}(x+1), x\in[-1, 2]$.  Find the PDF of $Y=X^2$.
 
-4.
+For $x \in [-1, 2]$
+
+\begin{align*}
+F_X(x) 
+&= \int_{-1}^x \frac{2}{9}(t+1)dt \\
+&= \frac{2}{9}\Bigg[\frac{t^2}{2}+t\Bigg]_{-1}^x \\
+&= \frac{2}{9}\Bigg[\frac{x^2}{2}+x - \Bigg(\frac{1}{2}-1\Bigg)\Bigg] \\
+&= \frac{x^2}{9} + \frac{2x}{9} + \frac{1}{9}
+\end{align*}
+
+Thus,
+
+\begin{align*}
+F_X(x) 
+= \begin{cases} 
+       0, & x < -1 \\
+       \frac{x^2}{9} + \frac{2x}{9} + \frac{1}{9}, & x \in [-1, 2] \\
+       1, & x > 2 
+    \end{cases}
+\end{align*}
+
+Consider $Y=X^2$. First, notice that $y \in [0, 4]$.  I consider two cases $y \in [0, 1]$ and $y \in (1, 4]$
+
+Case 1: $y \in [0, 1]$
+
+\begin{align*}
+F_Y(y) 
+&= P(Y \le y) \\
+&= P(X^2 \le y) \\
+&= P(-\sqrt{y} \le X \le \sqrt{y}) \\
+&= P(X \le \sqrt{y}) - P(X \le -\sqrt{y}) \\
+&= F_X(\sqrt{y}) - F_X(-\sqrt{y}) \\
+&= \Bigg[ \frac{y}{9} + \frac{2\sqrt{y}}{9} + \frac{1}{9} \Bigg] - \Bigg[ \frac{y}{9} - \frac{2\sqrt{y}}{9} + \frac{1}{9} \Bigg] \\
+&= \frac{4\sqrt{y}}{9} \\
+\end{align*}
+
+Case 2: $y \in (1, 4]$
+
+\begin{align*}
+F_Y(y) 
+&= P(Y \le y) \\
+&= P(X^2 \le y) \\
+&= P(X \le \sqrt{y}) \\
+&= F_X(\sqrt{y}) \\
+&= \frac{y}{9} + \frac{2\sqrt{y}}{9} + \frac{1}{9}
+\end{align*}
+
+Thus, the CDF and PDF of $Y$ is:
+
+\begin{align*}
+F_X(x) 
+= \begin{cases} 
+       0, & y < 0 \\
+       \frac{4\sqrt{y}}{9}, & y \in [0, 1] \\
+       \frac{y}{9} + \frac{2\sqrt{y}}{9} + \frac{1}{9}, & y \in (1, 4] \\
+       1, & y > 4 
+    \end{cases}
+\end{align*}
+
+\begin{align*}
+f_X(x) 
+= \begin{cases} 
+       \frac{2}{0\sqrt{y}}, & y \in [0, 1] \\
+       \frac{1}{9} + \frac{1}{9\sqrt{y}}, & y \in (1, 4] \\
+       0, & \text{ otherwise.} 
+    \end{cases}
+\end{align*}
+
+4.  A median of a distribution is a value $m$ such that $P(X \le m) \ge 1/2$ and $P(X \ge m) \ge 1/2$. Find the median of the distribution $f(x) = \frac{1}{\pi(1+x^2)}, x \in \R$. 
+
+The CDF of $X$ is
+
+\begin{align*}
+F(x) &= \int_{-\infty}^x \frac{1}{\pi(1+t^2)} dt  \\
+&= \frac{1}{\pi}  \int_{-\infty}^x \frac{1}{1+t^2} dt  \\
+&= \frac{1}{\pi}  \Bigg[ \tan^{-1}(t) \Bigg]_{-\infty}^x  \\
+&= \frac{1}{\pi}  \Bigg[ \tan^{-1}(x) - \lim_{t \to -\infty} \tan^{-1}(t)  \Bigg]  \\
+&= \frac{1}{\pi}  \Bigg[ \tan^{-1}(x) - \frac{\pi}{2} \Bigg]  \\
+\end{align*}
+
+Now, notice that the distribution is symmetric around 0, so we will consider $m=0$
+
+\begin{align*}
+P(X \le 0) 
+&= F(0) \\
+&= \frac{1}{\pi}  \Bigg[ \tan^{-1}(0) - \frac{\pi}{2} \Bigg] \\
+&= \frac{1}{\pi}  \Bigg[ 0- \frac{\pi}{2} \Bigg] \\
+&= \frac{1}{2} \\
+P(X \ge 0) 
+&= 1 - P(X \le 0) \\
+&= 1 - F(0) \\
+&= 1- \frac{1}{2} \\
+&= \frac{1}{2}
+\end{align*}
+
+Thus, $m=0$.
 
 5.
 
