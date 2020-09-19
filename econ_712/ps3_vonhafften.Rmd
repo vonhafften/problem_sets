@@ -1,0 +1,38 @@
+---
+title: "ECON 712 - PS 3"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "9/24/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Consider the following overlapping generations problem. In each period $t = 1, 2, 3, ...$ a new generation of 2 period lived households are born.  Each generation has a unitary mass.  There is a unit measure of initial old who are endowed with $\bar{M} > 0$ units of fiat money. Each generation is endowed with $w_1$ in youth and $w_2$ in old age of non-storable consumption goods where $w_1 > w_2$.  There is no commitment technology to enforce trades. The utility function of a household of generation $t \ge 1$ is $U(c_t^t, c_{t+1}^t) = \ln(c_t^t) + \ln(c_{t+1}^t)$ where $(c_t^t, c_{t+1}^t)$ is consumption of a household of generation $t$ in youth (i.e., in period $t$) and old age (i.e., in period $t+1$).  The preference of the initial old are given by $U(c_1^0) = \ln(c_1^0)$ where $c_1^0$ is consumption by a household of the initial old.
+
+(a) State and solve the planner problem.
+
+(b) State the representative household's problem in period $t \ge 0$. Try to write the budget constraints in real terms.
+
+(c) Define and solve for an autarkic equilibrium, assuming that it exists.
+
+(d) Define and solve for a competitive equilibrium assuming valued money but with $w_2=0$.
+
+(e) Compare the solutions to the plannners problem, the autarky equilibrium and the stationary monetary competitive equilibrium with valued money, all with $w_2 = 0$.
+
+(f) What happens to consumption, money demand and prices in a competitive equilibrium with valued money if the initial money supply is halved, i.e. $\bar{M}' = \frac{\bar{M}}{2}$. Keep the assumption that $w_2 = 0$.
+
+2. Plot the trade offer curves for the following utility functinos where the endowment is $(w_1, w_2)$ for goods 1 and 2, respectively.
+
+(a) $U=10c_1-4c_1^2+4c_2-c_2^2, (w1, w_2) = (0, 2)$
+
+(b) $U = \min{2c_1 + c_2, c_1 + 2c_2}, (w1, w_2) = (1, 0)$
+
+(c) $U = \min{2c_1 + c_2, c_1 + 2c_2}, (w1, w_2) = (1, 10)$
