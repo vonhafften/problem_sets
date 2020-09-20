@@ -23,7 +23,7 @@ In any period $t$, the social planner weights agents alive equally and optimally
 
 \begin{align*}
 \max_{(c_t^t, c_t^{t-1}) \in \R^2_+} & \ln(c_t^t) + \ln(c_{t}^{t-1})\\
-\text{s.t. } & c_t^t + c_t^{t-1}\le w_1 + w_2
+\text{s.t. } c_t^t + c_t^{t-1} &\le w_1 + w_2
 \end{align*}
 
 Since utility is strictly increasing in consumption, we know that the maximum will occur at $c_t^t + c_t^{t-1} = w_1 + w_2 \implies c_t^{t-1} = w_1 + w_2 - c_t^t$. Thus, we can write the social planner's problem as an unconstrained maximization problem:
@@ -34,46 +34,118 @@ $$
 
 Setting the first order condition to zero:
 
-\begin{align*}
-\frac{1}{c_t^t} - \frac{1}{w_1 + w_2 - c_t^t} &= 0\\
-\implies c_t^t  &= \frac{w_1 + w_2}{2}
-\end{align*}
+$$
+\frac{1}{c_t^t} - \frac{1}{w_1 + w_2 - c_t^t} = 0 \implies c_t^t  = \frac{w_1 + w_2}{2}
+$$
 
 Plugging the solution into the equation for the consumption of old agents:
 
-\begin{align*}
-c_t^{t-1} &= w_1 + w_2 - \frac{w_1 + w_2}{2} \\
-  &= \frac{w_1 + w_2}{2} \\
-\end{align*}
+$$
+c_t^{t-1} = w_1 + w_2 - \frac{w_1 + w_2}{2} = \frac{w_1 + w_2}{2}
+$$
+
+Thus, the solution to the social planner's problem is $(c_t^t, c_t^{t-1}) = \Big(\frac{w_1 + w_2}{2}, \frac{w_1 + w_2}{2} \Big)$.
+
+\pagebreak
 
 (b) State the representative household's problem in period $t \ge 0$. Try to write the budget constraints in real terms.
 
-I break the household problem into the problem facing an initial old agent and the problem facing agents born in period $t > 0$.  Let $p_t$ be the number of dollar per unit of consumption good in period $t$.  Define $m_{t+1}^t \in \R_+$ as the monetary holdings of the generation born in $t$ between periods $t$ and $t+1$.
+I break the household problem into the problem facing an initial old agent and the problem facing agents born in period $t > 0$.  Let $p_t$ be the number of dollar per unit of consumption good in period $t$.  Define $M_{t+1}^t \in \R_+$ as the monetary holdings of the generation born in $t$ between periods $t$ and $t+1$.
 
 The problem facing the initial old agents is:
 
 \begin{align*}
 \max_{c_1^0 \in \R_+} & \ln(c_1^0) \\
-\text{s.t. } & c_1^0 \le w_2 + \frac{\bar{M}}{p_1}
+\text{s.t. } c_1^0 & \le w_2 + \frac{\bar{M}}{p_1}
 \end{align*}
 
 The problem facing agents born in period $t > 0$ is:
 
 \begin{align*}
-\max_{(c_t^t, c_{t+1}^t) \in \R^2_+} & \ln(c_t^t) + \ln(c_{t+1}^{t})\\
-\text{s.t. } & c_t^t \le w_1 - \frac{m_{t+1}^t}{p_t}\\ 
-             & c_{t+1}^t \le w_2 + \frac{m_{t+1}^t}{p_{t+1}} 
+\max_{(c_t^t, c_{t+1}^t, M_{t+1}^t) \in \R^3_+} & \ln(c_t^t) + \ln(c_{t+1}^{t})\\
+\text{s.t. } c_t^t & \le w_1 - \frac{M_{t+1}^t}{p_t}\\ 
+             c_{t+1}^t & \le w_2 + \frac{M_{t+1}^t}{p_{t+1}} 
 \end{align*}
 
 (c) Define and solve for an autarkic equilibrium, assuming that it exists.
 
+In an autarky, money has no value. Thus, agents do not forego consumption to hold money, or $M_{t+1}^t=0$ $\forall t$. Thus, in period 1, young agents do not trade with old agents because they believe that money will not be valued in period 2. Thus, the stock of fiat currency disappears with the death of the initial old agents.  
+
+In an autarky, the problem facing the initial old agents collapses to:
+
+\begin{align*}
+\max_{c_1^0 \in \R_+} & \ln(c_1^0) \\
+\text{s.t. } c_1^0 & \le w_2
+\end{align*}
+
+Trivially, $c_1^0 = w_2$.
+
+In an autarky, the problem facing agents born in period $t > 0$ collapses to:
+
+\begin{align*}
+\max_{(c_t^t, c_{t+1}^t) \in \R^2_+} & \ln(c_t^t) + \ln(c_{t+1}^{t})\\
+\text{s.t. } c_t^t & \le w_1\\ 
+             c_{t+1}^t & \le w_2
+\end{align*}
+
+So, $(c_t^t, c_{t+1}^{t})=(w_1, w_2)$.  Thus, the autarkic equilibrium is $\{(w_1, w_2)\}_{\forall t}$.
+
+\pagebreak
+
 (d) Define and solve for a competitive equilibrium assuming valued money but with $w_2=0$.
 
-(e) Compare the solutions to the plannners problem, the autarky equilibrium and the stationary monetary competitive equilibrium with valued money, all with $w_2 = 0$.
+A competitive equilibrium is the allocation $\{(c_t^t, c_t^{t-1}\}_{\forall t}$ and prices $\{p_t\}_{\forall t}$ such that agents optimize and markets clear:
+
+\begin{align*}
+c_t^t+c_t^{t-1} &= w_1 + w_2 & \text{(Goods Market)}\\
+M_{t+1}^t &= \bar{M} & \text{(Money Market)}
+\end{align*}
+
+We can rewrite the problem of agents born in period $t > 0$ with $w_2 = 0$, since utility is strictly increasing in consumption.
+
+$$
+\max_{M_{t+1}^t \in \R_+} \ln\Bigg(w_1 - \frac{M_{t+1}^t}{p_t}\Bigg) + \ln\Bigg(\frac{M_{t+1}^t}{p_{t+1}}\Bigg)
+$$
+
+Setting the first order condition to zero:
+
+\begin{align*}
+\Bigg(w_1 - \frac{M_{t+1}^t}{p_t}\Bigg)^{-1} (-p_t)^{-1} + \Bigg(\frac{M_{t+1}^t}{p_{t+1}}\Bigg)^{-1} (p_{t+1})^{-1} &= 0 
+\implies M_{t+1}^t = \frac{p_t w_1}{2} \\
+\end{align*}
+
+Plugging back in for $c_t^t$ and $c_{t+1}^t$:
+
+\begin{align*}
+c_t^t &= w_1 - \frac{(p_t w_1)/2}{p_t} = \frac{w_1}{2} \\
+c_{t+1}^t &= \frac{(p_t w_1)/2}{p_{t+1}} = \Bigg(\frac{p_t}{p_{t+1}}\Bigg) \frac{w_1}{2}
+\end{align*}
+
+Setting $w_2=0$ and substituting in the household's optimization conditions, the goods market clearing condition becomes:
+
+\begin{align*}
+c_t^t + c_t^{t-1} &= w_1 + 0
+\implies \frac{w_1}{2} + \Bigg(\frac{p_t}{p_{t+1}}\Bigg) \frac{w_1}{2} = w_1
+\implies p_t = p_{t+1}
+\end{align*}
+
+The money market condition implies:
+
+\begin{align*}
+\frac{p_t w_1}{2} &= \bar{M}
+\implies
+p_t &= \frac{2\bar{M}}{w_1}
+\end{align*}
+
+Thus, the competitive equilibrium is the allocation $\Big\{\Big(\frac{w_1}{2}, \frac{w_1}{2} \Big)\Big\}_{\forall t}$ and prices $\Big\{\frac{2\bar{M}}{w_1}\Big\}_{\forall t}$
+
+\pagebreak
+
+(e) Compare the solutions to the planners problem, the autarky equilibrium and the stationary monetary competitive equilibrium with valued money, all with $w_2 = 0$.
 
 (f) What happens to consumption, money demand and prices in a competitive equilibrium with valued money if the initial money supply is halved, i.e. $\bar{M}' = \frac{\bar{M}}{2}$. Keep the assumption that $w_2 = 0$.
 
-2. Plot the trade offer curves for the following utility functinos where the endowment is $(w_1, w_2)$ for goods 1 and 2, respectively.
+2. Plot the trade offer curves for the following utility functions where the endowment is $(w_1, w_2)$ for goods 1 and 2, respectively.
 
 (a) $U=10c_1-4c_1^2+4c_2-c_2^2, (w1, w_2) = (0, 2)$
 
