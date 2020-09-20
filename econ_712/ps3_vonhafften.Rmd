@@ -19,7 +19,51 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (a) State and solve the planner problem.
 
+In any period $t$, the social planner weights agents alive equally and optimally allocates resources between them given preferences and technologies:
+
+\begin{align*}
+\max_{(c_t^t, c_t^{t-1}) \in \R^2_+} & \ln(c_t^t) + \ln(c_{t}^{t-1})\\
+\text{s.t. } & c_t^t + c_t^{t-1}\le w_1 + w_2
+\end{align*}
+
+Since utility is strictly increasing in consumption, we know that the maximum will occur at $c_t^t + c_t^{t-1} = w_1 + w_2 \implies c_t^{t-1} = w_1 + w_2 - c_t^t$. Thus, we can write the social planner's problem as an unconstrained maximization problem:
+
+$$
+\max_{c_t^t \in \R_+} \ln(c_t^t) + \ln(w_1 + w_2 - c_t^t)
+$$
+
+Setting the first order condition to zero:
+
+\begin{align*}
+\frac{1}{c_t^t} - \frac{1}{w_1 + w_2 - c_t^t} &= 0\\
+\implies c_t^t  &= \frac{w_1 + w_2}{2}
+\end{align*}
+
+Plugging the solution into the equation for the consumption of old agents:
+
+\begin{align*}
+c_t^{t-1} &= w_1 + w_2 - \frac{w_1 + w_2}{2} \\
+  &= \frac{w_1 + w_2}{2} \\
+\end{align*}
+
 (b) State the representative household's problem in period $t \ge 0$. Try to write the budget constraints in real terms.
+
+I break the household problem into the problem facing an initial old agent and the problem facing agents born in period $t > 0$.  Let $p_t$ be the number of dollar per unit of consumption good in period $t$.  Define $m_{t+1}^t \in \R_+$ as the monetary holdings of the generation born in $t$ between periods $t$ and $t+1$.
+
+The problem facing the initial old agents is:
+
+\begin{align*}
+\max_{c_1^0 \in \R_+} & \ln(c_1^0) \\
+\text{s.t. } & c_1^0 \le w_2 + \frac{\bar{M}}{p_1}
+\end{align*}
+
+The problem facing agents born in period $t > 0$ is:
+
+\begin{align*}
+\max_{(c_t^t, c_{t+1}^t) \in \R^2_+} & \ln(c_t^t) + \ln(c_{t+1}^{t})\\
+\text{s.t. } & c_t^t \le w_1 - \frac{m_{t+1}^t}{p_t}\\ 
+             & c_{t+1}^t \le w_2 + \frac{m_{t+1}^t}{p_{t+1}} 
+\end{align*}
 
 (c) Define and solve for an autarkic equilibrium, assuming that it exists.
 
