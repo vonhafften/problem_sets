@@ -44,7 +44,7 @@ $$
 c_t^{t-1} = w_1 + w_2 - \frac{w_1 + w_2}{2} = \frac{w_1 + w_2}{2}
 $$
 
-Thus, the solution to the social planner's problem is $(c_t^t, c_t^{t-1}) = \Big(\frac{w_1 + w_2}{2}, \frac{w_1 + w_2}{2} \Big)$.
+Thus, the solution to the social planner's problem is the allocation $\Big\{\Big(\frac{w_1 + w_2}{2}, \frac{w_1 + w_2}{2} \Big)\Big\}_{\forall t}$.
 
 \pagebreak
 
@@ -88,7 +88,7 @@ In an autarky, the problem facing agents born in period $t > 0$ collapses to:
              c_{t+1}^t & \le w_2
 \end{align*}
 
-So, $(c_t^t, c_{t+1}^{t})=(w_1, w_2)$.  Thus, the autarkic equilibrium is $\{(w_1, w_2)\}_{\forall t}$.
+So, $(c_t^t, c_{t+1}^{t})=(w_1, w_2)$.  Thus, the autarkic equilibrium is the allocation $\{(w_1, w_2)\}_{\forall t}$.
 
 \pagebreak
 
@@ -134,7 +134,7 @@ The money market condition implies:
 \begin{align*}
 \frac{p_t w_1}{2} &= \bar{M}
 \implies
-p_t &= \frac{2\bar{M}}{w_1}
+p_t = \frac{2\bar{M}}{w_1}
 \end{align*}
 
 Thus, the competitive equilibrium is the allocation $\Big\{\Big(\frac{w_1}{2}, \frac{w_1}{2} \Big)\Big\}_{\forall t}$ and prices $\Big\{\frac{2\bar{M}}{w_1}\Big\}_{\forall t}$
@@ -143,7 +143,23 @@ Thus, the competitive equilibrium is the allocation $\Big\{\Big(\frac{w_1}{2}, \
 
 (e) Compare the solutions to the planners problem, the autarky equilibrium and the stationary monetary competitive equilibrium with valued money, all with $w_2 = 0$.
 
+With $w_2 = 0$,
+
+* The solution to the planners problem is the allocation $\Big\{\Big(\frac{w_1}{2}, \frac{w_1}{2} \Big)\Big\}_{\forall t}$.
+* The autarky equilibrium is the allocation $\{(w_1, 0)\}_{\forall t}$.
+* The stationary monetary competitive equilibrium with valued money is the allocation $\Big\{\Big(\frac{w_1}{2}, \frac{w_1}{2} \Big)\Big\}_{\forall t}$ and prices $\Big\{\frac{2\bar{M}}{w_1}\Big\}_{\forall t}$.
+
+We see that the stationary monetary competitive equilibrium with valued money achieves the solution to the planners problem with agents consuming half their endowment in each period.  The autarky equilibrium results in agents consuming their entire endowment when young and nothing when old.  The autarky equilibrium is clearly worse because all agents have negative infinity utility due to consuming nothing when old.
+
 (f) What happens to consumption, money demand and prices in a competitive equilibrium with valued money if the initial money supply is halved, i.e. $\bar{M}' = \frac{\bar{M}}{2}$. Keep the assumption that $w_2 = 0$.
+
+In (d), we found that the consumption allocation under the competitive equilibrium with valued money does not depend on the money supply, so the consumption allocation would stay the same at $\Big\{\Big(\frac{w_1}{2}, \frac{w_1}{2} \Big)\Big\}_{\forall t}$ if the initial money supply is halved.  In contrast, prices on the other hand would also halve: 
+
+$$\Big\{\frac{2 \bar{M}' }{w_1}\Big\}_{\forall t} =\Big\{\frac{2(\bar{M}/2)}{w_1}\Big\}_{\forall t} = \Big\{\frac{\bar{M}}{w_1}\Big\}_{\forall t} $$
+
+Price dropping by a half would cause money demand to halve as well: $(M_{t+1}^t)' = \frac{(p_t'/2) w_1}{2} = \frac{p_t' w_1}{4}$ $\forall t$.
+
+\pagebreak
 
 2. Plot the trade offer curves for the following utility functions where the endowment is $(w_1, w_2)$ for goods 1 and 2, respectively.
 
