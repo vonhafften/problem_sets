@@ -173,25 +173,27 @@ Notice that $U$ has a global maximimum in $\R$. Setting the first order conditio
 \end{align*}
 
 
-Set $\bar{U}$,
+Set $U = \bar{u}$,
 
 \begin{align*}
-\bar{U} &= 10 c_1 - 4 c_1^2 + 4 c_2 - c_2^2 \\
-\implies  0 &= (-1)c_2^2 + (4) c_2 + (10 c_1 - 4 c_1^2 - \bar{U})   \\
-\implies    c_2 &= \frac{-4 \pm \sqrt{4^2-4(-1)(10 c_1 - 4 c_1^2 - \bar{U})}}{2(-1)} \\
-    &= 2 \pm \sqrt{4+10c_1-4c_1^{2}-4}
+\bar{u} &= 10 c_1 - 4 c_1^2 + 4 c_2 - c_2^2 \\
+\implies  0 &= (-1)c_2^2 + (4) c_2 + (10 c_1 - 4 c_1^2 - \bar{u})   \\
+\implies    c_2 &= \frac{-4 \pm \sqrt{4^2-4(-1)(10 c_1 - 4 c_1^2 - \bar{u})}}{2(-1)} \\
+    &= 2 \pm \sqrt{4+10c_1-4c_1^{2}-\bar{u}}
 \end{align*}
 
 ```{r, echo=FALSE, warning=FALSE}
-xlim <- c(0, 3)
+library(shape)
+
+xlim <- c(0, 4)
 ylim <- c(0, 6)
 
-plot(1, type="n", xlim = xlim, ylim = ylim, xaxs="i", yaxs="i", xlab = "c_1", ylab = "c_2", main = "Indifference Curves")
+plot(1, type="n", xlim = xlim, ylim = ylim, xaxs="i", yaxs="i", xlab = "c_1", ylab = "c_2", main = "Indifference Curves and Budget Constraints")
 
 c_1 <- (xlim[1]:(xlim[2]*1000))/1000
 u_bar <- 1:10
 
-for ( u in u_bar) {
+for (u in u_bar) {
   y <- c(2 + sqrt(4+10*c_1-4*c_1^2-u), rev(2 - sqrt(4+10*c_1-4*c_1^2-u)))
   x <- c(c_1, rev(c_1))[is.finite(y)]
   y <- y[is.finite(y)]
@@ -199,23 +201,43 @@ for ( u in u_bar) {
   lines(x= c(x, x), y= c(y, y), col = "blue")
 }
 
+Arrows(x0=c(5/4, 2.5, 1/4), 
+       x1=c(5/4, 2, 3/4), 
+       y0=c(4.5, 2.5, 2.5), 
+       y1=c(3.5, 2.5, 2.5), 
+       col="blue")
+
 points(y=c(2, 2, 1), x=c(0, 5/4, 1), pch = 19, col = "yellow", cex =2)
 
-segments(x0 = 0, y0 = 2,
-         x1 = 3, y1 = 2, col = "red")
+abline(h=2, col = "red")
 
 segments(x0 = 0, y0 = 6,
-         x1 = 0, y1 = 0, col = "red", lwd = 2)
+         x1 = 0, y1 = 0, col = "red", lwd = 3)
 
 segments(x0 = 0, y0 = 2,
          x1 = 2, y1 = 0, col = "red")
 
-points(y=2, x=0, pch=13, col = "red")
+points(y=2, x=0, pch=4, col = "red", cex = 2)
 
-points(y=2, x=5/4, pch = 8, col = "blue")
+points(y=2, x=5/4, pch = 8, col = "blue", cex = 2)
 
 abline(v=0, h=0)
+
+text("p_t/p_(t+1) = -infty", x=.75, y=5.5, col = "red")
+text("p_t/p_(t+1) = 0", x=3.5, y=2.5, col = "red")
+text("p_t/p_(t+1) = -1", x=3.25, y=.5, col = "red")
+text("Indifference Curves", x=3.25, y=3.5, col = "blue")
+
+legend("topright",
+       c("Max Utility",
+         "Endowment Points",
+         "Optimal Points"),
+       col=c("blue", "red", "yellow"),
+       pch = c(8, 4, 19))
+
 ```
+
+\pagebreak
 
 (b) $U = \min\{2c_1 + c_2, c_1 + 2c_2\}, (w_1, w_2) = (1, 0)$
 
