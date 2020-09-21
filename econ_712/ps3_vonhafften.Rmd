@@ -163,8 +163,76 @@ Price dropping by a half would cause money demand to halve as well: $(M_{t+1}^t)
 
 2. Plot the trade offer curves for the following utility functions where the endowment is $(w_1, w_2)$ for goods 1 and 2, respectively.
 
-(a) $U=10c_1-4c_1^2+4c_2-c_2^2, (w1, w_2) = (0, 2)$
+(a) $U = 10 c_1 - 4 c_1^2 + 4 c_2 - c_2^2, (w_1, w_2) = (0, 2)$
 
-(b) $U = \min{2c_1 + c_2, c_1 + 2c_2}, (w1, w_2) = (1, 0)$
+Notice that $U$ has a global maximimum in $\R$. Setting the first order conditions to zero:
 
-(c) $U = \min{2c_1 + c_2, c_1 + 2c_2}, (w1, w_2) = (1, 10)$
+\begin{align*}
+\frac{dU}{dc_1} &= 10 - 8 c_1 \implies c_1^* = 5/4 \\
+\frac{dU}{dc_1} &= 4 - 2 c_2 \implies c_2^* = 2 \\
+\end{align*}
+
+
+Set $\bar{U}$,
+
+\begin{align*}
+\bar{U} &= 10 c_1 - 4 c_1^2 + 4 c_2 - c_2^2 \\
+\implies  0 &= (-1)c_2^2 + (4) c_2 + (10 c_1 - 4 c_1^2 - \bar{U})   \\
+\implies    c_2 &= \frac{-4 \pm \sqrt{4^2-4(-1)(10 c_1 - 4 c_1^2 - \bar{U})}}{2(-1)} \\
+    &= 2 \pm \sqrt{4+10c_1-4c_1^{2}-4}
+\end{align*}
+
+```{r, echo=FALSE, warning=FALSE}
+xlim <- c(0, 3)
+ylim <- c(0, 6)
+
+plot(1, type="n", xlim = xlim, ylim = ylim, xaxs="i", yaxs="i", xlab = "c_1", ylab = "c_2", main = "Indifference Curves")
+
+c_1 <- (xlim[1]:(xlim[2]*1000))/1000
+u_bar <- 1:10
+
+for ( u in u_bar) {
+  y <- c(2 + sqrt(4+10*c_1-4*c_1^2-u), rev(2 - sqrt(4+10*c_1-4*c_1^2-u)))
+  x <- c(c_1, rev(c_1))[is.finite(y)]
+  y <- y[is.finite(y)]
+  
+  lines(x= c(x, x), y= c(y, y), col = "blue")
+}
+
+points(y=c(2, 2, 1), x=c(0, 5/4, 1), pch = 19, col = "yellow", cex =2)
+
+segments(x0 = 0, y0 = 2,
+         x1 = 3, y1 = 2, col = "red")
+
+segments(x0 = 0, y0 = 6,
+         x1 = 0, y1 = 0, col = "red", lwd = 2)
+
+segments(x0 = 0, y0 = 2,
+         x1 = 2, y1 = 0, col = "red")
+
+points(y=2, x=0, pch=13, col = "red")
+
+points(y=2, x=5/4, pch = 8, col = "blue")
+
+abline(v=0, h=0)
+```
+
+(b) $U = \min\{2c_1 + c_2, c_1 + 2c_2\}, (w_1, w_2) = (1, 0)$
+
+```{r, echo=FALSE}
+plot(1, type="n", xlim = c(-10, 10), ylim = c(-10, 10), xaxs="i", yaxs="i", xlab = "x_1", ylab = "x_2")
+
+abline(v=0, h=0, a=0, b=-1)
+
+```
+
+\pagebreak
+
+(c) $U = \min\{2c_1 + c_2, c_1 + 2c_2\}, (w_1, w_2) = (1, 10)$
+
+```{r, echo=FALSE}
+plot(1, type="n", xlim = c(-10, 10), ylim = c(-10, 10), xaxs="i", yaxs="i", xlab = "x_1", ylab = "x_2")
+
+abline(v=0, h=0, a=0, b=-1)
+
+```

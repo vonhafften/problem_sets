@@ -99,9 +99,21 @@ F_X(x)
     \end{cases}
 \end{align*}
 
-Consider $Y=X^2$. First, notice that $y \in [0, 4]$.  I consider two cases $y \in [0, 1]$ and $y \in (1, 4]$
+Consider $Y=X^2$. First, notice that $y \in [0, 4]$.  I consider three cases $y=0$, $y \in (0, 1]$, and $y \in (1, 4]$
 
-Case 1: $y \in [0, 1]$
+Case 1: $y = 0$
+
+\begin{align*}
+F_Y(0) 
+&= P(Y \le 0) \\
+&= P(X^2 \le 0) \\
+&= P(X^2 = 0) \\
+&= P(X = 0) \\
+&= F(0) \\
+&= 0
+\end{align*}
+
+Case 2: $y \in (0, 1]$
 
 \begin{align*}
 F_Y(y) 
@@ -114,7 +126,7 @@ F_Y(y)
 &= \frac{4\sqrt{y}}{9} \\
 \end{align*}
 
-Case 2: $y \in (1, 4]$
+Case 3: $y \in (1, 4]$
 
 \begin{align*}
 F_Y(y) 
@@ -130,8 +142,8 @@ Thus, the CDF and PDF of $Y$ is:
 \begin{align*}
 F_X(x) 
 = \begin{cases} 
-       0, & y < 0 \\
-       \frac{4\sqrt{y}}{9}, & y \in [0, 1] \\
+       0, & y \le 0 \\
+       \frac{4\sqrt{y}}{9}, & y \in (0, 1] \\
        \frac{y}{9} + \frac{2\sqrt{y}}{9} + \frac{1}{9}, & y \in (1, 4] \\
        1, & y > 4 
     \end{cases}
@@ -140,11 +152,13 @@ F_X(x)
 \begin{align*}
 f_X(x) 
 = \begin{cases} 
-       \frac{2}{0\sqrt{y}}, & y \in [0, 1] \\
+       \frac{2}{9\sqrt{y}}, & y \in (0, 1] \\
        \frac{1}{9} + \frac{1}{9\sqrt{y}}, & y \in (1, 4] \\
        0, & \text{ otherwise.} 
     \end{cases}
 \end{align*}
+
+\pagebreak
 
 4.  A median of a distribution is a value $m$ such that $P(X \le m) \ge 1/2$ and $P(X \ge m) \ge 1/2$. Find the median of the distribution $f(x) = \frac{1}{\pi(1+x^2)}, x \in \R$. 
 
@@ -174,6 +188,8 @@ P(X \ge 0)
 \end{align*}
 
 Thus, $m=0$.
+
+\pagebreak
 
 5. Show that if $X$ is a continuous random variable, then $\min_a E|X - a| = E|x-m|$, where $m$ is the median of $X$.
 
