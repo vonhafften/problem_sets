@@ -1,0 +1,69 @@
+---
+title: "ECON 709 - PS 3"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "9/27/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. A random point $(X, Y)$ is distributed uniformly on the square with vertices $(1, 1), (1, -1), (-1, 1)$, and $(-1, -1)$. That is, the joint PDF is $f(x, y) = 1/4$ on the square and $f(x, y) = 0$ outside the square. Determine the probability of the following events:
+
+(a) $X^2 + Y^2 < 1$
+
+(b) $|X + Y| < 2$
+
+2. Let the joint PDF of $X$ and $Y$ be given by $f(x, y) = g(x)h(y)$ $\forall x, y \in \R$ for some functions $g(x)$ and $h(y)$. Let $a$ denote $\int_{-\infty}^\infty g(x)dx$ and $b$ denote $\int_{-\infty}^\infty h(x)dx$
+
+(a) What conditions $a$ and $b$ should satisfy in order for $f(x, y)$ to be a bivariate PDF?
+
+(b) Find the marginal PDF of $X$ and $Y$.
+
+(c) Show that $X$ and $Y$ are independent.
+
+3. Let the joint PDF of $X$ and $Y$ be given by 
+
+$$
+f(x, y) = \begin{cases} cxy \text{ if } x, y \in [0, 1], x+y \le 1 \\ 0 \text{ otherwise } \end{cases}
+$$
+
+(a) Find the value of $c$ such that $f(x, y)$ is a joint PDF.
+
+(b) Find the marginal distributions of $X$ and $Y$.
+
+(c) Are $X$ and $Y$ independent? Compare your answer to Problem 2 and discuss.
+
+4. Show that any random variable is uncorrelated with a constant.
+
+5. Let $X$ and $Y$ be independent random variables with means $\mu_X, \mu_Y$ and variances $\sigma_X^2, \sigma_Y^2$.  Find an expression for the correlation of $XY$ and $Y$ in terms of these means and variances.
+
+6. Prove the following: For any random vector $(X_1, X_2, ..., X_n)$,
+
+$$
+Var\Bigg( \sum_{i=1}^n X_i\Bigg) = \sum_{i=1}^n Var (X_i) + 2 \sum_{1\le i < j \le n}
+Cov(X_i, Y_i).
+$$
+
+7. Suppose that $X$ and $Y$ are joint normal, i.e. they have the joint PDF:
+
+$$
+f(x, y) = \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}}\exp(-(2(1-\rho^2))^{-1}(x^2/\sigma_X-2xy/\sigma_X\sigma_Y+y^2/\sigma_Y^2))
+$$
+
+(a) Derive the marginal distributions of $X$ and $Y$, and observe that both normal distributions.
+
+(b) Derive the conditional distribution of $Y$ given $X=x$. Observe that it is also a nromal distribution.
+
+(c) Derive the joint distribution of $(X, Z)$ where $Z = (Y/\sigma_Y)-(\rho X/\sigma_X)$, and then show that $X$ and $Z$ are independent.
+
+8. Consider a function $g : \R \to \R$. Recall that the inverse image of a set $A$, denoted $g^{-1}(A)$ is $g^{-1}(A)=\{x \in \R: g(x) \in A\}$.  Let there be functions $g_1: \R \to \R$ and $g_2: \R \to \R$.  Let $X$ and $Y$ be two random variables that are independent.  Suppose that $g_1$ and $g_2$ are both Borel-measurable, which means that $g_1^{-1}(A)$ and $g_2^{-1}(A)$ are both in the Borel $\sigma$-field whenever $A$ is in the Borel $\sigma$-field.  Show that the two random variables $Z := g_1(X)$ and $W:=g_2(Y)$ are independent.  (Hint: use the 1st or the 2nd definition of independence.)
+
+
