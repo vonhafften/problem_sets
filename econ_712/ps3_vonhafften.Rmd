@@ -165,7 +165,7 @@ Price dropping by a half would cause money demand to halve as well: $(M_{t+1}^t)
 
 (a) $U = 10 c_1 - 4 c_1^2 + 4 c_2 - c_2^2, (w_1, w_2) = (0, 2)$
 
-Notice that $U$ has a global maximimum in $\R$. Setting the first order conditions to zero:
+Notice that $U$ has a global maximum in $\R$. Setting the first order conditions to zero:
 
 \begin{align*}
 \frac{dU}{dc_1} &= 10 - 8 c_1 \implies c_1^* = 5/4 \\
@@ -182,10 +182,10 @@ Set $U = \bar{u}$,
     &= 2 \pm \sqrt{4+10c_1-4c_1^{2}-\bar{u}}
 \end{align*}
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, fig.width=5, fig.height=5}
 library(shape)
 
-xlim <- c(0, 4)
+xlim <- c(0, 6)
 ylim <- c(0, 6)
 
 plot(1, type="n", xlim = xlim, ylim = ylim, xaxs="i", yaxs="i", xlab = "c_1", ylab = "c_2", main = "Indifference Curves and Budget Constraints")
@@ -223,28 +223,56 @@ points(y=2, x=5/4, pch = 8, col = "blue", cex = 2)
 
 abline(v=0, h=0)
 
-text("p_t/p_(t+1) = -infty", x=.75, y=5.5, col = "red")
-text("p_t/p_(t+1) = 0", x=3.5, y=2.5, col = "red")
-text("p_t/p_(t+1) = -1", x=3.25, y=.5, col = "red")
-text("Indifference Curves", x=3.25, y=3.5, col = "blue")
+text("p_1/p_2 = infty", x=1, y=5.5, col = "red")
+text("p_1/p_2 = 0", x=5, y=2.5, col = "red")
+text("p_1/p_2 = 1", x=3.5, y=.5, col = "red")
+text("Indifference Curves", x=4, y=4, col = "blue")
 
 legend("topright",
        c("Max Utility",
-         "Endowment Points",
+         "Endowment Point",
          "Optimal Points"),
        col=c("blue", "red", "yellow"),
        pch = c(8, 4, 19))
 
 ```
 
+We see that the trade offer curve will trace the points on the bottom of each ellipsoid tangent to the budget constraint with slopes ranging from zero to negative infinity:
+
+\begin{align*}
+\frac{d}{dc_1}\Big(2-\sqrt{4+10c_1-4c_1^{2}-\bar{u}}\Big) = \frac{p_1}{p_2}
+\end{align*}
+
 \pagebreak
 
 (b) $U = \min\{2c_1 + c_2, c_1 + 2c_2\}, (w_1, w_2) = (1, 0)$
 
-```{r, echo=FALSE}
-plot(1, type="n", xlim = c(-10, 10), ylim = c(-10, 10), xaxs="i", yaxs="i", xlab = "x_1", ylab = "x_2")
+```{r, echo=FALSE, fig.width=5, fig.height=5}
+library(shape)
 
-abline(v=0, h=0, a=0, b=-1)
+plot(1, type="n", xlim = c(0, 4), ylim = c(0, 4), xaxs="i", yaxs="i", xlab = "c_1", ylab = "c_2", main = "Indifference Curves and Budget Constraints")
+
+abline(a=0, b=1, lty=2, col="blue")
+
+u_bars <- 1:20
+
+for (u_bar in u_bars) {
+  segments(x0=0, y0=u_bar*2, x1=u_bar/3,  y1=u_bar/3, col = "blue")
+  segments(y0=0, x0=u_bar*2, y1=u_bar/3,  x1=u_bar/3, col = "blue")
+}
+
+Arrows(x0=c(1.5, 2.5), 
+       x1=c(2.5, 3.5), 
+       y0=c(2.5, 1.5), 
+       y1=c(3.5, 2.5), 
+       col="blue")
+
+points(y=0, x=1, pch=4, col = "red", cex = 2)
+
+abline(h=0, col = "red", lwd=3)
+abline(v=1, a=1, b= -1, col = "red")
+
+
 
 ```
 
@@ -252,9 +280,30 @@ abline(v=0, h=0, a=0, b=-1)
 
 (c) $U = \min\{2c_1 + c_2, c_1 + 2c_2\}, (w_1, w_2) = (1, 10)$
 
-```{r, echo=FALSE}
-plot(1, type="n", xlim = c(-10, 10), ylim = c(-10, 10), xaxs="i", yaxs="i", xlab = "x_1", ylab = "x_2")
+```{r, echo=FALSE, fig.width=5, fig.height=5}
+plot(1, type="n", xlim = c(0, 12), ylim = c(0, 12), xaxs="i", yaxs="i", xlab = "c_1", ylab = "c_2", main = "Indifference Curves and Budget Constraints")
 
-abline(v=0, h=0, a=0, b=-1)
+abline(a=0, b=1, lty=2, col="blue")
+
+u_bars <- 1:40
+
+for (u_bar in u_bars) {
+  segments(x0=0, y0=u_bar*2, x1=u_bar/3,  y1=u_bar/3, col = "blue")
+  segments(y0=0, x0=u_bar*2, y1=u_bar/3,  x1=u_bar/3, col = "blue")
+  
+  segments(x0=0, y0=u_bar*2, x1=u_bar,  y1=0, col = "blue")
+  segments(y0=0, x0=u_bar*2, y1=u_bar,  x1=0, col = "blue")
+}
+
+Arrows(x0=c(.5, 10.5), 
+       x1=c(1.5, 11.5), 
+       y0=c(10.5, .5), 
+       y1=c(11.5, 1.5), 
+       col="blue")
+
+points(y=10, x=1, pch=4, col = "red", cex = 2)
+abline(h=10, v=1)
+abline(a=11, b=-1)
+abline(a=10.5, b=-1/2)
 
 ```
