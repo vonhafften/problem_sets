@@ -19,25 +19,96 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (a) $X^2 + Y^2 < 1$
 
+Case 1: $X=1$ or $X=-1$ (left and right edge of the box). $X^2 + Y^2 < 1 \implies 1+Y^2<1$.  Since $Y^2 \ge 0 \implies P(1+Y^2<1)=0$.
+
+Case 2: $Y=1$ or $Y=-1$ (top and bottom edge of the box). $X^2 + Y^2 < 1 \implies X^2+1<1$.  Since $X^2 \ge 0 \implies P(X^2+1<1)=0$. 
+
+Therefore, $P(X^2 + Y^2 < 1) = 0$.
+
 (b) $|X + Y| < 2$
+
+Notice that only two points on the box do not meet $|X + Y| < 2$.  At $(1, 1)$ and $(-1, -1)$, $|1 + 1|=|-1+(-1)|=2$.  At all other points, $|X + Y| \in [0, 2)$.  Since $X$ and $Y$ are continuous random variables, the probability that they equal a given point is zero, so $P(|X + Y| < 2)=1$.
 
 2. Let the joint PDF of $X$ and $Y$ be given by $f(x, y) = g(x)h(y)$ $\forall x, y \in \R$ for some functions $g(x)$ and $h(y)$. Let $a$ denote $\int_{-\infty}^\infty g(x)dx$ and $b$ denote $\int_{-\infty}^\infty h(x)dx$
 
 (a) What conditions $a$ and $b$ should satisfy in order for $f(x, y)$ to be a bivariate PDF?
 
+For $f(x, y)$ to be a PDF, it should integrate to one:
+
+\begin{align*}
+\int_{-\infty}^\infty \int_{-\infty}^\infty f(x, y) dx dy &= 1 \\
+\implies \int_{-\infty}^\infty \int_{-\infty}^\infty g(x)h(y) dx dy &= 1 \\
+\implies \int_{-\infty}^\infty g(x) dx \int_{-\infty}^\infty h(y) dy &= 1 \\
+\implies a b &= 1 \\
+\implies a &= b^{-1} \\
+\end{align*}
+
+\pagebreak
+
 (b) Find the marginal PDF of $X$ and $Y$.
+
+The marginal PDF of $X$:
+
+\begin{align*}
+f_X(x) &= \int_{-\infty}^\infty f(x, y) dy \\
+       &= \int_{-\infty}^\infty g(x)h(y) dy \\
+       &= g(x)\int_{-\infty}^\infty h(y) dy \\
+       &= b \cdot g(x) \\
+\end{align*}
+
+The marginal PDF of $Y$:
+
+\begin{align*}
+f_Y(y) &= \int_{-\infty}^\infty f(x, y) dx \\
+       &= \int_{-\infty}^\infty g(x)h(y) dx \\
+       &= h(y)\int_{-\infty}^\infty g(x) dx \\
+       &= a \cdot h(y) \\
+\end{align*}
 
 (c) Show that $X$ and $Y$ are independent.
 
+Proof: $X$ and $Y$ are independent if the product of their marginal distributions is their joint distribution:
+
+\begin{align*}
+f_X(x) \cdot f_Y(y) &= b \cdot g(x) \cdot a \cdot h(y) \\
+                    &= b \cdot g(x) \cdot b^{-1} \cdot h(y) \\
+                    &= g(x) \cdot h(y) \\
+                    &= f(x, y) \\
+\end{align*}
+
+$\square$
+
+\pagebreak
+
 3. Let the joint PDF of $X$ and $Y$ be given by 
 
-$$
-f(x, y) = \begin{cases} cxy \text{ if } x, y \in [0, 1], x+y \le 1 \\ 0 \text{ otherwise } \end{cases}
-$$
+\begin{align*}
+f(x, y) = \begin{cases} cxy & \text{ if } x, y \in [0, 1], x+y \le 1 \\ 0, & \text{ otherwise } \end{cases}
+\end{align*}
 
 (a) Find the value of $c$ such that $f(x, y)$ is a joint PDF.
 
+\begin{align*}
+        \int_0^1 \int_0^{1-x} f(x, y) dy dx &= 1 \\
+\implies    \int_0^1 \int_0^{1-x} cxy dy dx &= 1 \\
+\implies c\int_0^1 \Big[ \frac{xy^2}{2} \Big]_{y=0}^{1-x} dx &= 1\\
+\implies \frac{c}{2} \int_0^1 x(1-x)^2 dx &= 1\\
+\implies \frac{c}{2} \int_0^1 x-2x^2+x^3 dx &= 1\\
+\implies \frac{c}{2}\Big[ \frac{x^2}{2}-\frac{2x^3}{3}+\frac{x^4}{4} \Big]_{x=0}^1 &= 1\\
+\implies \frac{c}{2}\Big[ \frac{1}{2}-\frac{2}{3}+\frac{1}{4} \Big] &= 1\\
+\implies \frac{c}{2}\Big(\frac{1}{12}\Big) &= 1\\
+\implies c &= 24\\
+\end{align*}
+
 (b) Find the marginal distributions of $X$ and $Y$.
+
+\begin{align*}
+f_X(x) = \int_0^{1-x} 24xy dy
+\end{align*}
+
+\begin{align*}
+f_Y(y) = \int_0^{1-y} 24xy dx
+\end{align*}
 
 (c) Are $X$ and $Y$ independent? Compare your answer to Problem 2 and discuss.
 
