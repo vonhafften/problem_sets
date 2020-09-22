@@ -1,0 +1,46 @@
+---
+title: "ECON 711 - PS 3"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "9/28/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1. Monotone Selection Theorems
+
+Consider a single-output firm facing a tax $\tau$ on revenue (not profit).  The firm is not a price-taker in input markets, but its technology is still characterized by a weakly-increasing cost function $c : \R_+ \to \R_+$, with $c(q)$ the cost of producing $q$ units of output.
+
+(a) Suppose the firm is a price taker in its output market.  Show that its objective function $(1-\tau)pq-c(q)$ has strictly increasing differences in $q$ and $-\tau$.  Prove that this implies a monotone selection rule: an increase in $\tau$ can never result in an increase in output.  Explain why this is a stronger result than "baby Topkis".
+
+Now suppose the firm is not a price-taker in the output market, but faces an inverse demand function $P( \cdot)$, where $P(q)$ is the price at which the firm can sell $q$ units of output.
+
+(b) Show that the firm's objective function $(1-\tau)P(q)q-c(q)$ does not necessarily have increasing differences in $q$ and $-\tau$.
+
+(c) Show that if $c(\cdot)$ is strictly increasing, the firm's objective function still have strictly single-crossing differences; prove that an increase in $\tau$ cannot result in an increase in output.
+
+# Question 2. Robot Carwashes
+
+A firm provides car washes using four inputs: unskilled labor ($\ell$), managers ($m$), robots ($r$), and engineers ($e$). Managers are required to supervise unskilled labor, and engineers are required to keep the robots running; the firm's output is 
+
+$$q=f(\ell, m, r, e) =(\ell^{0.5}m^{0.3})+r^{0.7}e^{0.1})^z$$
+
+with $z=1.1$. Input costs are $w_\ell, w_m, w_r,$ and $w_e$, so the firm's problem is 
+
+$$\max_{\ell, m, r, e \ge 0}\{pf(\ell, m, r, e)-w_\ell\ell- w_mm- w_rr-w_ee\}$$
+
+Suppose at each input price vector, the firm's problem has a unique solution.
+
+(a) In an effort to encourage STEM education, a politician proposes subsidizing the wage of engineers.  From the firm's point of view, this simply reduces the cost of engineers, $w_e$. What effect will this have on the firm's demand for each input?
+
+(b) Over time, the firm's technology shifts, with $z$ changing from 1.1 to 0.9. With $z = 0.9$, what effect would the subsidy on engineers' wages have on the firm's demand for each input?
+
+(c) If the supply of managers is fixed in the short-run, would the subsidy's effect on unskilled labor be larger in the short-run or the long-run? Explain.

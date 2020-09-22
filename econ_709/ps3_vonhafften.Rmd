@@ -19,15 +19,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (a) $X^2 + Y^2 < 1$
 
-Case 1: $X=1$ or $X=-1$ (left and right edge of the box). $X^2 + Y^2 < 1 \implies 1+Y^2<1$.  Since $Y^2 \ge 0 \implies P(1+Y^2<1)=0$.
 
-Case 2: $Y=1$ or $Y=-1$ (top and bottom edge of the box). $X^2 + Y^2 < 1 \implies X^2+1<1$.  Since $X^2 \ge 0 \implies P(X^2+1<1)=0$. 
-
-Therefore, $P(X^2 + Y^2 < 1) = 0$.
 
 (b) $|X + Y| < 2$
 
-Notice that only two points on the box do not meet $|X + Y| < 2$.  At $(1, 1)$ and $(-1, -1)$, $|1 + 1|=|-1+(-1)|=2$.  At all other points, $|X + Y| \in [0, 2)$.  Since $X$ and $Y$ are continuous random variables, the probability that they equal a given point is zero, so $P(|X + Y| < 2)=1$.
+
 
 2. Let the joint PDF of $X$ and $Y$ be given by $f(x, y) = g(x)h(y)$ $\forall x, y \in \R$ for some functions $g(x)$ and $h(y)$. Let $a$ denote $\int_{-\infty}^\infty g(x)dx$ and $b$ denote $\int_{-\infty}^\infty h(x)dx$
 
@@ -103,16 +99,66 @@ f(x, y) = \begin{cases} cxy & \text{ if } x, y \in [0, 1], x+y \le 1 \\ 0, & \te
 (b) Find the marginal distributions of $X$ and $Y$.
 
 \begin{align*}
-f_X(x) = \int_0^{1-x} 24xy dy
+f_X(x) &= \int_0^{1-x} f(x,y) dy \\
+       &= \int_0^{1-x} 24xy dy \\
+       &= \Big[ 12xy^2 \Big]_{y=0}^{1-x} \\
+       &= \begin{cases} 12x(1-x)^2, x \in [0, 1] \\ 0, \text{ otherwise.} \end{cases}
 \end{align*}
 
 \begin{align*}
-f_Y(y) = \int_0^{1-y} 24xy dx
+f_Y(y) &= \int_0^{1-y} f(x,y) dx \\
+       &= \int_0^{1-y} 24xy dx \\
+       &= \Big[ 12x^2y \Big]_{x=0}^{1-y} \\
+       &= \begin{cases} 12(1-y)^2 y, y \in [0, 1] \\ 0, \text{ otherwise.} \end{cases}
 \end{align*}
 
 (c) Are $X$ and $Y$ independent? Compare your answer to Problem 2 and discuss.
 
+$X$ and $Y$ independent if the product of the marginal distributions equals their joint distribution at all points in the support.  If $x=y=0.9$, $f(0.9, 0.9) = 0$ because $(0.9, 0.9)$ is not in the support, $x+y=0.9+0.9=1.8 > 1$. But each marginal distribution is define over $[0,1]$, so the product of the marginals is positive at $(0.9, 0.9)$: $f_X(0.9)f_Y(0.9) = [12(0.9)(1-(0.9))^2][12(1-0.9)^2 (0.9)] = 0.0117$.
+
+In (2), the support for the joint distribution is $\R^2$, whereas the support for the joint distribution depends on the realization of the random variable.
+
 4. Show that any random variable is uncorrelated with a constant.
+
+Proof: Let $a \in \R$ and $X$ be a random variable with distribution $F_X$. Define random variable $Y$ as the degenerate random variable that equals $a$.  Thus, the distribution $Y$ is
+
+\begin{align*}
+F_Y(y) = \begin{cases} 0, & y<a \\ 1, & y \ge a \end{cases}
+\end{align*}
+
+To show $X$ is uncorrelated with a constant, I show that $X$ and $Y$ are independent and then, by a theorem in the Lecture 3 Notes, we know that $X$ and $Y$ are uncorrelated.
+
+To find the joint distribution of $X$ and $Y$, consider two cases: $y < a$ and $y \ge a$. For $y < a$,
+
+\begin{align*}
+F(x, y) &= P(X \le x \text{ and } Y \le y)\\
+        &= P(X \le x \text{ and } Y \le a) \\
+        &= 0
+\end{align*}
+
+For $y \ge a$:
+
+\begin{align*}
+F(x, y) &= P(X \le x \text{ and } Y \le y)\\
+        &= P(X \le x) \\
+        &= F_X(x)
+\end{align*}
+
+Thus, the joint distribution is
+
+\begin{align*}
+F(x, y) = \begin{cases} 0, & y<a \\ F_X(x), & y \ge a \end{cases}
+\end{align*}
+
+The joint distribution equals the product of the marginals:
+
+\begin{align*}
+F(x, y) = \begin{cases} 0*F_X(x), & y<a \\ 1*F_X(x), & y \ge a \end{cases} = \begin{cases} F_Y(y)*F_X(x), & y<a \\ F_Y(y)*F_X(x), & y \ge a \end{cases}.
+\end{align*}
+
+$\square$
+
+\pagebreak
 
 5. Let $X$ and $Y$ be independent random variables with means $\mu_X, \mu_Y$ and variances $\sigma_X^2, \sigma_Y^2$.  Find an expression for the correlation of $XY$ and $Y$ in terms of these means and variances.
 
@@ -120,8 +166,10 @@ f_Y(y) = \int_0^{1-y} 24xy dx
 
 $$
 Var\Bigg( \sum_{i=1}^n X_i\Bigg) = \sum_{i=1}^n Var (X_i) + 2 \sum_{1\le i < j \le n}
-Cov(X_i, Y_i).
+Cov(X_i, X_j).
 $$
+
+Proof by induction.
 
 7. Suppose that $X$ and $Y$ are joint normal, i.e. they have the joint PDF:
 
@@ -131,7 +179,9 @@ $$
 
 (a) Derive the marginal distributions of $X$ and $Y$, and observe that both normal distributions.
 
-(b) Derive the conditional distribution of $Y$ given $X=x$. Observe that it is also a nromal distribution.
+Gaussian integrals
+
+(b) Derive the conditional distribution of $Y$ given $X=x$. Observe that it is also a normal distribution.
 
 (c) Derive the joint distribution of $(X, Z)$ where $Z = (Y/\sigma_Y)-(\rho X/\sigma_X)$, and then show that $X$ and $Z$ are independent.
 
