@@ -21,6 +21,8 @@ Consider a single-output firm facing a tax $\tau$ on revenue (not profit).  The 
 
 (a) Suppose the firm is a price taker in its output market.  Show that its objective function $(1-\tau)pq-c(q)$ has strictly increasing differences in $q$ and $-\tau$.  Prove that this implies a monotone selection rule: an increase in $\tau$ can never result in an increase in output.  Explain why this is a stronger result than "baby Topkis".
 
+Look at lecture 5 page 3.
+
 Now suppose the firm is not a price-taker in the output market, but faces an inverse demand function $P( \cdot)$, where $P(q)$ is the price at which the firm can sell $q$ units of output.
 
 (b) Show that the firm's objective function $(1-\tau)P(q)q-c(q)$ does not necessarily have increasing differences in $q$ and $-\tau$.

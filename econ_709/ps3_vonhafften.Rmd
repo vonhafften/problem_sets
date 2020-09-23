@@ -19,11 +19,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (a) $X^2 + Y^2 < 1$
 
+$X^2 + Y^2 < 1 \implies -\sqrt{1 - X^2} < Y < \sqrt{1 - X^2}$
 
+$$ \int_{-1}^1 \int_{-\sqrt{1 - x^2}}^{\sqrt{1 - x^2}} \frac{1}{4}dydx =  \int_{-1}^1 \Bigg[\frac{1}{4}y\Bigg]_{-\sqrt{1 - x^2}}^{\sqrt{1 - x^2}}dx =  \frac{1}{2}\int_{-1}^1 \sqrt{1 - x^2}dx$$
+
+Define $x = \sin \theta \implies dx = \cos \theta d \theta$.
+
+\begin{align*}
+\frac{1}{2}\int_{-1}^1 \sqrt{1 - x^2}dx &= \frac{1}{2}\int_{-\pi/2}^{\pi/2} \sqrt{1 - (\sin \theta)^2} \cos \theta d\theta \\
+                                        &= \frac{1}{2}\int_{-\pi/2}^{\pi/2} \cos^2 \theta d\theta \\
+                                        &= \frac{1}{4}\int_{-\pi/2}^{\pi/2} 1+\cos (2\theta) d\theta \\
+                                        &= \frac{1}{4} \Bigg[\theta+\frac{\sin (2\theta)}{2}\Bigg]_{-\pi/2}^{\pi/2} \\
+                                        &= \frac{1}{4} \Bigg[(\pi/2)+\frac{0}{2} - (-\pi/2) - \frac{0}{2}\Bigg] \\
+                                        &= \frac{\pi}{4}
+\end{align*}
 
 (b) $|X + Y| < 2$
 
+$|X + Y| < 2 \implies -2 < X +Y < 2 \implies -2-X<Y<2-X$. Since $X$ ranges from -1 to 1, $-2-X<Y<2-X \implies -1<Y<1$
 
+$$ \int_{-1}^1 \int_{-1}^{1} \frac{1}{4}dydx = \frac{1}{4} \int_{-1}^1 [ y ]_{-1}^{1} dx  = \frac{1}{2} \int_{-1}^1 dx = \frac{1}{2} [x]_{-1}^1 = 1$$
+
+\pagebreak
 
 2. Let the joint PDF of $X$ and $Y$ be given by $f(x, y) = g(x)h(y)$ $\forall x, y \in \R$ for some functions $g(x)$ and $h(y)$. Let $a$ denote $\int_{-\infty}^\infty g(x)dx$ and $b$ denote $\int_{-\infty}^\infty h(x)dx$
 
@@ -39,27 +56,19 @@ For $f(x, y)$ to be a PDF, it should integrate to one:
 \implies a &= b^{-1} \\
 \end{align*}
 
-\pagebreak
-
 (b) Find the marginal PDF of $X$ and $Y$.
 
 The marginal PDF of $X$:
 
-\begin{align*}
-f_X(x) &= \int_{-\infty}^\infty f(x, y) dy \\
-       &= \int_{-\infty}^\infty g(x)h(y) dy \\
-       &= g(x)\int_{-\infty}^\infty h(y) dy \\
-       &= b \cdot g(x) \\
-\end{align*}
+$$
+f_X(x) = \int_{-\infty}^\infty f(x, y) dy = \int_{-\infty}^\infty g(x)h(y) dy = g(x)\int_{-\infty}^\infty h(y) dy = b \cdot g(x)
+$$
 
 The marginal PDF of $Y$:
 
-\begin{align*}
-f_Y(y) &= \int_{-\infty}^\infty f(x, y) dx \\
-       &= \int_{-\infty}^\infty g(x)h(y) dx \\
-       &= h(y)\int_{-\infty}^\infty g(x) dx \\
-       &= a \cdot h(y) \\
-\end{align*}
+$$
+f_Y(y) = \int_{-\infty}^\infty f(x, y) dx = \int_{-\infty}^\infty g(x)h(y) dx = h(y)\int_{-\infty}^\infty g(x) dx = a \cdot h(y)
+$$
 
 (c) Show that $X$ and $Y$ are independent.
 
@@ -89,34 +98,28 @@ f(x, y) = \begin{cases} cxy & \text{ if } x, y \in [0, 1], x+y \le 1 \\ 0, & \te
 \implies    \int_0^1 \int_0^{1-x} cxy dy dx &= 1 \\
 \implies c\int_0^1 \Big[ \frac{xy^2}{2} \Big]_{y=0}^{1-x} dx &= 1\\
 \implies \frac{c}{2} \int_0^1 x(1-x)^2 dx &= 1\\
-\implies \frac{c}{2} \int_0^1 x-2x^2+x^3 dx &= 1\\
 \implies \frac{c}{2}\Big[ \frac{x^2}{2}-\frac{2x^3}{3}+\frac{x^4}{4} \Big]_{x=0}^1 &= 1\\
 \implies \frac{c}{2}\Big[ \frac{1}{2}-\frac{2}{3}+\frac{1}{4} \Big] &= 1\\
-\implies \frac{c}{2}\Big(\frac{1}{12}\Big) &= 1\\
 \implies c &= 24\\
 \end{align*}
 
 (b) Find the marginal distributions of $X$ and $Y$.
 
-\begin{align*}
-f_X(x) &= \int_0^{1-x} f(x,y) dy \\
-       &= \int_0^{1-x} 24xy dy \\
-       &= \Big[ 12xy^2 \Big]_{y=0}^{1-x} \\
-       &= \begin{cases} 12x(1-x)^2, x \in [0, 1] \\ 0, \text{ otherwise.} \end{cases}
-\end{align*}
+$$
+f_X(x) = \int_0^{1-x} f(x,y) dy = \int_0^{1-x} 24xy dy = \Big[ 12xy^2 \Big]_{y=0}^{1-x} = \begin{cases} 12x(1-x)^2, x \in [0, 1] \\ 0, \text{ otherwise.} \end{cases}
+$$
 
-\begin{align*}
-f_Y(y) &= \int_0^{1-y} f(x,y) dx \\
-       &= \int_0^{1-y} 24xy dx \\
-       &= \Big[ 12x^2y \Big]_{x=0}^{1-y} \\
-       &= \begin{cases} 12(1-y)^2 y, y \in [0, 1] \\ 0, \text{ otherwise.} \end{cases}
-\end{align*}
+$$
+f_Y(y) = \int_0^{1-y} f(x,y) dx = \int_0^{1-y} 24xy dx = \Big[ 12x^2y \Big]_{x=0}^{1-y} = \begin{cases} 12(1-y)^2 y, y \in [0, 1] \\ 0, \text{ otherwise.} \end{cases}
+$$
 
 (c) Are $X$ and $Y$ independent? Compare your answer to Problem 2 and discuss.
 
 $X$ and $Y$ independent if the product of the marginal distributions equals their joint distribution at all points in the support.  If $x=y=0.9$, $f(0.9, 0.9) = 0$ because $(0.9, 0.9)$ is not in the support, $x+y=0.9+0.9=1.8 > 1$. But each marginal distribution is define over $[0,1]$, so the product of the marginals is positive at $(0.9, 0.9)$: $f_X(0.9)f_Y(0.9) = [12(0.9)(1-(0.9))^2][12(1-0.9)^2 (0.9)] = 0.0117$.
 
 In (2), the support for the joint distribution is $\R^2$, whereas the support for the joint distribution depends on the realization of the random variable.
+
+\pagebreak
 
 4. Show that any random variable is uncorrelated with a constant.
 
@@ -162,6 +165,8 @@ $\square$
 
 5. Let $X$ and $Y$ be independent random variables with means $\mu_X, \mu_Y$ and variances $\sigma_X^2, \sigma_Y^2$.  Find an expression for the correlation of $XY$ and $Y$ in terms of these means and variances.
 
+\pagebreak
+
 6. Prove the following: For any random vector $(X_1, X_2, ..., X_n)$,
 
 $$
@@ -170,6 +175,8 @@ Cov(X_i, X_j).
 $$
 
 Proof by induction.
+
+\pagebreak
 
 7. Suppose that $X$ and $Y$ are joint normal, i.e. they have the joint PDF:
 
@@ -184,6 +191,10 @@ Gaussian integrals
 (b) Derive the conditional distribution of $Y$ given $X=x$. Observe that it is also a normal distribution.
 
 (c) Derive the joint distribution of $(X, Z)$ where $Z = (Y/\sigma_Y)-(\rho X/\sigma_X)$, and then show that $X$ and $Z$ are independent.
+
+Equation 23 in lecture 3.
+
+\pagebreak
 
 8. Consider a function $g : \R \to \R$. Recall that the inverse image of a set $A$, denoted $g^{-1}(A)$ is $g^{-1}(A)=\{x \in \R: g(x) \in A\}$.  Let there be functions $g_1: \R \to \R$ and $g_2: \R \to \R$.  Let $X$ and $Y$ be two random variables that are independent.  Suppose that $g_1$ and $g_2$ are both Borel-measurable, which means that $g_1^{-1}(A)$ and $g_2^{-1}(A)$ are both in the Borel $\sigma$-field whenever $A$ is in the Borel $\sigma$-field.  Show that the two random variables $Z := g_1(X)$ and $W:=g_2(Y)$ are independent.  (Hint: use the 1st or the 2nd definition of independence.)
 
