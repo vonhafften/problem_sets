@@ -165,6 +165,10 @@ Price dropping by a half would cause money demand to halve as well: $(M_{t+1}^t)
 
 (a) $U = 10 c_1 - 4 c_1^2 + 4 c_2 - c_2^2, (w_1, w_2) = (0, 2)$
 
+In the first figure, we can see that the utility function is an ellipsoid and thus the indifference curves are concentric ellipses centered at  $(5/4, 2)$.  Higher utility is associated with ellipses closer to $(5/4, 2)$.  The budget constraint with a price ratio ($p_1/p_2$) of infinity is represented as a vertical line at $c_1 = 0$. The highest utility the agent can get is at the autarky point, which is tangent to the indifference curve associated with $\bar{u}=4$.  As the price ratio decreases, the slope of the budget constraint decreases.  The agent will choose consumption at the point allow the budget constraint that is tangent to highest utility ellipse.  For example, at $p_1/p_2 = 1$, the agent will choose to consume $(1, 1)$ which is tangent to the indifference ellipse associated with $\bar{u} = 9$.  At $p_1/p_2 = 0$, the budget constraint is horizontal line at $c_2=2$.  Thus, the agent will consume $(5/4, 2)$ achieving their maximum utility of $\bar{u} = 10.25$.  Thus, the trade offer curve traces the lower half of an ellipse starting at the autarky point through the tangent points to the concentric ellipse and ending at the maximum utility point.
+
+The second figure translates the trade offer curve from consumption space to excess demand space.
+
 ```{r, echo=FALSE, warning=FALSE, fig.width=6, fig.height=4.5}
 library(shape)
 
@@ -224,9 +228,11 @@ lines(x= c_1, y= -sqrt(5*c_1-4*c_1^2), col = "red")
 
 ```
 
-\pagebreak
-
 (b) $U = \min\{2c_1 + c_2, c_1 + 2c_2\}, (w_1, w_2) = (1, 0)$
+
+In the first figure, we see that the indifference curves are similar to the perfect complements case discussed in section.  However, the lines below the identity line have a slope of 1/2 and the lines above the identity line have a slope of 2.  At a price ratio ($p_1/p_2$) of zero, the budget constraint is a horizontal line at $c_2=0$.  To get the highest indifference curve, the agent will consume infinity units of $c_1$ and zero units of $c_2$. Between price ratios of zero and 1/2, the agent will consume at the autarky point of $(1, 0)$.  The agent will continue to consume the autarky point until the price ratio is 1/2, at which point the budget constraint will lay ontop of the lower half of the indifference curve associated with $\bar{u}=1/2$.  Thus, the agent is indifferent between consuming at all points on the line segment between $(1, 0)$ and $(1/3, 1/3)$.  At price ratios between 1/2 and 2, the agent will consume along the identity line.  At a price ratio of 2, the budget constraint sits ontop of the upper half of the indifference curve associated with $\bar{u}=1$.  At this price ratio, the agent is indifferent between consuming the points along the line segment between $(2/3, 2/3)$ and $(0, 2)$.  At price ratio higher than 2, the agent consumes all $c_2$ at the highest amount possible. At a price ratio of infinity, the agent consumes infinity units of $c_2$.
+
+The second figure translates the trade offer curve from consumption space to excess demand space.
 
 ```{r, echo=FALSE, fig.width=6, fig.height=4.5}
 library(shape)
@@ -283,6 +289,10 @@ lines(x = toc_x-1,
 \pagebreak
 
 (c) $U = \min\{2c_1 + c_2, c_1 + 2c_2\}, (w_1, w_2) = (1, 10)$
+
+In the first figure, we see that the indifference curves are the same as in (b).  At an price ratio ($p_1/p_2$) of 0, the agent consumes infinity units of $c_1$ and zero units of $c_2$.  As the price ratio increases, the agent consumes less and less units of $c_1$. At a price ratio of 1/2, the budget constraint sit on top of the lower half of an indifference curve at $\bar{u} = 10.5$. The agent is indifferent between consuming any point between $(21, 0)$ and $(7, 7)$.  For price ratios between 1/2 and 2, the agent consumes along the identity line. At a price ratio of 2, the budget constraint lays on top of the upper half of an indifference curve associated with $\bar{u} = 6$.  The agent is indifferent between consuming at points along the line segment between $(4, 4)$ and $(12, 0)$.  This segment passes through the autarky point. For higher price ratios, the agent consumes zero units of $c_1$ and more and more units of $c_2$. At a price ratio of infinity, the agent would consume infinity units of $c_2$ and zero units of $c_1$.
+
+The second figure translates the trade offer curve from consumption space to excess demand space.
 
 ```{r, echo=FALSE, fig.width=6, fig.height=4.5}
 library(shape)
