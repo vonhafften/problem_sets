@@ -182,11 +182,23 @@ Corr(XY, Y)
 6. Prove the following: For any random vector $(X_1, X_2, ..., X_n)$,
 
 $$
-Var\Bigg( \sum_{i=1}^n X_i\Bigg) = \sum_{i=1}^n Var (X_i) + 2 \sum_{1\le i < j \le n}
-Cov(X_i, X_j).
+Var\Bigg( \sum_{i=1}^n X_i\Bigg) = \sum_{i=1}^n Var (X_i) + 2 \sum_{1\le i < j \le n}Cov(X_i, X_j).
 $$
 
-Proof by induction.
+Proof (by induction): For $n = 2$, $Var(X_1+X_2) = Var (X_1) + Var (X_2) + 2Cov(X_1, X_2)$ from lecture 3 notes.  Assume that the formula holds for some $n$, then
+
+\begin{align*}
+& Var\Bigg( \sum_{i=1}^{n+1} X_i\Bigg) \\
+&= Var\Bigg( \sum_{i=1}^{n} X_i + X_{n+1} \Bigg) \\
+&= Var\Bigg( \sum_{i=1}^{n} X_i \Bigg) + Var( X_{n+1} ) + 2Cov\Bigg(\sum_{i=1}^{n} X_i, X_{n+1}\Bigg)\\
+&= \sum_{i=1}^n Var (X_i) + 2 \sum_{1\le i < j \le n}Cov(X_i, X_j) + Var( X_{n+1} )+2 \Bigg[E\Bigg(X_{n+1}\sum_{i=1}^{n} X_i\Bigg)+E\Bigg(X_{n+1}\Bigg)E\Bigg(\sum_{i=1}^{n} X_i\Bigg)\Bigg]\\
+&= \sum_{i=1}^{n+1} Var (X_i) + 2 \sum_{1\le i < j \le n}Cov(X_i, X_j) + 2 \Bigg[\sum_{i=1}^{n}E\Bigg(X_{n+1} X_i\Bigg) + E\Bigg(X_{n+1}\Bigg) \sum_{i=1}^{n} E\Bigg(X_i\Bigg)\Bigg]\\
+&= \sum_{i=1}^{n+1} Var (X_i) + 2 \sum_{1\le i < j \le n}Cov(X_i, X_j) + 2 \Bigg[\sum_{i=1}^{n}E\Bigg(X_{n+1} X_i\Bigg) + E\Bigg(X_{n+1}\Bigg)  E\Bigg(X_i\Bigg)\Bigg]\\
+&= \sum_{i=1}^{n+1} Var (X_i) + 2 \sum_{1\le i < j \le n}Cov(X_i, X_j) + 2 \sum_{i=1}^{n}Cov\Bigg(X_{n+1} X_i\Bigg) \\
+&= \sum_{i=1}^{n+1} Var (X_i) + 2 \sum_{1\le i < j \le n+1}Cov(X_i, X_j) \\
+\end{align*}
+
+$\square$
 
 \pagebreak
 
