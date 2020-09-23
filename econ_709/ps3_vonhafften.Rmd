@@ -205,14 +205,68 @@ $\square$
 7. Suppose that $X$ and $Y$ are joint normal, i.e. they have the joint PDF:
 
 $$
-f(x, y) = \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}}\exp(-(2(1-\rho^2))^{-1}(x^2/\sigma_X-2xy/\sigma_X\sigma_Y+y^2/\sigma_Y^2))
+f(x, y) = \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}}\exp(-(2(1-\rho^2))^{-1}(x^2/\sigma_X^2-2 \rho xy/\sigma_X\sigma_Y+y^2/\sigma_Y^2))
 $$
 
 (a) Derive the marginal distributions of $X$ and $Y$, and observe that both normal distributions.
 
-Gaussian integrals
+Note that the integral of a Gaussian function is
+
+$$
+\int_{-\infty}^{\infty} \exp(-ax^2+bx+c)dx= \sqrt{\frac{\pi}{a}} \exp\Bigg(\frac{b^2}{4a}+c\Bigg).
+$$
+
+The marginal distribution of $Y$ is
+
+\begin{align*}
+F_Y(y) &= 
+\int_{-\infty}^{\infty} f(x, y) dx \\
+&= \int_{-\infty}^{\infty} \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}} \exp\Bigg(-\frac{1}{2(1-\rho^2)}\Bigg(\frac{x^2}{\sigma_X^2}-\frac{2\rho xy}{\sigma_X\sigma_Y}+\frac{y^2}{\sigma_Y^2}\Bigg)\Bigg) dx \\
+&= \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}} \int_{-\infty}^{\infty} \exp\Bigg(-\frac{1}{2\sigma_X^2(1-\rho^2)}x^2 + \frac{\rho y }{\sigma_X\sigma_Y(1-\rho^2)}x - \frac{y^2}{2\sigma_Y^2(1-\rho^2)}\Bigg)  dx \\
+&= \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}} \int_{-\infty}^{\infty} \exp\Bigg(-ax^2 + bx + c \Bigg) dx \\
+\end{align*}
+
+where $a=(2\sigma_X^2(1-\rho^2))^{-1}$, $b = \rho y (\sigma_X\sigma_Y(1-\rho^2))^{-1}$, and $c=-y^2(2\sigma_Y^2(1-\rho^2))^{-1}$. Therefore, using the Gaussian integral formula above:
+
+\begin{align*}
+F_Y(y) &= \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}} \sqrt{\pi 2\sigma_X^2(1-\rho^2)} \exp\Bigg(\frac{2\sigma_X^2(1-\rho^2) (\rho y)^2}{4(\sigma_X\sigma_Y(1-\rho^2))^2} - \frac{y^2}{2\sigma_Y^2(1-\rho^2)}\Bigg) \\
+&=  \frac{1}{ \sigma_Y\sqrt{2\pi}} \exp \Bigg(\frac{\rho^2y^2}{2\sigma_Y^2(1-\rho^2)}- \frac{y^2}{2\sigma_Y^2(1-\rho^2)}\Bigg) \\
+&=  \frac{1}{ \sigma_Y\sqrt{2\pi}} \exp \Bigg(-\frac{y^2}{2\sigma_Y^2}\Bigg) \\
+\end{align*}
+
+Thus, $Y \sim Normal(0, \sigma_Y^2)$.  
+
+\pagebreak
+
+The marginal distribution of $X$ is
+
+\begin{align*}
+F_X(x) &= 
+\int_{-\infty}^{\infty} f(x, y) dy \\
+&= \int_{-\infty}^{\infty} \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}} \exp\Bigg(-\frac{1}{2(1-\rho^2)}\Bigg(\frac{x^2}{\sigma_X^2}-\frac{2\rho xy}{\sigma_X\sigma_Y}+\frac{y^2}{\sigma_Y^2}\Bigg)\Bigg) dy \\
+&= \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}} \int_{-\infty}^{\infty} \exp\Bigg(-\frac{1}{2\sigma_Y^2(1-\rho^2)}y^2 + \frac{\rho x }{\sigma_X\sigma_Y(1-\rho^2)}y - \frac{x^2}{2\sigma_X^2(1-\rho^2)}\Bigg)  dy \\
+&= \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}} \sqrt{\pi 2\sigma_Y^2(1-\rho^2)} \exp\Bigg(\frac{2\sigma_Y^2(1-\rho^2) (\rho x)^2}{4(\sigma_Y\sigma_X(1-\rho^2))^2} - \frac{x^2}{2\sigma_X^2(1-\rho^2)}\Bigg) \\
+&=  \frac{1}{ \sigma_X\sqrt{2\pi}} \exp \Bigg(\frac{\rho^2x^2}{2\sigma_X^2(1-\rho^2)}- \frac{x^2}{2\sigma_X^2(1-\rho^2)}\Bigg) \\
+&=  \frac{1}{ \sigma_X\sqrt{2\pi}} \exp \Bigg(-\frac{x^2}{2\sigma_X^2}\Bigg) \\
+\end{align*}
+
+Thus, $X \sim Normal(0, \sigma_X^2)$.
 
 (b) Derive the conditional distribution of $Y$ given $X=x$. Observe that it is also a normal distribution.
+
+\begin{align*}
+f_{Y|X}(y|x) &= \frac{f_{X,Y}(x, y)}{f_X(x)} \\
+&= \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{1-\rho^2}} \exp\Bigg(-\frac{1}{2(1-\rho^2)}\Bigg(\frac{x^2}{\sigma_X^2}-\frac{2\rho xy}{\sigma_X\sigma_Y}+\frac{y^2}{\sigma_Y^2}\Bigg)\Bigg) \Bigg[\frac{1}{ \sigma_X\sqrt{2\pi}} \exp \Bigg(-\frac{x^2}{2\sigma_X^2}\Bigg)\Bigg]^{-1} \\
+&= \frac{1} { \sigma_Y \sqrt{1- \rho^2} \sqrt{2\pi} } \exp\Bigg(-\frac{1}{2(1-\rho^2)} \Bigg(\frac{x^2}{\sigma_X^2}-\frac{2\rho xy}{\sigma_X\sigma_Y}+\frac{y^2}{\sigma_Y^2}\Bigg)+\frac{x^2}{2\sigma_X^2}\Bigg) \\
+&= \frac{1} { \sigma_Y \sqrt{1- \rho^2} \sqrt{2\pi}} \exp\Bigg(-\frac{1}{2(1-\rho^2)} \Bigg(\frac{x^2}{\sigma_X^2}-\frac{2\rho xy}{\sigma_X\sigma_Y}+\frac{y^2}{\sigma_Y^2}-\frac{x^2(1-\rho^2)}{\sigma_X^2}\Bigg)\Bigg) \\
+&= \frac{1} { \sigma_Y \sqrt{1- \rho^2} \sqrt{2\pi}} \exp\Bigg(-\frac{1}{2(1-\rho^2)} \Bigg(\frac{y^2}{\sigma_Y^2} - \frac{2\rho xy}{\sigma_X\sigma_Y} + \frac{x^2\rho^2}{\sigma_X^2}\Bigg)\Bigg) \\
+&= \frac{1} { \sigma_Y \sqrt{1- \rho^2} \sqrt{2\pi}} \exp\Bigg(-\frac{1}{2(1-\rho^2)} \Bigg(\frac{y}{\sigma_Y}-\frac{x\rho}{\sigma_X}\Bigg)^2\Bigg) \\
+&= \frac{1} { \sigma_Y \sqrt{1- \rho^2} \sqrt{2\pi}} \exp\Bigg(-\frac{1}{2} \frac{(y-\frac{\sigma_Y}{\sigma_X}\rho x)^2}{(1-\rho^2)\sigma_Y^2}\Bigg)
+\end{align*}
+
+Observe that $Y|X \sim Normal(\frac{\sigma_Y}{\sigma_X}\rho x, \sigma_Y(1-\rho^2))$.
+
+\pagebreak
 
 (c) Derive the joint distribution of $(X, Z)$ where $Z = (Y/\sigma_Y)-(\rho X/\sigma_X)$, and then show that $X$ and $Z$ are independent.
 
