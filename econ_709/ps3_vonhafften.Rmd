@@ -165,6 +165,18 @@ $\square$
 
 5. Let $X$ and $Y$ be independent random variables with means $\mu_X, \mu_Y$ and variances $\sigma_X^2, \sigma_Y^2$.  Find an expression for the correlation of $XY$ and $Y$ in terms of these means and variances.
 
+Note that $Var(X) = E(X^2) - E(X)^2 \implies E(X^2) = Var(X) + E(X)^2$.
+
+\begin{align*}
+Corr(XY, Y) 
+&= \frac{Cov(XY, Y)}{\sqrt{Var(XY) Var(Y)}} \\
+&= \frac{E(XY^2)-E(XY)E(Y)}{\sigma_Y\sqrt{E((XY)^2)-E(XY)^2}} \\
+&= \frac{E(X)E(Y^2)-E(X)E(Y)E(Y)}{\sigma_Y\sqrt{E(X^2)E(Y^2)-(E(X)E(Y))^2}} \\
+&= \frac{\mu_X(Var(Y) + E(Y)^2)-\mu_X\mu_Y^2}{\sigma_Y\sqrt{(Var(X) + E(X)^2)(Var(Y) + E(Y)^2)-(\mu_X\mu_Y)^2}} \\
+&= \frac{\mu_X\sigma_Y^2 + \mu_X\mu_Y^2-\mu_X\mu_Y^2}{\sigma_Y\sqrt{\sigma_Y^2\sigma_X^2 + \mu_X^2\sigma_Y^2 + \mu_Y^2\sigma_X^2 + \mu_Y^2\mu_X^2-\mu_X^2\mu_Y^2}} \\
+&= \frac{\mu_X\sigma_Y}{\sqrt{\sigma_Y^2\sigma_X^2 + \mu_X^2\sigma_Y^2 + \mu_Y^2\sigma_X^2}}
+\end{align*}
+
 \pagebreak
 
 6. Prove the following: For any random vector $(X_1, X_2, ..., X_n)$,
