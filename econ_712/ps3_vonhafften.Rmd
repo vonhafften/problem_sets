@@ -50,7 +50,7 @@ Thus, the solution to the social planner's problem is the allocation $\Big\{\Big
 
 (b) State the representative household's problem in period $t \ge 0$. Try to write the budget constraints in real terms.
 
-I break the household problem into the problem facing an initial old agent and the problem facing agents born in period $t > 0$.  Let $p_t$ be the number of dollar per unit of consumption good in period $t$.  Define $M_{t+1}^t \in \R_+$ as the monetary holdings of the generation born in $t$ between periods $t$ and $t+1$.
+I break the household problem into the problem facing an initial old agent and the problem facing agents born in period $t > 0$.  Let $p_t$ be the number of dollar per unit of consumption good in period $t$.
 
 The problem facing the initial old agents is:
 
@@ -59,7 +59,7 @@ The problem facing the initial old agents is:
 \text{s.t. } c_1^0 & \le w_2 + \frac{\bar{M}}{p_1}
 \end{align*}
 
-The problem facing agents born in period $t > 0$ is:
+Define $M_{t+1}^t \in \R_+$ as the holding of fiat currency by the representative household in generation born in $t$ between periods $t$ and $t+1$. The problem facing agents born in period $t > 0$ is:
 
 \begin{align*}
 \max_{(c_t^t, c_{t+1}^t, M_{t+1}^t) \in \R^3_+} & \ln(c_t^t) + \ln(c_{t+1}^{t})\\
@@ -67,11 +67,26 @@ The problem facing agents born in period $t > 0$ is:
              c_{t+1}^t & \le w_2 + \frac{M_{t+1}^t}{p_{t+1}} 
 \end{align*}
 
+Defining $m_{t+1}^t = \frac{M_{t+1}^t}{p_t}$ as the real value of the holding of fiat currency, we can rewrite the problem facing agents born in period $t>0$:
+
+\begin{align*}
+\max_{(c_t^t, c_{t+1}^t, m_{t+1}^t) \in \R^3_+} & \ln(c_t^t) + \ln(c_{t+1}^{t})\\
+\text{s.t. } c_t^t & \le w_1 - m_{t+1}^t\\ 
+             c_{t+1}^t & \le w_2 + \frac{p_t}{p_{t+1}} m_{t+1}^t
+\end{align*}
+
+\pagebreak
+
 (c) Define and solve for an autarkic equilibrium, assuming that it exists.
 
-In an autarky, money has no value. Thus, agents do not forego consumption to hold money, or $M_{t+1}^t=0$ $\forall t$. Thus, in period 1, young agents do not trade with old agents because they believe that money will not be valued in period 2. Thus, the stock of fiat currency disappears with the death of the initial old agents.  
+An autarkic equilibrium is the allocation $\{(c_t^t, c_t^{t-1}\}_{\forall t}$ and prices $\{p_t\}_{\forall t}$ such that agents optimize and markets clear when money has no real value, or $m_{t+1}^t=0$ $\forall t$. The market clearing conditions are:
 
-In an autarky, the problem facing the initial old agents collapses to:
+\begin{align*}
+c_t^t+c_t^{t-1} &= w_1 + w_2 & \text{(Goods Market)}\\
+M_{t+1}^t &= \bar{M} & \text{(Money Market)}
+\end{align*}
+
+The problem facing the initial old agents collapses to:
 
 \begin{align*}
 \max_{c_1^0 \in \R_+} & \ln(c_1^0) \\
@@ -80,7 +95,7 @@ In an autarky, the problem facing the initial old agents collapses to:
 
 Trivially, $c_1^0 = w_2$.
 
-In an autarky, the problem facing agents born in period $t > 0$ collapses to:
+The problem facing agents born in period $t > 0$ collapses to:
 
 \begin{align*}
 \max_{(c_t^t, c_{t+1}^t) \in \R^2_+} & \ln(c_t^t) + \ln(c_{t+1}^{t})\\
@@ -88,7 +103,7 @@ In an autarky, the problem facing agents born in period $t > 0$ collapses to:
              c_{t+1}^t & \le w_2
 \end{align*}
 
-So, $(c_t^t, c_{t+1}^{t})=(w_1, w_2)$.  Thus, the autarkic equilibrium is the allocation $\{(w_1, w_2)\}_{\forall t}$.
+So, $(c_t^t, c_{t+1}^{t})=(w_1, w_2)$.  For prices, we know that $m_{t+1}^t = \frac{M_{t+1}^t}{p_t}=0$ and $M_{t+1}^t = \bar{M}>0 \implies \frac{1}{p_t}=0$.  Thus, the autarkic equilibrium is the allocation $\{(w_1, w_2)\}_{\forall t}$ and prices $\{\infty\}_{\forall t}$.
 
 \pagebreak
 
