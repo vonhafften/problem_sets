@@ -274,4 +274,16 @@ Thus, $X$ and $Z$ are independent with $Z \sim Normal(0, 1-\rho^2)$.
 
 8. Consider a function $g : \R \to \R$. Recall that the inverse image of a set $A$, denoted $g^{-1}(A)$ is $g^{-1}(A)=\{x \in \R: g(x) \in A\}$.  Let there be functions $g_1: \R \to \R$ and $g_2: \R \to \R$.  Let $X$ and $Y$ be two random variables that are independent.  Suppose that $g_1$ and $g_2$ are both Borel-measurable, which means that $g_1^{-1}(A)$ and $g_2^{-1}(A)$ are both in the Borel $\sigma$-field whenever $A$ is in the Borel $\sigma$-field.  Show that the two random variables $Z := g_1(X)$ and $W:=g_2(Y)$ are independent.  (Hint: use the 1st or the 2nd definition of independence.)
 
+Proof: Let $A, B$ be events in the Borel $\sigma$-field. Then,
 
+$$
+P(Z \in A, W \in B) = P(g_1(X) \in A, g_2(Y) \in B) = P(X \in g_1^{-1}(A), Y \in g_2^{-1}(B))
+$$
+
+Since $g_1, g_2$ are Borel measurable, $g_1^{-1}(A), g_2^{-1}(B)$ are events in the Borel $\sigma$-field. Thus, by the independence of $X$ and $Y$:
+
+$$
+P(X \in g_1^{-1}(A), Y \in g_2^{-1}(B)) = P(X \in g_1^{-1}(A)) P(Y \in g_2^{-1}(B)) = P(g_1(X) \in A) P(g_2(Y) \in B) = P(Z \in A)P(W \in B)
+$$
+
+Thus, $Z$ and $W$ are independent. $\square$
