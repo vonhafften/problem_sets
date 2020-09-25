@@ -27,6 +27,8 @@ Now suppose the firm is not a price-taker in the output market, but faces an inv
 
 (b) Show that the firm's objective function $(1-\tau)P(q)q-c(q)$ does not necessarily have increasing differences in $q$ and $-\tau$.
 
+Take the derivative with respect to -$\tau$.
+
 (c) Show that if $c(\cdot)$ is strictly increasing, the firm's objective function still have strictly single-crossing differences; prove that an increase in $\tau$ cannot result in an increase in output.
 
 # Question 2. Robot Carwashes

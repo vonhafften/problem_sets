@@ -1,0 +1,153 @@
+---
+title: "ECON 703 - PS 6"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "9/30/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+(1) Alices lives on the farm "Happy Cow", which is located in the forest 5 kilometers from the main road. Bob lives in the house, located on the main road and 13 kilometers from Alice's farm. Bob wants to visit his friend Alice. He walks with the speed 5km/hour on the road and 3km/hour in the forest. What is the smallest time Bob needs to reach "Happy Cow" from home?
+
+Define $x$ as the distance Bob travels on the road, $y$ as the distance he travels through the forest, and $T=x/5+y/3$ as the total time it takes him to walk to "Happy Cow". Since the path through the forest that is perpendicular to the road starts at $\sqrt{13^2-5^2}=12$, we can write $y$ as:
+
+$$
+y = \sqrt{5^2+(12-x)^2} = \sqrt{169-24x+x^2}
+$$
+
+So $T=x/5+(1/3)\sqrt{169-24x+x^2}$. Setting the first order condition to zero:
+
+\begin{align*}
+\frac{dT}{dx} &= 1/5+(1/3)(1/2)(169-24x+x^2)^{-1/2}(2x-24)\\
+0 &= 1/5+(1/3)(1/2)(169-24x+x^2)^{-1/2}(2x-24)\\
+-5(2x-24) &= 6\sqrt{169-24x+x^2}\\
+\frac{120-10x}{6} &= \sqrt{169-24x+x^2}\\
+\frac{14400-2400x+100x^2}{36} &= 169-24x+x^2\\
+14400-2400x+100x^2 &= 6084-864x+36x^2\\
+8316-1536x+64x^2 &= 0\\
+4(4x-33)(4x-63) &=0
+\end{align*}
+
+The roots are $(33/4, 63/4)$, but the second root is larger than 12.  Thus, $x=33/4$, so $y=\sqrt{169-24x+x^2}=25/4$ and $T = (33/4)/5+(25/4)/3= 224/60\approx 3.733$ hours.
+
+\pagebreak
+
+(2) Suppose that a function $f : \R \to \R$ is differentiable on $B_\varepsilon(x_0)$ for some $x_0 \in \R, \varepsilon > 0$. Suppose also that $f'(x)<0$ for any $x \in B_\varepsilon(x_0) \setminus \{ x_0 \}$. Can the point $x_0$ be a local maximum or minimum of $f$?
+
+No.
+
+Proof: Observe that, if $f'(x)<0$ for any $x \in B_\varepsilon(x_0) \setminus \{ x_0 \}$, then $f'(x_0)=0$ or $f'(x_0)<0$.
+
+Assume $f'(x_0)<0$. Assume for the sake of a contradiction that $x_0$ is a local maximum or minimum. Then $f'(x_0)=0$. $\Rightarrow \Leftarrow$. $x_0$ cannot be a local maximum or minimum.
+
+Assume $f'(x_0)=0$
+
+\pagebreak
+
+(3) Let $w = f(x, y, z) = xy^2z$, with $x = r+2s+t, y=2r+3s+t, z=3r+s+t$. Use the chain rule to calculate $\partial w/\partial r, \partial w/\partial s, \partial w/\partial t$.
+
+\begin{align*}
+\frac{\partial w}{\partial x} &= y^2z = (2r+3s+t)^2(3r+s+t) \\
+\frac{\partial w}{\partial y} &= 2xyz = 2(r+2s+t)(2r+3s+t)(3r+s+t) \\
+\frac{\partial w}{\partial z} &= xy^2 = (r+2s+t)(2r+3s+t)^2
+\end{align*}
+
+\begin{align*}
+\frac{\partial x}{\partial r} &= 1\\
+\frac{\partial x}{\partial s} &= 2\\
+\frac{\partial x}{\partial t} &= 1\\
+\frac{\partial y}{\partial r} &= 2\\
+\frac{\partial y}{\partial s} &= 3\\
+\frac{\partial y}{\partial t} &= 1\\
+\frac{\partial z}{\partial r} &= 3\\
+\frac{\partial z}{\partial s} &= 1\\
+\frac{\partial z}{\partial t} &= 1\\
+\end{align*}
+
+\begin{align*}
+\frac{\partial w}{\partial r}
+&= \frac{\partial w}{\partial x}\frac{\partial x}{\partial r}+\frac{\partial w}{\partial y}\frac{\partial y}{\partial r}+\frac{\partial w}{\partial z}\frac{\partial z}{\partial r} \\
+&= (1)(2r+3s+t)^2(3r+s+t)+(2)(2)(r+2s+t)(2r+3s+t)(3r+s+t)+(3)(r+2s+t)(2r+3s+t)^2 \\
+&= (2r+3s+t)^2(3r+s+t)+4(r+2s+t)(2r+3s+t)(3r+s+t)+3(r+2s+t)(2r+3s+t)^2 \\
+&= 48 r^3 + 192 r^2 s + 84 r^2 t + 238 r s^2 + 212 r s t + 46 r t^2 + 87 s^3 + 122 s^2 t + 55 s t^2 + 8 t^3\\
+\frac{\partial w}{\partial s} 
+&= \frac{\partial w}{\partial x}\frac{\partial x}{\partial s}+\frac{\partial w}{\partial y}\frac{\partial y}{\partial s}+\frac{\partial w}{\partial z}\frac{\partial z}{\partial s} \\
+&= (2)(2r+3s+t)^2(3r+s+t)+(3)(2)(r+2s+t)(2r+3s+t)(3r+s+t)+(1)(r+2s+t)(2r+3s+t)^2 \\
+&= 2(2r+3s+t)^2(3r+s+t)+6(r+2s+t)(2r+3s+t)(3r+s+t)+(r+2s+t)(2r+3s+t)^2 \\
+&= 64 r^3 + 238 r^2 s + 106 r^2 t + 261 r s^2 + 244 r s t + 55 r t^2 + 72 s^3 + 117 s^2 t + 58 s t^2 + 9 t^3 \\
+\frac{\partial w}{\partial t} 
+&= \frac{\partial w}{\partial x}\frac{\partial x}{\partial t}+\frac{\partial w}{\partial y}\frac{\partial y}{\partial t}+\frac{\partial w}{\partial z}\frac{\partial z}{\partial t} \\
+&= (1)(2r+3s+t)^2(3r+s+t)+(1)(2)(r+2s+t)(2r+3s+t)(3r+s+t)+(1)(r+2s+t)(2r+3s+t)^2 \\
+&= (2r+3s+t)^2(3r+s+t)+2(r+2s+t)(2r+3s+t)(3r+s+t)+(r+2s+t)(2r+3s+t)^2 \\
+&= 28 r^3 + 106 r^2 s + 46 r^2 t + 122 r s^2 + 110 r s t + 24 r t^2 + 39 s^3 + 58 s^2 t + 27 s t^2 + 4 t^3
+\end{align*}
+
+\pagebreak
+
+(4) Let $f : X \to \R^n$ be a continuously differentiable function on the open set $X \subset \R^n$. Show that $f$ is locally Lipschitz on $X$ (use Euclidean distance).
+
+Proof: Let $f : X \to \R^n$ be a continuously differentiable function on the open set $X \subset \R^n$. Choose $x \in X$ and $\varepsilon > 0$. Define $B_\varepsilon(x)$ as the open ball around $x$ using Euclidean distance. Since $f$ is continuously differentiable on $X$, it is continuously differentiable on $B_\varepsilon(x) \cap X$. Choose $w, y \in B_\varepsilon(x) \cap X$. Since $f$ is differential, there exists $z_i \in \R^n$ such that $f^i(w)-f^i(y) = Df^{i}(z_i)(w^i - y^i)$ where $z_i \in \{\alpha w + (1 - \alpha)y | \alpha \in [0, 1]\}$ for all $i=1,...,n$. Thus, $\sum_{i=1}^{n}f^i(w)-f^i(y) = \sum_{i=1}^{n}Df^{i}(z_i)(w^i - y^i)$.
+
+\pagebreak
+
+(5) Let $f(x, y) = x^5-x^2+x-y^3-2y+2$ and let $x(y)$ satisfy $x(1)=1$ and $f(x(y), y) = 0$. Calculate $\frac{\partial x (y)}{\partial y} \Bigg|_{y=1}$.
+
+I apply the implicit function theorem. Note that $f$ is continuously differentiable:
+
+\begin{align*}
+\frac{\partial f}{\partial x} =& 5x^4-2x+1 \\
+\frac{\partial f}{\partial y} =& -3y^2-2
+\end{align*}
+
+If $x_0 = x(y)$ and $a_0=y$, then $f(x_0, a_0)=f(x(y), y)=0$.  Furthermore, $\det(D_Xf(x, y)) = 5x^4-2x+1 > 0$ $\forall x(y) \in \R$. By the implicit function theorem:
+
+\begin{align*}
+Dx(y) &= - (5x(y)^4-2x(y)+1)^{-1}(-3y-2) \\
+Dx(1) &= - (5(1)^4-2(1)+1)^{-1}(-3(1)^2-2) \\
+      &= 5/4
+\end{align*}
+
+(6) Find all local minima/maxima of $f(x, y)=2x^4+y^2-xy+1$. Does it have a global maximum/minimum?
+
+The Jacobian is:
+
+$$
+Df(x, y) = \begin{pmatrix}  \partial f/\partial x &  \partial f/\partial y \end{pmatrix} = \begin{pmatrix}  8x^3-y &2y-x \end{pmatrix} = \vec{0} \\
+$$
+and the Hessian is:
+
+$$
+D^2f(x, y) = \begin{pmatrix}  \partial^2 f/\partial^2 x &  \partial^2 f/(\partial y \partial x) \\  \partial^2 f/(\partial x \partial y) &  \partial^2 f/\partial^2 y \end{pmatrix} =  \begin{pmatrix}  24x^2 &  -1 \\  -1 &  2 \end{pmatrix} \\
+$$
+
+Setting the Jacobian to zero implies
+
+$$
+0 = 2y-x \implies x = 2y \implies 0 = 8(2y)^3-y \implies 0 = y(8y-1)(8y+1) \\
+$$
+Thus, there are potential minima/maxima at $(0, 0)$, $(1/4, 1/8)$, $(-1/4, -1/8)$.
+
+For $(0, 0)$,
+
+$$
+D^2f(1/4, 1/8) =  \begin{pmatrix}  24(0)^2 &  -1 \\  -1 &  2 \end{pmatrix}=  \begin{pmatrix} 0 &  -1 \\  -1 &  2 \end{pmatrix}
+$$
+
+The characteristic polynomial is $-\lambda(2-\lambda)-(-1)(-1)=0 \implies \lambda^2-2\lambda-1 \implies \lambda_1 = 1 -\sqrt{2}, \lambda_2 = 1 + \sqrt{2}$.  Since one eigenvalue is positive and one eigenvalue is negative, $f$ has a saddle point at $(0,0)$.
+
+For $(1/4, 1/8)$ and $(-1/4, -1/8)$,
+
+$$
+D^2f(-1/4, 1/8) = D^2f(1/4, 1/8)  =  \begin{pmatrix}  24(1/4)^2 &  -1 \\  -1 &  2 \end{pmatrix}=  \begin{pmatrix}  3/2 &  -1 \\  -1 &  2 \end{pmatrix}
+$$
+
+The characteristic polynormal is $(3/2-\lambda)(2-\lambda)-1 = 0 \implies \lambda^2 -7/2\lambda+2 \implies \lambda_1 = 7/4 + \sqrt{17}/4, \lambda_2 = 7/4 - \sqrt{17}/4$. Since both eigenvalues are positive, $f$ has local minima at $(1/4, 1/8)$ and $(-1/4, -1/8)$.  Since $f(1/4, 1/8)=f(-1/4, -1/8)$, $(1/4, 1/8)$ and $(-1/4, -1/8)$ are also global minima.  Since $f$ has no local maxima, it has no global maxima.
+
