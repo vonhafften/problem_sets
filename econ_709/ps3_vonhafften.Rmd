@@ -117,7 +117,7 @@ $$
 
 $X$ and $Y$ independent if the product of the marginal distributions equals their joint distribution at all points in the support.  If $x=y=0.9$, $f(0.9, 0.9) = 0$ because $(0.9, 0.9)$ is not in the support, $x+y=0.9+0.9=1.8 > 1$. But each marginal distribution is define over $[0,1]$, so the product of the marginals is positive at $(0.9, 0.9)$: $f_X(0.9)f_Y(0.9) = [12(0.9)(1-(0.9))^2][12(1-0.9)^2 (0.9)] = 0.0117$.
 
-In (2), the support for the joint distribution is $\R^2$, so the support for each random variable does not depend on the realization of the other random variable.  In constract in (3), the support for each random variable depends on the realization of the other random variable.  Thus in (3), the random variables cannot be independent.
+In (2), the support for the joint distribution is $\R^2$, so the support for each random variable does not depend on the realization of the other random variable.  In contrast in (3), the support for each random variable depends on the realization of the other random variable.  Thus in (3), the random variables cannot be independent.
 
 \pagebreak
 
@@ -246,7 +246,7 @@ Observe that $Y|X \sim Normal(\frac{\sigma_Y}{\sigma_X}\rho x, \sigma_Y^2(1-\rho
 
 (c) Derive the joint distribution of $(X, Z)$ where $Z = (Y/\sigma_Y)-(\rho X/\sigma_X)$, and then show that $X$ and $Z$ are independent.
 
-Define $g : \R^2 \to \R^2$ such that $g(x, y) = (x, (y/\sigma_Y)-(\rho x)/\sigma_X)$.  Notice that $g$ is one-to-one, so it is invertible. Define $h = g^{-1}$ such that $h(x, z) = (x, \sigma_Y(z+\rho x /\sigma_X))$. The determinant of the Jacobian of the tranformation is
+Define $g : \R^2 \to \R^2$ such that $g(x, y) = (x, (y/\sigma_Y)-(\rho x)/\sigma_X)$.  Notice that $g$ is one-to-one, so it is invertible. Define $h = g^{-1}$ such that $h(x, z) = (x, \sigma_Y(z+\rho x /\sigma_X))$. The determinant of the Jacobian of the transformation is
 
 \begin{align*}
 |J| &= \begin{vmatrix} \frac{\partial h_1(x, z)}{\partial x} & \frac{\partial h_1(x, z)}{\partial z} \\ \frac{\partial h_2(x, z)}{\partial x} & \frac{\partial h_2(x, z)}{\partial z} \end{vmatrix}\\
