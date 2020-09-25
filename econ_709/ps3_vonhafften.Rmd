@@ -117,7 +117,7 @@ $$
 
 $X$ and $Y$ independent if the product of the marginal distributions equals their joint distribution at all points in the support.  If $x=y=0.9$, $f(0.9, 0.9) = 0$ because $(0.9, 0.9)$ is not in the support, $x+y=0.9+0.9=1.8 > 1$. But each marginal distribution is define over $[0,1]$, so the product of the marginals is positive at $(0.9, 0.9)$: $f_X(0.9)f_Y(0.9) = [12(0.9)(1-(0.9))^2][12(1-0.9)^2 (0.9)] = 0.0117$.
 
-In (2), the support for the joint distribution is $\R^2$, whereas the support for the joint distribution depends on the realization of the random variable.
+In (2), the support for the joint distribution is $\R^2$, so the support for each random variable does not depend on the realization of the other random variable.  In constract in (3), the support for each random variable depends on the realization of the other random variable.  Thus in (3), the random variables cannot be independent.
 
 \pagebreak
 
@@ -193,7 +193,7 @@ Proof (by induction): For $n = 2$, $Var(X_1+X_2) = Var (X_1) + Var (X_2) + 2Cov(
 &= Var\Bigg( \sum_{i=1}^{n} X_i \Bigg) + Var( X_{n+1} ) + 2Cov\Bigg(\sum_{i=1}^{n} X_i, X_{n+1}\Bigg)\\
 &= \sum_{i=1}^n Var (X_i) + 2 \sum_{1\le i < j \le n}Cov(X_i, X_j) + Var( X_{n+1} )+2 \Bigg[E\Bigg(X_{n+1}\sum_{i=1}^{n} X_i\Bigg)+E\Bigg(X_{n+1}\Bigg)E\Bigg(\sum_{i=1}^{n} X_i\Bigg)\Bigg]\\
 &= \sum_{i=1}^{n+1} Var (X_i) + 2 \sum_{1\le i < j \le n}Cov(X_i, X_j) + 2 \Bigg[\sum_{i=1}^{n}E\Bigg(X_{n+1} X_i\Bigg) + E\Bigg(X_{n+1}\Bigg) \sum_{i=1}^{n} E\Bigg(X_i\Bigg)\Bigg]\\
-&= \sum_{i=1}^{n+1} Var (X_i) + 2 \sum_{1\le i < j \le n}Cov(X_i, X_j) + 2 \Bigg[\sum_{i=1}^{n}E\Bigg(X_{n+1} X_i\Bigg) + E\Bigg(X_{n+1}\Bigg)  E\Bigg(X_i\Bigg)\Bigg]\\
+&= \sum_{i=1}^{n+1} Var (X_i) + 2 \sum_{1\le i < j \le n}Cov(X_i, X_j) + 2 \sum_{i=1}^{n}\Bigg[E\Bigg(X_{n+1} X_i\Bigg) + E\Bigg(X_{n+1}\Bigg)  E\Bigg(X_i\Bigg)\Bigg]\\
 &= \sum_{i=1}^{n+1} Var (X_i) + 2 \sum_{1\le i < j \le n}Cov(X_i, X_j) + 2 \sum_{i=1}^{n}Cov\Bigg(X_{n+1} X_i\Bigg) \\
 &= \sum_{i=1}^{n+1} Var (X_i) + 2 \sum_{1\le i < j \le n+1}Cov(X_i, X_j) \\
 \end{align*}
