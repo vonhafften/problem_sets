@@ -240,7 +240,7 @@ f_{Y|X}(y|x) &= \frac{f_{X,Y}(x, y)}{f_X(x)} \\
 &= \frac{1} { \sigma_Y \sqrt{1- \rho^2} \sqrt{2\pi}} \exp\Bigg(-\frac{1}{2} \frac{(y-\frac{\sigma_Y}{\sigma_X}\rho x)^2}{(1-\rho^2)\sigma_Y^2}\Bigg)
 \end{align*}
 
-Observe that $Y|X \sim Normal(\frac{\sigma_Y}{\sigma_X}\rho x, \sigma_Y(1-\rho^2))$.
+Observe that $Y|X \sim Normal(\frac{\sigma_Y}{\sigma_X}\rho x, \sigma_Y^2(1-\rho^2))$.
 
 \pagebreak
 
