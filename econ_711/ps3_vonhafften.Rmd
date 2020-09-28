@@ -21,21 +21,48 @@ Consider a single-output firm facing a tax $\tau$ on revenue (not profit).  The 
 
 (a) Suppose the firm is a price taker in its output market.  Show that its objective function $(1-\tau)pq-c(q)$ has strictly increasing differences in $q$ and $-\tau$.  Prove that this implies a monotone selection rule: an increase in $\tau$ can never result in an increase in output.  Explain why this is a stronger result than "baby Topkis".
 
-Look at lecture 5 page 3.
+Define $t = - \tau$ and $g(q, t)=(1 + t)pq-c(q)$ as the objective function . For $q' > q$ and $t' > t$, 
+
+\begin{align*}
+g(q', t)-g(q, t) 
+&= [(1+t)pq' - c(q')]-[(1+t)pq-c(q)] \\
+&= (1+t)p(q'-q)-[c(q')-c(q)]\\
+&< (1+t')p(q'-q)-[c(q')-c(q)]\\
+&= [(1+t')pq' - c(q')]-[(1+t')pq-c(q)]\\
+&=g(q', t')-g(q, t') 
+\end{align*}
+
+Thus, $g$ has strictly increasing differences in $t=-\tau$ and $q$.
+
+With $t'>t$, let $q \in q^*(t)$ and $q' \in q^*(t')$ and assume for the sake of a contradiction that $q > q'$. Thus, $g(q, t) \ge g(q', t) \implies  g(q, t)- g(q', t) \ge 0$ and $g(q', t') \ge g(q, t') \implies 0 \ge  g(q, t') -g(q', t')$.  By strictly increasing differences,
+
+$$ 
+0 \ge  g(q, t') -g(q', t') > g(q, t)- g(q', t) \ge 0 \implies 0>0 \Rightarrow\Leftarrow
+$$
+
+Thus, $q'\ge q$. Thus, if the revenue tax rate increases from $t=-\tau$ to $t'=-\tau'$, output can not increase.
+
+This result is a stronger "baby Topkis" because "baby Topkis" implies that the $q^*(t')$ is larger than $q^*(t)$ via the strong set order whereas this result is that any element of $q^*(t')$ is at least as large as any element of $q^*(t)$.
+
+\pagebreak
 
 Now suppose the firm is not a price-taker in the output market, but faces an inverse demand function $P( \cdot)$, where $P(q)$ is the price at which the firm can sell $q$ units of output.
 
 (b) Show that the firm's objective function $(1-\tau)P(q)q-c(q)$ does not necessarily have increasing differences in $q$ and $-\tau$.
 
-Take the derivative with respect to -$\tau$.
+Define $t = -\tau$ and $h(q, t) = (1+t)P(q)q-c(q)$ as the objective function. To check increasing difference, notice that $h$ is differentiable by $t$: $\frac{\partial h}{\partial t} = P(q)q$. $\frac{\partial h}{\partial t}$ could be increasing or decreasing in $q$ depending on how $P(q)$ changes with an increase in $q$. For example, as discussed in lecture, $P(q)$ assumed to be decreasing function of $q$ when the firm is a monopolist.  
+
+If $P(q)$ is differentiable, $\frac{\partial h}{\partial t}$ is increasing in $q$ if $\frac{\partial P}{\partial q}>-\frac{P(q)}{q}$ and $\frac{\partial h}{\partial t}$ is decreasing if $\frac{\partial P}{\partial q}<-\frac{P(q)}{q}$.
 
 (c) Show that if $c(\cdot)$ is strictly increasing, the firm's objective function still have strictly single-crossing differences; prove that an increase in $\tau$ cannot result in an increase in output.
+
+\pagebreak
 
 # Question 2. Robot Carwashes
 
 A firm provides car washes using four inputs: unskilled labor ($\ell$), managers ($m$), robots ($r$), and engineers ($e$). Managers are required to supervise unskilled labor, and engineers are required to keep the robots running; the firm's output is 
 
-$$q=f(\ell, m, r, e) =(\ell^{0.5}m^{0.3})+r^{0.7}e^{0.1})^z$$
+$$q=f(\ell, m, r, e) =(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^z$$
 
 with $z=1.1$. Input costs are $w_\ell, w_m, w_r,$ and $w_e$, so the firm's problem is 
 
@@ -45,6 +72,98 @@ Suppose at each input price vector, the firm's problem has a unique solution.
 
 (a) In an effort to encourage STEM education, a politician proposes subsidizing the wage of engineers.  From the firm's point of view, this simply reduces the cost of engineers, $w_e$. What effect will this have on the firm's demand for each input?
 
+Define $g$ as $p(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z}-w_\ell\ell- w_mm- w_rr-w_ee$. The derivatives of $g$ with respect to the choice variables are:
+
+\begin{align*}
+\frac{\partial g}{\partial \ell} &= (0.5)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-1}\ell^{-0.5}m^{0.3}-w_\ell \\
+\frac{\partial g}{\partial m} &= (0.3)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-1}\ell^{0.5}m^{-0.7}- w_m \\
+\frac{\partial g}{\partial r} &= (0.7)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-1}r^{-0.3}e^{0.1}- w_r \\
+\frac{\partial g}{\partial e} &= (0.1)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-1}r^{0.7}e^{-0.9}- w_e
+\end{align*}
+
+The cross partial derivatives of $g$ with respect to the choice variables are:
+
+\begin{align*}
+\frac{\partial^2 g}{\partial \ell \partial m} &= (0.5)(0.3)zp[(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-1}\ell^{-0.5}m^{-0.7} + (z-1)(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}m^{-0.4}] \\
+\frac{\partial^2 g}{\partial \ell \partial r} &= (0.5)(0.7)(z-1)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}\ell^{-0.5}m^{0.3}r^{-0.3}e^{0.1} \\
+\frac{\partial^2 g}{\partial \ell \partial e} &= (0.5)(0.1)(z-1)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}\ell^{-0.5}m^{0.3}r^{0.7}e^{-0.9} \\
+\frac{\partial^2 g}{\partial m \partial r} &= (0.3)(0.7)(z-1)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}\ell^{0.5}m^{-0.7}r^{-0.3}e^{0.1} \\
+\frac{\partial^2 g}{\partial m \partial e} &= (0.3)(0.1)(z-1)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-1}\ell^{0.5}m^{-0.7}r^{0.7}e^{-0.9} \\
+\frac{\partial^2 g}{\partial r \partial e} &= (0.7) (0.1) zp [(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-1}r^{-0.3}e^{-0.9} + (z-1)(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}r^{0.4}e^{-0.8}]
+\end{align*}
+
+\pagebreak
+
+When $z=1.1$, $g$ is supermodular because all cross partials derivative are nonnegative:
+
+\begin{align*}
+\frac{\partial^2 g}{\partial \ell \partial m} 
+&= (0.5)(0.3)(1.1)p[(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{0.1}\ell^{-0.5}m^{-0.7} + (0.1)(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-0.9}m^{-0.4}] \\
+&\ge 0 \\
+\frac{\partial^2 g}{\partial \ell \partial r} 
+&= (0.5)(0.7)(0.1)(1.1)p(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-0.9}\ell^{-0.5}m^{0.3}r^{-0.3}e^{0.1} \\
+&\ge 0  \\
+\frac{\partial^2 g}{\partial \ell \partial e} 
+&= (0.5)(0.1)(0.1)(1.1)p(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-0.9}\ell^{-0.5}m^{0.3}r^{0.7}e^{-0.9} \\
+&\ge 0 \\
+\frac{\partial^2 g}{\partial m \partial r} 
+&= (0.3)(0.7)(0.1)(1.1)p(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-0.9}\ell^{0.5}m^{-0.7}r^{-0.3}e^{0.1} \\
+&\ge 0 \\
+\frac{\partial^2 g}{\partial m \partial e} 
+&= (0.3)(0.1)(0.1)(1.1)p(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{0.1}\ell^{0.5}m^{-0.7}r^{0.7}e^{-0.9}  \\
+&\ge 0 \\
+\frac{\partial^2 g}{\partial r \partial e} 
+&= (0.7) (0.1) (1.1)p [(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{0.1}r^{-0.3}e^{-0.9} + (0.1)(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-0.9}r^{0.4}e^{-0.8}] \\
+&\ge 0 
+\end{align*}
+
+Furthermore, $g$ has increasing differences because the derivatives with respect to $-w_e$ are all weakly increasing in $(\ell, m, r, e)$:
+
+\begin{align*}
+\frac{\partial g}{\partial (-w_e)} &= e
+\end{align*}
+
+Thus, by Topkis' Theorem, an increase in $(-w_e)$ leads to increases in $(\ell, m, r, e)$.  In words, a decrease in the cost of engineers increases the firms' demand for unskilled labor, managers, robots, and engineers.
+
+\pagebreak
+
 (b) Over time, the firm's technology shifts, with $z$ changing from 1.1 to 0.9. With $z = 0.9$, what effect would the subsidy on engineers' wages have on the firm's demand for each input?
 
+When $z = 0.9$, notice that $\frac{\partial^2 g}{\partial \ell \partial r}, \frac{\partial^2 g}{\partial \ell \partial e}, \frac{\partial^2 g}{\partial m \partial r}, \frac{\partial^2 g}{\partial m \partial e} < 0$ found in (a).  Consider cross partial derivatives with $(-\ell)$ and $(-m)$:
+
+\begin{align*}
+\frac{\partial^2 g}{\partial (-\ell) \partial (-m)} &= (0.5)(0.3)(-1)zp[(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-1}\ell^{-0.5}m^{-0.7}(-1) + (z-1)(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}m^{-0.4}(-1)] \\
+&= (0.5)(0.3)zp[(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-1}\ell^{-0.5}m^{-0.7} + (z-1)(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}m^{-0.4}] \\
+\frac{\partial^2 g}{\partial (-\ell) \partial r} &= (0.5)(0.7)(-1)(z-1)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}\ell^{-0.5}m^{0.3}r^{-0.3}e^{0.1} \\
+\frac{\partial^2 g}{\partial (-\ell) \partial e} &= (0.5)(0.1)(-1)(z-1)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}\ell^{-0.5}m^{0.3}r^{0.7}e^{-0.9} \\
+\frac{\partial^2 g}{\partial (-m) \partial r} &= (0.3)(0.7)(-1)(z-1)zp(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}\ell^{0.5}m^{-0.7}r^{-0.3}e^{0.1} \\
+\frac{\partial^2 g}{\partial r \partial e} &= (0.7) (0.1) zp [(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-1}r^{-0.3}e^{-0.9} + (z-1)(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{z-2}r^{0.4}e^{-0.8}]
+\end{align*}
+
+When $z=0.9$, all modified cross partial derivatives are nonnegative, so $g$ is supermodular in $(-\ell, -m, r, e)$:\footnote{It is relatively easy to that the cross partials are nonnegative except for $\frac{\partial^2 g}{\partial (-\ell) \partial (-m)}$ and $\frac{\partial^2 g}{\partial r \partial e}$.  Because $\ell, m, r, e$ are nonnegative $\implies 10(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1}) \ge \ell^{0.5}m^{0.3} \implies \frac{\partial^2 g}{\partial (-\ell) \partial (-m)} \ge 0$. Similarly, $10(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1}) \ge r^{0.7}e^{0.1} \implies \frac{\partial^2 g}{\partial r \partial e} \ge 0$.}
+
+\begin{align*}
+\frac{\partial^2 g}{\partial (-\ell) \partial (-m)} &= (0.5)(0.3)(0.9)p[(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-0.1}\ell^{-0.5}m^{-0.7} + (-0.1)(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-1.1}m^{-0.4}] \\
+\frac{\partial^2 g}{\partial (-\ell) \partial r} &= (0.5)(0.7)(-1)(-0.1)(0.9)p(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-1.1}\ell^{-0.5}m^{0.3}r^{-0.3}e^{0.1} \\
+\frac{\partial^2 g}{\partial (-\ell) \partial e} &= (0.5)(0.1)(-1)(-0.1)(0.9)p(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-1.1}\ell^{-0.5}m^{0.3}r^{0.7}e^{-0.9} \\
+\frac{\partial^2 g}{\partial (-m) \partial r} &= (0.3)(0.7)(-1)(-0.1)(0.9)p(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-1.1}\ell^{0.5}m^{-0.7}r^{-0.3}e^{0.1} \\
+\frac{\partial^2 g}{\partial (-m) \partial e} &= (0.3)(0.1)(-1)(-0.1)(0.9)p(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-0.1}\ell^{0.5}m^{-0.7}r^{0.7}e^{-0.9} \\
+\frac{\partial^2 g}{\partial r \partial e} &= (0.7) (0.1) (0.9)p [(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-0.1}r^{-0.3}e^{-0.9} + (-0.1)(\ell^{0.5}m^{0.3}+r^{0.7}e^{0.1})^{-1.1}r^{0.4}e^{-0.8}]
+\end{align*}
+
+Furthermore, $g$ still has increasing differences because the derivatives with respect to $-w_e$ are all weakly increasing in $(-\ell, -m, r, e)$:
+
+\begin{align*}
+\frac{\partial g}{\partial (-w_e)} &= e
+\end{align*}
+
+By Topkis' theorem, an increase in $-w_e$ leads to weak increases in $(-\ell, -m, r, e)$.  In words, an decrease in the cost of engineers decreases the firm's demand for unskilled labor and managers and increases its use of robots and engineers.
+
+\pagebreak
+
 (c) If the supply of managers is fixed in the short-run, would the subsidy's effect on unskilled labor be larger in the short-run or the long-run? Explain.
+
+The subsidy's effect on unskilled labor would be larger in the long-run than in the short-run. This is similar logic to the LeChatelier's principle where unskilled labor is thought of "labor" and managers is thought of "capital".  In lecture, we framed LeChatelier's principle in context of only two choice variables, but a similar result holds because $g$ is supermodular in $(-\ell, -m, r, e)$.  
+
+In the short-run, the subsidy reduces the firm's demand for unskilled labor.  In (a) and (b), we found that the cross partial $\frac{\partial^2 g}{\partial (-\ell) \partial (-m)} = \frac{\partial^2 g}{\partial \ell \partial m}\ge 0$. Thus, in the long-run, the reduction in unskilled labor would reduce the firm's demand for managers and the lower number of managers would then reduce the firm's demand for unskilled labor.  Furthermore, since $g$ is supermodular (i.e. all cross partials are nonnegative), the other feedback loops move in the same direction.  For example, the subsidy also increases the firm's demand for engineers, which decreases the demand for managers that, in the long-run, further decreases the demand for unskilled labor.
+
