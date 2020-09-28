@@ -56,6 +56,31 @@ If $P(q)$ is differentiable, $\frac{\partial h}{\partial t}$ is increasing in $q
 
 (c) Show that if $c(\cdot)$ is strictly increasing, the firm's objective function still have strictly single-crossing differences; prove that an increase in $\tau$ cannot result in an increase in output.
 
+For $t'>t$ and $q'>q$, if
+
+\begin{align*}
+h(q', t)-h(q, t) &\ge 0 \\
+[(1+t)P(q')q'-c(q')] - [(1+t)P(q)q-c(q)] &\ge 0 \\
+\implies (1+t)[P(q')q'-P(q)q]-[c(q')-c(q)] &\ge 0 \\
+\implies P(q')q'-P(q)q  &\ge \frac{c(q')-c(q)}{1+t},
+\end{align*}
+
+Then
+
+\begin{align*}
+h(q', t')-h(q, t') 
+&= [(1+t')P(q')q'-c(q')] - [(1+t')P(q)q-c(q)] \\
+&= (1+t')[P(q')q'-P(q)q]-[c(q')-c(q)] \\
+&\ge (1+t')\Bigg[\frac{c(q')-c(q)}{1+t}\Bigg]-[c(q')-c(q)] \\
+&=\Bigg[\frac{1+t'}{1+t}-1\Bigg][c(q')-c(q)]\\
+&=\Bigg[\frac{t'-t}{1+t}\Bigg][c(q')-c(q)] \\
+&> 0
+\end{align*}
+
+Because $c(q')-c(q)>0$ and $t'-t > 0$. So $h$ has single crossing differences.
+
+For $t' > t$, let $q \in q^*(t)$ and $q' \in q^*(t')$.  Assume for sake of a contradition, $q > q'$. By optimality, $h(q, t')-h(q', t') \le 0$.  By strictly crossing differences, $h(q, t')-h(q', t') > 0$.  Thus $0 \ge h(q, t')-h(q', t') > 0 \implies 0>0$.  $\Rightarrow \Leftarrow$ $q'$ must be at least as large as $q'$. Thus, an increase in $\tau$ cannot result in an increase in output.
+
 \pagebreak
 
 # Question 2. Robot Carwashes
