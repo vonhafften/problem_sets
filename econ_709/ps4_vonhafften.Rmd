@@ -1,0 +1,66 @@
+---
+title: "ECON 709 - PS 4"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/4/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Suppose that another observation $X_{n+1}$ becomes available.  Show that
+
+(a) $\bar{X}_{n+1} = (n \bar{X}_n + X_{n+1})/(n+1)$
+
+(b) $s^2_{n+1}= ((n-1)s_n^2 + (n/(n+1))(X_{n+1}-\bar{X}_n)^2)/n$
+
+2. For some integer $k$, set $\mu_k=E(X^k)$. Construct an unbiased estimator $\hat{\mu}_k$ for $\mu_k$, and show its unbiasedness.
+
+3. Problem 3
+
+Consider the central moment $m_k = E((X- \mu)^k)$. Construct an estimator $\hat{m}_k$ for $m_k$ without assuming a known $\mu$. In general, do you expect $\hat{m}_k$ to be biased or unbiased?
+
+4. Problem 4
+
+Calculate the variance of $\hat{\mu}_k$ that you proposed above, and call it $Var(\hat{\mu_k})$.
+
+5. Problem 6
+
+Show that $E(s_n) \le \sigma$. (Hint: Use Jensen's inequality, CB Theorem 4.7.7).
+
+6. Problem 8
+
+Show algebraically that $\hat{\sigma}^2=n^{-1}\sum_{i=1}^n (X_i - \mu)^2-(\bar{X}_n-\mu)^2$.
+
+7. Problem 9
+
+Find the covariance of $\hat{sigma}^2$ and $\bar{X}_n$. Under what condition is this zero?
+
+8. Problem 10
+
+Suppose that $X_i$ are i.n.i.d (independent but not necessarily identically distributed) with $E(X_i)=\mu_i$ and $Var(X_i)=\sigma_i^2$.
+
+(a) Find $E(\bar{X}_n)$.
+
+(b) Find $Var(\bar{X}_n)$.
+
+9. Problem 12
+
+Show that if $Q \sim \chi^2_r$, then $E(Q) = r$ and $Var(Q)=2r$. (Hint: use the representation: $Q = \sum_{i=1}^n X_i^2$ with $X_i \sim N(0,1)$).
+
+10. Problem 14
+
+Suppose that $X_i \sim N(\mu_X, \sigma_X^2): i = 1,...,n_1$ and $Y_i \sim N(\mu_Y, \sigma_Y^2): i = 1,...,n_2$ are mutually independent. Set $\bar{X}_n = n_1^{-1} \sum_{i=1}^{n_1} X_i$ and $\bar{Y}_n=n_2^{-1}\sum_{i=1}^{n_2}Y_i$.
+
+(a) Find $E(\bar{X}_n -\bar{Y}_n)$.
+
+(b) Find $Var(\bar{X}_n -\bar{Y}_n)$.
+
+(c) Find the distribution of $\bar{X}_n - \bar{Y}_n$.
