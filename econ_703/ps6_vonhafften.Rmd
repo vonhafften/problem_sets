@@ -42,13 +42,30 @@ The roots are $(33/4, 63/4)$, but the second root is larger than 12.  Thus, $x=3
 
 (2) Suppose that a function $f : \R \to \R$ is differentiable on $B_\varepsilon(x_0)$ for some $x_0 \in \R, \varepsilon > 0$. Suppose also that $f'(x)<0$ for any $x \in B_\varepsilon(x_0) \setminus \{ x_0 \}$. Can the point $x_0$ be a local maximum or minimum of $f$?
 
-No.
+No, the point $x_0$ cannot be a local maximum or minimum of $f$.
 
-Proof: Observe that, if $f'(x)<0$ for any $x \in B_\varepsilon(x_0) \setminus \{ x_0 \}$, then $f'(x_0)=0$ or $f'(x_0)<0$.
+Proof: Fix $\varepsilon >0$.  Assume for the sake a contradiction that $x_0$ is a local maximum.  Then, choose $x_1 \in (x_0 - \varepsilon, x_0)$.  By the mean value theorem, there exists a $x_2$ such that 
 
-Assume $f'(x_0)<0$. Assume for the sake of a contradiction that $x_0$ is a local maximum or minimum. Then $f'(x_0)=0$. $\Rightarrow \Leftarrow$. $x_0$ cannot be a local maximum or minimum.
+$$
+f(x_1) - f(x_0) = f'(x_2)(x_1-x_0) \\
+f(x_1) - f(x_0) = f'(x_2)(x_0 - \varepsilon-x_0) \\
+f(x_1) - f(x_0) = f'(x_2)( - \varepsilon) \\
+$$
 
-Assume $f'(x_0)=0$
+Since $x_2 \in B_\varepsilon(x_0)$, $f'(x_2) < 0$, so the $f(x_1) - f(x_0) > 0 \implies f(x_1) > f(x_0)$. This is a contradiction because $x_0$ is assumed to be a local maximum.
+
+Similarly, assume for the sake a contradiction that $x_0$ is a local minimum.  Then, choose $x_1 \in (x_0, x_0 + \varepsilon)$.  By the mean value theorem, there exists a $x_2$ such that 
+
+$$
+f(x_0) - f(x_1) = f'(x_2)(x_0-x_1) \\
+f(x_0) - f(x_1) = f'(x_2)(x_0 - \varepsilon-x_0) \\
+f(x_0) - f(x_1) = f'(x_2)( - \varepsilon) \\
+$$
+
+Since $x_2 \in B_\varepsilon(x_0)$, $f'(x_2) < 0$, so the $f(x_0) - f(x_1) > 0 \implies f(x_1) < f(x_0)$. This is a contradiction because $x_0$ is assumed to be a local minimum.
+
+Therefore, $x_0$ cannot be a local minimum or maximum. $\square$
+
 
 \pagebreak
 
@@ -149,5 +166,5 @@ $$
 D^2f(-1/4, 1/8) = D^2f(1/4, 1/8)  =  \begin{pmatrix}  24(1/4)^2 &  -1 \\  -1 &  2 \end{pmatrix}=  \begin{pmatrix}  3/2 &  -1 \\  -1 &  2 \end{pmatrix}
 $$
 
-The characteristic polynormal is $(3/2-\lambda)(2-\lambda)-1 = 0 \implies \lambda^2 -7/2\lambda+2 \implies \lambda_1 = 7/4 + \sqrt{17}/4, \lambda_2 = 7/4 - \sqrt{17}/4$. Since both eigenvalues are positive, $f$ has local minima at $(1/4, 1/8)$ and $(-1/4, -1/8)$.  Since $f(1/4, 1/8)=f(-1/4, -1/8)$, $(1/4, 1/8)$ and $(-1/4, -1/8)$ are also global minima.  Since $f$ has no local maxima, it has no global maxima.
+The characteristic polynormal is $(3/2-\lambda)(2-\lambda)-1 = 0 \implies \lambda^2 -7/2\lambda+2 \implies \lambda_1 = 7/4 + \sqrt{17}/4, \lambda_2 = 7/4 - \sqrt{17}/4$. Since both eigenvalues are positive, $f$ has local minima at $(1/4, 1/8)$ and $(-1/4, -1/8)$.  Since $f(1/4, 1/8)=f(-1/4, -1/8)$ and $\lim_{x \to \infty} f(x, y)=\lim_{x \to -\infty} f(x, y)=\lim_{y \to \infty} f(x, y)=\lim_{y \to -\infty} f(x, y)=\infty$, $(1/4, 1/8)$ and $(-1/4, -1/8)$ are also global minima.  Since $f$ has no local maxima, it has no global maxima.
 
