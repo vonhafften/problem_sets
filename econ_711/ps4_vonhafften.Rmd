@@ -35,12 +35,36 @@ For equality of $C(\cdot, \succsim_C)$ and $C$, fix nonempty $A \subset X$. Choo
 
 # Question 3. Choice over finite sets
 
-Let $X$ be a finite set, and $\succsim$ a complete and transitive preference relation on $X$. (Hint: for (a), fix $X$ finite, and prove by induction. For (b) use induction on $|X|$ to prove the stronger result that when $X$ is finite, a utility representation exists with range $\{1, 2, ..., |X|\}$)
+Let $X$ be a finite set, and $\succsim$ a complete and transitive preference relation on $X$.
 
 (a) Show that the induced choice rule $C(\cdot, \succsim)$ is nonempty - that is $C(A, \succsim) \neq \emptyset$ if $A = \emptyset$.
 
-Proof (by induction): Let nonempty $A, B \subset X$ such that $A:=\{x\}$ for some $x \notin B$ and $|B| = n$ for some $n \in \N$. Notice that $|A|=1$. Because $\succsim$ is complete, $x \succsim x$. Thus, $x$ is weakly preferred to all elements of $A$. Thus, $x \in C(A, \succsim) \neq \emptyset$. Assume $C(B, \succsim) \neq \emptyset$. Notice that $|A \cup B|=n+1$.  Choose arbitrary $y$ from $C(B, \succsim)$, so by definition $y \succsim z$ for all $z \in B$.  By completeness, $x \succsim y$ and/or $y \succsim x$. If $x \succsim y$, x is weakly preferred to all elements in $B$ by transitivity, so $x \in C(A \cup B, \succsim)$.  If $y \succsim x$, then $y$ is weakly preferred to all elements in $A \cup B$, so $y \in C(A \cup B, \succsim)$.  Thus, $C(A \cup B, \succsim) \neq \emptyset$. $\square$
+Proof (by induction): Let nonempty $A, B \subset X$ such that $A:=\{x\}$ for some $x \in X \setminus B$ and $|B| = n$ for some $n \in \N$. Notice that $|A|=1$. Because $\succsim$ is complete, $x \succsim x$. Thus, $x$ is weakly preferred to all elements of $A$. Thus, $x \in C(A, \succsim) \neq \emptyset$. 
+
+Assume $C(B, \succsim) \neq \emptyset$. Notice that $|A \cup B|=n+1$.  Choose arbitrary $y$ from $C(B, \succsim)$, so by definition $y \succsim z$ for all $z \in B$.  By completeness, $x \succsim y$ and/or $y \succsim x$. If $x \succsim y$, x is weakly preferred to all elements in $B$ by transitivity, so $x \in C(A \cup B, \succsim)$.  If $y \succsim x$, then $y$ is weakly preferred to all elements in $A \cup B$, so $y \in C(A \cup B, \succsim)$.  Thus, $C(A \cup B, \succsim) \neq \emptyset$. $\square$
 
 (b) Show that a utility representation exists.
 
-Proof (by induction):
+Proof (by induction): We will prove the stronger result that a utility representation exists with range $\{1, 2, ..., |X|\}$. Let nonempty $A, B \subset X$ such that $A:=\{x\}$ for some $x \in X \setminus B$ and $|B| = n$ for some $n \in \N$. Define utility function $u_A:A \to \{1\}$. Trivially, $x \succsim x \iff u_A(x)=u_A(x)=1$.  
+
+Assume that there exists such a utility function $u_B$ for $B$ such that $y \succsim z$ iff $u_B(y) \ge u_B(z)$ for $y, z \in B$. Construct a set of the elements of $B$ that are strictly preferred to $x$, or $B_0=\{y \in B: y \succ x\}$ where $A:=\{x\}$. Let $a := \min_{z \in B_0}\{u_B(z)\}$.  Define utility function $v : A \cup B \to \{1, 2, ..., |X|\}$ such that, for $w \in A \cup B$,
+
+\begin{align*}
+v(w) = \begin{cases} u_B(w)+1, &w \in B_0 \\ 
+                     a,        &w \in A \\ 
+                     u_B(w),   &w \in B \setminus B_0  
+       \end{cases}
+\end{align*}
+
+To see that $v$ is a valid utility function for $A \cup B$, notice that $A \cup B$ is composed of three disjoint sets $B_0$, $A$, and $B \setminus B_0$. When picking $y,z \in A \cup B$, there are six possibilities: 
+
+- If $y,z \in B_0$, $y \succsim z \iff u_B(y) \ge u_B(z) \iff u_B(y) + 1 \ge u_B(z) + 1 \iff v(y) \ge v(z)$ and/or $z \succsim y \iff u_B(z) \ge u_B(y) \iff u_B(z) + 1 \ge u_B(y) + 1 \iff v(z) \ge v(y)$.
+- If $y,z \in A$, $y \succsim z$ and $z \succsim y$ then $v(y) = v(z)=a$, so $v(y) \ge v(z)$ and $v(y) \le v(z)$.
+- If $y,z \in B \setminus B_0$, $y \succsim z \iff u_B(y) \ge u_B(z) \iff v(y) \ge v(z)$ and/or $z \succsim y \iff u_B(z) \ge u_B(y) \iff v(z) \ge v(y)$.
+- If $y \in B_0$ and $z \in A$, $y \succsim z$. Assume, for sake of a contradiction, that $v(z) > v(y) \implies a > u_B(y)> \implies\min_{w \in B_0}\{u_B(w)\}> u_B(y)$ $\Rightarrow \Leftarrow$. $v(y) \ge v(z)$.
+- If $y \in B \setminus B_0$ and $z \in A$, $z \succsim y$.  Assume, for sake of a contradiction, that $v(y) > v(z) \implies u_B(y)> a \implies u_B(y) > \min_{w \in B_0}\{u_B(w)\} \implies y \succ w_0$ for some $w_0 \in B_0$.  By transitivity, $y \succ z$ $\Rightarrow \Leftarrow$. $v(y) \le v(z)$.
+- If $y \in B_0$ and $z \in B \setminus B_0$, $y \succ x$ and $x \succsim z$.  By transitivity, $y \succ z$.
+
+Thus, $v$ is valid utility function for $A \cup B$. $\square$
+
+
