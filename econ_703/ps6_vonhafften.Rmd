@@ -15,7 +15,7 @@ header-includes:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-(1) Alices lives on the farm "Happy Cow", which is located in the forest 5 kilometers from the main road. Bob lives in the house, located on the main road and 13 kilometers from Alice's farm. Bob wants to visit his friend Alice. He walks with the speed 5km/hour on the road and 3km/hour in the forest. What is the smallest time Bob needs to reach "Happy Cow" from home?
+(1) Alice lives on the farm "Happy Cow", which is located in the forest 5 kilometers from the main road. Bob lives in the house, located on the main road and 13 kilometers from Alice's farm. Bob wants to visit his friend Alice. He walks with the speed 5km/hour on the road and 3km/hour in the forest. What is the smallest time Bob needs to reach "Happy Cow" from home?
 
 Define $x$ as the distance Bob travels on the road, $y$ as the distance he travels through the forest, and $T=x/5+y/3$ as the total time it takes him to walk to "Happy Cow". Since the path through the forest that is perpendicular to the road starts at $\sqrt{13^2-5^2}=12$, we can write $y$ as:
 
@@ -179,5 +179,5 @@ $$
 D^2f(-1/4, 1/8) = D^2f(1/4, 1/8)  =  \begin{pmatrix}  24(1/4)^2 &  -1 \\  -1 &  2 \end{pmatrix}=  \begin{pmatrix}  3/2 &  -1 \\  -1 &  2 \end{pmatrix}
 $$
 
-The characteristic polynormal is $(3/2-\lambda)(2-\lambda)-1 = 0 \implies \lambda^2 -7/2\lambda+2 \implies \lambda_1 = 7/4 + \sqrt{17}/4, \lambda_2 = 7/4 - \sqrt{17}/4$. Since both eigenvalues are positive, $f$ has local minima at $(1/4, 1/8)$ and $(-1/4, -1/8)$.  Since $f(1/4, 1/8)=f(-1/4, -1/8)$ and $\lim_{x \to \infty} f(x, y)=\lim_{x \to -\infty} f(x, y)=\lim_{y \to \infty} f(x, y)=\lim_{y \to -\infty} f(x, y)=\infty$, $(1/4, 1/8)$ and $(-1/4, -1/8)$ are also global minima.  Since $f$ has no local maxima, it has no global maxima.
+The characteristic polynomial is $(3/2-\lambda)(2-\lambda)-1 = 0 \implies \lambda^2 -7/2\lambda+2 \implies \lambda_1 = 7/4 + \sqrt{17}/4, \lambda_2 = 7/4 - \sqrt{17}/4$. Since both eigenvalues are positive, $f$ has local minima at $(1/4, 1/8)$ and $(-1/4, -1/8)$.  Since $f(1/4, 1/8)=f(-1/4, -1/8)$ and $\lim_{x \to \infty} f(x, y)=\lim_{x \to -\infty} f(x, y)=\lim_{y \to \infty} f(x, y)=\lim_{y \to -\infty} f(x, y)=\infty$, $(1/4, 1/8)$ and $(-1/4, -1/8)$ are also global minima.  Since $f$ has no local maxima, it has no global maxima.
 
