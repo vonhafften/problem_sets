@@ -49,7 +49,7 @@ We can find the $c_t^t$ that overtakes all other allocations by setting the firs
 \implies c_t^{t-1} &= \frac{1+n}{2}w_1 + \frac{1}{2}w_2
 \end{align*}
 
-Thus, the solution to the social planner's problem is $\Bigg\{\Bigg(\frac{1}{2}w_1 + \frac{1}{2(1+n)}w_2, \frac{1+n}{2}w_1 + \frac{1}{2}w_2\Bigg)\Bigg\}_{\forall t>0}$ and $c_1^0=$
+Thus, the solution to the social planner's problem is $\Bigg\{\Bigg(\frac{1}{2}w_1 + \frac{1}{2(1+n)}w_2, \frac{1+n}{2}w_1 + \frac{1}{2}w_2\Bigg)\Bigg\}_{\forall t>0}$.
 
 2. Let $p_t$ be the price of consumption goods in terms of money at time $t$. Define a competitive equilibrium.
 
@@ -73,8 +73,8 @@ The problem of generations $t > 0$ is
 The market clearing conditions are
 
 \begin{align*}
-(1+n)c_t^t+c_t^{t-1} &\le (1+n)w_1+w_2                     & \text{(Goods Market)} \\
-    (1+n)^tM_{t+1}^{t} &\le (1+z)^{t-1}\bar{M_1}           & \text{(Money Market)}
+(1+n)c_t^t+c_t^{t-1} &= (1+n)w_1+w_2                     & \text{(Goods Market)} \\
+    (1+n)^tM_{t+1}^{t} &= (1+z)^{t-1}\bar{M_1}           & \text{(Money Market)}
 \end{align*}
 
 \pagebreak
