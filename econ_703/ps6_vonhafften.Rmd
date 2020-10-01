@@ -111,7 +111,20 @@ Therefore, $x_0$ cannot be a local minimum or maximum. $\square$
 
 (4) Let $f : X \to \R^n$ be a continuously differentiable function on the open set $X \subset \R^n$. Show that $f$ is locally Lipschitz on $X$ (use Euclidean distance).
 
-Proof: Let $f : X \to \R^n$ be a continuously differentiable function on the open set $X \subset \R^n$. Choose $x \in X$ and $\varepsilon > 0$. Define $B_\varepsilon(x)$ as the open ball around $x$ using Euclidean distance. Since $f$ is continuously differentiable on $X$, it is continuously differentiable on $B_\varepsilon(x) \cap X$. Choose $w, y \in B_\varepsilon(x) \cap X$. Since $f$ is differential, there exists $z_i \in \R^n$ such that $f^i(w)-f^i(y) = Df^{i}(z_i)(w^i - y^i)$ where $z_i \in \{\alpha w + (1 - \alpha)y | \alpha \in [0, 1]\}$ for all $i=1,...,n$. Thus, $\sum_{i=1}^{n}f^i(w)-f^i(y) = \sum_{i=1}^{n}Df^{i}(z_i)(w^i - y^i)$.
+Proof: Let $f : X \to \R^n$ be a continuously differentiable function on the open set $X \subset \R^n$. Choose $x \in X$ and $\varepsilon > 0$ such that the closed ball $B_\varepsilon[x] \subset X$. 
+
+Since $f$ is continuously differentiable on $X$, it is continuously differentiable on $B_\varepsilon[x]$. Since $Df$ is continuous on $B_\varepsilon[x]$, it is bounded. Define $a^{i,j}$ as the upper bound of $Df$ on $B_\varepsilon[x_0]$ in the $i$th input dimension and $j$th output dimension for $i,j \in \{1, ..., n\}$.  Similarly, define $b^{i, j}$ as the lower bound of $Df$ on $B_\varepsilon[x]$ in the $i$th input dimension and $j$th output dimension for $i,j \in \{1, ..., n\}$.  Let $M :=\max_{i,j \in \{1, ..., n\}}\{|a_{i, j}|, |b_{i, j}|\}$ and let $\vec{M}$ be an $n$-element vector with $M$ in each dimension. Notice that $\forall v \in B_\varepsilon[x]$, $||Df(v)||\le||\vec{M}||$.
+
+Choose $w, y \in B_\varepsilon[x]$. By the mean value theorem, there exists $z_1, ..., z_n \in \{\alpha w+(1-\alpha)y : \alpha \in [0, 1]\}$ such that $f_i(w)-f_i(y) = Df^i(z_i)(w_i-y_i)$.  By the Cauchy-Schwarz inequality, 
+
+\begin{align*}
+|f_i(w)-f_i(y)| &\le ||Df_i(z_i)|| \cdot |w_i-y_i|\\
+|f_i(w)-f_i(y)| &\le ||\vec{M}||\cdot |w_i-y_i| \\
+\sqrt{\sum_{i=1}^n (f_i(w)-f_i(y))^2} &\le \sqrt{\sum_{i=1}^n ||\vec{M}||^2\cdot (w_i-y_i)^2} \\
+||f(w)-f(y)|| &\le  ||\vec{M}||\cdot ||w-y||
+\end{align*}
+
+Thus, $f$ is locally Lipschitz on $X$.
 
 \pagebreak
 
