@@ -19,22 +19,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Let $X$ be a choice set and $\succsim$ a complete and transitive preference relation on $X$. Show that the choice rule induced by $\succsim$, $C(A, \succsim) = \{x \in A : x \succsim y$ $\forall y \in A\}$, must satisfy the Weak Axiom of Revealed Preference (WARP).
 
-Proof: $C(\cdot)$ satisfies WARP if for any sets $A, B \subset X$ and any $x, y \in A \cap B$, if $x \in C(A)$ and $y \in C(B)$, then $x \in C(B)$ and $y \in C(A)$.  Since $x \in C(A)$ and $y \in C(B)$, $x \succsim y$ and $y \succsim x$.  For any $w \in B$, $y \succsim w$ because $y \in C(B)$. By transitivity, $x \succsim w$, so $x \in C(B)$. For any $z \in A$, $x \succsim z$ because $x \in C(A)$. By transitivity, $y \succsim z$, so $y \in C(A)$. $\square$
+Proof: $C(\cdot)$ satisfies WARP if for any sets $A, B \subset X$ and any $x, y \in A \cap B$, if $x \in C(A)$ and $y \in C(B)$, then $x \in C(B)$ and $y \in C(A)$.  Since $x \in C(A)$ and $y \in C(B)$, $x \succsim y$ and $y \succsim x$.  For an arbitrary $w \in B$, $y \succsim w$ because $y \in C(B)$. By transitivity, $x \succsim w$, so $x \in C(B)$. For arbitrary $z \in A$, $x \succsim z$ because $x \in C(A)$. By transitivity, $y \succsim z$, so $y \in C(A)$. $\square$
 
 # Question 2. Preferences from choice rules
 
 Let $X$ be a choice set and $C : \mathcal{P}(X) \to \mathcal{P}(X)$ a nonempty choice rule. Show that if $C$ satisfies WARP, then the preference relation $\succsim_C$ defined on $X$ by "$x \succsim_C y$ iff there exists a set $A \subseteq X$ such that $x, y \in A$ and $x \in C(A)$" is complete and transitive, and that the choice rule it induces, $C(\cdot, \succsim_C)$, is equal to $C$.
 
-Proof:
+Proof:  For completeness, choose $x,y \in X$.  Construct $A := \{x, y\}$.  Since $C$ is nonempty, we know that $x \in C(A)$ and/or $y \in C(A)$.  If $x \in C(A)$, then $x \succsim_C y$. If $y \in C(A)$, then $y \succsim_C x$. Thus, $\succsim_C$ is complete.
 
-Completeness, choose $x,y \in X$.
+For transitivity, choose $x, y, z \in X$ such that $x \succsim_C y$ and $y \succsim_C z$. This setup implies that there exists $A,B \subset X$ such that $x, y \in A$, $y, z \in B$, $x \in C(A)$, and $y \in C(B)$. Assume for sake of a contradiction that $x \notin C(A \cup B)$ and $z \in C(A \cup B)$. By WARP, $z \in C(A \cup B)$ and $y \in C(B)$ implies that $y \in C(A \cup B)$,  By WARP, $y \in C(A \cup B)$ and $x \in C(A)$ implies that $x \in C(A \cup B)$ $\Rightarrow \Leftarrow$. This is a contradiction, so $x \in C(A \cup B) \implies x \succsim_C z$.
 
-Transitivity
+For equality of $C(\cdot, \succsim_C)$ and $C$, fix nonempty $A \subset X$. Choose $x \in C(A)$.  For an arbitrary $y \in A$, $x \succsim_C y$.  Thus, $x \in C(A, \succsim)$. Choose $x \in C(A, \succsim_C)$, then $x \succsim_C y$ for all $y \in A$.  Thus, $x \in C(A)$.  Therefore, $C(\cdot, \succsim_C)$ is equal to $C$. $\square$
+
+\pagebreak
 
 # Question 3. Choice over finite sets
 
 Let $X$ be a finite set, and $\succsim$ a complete and transitive preference relation on $X$. (Hint: for (a), fix $X$ finite, and prove by induction. For (b) use induction on $|X|$ to prove the stronger result that when $X$ is finite, a utility representation exists with range $\{1, 2, ..., |X|\}$)
 
-(a) Show that the induced choice rule $C(\cdot, \succsim_C)$ is nonempty - that $C(A, \succsim_C) \neq \emptyset$ if $A = \emptyset$.
+(a) Show that the induced choice rule $C(\cdot, \succsim)$ is nonempty - that is $C(A, \succsim) \neq \emptyset$ if $A = \emptyset$.
+
+Proof (by induction): Let nonempty $A, B \subset X$ such that $A:=\{x\}$ for some $x \notin B$ and $|B| = n$ for some $n \in \N$. Notice that $|A|=1$. Because $\succsim$ is complete, $x \succsim x$. Thus, $x$ is weakly preferred to all elements of $A$. Thus, $x \in C(A, \succsim) \neq \emptyset$. Assume $C(B, \succsim) \neq \emptyset$. Notice that $|A \cup B|=n+1$.  Choose arbitrary $y$ from $C(B, \succsim)$, so by definition $y \succsim z$ for all $z \in B$.  By completeness, $x \succsim y$ and/or $y \succsim x$. If $x \succsim y$, x is weakly preferred to all elements in $B$ by transitivity, so $x \in C(A \cup B, \succsim)$.  If $y \succsim x$, then $y$ is weakly preferred to all elements in $A \cup B$, so $y \in C(A \cup B, \succsim)$.  Thus, $C(A \cup B, \succsim) \neq \emptyset$. $\square$
 
 (b) Show that a utility representation exists.
+
+Proof (by induction):
