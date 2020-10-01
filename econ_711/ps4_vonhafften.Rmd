@@ -1,0 +1,40 @@
+---
+title: "ECON 711 - PS 4"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/5/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1. Choice rules from preferences
+
+Let $X$ be a choice set and $\succsim$ a complete and transitive preference relation on $X$. Show that the choice rule induced by $\succsim$, $C(A, \succsim) = \{x \in A : x \succsim y$ $\forall y \in A\}$, must satisfy the Weak Axiom of Revealed Preference (WARP).
+
+Proof: $C(\cdot)$ satisfies WARP if for any sets $A, B \subset X$ and any $x, y \in A \cap B$, if $x \in C(A)$ and $y \in C(B)$, then $x \in C(B)$ and $y \in C(A)$.  Since $x \in C(A)$ and $y \in C(B)$, $x \succsim y$ and $y \succsim x$.  For any $w \in B$, $y \succsim w$ because $y \in C(B)$. By transitivity, $x \succsim w$, so $x \in C(B)$. For any $z \in A$, $x \succsim z$ because $x \in C(A)$. By transitivity, $y \succsim z$, so $y \in C(A)$. $\square$
+
+# Question 2. Preferences from choice rules
+
+Let $X$ be a choice set and $C : \mathcal{P}(X) \to \mathcal{P}(X)$ a nonempty choice rule. Show that if $C$ satisfies WARP, then the preference relation $\succsim_C$ defined on $X$ by "$x \succsim_C y$ iff there exists a set $A \subseteq X$ such that $x, y \in A$ and $x \in C(A)$" is complete and transitive, and that the choice rule it induces, $C(\cdot, \succsim_C)$, is equal to $C$.
+
+Proof:
+
+Completeness, choose $x,y \in X$.
+
+Transitivity
+
+# Question 3. Choice over finite sets
+
+Let $X$ be a finite set, and $\succsim$ a complete and transitive preference relation on $X$. (Hint: for (a), fix $X$ finite, and prove by induction. For (b) use induction on $|X|$ to prove the stronger result that when $X$ is finite, a utility representation exists with range $\{1, 2, ..., |X|\}$)
+
+(a) Show that the induced choice rule $C(\cdot, \succsim_C)$ is nonempty - that $C(A, \succsim_C) \neq \emptyset$ if $A = \emptyset$.
+
+(b) Show that a utility representation exists.
