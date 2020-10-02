@@ -110,10 +110,42 @@ n^{-1}\sum_{i=1}^n (X_i - \mu)^2-(\bar{X}_n-\mu)^2
 
 7. Find the covariance of $\hat{\sigma}^2$ and $\bar{X}_n$. Under what condition is this zero?
 
-$$
-E\Big[(\bar{X}_n-E(\bar{X}_n))(\hat{\sigma}^2 - E(\hat{\sigma}^2))\Big] = 
-E\Big[(\bar{X}_n-\mu)(\hat{\sigma}^2 - \sigma^2)\Big]
-$$
+\begin{align*}
+Cov(\hat{\sigma}^2, \bar{X}_n) 
+&= E\Big[\Big(\hat{\sigma}^2 - E(\hat{\sigma}^2)\Big)\Big(\bar{X}_n-E(\bar{X}_n)\Big)\Big] \\
+&= E\Big[\hat{\sigma}^2\Big(\bar{X}_n-\mu\Big)\Big]\\
+&= E\Big[\Big(n^{-1}\sum_{i=1}^n (X_i - \mu)^2-(\bar{X}_n-\mu)^2\Big)\Big(\bar{X}_n-\mu\Big)\Big]\\
+&= n^{-1}E\Big[\Big(\bar{X}_n-\mu\Big)\sum_{i=1}^n (X_i - \mu)^2\Big]- E\Big[(\bar{X}_n-\mu)^3 \Big]
+\end{align*}
+
+\begin{align*}
+E\Big[\Big(\bar{X}_n-\mu\Big)\sum_{i=1}^n (X_i - \mu)^2\Big] 
+&= E\Big[\Big(n^{-1}\sum_{i=1}^nX_i-\mu\Big)\sum_{i=1}^n (X_i - \mu)^2\Big] \\
+&= n^{-1}E\Big[\sum_{i=1}^n (X_i - \mu)^3 + \sum_{i=1}^n \sum_{j=1; j \neq i}^n (X_i - \mu)^2 (X_j - \mu) \Big] \\
+&= n^{-1}\Bigg[\sum_{i=1}^n E[(X_i - \mu)^3] + \sum_{i=1}^n \sum_{j=1; j \neq i}^n E[(X_i - \mu)^2][E(X_j) - \mu] \Bigg] \\
+&= n^{-1}\Bigg[\sum_{i=1}^n E[(X_i - \mu)^3] + \sum_{i=1}^n \sum_{j=1; j \neq i}^n E[(X_i - \mu)^2][\mu - \mu] \Bigg] \\
+&= n^{-1}\Bigg[\sum_{i=1}^n E[(X_i - \mu)^3] + \sum_{i=1}^n \sum_{j=1; j \neq i}^n E[(X_i - \mu)^2](0) \Bigg] \\
+&= n^{-1}\sum_{i=1}^n E[(X_i - \mu)^3]  \\
+&= E[(X_i - \mu)^3]
+\end{align*}
+
+\begin{align*}
+& E\Big[(\bar{X}_n-\mu)^3 \Big] \\
+&= E\Big[(n^{-1}\sum_{i=1}^nX_i-\mu)^3 \Big] \\
+&= n^{-3} \sum_{i=1}^n E\Big[(X_i-\mu)^3 \Big]+ n^{-3} \sum_{i=1}^n\sum_{j=1; i \neq j}^n E\Big[(X_i-\mu)^2(X_j-\mu) \Big] + n^{-3} \sum_{i=1}^n\sum_{j=1; j \neq i}^n\sum_{k=1; k \neq i; k \neq j}^n E\Big[(X_i-\mu)(X_j-\mu)(X_k-\mu) \Big] \\
+&= n^{-3}n E\Big[(X_i-\mu)^3 \Big]+ n^{-3} n(n-1) E[(X_i-\mu)^2] [E(X_j)-\mu] + n^{-3} n(n-1)(n-1) [E(X_i)-\mu][E(X_j)-\mu)][E(X_k)-\mu] \\
+&= n^{-2} E\Big[(X_i-\mu)^3 \Big]+ n^{-3} n(n-1) E[(X_i-\mu)^2] (0) + n^{-3} n(n-1)(n-1) (0)(0)(0) \\
+&= n^{-2} E\Big[(X_i-\mu)^3 \Big] 
+\end{align*}
+
+\begin{align*}
+Cov(\hat{\sigma}^2, \bar{X}_n) 
+&= n^{-1}E[(X_i - \mu)^3] - n^{-2} E[(X_i-\mu)^3 ]\\
+&= (n^{-1}- n^{-2})E[(X_i - \mu)^3]
+\end{align*}
+
+The covariance of $\hat{\sigma}^2$ and $\bar{X}_n$ is zero if the kurtosis ($E[(X_i - \mu)^3]$) is zero.
+
 
 \pagebreak
 
