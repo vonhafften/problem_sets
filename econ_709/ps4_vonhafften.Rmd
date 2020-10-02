@@ -15,49 +15,150 @@ header-includes:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Most of the problems assume a random sample $\{X_1, ..., X_n\}$ from a common distribution $F$ with density $f$ such that $E(X) = \mu$ and $Var(X) = \sigma^2$ for generic random variable $X \sim F$. The sample mean and variances are denoted $\bar{X}_n$ and $\sigma^2 = n^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2$, with the bias corrected variance $s^2 = (n-1)^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2$.
+
 1. Suppose that another observation $X_{n+1}$ becomes available.  Show that
 
 (a) $\bar{X}_{n+1} = (n \bar{X}_n + X_{n+1})/(n+1)$
 
+\begin{align*}
+(n \bar{X}_n + X_{n+1})/(n+1) &= \Bigg(n n^{-1}\sum_{i=1}^nX_i + X_{n+1}\Bigg)/(n+1) \\
+&= \Bigg(\sum_{i=1}^nX_i + X_{n+1}\Bigg)/(n+1) \\
+&= \Bigg(\sum_{i=1}^{n+1}X_i\Bigg)/(n+1) \\
+&= \bar{X}_{n+1}
+\end{align*}
+
 (b) $s^2_{n+1}= ((n-1)s_n^2 + (n/(n+1))(X_{n+1}-\bar{X}_n)^2)/n$
+
+$$
+n^{-1}\Bigg[(n-1)s_n^2 + \frac{n}{n+1}(X_{n+1}-\bar{X}_n)^2\Bigg] 
+= n^{-1}\Bigg[(n-1)(n-1)^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2 + \frac{n}{n+1}(X_{n+1}-\bar{X}_n)^2\Bigg]  \\ 
+= n^{-1}(n+1)^{-1}\Bigg[(n+1)\sum_{i=1}^n (X_i - \bar{X}_n)^2 + n(X_{n+1}-\bar{X}_n)^2\Bigg]  \\
+= n^{-1}(n+1)^{-1}\Bigg[(n+1)\sum_{i=1}^n (X_i^2 - 2X_i\bar{X}_n+\bar{X}_n^2) + n(X_{n+1}^2-2\bar{X}_nX_{n+1} + \bar{X}_n^2)\Bigg]  \\
+= n^{-1}(n+1)^{-1}\Bigg[n\sum_{i=1}^n (X_i^2 - 2X_i\bar{X}_n+\bar{X}_n^2) + n(X_{n+1}^2-2\bar{X}_nX_{n+1} + \bar{X}_n^2) + \sum_{i=1}^n (X_i^2 - 2X_i\bar{X}_n+\bar{X}_n^2)\Bigg]  \\
+= n^{-1}(n+1)^{-1}\Bigg[n\Bigg[\sum_{i=1}^n X_i^2 - \sum_{i=1}^n2X_i\bar{X}_n+n\bar{X}_n^2 + X_{n+1}^2-2\bar{X}_nX_{n+1} + \bar{X}_n^2\Bigg] + \sum_{i=1}^n (X_i^2 - 2X_i\bar{X}_n+\bar{X}_n^2)\Bigg]  \\
+= n^{-1}(n+1)^{-1}\Bigg[n\Bigg[\sum_{i=1}^{n+1} X_i^2 - \sum_{i=1}^{n+1}2X_i\bar{X}_n + (n+1)\bar{X}_n^2 \Bigg] + \sum_{i=1}^n (X_i^2 - 2X_i\bar{X}_n+\bar{X}_n^2)\Bigg]  \\
+$$ 
+
+
+$$
+s^2_{n+1}= n^{-1} \sum_{i=1}^{n+1} (X_i - \bar{X}_{n+1})^2 \\
+= n^{-1} \sum_{i=1}^{n+1} \Big(X_i - (n \bar{X}_n + X_{n+1})/(n+1)\Big)^2 \\
+= n^{-1} \sum_{i=1}^{n+1} \Big(X_i^2 - 2X_i(n \bar{X}_n + X_{n+1})/(n+1) + (n \bar{X}_n + X_{n+1})^2/(n+1)^2\Big) \\
+= n^{-1} (n+1)^{-2}\sum_{i=1}^{n+1} \Big((n+1)^2X_i^2 - 2(n+1)X_i(n \bar{X}_n + X_{n+1}) + (n \bar{X}_n + X_{n+1})^2\Big) \\
+= n^{-1} (n+1)^{-1} \Big((n+1)\sum_{i=1}^{n+1}X_i^2 - 2(n \bar{X}_n + X_{n+1})\sum_{i=1}^{n+1}X_i + (n \bar{X}_n + X_{n+1})^2\Big) \\
+= n^{-1} (n+1)^{-1} \Big((n+1)\sum_{i=1}^{n}X_i^2 + (n+1) X_{n+1}^2 - 2(n \bar{X}_n + X_{n+1})\sum_{i=1}^{n}X_i + 2(n \bar{X}_n + X_{n+1})X_{n+1}+ (n \bar{X}_n + X_{n+1})^2\Big) \\
+= n^{-1} (n+1)^{-1} \Big((n+1)\sum_{i=1}^{n}X_i^2  - 2(n \bar{X}_n + X_{n+1})\sum_{i=1}^{n}X_i + (n+1) X_{n+1}^2+ 2(n \bar{X}_n + X_{n+1})X_{n+1}+ (n \bar{X}_n + X_{n+1})^2\Big) \\
+$$
+
+\pagebreak
 
 2. For some integer $k$, set $\mu_k=E(X^k)$. Construct an unbiased estimator $\hat{\mu}_k$ for $\mu_k$, and show its unbiasedness.
 
-3. Problem 3
+Consider $\hat{\mu}_k = \frac{1}{n} \sum_{i=1}^n X_i^k$, which is unbiased:
 
-Consider the central moment $m_k = E((X- \mu)^k)$. Construct an estimator $\hat{m}_k$ for $m_k$ without assuming a known $\mu$. In general, do you expect $\hat{m}_k$ to be biased or unbiased?
+$$
+E(\hat{\mu}_k) = E\Bigg( \frac{1}{n} \sum_{i=1}^n X_i^k \Bigg)= \frac{1}{n}\sum_{i=1}^n E(X_i^k)=\frac{1}{n}\sum_{i=1}^n \mu_k=\mu_k
+$$
 
-4. Problem 4
+3. Consider the central moment $m_k = E((X- \mu)^k)$. Construct an estimator $\hat{m}_k$ for $m_k$ without assuming a known $\mu$. In general, do you expect $\hat{m}_k$ to be biased or unbiased?
 
-Calculate the variance of $\hat{\mu}_k$ that you proposed above, and call it $Var(\hat{\mu_k})$.
+Consider $\hat{m}_k = \frac{1}{n} \sum_{i=1}^n (X_i-\bar{X}_n)^k$. If $g(x) = x^k$ is convex:
 
-5. Problem 6
+$$
+E(\hat{m}_k) = E \Bigg( \frac{1}{n} \sum_{i=1}^n (X_i-\bar{X}_n)^k \Bigg)=  \frac{1}{n} \sum_{i=1}^n E[(X_i-\bar{X}_n)^k] \ge  \frac{1}{n} \sum_{i=1}^n E(X_i-\bar{X}_n)^k=\frac{1}{n} \sum_{i=1}^n (E(X_i)-E(\bar{X}_n))^k=\frac{1}{n} \sum_{i=1}^n (\mu-\mu)^k = 0
+$$
 
-Show that $E(s_n) \le \sigma$. (Hint: Use Jensen's inequality, CB Theorem 4.7.7).
+\pagebreak
 
-6. Problem 8
+4. Calculate the variance of $\hat{\mu}_k$ that you proposed above, and call it $Var(\hat{\mu_k})$.
 
-Show algebraically that $\hat{\sigma}^2=n^{-1}\sum_{i=1}^n (X_i - \mu)^2-(\bar{X}_n-\mu)^2$.
+\pagebreak
 
-7. Problem 9
+5. Show that $E(s_n) \le \sigma$. (Hint: Use Jensen's inequality, CB Theorem 4.7.7).
 
-Find the covariance of $\hat{sigma}^2$ and $\bar{X}_n$. Under what condition is this zero?
+Because $g(x) = \sqrt{x}$ is a concave function, we can apply Jensen's inequality:
 
-8. Problem 10
+$$
+E(s_n) = E\Bigg(\sqrt{(n-1)^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2}\Bigg) \le \sqrt{E\Bigg((n-1)^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2\Bigg)} = \sqrt{\sigma^2}=\sigma
+$$
 
-Suppose that $X_i$ are i.n.i.d (independent but not necessarily identically distributed) with $E(X_i)=\mu_i$ and $Var(X_i)=\sigma_i^2$.
+\pagebreak
+
+6. Show algebraically that $\hat{\sigma}^2=n^{-1}\sum_{i=1}^n (X_i - \mu)^2-(\bar{X}_n-\mu)^2$.
+
+$$
+n^{-1}\sum_{i=1}^n (X_i - \mu)^2-(\bar{X}_n-\mu)^2 
+= n^{-1}\sum_{i=1}^n (X_i^2 -2X_i\mu + \mu^2)-(\bar{X}_n^2-2\bar{X}_n\mu + \mu^2)\\
+= n^{-1} \Bigg[\sum_{i=1}^n X_i^2 -2\mu\sum_{i=1}^nX_i + n\mu^2-n\bar{X}_n^2+2n\bar{X}_n\mu -n\mu^2\Bigg]\\
+= n^{-1} \Bigg[\sum_{i=1}^n X_i^2  -n\bar{X}_n^2 \Bigg]\\
+$$
+
+\pagebreak
+
+7. Find the covariance of $\hat{\sigma}^2$ and $\bar{X}_n$. Under what condition is this zero?
+
+$$
+E\Big[(\bar{X}_n-E(\bar{X}_n))(\hat{\sigma}^2 - E(\hat{\sigma}^2))\Big] = 
+E\Big[(\bar{X}_n-\mu)(\hat{\sigma}^2 - \sigma^2)\Big]
+$$
+
+\pagebreak
+
+8. Suppose that $X_i$ are i.n.i.d (independent but not necessarily identically distributed) with $E(X_i)=\mu_i$ and $Var(X_i)=\sigma_i^2$.
 
 (a) Find $E(\bar{X}_n)$.
 
+$$
+E(\bar{X}_n) = E\Bigg(n^{-1} \sum_{i=1}^nX_i\Bigg) = n^{-1} \sum_{i=1}^nE(X_i) = n^{-1} \sum_{i=1}^n\mu_i
+$$
+
 (b) Find $Var(\bar{X}_n)$.
 
-9. Problem 12
+\pagebreak
 
-Show that if $Q \sim \chi^2_r$, then $E(Q) = r$ and $Var(Q)=2r$. (Hint: use the representation: $Q = \sum_{i=1}^n X_i^2$ with $X_i \sim N(0,1)$).
+9. Show that if $Q \sim \chi^2_r$, then $E(Q) = r$ and $Var(Q)=2r$. (Hint: use the representation: $Q = \sum_{i=1}^n X_i^2$ with $X_i \sim N(0,1)$).
 
-10. Problem 14
+If $X \sim N(0, 1)$, then $M_X(t) = \exp\Big(\frac{1}{2}t^2\Big)$.
 
-Suppose that $X_i \sim N(\mu_X, \sigma_X^2): i = 1,...,n_1$ and $Y_i \sim N(\mu_Y, \sigma_Y^2): i = 1,...,n_2$ are mutually independent. Set $\bar{X}_n = n_1^{-1} \sum_{i=1}^{n_1} X_i$ and $\bar{Y}_n=n_2^{-1}\sum_{i=1}^{n_2}Y_i$.
+\begin{align*}
+M_X^{(1)}(t) 
+&= \exp\Big(\frac{1}{2}t^2\Big)t\\
+M_X^{(2)}(t) 
+&= \exp\Big(\frac{1}{2}t^2\Big) + \exp\Big(\frac{1}{2}t^2\Big)t^2\\
+M_X^{(3)}(t) 
+&= \exp\Big(\frac{1}{2}t^2\Big)t + \exp\Big(\frac{1}{2}t^2\Big)t^3 + 2\exp\Big(\frac{1}{2}t^2\Big)t \\
+&= 3\exp\Big(\frac{1}{2}t^2\Big)t + \exp\Big(\frac{1}{2}t^2\Big)t^3 \\
+M_X^{(4)}(t) 
+&= 3\exp\Big(\frac{1}{2}t^2\Big) + 3\exp\Big(\frac{1}{2}t^2\Big)t^2 + \exp\Big(\frac{1}{2}t^2\Big)t^4 + 3\exp\Big(\frac{1}{2}t^2\Big)t^2\\
+&= \exp\Big(\frac{1}{2}t^2\Big)t^4 + 6\exp\Big(\frac{1}{2}t^2\Big)t^2 + 3\exp\Big(\frac{1}{2}t^2\Big)
+\end{align*}
+
+\begin{align*}
+E[X] &= M_X^{(1)}(0)= 0 \\
+E[X^2] &= M_X^{(2)}(0)= 1 \\
+E[X^3] &= M_X^{(3)}(0)= 0 \\
+E[X^4] &= M_X^{(4)}(0)= 3\\
+\end{align*}
+
+\begin{align*}
+E(Q) = E\Bigg( \sum_{i=1}^r X_i^2 \Bigg) = \sum_{i=1}^r E(X_i^2) = \sum_{i=1}^r (1)= r
+\end{align*}
+
+\begin{align*}
+Var(Q) &= E(Q^2)-E(Q)^2 \\
+&= E\Bigg(\Bigg(\sum_{i=1}^r X_i^2\Bigg)^2\Bigg)-r^2 \\
+&= E\Bigg(\sum_{i=1}^r\sum_{j=1}^r X_i^2X_j^2 \Bigg) - r^2\\
+&= E\Bigg(\sum_{i=1}^rX_i^4 + \sum_{i=1}^r\sum_{j=1; j \neq i}^r X_i^2X_j^2\Bigg)-r^2\\
+&= \sum_{i=1}^rE(X_i^4) + \sum_{i=1}^r\sum_{j=1; j \neq i}^r E(X_i^2)E(X_j^2)-r^2 \\
+&= \sum_{i=1}^r (3) + \sum_{i=1}^r\sum_{j=1; j \neq i}^r (1)(1)-r^2 \\
+&= 3r + r(r-1)-r^2 \\
+&= 2r
+\end{align*}
+
+\pagebreak
+
+10. Suppose that $X_i \sim N(\mu_X, \sigma_X^2): i = 1,...,n_1$ and $Y_i \sim N(\mu_Y, \sigma_Y^2): i = 1,...,n_2$ are mutually independent. Set $\bar{X}_n = n_1^{-1} \sum_{i=1}^{n_1} X_i$ and $\bar{Y}_n=n_2^{-1}\sum_{i=1}^{n_2}Y_i$.
 
 (a) Find $E(\bar{X}_n -\bar{Y}_n)$.
 

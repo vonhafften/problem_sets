@@ -1,0 +1,44 @@
+---
+title: "ECON 703 - PS 7"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/7/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\co}{\text{co}}
+- \newcommand{\cl}{\text{cl}}
+- \newcommand{\hyp}{\text{hyp}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+(1) Let $X \subset \R^n$ be a convex set, and $\lambda_1, ..., \lambda_k \ge 0$ with $\sum_{i=1}^k \lambda_i = 1$. Prove that if $x_1, ..., x_k \in X$, then $\sum_{i=1}^k \lambda_i x_i \in X$.
+
+\pagebreak
+
+(2) The sum $\sum_{i=1}^k \lambda_i x_i$ defined in Problem (1) is called a convex combination. The convex hull of a set $S$, denoted by $\co(S)$, is the intersection of all convex sets which contain $S$. Prove that the set of all convex combinations of the elements of $S$ is exactly $\co(S)$.
+
+\pagebreak
+
+(3) For any set $X \subset \R^n$, let its closure be $\cl X = X \cup \{$all limit points of $X\}$. Show that the closure of a convex set is convex.
+
+\pagebreak
+
+(4) The function $f: X \to \R$, where $X$ is a convex set in $\R^n$, is concave if $\forall \lambda \in [0,1], x', x'' \in X f((1-\lambda)x' + \lambda x'')\ge(1-\lambda)f(x')+\lambda f(x'')$. Given a function $f: X \to \R$, its hypograph is the set of points $(y, x)$ lying on or below the graph of the function: $\hyp f =\{(y,x)| x \in X, y \le f(x)\}$. Show that the function $f$ is concave if and only if its hypograph is a convex set.
+
+\pagebreak
+
+(5) Let $X$ and $Y$ be disjoint, closed, and convex sets in $\R^n$, one of which is compact. Show that there exists a hyperplane $H(p, \alpha)$ that strictly separates $X$ and $Y$.
+
+\pagebreak
+
+(6) Call a vector $\pi \in \R^n$ a probability vector if $\sum_{i=1}^n \pi_i = 1$ and $\pi_i \ge 0$ for all $i=1, ..., n$. Interpretation is that there are $n$ states of the world and $\pi_i$ is the probability that state $i$ occurs. Suppose that Alice and Bob each have a set of probability distributions ($\Pi_A$ and $\Pi_B$) which are nonempty, convex, and compact.  They propose bids on each state of the world.  A vector $x = (x_1, ..., x_n) \in \R^n$, where $x_i$ denotes the net transfer Alice recieves from Bob in state $i$, is called a trade (Thus, $-x$ is the net transfer Bob receives in each state of the world.) A trade is agreeable if $\inf_{\pi \in \Pi_A}\sum_{i=1}^n \pi_i x_i > 0$ and $\inf_{\pi \in \Pi_B}\sum_{i=1}^n \pi_i (-x_i) > 0$. The above means that both Alice and Bob expect to strictly gain from the trade. Prove that there exists an agreeable trade iff there is no common prior (i.e., $\Pi_A \cap \Pi_B = \emptyset$).
+
+
+
