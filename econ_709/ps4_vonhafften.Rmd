@@ -15,7 +15,7 @@ header-includes:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Most of the problems assume a random sample $\{X_1, ..., X_n\}$ from a common distribution $F$ with density $f$ such that $E(X) = \mu$ and $Var(X) = \sigma^2$ for generic random variable $X \sim F$. The sample mean and variances are denoted $\bar{X}_n$ and $\sigma^2 = n^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2$, with the bias corrected variance $s^2 = (n-1)^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2$.
+Most of the problems assume a random sample $\{X_1, ..., X_n\}$ from a common distribution $F$ with density $f$ such that $E(X) = \mu$ and $Var(X) = \sigma^2$ for generic random variable $X \sim F$. The sample mean and variances are denoted $\bar{X}_n$ and $\hat{\sigma}^2 = n^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2$, with the bias corrected variance $s^2 = (n-1)^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2$.
 
 1. Suppose that another observation $X_{n+1}$ becomes available.  Show that
 
@@ -55,7 +55,7 @@ $$
 
 2. For some integer $k$, set $\mu_k=E(X^k)$. Construct an unbiased estimator $\hat{\mu}_k$ for $\mu_k$, and show its unbiasedness.
 
-Consider $\hat{\mu}_k = \frac{1}{n} \sum_{i=1}^n X_i^k$, which is unbiased:
+Consider sample raw moments: $\hat{\mu}_k = \frac{1}{n} \sum_{i=1}^n X_i^k$. Raw sample moments are unbiased:
 
 $$
 E(\hat{\mu}_k) = E\Bigg( \frac{1}{n} \sum_{i=1}^n X_i^k \Bigg)= \frac{1}{n}\sum_{i=1}^n E(X_i^k)=\frac{1}{n}\sum_{i=1}^n \mu_k=\mu_k
@@ -63,15 +63,22 @@ $$
 
 3. Consider the central moment $m_k = E((X- \mu)^k)$. Construct an estimator $\hat{m}_k$ for $m_k$ without assuming a known $\mu$. In general, do you expect $\hat{m}_k$ to be biased or unbiased?
 
-Consider $\hat{m}_k = \frac{1}{n} \sum_{i=1}^n (X_i-\bar{X}_n)^k$. If $g(x) = x^k$ is convex:
-
-$$
-E(\hat{m}_k) = E \Bigg( \frac{1}{n} \sum_{i=1}^n (X_i-\bar{X}_n)^k \Bigg)=  \frac{1}{n} \sum_{i=1}^n E[(X_i-\bar{X}_n)^k] \ge  \frac{1}{n} \sum_{i=1}^n E(X_i-\bar{X}_n)^k=\frac{1}{n} \sum_{i=1}^n (E(X_i)-E(\bar{X}_n))^k=\frac{1}{n} \sum_{i=1}^n (\mu-\mu)^k = 0
-$$
-
-\pagebreak
+Consider sample central moments: $\hat{m}_k = \frac{1}{n} \sum_{i=1}^n (X_i-\bar{X}_n)^k$. In general, I expect $\hat{m}_k$ to be biased.  For example, as shown in lecture, $\hat{m}_2 = \hat{\sigma}_2$ is a biased estimator for variance $\sigma_2$.
 
 4. Calculate the variance of $\hat{\mu}_k$ that you proposed above, and call it $Var(\hat{\mu_k})$.
+
+\begin{align*}
+Var(\hat{\mu}_k) = E(\hat{\mu}_k^2) - E(\hat{\mu}_k)^2
+&= E\Bigg( \Bigg(\frac{1}{n} \sum_{i=1}^n X_i^k \Bigg)^2\Bigg)-\mu_k^2 \\
+&= \frac{1}{n^2}E\Bigg( \Bigg( \sum_{i=1}^n X_i^k \Bigg)^2\Bigg)-\mu_k^2 \\
+&= \frac{1}{n^2}E\Bigg( \sum_{i=1}^n\sum_{j=1}^n X_i^kX_j^k \Bigg)-\mu_k^2 \\
+&= \frac{1}{n^2}E\Bigg( \sum_{i=1}^n X_i^{2k} + \sum_{i=1}^n\sum_{j=1; i \neq j}^n X_i^kX_j^k \Bigg)-\mu_k^2 \\
+&= \frac{1}{n^2} \sum_{i=1}^n E[X_i^{2k}] + \frac{1}{n^2}\sum_{i=1}^n\sum_{j=1; i \neq j}^n E[X_i^k]E[X_j^k] -\mu_k^2 \\
+&= \frac{1}{n^2} \sum_{i=1}^n \mu_{2k} + \frac{1}{n^2}\sum_{i=1}^n\sum_{j=1; i \neq j}^n \mu_k^2 -\mu_k^2 \\
+&= \frac{1}{n^2} n\mu_{2k} + \frac{1}{n^2}(n^2-n) \mu_k^2 -\mu_k^2 \\
+&= \frac{1}{n} \mu_{2k} + \mu_k^2-\frac{\mu_k^2}{n}  -\mu_k^2 \\
+&= \frac{\mu_{2k} - \mu_k^2}{n} 
+\end{align*}
 
 \pagebreak
 
