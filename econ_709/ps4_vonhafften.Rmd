@@ -28,28 +28,23 @@ Most of the problems assume a random sample $\{X_1, ..., X_n\}$ from a common di
 &= \bar{X}_{n+1}
 \end{align*}
 
+\pagebreak
+
 (b) $s^2_{n+1}= ((n-1)s_n^2 + (n/(n+1))(X_{n+1}-\bar{X}_n)^2)/n$
 
-$$
-n^{-1}\Bigg[(n-1)s_n^2 + \frac{n}{n+1}(X_{n+1}-\bar{X}_n)^2\Bigg] 
-= n^{-1}\Bigg[(n-1)(n-1)^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2 + \frac{n}{n+1}(X_{n+1}-\bar{X}_n)^2\Bigg]  \\ 
-= n^{-1}(n+1)^{-1}\Bigg[(n+1)\sum_{i=1}^n (X_i - \bar{X}_n)^2 + n(X_{n+1}-\bar{X}_n)^2\Bigg]  \\
-= n^{-1}(n+1)^{-1}\Bigg[(n+1)\sum_{i=1}^n (X_i^2 - 2X_i\bar{X}_n+\bar{X}_n^2) + n(X_{n+1}^2-2\bar{X}_nX_{n+1} + \bar{X}_n^2)\Bigg]  \\
-= n^{-1}(n+1)^{-1}\Bigg[n\sum_{i=1}^n (X_i^2 - 2X_i\bar{X}_n+\bar{X}_n^2) + n(X_{n+1}^2-2\bar{X}_nX_{n+1} + \bar{X}_n^2) + \sum_{i=1}^n (X_i^2 - 2X_i\bar{X}_n+\bar{X}_n^2)\Bigg]  \\
-= n^{-1}(n+1)^{-1}\Bigg[n\Bigg[\sum_{i=1}^n X_i^2 - \sum_{i=1}^n2X_i\bar{X}_n+n\bar{X}_n^2 + X_{n+1}^2-2\bar{X}_nX_{n+1} + \bar{X}_n^2\Bigg] + \sum_{i=1}^n (X_i^2 - 2X_i\bar{X}_n+\bar{X}_n^2)\Bigg]  \\
-= n^{-1}(n+1)^{-1}\Bigg[n\Bigg[\sum_{i=1}^{n+1} X_i^2 - \sum_{i=1}^{n+1}2X_i\bar{X}_n + (n+1)\bar{X}_n^2 \Bigg] + \sum_{i=1}^n (X_i^2 - 2X_i\bar{X}_n+\bar{X}_n^2)\Bigg]  \\
-$$ 
-
-
-$$
-s^2_{n+1}= n^{-1} \sum_{i=1}^{n+1} (X_i - \bar{X}_{n+1})^2 \\
-= n^{-1} \sum_{i=1}^{n+1} \Big(X_i - (n \bar{X}_n + X_{n+1})/(n+1)\Big)^2 \\
-= n^{-1} \sum_{i=1}^{n+1} \Big(X_i^2 - 2X_i(n \bar{X}_n + X_{n+1})/(n+1) + (n \bar{X}_n + X_{n+1})^2/(n+1)^2\Big) \\
-= n^{-1} (n+1)^{-2}\sum_{i=1}^{n+1} \Big((n+1)^2X_i^2 - 2(n+1)X_i(n \bar{X}_n + X_{n+1}) + (n \bar{X}_n + X_{n+1})^2\Big) \\
-= n^{-1} (n+1)^{-1} \Big((n+1)\sum_{i=1}^{n+1}X_i^2 - 2(n \bar{X}_n + X_{n+1})\sum_{i=1}^{n+1}X_i + (n \bar{X}_n + X_{n+1})^2\Big) \\
-= n^{-1} (n+1)^{-1} \Big((n+1)\sum_{i=1}^{n}X_i^2 + (n+1) X_{n+1}^2 - 2(n \bar{X}_n + X_{n+1})\sum_{i=1}^{n}X_i + 2(n \bar{X}_n + X_{n+1})X_{n+1}+ (n \bar{X}_n + X_{n+1})^2\Big) \\
-= n^{-1} (n+1)^{-1} \Big((n+1)\sum_{i=1}^{n}X_i^2  - 2(n \bar{X}_n + X_{n+1})\sum_{i=1}^{n}X_i + (n+1) X_{n+1}^2+ 2(n \bar{X}_n + X_{n+1})X_{n+1}+ (n \bar{X}_n + X_{n+1})^2\Big) \\
-$$
+\begin{align*}
+s^2_{n+1} &= n^{-1} \sum_{i=1}^{n+1} (X_i - \bar{X}_{n+1})^2 \\
+&= n^{-1} \sum_{i=1}^{n+1} [(X_i - \bar{X}_n) + (\bar{X}_n - \bar{X}_{n+1})]^2 \\
+&= n^{-1} \sum_{i=1}^{n+1} \Bigg[(X_i - \bar{X}_n) + \Bigg(\bar{X}_n - \frac{n \bar{X}_n + X_{n+1}}{n+1}\Bigg)\Bigg]^2 \\
+&= n^{-1} \sum_{i=1}^{n+1} \Bigg[(X_i - \bar{X}_n) + \Bigg(\frac{\bar{X}_n - X_{n+1}}{n+1}\Bigg)\Bigg]^2 \\
+&= n^{-1} \sum_{i=1}^{n+1} \Bigg[(X_i - \bar{X}_n)^2 + 2(X_i - \bar{X}_n)\Bigg(\frac{\bar{X}_n - X_{n+1}}{n+1}\Bigg) + \Bigg(\frac{\bar{X}_n - X_{n+1}}{n+1}\Bigg)^2 \Bigg] \\
+&= n^{-1} \Bigg[ \sum_{i=1}^{n+1} (X_i - \bar{X}_n)^2 + 2\Bigg(\frac{\bar{X}_n - X_{n+1}}{n+1}\Bigg)\sum_{i=1}^{n+1}(X_i - \bar{X}_n) + (n+1)\Bigg(\frac{\bar{X}_n - X_{n+1}}{n+1}\Bigg)^2 \Bigg] \\
+&= n^{-1} \Bigg[ \sum_{i=1}^{n} (X_i - \bar{X}_n)^2 + (X_{n+1} - \bar{X}_n)^2 + 2\Bigg(\frac{\bar{X}_n - X_{n+1}}{n+1}\Bigg)\Bigg(\sum_{i=1}^{n}X_i +X_{n+1} - (n+1)\bar{X}_n\Bigg) + \frac{(\bar{X}_n - X_{n+1})^2}{n+1} \Bigg] \\
+&= n^{-1} \Bigg[ (n-1)s^2_n + (X_{n+1} - \bar{X}_n)^2 + 2\Bigg(\frac{\bar{X}_n - X_{n+1}}{n+1}\Bigg)\Bigg(X_{n+1} - \bar{X}_n\Bigg) + \frac{(\bar{X}_n - X_{n+1})^2}{n+1} \Bigg] \\
+&= n^{-1} \Bigg[ (n-1)s^2_n + (X_{n+1} - \bar{X}_n)^2 - 2\Bigg(\frac{(\bar{X}_n - X_{n+1})^2}{n+1}\Bigg) + \frac{(\bar{X}_n - X_{n+1})^2}{n+1} \Bigg] \\
+&= n^{-1} \Bigg[ (n-1)s^2_n + (X_{n+1} - \bar{X}_n)^2 - \frac{(\bar{X}_n - X_{n+1})^2}{n+1} \Bigg] \\
+&= n^{-1} \Bigg[ (n-1)s_n^2 + \frac{n}{n+1}(X_{n+1}-\bar{X}_n)^2 \Bigg]
+\end{align*}
 
 \pagebreak
 
@@ -68,7 +63,8 @@ Consider sample central moments: $\hat{m}_k = \frac{1}{n} \sum_{i=1}^n (X_i-\bar
 4. Calculate the variance of $\hat{\mu}_k$ that you proposed above, and call it $Var(\hat{\mu_k})$.
 
 \begin{align*}
-Var(\hat{\mu}_k) = E(\hat{\mu}_k^2) - E(\hat{\mu}_k)^2
+Var(\hat{\mu}_k) 
+&= E(\hat{\mu}_k^2) - E(\hat{\mu}_k)^2\\
 &= E\Bigg( \Bigg(\frac{1}{n} \sum_{i=1}^n X_i^k \Bigg)^2\Bigg)-\mu_k^2 \\
 &= \frac{1}{n^2}E\Bigg( \Bigg( \sum_{i=1}^n X_i^k \Bigg)^2\Bigg)-\mu_k^2 \\
 &= \frac{1}{n^2}E\Bigg( \sum_{i=1}^n\sum_{j=1}^n X_i^kX_j^k \Bigg)-\mu_k^2 \\
@@ -90,16 +86,25 @@ $$
 E(s_n) = E\Bigg(\sqrt{(n-1)^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2}\Bigg) \le \sqrt{E\Bigg((n-1)^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2\Bigg)} = \sqrt{\sigma^2}=\sigma
 $$
 
-\pagebreak
-
 6. Show algebraically that $\hat{\sigma}^2=n^{-1}\sum_{i=1}^n (X_i - \mu)^2-(\bar{X}_n-\mu)^2$.
 
-$$
+I show that $\hat{\sigma}^2=n^{-1} \Bigg(\sum_{i=1}^n X_i^2  -n\bar{X}_n^2 \Bigg)$ and $n^{-1}\sum_{i=1}^n (X_i - \mu)^2-(\bar{X}_n-\mu)^2=n^{-1} \Bigg(\sum_{i=1}^n X_i^2  -n\bar{X}_n^2 \Bigg)$, so by transitivity $\hat{\sigma}^2=n^{-1}\sum_{i=1}^n (X_i - \mu)^2-(\bar{X}_n-\mu)^2$:
+
+\begin{align*}
 n^{-1}\sum_{i=1}^n (X_i - \mu)^2-(\bar{X}_n-\mu)^2 
-= n^{-1}\sum_{i=1}^n (X_i^2 -2X_i\mu + \mu^2)-(\bar{X}_n^2-2\bar{X}_n\mu + \mu^2)\\
-= n^{-1} \Bigg[\sum_{i=1}^n X_i^2 -2\mu\sum_{i=1}^nX_i + n\mu^2-n\bar{X}_n^2+2n\bar{X}_n\mu -n\mu^2\Bigg]\\
-= n^{-1} \Bigg[\sum_{i=1}^n X_i^2  -n\bar{X}_n^2 \Bigg]\\
-$$
+&= n^{-1}\sum_{i=1}^n (X_i^2 -2X_i\mu + \mu^2)-(\bar{X}_n^2-2\bar{X}_n\mu + \mu^2)\\
+&= n^{-1} \Bigg(\sum_{i=1}^n X_i^2 -2\mu\sum_{i=1}^nX_i + n\mu^2-n\bar{X}_n^2+2n\bar{X}_n\mu -n\mu^2\Bigg)\\
+&= n^{-1} \Bigg(\sum_{i=1}^n X_i^2  -n\bar{X}_n^2 \Bigg)\\
+\end{align*}
+
+\begin{align*}
+\hat{\sigma}^2 
+&= n^{-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2 \\
+&= n^{-1} \sum_{i=1}^n (X_i^2 -2X_i\bar{X}_n+ \bar{X}_n^2) \\
+&= n^{-1} \Bigg(\sum_{i=1}^n X_i^2 - 2\bar{X}_n \sum_{i=1}^n X_i+ \sum_{i=1}^n\bar{X}_n^2\Bigg) \\
+&= n^{-1} \Bigg(\sum_{i=1}^n X_i^2 - 2\bar{X}_n n\bar{X}_n+ n\bar{X}_n^2\Bigg) \\
+&= n^{-1} \Bigg(\sum_{i=1}^n X_i^2 - n\bar{X}_n^2\Bigg) \\
+\end{align*}
 
 \pagebreak
 
@@ -122,11 +127,16 @@ $$
 
 (b) Find $Var(\bar{X}_n)$.
 
+
+$$
+Var(\bar{X}_n) = Var\Bigg(n^{-1}\sum_{i=1}^n X_i\Bigg) = n^{-2} \sum_{i=1}^n Var(X_i) = n^{-2} \sum_{i=1}^n \sigma_i^2
+$$
+
 \pagebreak
 
-9. Show that if $Q \sim \chi^2_r$, then $E(Q) = r$ and $Var(Q)=2r$. (Hint: use the representation: $Q = \sum_{i=1}^n X_i^2$ with $X_i \sim N(0,1)$).
+9. Show that if $Q \sim \chi^2_r$, then $E(Q) = r$ and $Var(Q)=2r$. 
 
-If $X \sim N(0, 1)$, then $M_X(t) = \exp\Big(\frac{1}{2}t^2\Big)$.
+Note that $Q = \sum_{i=1}^n X_i^2$ with $X_i \sim N(0,1)$), then $M_X(t) = \exp\Big(\frac{1}{2}t^2\Big)$.
 
 \begin{align*}
 M_X^{(1)}(t) 
@@ -169,6 +179,45 @@ Var(Q) &= E(Q^2)-E(Q)^2 \\
 
 (a) Find $E(\bar{X}_n -\bar{Y}_n)$.
 
+\begin{align*}
+E(\bar{X}_n -\bar{Y}_n) 
+&= E\Bigg(n_1^{-1} \sum_{i=1}^{n_1} X_i - n_2^{-1}\sum_{i=1}^{n_2}Y_i \Bigg) \\
+&= n_1^{-1} \sum_{i=1}^{n_1} E(X_i) - n_2^{-1}\sum_{i=1}^{n_2} E(Y_i) \\
+&= n_1^{-1} \sum_{i=1}^{n_1} \mu_X - n_2^{-1}\sum_{i=1}^{n_2} \mu_Y \\
+&= \mu_X - \mu_Y
+\end{align*}
+
 (b) Find $Var(\bar{X}_n -\bar{Y}_n)$.
 
+\begin{align*}
+Var(\bar{X}_n -\bar{Y}_n) 
+&= Var\Bigg(n_1^{-1} \sum_{i=1}^{n_1} X_i + n_2^{-1}\sum_{i=1}^{n_2}Y_i \Bigg) \\
+&= n_1^{-2} \sum_{i=1}^{n_1} Var(X_i) + n_2^{-2}\sum_{i=1}^{n_2} Var(Y_i) \\
+&= n_1^{-2} \sum_{i=1}^{n_1} \sigma_X^2 + n_2^{-2}\sum_{i=1}^{n_2} \sigma_Y^2  \\
+&= \frac{\sigma_X^2}{n_1} + \frac{\sigma_Y^2}{n_2} \\
+\end{align*}
+
+\pagebreak
+
 (c) Find the distribution of $\bar{X}_n - \bar{Y}_n$.
+
+Consider any independent $W \sim N(\mu_W, \sigma_W)$ and $Z \sim N(\mu_Z, \sigma_Z)$. Therefore:
+
+\begin{align*}
+M_W(t) 
+&= \exp\Bigg(t\mu_W + \frac{t^2}{2}\sigma_W^2\Bigg) \\
+M_Z(t) 
+&= \exp\Bigg(t\mu_Z + \frac{t^2}{2}\sigma_Z^2\Bigg) \\
+M_{W+Z}(t) 
+&= E[\exp(t(W+Z))] \\
+&= E[\exp(tW)\exp(tZ)]\\
+&= E[\exp(tW)]E[\exp(tZ)] \\
+&= M_W(t)M_Z(t) \\
+&= \exp\Bigg(t\mu_W + \frac{t^2}{2}\sigma_W^2\Bigg)\exp\Bigg(t\mu_Z + \frac{t^2}{2}\sigma_Z^2\Bigg) \\
+&= \exp\Bigg(t\mu_W + \frac{t^2}{2}\sigma_W^2+t\mu_Z + \frac{t^2}{2}\sigma_Z^2\Bigg)\\
+&= \exp\Bigg(t(\mu_W+\mu_Z) + \frac{t^2}{2}(\sigma_W^2+\sigma_Z^2)\Bigg)
+\end{align*}
+
+So $W+Z \sim N(\mu_W+\mu_Z, \sigma_W^2+\sigma_Z^2)$.
+
+By induction, $\sum_{i=1}^{n_1} X_i \sim(n_1\mu_X, n_1\sigma_X^2)$ and $\sum_{i=1}^{n_2} Y_i \sim(n_2\mu_Y, n_2\sigma_Y^2)$. So $\bar{X}_{n} \sim N(\mu_X, n_1^{-1}\sigma_X^2)$ and $\bar{Y}_{n} \sim N (\mu_Y, n_2^{-1}\sigma_Y^2)$.  And $\bar{X}_{n} - \bar{Y}_{n} \sim N\Bigg(\mu_X - \mu_Y, \frac{\sigma_X^2}{n_1} + \frac{\sigma_Y^2}{n_2}\Bigg)$.
