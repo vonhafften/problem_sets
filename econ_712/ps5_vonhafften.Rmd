@@ -1,0 +1,114 @@
+---
+title: "ECON 712 - PS 5"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/1/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this problem set we study the macroeconomic consequences of eliminating the Social Security system in the U.S. To do so, we set up and solve a simple general equilibrium overlapping generations model.  This model is a simplified version of the model by Conesa and Krueger (1999). You are not required to write the code from scratch to solve this model, we provide you with already written code with some missing parts.  You are asked to understand the logic of the code, complete missing parts and use it to run policy experiments.
+
+# 1 Model
+
+Consider the model presented during Friday's discussion section.
+
+Each period a continuum of agents is born. Agents live for $J$ periods after which they die. The population growth rate is $n$ per year (which is the model period length). Thus, the relative size of each cohort of age $j$, $\psi_j$, is given by: 
+
+$$\psi_{i+1} = \frac{\psi_i}{1+n}$$
+
+for $i=1, ..., J - 1$ with $\psi_1 = \bar{\psi} > 0$.  It is convenient to normalize $\psi$, so that it sums up to 1 across all age groups.
+
+Newly born agents (i.e. $j=1$) are endowed with no initial capital (i.e., $k_j=0$) but can subsequently save in capital which they can rent to firms at rate $r$. A worker of age $j$ supplies labor $\ell_j \in [0,1]$ and pays proportional social security taxes on her labor income $\tau w e_j \ell_j$ until she retires at age $J^R < J$, where $e_j$ is the age-efficiency profile. Upon retirement, agent receives pension benefits $b$.
+
+The instantaneous utility function of a worker at age $j=1, 2, ..., J^R-1$ is given by: 
+
+$$u^{W} (c_j, \ell_j) = \frac{(c_j^{\gamma}(1-\ell_j)^{1-\gamma})^{1-\sigma}}{1 - \sigma}$$
+
+with $c_j$ denoting consumption and $\ell_j$ denoting labor supply at age $j$. The weight on consumption is $\gamma$ and the coefficient of relative risk aversion is $\sigma$. The instantaneous utility function of a retired agent at age $j = J^R, ..., J$ is given by: 
+
+$$u^R(c_j) = \frac{c_j^{1-\sigma}}{1-\sigma}.$$
+
+\pagebreak
+
+Preferences are then given by 
+
+$$\sum_{j=1}^{J^R-1}\beta^{j-1}u^W(c_j, \ell_j) + \sum_{j=J^R}^J \beta^{j-1}u^R(c_j)$$
+
+There is a constant returns to scale production technology $Y=F(K, L)=K^\alpha L^{1-\alpha}$ with $\alpha$ denoting capital share, $Y$ denoting aggregate output, $K$ denoting aggregate capital stock, and $L$ denoting aggregate effective labor supply. The capital depreciates at rate $\delta$. Capital and labor markets are perfectly competitive.
+
+## 1.1 Parametrization
+
+\begin{align*}
+J &= 66 \\
+J^R &= 46 \\
+n &=  0.011  \\
+k_1 &= 0 \\
+\tau &= 0.11 \\
+\gamma &= 0.42 \\
+\sigma &= 2 \\
+\beta &= 0.97  \\
+\alpha &= 0.36 \\
+\delta &= 0.06 \\
+\end{align*}
+
+# 2 Questions
+
+## 2.1
+
+Derive the below equation for labor supply, used in the solution of workers' recursive problem (refer to lecture notes for details).
+
+$$
+\ell = \frac{\gamma(1-\tau)e_jw-(1 - \gamma)[(1+r)k-k']}{(1-\tau)e_jw}
+$$
+
+The dynamic programming problem of a $j$-year-old worker, $j=1, ..., J^R-1$, is given by (equation (8) from the section handout):
+
+\begin{align*}
+V_j(k) = \max_{k', \ell} & \{u^{W}((1 - \tau)we_j\ell+(1+r)k-k', \ell) + \beta V_{j+1}(k')\}\\
+\text{s.t. } & k = 0 \text{ if } j = 1\\
+\text{and } & 0 \le \ell \le 1\\
+\end{align*}
+
+Taking the FOC of $V_j$ with respect to $\ell$:
+
+$$
+\frac{\partial V_j}{\partial \ell} = \frac{\partial}{\partial \ell}\Big(u^W((1 - \tau)we_j\ell+(1+r)k-k', \ell)\Big) + \beta (0)\\
+ = \frac{\partial}{\partial \ell}\Big(u^W((1 - \tau)we_j\ell+(1+r)k-k', \ell)\Big) \\
+ = \frac{\partial u^W}{\partial \ell}\Big(c(\ell), \ell)\Big)\frac{\partial c}{\partial \ell} (\ell)
+$$
+
+Where $c(\ell)=(1 - \tau)we_j\ell+(1+r)k-k'$. 
+
+$$
+\frac{\partial c}{\partial \ell}(\ell) = (1 - \tau)we_j
+$$
+
+The FOC of $u^W$ with respect to $\ell$ is:
+
+$$
+\frac{\partial u^W}{\partial \ell} (c(\ell), \ell) 
+= (1 - \sigma)\frac{(c(\ell)^{\gamma}(1-\ell)^{1-\gamma})^{-\sigma}}{1 - \sigma} \Big[(1-\gamma)c(\ell)^{\gamma}(1-\ell)^{-\gamma}(-1) + \gamma c(\ell)^{\gamma-1}(1-\ell)^{1-\gamma}\frac{\partial c}{\partial \ell} (\ell) \Big] \\
+= \frac{(1-\gamma)c(\ell)^{\gamma}(1-\ell)^{-\gamma}(-1) + \gamma c(\ell)^{\gamma-1}(1-\ell)^{1-\gamma}\frac{\partial c}{\partial \ell} (\ell)}{(c(\ell)^{\gamma}(1-\ell)^{1-\gamma})^{-\sigma} } \\
+$$
+
+## 2.2
+
+See attached Matlab code.
+
+## 2.3
+
+Explain in words what each `while` and `for` loop does (lines 102-258), about 1-3
+sentences per loop. Thus, write for example: The first while loop will iterate
+until both the absolute difference between the updated gross capital (labor)
+equals the initial level of capital (labor). The loop stops once the number if
+iterations equals the maximum number allowed. Hint: Do this before you start
+programming.
