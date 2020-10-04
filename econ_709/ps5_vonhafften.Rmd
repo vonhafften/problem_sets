@@ -1,0 +1,138 @@
+---
+title: "ECON 709 - PS 5"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/11/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. For the following sequences, show $a_n \to 0$ as $n \to \infty$:
+
+(a) $a_n = 1/n$
+
+Fix $\varepsilon > 0$.  Choose $\bar{n} > \frac{1}{\varepsilon}$. For all $n \ge \bar{n}$,
+
+$$
+|1/n - 0| = |1/n| = \varepsilon.
+$$
+
+Thus, $a_n = 1/n \to 0$ as $n \to \infty$.
+
+(b) $a_n = \frac{1}{n} \sin(\frac{n \pi}{2})$
+
+Fix $\varepsilon > 0$. Notice that $|\sin(x)|\le1$ $\forall x$. Choose $\bar{n} > \frac{1}{\varepsilon}$. For all $n \ge \bar{n}$,
+
+$$
+\Bigg|\frac{1}{n} \sin\Bigg(\frac{n \pi}{2}\Bigg) - 0\Bigg|=\Bigg|\frac{1}{n} \sin\Bigg(\frac{n \pi}{2}\Bigg) \Bigg| \le |1|\Bigg|\frac{1}{n}\Bigg| = \Bigg|\frac{1}{n}\Bigg|\le \varepsilon
+$$
+
+Thus, $a_n = \frac{1}{n} \sin(\frac{n \pi}{2}) \to 0$ as $n \to \infty$.
+
+\pagebreak
+
+2. Consider a random variable $X^n$ with the probability function
+
+\begin{align*}
+X_n = \begin{cases} -n, & \text{with probability } 1/n \\ 
+                    0,  & \text{with probability } 1-2/n \\ 
+                    n,  & \text{with probability } 1/n \end{cases}
+\end{align*}
+
+(a) Does $X_n \to_p 0$ as $n\to \infty$?
+
+Fix $\varepsilon > 0$.  Choose $\bar{n} > \varepsilon$.  For $n \ge \bar{n}$,
+
+$$
+P(|X_n| \ge \varepsilon) \le P(|X_n| \ge n) = P(X_n = -n) + P(X_n = n) = 1/n + 1/n = 2/n
+$$
+
+Since $1/n \to 0$, $2/n \to 0$. Thus, $X_n \to_p 0$ as $n\to \infty$.
+
+(b) Calculate $E(X_n)$.
+
+$$
+E(X_n) = \sum_{x \in \text{Supp}(X)} \pi(x)x = (1/n)*(-n)+(1-2/n)(0)+(1/n)(n)=-1+1=0.
+$$
+
+(c) Calculate $Var(X_n)$.
+
+$$
+Var(X_n) = E(X_n^2)-E(X_n)^2=E(X_n^2) = \sum_{x \in \text{Supp}(X)} \pi(x) x^2 = (1/n)*(-n)^2+(1-2/n)(0)^2+(1/n)(n)^2 = n+n=2n.
+$$
+
+(d) Now suppose the distribution is
+
+\begin{align*}
+X_n = \begin{cases} 0, & \text{with probability } 1-1/n \\ 
+                    n,  & \text{with probability } 1/n  \end{cases}
+\end{align*}
+
+|          Calculate $E(X_n)$.
+
+$$
+E(X_n)= \sum_{x \in \text{Supp}(X)} \pi(x) x = (1-1/n)(0)+(1/n)(n)=0+1=1
+$$
+
+(e) Conclude that $X_n \to_p 0$ is not sufficient for $E(X_n) \to 0$.
+
+Fix $\varepsilon > 0$. Choose $\bar{n} > \varepsilon$. For $n > \bar{n}$
+
+$$
+P(|X_n| \ge \varepsilon) \le P(|X_n| \ge n) = P(X_n = n) = 1/n
+$$
+
+Since $1/n \to 0$, $X_n \to_p 0$ as $n \to \infty$.  Thus, $X_n \to_p 0$ is not sufficient for $E(X_n) \to 0$.
+
+\pagebreak
+
+3. A weighted sample mean takes the form $\bar{Y}^* = \frac{1}{n} \sum_{i=1}^n w_iY_i$ for some non-negative constants $w_i$ satisfying $\frac{1}{n}\sum_{i=1}^n w_i =1$. Assume that $Y_i : i =1, ..., n$ are i.i.d.
+
+(a) Show that $\bar{Y}^*$ is unbiased for $\mu=E(Y_i)$.
+
+$$
+E(\bar{Y}^*) = E\Bigg( \frac{1}{n} \sum_{i=1}^n w_iY_i  \Bigg)= \frac{1}{n} \sum_{i=1}^n w_i E (Y_i)= \frac{1}{n} \sum_{i=1}^n w_i \mu = (1) \mu = \mu
+$$
+
+(b) Calculate $Var(\bar{Y}^*)$.
+
+$$
+Var(\bar{Y}^*) = Var\Bigg( \frac{1}{n} \sum_{i=1}^n w_iY_i  \Bigg)= \frac{1}{n^2} \sum_{i=1}^n w_i^2 Var (Y_i)
+$$
+
+(c) Show that a sufficient condition for $\bar{Y}^* \to_p \mu$ is that $\frac{1}{n^2} \sum_{i=1}^n w_i^2 \to 0$. (Hint: use the Markov's or Chebyshev's Inequality).
+
+$P(|\bar{Y}^*|)$
+
+(d) Show that the sufficient condition for the condition in part (c) is $\max_{i \le n} w_i/n \to 0$.
+
+\pagebreak
+
+4. Take a random sample $\{X_1, ..., X_n\}$. Which statistic converges in probability by the weak law of large numbers and continuous mapping theorem, assuming the moment exists?
+
+(a) $\frac{1}{n} \sum_{i=1}^n X_i^2$
+
+(b) $\frac{1}{n} \sum_{i=1}^n X_i^3$
+
+(c) $\max_{i \le n}X_i$
+
+(d) $\frac{1}{n} \sum_{i=1}^n X_i^2 - (\frac{1}{n} \sum_{i=1}^n X_i)^2$
+
+(e) $\frac{\sum_{i=1}^n X_i^2}{\sum_{i=1}^n X_i}$ assuming $\mu = E(X_i) > 0$.
+
+(f) $1(\frac{1}{n} \sum_{i=1}^n X_i > 0)$ where
+
+\begin{align*}
+1(a) = \begin{cases} 1 & \text{if $a$ is true} \\ 0 & \text{if $a$ is not true} \end{cases}
+\end{align*}
+
+|          is called the indicator function of event $a$.
+
