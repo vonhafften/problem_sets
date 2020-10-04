@@ -109,15 +109,21 @@ Matlab code for this problem set is provided in file `ps5.m`. Look for areas in 
 
 See attached Matlab code with blanks filled in.
 
+\pagebreak
+
 ## 2.3
 
 Explain in words what each `while` and `for` loop does.
 
-The `while` loop stops iterating when the initial guess and .
+In my code, I added a `for` loop (starting on line 89) that runs twice for the two policy experiments: one with social security and one without social security. 
 
-The first `for` loop .
+For a given policy experiment, the `while` loop (starting on line 107) runs the following procedure until the level of capital and the level of labor converge or the loop reaches a maximum number of iterations.  Based on the current guess for the level of capital and the level of labor, we compute the interest rate and the wage based on the firm's problem as well as the pension benefit based on the government budget constraint.  Based on these values there is a `for` loop for the retired households and a `for` loop for the working households.
 
-The second `for` loop .
+The `for` loop for the retired households (starting on line 140) iterates backward from the period before their death to the first period of their retirement.  In each period, the outer `for` loop (starting on line 141) iterates over the assets holdings for that period and the inner `while` loop (starting on line 150) iterates over the possible assets for the next period conditional on the current asset holdings.  Within the `while` loop, we calculate consumption and utility. We save the optimal capital level.
+
+The `for` loop for the working households (starting on line 178) iterates backward from the last period of their employment to the first period of their employement.  Similar, to the retired household loop, we iterate over possible levels of capital for this period (starting on line 179) and then possible levels of capital for next period (starting on line 188). Conditional on these capital levels, we calculate optimal labor supply and the implied level of consumption and utility.  We save the optimal capital level and labor supply.
+
+Finally, the `for` loop (starting on line 238) looks across generations and calculates aggregate capital and labor.  The current guess is updated as a weighted average of the previous guess and guess implied by aggregate the optimal household behaviour calculated in this iteration.  The overall `while` loop terminates if the guess is within the tolerance.
 
 \pagebreak
 
