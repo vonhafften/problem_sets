@@ -21,6 +21,9 @@ clear; close all; clc;
 % Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Logical for whether to print out info in loop iterations
+verbose = 0;
+
 % Demographics
 J=66;                       % life-span
 JR=46;                      % age of retirement
@@ -36,11 +39,6 @@ gamma=0.42;                 % weight on consumption
 % Production
 alpha=0.36;                 % production elasticity of capital
 delta=0.06;                 % rate of depreciation
-
-% Social Security tax rate
-tau=0.11; % Use this for model with SS
-%tau=0;   % Use this for model without SS
-
 
 % Measure of each generation
 mass=ones(J,1);
@@ -71,23 +69,10 @@ nk=180;                                    % number of grid points
 inckap=(maxkap-minkap)/(nk-1).^2;          % distance between points
 aux=1:nk;
 kap= minkap+inckap*(aux-1).^2;             % capital grid
+
 % This formula makes a non-uniform grid with more density at lower range.
 
 neg=-1e10;                              % very small number
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Initial guesses for interest rate, wages and pension benefits
-% Comment out the appropriate lines!
-
-% Social Security
-K0=3.1392;
-L0=0.3496;
-
-% No Social Security
-%K0=3.9288;
-%L0= 0.3663;
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Loop over capital and labor
@@ -95,19 +80,38 @@ L0=0.3496;
 
 tolk=1e-3;              % Numerical tolerance for capital
 tollab=1e-3;            % Numerical tolerance for labor
-nq=100;                 % Max number of iterations
 
+nq=100;                 % Max number of iterations
 q=0;                    % Counter for iterations
-K1=K0+10;
-L1=L0+10;
 
 fprintf('\nComputing equilibrium prices... \n');
+
+for experiment = ["SS", "No SS"] % Modified to run both policy experiments in a single go
+
+% Initial guesses for interest rate, wages and pension benefits
+if experiment == "No SS"
+    tau = 0; % No Social Security
+    K0=3.9288;
+    L0= 0.3663;
+end
+
+if experiment == "SS"
+    tau = 0.11; % Social Security
+    K0 = 3.1392;
+    L0 = 0.3496;
+end   
+
+K1=K0+10;
+L1=L0+10;
+    
 while q<nq && (abs(K1-K0)>tolk || abs(L1-L0)>tollab)
 
     q=q+1;
-
-    fprintf('\nIteration %g out of %g \n',q,nq);
-
+    
+    if verbose
+      fprintf('\nIteration %g out of %g \n',q,nq);
+    end
+    
     % Prices
     r0 =  alpha * (L0/K0)^(1-alpha) - delta;
     w0 = (1-alpha) * (K0/L0)^alpha;
@@ -219,7 +223,7 @@ while q<nq && (abs(K1-K0)>tolk || abs(L1-L0)>tollab)
             end
         end
     end
-
+    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Aggregate capital stock and employment                                  %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -252,12 +256,35 @@ while q<nq && (abs(K1-K0)>tolk || abs(L1-L0)>tollab)
     % Update the guess on capital and labor
     K0=0.9*K0+0.1*K1;
     L0=0.9*L0+0.1*L1;
+    
+    if verbose
+        % Display results
+        disp('  capital     labor   pension');
+        disp([K0, L0, b]);
+        disp('deviation-capital deviation-labor       ');
+        disp([abs(K1-K0),  abs(L1-L0)]);
+    end
+    
+    if q == 1 && experiment == "SS"
+        %% Plots
+        % Value function for a retired agent
+        figure(1)
+        age=50;
+        plot(kap,v(:,age));
+        xlabel('asset holdings, k','FontSize',14);
+        ylabel('value function, V_{50}(k)','FontSize',14);
+        title(['value function of a retired agent at age ', num2str(age)],'FontSize',14)
 
-    % Display results
-    disp('  capital     labor   pension');
-    disp([K0, L0, b]);
-    disp('deviation-capital deviation-labor       ');
-    disp([abs(K1-K0),  abs(L1-L0)]);
+
+        % Savings of a working agent
+        figure(2)
+        age=20;
+        plot(kap,kap(kapopt(:,age)),'k-',kap,kap,'r--');
+        xlabel('asset holdings, k','FontSize',14);
+        ylabel('saving, k''','FontSize',14);
+        legend('saving','45 degree line','Location','East');
+        title(['saving k'' of a working agent at age ', num2str(age)],'FontSize',14)
+    end
 end
 
 % Display equilibrium results
@@ -269,27 +296,6 @@ if sum(kgen == kap(end)) > 0
     disp('Capital decision on upper bound, increase!');
 end
 
-
-%% Plots
-% Value function for a retired agent
-figure(1)
-age=50;
-plot(kap,v(:,age));
-xlabel('asset holdings, k','FontSize',14);
-ylabel('value function, V_{50}(k)','FontSize',14);
-title(['value function of a retired agent at age ', num2str(age)],'FontSize',14)
-
-
-% Savings of a working agent
-figure(2)
-age=20;
-plot(kap,kap(kapopt(:,age)),'k-',kap,kap,'r--');
-xlabel('asset holdings, k','FontSize',14);
-ylabel('saving, k''','FontSize',14);
-legend('saving','45 degree line','Location','East');
-title(['saving k'' of a working agent at age ', num2str(age)],'FontSize',14)
-
-
 %% Saving Model Results
 if tau ~= 0
 % Solve the model with social security and
@@ -297,6 +303,8 @@ save('ss.mat');
 elseif tau ==0
 % Solve the model without social security and
 save('no_ss.mat');
+end
+
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

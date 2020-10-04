@@ -78,27 +78,27 @@ V_j(k) = \max_{k', \ell} & \{u^{W}((1 - \tau)we_j\ell+(1+r)k-k', \ell) + \beta V
 \text{and } & 0 \le \ell \le 1\\
 \end{align*}
 
-Taking the FOC of $V_j$ with respect to $\ell$:
+\pagebreak
 
-$$
-\frac{\partial V_j}{\partial \ell} = \frac{\partial}{\partial \ell}\Big(u^W((1 - \tau)we_j\ell+(1+r)k-k', \ell)\Big) + \beta (0)\\
- = \frac{\partial}{\partial \ell}\Big(u^W((1 - \tau)we_j\ell+(1+r)k-k', \ell)\Big) \\
- = \frac{\partial u^W}{\partial \ell}\Big(c(\ell), \ell)\Big)\frac{\partial c}{\partial \ell} (\ell)
-$$
+Define $c(\ell)=(1 - \tau)we_j\ell+(1+r)k-k'$, so $\frac{\partial c}{\partial \ell}(\ell) = (1 - \tau)we_j$.  Setting the FOC of $V_j$ with respect to $\ell$ to zero:
 
-Where $c(\ell)=(1 - \tau)we_j\ell+(1+r)k-k'$. 
+\begin{align*}
+\frac{\partial V_j}{\partial \ell} &= 0 \\
+\frac{\partial}{\partial \ell}\Big(u^W(c(\ell), \ell)\Big) + \beta \frac{\partial}{\partial \ell}\Big(V_{j+1}(k')\Big) &= 0 \\
+\frac{\partial u^W}{\partial \ell}\Big(c(\ell), \ell)\Big)\frac{\partial c}{\partial \ell} (\ell) + \beta (0) &= 0 \\
+\frac{\partial u^W}{\partial \ell}\Big(c(\ell), \ell)\Big)\frac{\partial c}{\partial \ell} (\ell) &= 0 \\
+(1 - \sigma)\frac{(c(\ell)^{\gamma}(1-\ell)^{1-\gamma})^{-\sigma}}{1 - \sigma} \Big[(1-\gamma)c(\ell)^{\gamma}(1-\ell)^{-\gamma}(-1) + \gamma c(\ell)^{\gamma-1}(1-\ell)^{1-\gamma}\frac{\partial c}{\partial \ell} (\ell) \Big]((1 - \tau)we_j) &= 0 \\
+\frac{\gamma c(\ell)^{\gamma-1}(1-\ell)^{1-\gamma}\frac{\partial c}{\partial \ell} (\ell)- (1-\gamma)c(\ell)^{\gamma}(1-\ell)^{-\gamma}}{(c(\ell)^{\gamma}(1-\ell)^{1-\gamma})^{\sigma} }((1 - \tau)we_j) &= 0\\
+(1-\gamma)c(\ell) - \gamma \frac{\partial c}{\partial \ell} (\ell)&= 0\\
+\end{align*}
 
-$$
-\frac{\partial c}{\partial \ell}(\ell) = (1 - \tau)we_j
-$$
+Substituting in $c(\ell)$ and $\frac{\partial c}{\partial \ell}(\ell)$:
 
-The FOC of $u^W$ with respect to $\ell$ is:
-
-$$
-\frac{\partial u^W}{\partial \ell} (c(\ell), \ell) 
-= (1 - \sigma)\frac{(c(\ell)^{\gamma}(1-\ell)^{1-\gamma})^{-\sigma}}{1 - \sigma} \Big[(1-\gamma)c(\ell)^{\gamma}(1-\ell)^{-\gamma}(-1) + \gamma c(\ell)^{\gamma-1}(1-\ell)^{1-\gamma}\frac{\partial c}{\partial \ell} (\ell) \Big] \\
-= \frac{(1-\gamma)c(\ell)^{\gamma}(1-\ell)^{-\gamma}(-1) + \gamma c(\ell)^{\gamma-1}(1-\ell)^{1-\gamma}\frac{\partial c}{\partial \ell} (\ell)}{(c(\ell)^{\gamma}(1-\ell)^{1-\gamma})^{-\sigma} } \\
-$$
+\begin{align*}
+(1-\gamma)[(1 - \tau)we_j\ell + (1+r)k-k'] &= \gamma (1 - \tau)we_j\\
+(1 - \tau)we_j\ell + (1+r)k-k' &= \frac{\gamma (1 - \tau)we_j}{1-\gamma}\\
+\ell &= \frac{\gamma (1 - \tau)we_j - (1-\gamma)[(1+r)k + k']}{(1 - \tau)we_j}
+\end{align*}
 
 ## 2.2
 
@@ -106,9 +106,4 @@ See attached Matlab code.
 
 ## 2.3
 
-Explain in words what each `while` and `for` loop does (lines 102-258), about 1-3
-sentences per loop. Thus, write for example: The first while loop will iterate
-until both the absolute difference between the updated gross capital (labor)
-equals the initial level of capital (labor). The loop stops once the number if
-iterations equals the maximum number allowed. Hint: Do this before you start
-programming.
+Explain in words what each `while` and `for` loop does (lines 102-258), about 1-3 sentences per loop. Thus, write for example: The first while loop will iterate until both the absolute difference between the updated gross capital (labor) equals the initial level of capital (labor). The loop stops once the number if iterations equals the maximum number allowed. Hint: Do this before you start programming.
