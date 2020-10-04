@@ -13,6 +13,9 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(rmatio)
+library(knitr)
+library(tidyverse)
 ```
 
 In this problem set we study the macroeconomic consequences of eliminating the Social Security system in the U.S. To do so, we set up and solve a simple general equilibrium overlapping generations model.  This model is a simplified version of the model by Conesa and Krueger (1999). You are not required to write the code from scratch to solve this model, we provide you with already written code with some missing parts.  You are asked to understand the logic of the code, complete missing parts and use it to run policy experiments.
@@ -102,8 +105,66 @@ Substituting in $c(\ell)$ and $\frac{\partial c}{\partial \ell}(\ell)$:
 
 ## 2.2
 
-See attached Matlab code.
+Matlab code for this problem set is provided in file `ps5.m`. Look for areas in the code that ask you to fill in the blanks and fill them in.
+
+See attached Matlab code with blanks filled in.
 
 ## 2.3
 
-Explain in words what each `while` and `for` loop does (lines 102-258), about 1-3 sentences per loop. Thus, write for example: The first while loop will iterate until both the absolute difference between the updated gross capital (labor) equals the initial level of capital (labor). The loop stops once the number if iterations equals the maximum number allowed. Hint: Do this before you start programming.
+Explain in words what each `while` and `for` loop does.
+
+The `while` loop stops iterating when the initial guess and .
+
+The first `for` loop .
+
+The second `for` loop .
+
+\pagebreak
+
+## 2.4
+
+Using your code, solve household optimization problem with $K = 3.1392, L = 0.3496$ and social security in place. Plot the value function over $k$ for the retired agent at the model-age $j =50$, $V_50(k)$.  Is it increasing and concave? Plot the savings function for a worker at the model-age $j=20$ $k'_20(k)$.  Is saving increasing in $k$? What about net saving, $k'-k$?
+
+The first figure below shows the value function over $k$ for the retired agent at the model-age $j =50$, $V_50(k)$. $V_50(k)$ is increasing and concave. The second figure below shows the savings function for a worker at the model-age $j=20$ $k'_20(k)$. $k'_20(k)$ is increasing in $k$ and net savings, $k'-k$, is decreasing in $k$.
+
+```{r, echo=FALSE}
+include_graphics("ps5_problem2.4_1.png")
+include_graphics("ps5_problem2.4_2.png")
+```
+
+\pagebreak
+
+## 2.5
+
+Evaluate the macroeconomic consequences of eliminating social security (see table).
+
+```{r, echo=FALSE, warning=FALSE}
+ss <- read.mat("ps5_ss.mat")
+no_ss <- read.mat("ps5_no_ss.mat")
+welfare <- read.mat("ps5_welfare_comparison.mat")
+
+w_ss <- c(ss$K0, ss$L0, ss$w0, ss$r0, ss$b, welfare$V1_ss, welfare$W_ss)
+wo_ss <- c(no_ss$K0, no_ss$L0, no_ss$w0, no_ss$r0, no_ss$b, welfare$V1_noss, welfare$W_noss)
+row_names <- c("Capital $K$", "Labor $L$", "Wage $w$", "Interest $r$", "Pension benefit $b$", "Newborn welfare $V_1(k_1)$", "Aggregate welfare $W$")
+
+tibble(`Variables` = row_names, `with SS` = w_ss, `without SS` = wo_ss) %>% 
+  kable(digits = 3, escape = FALSE, caption = "Results of the policy experiment: benchmark model")
+
+```
+
+1. Solve for the stationary competitive market equilibrium of the benchmark model with social security. Is this economy dynamically efficient?
+
+Yes, the economy is dynamically efficient because the interest rate $r$ is larger than the population growth rate.
+
+2. Eliminate social security by setting $\tau = 0$ and solve for the new stationary equilibrium.
+
+The figure below compares the the profiles of wealth by age groups for the case with and without social security.  Notice that agents save more throughout their working lives without social security. In retirement, the wealth of agents without social security decreases more slowly because their consumption is being supplemented by the pension benefit.
+
+The newborn generation prefers to start in a steady state without social security.
+
+Assuming that the reform instantly takes every cohort into the new steady state, it would not be supported by a majority voting because aggregate welfare is higher with social security than without social security.
+
+```{r, echo=FALSE}
+include_graphics("ps5_problem2.5.png")
+```
+

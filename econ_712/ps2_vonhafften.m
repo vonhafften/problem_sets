@@ -118,8 +118,8 @@ Distance = zeros(1,M);  % The matrix that stores the distance between the new st
 % and where the system is at after a long period of time following
 % particular c_t0
 for i = 1:M
-    Distance(1,i)=calib( C_range(i), alpha, beta, delta, z, k_bar, k_bar2, c_bar2);
-    % The calib.m provided is a function that calibrates where the system
+    Distance(1,i)=ps2_calib( C_range(i), alpha, beta, delta, z, k_bar, k_bar2, c_bar2);
+    % The ps2_calib.m provided is a function that calibrates where the system
     % is at after 50 periods
 end
 [DD,I] = min(Distance);     % Picking the particular c_t0 that minimizes the distance

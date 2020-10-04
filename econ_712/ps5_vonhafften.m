@@ -91,8 +91,8 @@ for experiment = ["SS", "No SS"] % Modified to run both policy experiments in a 
 % Initial guesses for interest rate, wages and pension benefits
 if experiment == "No SS"
     tau = 0; % No Social Security
-    K0=3.9288;
-    L0= 0.3663;
+    K0 = 3.9288;
+    L0 = 0.3663;
 end
 
 if experiment == "SS"
@@ -250,8 +250,8 @@ while q<nq && (abs(K1-K0)>tolk || abs(L1-L0)>tollab)
         ik0 = ik1;
     end
 
-    K1 = kgen' * mass;              % dot product of vectors
-    L1 = (labgen .* e)' * mass(1:tW);      % dot product of vectors
+    K1 = kgen' * mass;                % dot product of vectors
+    L1 = (labgen .* e)' * mass(1:tW); % dot product of vectors
 
     % Update the guess on capital and labor
     K0=0.9*K0+0.1*K1;
@@ -266,7 +266,7 @@ while q<nq && (abs(K1-K0)>tolk || abs(L1-L0)>tollab)
     end
     
     if q == 1 && experiment == "SS"
-        %% Plots
+        %% Plots for first iteration of the loop
         % Value function for a retired agent
         figure(1)
         age=50;
@@ -299,10 +299,10 @@ end
 %% Saving Model Results
 if tau ~= 0
 % Solve the model with social security and
-save('ss.mat');
+save('ps5_ss.mat');
 elseif tau ==0
 % Solve the model without social security and
-save('no_ss.mat');
+save('ps5_no_ss.mat');
 end
 
 end
@@ -312,10 +312,10 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear all;
 
-load('ss.mat','kgen','J');
+load('ps5_ss.mat','kgen','J');
 kgen_ss=kgen;
 
-load('no_ss.mat','kgen','J');
+load('ps5_no_ss.mat','kgen','J');
 kgen_noss=kgen;
 
 figure(3)
@@ -326,17 +326,13 @@ ylabel('wealth','FontSize',14);
 AX=legend('with Social Security','without Social Security','Location','NorthWest');
 LEG=findobj(AX,'type','text');
 set(LEG,'FontSize',14);
+title('comparison of wealth profile by age-group','FontSize',14)
 
-% save figure to pdf
-set(3, 'PaperSize', [5 5]);
-set(3, 'PaperPositionMode', 'manual');
-set(3, 'PaperPosition', [0 0 5 5]);
-print(3, 'fig_wealth', '-dpdf');
 
 %% Welfare comparison
 clear all;
 
-load('ss.mat','v','mass','ikgen','J');
+load('ps5_ss.mat','v','mass','ikgen','J');
 
 % Newborn generation
 V1_ss = v(1,1)
@@ -351,7 +347,7 @@ end
 W_ss = V_ss' * mass
 
 
-load('no_ss.mat','v','mass','ikgen','J');
+load('ps5_no_ss.mat','v','mass','ikgen','J');
 
 % Newborn generation
 V1_noss = v(1,1)
@@ -364,3 +360,5 @@ for j = 2:J
     V_noss(j) = v(ik0,j);
 end
 W_noss = V_noss' * mass
+
+save('ps5_welfare_comparison.mat');
