@@ -233,13 +233,21 @@ Define $g(x) = x^2$.  Notice that $g$ is continuous, $\beta = g(\mu)$, and $\hat
 
 (b) Now suppose $\mu = 0$. Describe what happens to the asymptotic distribution from the previous part.
 
-If $\mu = 0$, then the variance of the asymptotic distribution is zero, so it become a degenerate distribution at its mean:
+If $\mu = 0$, then $\beta=(0)^2=0$ and the variance of the asymptotic distribution is zero, so it become a degenerate distribution at its mean:
 
 $$
 \sqrt{n}(\hat{\beta}-\beta) = 0
-\implies \hat{\beta} = \beta
+\implies \hat{\beta} = \beta = 0
 $$
 
-(c) Improve on the previous answer. Under the assumption $\mu = 0$, find the asymptotic distribution of $n\hat{\beta}$.
+(c) Improve on the previous answer. Under the assumption $\mu = 0$, find the asymptotic distribution of $\sqrt{n}\hat{\beta}$.
+
+Define $g(x) = x^2$.  Notice that $g$ is continuous, $\beta = g(\mu) = 0^2=0$, and $\hat{\beta} = g(\hat{\mu})$. Furthermore $g'(0) = 2(0) = 0$. By the Delta Method,
+
+$$
+\sqrt{n}\hat{\beta} \to_d N(0, (0)^2v^2)
+$$
+
+Which implies that $\sqrt{n}\hat{\beta}$ is a degenerate probability distribution at zero, so $\hat{\beta} = 0$.
 
 (d) Comment on the differences between the answers in parts (a) and (c).
