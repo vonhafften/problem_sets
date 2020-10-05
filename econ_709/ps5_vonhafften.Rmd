@@ -184,12 +184,62 @@ $$
 
 By the weak law of large numbers, $\log(\hat{\mu}) = \frac{1}{n}\sum_{i=1}^n\log( X_i) \to_p E(\log(X))$. By the continuous mapping theorem with $g(x)=\exp(x)$, we know that $\hat{\mu} \to_p \exp(E(\log(X))) = \mu$.
 
-6. Let $\mu_k = E(X^k)$ for some integer $k \ge 1$. ($X_i : i = 1, ..., n$ is a i.i.d. sample.)
+6. Let $\mu_k = E(X^k)$ for some integer $k \ge 1$. 
 
 (a) Write down the natural moment estimator $\hat{\mu}_k$ of $\mu_k$.
 
-(b)
+For i.i.d. sample $X_i : i = 1, ..., n$, the "plug-in" estimator is the sample moment:
 
-7. ($X_i : i = 1, ..., n$ is a i.i.d. sample.)
+$$
+\hat{\mu}_k = \frac{1}{n} \sum_{i=1}^n X_i^k
+$$
 
-8. ($X_i : i = 1, ..., n$ is a i.i.d. sample.)
+(b) Find the asymptotic distribution of $\sqrt{n}(\hat{\mu}_k-\mu_k)$ as $n \to \infty$, assuming that $E(X^{2k}) < \infty$.
+
+Notice that the $E(X_i^k) = \mu_k$ and $Var(X_i^k) = E(X_i^{2k})-(\mu_k)^2 = \mu_{2k}-\mu_k^2$.  Thus, by the central limit theorem, $\sqrt{n}(\hat{\mu}_k-\mu_k)\to_d N(0, \mu_{2k}-\mu_k)$.
+
+7. Let $m_k = (E(X_k))^{1/k}$ for some integer $k \ge 1$.
+
+(a) Write down the natural moment estimator $\hat{m}_k$ of $m_k$.
+
+For i.i.d. sample $X_i : i = 1, ..., n$, the "plug-in" estimator is:
+
+$$
+\hat{m}_k = \Bigg( \frac{1}{n}\sum_{i=1}^n X_i^k \Bigg)^{1/k}
+$$
+
+(b) Find the asymptotic distribution of $\sqrt{n}(\hat{\mu}_k-\mu_k)$ as $n \to \infty$, assuming that $E(X^{2k}) < \infty$.
+
+From 6(b), we know that $\sqrt{n}(\hat{\mu}_k-\mu_k)\to_d N(0, \mu_{2k}-\mu_k)$. Define $g(x)=x^{1/k}$ for some $k \in \N$.  Notice that $g$ is continuous for all values of $k$.  Furthermore, $g(\hat{\mu}_k) = \hat{m}_k$, $g(\mu_k) = m_k$, and $g'(\mu_k) = (1/k)\mu_k^{(1-k)/k} = (1/k)m_k^{1-k}$. Thus, by the Delta Method,  
+
+\begin{align*}
+\sqrt{n}(g(\hat{\mu}_k)-g(\mu_k)) &\to_d N(0, (g'(\mu_k))^2(\mu_{2k}-\mu_k) \\
+\implies \sqrt{n}(\hat{m}_k-m_k) &\to_d N(0, ((1/k)m_k^{1-k})^2(m_{2k}^k-m_k^k)) \\
+\implies \sqrt{n}(\hat{m}_k-m_k) &\to_d N\Bigg(0, \frac{m_k^{2}(m_{2k}^k-m_k^k)}{k^2m_k^{2k}}\Bigg)
+\end{align*}
+
+\pagebreak
+
+8. Suppose $\sqrt{n}(\hat{\mu}-\mu) \to_d N(0, v^2)$ and set $\beta = \mu^2$ and $\hat{\beta} = \hat{\mu}^2$.
+
+(a) Use the Delta Method to obtain an asymptotic distribution for $\sqrt{n}(\hat{\beta}-\beta)$.
+
+Define $g(x) = x^2$.  Notice that $g$ is continuous, $\beta = g(\mu)$, and $\hat{\beta} = g(\hat{\mu})$. Thus, by the Delta Method,
+
+\begin{align*}
+\sqrt{n}(\hat{\beta}-\beta) &\to_d N(0, (2\mu)^2v^2) \\
+\implies \sqrt{n}(\hat{\beta}-\beta) &\to_d N(0, 4 \beta v^2)
+\end{align*}
+
+(b) Now suppose $\mu = 0$. Describe what happens to the asymptotic distribution from the previous part.
+
+If $\mu = 0$, then the variance of the asymptotic distribution is zero, so it become a degenerate distribution at its mean:
+
+$$
+\sqrt{n}(\hat{\beta}-\beta) = 0
+\implies \hat{\beta} = \beta
+$$
+
+(c) Improve on the previous answer. Under the assumption $\mu = 0$, find the asymptotic distribution of $n\hat{\beta}$.
+
+(d) Comment on the differences between the answers in parts (a) and (c).
