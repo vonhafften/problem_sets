@@ -110,9 +110,30 @@ $$
 
 (c) Show that a sufficient condition for $\bar{Y}^* \to_p \mu$ is that $\frac{1}{n^2} \sum_{i=1}^n w_i^2 \to 0$. (Hint: use the Markov's or Chebyshev's Inequality).
 
-$P(|\bar{Y}^*|)$
+Fix $\varepsilon > 0$. Because $\frac{1}{n^2} \sum_{i=1}^n w_i^2 \to 0$, there exists $\bar{n}$ such that for $n\ge \bar{n}$, 
+
+$$\Bigg| \frac{1}{n^2}\sum_{i=1}^n w_i^2 \Bigg| \le \varepsilon$$
+
+From (a) we know that $E(\bar{Y}^*) = \mu$ and from (b) we know that $Var(\bar{Y}^*) = \frac{1}{n^2} \sum_{i=1}^n w_i^2 Var (Y_i)$, so by Chebychev's Inequality,
+
+$$P(|\bar{Y}^* - \mu| \ge \lambda) \le \frac{Var(\bar{Y}^*)}{\lambda^2} = \frac{\frac{1}{n^2} \sum_{i=1}^n w_i^2 Var (Y_i)}{\lambda^2} \le \frac{\varepsilon Var (Y_i)}{\lambda^2}=\frac{\varepsilon Var (Y_i)}{\Bigg(\sqrt{ Var(Y_i)}\Bigg)^2} = \varepsilon$$
+
+where $\lambda = \sqrt{ Var(Y_i)}$.  Thus $\bar{Y}^* \to_p \mu$.
 
 (d) Show that the sufficient condition for the condition in part (c) is $\max_{i \le n} w_i/n \to 0$.
+
+Fix $\varepsilon > 0$.  Let $\delta = \sqrt{\frac{\varepsilon}{n}}$. Because $\max_{i \le n} w_i/n \to 0$, there exists a $\bar{n}$ such that for $n\ge \bar{n}$, 
+
+\begin{align*}
+\Bigg|\max_{i \le n} w_i/n\Bigg| \le \delta 
+&\implies |w_i/n| \le \delta \; \forall i \in \{1, ..., n\} \\
+&\implies (w_i/n)^2 \le \delta^2 \; \forall i \in \{1, ..., n\} \\
+&\implies  \sum_{i=1}^n \frac{w_i^2}{n^2} \le n \delta^2  \\
+&\implies  \sum_{i=1}^n \frac{w_i^2}{n^2} \le n \Bigg(\sqrt{\frac{\varepsilon}{n}}\Bigg)^2  \\
+&\implies \sum_{i=1}^n \frac{w_i^2}{n^2} \le \varepsilon
+\end{align*}
+
+Thus, $\frac{1}{n^2} \sum_{i=1}^n w_i^2 \to 0$.
 
 \pagebreak
 
