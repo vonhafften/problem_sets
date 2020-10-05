@@ -141,19 +141,55 @@ Thus, $\frac{1}{n^2} \sum_{i=1}^n w_i^2 \to 0$.
 
 (a) $\frac{1}{n} \sum_{i=1}^n X_i^2$
 
+Transform $\{X_1, ..., X_n\}$ to $\{Y_1, ..., Y_n\}$ such that $Y_i = X_i^2$.  Thus, $\{Y_1, ..., Y_n\}$ is an i.i.d. sequence with $E(|Y_i|) = E(X_i^2) = \mu_2 < \infty$.  By the weak law of large numbers $\bar{Y}_N \to_p \mu_2$ as $n \to \infty$. Thus, $\frac{1}{n} \sum_{i=1}^n X_i^2 \to_p \mu_2$ as $n \to \infty$.
+
 (b) $\frac{1}{n} \sum_{i=1}^n X_i^3$
+
+Transform $\{X_1, ..., X_n\}$ to $\{Y_1, ..., Y_n\}$ such that $Y_i = X_i^3$.  Thus, $\{Y_1, ..., Y_n\}$ is an i.i.d. sequence with $E(|Y_i|) = E(X_i^3) = \mu_3 < \infty$.  By the weak law of large numbers $\bar{Y}_N \to_p \mu_3$ as $n \to \infty$. Thus, $\frac{1}{n} \sum_{i=1}^n X_i^3 \to_p \mu_3$ as $n \to \infty$.
 
 (c) $\max_{i \le n}X_i$
 
+This statistic does not converge in probability by the weak law of large numbers and continuous mapping theorem.  Instead we could apply the Fisher-Tippett-Gnedenko theorem, which can characterize the asymptotic distribution of extreme order statistics.
+
 (d) $\frac{1}{n} \sum_{i=1}^n X_i^2 - (\frac{1}{n} \sum_{i=1}^n X_i)^2$
 
+From (a), we know that $\frac{1}{n} \sum_{i=1}^n X_i^2 \to_p \mu_2$.  An immediate result of the weak law of large numbers is $\frac{1}{n} \sum_{i=1}^n X_i \to_p \mu$. By the continuous mapping theorem, $(\frac{1}{n} \sum_{i=1}^n X_i)^2 \to_p \mu^2$ . Thus, $\frac{1}{n} \sum_{i=1}^n X_i^2 - (\frac{1}{n} \sum_{i=1}^n X_i)^2 \to_p \mu_2 - \mu^2$.
+
 (e) $\frac{\sum_{i=1}^n X_i^2}{\sum_{i=1}^n X_i}$ assuming $\mu = E(X_i) > 0$.
+
+From (a), we know that $\frac{1}{n} \sum_{i=1}^n X_i^2 \to_p \mu_2$.  An immediate result of the weak law of large numbers is $\frac{1}{n} \sum_{i=1}^n X_i \to_p \mu$.  Thus, by the Continuous Mapping Theorem, $\frac{n^{-1}\sum_{i=1}^n X_i^2}{n^{-1}\sum_{i=1}^n X_i} = \frac{\sum_{i=1}^n X_i^2}{\sum_{i=1}^n X_i} \to_p \frac{\mu_2}{\mu}$.
 
 (f) $1(\frac{1}{n} \sum_{i=1}^n X_i > 0)$ where
 
 \begin{align*}
-1(a) = \begin{cases} 1 & \text{if $a$ is true} \\ 0 & \text{if $a$ is not true} \end{cases}
+1(a) = \begin{cases} 
+       1 & \text{if $a$ is true} \\ 
+       0 & \text{if $a$ is not true} 
+       \end{cases}
 \end{align*}
 
-|          is called the indicator function of event $a$.
+|         is called the indicator function of event $a$.
 
+Notice that $1(\frac{1}{n} \sum_{i=1}^n X_i > 0) \sim Bernoulli(P(\frac{1}{n} \sum_{i=1}^n X_i > 0))$.  By the weak law of large numbers, $\frac{1}{n} \sum_{i=1}^n X_i = \bar{X}_n \to_p \mu$.  So, if $\mu > 0$, $1(\frac{1}{n} \sum_{i=1}^n X_i > 0) \to_p 1$. if $\mu \le 0$, $1(\frac{1}{n} \sum_{i=1}^n X_i > 0) \to_p 0$.
+
+\pagebreak
+
+5. Take a random sample $\{X_1, ..., X_n\}$ where the support $X_i$ is a subset of $(0, \infty)$.  Consider the sample geometric mean $\hat{\mu} = (\Pi_{i=1}^n X_i)^{1/n}$ and population geometric mean $\mu = \exp(E(\log(X)))$. Assuming that $\mu$ is finite, show that $\hat{\mu} \to_p \mu$ as $n \to \infty$.
+
+Assuming that $\mu$ is finite,
+
+$$ 
+\log(\hat{\mu}) = \log((\Pi_{i=1}^n X_i)^{1/n}) = \frac{1}{n}\log(\Pi_{i=1}^n X_i) = \frac{1}{n}\sum_{i=1}^n\log( X_i)
+$$
+
+By the weak law of large numbers, $\log(\hat{\mu}) = \frac{1}{n}\sum_{i=1}^n\log( X_i) \to_p E(\log(X))$. By the continuous mapping theorem with $g(x)=\exp(x)$, we know that $\hat{\mu} \to_p \exp(E(\log(X))) = \mu$.
+
+6. Let $\mu_k = E(X^k)$ for some integer $k \ge 1$. ($X_i : i = 1, ..., n$ is a i.i.d. sample.)
+
+(a) Write down the natural moment estimator $\hat{\mu}_k$ of $\mu_k$.
+
+(b)
+
+7. ($X_i : i = 1, ..., n$ is a i.i.d. sample.)
+
+8. ($X_i : i = 1, ..., n$ is a i.i.d. sample.)
