@@ -12,6 +12,7 @@ header-includes:
 - \newcommand{\cl}{\text{cl}}
 - \newcommand{\hyp}{\text{hyp}}
 - \usepackage{bm}
+- \usepackage{bbm}
 ---
 
 ```{r setup, include=FALSE}
@@ -54,7 +55,7 @@ Proof: Let $X$ be a convex set. Choose two points $x, y \cl X$. Thus, there exis
 
 Proof: Assume a function $f: X \to \R$ is concave where $X$ is a convex set in $\R^n$.  To show that its hypograph is a convex set, we need to show that, for any $\lambda \in [0, 1]$ and $(y', x'), (y'', x'') \in \hyp f$, $\lambda (y', x') + (1-\lambda) (y'', x'') = (\lambda y' + (1-\lambda)y'', \lambda x' + (1-\lambda)x'')  \in \hyp f$.  First, notice that since $X$ is convex, $\lambda x' + (1-\lambda) x'' \in X$. Since $f$ is concave, $f(\lambda x' + (1-\lambda)x'') \ge (1-\lambda)f(x')+\lambda f(x'') \ge (1-\lambda)y'+\lambda y''$. Thus, $\lambda (y', x') + (1-\lambda) (y'', x'') \in \hyp f$.
 
-Assume that the hypograph of a function $f: X \to \R$ is convex.  Choose $(x', y'), (x'', y'') \in \hyp f$. To show that $X$ is convex, we need to show that, for any $\lambda \in [0, 1]$, $f((1-\lambda)x' + \lambda x'') \ge (1-\lambda)f(x')+\lambda f(x'')$.  Since $\hyp f$ is convex, we know that $\lambda f(x') + (1-\lambda)f(x'') \le \lambda y' + (1-\lambda)y'' \le f((1-\lambda)x' + \lambda x'')$. Thus, $f$ is concave.
+Assume that the hypograph of a function $f: X \to \R$ is convex.  Choose $(x', y'), (x'', y'') \in \hyp f$. To show that $X$ is convex, we need to show that, for any $\lambda \in [0, 1]$, $f((1-\lambda)x' + \lambda x'') \ge (1-\lambda)f(x')+\lambda f(x'')$.  Since $\hyp f$ is convex, we know that $\lambda f(x') + (1-\lambda)f(x'') \le \lambda y' + (1-\lambda)y'' \le f((1-\lambda)x' + \lambda x'')$. Thus, $f$ is concave. $\square$
 
 (5) Let $X$ and $Y$ be disjoint, closed, and convex sets in $\R^n$, one of which is compact. Show that there exists a hyperplane $H(p, \alpha)$ that strictly separates $X$ and $Y$.
 
@@ -78,5 +79,26 @@ Thus, $X$ and $Y$ are strictly separated by $H(p, \beta^*)$. $\square$
 
 (6) Call a vector $\pi \in \R^n$ a probability vector if $\sum_{i=1}^n \pi_i = 1$ and $\pi_i \ge 0$ for all $i=1, ..., n$. Interpretation is that there are $n$ states of the world and $\pi_i$ is the probability that state $i$ occurs. Suppose that Alice and Bob each have a set of probability distributions ($\Pi_A$ and $\Pi_B$) which are nonempty, convex, and compact.  They propose bids on each state of the world.  A vector $x = (x_1, ..., x_n) \in \R^n$, where $x_i$ denotes the net transfer Alice receives from Bob in state $i$, is called a trade (Thus, $-x$ is the net transfer Bob receives in each state of the world.) A trade is agreeable if $\inf_{\pi \in \Pi_A}\sum_{i=1}^n \pi_i x_i > 0$ and $\inf_{\pi \in \Pi_B}\sum_{i=1}^n \pi_i (-x_i) > 0$. The above means that both Alice and Bob expect to strictly gain from the trade. Prove that there exists an agreeable trade iff there is no common prior (i.e., $\Pi_A \cap \Pi_B = \emptyset$).
 
+Proof: Suppose that Alice and Bob each have a set of nonempty, convex, and compact probability distributions, $\Pi_A$ and $\Pi_B$.
 
+($\Rightarrow$)  Assume $x$ is an agreeable trade, so $\inf_{\pi \in \Pi_A}\sum_{i=1}^n \pi_i x_i > 0$ and $\inf_{\pi \in \Pi_B}\sum_{i=1}^n \pi_i (-x_i) > 0$. Thus, $\pi \cdot x > 0$ and $\pi' \cdot (-x) > 0$ for all $\pi \in \Pi_A$ and $\pi' \in \Pi_B$. Because $\pi' \cdot (-x) > 0 \implies \pi' \cdot x < 0$, we can construct a hyperplane $h(x, \bar{0})$ which strictly separates $\Pi_A$ and $\Pi_B$. Assume for sake of a contradiction that $\pi'' \in \Pi_A \cap \Pi_B$, then $\pi'' \cdot x < 0$ and $\pi'' \cdot x > 0$. $\Rightarrow \Leftarrow$ Therefore, $\Pi_A \cap \Pi_B = \emptyset$.
 
+($\Leftarrow$) Assume there are no common priors (i.e., $\Pi_A \cap \Pi_B = \emptyset$) or, in other words, $\Pi_A$ and $\Pi_B$ are disjoint. Notice that $\Pi_A$ and $\Pi_B$ are convex, positive subsets of the hyperplane $h(\vec{1}, 1)$ because $\sum_{i=1}^n \pi_i = \vec{1} \cdot \pi= 1$.\footnote{$\vec{1}$ denotes an $n$-dimensional vector of ones.} Thus, we can reduce dimensions and construct $\tilde{\Pi_A} = \{(\pi_1, ..., \pi_{n-1})|\forall (\pi_1, ..., \pi_n) \in \Pi_A \}$ and $\tilde{\Pi_B} = \{(\pi_1, ..., \pi_{n-1})|\forall (\pi_1, ..., \pi_n) \in \Pi_B \}$ because conditional on the first $n-1$ elements $\pi_n$ must bring the sum up to one. For all $\pi \in \Pi_A \cup \Pi_B$:
+
+$$
+\sum_{i=1}^n \pi_i =1 \implies \pi_n=1- \sum_{i=1}^{n-1} \pi_i
+$$
+
+Notice that $\tilde{\Pi_A}$ and $\tilde{\Pi_B}$ inherit closedness, convexity, compactness, and disjointness.  By problem (5), there exists a hyperplane $h(p, \beta)$ in $n-1$ dimensions that strictly separates $\tilde{\Pi_A}$ and $\tilde{\Pi_B}$.  Construct $h(x, \bar{0})$ as the hyperplane in $n$ dimensions containing $\bar{0}$ and $h(p, \beta)$. Thus, $h(x, \bar{0})$ strictly separates $\Pi_A$ and $\Pi_B$.  For $\pi \in \Pi_A$ and $\pi' \in \Pi_B$:
+
+$$
+x \cdot \pi > x \cdot 0 > x \cdot \pi' \implies x \cdot \pi > 0 \text{ and } (-x) \cdot \pi' > 0 
+$$
+
+We can define $f:\Pi_A \to \R$ as $f(\pi) = \pi \cdot x$ and $g:\Pi_B \to \R$ as $g(\pi) = \pi \cdot (-x)$. Since $f$ and $g$ are both continuous and $\Pi_A$ and $\Pi_B$ are both compact, $f$ achieves its minimum on $\Pi_A$ and $g$ achieves its minimum on $\Pi_B$ by the extreme value theorem:
+
+$$
+\inf_{\pi \in \Pi_A} \pi \cdot x = \min_{\pi \in \Pi_A} \pi \cdot x = \min_{\pi \in \Pi_A} f(\pi) > 0 \text{ and } \inf_{\pi \in \Pi_B} \pi \cdot (-x) = \min_{\pi \in \Pi_B} \pi \cdot (-x) = \min_{\pi \in \Pi_B} g(\pi) > 0
+$$
+
+Therefore, $x$ is an agreeable trade.  $\square$
