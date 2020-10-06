@@ -52,15 +52,13 @@ Proof: Let $X$ be a convex set. Choose two points $x, y \cl X$. Thus, there exis
 
 (4) The function $f: X \to \R$, where $X$ is a convex set in $\R^n$, is concave if $\forall \lambda \in [0,1], x', x'' \in X$, $f((1-\lambda)x' + \lambda x'') \ge (1-\lambda)f(x')+\lambda f(x'')$. Given a function $f: X \to \R$, its hypograph is the set of points $(y, x)$ lying on or below the graph of the function: $\hyp f =\{(y,x) \in \R^{n+1}| x \in X, y \le f(x)\}$. Show that the function $f$ is concave if and only if its hypograph is a convex set.
 
-Proof: Assume a function $f: X \to \R$ is concave where $X$ is a convex set in $\R^n$.  To show that its hypograph is a convex set, we need to show that, for any $\lambda \in [0, 1]$ and $(y', x'), (y'', x'') \in \hyp f$, $\lambda (y', x') + (1-\lambda) (y'', x'') = (\lambda y' + (1-\lambda)y'', \lambda x' + (1-\lambda)x'')  \in \hyp f$.  First, notice that since $X$ is convex, $\lambda x' + (1-\lambda) x'' \in X$. Since $f$ is concave, $f(\lambda x' + (1-\lambda)x'') \le (1-\lambda)f(x')+\lambda f(x'') \le (1-\lambda)y'+\lambda y''$. Thus, $\lambda (y', x') + (1-\lambda) (y'', x'') \in \hyp f$.
+Proof: Assume a function $f: X \to \R$ is concave where $X$ is a convex set in $\R^n$.  To show that its hypograph is a convex set, we need to show that, for any $\lambda \in [0, 1]$ and $(y', x'), (y'', x'') \in \hyp f$, $\lambda (y', x') + (1-\lambda) (y'', x'') = (\lambda y' + (1-\lambda)y'', \lambda x' + (1-\lambda)x'')  \in \hyp f$.  First, notice that since $X$ is convex, $\lambda x' + (1-\lambda) x'' \in X$. Since $f$ is concave, $f(\lambda x' + (1-\lambda)x'') \ge (1-\lambda)f(x')+\lambda f(x'') \ge (1-\lambda)y'+\lambda y''$. Thus, $\lambda (y', x') + (1-\lambda) (y'', x'') \in \hyp f$.
 
 Assume that the hypograph of a function $f: X \to \R$ is convex.  Choose $(x', y'), (x'', y'') \in \hyp f$. To show that $X$ is convex, we need to show that, for any $\lambda \in [0, 1]$, $f((1-\lambda)x' + \lambda x'') \ge (1-\lambda)f(x')+\lambda f(x'')$.  Since $\hyp f$ is convex, we know that $\lambda f(x') + (1-\lambda)f(x'') \le \lambda y' + (1-\lambda)y'' \le f((1-\lambda)x' + \lambda x'')$. Thus, $f$ is concave.
 
-\pagebreak
-
 (5) Let $X$ and $Y$ be disjoint, closed, and convex sets in $\R^n$, one of which is compact. Show that there exists a hyperplane $H(p, \alpha)$ that strictly separates $X$ and $Y$.
 
-Proof: Let $X$ and $Y$ be disjoint, closed, and convex sets in $\R^n$ and $Y$ be compact. Let $Z := X-Y = \{z \in \R^n | z=x-y$ for some $x \in X, y \in Y\}$.  The set $Z$ is convex and $\bar{0} \notin Z$ because $X \cap Y = \emptyset$.  By the theorem on slide x of the lecture notes, there exists a hyperplane $H(p, \beta)$ that strictly separates $Z$ and $\{\bar{0}\}$.  Thus, for all $z \in Z, x \in X, y \in Y$,
+Proof: Let $X$ and $Y$ be disjoint, closed, and convex sets in $\R^n$ and $X$ be compact. Let $Z := X-Y = \{z \in \R^n | z=x-y$ for some $x \in X, y \in Y\}$.  The set $Z$ is convex and $\bar{0} \notin Z$ because $X \cap Y = \emptyset$.  By the theorem on slide 6 of the lecture 14 slides, there exists a hyperplane $H(p, \beta)$ that strictly separates $Z$ and $\{\bar{0}\}$.  Thus, for all $z \in Z, x \in X, y \in Y$,
 
 $$
 p \cdot \bar{0} < p \cdot z
@@ -68,7 +66,13 @@ p \cdot \bar{0} < p \cdot z
 \implies p \cdot y < p \cdot x 
 $$
 
-Define $f:Y \to \R$ as $f(y) = p \cdot y$.  Since $f$ is continuous and Y is compact, $f$ attains its maximum on $Y$ by the extreme value theorem.  Set $\beta^* = \max(f(y))$ for all $y \in Y$.  Thus, $\beta^* = \max\{p \cdot y | y \in Y\} < p \cdot x$ for all $x \in X$.  
+Pick $x' \in X$. Since $p \cdot y$ is bounded from above by $p \cdot x'$ for all $y \in Y$, define $\beta' := \sup_{y \in Y} \{p \cdot y\} \in \R$. Define $f:X \to \R$ as $f(x) = p \cdot x$.  Since $f$ is continuous and X is compact, $f$ attains its minimum on $X$, by the extreme value theorem.  Define $\beta'' := \min_{x \in X}\{f(x)\} = \min_{x \in X} \{p \cdot x\} \in \R$.  Since $X$ and $Y$ are disjoint, $\beta'$ is strictly less than $\beta''$. By the denseness of rational numbers, there exists a $\beta^* \in \Q$ such that $\beta'< \beta^* < \beta''$. Therefore, for all $x \in X$ and $y \in Y$:
+
+$$
+p \cdot y \le \sup_{y \in Y} p \cdot y = \beta'< \beta^*< \beta'' = \min_{x \in X} \{p \cdot x\} \le p \cdot x 
+$$
+
+Thus, $X$ and $Y$ are strictly separated by $H(p, \beta^*)$. $\square$
 
 \pagebreak
 
