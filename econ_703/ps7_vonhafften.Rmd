@@ -36,17 +36,25 @@ $$
 
 By the definition of convexity, $\sum_{i=1}^{k+1} \lambda^{k+1}_i x_i \in X$ because $\sum_{i=1}^{k} \lambda^{k+1}_i + \lambda^{k+1}_{k+1} = 1$. $\square$
 
-\pagebreak
-
 (2) The sum $\sum_{i=1}^k \lambda_i x_i$ defined in Problem (1) is called a convex combination. The convex hull of a set $S$, denoted by $\co(S)$, is the intersection of all convex sets which contain $S$. Prove that the set of all convex combinations of the elements of $S$ is exactly $\co(S)$.
+
+Proof: We show that an arbitrary convex combination of elements of $S$ is in $\co(S)$ and an arbitrary point in $\co(S)$ can be represented by a convex combination of elements of $S$.  First, notice that $S \subset \co(S)$ and $\co(S)$ is convex because it is the intersection of convex sets. 
+
+Consider an arbitrary convex combination of elements of $S$, $\sum_{i=1}^k \lambda_i s_i$ with $s_1, ..., s_k \in S$. Since $s_i \in S$, $s_i \in \co(S)$ for $i \in \{1, ..., k\}$.  Since $\co(S)$ is convex, $\sum_{i=1}^k \lambda_i s_i \in \co(S)$.
+
+Consider $x \in \co(S)$. Assume for the sake of a contradiction that $x$ cannot be represented as a convex combination of elements of $S$.  Then there exists a convex set $Y$ such that $S \subset Y$ and $x \notin Y$.  This is a contradiction because $\co(S)$ is the intersection of all convex sets which contain $S$. Thus, $x$ can be represented as a convex combination of elements of $S$. $\square$
 
 \pagebreak
 
 (3) For any set $X \subset \R^n$, let its closure be $\cl X = X \cup \{$all limit points of $X\}$. Show that the closure of a convex set is convex.
 
-\pagebreak
+Proof: Let $X$ be a convex set. Choose two points $x, y \cl X$. Thus, there exists sequences $\{x_n\}, \{y_n\} \in X$ such that $\{x_n\} \to x$ and $\{y_n\} \to y$.  Since $X$ is convex, $\lambda x_n + (1-\lambda) y_n \in X$ for all $n$ with $\lambda \in [0, 1]$. Because $\cl X$ contains all limit points of $X$, $\lambda x + (1- \lambda)y = \lim_{n \to \infty} (\lambda x_n + (1-\lambda) y_n) \in \cl X$. $\square$
 
-(4) The function $f: X \to \R$, where $X$ is a convex set in $\R^n$, is concave if $\forall \lambda \in [0,1], x', x'' \in X f((1-\lambda)x' + \lambda x'')\ge(1-\lambda)f(x')+\lambda f(x'')$. Given a function $f: X \to \R$, its hypograph is the set of points $(y, x)$ lying on or below the graph of the function: $\hyp f =\{(y,x)| x \in X, y \le f(x)\}$. Show that the function $f$ is concave if and only if its hypograph is a convex set.
+(4) The function $f: X \to \R$, where $X$ is a convex set in $\R^n$, is concave if $\forall \lambda \in [0,1], x', x'' \in X$, $f((1-\lambda)x' + \lambda x'') \ge (1-\lambda)f(x')+\lambda f(x'')$. Given a function $f: X \to \R$, its hypograph is the set of points $(y, x)$ lying on or below the graph of the function: $\hyp f =\{(y,x) \in \R^{n+1}| x \in X, y \le f(x)\}$. Show that the function $f$ is concave if and only if its hypograph is a convex set.
+
+Proof: Assume a function $f: X \to \R$ is concave where $X$ is a convex set in $\R^n$.  To show that its hypograph is a convex set, we need to show that, for any $\lambda \in [0, 1]$ and $(y', x'), (y'', x'') \in \hyp f$, $\lambda (y', x') + (1-\lambda) (y'', x'') = (\lambda y' + (1-\lambda)y'', \lambda x' + (1-\lambda)x'')  \in \hyp f$.  First, notice that since $X$ is convex, $\lambda x' + (1-\lambda) x'' \in X$. Since $f$ is concave, $f(\lambda x' + (1-\lambda)x'') \le (1-\lambda)f(x')+\lambda f(x'') \le (1-\lambda)y'+\lambda y''$. Thus, $\lambda (y', x') + (1-\lambda) (y'', x'') \in \hyp f$.
+
+Assume that the hypograph of a function $f: X \to \R$ is convex.  Choose $(x', y'), (x'', y'') \in \hyp f$. To show that $X$ is convex, we need to show that, for any $\lambda \in [0, 1]$, $f((1-\lambda)x' + \lambda x'') \ge (1-\lambda)f(x')+\lambda f(x'')$.  Since $\hyp f$ is convex, we know that $\lambda f(x') + (1-\lambda)f(x'') \le \lambda y' + (1-\lambda)y'' \le f((1-\lambda)x' + \lambda x'')$. Thus, $f$ is concave.
 
 \pagebreak
 
@@ -54,7 +62,7 @@ By the definition of convexity, $\sum_{i=1}^{k+1} \lambda^{k+1}_i x_i \in X$ bec
 
 \pagebreak
 
-(6) Call a vector $\pi \in \R^n$ a probability vector if $\sum_{i=1}^n \pi_i = 1$ and $\pi_i \ge 0$ for all $i=1, ..., n$. Interpretation is that there are $n$ states of the world and $\pi_i$ is the probability that state $i$ occurs. Suppose that Alice and Bob each have a set of probability distributions ($\Pi_A$ and $\Pi_B$) which are nonempty, convex, and compact.  They propose bids on each state of the world.  A vector $x = (x_1, ..., x_n) \in \R^n$, where $x_i$ denotes the net transfer Alice recieves from Bob in state $i$, is called a trade (Thus, $-x$ is the net transfer Bob receives in each state of the world.) A trade is agreeable if $\inf_{\pi \in \Pi_A}\sum_{i=1}^n \pi_i x_i > 0$ and $\inf_{\pi \in \Pi_B}\sum_{i=1}^n \pi_i (-x_i) > 0$. The above means that both Alice and Bob expect to strictly gain from the trade. Prove that there exists an agreeable trade iff there is no common prior (i.e., $\Pi_A \cap \Pi_B = \emptyset$).
+(6) Call a vector $\pi \in \R^n$ a probability vector if $\sum_{i=1}^n \pi_i = 1$ and $\pi_i \ge 0$ for all $i=1, ..., n$. Interpretation is that there are $n$ states of the world and $\pi_i$ is the probability that state $i$ occurs. Suppose that Alice and Bob each have a set of probability distributions ($\Pi_A$ and $\Pi_B$) which are nonempty, convex, and compact.  They propose bids on each state of the world.  A vector $x = (x_1, ..., x_n) \in \R^n$, where $x_i$ denotes the net transfer Alice receives from Bob in state $i$, is called a trade (Thus, $-x$ is the net transfer Bob receives in each state of the world.) A trade is agreeable if $\inf_{\pi \in \Pi_A}\sum_{i=1}^n \pi_i x_i > 0$ and $\inf_{\pi \in \Pi_B}\sum_{i=1}^n \pi_i (-x_i) > 0$. The above means that both Alice and Bob expect to strictly gain from the trade. Prove that there exists an agreeable trade iff there is no common prior (i.e., $\Pi_A \cap \Pi_B = \emptyset$).
 
 
 
