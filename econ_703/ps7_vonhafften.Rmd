@@ -20,6 +20,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (1) Let $X \subset \R^n$ be a convex set, and $\lambda_1, ..., \lambda_k \ge 0$ with $\sum_{i=1}^k \lambda_i = 1$. Prove that if $x_1, ..., x_k \in X$, then $\sum_{i=1}^k \lambda_i x_i \in X$.
 
+Proof (by induction): For the base step, choose $\lambda^2_1, \lambda^2_2 \ge 0$ such that $\lambda^2_1 + \lambda^2_2 = 1$.\footnote{A note on notation; $\lambda^j_i$ denotes the coefficient on $x_i$ when the convex combination is composed of $j$ elements. For example, $\lambda^2_i$ pertains to the base step, $\lambda^k_i$ pertains to the induction hypothesis, and $\lambda^{k+1}_i$ pertains to the induction step.}  For any $x_1, x_2 \in X \subset \R^n$, $\lambda^2_1 x_1 + \lambda^2_2 x_2 \in X$ because $X$ is convex.  For some $k$, assume that $\sum_{i=1}^k \lambda^k_i x_i \in X$ for $x_1, ..., x_k \in X$ with $\lambda^k_1, ..., \lambda^k_k \ge 0$ and $\sum_{i=1}^k \lambda^k_i = 1$. Consider $k+1$. Choose $\lambda^{k+1}_1, ..., \lambda^{k+1}_{k+1} \ge 0$ such that $\sum_{i=1}^{k+1} \lambda^{k+1}_i = 1$:
+
+$$
+\sum_{i=1}^{k+1} \lambda^{k+1}_i x_i = 
+\sum_{i=1}^{k} \lambda^{k+1}_i x_i+\lambda^{k+1}_{k+1} x_{k+1}= 
+\Bigg( \sum_{i=1}^{k} \lambda^{k+1}_i \Bigg) \sum_{i=1}^{k} \Bigg( \frac{\lambda^{k+1}_i}{\sum_{i=1}^{k} \lambda^{k+1}_i} x_i \Bigg)+\lambda^{k+1}_{k+1} x_{k+1}
+$$
+
+By the induction hypothesis, $y:=\sum_{i=1}^{k} \Bigg( \frac{\lambda^{k+1}_i}{\sum_{i=1}^{k} \lambda^{k+1}_i} x_i \Bigg) \in X$ because $\sum_{i=1}^{k}\frac{\lambda^{k+1}_i}{\sum_{i=1}^{k} \lambda^{k+1}_i} = 1$. Thus,
+
+$$
+\sum_{i=1}^{k+1} \lambda^{k+1}_i x_i = \Bigg( \sum_{i=1}^{k} \lambda^{k+1}_i \Bigg) y + \lambda^{k+1}_{k+1} x_{k+1}
+$$
+
+By the definition of convexity, $\sum_{i=1}^{k+1} \lambda^{k+1}_i x_i \in X$ because $\sum_{i=1}^{k} \lambda^{k+1}_i + \lambda^{k+1}_{k+1} = 1$. $\square$
+
 \pagebreak
 
 (2) The sum $\sum_{i=1}^k \lambda_i x_i$ defined in Problem (1) is called a convex combination. The convex hull of a set $S$, denoted by $\co(S)$, is the intersection of all convex sets which contain $S$. Prove that the set of all convex combinations of the elements of $S$ is exactly $\co(S)$.
