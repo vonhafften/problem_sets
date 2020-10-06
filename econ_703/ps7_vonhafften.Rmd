@@ -20,21 +20,21 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (1) Let $X \subset \R^n$ be a convex set, and $\lambda_1, ..., \lambda_k \ge 0$ with $\sum_{i=1}^k \lambda_i = 1$. Prove that if $x_1, ..., x_k \in X$, then $\sum_{i=1}^k \lambda_i x_i \in X$.
 
-Proof (by induction): For the base step, choose $\lambda^2_1, \lambda^2_2 \ge 0$ such that $\lambda^2_1 + \lambda^2_2 = 1$.\footnote{A note on notation; $\lambda^j_i$ denotes the coefficient on $x_i$ when the convex combination is composed of $j$ elements. For example, $\lambda^2_i$ pertains to the base step, $\lambda^k_i$ pertains to the induction hypothesis, and $\lambda^{k+1}_i$ pertains to the induction step.}  For any $x_1, x_2 \in X \subset \R^n$, $\lambda^2_1 x_1 + \lambda^2_2 x_2 \in X$ because $X$ is convex.  For some $k$, assume that $\sum_{i=1}^k \lambda^k_i x_i \in X$ for $x_1, ..., x_k \in X$ with $\lambda^k_1, ..., \lambda^k_k \ge 0$ and $\sum_{i=1}^k \lambda^k_i = 1$. Consider $k+1$. Choose $\lambda^{k+1}_1, ..., \lambda^{k+1}_{k+1} \ge 0$ such that $\sum_{i=1}^{k+1} \lambda^{k+1}_i = 1$:
+Proof (by induction): For the base step, choose $\lambda_1, \lambda_2 \ge 0$ such that $\lambda_1 + \lambda_2 = 1$.  For any $x_1, x_2 \in X \subset \R^n$, $\lambda_1 x_1 + \lambda_2 x_2 \in X$ because $X$ is convex.  For some $k$, assume that $\sum_{i=1}^k \lambda_i x_i \in X$ for $x_1, ..., x_k \in X$ with $\lambda_1, ..., \lambda_k \ge 0$ and $\sum_{i=1}^k \lambda_i = 1$. Consider $k+1$. Choose $\lambda'_1, ..., \lambda'_{k+1} \ge 0$ such that $\sum_{i=1}^{k+1} \lambda'_i = 1$:
 
 $$
-\sum_{i=1}^{k+1} \lambda^{k+1}_i x_i = 
-\sum_{i=1}^{k} \lambda^{k+1}_i x_i+\lambda^{k+1}_{k+1} x_{k+1}= 
-\Bigg( \sum_{i=1}^{k} \lambda^{k+1}_i \Bigg) \sum_{i=1}^{k} \Bigg( \frac{\lambda^{k+1}_i}{\sum_{i=1}^{k} \lambda^{k+1}_i} x_i \Bigg)+\lambda^{k+1}_{k+1} x_{k+1}
+\sum_{i=1}^{k+1} \lambda'_i x_i = 
+\sum_{i=1}^{k} \lambda'_i x_i+\lambda'_{k+1} x_{k+1}= 
+\Bigg( \sum_{i=1}^{k} \lambda'_i \Bigg) \sum_{i=1}^{k} \Bigg( \frac{\lambda'_i}{\sum_{i=1}^{k} \lambda'_i} x_i \Bigg)+\lambda'_{k+1} x_{k+1}
 $$
 
-By the induction hypothesis, $y:=\sum_{i=1}^{k} \Bigg( \frac{\lambda^{k+1}_i}{\sum_{i=1}^{k} \lambda^{k+1}_i} x_i \Bigg) \in X$ because $\sum_{i=1}^{k}\frac{\lambda^{k+1}_i}{\sum_{i=1}^{k} \lambda^{k+1}_i} = 1$. Thus,
+By the induction hypothesis, $y:=\sum_{i=1}^{k} \Bigg( \frac{\lambda'_i}{\sum_{i=1}^{k} \lambda'_i} x_i \Bigg) \in X$ because $\sum_{i=1}^{k}\frac{\lambda'_i}{\sum_{i=1}^{k} \lambda'_i} = 1$. Thus,
 
 $$
-\sum_{i=1}^{k+1} \lambda^{k+1}_i x_i = \Bigg( \sum_{i=1}^{k} \lambda^{k+1}_i \Bigg) y + \lambda^{k+1}_{k+1} x_{k+1}
+\sum_{i=1}^{k+1} \lambda'_i x_i = \Bigg( \sum_{i=1}^{k} \lambda'_i \Bigg) y + \lambda'_{k+1} x_{k+1}
 $$
 
-By the definition of convexity, $\sum_{i=1}^{k+1} \lambda^{k+1}_i x_i \in X$ because $\sum_{i=1}^{k} \lambda^{k+1}_i + \lambda^{k+1}_{k+1} = 1$. $\square$
+By the definition of convexity, $\sum_{i=1}^{k+1} \lambda'_i x_i \in X$ because $\sum_{i=1}^{k} \lambda'_i + \lambda'_{k+1} = 1$. $\square$
 
 (2) The sum $\sum_{i=1}^k \lambda_i x_i$ defined in Problem (1) is called a convex combination. The convex hull of a set $S$, denoted by $\co(S)$, is the intersection of all convex sets which contain $S$. Prove that the set of all convex combinations of the elements of $S$ is exactly $\co(S)$.
 
@@ -59,6 +59,16 @@ Assume that the hypograph of a function $f: X \to \R$ is convex.  Choose $(x', y
 \pagebreak
 
 (5) Let $X$ and $Y$ be disjoint, closed, and convex sets in $\R^n$, one of which is compact. Show that there exists a hyperplane $H(p, \alpha)$ that strictly separates $X$ and $Y$.
+
+Proof: Let $X$ and $Y$ be disjoint, closed, and convex sets in $\R^n$ and $Y$ be compact. Let $Z := X-Y = \{z \in \R^n | z=x-y$ for some $x \in X, y \in Y\}$.  The set $Z$ is convex and $\bar{0} \notin Z$ because $X \cap Y = \emptyset$.  By the theorem on slide x of the lecture notes, there exists a hyperplane $H(p, \beta)$ that strictly separates $Z$ and $\{\bar{0}\}$.  Thus, for all $z \in Z, x \in X, y \in Y$,
+
+$$
+p \cdot \bar{0} < p \cdot z
+\implies 0 < p \cdot (x-y)
+\implies p \cdot y < p \cdot x 
+$$
+
+Define $f:Y \to \R$ as $f(y) = p \cdot y$.  Since $f$ is continuous and Y is compact, $f$ attains its maximum on $Y$ by the extreme value theorem.  Set $\beta^* = \max(f(y))$ for all $y \in Y$.  Thus, $\beta^* = \max\{p \cdot y | y \in Y\} < p \cdot x$ for all $x \in X$.  
 
 \pagebreak
 
