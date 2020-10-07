@@ -1,0 +1,91 @@
+---
+title: "ECON 711 - PS 5"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/12/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1. The Consumer Problem
+
+Solve the Consumer Problem and state the Marshallian demand $x(p,w)$ and indirect utility $v(p, w)$ for the following utility functions:\footnote{For parts (e) and (f), you may describe the Marshallian demand in words rather than giving mathematical formulas if you prefer, and you can ignore the "knife-edge" cases where two prices or sums of prices are exactly equal, but you should still give formulas for the indirect utility function.}
+
+(a) $u(x) = x_1^\alpha + x_2^\alpha$ for $\alpha<1$
+
+The consumer problem is $\max\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. The Legrangian is $\mathcal{L}(x, \lambda, \mu) = (x_1^\alpha + x_2^\alpha) + \lambda(w - p_1x_1 - p_2x_2) + \mu_1x_1 + \mu_2x_2$. The Kuhn-Tucker FOC are
+
+$$
+\frac{\partial \mathcal{L}}{\partial x_i} =  0 \implies 0 = \alpha x_i^{\alpha-1} - \lambda p_i + \mu_i
+$$
+
+(b) $u(x) = x_1+x_2$
+
+The indifference curves are straight lines with slopes of -1. Since the budget constraint is also a straight line, the consumer chooses corner solutions when $p_1 \neq p_2$.  When $p_1 < p_2$, the consumer can afford more of $x_1$, so she buys $x_1 = \frac{w}{p_1}$ and none of $x_2$. When $p_1 > p_2$, the consumer can afford more of $x_2$, so she buys $x_2 = \frac{w}{p_2}$ and none of $x_1$.  When $p_1 = p_2$, there is a continuum of solutions along the overlaid indifference curve and budget constraint.
+
+\begin{align*}
+x(p, w) = \begin{cases} (w/p_1, 0) & \text{ if } p_1 < p_2 \\
+                        (0, w/p_2) & \text{ if } p_1 > p_2 \\
+                        (tw/p_1, (t-1)w/p_1) \forall t \in[0, 1] & \text{ if } p_1 = p_2
+          \end{cases}
+\end{align*}
+
+(c) $u(x) = x_1^\alpha + x_2^\alpha$ for $\alpha>1$
+
+
+
+(d) $u(x) = \min\{x_1, x_2\}$ (Leontief utility)
+
+
+
+(e) $u(x) = \min\{x_1 + x_2, x_3 + x_4\}$
+
+
+
+(f) $u(x) = \min\{x_1, x_2\} + \min\{x_3, x_4\}$
+
+
+
+\pagebreak
+
+# Question 2. CES Utility
+
+Throughout this problem, let $X=\R^k_+$, and let $(a_1, a_2, ..., a_k)$ be a set of strictly positive coefficients which sum to 1. You may assume prices and wealth are strictly positive, and ignore cases where two or more prices are identical.
+
+(a) For each of the following utility functions, solve the consumer problem and state $x(p, w)$:
+
+i. linear utility $u(x)=x_1+x_2+...+x_k$
+ii. Cobb-Douglas utility $u(x)=x_1^{a_1}x_2^{a_2}...x_k^{a_k}$
+iii. Leontief utility $u(x)=\min\{\frac{x_1}{a_1}, \frac{x_2}{a_2}, ..., \frac{x_k}{a_k}\}$
+
+(b) Consider the Constant Elasticity of Substitution (CES) utility function $u(x) = \Bigg( \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s} \Bigg)^\frac{s}{s-1}$ with $s \in (0,1) \cup(1, +\infty)$. Solve the consumer problem and state $x(p,w)$.\footnote{Recall that maximizing a function $(f(x))^\frac{s}{s-1}$ is the same as maximizing $f(x)$ when $s > 1$, and the same as minimizing $f(x)$ when $s < 1$.}
+
+(c) Show that CES utility gives the same demand as linear utility in the limit $s \to + \infty$, as Cobb-Douglas utility in the limit $s \to 1$, and as Leontief utility in the limit $s \to 0$.
+
+(d) The Elasticity of Substitution between goods 1 and 2 is defined as $\xi_{1,2} = - \frac{\partial\log\Big(\frac{x_1(p,w)}{x_2(p,w)}\Big)}{\partial log\Big(\frac{p_1}{p_2}\Big)}=- \frac{\partial\Big(\frac{x_1(p,w)}{x_2(p,w)}\Big)}{\partial \Big(\frac{p_1}{p_2}\Big)}\frac{\frac{p_1}{p_2}}{\frac{x_1(p,w)}{x_2(p,w)}}$ While this looks complicated, in the case of CES demand, we can write the ratio $\frac{x_1}{x_2}$ as a relatively simple function of the price ratio $\frac{p_1}{p_2}$, and calculate this elasticity without much difficulty. Calculate the elasticity of substitution for CES demand, note its value as $s \to + \infty$, $s \to 1$, and $s \to 0$.
+
+
+\pagebreak
+
+# Question 3. Exchange Economies
+
+We've been considering the problem facing a consumer with wealth $w$ at prices $p$. An "exchange economy" is different model where instead of money, each consumer is endowed with an initial bundle of goods $e \in \R^k_+$, and can either buy or sell any quantity of the goods at market prices $p$. The consumer's problem is then $\max_{x \in \R_+^k} u(x)$ subject to $p \cdot x \ge p \cdot e$ (i.e., the consumer's "budget" is the market value of the goods they start with).  Assume preferences are locally non-satiated and the consumer's problem has a unique solution $x(p, e)$. We'll say the consumer is a net buyer of good $i$ if $x_i(p, e) > e_i$ and a net seller if $x_i(p, e) < e_i$.
+
+(a) Show that if $p_i$ increases, the consumer cannot switch from being a net seller to a net buyer.
+
+
+
+(b) Suppose $u$ is differentiable and concave. Use the Legrangian and the envelope theorem to show that $\frac{\partial v}{\partial p_i}$ is negative if the consumer is a net buyer of good $i$, and positive if the consumer is a net seller.
+
+
+
+(c) Consider the following statement. "If the consumer is a net buyer of good $i$ and its price goes up, the consumer must be worse off." True or false? Explain.
+
