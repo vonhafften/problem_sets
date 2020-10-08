@@ -19,28 +19,120 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Solve the Consumer Problem and state the Marshallian demand $x(p,w)$ and indirect utility $v(p, w)$ for the following utility functions:\footnote{For parts (e) and (f), you may describe the Marshallian demand in words rather than giving mathematical formulas if you prefer, and you can ignore the "knife-edge" cases where two prices or sums of prices are exactly equal, but you should still give formulas for the indirect utility function.}
 
-(a) $u(x) = x_1^\alpha + x_2^\alpha$ for $\alpha<1$
+(a) $u(x) = x_1^\alpha + x_2^\alpha$ for $\alpha<1$\footnote{This answer assumes $\alpha>0$.}
 
-The consumer problem is $\max\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. The Legrangian is $\mathcal{L}(x, \lambda, \mu) = (x_1^\alpha + x_2^\alpha) + \lambda(w - p_1x_1 - p_2x_2) + \mu_1x_1 + \mu_2x_2$. The Kuhn-Tucker FOC are
+The consumer problem is $\max\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Based on the utility function, it is clear that $x_1^* = x_2^* = 0$ is impossible because the consumer's utility is zero and they would be infinitely better off if they consume $\varepsilon$ of either $x_1$ or $x_2$. Thus, let us assume $x_1^*>0$.\footnote{This assumption is for expositional clarity.  Since the utility function is symmetric, results do not change if we had assumed $x_2^*>0$.} Notice that $u$ is differentiable and concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = \alpha (\alpha-1) x_i^{\alpha-2} < 0$. So, by Theorem 2 in lecture 10 notes, if $(x^*, \lambda^*, \mu^*)$ satisfies the Kuhn-Tucker conditions, $x^*$ solves the consumer problem.  The Legrangian is $\mathcal{L}(x, \lambda, \mu) = (x_1^\alpha + x_2^\alpha) + \lambda(w - p_1x_1 - p_2x_2) + \mu_1x_1 + \mu_2x_2$. The Kuhn-Tucker FOC are
 
 $$
-\frac{\partial \mathcal{L}}{\partial x_i} =  0 \implies 0 = \alpha x_i^{\alpha-1} - \lambda p_i + \mu_i
+\frac{\partial \mathcal{L}}{\partial x_i} =  0 
+\implies \alpha (x_i^*)^{\alpha-1} - \lambda^* p_i + \mu^*_i = 0 
+\implies x_i^* = \Bigg(\frac{\lambda^* p_i - \mu_i^*}{\alpha}\Bigg)^\frac{1}{\alpha-1}
 $$
+
+Since $x_1^*>0$, the above equation implies that $\lambda^*>0$. By complementary slackness, $\lambda^*>0 \implies w=p_1x_1^*+p_2x_2^* \implies x^*_2 = \frac{p_1}{p_2}x_1^* > 0$. Thus, again by complementary slackness, $x_1^*> 0$ and $x_2^*> 0 \implies \mu_1^*=\mu_2^*=0$.
+
+$$
+\Bigg(\frac{\lambda^* p_1}{\alpha}\Bigg)^\frac{1}{\alpha-1} + \frac{p_1}{p_2}\Bigg(\frac{\lambda^* p_1}{\alpha}\Bigg)^\frac{1}{\alpha-1} = w \implies
+\lambda^* = \frac{\alpha}{p_1}\Bigg(\frac{p_2w}{p_1+p_2}\Bigg)^{(\alpha-1)}
+$$
+
+$$
+x^*_1 
+= \Bigg(\frac{\frac{\alpha}{p_1}\Big(\frac{p_2w}{p_1+p_2}\Big)^{(\alpha-1)} p_1}{\alpha}\Bigg)^\frac{1}{\alpha-1}
+=\frac{p_2}{p_1+p_2}w 
+\implies 
+x_2^* = \frac{p_1}{p_2}\frac{p_2}{p_1+p_2}w
+=\frac{p_1}{p_1+p_2}w
+$$
+
+\pagebreak
+
+Thus, the Marshallian demand and the indirect utility are
+
+\begin{align*}
+x(p, w) &= \Bigg( \frac{p_2}{p_1+p_2}w , \frac{p_1}{p_1+p_2}w \Bigg) \\
+v(p, w) &= \Bigg( \frac{p_2}{p_1+p_2}w\Bigg)^\alpha + \Bigg( \frac{p_1}{p_1+p_2}w\Bigg)^\alpha 
+= \frac{(p_1^\alpha+p_2^\alpha)w^\alpha}{(p_1+p_2)^\alpha}
+\end{align*}
 
 (b) $u(x) = x_1+x_2$
 
-The indifference curves are straight lines with slopes of -1. Since the budget constraint is also a straight line, the consumer chooses corner solutions when $p_1 \neq p_2$.  When $p_1 < p_2$, the consumer can afford more of $x_1$, so she buys $x_1 = \frac{w}{p_1}$ and none of $x_2$. When $p_1 > p_2$, the consumer can afford more of $x_2$, so she buys $x_2 = \frac{w}{p_2}$ and none of $x_1$.  When $p_1 = p_2$, there is a continuum of solutions along the overlaid indifference curve and budget constraint.
+The consumer problem is $\max\{x_1 + x_2\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Notice that although $u$ is differentiable, it is not concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = 0$. Thus, $(x^*, \lambda^*, \mu^*)$ satisfying the Kuhn-Tucker conditions do not guarantee a solution to the consumer problem.  The linear utility function can be represented as straight indifference lines with slopes of -1 (see figure for examples with blue indifference curves, green budget constraints, and red solutions). Since the budget constraint is also a straight line, the consumer chooses corner solutions when $p_1 \neq p_2$.  When $p_1 < p_2$, the consumer can afford more of $x_1$, so she buys $x_1 = \frac{w}{p_1}$ and none of $x_2$. When $p_1 > p_2$, the consumer can afford more of $x_2$, so she buys $x_2 = \frac{w}{p_2}$ and none of $x_1$.  When $p_1 = p_2$, there is a continuum of solutions along the overlaid indifference curve and budget constraint.
+
+The Marshallian demand and the indirect utility are
 
 \begin{align*}
-x(p, w) = \begin{cases} (w/p_1, 0) & \text{ if } p_1 < p_2 \\
-                        (0, w/p_2) & \text{ if } p_1 > p_2 \\
-                        (tw/p_1, (t-1)w/p_1) \forall t \in[0, 1] & \text{ if } p_1 = p_2
-          \end{cases}
+x(p, w) 
+= \begin{cases} (w/p_1, 0) & \text{ if } p_1 < p_2 \\
+                (0, w/p_2) & \text{ if } p_1 > p_2 \\
+                \{(tw/p_1, (t-1)w/p_1) \; \forall t \in[0, 1]\} & \text{ if } p_1 = p_2
+\end{cases}
 \end{align*}
+
+\begin{align*}
+v(p, w) 
+= \begin{cases} w/p_1 & \text{ if } p_1 \le p_2 \\
+                w/p_2 & \text{ if } p_1 > p_2 
+  \end{cases}
+\end{align*}
+
+``` {r, echo = FALSE, fig.height = 2.75, fig.width = 6.5}
+par(mfrow = c(1, 3))
+
+plot(1, type = "n", xlim=c(0, 10), ylim =c(0, 10), xaxs = "i", yaxs = "i", xlab = "x_1", ylab = "x_2", main = "p_1 < p_2")
+
+for (i in 1:20) abline(a = i, b = -1, col = "blue")
+
+abline(a = 4, b = -1/2, lwd = 2, col = "green")
+points(x=8, y=0, pch = 19, col="red")
+
+plot(1, type = "n", xlim=c(0, 10), ylim =c(0, 10), xaxs = "i", yaxs = "i", xlab = "x_1", ylab = "x_2", main = "p_1 > p_2")
+
+for (i in 1:20) abline(a = i, b = -1, col = "blue")
+
+abline(a = 8, b = -2, lwd = 2, col = "green")
+points(x=0, y=8, pch = 19, col="red")
+
+plot(1, type = "n", xlim=c(0, 10), ylim =c(0, 10), xaxs = "i", yaxs = "i", xlab = "x_1", ylab = "x_2", main = "p_1 = p_2")
+
+for (i in 1:20) abline(a = i, b = -1, col = "blue")
+
+abline(a = 8, b = -1, lwd = 4, col = "red")
+abline(a = 8, b = -1, col = "green")
+```
+
+\pagebreak
 
 (c) $u(x) = x_1^\alpha + x_2^\alpha$ for $\alpha>1$
 
+The consumer problem is $\max\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Notice that although $u$ is differentiable, it is not concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = \alpha (\alpha-1) x_i^{\alpha-2} \ge 0$. Thus, $(x^*, \lambda^*, \mu^*)$ satisfying the Kuhn-Tucker conditions do not guarantee a solution to the consumer problem.  As shown in the figure, the indifference curves when $\alpha > 1$ become concave to the origin: $x_i = f(x_j) = (\bar{u} - x_j^\alpha)^{1/\alpha} \implies \frac{\partial^2 f}{\partial^2x_i}$
 
+``` {r, echo = FALSE, fig.height = 2.75, fig.width = 6.5}
+par(mfrow = c(1, 3))
+
+x <- (0:(10*100))/100
+
+plot(1, type = "n", xlim=c(0, 10), ylim =c(0, 10), xaxs = "i", yaxs = "i", xlab = "x_1", ylab = "x_2", main = "alpha = 1.5")
+
+for (u_bar in (1:30)*2) lines(x=x, y=(u_bar - x^1.5)^(1/1.5), col = "blue")
+
+plot(1, type = "n", xlim=c(0, 10), ylim =c(0, 10), xaxs = "i", yaxs = "i", xlab = "x_1", ylab = "x_2", main = "alpha = 5")
+
+x <- (0:(10*10000))/10000
+
+for (u_bar in exp(1:30)) lines(x=x, y=(u_bar - x^5)^(1/5), col = "blue")
+
+plot(1, type = "n", xlim=c(0, 10), ylim =c(0, 10), xaxs = "i", yaxs = "i", xlab = "x_1", ylab = "x_2", main = "alpha = infinity")
+
+for (i in 1:20) {
+  segments(x0 = 0, y0 = i,
+           x1 = i, y1 = i, 
+           col = "blue")
+    segments(x0 = i, y0 = 0,
+           x1 = i, y1 = i, 
+           col = "blue")
+}
+```
 
 (d) $u(x) = \min\{x_1, x_2\}$ (Leontief utility)
 
