@@ -21,7 +21,7 @@ Solve the Consumer Problem and state the Marshallian demand $x(p,w)$ and indirec
 
 (a) $u(x) = x_1^\alpha + x_2^\alpha$ for $\alpha<1$\footnote{This answer assumes $\alpha>0$.}
 
-The consumer problem is $\max\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Based on the utility function, it is clear that $x_1^* = x_2^* = 0$ is impossible because the consumer's utility is zero and they would be infinitely better off if they consume $\varepsilon$ of either $x_1$ or $x_2$. Thus, let us assume $x_1^*>0$.\footnote{This assumption is for expositional clarity.  Since the utility function is symmetric, results do not change if we had assumed $x_2^*>0$.} Notice that $u$ is differentiable and concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = \alpha (\alpha-1) x_i^{\alpha-2} < 0$. So, by Theorem 2 in lecture 10 notes, if $(x^*, \lambda^*, \mu^*)$ satisfies the Kuhn-Tucker conditions, $x^*$ solves the consumer problem.  The Legrangian is $\mathcal{L}(x, \lambda, \mu) = (x_1^\alpha + x_2^\alpha) + \lambda(w - p_1x_1 - p_2x_2) + \mu_1x_1 + \mu_2x_2$. The Kuhn-Tucker FOC are
+The consumer problem is $\max_{x_1, x_2}\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Based on the utility function, it is clear that $x_1^* = x_2^* = 0$ is impossible because the consumer's utility is zero and they would be infinitely better off if they consume $\varepsilon$ of either $x_1$ or $x_2$. Thus, let us assume $x_1^*>0$.\footnote{This assumption is for expositional clarity.  Since the utility function is symmetric, results do not change if we had assumed $x_2^*>0$.} Notice that $u$ is differentiable and concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = \alpha (\alpha-1) x_i^{\alpha-2} < 0$. So, by Theorem 2 in lecture 10 notes, if $(x^*, \lambda^*, \mu^*)$ satisfies the Kuhn-Tucker conditions, $x^*$ solves the consumer problem.  The Legrangian is $\mathcal{L}(x, \lambda, \mu) = (x_1^\alpha + x_2^\alpha) + \lambda(w - p_1x_1 - p_2x_2) + \mu_1x_1 + \mu_2x_2$. The Kuhn-Tucker FOC are
 
 $$
 \frac{\partial \mathcal{L}}{\partial x_i} =  0 
@@ -57,7 +57,7 @@ v(p, w) &= \Bigg( \frac{p_2}{p_1+p_2}w\Bigg)^\alpha + \Bigg( \frac{p_1}{p_1+p_2}
 
 (b) $u(x) = x_1+x_2$
 
-The consumer problem is $\max\{x_1 + x_2\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Notice that although $u$ is differentiable, it is not concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = 0$. Thus, $(x^*, \lambda^*, \mu^*)$ satisfying the Kuhn-Tucker conditions do not guarantee a solution to the consumer problem.  The linear utility function can be represented as straight indifference lines with slopes of -1 (see figure for examples with blue indifference curves, green budget constraints, and red solutions). Since the budget constraint is also a straight line, the consumer chooses corner solutions when $p_1 \neq p_2$.  When $p_1 < p_2$, the consumer can afford more of $x_1$, so she buys $x_1 = \frac{w}{p_1}$ and none of $x_2$. When $p_1 > p_2$, the consumer can afford more of $x_2$, so she buys $x_2 = \frac{w}{p_2}$ and none of $x_1$.  When $p_1 = p_2$, there is a continuum of solutions along the overlaid indifference curve and budget constraint.
+The consumer problem is $\max_{x_1, x_2}\{x_1 + x_2\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Notice that although $u$ is differentiable, it is not concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = 0$. Thus, $(x^*, \lambda^*, \mu^*)$ satisfying the Kuhn-Tucker conditions do not guarantee a solution to the consumer problem.  The linear utility function can be represented as straight indifference lines with slopes of -1 (see figure for examples with blue indifference curves, green budget constraints, and red solutions). Since the budget constraint is also a straight line, the consumer chooses corner solutions when $p_1 \neq p_2$.  When $p_1 < p_2$, the consumer can afford more of $x_1$, so she buys $x_1 = \frac{w}{p_1}$ and none of $x_2$. When $p_1 > p_2$, the consumer can afford more of $x_2$, so she buys $x_2 = \frac{w}{p_2}$ and none of $x_1$.  When $p_1 = p_2$, there is a continuum of solutions along the overlaid indifference curve and budget constraint.
 
 The Marshallian demand and the indirect utility are
 
@@ -105,7 +105,7 @@ abline(a = 8, b = -1, col = "green")
 
 (c) $u(x) = x_1^\alpha + x_2^\alpha$ for $\alpha>1$
 
-The consumer problem is $\max\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Notice that although $u$ is differentiable, it is not concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = \alpha (\alpha-1) x_i^{\alpha-2} \ge 0$. Thus, $(x^*, \lambda^*, \mu^*)$ satisfying the Kuhn-Tucker conditions do not guarantee a solution to the consumer problem.  As shown in the figure, the indifference curves when $\alpha > 1$ become concave to the origin: $x_i = f(x_j) = (\bar{u} - x_j^\alpha)^{1/\alpha} \implies \frac{\partial^2 f}{\partial^2x_i}$
+The consumer problem is $\max_{x_1, x_2}\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Notice that although $u$ is differentiable, it is not concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = \alpha (\alpha-1) x_i^{\alpha-2} \ge 0$. Thus, $(x^*, \lambda^*, \mu^*)$ satisfying the Kuhn-Tucker conditions do not guarantee a solution to the consumer problem.  As shown in the figure, the indifference curves when $\alpha > 1$ are concave to the origin: $x_i = f(x_j) = (\bar{u} - x_j^\alpha)^{1/\alpha} \implies \frac{\partial^2 f}{\partial^2 x_j} = -(1/\alpha-1)(\bar{u} - x_j^\alpha)^{1/\alpha-2}( x_j^{\alpha-1})( x_j^{\alpha-1})-(\bar{u} - (\alpha-1)x_j^\alpha)^{1/\alpha-1}( x_j^{\alpha-2})$.
 
 ``` {r, echo = FALSE, fig.height = 2.75, fig.width = 6.5}
 par(mfrow = c(1, 3))
@@ -134,17 +134,81 @@ for (i in 1:20) {
 }
 ```
 
+Since the budget constraint is linear, the consumer chooses corner solutions for all prices.  When $p_1 < p_2$, the consumer can afford more of $x_1$, so she buys $x_1 = \frac{w}{p_1}$ and none of $x_2$. When $p_1 > p_2$, the consumer can afford more of $x_2$, so she buys $x_2 = \frac{w}{p_2}$ and none of $x_1$.
+
+The Marshallian demand and the indirect utility are
+
+\begin{align*}
+x(p, w) 
+= \begin{cases} (w/p_1, 0) & \text{ if } p_1 < p_2 \\
+                (0, w/p_2) & \text{ if } p_1 > p_2 \\
+                \{(w/p_1, 0), (0, w/p_2)\} & \text{ if } p_1 = p_2
+\end{cases}
+\end{align*}
+
+\begin{align*}
+v(p, w) 
+= \begin{cases} w/p_1 & \text{ if } p_1 \le p_2 \\
+                w/p_2 & \text{ if } p_1 > p_2 
+  \end{cases}
+\end{align*}
+
 (d) $u(x) = \min\{x_1, x_2\}$ (Leontief utility)
 
+The consumer problem is $\max_{x_1, x_2}\{\min\{x_1, x_2\}\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Since $u$ is not differentiable, we cannot rely on Kuhn-Tucker conditions to solve the consumer problem.  Notice that Leontief utility is associated with the case of perfect complements. Thus, the solution is for the consumer to consume equal amounts of $x^*_1=x^*_2$ and exhaust their wealth.  If $x^*_2 > x^*_1$, the consumer would increase her utility if she consumed less $x_2$ and more $x_1$. Similarly, if $x^*_1 > x^*_2$, the consumer should consume less $x_1$ and more $x_2$.  Therefore, the consumer consumes $\frac{w}{p_1 + p_2}$ of each $x_i$ and gets $\frac{w}{p_1 + p_2}$ in utility.
 
+The Marshallian demand and the indirect utility are
+
+\begin{align*}
+x(p, w) &= \Bigg( \frac{w}{p_1 + p_2}, \frac{w}{p_1 + p_2} \Bigg) \\
+v(p, w) &= \frac{w}{p_1 + p_2}
+\end{align*}
+
+\pagebreak
 
 (e) $u(x) = \min\{x_1 + x_2, x_3 + x_4\}$
 
+The consumer problem is $\max_{x_1, x_2}\{\min\{x_1 + x_2, x_3 + x_4\}\}$ subject to $p \cdot x \le w$ and $x_i \ge 0$. Similar to (d), we cannot rely on Kuhn-Tucker conditions to solve the consumer problem, but we know that $x^*_1+x^*_2 = x^*_3 + x^*_4$ based on the same logic.  Now let us just consider the consumer's consumption of $x_1$ and $x_2$.  Similar to (b), we know that the consumer choose a corner solution and consume all of one good and none of the other.  The same logic applies to the consumption of $x_3$ and $x_4$.  Note that we can ignore knife-edge cases in which $p_1=p_2$ and/or $p_3=p_4$.
 
+The Marshallian demand and the indirect utility are
+
+\begin{align*}
+x(p, w) 
+= \begin{cases} (w/(p_1+p_3), 0, w/(p_1+p_3), 0) & \text{ if } p_1 < p_2 \text{ and } p_3 < p_4 \\
+                (w/(p_1+p_4), 0, 0, w/(p_1+p_4)) & \text{ if } p_1 < p_2 \text{ and } p_3 > p_4 \\
+                (0, w/(p_2+p_3), w/(p_2+p_3), 0) & \text{ if } p_1 > p_2 \text{ and } p_3 < p_4 \\
+                (0, w/(p_2+p_4), 0, w/(p_2+p_4)) & \text{ if } p_1 > p_2 \text{ and } p_3 > p_4
+\end{cases}
+\end{align*}
+
+\begin{align*}
+v(p, w) 
+= \begin{cases} w/(p_1+p_3) & \text{ if } p_1 < p_2 \text{ and } p_3 < p_4 \\
+                w/(p_1+p_4) & \text{ if } p_1 < p_2 \text{ and } p_3 > p_4 \\
+                w/(p_2+p_3) & \text{ if } p_1 > p_2 \text{ and } p_3 < p_4 \\
+                w/(p_2+p_4) & \text{ if } p_1 > p_2 \text{ and } p_3 > p_4
+\end{cases}
+\end{align*}
 
 (f) $u(x) = \min\{x_1, x_2\} + \min\{x_3, x_4\}$
 
+The consumer problem is $\max_{x_1, x_2}\{\min\{x_1, x_2\} + \min\{x_3, x_4\}\}$ subject to $p \cdot x \le w$ and $x_i \ge 0$.  Similar to (e), we cannot rely on Kuhn-Tucker conditions to solve the consumer problem because $u$ is not differentiable, but we can combine the logic from (b) and (d).  From (d), we know that $x_1 = x_2$ and $x_3=x_4$.  From (b), we know that if $p_1+p_2 < p_3 + p_4$, the consume will choose the corner solution of consuming all $x_1$ and $x_2$; if $p_3 + p_4 < p_1 + p_2$, the consume will choose the corner solution of consuming all $x_3$ and $x_4$. The same logic applies to the consumption of $x_3$ and $x_4$.  Note that we can ignore knife-edge cases in which $p_1+p_2=p_3+p_4$.
 
+The Marshallian demand and the indirect utility are
+
+\begin{align*}
+x(p, w) 
+= \begin{cases} (w/(p_1+p_2), w/(p_1+p_2), 0, 0) & \text{ if } p_1 + p_2 < p_3 + p_4 \\
+                (0, 0, w/(p_3+p_4), w/(p_3+p_4)) & \text{ if } p_1 + p_2 > p_3 + p_4
+\end{cases}
+\end{align*}
+
+\begin{align*}
+v(p, w) 
+= \begin{cases} w/(p_1+p_2) & \text{ if } p_1 + p_2 < p_3 + p_4 \\
+                w/(p_3+p_4) & \text{ if } p_1 + p_2 > p_3 + p_4
+\end{cases}
+\end{align*}
 
 \pagebreak
 
