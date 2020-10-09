@@ -47,7 +47,7 @@ Let $T \in L(\R^n, \R^n)$ and $W$ be the standard basis of $\R^n$. If $\mtx_W(T)
 
   - $T$ has $n$ eigenvalues.
   - $T$'s eigenvectors $\{v_1, ..., v_n\}$ are orthonormal basis of $\R^n$
-  - $\mtx_W(T)$ is diagonaliable: $\mtx_W(T) = \mtx_{W, V}(id) \cdot \mtx_V(T) \cdot \mtx_{V,W}(id)$ ($\mtx_V(T)$ is diagonal and $\mtx_{W, V}(id), \mtx_{V,W}(id)$ are orthogonal)
+  - $\mtx_W(T)$ is diagonalizable: $\mtx_W(T) = \mtx_{W, V}(id) \cdot \mtx_V(T) \cdot \mtx_{V,W}(id)$ ($\mtx_V(T)$ is diagonal and $\mtx_{W, V}(id), \mtx_{V,W}(id)$ are orthogonal)
 
 \textbf{Quadratic Form}
 
@@ -184,7 +184,7 @@ Let $f: X \to \R, X \in \R^n, f \in C^2$, then $D^2f(x)$ has eigenvalues $\lambd
   - $\lambda_1, ..., \lambda_n \le 0, \lambda_i<0$ for some $i \implies f$ has a local maximum or saddle at $x$.
   - $\lambda_1 = ... = \lambda_n = 0$ gives no information.
 
-\textbf{Inverve Fn Thm}: Let $f: X \to \R^n$ be a continuously differentiable function, $X \subset \R^n$ be open, $x_0 \in X$. If $\det(Df(x_0)) \neq 0$, then there exists an open neighborhood $U$ of $x_0$ such that
+\textbf{Inverse Fn Thm}: Let $f: X \to \R^n$ be a continuously differentiable function, $X \subset \R^n$ be open, $x_0 \in X$. If $\det(Df(x_0)) \neq 0$, then there exists an open neighborhood $U$ of $x_0$ such that
 
   - $f$ is one-to-one in $U$
   - $V = f(U)$ is an open set, $y_0 :=f(x_0) \in V$
