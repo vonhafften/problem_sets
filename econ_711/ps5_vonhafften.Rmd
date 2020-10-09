@@ -8,6 +8,7 @@ header-includes:
 - \newcommand{\Z}{\mathbb{Z}}
 - \newcommand{\R}{\mathbb{R}}
 - \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
 - \usepackage{bm}
 ---
 
@@ -21,10 +22,10 @@ Solve the Consumer Problem and state the Marshallian demand $x(p,w)$ and indirec
 
 (a) $u(x) = x_1^\alpha + x_2^\alpha$ for $\alpha<1$\footnote{This answer assumes $\alpha>0$.}
 
-The consumer problem is $\max_{x_1, x_2}\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Based on the utility function, it is clear that $x_1^* = x_2^* = 0$ is impossible because the consumer's utility is zero and they would be infinitely better off if they consume $\varepsilon$ of either $x_1$ or $x_2$. Thus, let us assume $x_1^*>0$.\footnote{This assumption is for expositional clarity.  Since the utility function is symmetric, results do not change if we had assumed $x_2^*>0$.} Notice that $u$ is differentiable and concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = \alpha (\alpha-1) x_i^{\alpha-2} < 0$. So, by Theorem 2 in lecture 10 notes, if $(x^*, \lambda^*, \mu^*)$ satisfies the Kuhn-Tucker conditions, $x^*$ solves the consumer problem.  The Legrangian is $\mathcal{L}(x, \lambda, \mu) = (x_1^\alpha + x_2^\alpha) + \lambda(w - p_1x_1 - p_2x_2) + \mu_1x_1 + \mu_2x_2$. The Kuhn-Tucker FOC are
+The consumer problem is $\max_{x_1, x_2}\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Based on the utility function, it is clear that $x_1^* = x_2^* = 0$ is impossible because the consumer's utility is zero and they would be infinitely better off if they consume $\varepsilon$ of either $x_1$ or $x_2$. Thus, let us assume $x_1^*>0$.\footnote{This assumption is for expositional clarity.  Since the utility function is symmetric, results do not change if we had assumed $x_2^*>0$.} Notice that $u$ is differentiable and concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = \alpha (\alpha-1) x_i^{\alpha-2} < 0$. So, by Theorem 2 in lecture 10 notes, if $(x^*, \lambda^*, \mu^*)$ satisfies the Kuhn-Tucker conditions, $x^*$ solves the consumer problem.  The Legrangian is $\Lf(x, \lambda, \mu) = (x_1^\alpha + x_2^\alpha) + \lambda(w - p_1x_1 - p_2x_2) + \mu_1x_1 + \mu_2x_2$. The Kuhn-Tucker FOC are
 
 $$
-\frac{\partial \mathcal{L}}{\partial x_i} =  0 
+\frac{\partial \Lf}{\partial x_i} =  0 
 \implies \alpha (x_i^*)^{\alpha-1} - \lambda^* p_i + \mu^*_i = 0 
 \implies x_i^* = \Bigg(\frac{\lambda^* p_i - \mu_i^*}{\alpha}\Bigg)^\frac{1}{\alpha-1}
 $$
@@ -57,7 +58,7 @@ v(p, w) &= \Bigg( \frac{p_2}{p_1+p_2}w\Bigg)^\alpha + \Bigg( \frac{p_1}{p_1+p_2}
 
 (b) $u(x) = x_1+x_2$
 
-The consumer problem is $\max_{x_1, x_2}\{x_1 + x_2\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Notice that although $u$ is differentiable, it is not concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = 0$. Thus, $(x^*, \lambda^*, \mu^*)$ satisfying the Kuhn-Tucker conditions do not guarantee a solution to the consumer problem.  The linear utility function can be represented as straight indifference lines with slopes of -1 (see figure for examples with blue indifference curves, green budget constraints, and red solutions). Since the budget constraint is also a straight line, the consumer chooses corner solutions when $p_1 \neq p_2$.  When $p_1 < p_2$, the consumer can afford more of $x_1$, so she buys $x_1 = \frac{w}{p_1}$ and none of $x_2$. When $p_1 > p_2$, the consumer can afford more of $x_2$, so she buys $x_2 = \frac{w}{p_2}$ and none of $x_1$.  When $p_1 = p_2$, there is a continuum of solutions along the overlaid indifference curve and budget constraint.
+The consumer problem is $\max_{x_1, x_2}\{x_1 + x_2\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Notice that although $u$ is differentiable, it is not strictly concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = 0$. Thus, $(x^*, \lambda^*, \mu^*)$ satisfying the Kuhn-Tucker conditions do not guarantee a solution to the consumer problem.  The linear utility function can be represented as straight indifference lines with slopes of -1 (see figure for examples with blue indifference curves, green budget constraints, and red solutions). Since the budget constraint is also a straight line, the consumer chooses corner solutions when $p_1 \neq p_2$.  When $p_1 < p_2$, the consumer can afford more of $x_1$, so she buys $x_1 = \frac{w}{p_1}$ and none of $x_2$. When $p_1 > p_2$, the consumer can afford more of $x_2$, so she buys $x_2 = \frac{w}{p_2}$ and none of $x_1$.  When $p_1 = p_2$, there is a continuum of solutions along the overlaid indifference curve and budget constraint.
 
 The Marshallian demand and the indirect utility are
 
@@ -219,10 +220,57 @@ Throughout this problem, let $X=\R^k_+$, and let $(a_1, a_2, ..., a_k)$ be a set
 (a) For each of the following utility functions, solve the consumer problem and state $x(p, w)$:
 
 i. linear utility $u(x)=x_1+x_2+...+x_k$
+
+Similar idea as 1(b).  The consumer will spend all their wealth on the cheapest good.  Also we know that $\min\{p_1,..., p_k\}$ is single-valued. So Marshallian demand is
+
+$x(p, w) = (x_1^*, ..., x_k^*)$ where $x_i^* = \frac{w}{p_i}$ if $p_i = \min\{p_1,..., p_k\}$ and $x_j^* = 0$ if $p_i \neq \min\{p_1,..., p_k\}$.
+
 ii. Cobb-Douglas utility $u(x)=x_1^{a_1}x_2^{a_2}...x_k^{a_k}$
+
+Since $u(x)$ is differentiable and concave ($\frac{\partial^2 u}{\partial^2 x_i} = a_i(a_i-1)x_i^{a_i-2} < 0$), we can apply the Kuhn-Tucker Conditions.  Similar to our discussion 3-good Cobb-Douglas in lecture, we know that $x >> 0$ or else $u(x) = 0$, so by complementary slackness $\mu_i=0$ $\forall i$.  In addition, we will maximize $\Lf = \ln u (x) + \lambda(w-p\cdot x)=a_1 \ln x_1 + a_2 \ln x_2+...a_k \ln x_k - \lambda(w-p\cdot x)$:
+
+$$
+\frac{\partial \Lf}{\partial x_i} = 0 
+\implies \frac{a_i}{x_i} - \lambda p_i = 0 
+\implies x_i = \frac{a_i}{\lambda p_i}
+$$
+
+Since $x >> 0 \implies \lambda = \frac{a_i}{x_i p_i}>0 \implies w - p \cdot x = 0$ by complementary slackness so Walras' Law holds:
+
+$$
+\sum_{i=1}^k \frac{a_i}{\lambda p_i} * p_i =w \implies \frac{\sum_{i=1}^k a_i}{\lambda} =w \implies \frac{1}{w} = \lambda \implies x_i = \frac{a_i}{p_i}w
+$$
+
+So Marshallian demand is
+
+$$
+x(p, w) = \Bigg(\frac{a_1}{p_1}w, ..., \frac{a_k}{p_k}w\Bigg)
+$$
+
 iii. Leontief utility $u(x)=\min\{\frac{x_1}{a_1}, \frac{x_2}{a_2}, ..., \frac{x_k}{a_k}\}$
 
+Similar to 1(d), $u$ is not differentiable, but we know that $\frac{x^*_1}{a_1} = ... = \frac{x^*_k}{a_k}$.  If all $x^*_i$ are equal except for $x^*_i > x^*_j$ $\forall i \neq j$, the consumer could get higher utility by buy less $x^*_i$ and more of the other goods. We also know that the consumer will exhaust their budget, or else they could spend their remaining budget proportionally and buy more of each good and increase their utility.  So, $\frac{x^*_1}{a_1}p_1 + ... + \frac{x^*_k}{a_k}p_k=w \implies \frac{x^*_i}{a_i}p_1 + ... + \frac{x^*_i}{a_i}p_k=w \implies \frac{x^*_i}{a_i}(p_1 + ... + p_k)=w \implies x^*_i = \frac{a_iw}{\sum_{j=1}^n p_j}$.
+
+So the Marshallian demand is 
+
+$$
+x(p, w) = \Bigg(\frac{a_1w}{\sum_{i=1}^n p_i}, ..., \frac{a_kw}{\sum_{i=1}^n p_i} \Bigg)
+$$
+
+\pagebreak
+
 (b) Consider the Constant Elasticity of Substitution (CES) utility function $u(x) = \Bigg( \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s} \Bigg)^\frac{s}{s-1}$ with $s \in (0,1) \cup(1, +\infty)$. Solve the consumer problem and state $x(p,w)$.\footnote{Recall that maximizing a function $(f(x))^\frac{s}{s-1}$ is the same as maximizing $f(x)$ when $s > 1$, and the same as minimizing $f(x)$ when $s < 1$.}
+
+Notice that if $x_1=...x_k = 0$, then $u(x) = 0$ and $u(x)$ is positive if at least one $x_i$ is positive; thus, we know that $\exists i^*$ such that $x_i^*>0$.  Notice that $u$ is differentiable. Define $f(x) = \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s}$. Note that maximizing $u(x)=(f(x))^\frac{s}{s-1}$ is the same as maximizing $f(x)$ when $s > 1$, and the same as minimizing $f(x)$ when $s < 1$.  Notice that $f$ is concave: $\frac{\partial^2 f}{\partial^2 x_i} = -a_i^{\frac{1}{s}}  \frac{s-1}{s^2}x_i^{\frac{-1-s}{s}} < 0$.  So the Kuhn-Tucker Conditions solve the consumer problem. Define $\Lf = \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s} - \lambda(w-p\cdot x) - \mu \cdot x$
+
+\begin{align*}
+\frac{\partial \Lf}{\partial x_i} &= 0 \\
+\implies \frac{s-1}{s}a_i^{\frac{1}{s}} x_i^{\frac{s-1}{s}-1} - \lambda p_i -\mu_i &= 0 \\
+\implies  x_i &= \Bigg(\frac{s}{s-1} \frac{\lambda p_i + \mu_i}{a_i^{1/s}} \Bigg)^{-s} \\
+\text{and } \lambda &= \frac{s-1}{p_is}a_i^{\frac{1}{s}} x_i^{\frac{s-1}{s}-1} -\frac{\mu_i}{p_i}
+\end{align*}
+
+Since $x_{i^*}$ is positive, $\mu_{i^*}=0$ by complementary slackness.  Therefore we know that $\lambda > 0 \implies w= p \cdot x$, so Walras' Law holds.
 
 (c) Show that CES utility gives the same demand as linear utility in the limit $s \to + \infty$, as Cobb-Douglas utility in the limit $s \to 1$, and as Leontief utility in the limit $s \to 0$.
 
