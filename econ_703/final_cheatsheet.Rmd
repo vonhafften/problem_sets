@@ -83,7 +83,7 @@ Let $X$ be a vector space. A \textbf{norm} on $X$ is a function $|| \cdot ||:X \
 
   - $||x|| \ge 0 \forall x \in X$
   - $||x|| = 0 \iff x = \bar{0}$
-  - $||x+y|| \ge ||x|| + ||y|| \; \forall x, y \in X$
+  - $||x+y|| \le ||x|| + ||y|| \; \forall x, y \in X$
   - $||\alpha x|| = |\alpha| \cdot ||x|| \; \forall \alpha \in \R, x \in X$
 
 A \textbf{normed vector space} is a vector space equipped with a norm.

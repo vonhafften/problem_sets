@@ -267,7 +267,7 @@ Notice that if $x_1=...x_k = 0$, then $u(x) = 0$ and $u(x)$ is positive if at le
 \frac{\partial \Lf}{\partial x_i} &= 0 \\
 \implies \frac{s-1}{s}a_i^{\frac{1}{s}} x_i^{\frac{s-1}{s}-1} - \lambda p_i -\mu_i &= 0 \\
 \implies  x_i &= \Bigg(\frac{s}{s-1} \frac{\lambda p_i + \mu_i}{a_i^{1/s}} \Bigg)^{-s} \\
-\text{and } \lambda &= \frac{s-1}{p_is}a_i^{\frac{1}{s}} x_i^{\frac{s-1}{s}-1} -\frac{\mu_i}{p_i}
+\text{and } \lambda &= \frac{s-1}{p_is}a_i^{1/s} x_i^{\frac{s-1}{s}-1} -\frac{\mu_i}{p_i}
 \end{align*}
 
 Since $x_{i^*}$ is positive, $\mu_{i^*}=0$ by complementary slackness.  Therefore we know that $\lambda > 0 \implies w= p \cdot x$, so Walras' Law holds.
