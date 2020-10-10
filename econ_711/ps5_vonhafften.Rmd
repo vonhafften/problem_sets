@@ -261,16 +261,20 @@ $$
 
 (b) Consider the Constant Elasticity of Substitution (CES) utility function $u(x) = \Bigg( \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s} \Bigg)^\frac{s}{s-1}$ with $s \in (0,1) \cup(1, +\infty)$. Solve the consumer problem and state $x(p,w)$.\footnote{Recall that maximizing a function $(f(x))^\frac{s}{s-1}$ is the same as maximizing $f(x)$ when $s > 1$, and the same as minimizing $f(x)$ when $s < 1$.}
 
-Notice that if $x_1=...x_k = 0$, then $u(x) = 0$ and $u(x)$ is positive if at least one $x_i$ is positive; thus, we know that $\exists i^*$ such that $x_i^*>0$.  Notice that $u$ is differentiable. Define $f(x) = \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s}$. Note that maximizing $u(x)=(f(x))^\frac{s}{s-1}$ is the same as maximizing $f(x)$ when $s > 1$, and the same as minimizing $f(x)$ when $s < 1$.  Notice that $f$ is concave: $\frac{\partial^2 f}{\partial^2 x_i} = -a_i^{\frac{1}{s}}  \frac{s-1}{s^2}x_i^{\frac{-1-s}{s}} < 0$.  So the Kuhn-Tucker Conditions solve the consumer problem. Define $\Lf = \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s} - \lambda(w-p\cdot x) - \mu \cdot x$
+Notice that $u$ is differentiable. Define $f(x) = \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s}$. Note that maximizing $u(x)=(f(x))^\frac{s}{s-1}$ is the same as maximizing $f(x)$ when $s > 1$, and the same as minimizing $f(x)$ when $s < 1$.  Notice that $f$ is concave: $\frac{\partial^2 f}{\partial^2 x_i} = -a_i^{\frac{1}{s}}  \frac{s-1}{s^2}x_i^{\frac{-1-s}{s}} < 0$.  So the Kuhn-Tucker Conditions solve the consumer problem. Define $\Lf = \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s} - \lambda(w-p\cdot x) - \mu \cdot x$
 
 \begin{align*}
 \frac{\partial \Lf}{\partial x_i} &= 0 \\
 \implies \frac{s-1}{s}a_i^{\frac{1}{s}} x_i^{\frac{s-1}{s}-1} - \lambda p_i -\mu_i &= 0 \\
-\implies  x_i &= \Bigg(\frac{s}{s-1} \frac{\lambda p_i + \mu_i}{a_i^{1/s}} \Bigg)^{-s} \\
+\implies  x^*_i &= \Bigg(\frac{s}{s-1} \frac{\lambda p_i + \mu_i}{a_i^{1/s}} \Bigg)^{-s} \\
 \text{and } \lambda &= \frac{s-1}{p_is}a_i^{1/s} x_i^{\frac{s-1}{s}-1} -\frac{\mu_i}{p_i}
 \end{align*}
 
-Since $x_{i^*}$ is positive, $\mu_{i^*}=0$ by complementary slackness.  Therefore we know that $\lambda > 0 \implies w= p \cdot x$, so Walras' Law holds.
+Thus $x^*_{i}$ is positive $\forall i \implies \mu_{i}=0$ $\forall i$ by complementary slackness.  Therefore, we know that $\lambda > 0 \implies w - p \cdot x = 0$, so Walras' Law holds:
+
+$$
+\sum_{i=1}^np_i\Bigg(\frac{s}{s-1} \frac{\lambda p_i}{a_i^{1/s}} \Bigg)^{-s} =w
+$$
 
 (c) Show that CES utility gives the same demand as linear utility in the limit $s \to + \infty$, as Cobb-Douglas utility in the limit $s \to 1$, and as Leontief utility in the limit $s \to 0$.
 

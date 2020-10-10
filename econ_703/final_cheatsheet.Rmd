@@ -204,7 +204,7 @@ A set $X \subset \R^n$ is \textbf{convex} if $\forall \lambda \in [0,1], x', x''
 
 Any intersection of convex sets is convex.
 
-If $X, Y$ are convex sets in $\R^n$, then for any $\alpha, \beta \in \R$, the set $z = \alpha X + \beta Y :=\{z \in \R^n| z = \alpha x + \beta y$ for some $x \in X, y \in Y \}$ is also convex.
+If $X, Y$ are convex sets in $\R^n$, then for any $\alpha, \beta \in \R$, the set $Z = \alpha X + \beta Y :=\{z \in \R^n| z = \alpha x + \beta y$ for some $x \in X, y \in Y \}$ is also convex.
 
 A vector $p \neq \bar{0}$ in $\R^n$ and a scalar $\alpha \in \R$ define the \textbf{hyperplane} $H(p, \alpha)$ given by $H(p, \alpha) = \{ x \in \R^n | p \cdot x := \sum_{i=1}^n p_i x_i = \alpha\}$.
 
