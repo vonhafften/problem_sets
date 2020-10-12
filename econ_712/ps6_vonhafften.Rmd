@@ -1,0 +1,76 @@
+---
+title: "ECON 712 - PS 6"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/15/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## (Non-) Commitment in a black-box example with discrete choice set
+
+Let there be a continuum of identical households in the economy, taking actions $\xi \in X$.\footnote{These problems draw extensively from Ljungqvist and Sargent's Recursive Macroeconomic Theory.}  Let the economy wide average (the aggregate) of these actions be $x$.  The benevolent government takes action $y \in Y$.  The payoff to households is $u(\xi, x, y)$. Let the optimal choice of households, as a function of aggregates, be $f(x, y) := \arg\max_{\xi \in X} u(\xi, x, y)$.
+
+In a competitive equilibrium, household action is consistent with the aggregate, i.e. $x=f(x, y)$. Now for each $y$, let $x = h(y)$ be such that $h(y) = f(h(y), y)$. That is, $(x = h(y), y)$ is a competitive equilibrium.
+
+Let $X = \{x_H, x_l\}, Y = \{y_H, y_L\}$. For the one-period economy, with $\xi_i = x_i$, the payoffs $u(x_i, x_i, y_j)$ is given by the following table of one-period payoffs:
+
++-------+-------+-------+
+|       | $x_L$ | $x_H$ |
++-------+-------+-------+
+| $y_L$ |   12* |    25 |
++-------+-------+-------+
+| $y_H$ |    0  |   24* |
++-------+-------+-------+
+
+Here the values $u(\xi_k, x_i, y_j)$ not reported are such that the outcomes with * are competitive equilibria.  For example, $u(\xi_k, x_i, y_j) = -1$ for $k \neq i$ and $i = j$, and $u(\xi_k, x_i, y_j) = 30$ for $k \neq i$ and $i \neq j$. You should convince yourself that this is the case.
+
+1. Find the Ramsey outcome, that is when the government has commitment/moves first. Find the outcome when the government cannot commit/moves second (in pure strategies).  We will refer to this case as the Nash equilibrium in pure strategies (NE).
+
+2. Suppose the economy is repeated 5 times. Can the Ramsey outcome be supported in any period?
+
+Now consider the expanded version of the previous economy.  The payoffs $u(x_i, x_i, y_j)$ is given by the following the following table of one-period payoffs:
+
++-------+--------+-------+-------+
+|       | $x_LL$ | $x_L$ | $x_H$ |
++-------+--------+-------+-------+
+| $y_LL$|    2*  |    6  | 10    |
++-------+--------+-------+-------+
+| $y_L$ |    1   |   12* | 25    |
++-------+--------+-------+-------+
+| $y_H$ |   -1   |   0   |   24* |
++-------+--------+-------+-------+
+
+3. What are the NEs? Suppose the economy is repeated 3 times, with agents discounting future utilities by $\beta = 0.9$. Can the Ramsey outcome be supported in any period?
+
+\pagebreak
+
+## Static taxation
+
+Let there be a unit measure of households with preferences over leisure, (private) consumption, and public goods ($l, c, g$), defined by the utility
+
+$$
+u(l, c, g) = \ln l \ln(\alpha + c) + \ln(\alpha + g), \alpha \in (0,0.5)
+$$
+
+Each household is endowed with 1 unit of time, which can be spent on leisure or labor.  Production is linear in labor, i.e. the economy resource constraint is $\bar{l} + g + \bar{c} = 1$ where $\bar{l}, \bar{c}$ are aggregate leisure and consumption.  To provide the public good, the government can levy a flat proportional tax $\tau$ on labor. That is $g = \tau(1-l)$.
+
+1. Set up and solve the Planner's problem.
+
+2. Set up and solve for the Ramsey outcome.
+
+3. Set up and solve for the NE outcome.
+
+4. Comment on the differences between the above 3 outcomes, and the reason as to why they are different.
+
+5. Suppose the economy is repeated for infinite periods, with discount factor $\beta < 1$. For high enough $\beta$, can the Ramsey outcome be sustained?
+
+
