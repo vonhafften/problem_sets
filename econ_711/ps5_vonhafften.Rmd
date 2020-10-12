@@ -22,7 +22,7 @@ Solve the Consumer Problem and state the Marshallian demand $x(p,w)$ and indirec
 
 (a) $u(x) = x_1^\alpha + x_2^\alpha$ for $\alpha<1$\footnote{This answer assumes $\alpha>0$.}
 
-The consumer problem is $\max_{x_1, x_2}\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Based on the utility function, it is clear that $x_1^* = x_2^* = 0$ is impossible because the consumer's utility is zero and they would be infinitely better off if they consume $\varepsilon$ of either $x_1$ or $x_2$. Thus, let us assume $x_1^*>0$.\footnote{This assumption is for expositional clarity.  Since the utility function is symmetric, results do not change if we had assumed $x_2^*>0$.} Notice that $u$ is differentiable and concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = \alpha (\alpha-1) x_i^{\alpha-2} < 0$. So, by Theorem 2 in lecture 10 notes, if $(x^*, \lambda^*, \mu^*)$ satisfies the Kuhn-Tucker conditions, $x^*$ solves the consumer problem.  The Legrangian is $\Lf(x, \lambda, \mu) = (x_1^\alpha + x_2^\alpha) + \lambda(w - p_1x_1 - p_2x_2) + \mu_1x_1 + \mu_2x_2$. The Kuhn-Tucker FOC are
+The consumer problem is $\max_{x_1, x_2}\{x_1^\alpha + x_2^\alpha\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Based on the utility function, it is clear that $x_1^* = x_2^* = 0$ is impossible because the consumer's utility is zero and they would be infinitely better off if they consume $\varepsilon$ of either $x_1$ or $x_2$. Thus, let us assume $x_1^*>0$.\footnote{This assumption is for expositional clarity.  Since the utility function is symmetric, results do not change if we had assumed $x_2^*>0$.} Notice that $u$ is differentiable and concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = \alpha (\alpha-1) x_i^{\alpha-2} < 0$. So, by Theorem 2 in lecture 10 notes, if $(x^*, \lambda^*, \mu^*)$ satisfies the Kuhn-Tucker conditions, $x^*$ solves the consumer problem.  The Lagrangian is $\Lf(x, \lambda, \mu) = (x_1^\alpha + x_2^\alpha) + \lambda(w - p_1x_1 - p_2x_2) + \mu_1x_1 + \mu_2x_2$. The Kuhn-Tucker FOC are
 
 $$
 \frac{\partial \Lf}{\partial x_i} =  0 
@@ -58,7 +58,7 @@ v(p, w) &= \Bigg( \frac{p_2}{p_1+p_2}w\Bigg)^\alpha + \Bigg( \frac{p_1}{p_1+p_2}
 
 (b) $u(x) = x_1+x_2$
 
-The consumer problem is $\max_{x_1, x_2}\{x_1 + x_2\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. Notice that although $u$ is differentiable, it is not strictly concave in $x_i$: $\frac{\partial^2 u}{\partial^2 x_i} = 0$. Thus, $(x^*, \lambda^*, \mu^*)$ satisfying the Kuhn-Tucker conditions do not guarantee a solution to the consumer problem.  The linear utility function can be represented as straight indifference lines with slopes of -1 (see figure for examples with blue indifference curves, green budget constraints, and red solutions). Since the budget constraint is also a straight line, the consumer chooses corner solutions when $p_1 \neq p_2$.  When $p_1 < p_2$, the consumer can afford more of $x_1$, so she buys $x_1 = \frac{w}{p_1}$ and none of $x_2$. When $p_1 > p_2$, the consumer can afford more of $x_2$, so she buys $x_2 = \frac{w}{p_2}$ and none of $x_1$.  When $p_1 = p_2$, there is a continuum of solutions along the overlaid indifference curve and budget constraint.
+The consumer problem is $\max_{x_1, x_2}\{x_1 + x_2\}$ subject to $p_1x_1+p_2x_2 \le w$, $x_1 \ge 0$, and $x_2 \ge 0$. The linear utility function can be represented as straight indifference lines with slopes of -1 (see figure for examples with blue indifference curves, green budget constraints, and red solutions). Since the budget constraint is also a straight line, the consumer chooses corner solutions when $p_1 \neq p_2$.  When $p_1 < p_2$, the consumer can afford more of $x_1$, so she buys $x_1 = \frac{w}{p_1}$ and none of $x_2$. When $p_1 > p_2$, the consumer can afford more of $x_2$, so she buys $x_2 = \frac{w}{p_2}$ and none of $x_1$.  When $p_1 = p_2$, there is a continuum of solutions along the overlaid indifference curve and budget constraint.
 
 The Marshallian demand and the indirect utility are
 
@@ -227,7 +227,7 @@ $x(p, w) = (x_1^*, ..., x_k^*)$ where $x_i^* = \frac{w}{p_i}$ if $p_i = \min\{p_
 
 ii. Cobb-Douglas utility $u(x)=x_1^{a_1}x_2^{a_2}...x_k^{a_k}$
 
-Since $u(x)$ is differentiable and concave ($\frac{\partial^2 u}{\partial^2 x_i} = a_i(a_i-1)x_i^{a_i-2} < 0$), we can apply the Kuhn-Tucker Conditions.  Similar to our discussion 3-good Cobb-Douglas in lecture, we know that $x >> 0$ or else $u(x) = 0$, so by complementary slackness $\mu_i=0$ $\forall i$.  In addition, we will maximize $\Lf = \ln u (x) + \lambda(w-p\cdot x)=a_1 \ln x_1 + a_2 \ln x_2+...a_k \ln x_k - \lambda(w-p\cdot x)$:
+Since $u(x)$ is differentiable and concave ($\frac{\partial^2 u}{\partial^2 x_i} = a_i(a_i-1)x_i^{a_i-2} < 0$), we can apply the Kuhn-Tucker Conditions.  Similar to our discussion 3-goods Cobb-Douglas in lecture, we know that $x >> 0$ or else $u(x) = 0$, so by complementary slackness $\mu_i=0$ $\forall i$.  In addition, we will maximize $\Lf = \ln u (x) + \lambda(w-p\cdot x)=a_1 \ln x_1 + a_2 \ln x_2+...a_k \ln x_k - \lambda(w-p\cdot x)$:
 
 $$
 \frac{\partial \Lf}{\partial x_i} = 0 
@@ -249,51 +249,151 @@ $$
 
 iii. Leontief utility $u(x)=\min\{\frac{x_1}{a_1}, \frac{x_2}{a_2}, ..., \frac{x_k}{a_k}\}$
 
-Similar to 1(d), $u$ is not differentiable, but we know that $\frac{x^*_1}{a_1} = ... = \frac{x^*_k}{a_k}$.  If all $x^*_i$ are equal except for $x^*_i > x^*_j$ $\forall i \neq j$, the consumer could get higher utility by buy less $x^*_i$ and more of the other goods. We also know that the consumer will exhaust their budget, or else they could spend their remaining budget proportionally and buy more of each good and increase their utility.  So, $\frac{x^*_1}{a_1}p_1 + ... + \frac{x^*_k}{a_k}p_k=w \implies \frac{x^*_i}{a_i}p_1 + ... + \frac{x^*_i}{a_i}p_k=w \implies \frac{x^*_i}{a_i}(p_1 + ... + p_k)=w \implies x^*_i = \frac{a_iw}{\sum_{j=1}^n p_j}$.
+Similar to 1(d), $u$ is not differentiable, but we know that $\frac{x^*_1}{a_1} = ... = \frac{x^*_k}{a_k}$.  If all $x^*_i$ are equal except for $x^*_i > x^*_j$ $\forall i \neq j$, the consumer could get higher utility by buy less $x^*_i$ and more of the other goods. We also know that the consumer will exhaust their budget, or else they could spend their remaining budget proportionally and buy more of each good and increase their utility.  So, $\frac{x^*_1}{a_1}a_1p_1 + ... + \frac{x^*_k}{a_k}a_kp_k=w \implies \frac{x^*_i}{a_i}a_1p_1 + ... + \frac{x^*_i}{a_i}a_kp_k=w \implies \frac{x^*_i}{a_i}(a_1p_1 + ... + p_kp_k)=w \implies x^*_i = \frac{a_iw}{\sum_{j=1}^n a_jp_j}$.
 
 So the Marshallian demand is 
 
 $$
-x(p, w) = \Bigg(\frac{a_1w}{\sum_{i=1}^n p_i}, ..., \frac{a_kw}{\sum_{i=1}^n p_i} \Bigg)
+x(p, w) = \Bigg(\frac{a_1w}{\sum_{i=1}^n a_ip_i}, ..., \frac{a_kw}{\sum_{i=1}^n a_ip_i} \Bigg)
 $$
 
 \pagebreak
 
 (b) Consider the Constant Elasticity of Substitution (CES) utility function $u(x) = \Bigg( \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s} \Bigg)^\frac{s}{s-1}$ with $s \in (0,1) \cup(1, +\infty)$. Solve the consumer problem and state $x(p,w)$.\footnote{Recall that maximizing a function $(f(x))^\frac{s}{s-1}$ is the same as maximizing $f(x)$ when $s > 1$, and the same as minimizing $f(x)$ when $s < 1$.}
 
-Notice that $u$ is differentiable. Define $f(x) = \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s}$. Note that maximizing $u(x)=(f(x))^\frac{s}{s-1}$ is the same as maximizing $f(x)$ when $s > 1$, and the same as minimizing $f(x)$ when $s < 1$.  Notice that $f$ is concave: $\frac{\partial^2 f}{\partial^2 x_i} = -a_i^{\frac{1}{s}}  \frac{s-1}{s^2}x_i^{\frac{-1-s}{s}} < 0$.  So the Kuhn-Tucker Conditions solve the consumer problem. Define $\Lf = \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s} - \lambda(w-p\cdot x) - \mu \cdot x$
+If $x^* = 0$ then $u(x) = 0$ and the consumer is infinitely better off if they consume $\varepsilon$ of each good, so we know that $x^* >> 0$ and by complementary slackness $\mu_i^*=0$ $\forall i$. Define $f(x) = \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s}$. Note that maximizing $u(x)=(f(x))^\frac{s}{s-1}$ is the same as maximizing $f(x)$ when $s > 1$, and the same as minimizing $f(x)$ when $s < 1$.  Define $\Lf = \sum_{i=1}^k a_i^{\frac{1}{s}} x_i^\frac{s-1}{s} - \lambda(w-p\cdot x)$
 
 \begin{align*}
 \frac{\partial \Lf}{\partial x_i} &= 0 \\
-\implies \frac{s-1}{s}a_i^{\frac{1}{s}} x_i^{\frac{s-1}{s}-1} - \lambda p_i -\mu_i &= 0 \\
-\implies  x^*_i &= \Bigg(\frac{s}{s-1} \frac{\lambda p_i + \mu_i}{a_i^{1/s}} \Bigg)^{-s} \\
-\text{and } \lambda &= \frac{s-1}{p_is}a_i^{1/s} x_i^{\frac{s-1}{s}-1} -\frac{\mu_i}{p_i}
+\implies \frac{s-1}{s}a_i^{\frac{1}{s}} x_i^{\frac{s-1}{s}-1} - \lambda^* p_i &= 0 \\
+\implies  x^*_i &= a_i\Bigg(\frac{s-1}{s} \Bigg)^{s} (\lambda^*)^{-s} p_i^{-s} \\
+\text{and } \lambda^* &= \frac{s-1}{s} p_i^{-1} a_i^{(1/s)} (x_i^*)^{(-1/s)}
 \end{align*}
 
-Thus $x^*_{i}$ is positive $\forall i \implies \mu_{i}=0$ $\forall i$ by complementary slackness.  Therefore, we know that $\lambda > 0 \implies w - p \cdot x = 0$, so Walras' Law holds:
+Since $p_i$, $a_i$, and $x_i^*$ are strictly positive as well as $s > 1$, we know that $\lambda^* > 0 \implies w - p \cdot x = 0$, so Walras' Law holds:
+
+\begin{align*}
+\sum_{j=1}^k p_j  a_j \Bigg(\frac{s-1}{s} \Bigg)^{s} (\lambda^*)^{-s}p_j^{-s} &= w \\ 
+\Bigg(\frac{s-1}{s} \Bigg)^{s} (\lambda^*)^{-s}  &= \frac{w}{\sum_{j=1}^k p_j^{1-s} a_j} \\ 
+\end{align*}
+
+Plugging into the expression for $x_i^*$, we get the Marshallian demand:
 
 $$
-\sum_{i=1}^np_i\Bigg(\frac{s}{s-1} \frac{\lambda p_i}{a_i^{1/s}} \Bigg)^{-s} =w
+x^*_i =  \frac{a_iw}{p_i^{s}\sum_{j=1}^k p_j^{1-s} a_j} \\
 $$
+
+Finally, the stationary point we found minimizing and maximizing $f(x)$ appropriately because the second-order partial is negative and when $s > 1$ and positive when $s < 1$:
+
+$$\frac{\partial^2 f}{\partial^2 x_i} = -\frac{s-1}{s^2}a_i^{\frac{1}{s}} x_i^{\frac{-1-s}{s}}$$
+
+Therefore, $x_i^*$ solves the consumer problem. 
+
+\pagebreak
 
 (c) Show that CES utility gives the same demand as linear utility in the limit $s \to + \infty$, as Cobb-Douglas utility in the limit $s \to 1$, and as Leontief utility in the limit $s \to 0$.
 
-(d) The Elasticity of Substitution between goods 1 and 2 is defined as $\xi_{1,2} = - \frac{\partial\log\Big(\frac{x_1(p,w)}{x_2(p,w)}\Big)}{\partial log\Big(\frac{p_1}{p_2}\Big)}=- \frac{\partial\Big(\frac{x_1(p,w)}{x_2(p,w)}\Big)}{\partial \Big(\frac{p_1}{p_2}\Big)}\frac{\frac{p_1}{p_2}}{\frac{x_1(p,w)}{x_2(p,w)}}$ While this looks complicated, in the case of CES demand, we can write the ratio $\frac{x_1}{x_2}$ as a relatively simple function of the price ratio $\frac{p_1}{p_2}$, and calculate this elasticity without much difficulty. Calculate the elasticity of substitution for CES demand, note its value as $s \to + \infty$, $s \to 1$, and $s \to 0$.
 
+CES utility gives the same demand as linear utility in the limit $s \to + \infty$:
+
+$$
+\lim_{s \to +\infty} x^*_i =  
+\lim_{s \to +\infty} \frac{a_iw}{p_i^{s}\sum_{j=1}^k p_j^{1-s} a_j} =  
+\lim_{s \to +\infty} \frac{a_iw}{\sum_{j=1}^k p_j \Big(\frac{p_i}{p_j}\Big)^{s} a_j}
+$$
+
+Consider the demand for good $i^*$ such that $p_{i^*} = \min\{p_1, ..., p_k\}$.  For all $j \neq i^*$, $\frac{p_{i^*}}{p_j}<1 \implies \lim_{s \to \infty} \Big(\frac{p_{i^*}}{p_j}\Big)^{s} = 0$.
+
+$$
+\lim_{s \to +\infty} x^*_{i^*} = 
+\lim_{s \to +\infty} \frac{a_iw}{ p_{i^*} \Big(\frac{p_{i^*}}{p_{i^*}}\Big)^{s} a_{i^*}} = \frac{w}{p_{i^*}}
+$$
+
+Consider the demand for goods $i'$ such that $p_{i'} \neq \min\{p_1, ..., p_k\}$. In the denominator sum, one of the terms is $\frac{p_{i'}}{p_{i^*}}>1 \implies \implies \lim_{s \to + \infty} \Big(\frac{p_{i'}}{p_{i^*}}\Big)^s = \infty \implies \lim_{s \to +\infty} x^*_{i'}=0$.
+
+CES utility gives the same demand as Cobb-Douglas utility in the limit $s \to 1$:
+
+$$
+\lim_{s \to 1} x^*_i =  
+\lim_{s \to 1} \frac{a_iw}{p_i^{s}\sum_{j=1}^k p_j^{1-s} a_j} = 
+\frac{a_iw}{p_i^{1}\sum_{j=1}^k p_j^{1-1} a_j}= 
+\frac{a_i}{p_i}w
+$$
+
+CES utility gives the same demand as Leontief utility in the limit $s \to 0$:
+
+$$
+\lim_{s \to 0} x^*_i =  
+\lim_{s \to 0} \frac{a_iw}{p_i^{s}\sum_{j=1}^k p_j^{1-s} a_j} = 
+\frac{a_iw}{p_i^{0}\sum_{j=1}^k p_j^{1-0} a_j} = 
+\frac{a_iw}{\sum_{j=1}^k p_j a_j}
+$$
+
+(d) The Elasticity of Substitution between goods 1 and 2 is defined as $\xi_{1,2} = - \frac{\partial\log\Big(\frac{x_1(p,w)}{x_2(p,w)}\Big)}{\partial \log\Big(\frac{p_1}{p_2}\Big)}=- \frac{\partial\Big(\frac{x_1(p,w)}{x_2(p,w)}\Big)}{\partial \Big(\frac{p_1}{p_2}\Big)} \frac{\frac{p_1}{p_2}}{\frac{x_1(p,w)}{x_2(p,w)}}$. While this looks complicated, in the case of CES demand, we can write the ratio $\frac{x_1}{x_2}$ as a relatively simple function of the price ratio $\frac{p_1}{p_2}$, and calculate this elasticity without much difficulty. Calculate the elasticity of substitution for CES demand, note its value as $s \to + \infty$, $s \to 1$, and $s \to 0$.
+
+$$
+\frac{x_1}{x_2} = 
+\frac{\Bigg(\frac{a_1 w}{p_1^{s}\sum_{i=1}^k p_i^{1-s} a_i}\Bigg)}{\Bigg(\frac{a_2 w}{p_2^{s}\sum_{i=1}^k p_i^{1-s} a_i}\Bigg)} = 
+\frac{a_1}{a_2} \Bigg( \frac{p_1}{p_2} \Bigg)^{-s} \frac{\sum_{i=1}^k p_i^{1-s} a_i}{\sum_{i=1}^k p_i^{1-s} a_i} = 
+\frac{a_1}{a_2} \Bigg( \frac{p_1}{p_2} \Bigg)^{-s}
+$$
+
+$$
+\implies \xi_{1,2} = - (-s)\frac{a_1}{a_2} \Bigg( \frac{p_1}{p_2} \Bigg)^{-s-1} \frac{\frac{p_1}{p_2}}{\frac{a_1}{a_2} \Bigg( \frac{p_1}{p_2} \Bigg)^{-s}}=s
+$$
+
+Linear utility (when $s \to \infty$) represents preferences when goods that are perfect substitutes, so the elasticity of substitution is infinite.  Leontief utility (when $s \to 0$) represent preferences when goods are perfect complements, so the elasticity of substitution is zero. Cobb-Douglas utility (when $s \to 1$) represents preferences that are a middle ground between perfect substitutes and complements, so the elasticity of substitution equals a positive finite number.
 
 \pagebreak
 
 # Question 3. Exchange Economies
 
-We've been considering the problem facing a consumer with wealth $w$ at prices $p$. An "exchange economy" is different model where instead of money, each consumer is endowed with an initial bundle of goods $e \in \R^k_+$, and can either buy or sell any quantity of the goods at market prices $p$. The consumer's problem is then $\max_{x \in \R_+^k} u(x)$ subject to $p \cdot x \ge p \cdot e$ (i.e., the consumer's "budget" is the market value of the goods they start with).  Assume preferences are locally non-satiated and the consumer's problem has a unique solution $x(p, e)$. We'll say the consumer is a net buyer of good $i$ if $x_i(p, e) > e_i$ and a net seller if $x_i(p, e) < e_i$.
+We've been considering the problem facing a consumer with wealth $w$ at prices $p$. An "exchange economy" is different model where instead of money, each consumer is endowed with an initial bundle of goods $e \in \R^k_+$, and can either buy or sell any quantity of the goods at market prices $p$. The consumer's problem is then $\max_{x \in \R_+^k} u(x)$ subject to $p \cdot x \le p \cdot e$ (i.e., the consumer's "budget" is the market value of the goods they start with).  Assume preferences are locally non-satiated and the consumer's problem has a unique solution $x(p, e)$. We'll say the consumer is a net buyer of good $i$ if $x_i(p, e) > e_i$ and a net seller if $x_i(p, e) < e_i$.
 
 (a) Show that if $p_i$ increases, the consumer cannot switch from being a net seller to a net buyer.
 
+Let $p \in \R_+^k$ and $p' := p + \Delta p$ where $\Delta p_i > 0$ and $\Delta p_j=0$ $\forall j \neq i$.  Let $x := x(p, e)$ be the single-valued solution to the consumer problem when faced with $p$ and $x' := x(p', e)$ be the solution when faced by $p'$.  Suppose the consumer is a net seller of good $i$ when faced with $p$:
 
+$$
+x_i < e_i \implies x_i - e_i < 0 \implies \Delta p_i (x_i - e_i) < 0 \implies  p'_i (x_i - e_i) < p_i (x_i - e_i) \implies p' \cdot (x - e) < p \cdot (x - e)
+$$
 
-(b) Suppose $u$ is differentiable and concave. Use the Legrangian and the envelope theorem to show that $\frac{\partial v}{\partial p_i}$ is negative if the consumer is a net buyer of good $i$, and positive if the consumer is a net seller.
+Thus, the consumer is able to afford $x$ when faced with $p'$. Since $x(p, e)$ is single-valued $\implies u(x - e) > u(x' - e)$.  Assume for sake of a contradiction that the consumer is a net buyer of good $i$ when faced with $p'$:
 
+$$
+x_i' > e_i \implies x_i' - e_i > 0 \implies  \Delta p_i (x_i' - e_i) > 0 \implies p'_i (x_i' - e_i) > p_i (x_i' - e_i) \implies p' \cdot (x' - e) > p \cdot (x' - e)
+$$
 
+Thus, the consumer is able to afford $x$ when faced with $p' \implies u(x' - e) > u(x - e)$. $\Rightarrow \Leftarrow$ Therefore, the consumer cannot switch from being a net seller to a net buyer if $p_i$ increases. $\square$
+
+(b) Suppose $u$ is differentiable and concave. Use the Lagrangian and the envelope theorem to show that $\frac{\partial v}{\partial p_i}$ is negative if the consumer is a net buyer of good $i$, and positive if the consumer is a net seller.
+
+Define $\Lf = u(x) + \lambda(p \cdot e - p \cdot x) + \mu \cdot x = u(x) + \lambda p \cdot(e - x) + \mu \cdot x$. Since the solution to the consumer point is a saddle point, we can write $v(p, e)$ as
+
+$$
+v(p, e) = \min_{\lambda, \mu \ge 0} \max_x \{ u(x) + \lambda p \cdot(e - x) + \mu \cdot x \} \\
+$$
+
+We can separate the maximization and minimaztion into separate functions:
+
+$$
+\Phi(\lambda, \mu, p, e) =  \max_x \{ u(x) + \lambda p \cdot(e - x) + \mu \cdot x \}\\
+v(p, e) = \min_{\lambda, \mu \ge 0} \Phi(\lambda, \mu, p, e) 
+$$
+
+By the envelope theorem (twice),
+
+\begin{align*}
+\frac{\partial v}{\partial p_i} &= \frac{\partial \Phi}{\partial p_i} \Bigg|_{\lambda=\lambda^*, \mu = \mu^*} \text{ and }
+\frac{\partial \Phi}{\partial p_i} = \frac{\partial \Lf}{\partial p_i}\Bigg|_{x=x^*} \\
+\implies \frac{\partial v}{\partial p_i} &= \frac{\partial \Lf}{\partial p_i}\Bigg|_{\lambda=\lambda^*, \mu = \mu^*, x=x^*} \\
+&= \lambda \cdot(e_i - x_i)
+\end{align*}
+
+We know that $\lambda \ge 0$, so if the consumer is a net buyer of good $i \implies e_i - x_i < 0 \implies \frac{\partial v}{\partial p_i} < 0$ and if the consumer is a net seller of good $i \implies e_i - x_i > 0 \implies \frac{\partial v}{\partial p_i} > 0$.
+
+\pagebreak
 
 (c) Consider the following statement. "If the consumer is a net buyer of good $i$ and its price goes up, the consumer must be worse off." True or false? Explain.
 
+True.  Based on my answer to (b), if a consumer is a net buyer of good $i$, then $\frac{\partial v}{\partial p_i} < 0$.  Thus, an increase in the price would make the consumer worse off.
