@@ -225,6 +225,52 @@ Thus, the solution to the Planner's problem is $(l,c,g) = \Big(\frac{1 + 2\alpha
 
 2. Set up and solve for the Ramsey outcome.
 
+In the Ramsey outcome, the government moves first and the household moves second.  Specifically the government chooses $\tau$ and since the individual household cannot change the aggregate $g = (1-\tau)\bar{l}$ is also fixed.  Thus, we first solve the individual household problem conditional on $\tau$ and $g$. The individual household's income is $(1-l)$ and they pay $(1-l)\tau$ in taxes, so their discretionary income is $(1-l)(1-\tau)$.  Thus the household problem is:
+
+\begin{align*}
+\max_{c, l \in \R^2_+} & \ln l + \ln(\alpha + c) + \ln(\alpha + g) \\
+\text{s.t. } & c \le (1-l)(1-\tau)
+\end{align*}
+
+Since the household's income is increasing in $c$, they will consume their entire discretionary income. We can subsitute in $c = (1-l)(1-\tau)$:
+
+$$
+\max_{l \in \R^2_+} \ln l + \ln(\alpha + (1-l)(1-\tau)) + \ln(\alpha + g) \\
+$$
+
+Thus, the FOC implies
+
+$$
+\frac{1}{l} - \frac{1-\tau}{\alpha + (1-l)(1-\tau)} + 0= 0 
+\implies \alpha + (1-\tau)-l(1-\tau) = l(1-\tau) 
+\implies l = \frac{\alpha + (1-\tau)}{2(1-\tau)} 
+$$
+
+Thus, $c$ is:
+
+$$
+c = \Bigg(1-\Bigg(\frac{\alpha + (1-\tau)}{2(1-\tau)} \Bigg)\Bigg)(1-\tau) = \frac{(1-\tau) - \alpha}{2}
+$$
+
+By consistency, $\bar{l} = l = \frac{\alpha + (1-\tau)}{2(1-\tau)}$ and $\bar{c} = c = \frac{(1-\tau) - \alpha}{2}$. This implies that $g$ equals:
+
+$$
+g = \tau\Bigg(1-\frac{\alpha + (1-\tau)}{2(1-\tau)}\Bigg) = \frac{\tau(1-\tau) - \tau\alpha}{2(1-\tau)}
+$$
+
+Now let us consider the government problem:
+
+$$
+\max_{\tau \in [0,1]} \ln \Bigg( \frac{\alpha + (1-\tau)}{2(1-\tau)} \Bigg) + \ln\Bigg(\alpha + \frac{(1-\tau) - \alpha}{2}\Bigg) + \ln\Bigg(\alpha + \frac{\tau(1-\tau) - \tau\alpha}{2(1-\tau)}\Bigg)  \\
+=\max_{\tau \in [0,1]} \ln \Bigg( \frac{\alpha - \tau + 1}{2 - 2\tau} \Bigg) + \ln\Bigg(\frac{1-\tau + \alpha}{2}\Bigg) + \ln\Bigg(\frac{2\alpha +(1- 3\alpha) \tau - \tau^2}{2-2\tau}\Bigg)
+$$
+
+The FOC implies
+
+$$
+\Bigg( \frac{2(1-\tau)}{\alpha + (1-\tau)} \Bigg) + \Bigg(\frac{2}{(1-\tau) + \alpha}\Bigg) 
+$$
+
 3. Set up and solve for the NE outcome.
 
 4. Comment on the differences between the above 3 outcomes, and the reason as to why they are different.
