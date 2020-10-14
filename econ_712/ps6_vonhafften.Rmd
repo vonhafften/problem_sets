@@ -109,7 +109,7 @@ In \textbf{the Ramsey equilibrium}, the government plays first and households pl
 | $\xi_H$               |    -1  |   30  |   10  |
 +-----------------------+--------+-------+-------+
 
-Conditional that the government plays $y_{L}$, the individual household cannot do better off than playing $\xi_{L}$ whatever is played by the aggregate household. So it plays $\xi_{L}$ and, by consistency, the aggregate household plays $x_{L}$.
+Conditional that the government plays $y_{L}$, the individual household cannot do better off than playing $\xi_{L}$ whatever is played by the aggregate household. By consistency, the aggregate household plays $x_{L}$.
 
 +----------------------+--------+-------+-------+
 | Conditional on $y_L$ |$x_{LL}$| $x_L$ | $x_H$ |
@@ -121,7 +121,7 @@ Conditional that the government plays $y_{L}$, the individual household cannot d
 | $\xi_H$              |    30  |   -1  |   25  |
 +----------------------+--------+-------+-------+
 
-Conditional that the government plays $y_{H}$, the individual household cannot do better off than playing $\xi_{H}$ whatever is played by the aggregate household. So it plays $\xi_{H}$ and, by consistency, the aggregate household plays $x_{H}$.
+Conditional that the government plays $y_{H}$, the individual household cannot do better than playing $\xi_{H}$ regardless of the aggregate household's move. By consistency, the aggregate household plays $x_{H}$.
 
 +----------------------+--------+-------+-------+
 | Conditional on $y_H$ |$x_{LL}$| $x_L$ | $x_H$ |
@@ -137,9 +137,7 @@ Now consider the government problem.  If it plays $y_{LL}$, aggregate households
 
 In the \textbf{Nash equilibrium in pure strategy}, households play first and the government plays second.  If aggregated households play $x_{LL}$, the government plays $y_{LL}$ because $\max\{2, 1, -1\}=2$.  If aggregated households play $x_L$, the government plays $y_L$ because $\max\{6, 12, 0\}=12$.  If aggregated households play $x_H$, the government plays $y_L$ because $\max\{10, 25, 24\}=25$.
 
-Now let's consider the individual household problem. As we see in the table above, if the government plays $y_{LL}$, the payoffs of the individual household plays $\xi_{LL}$ and, by consistency, the aggregate household plays $x_{LL}$. Thus, we have no commitment equilibrium at $(\xi_{LL}, x_{LL}, y_{LL})$.
-
-As we see from the other table above, if the government play $y_L$, the individual household cannot do better off than playing $\xi_L$.  Thus, individual household plays $\xi_L$, and by consistency, the aggregate household plays $x_L$.  So there is second no commitment equilibrium at $(\xi_{L}, x_{L}, y_{L})$.
+Now let's consider the individual household problem. As we see in the table above, if the government plays $y_{LL}$, the payoffs of the individual household plays $\xi_{LL}$ and, by consistency, the aggregate household plays $x_{LL}$. Thus, we have no commitment equilibrium at $(\xi_{LL}, x_{LL}, y_{LL})$.  As we see from the other table above, if the government play $y_L$, the individual household cannot do better off than playing $\xi_L$.  Thus, individual household plays $\xi_L$, and by consistency, the aggregate household plays $x_L$.  So there is second no commitment equilibrium at $(\xi_{L}, x_{L}, y_{L})$.
 
 Consider repeating the economy 3 times.  The Ramsey equilibrium can be supported in the first two period.  Consider the timeline of moves $x_H, y_H, x_H, y_H, x_L, y_L$ and the household adopting a grime trigger strategy that punishes the government with $x_{LL}$ for the rest of the game if it deviates.  This threat is credible because individual households do not have an incentive to deviate from playing $\xi_{LL}$. 
 
@@ -162,6 +160,68 @@ $$
 Each household is endowed with 1 unit of time, which can be spent on leisure or labor.  Production is linear in labor, i.e. the economy resource constraint is $\bar{l} + g + \bar{c} = 1$ where $\bar{l}, \bar{c}$ are aggregate leisure and consumption.  To provide the public good, the government can levy a flat proportional tax $\tau$ on labor. That is $g = \tau(1-l)$.
 
 1. Set up and solve the Planner's problem.
+
+The Planner maximizes utility subject to resource feasibility and the government budget constraint with consistency ($\bar{l}=l$ and $\bar{c} = c$):
+
+\begin{align*}
+\max_{l, c, g \in \R_+^3} & \ln l + \ln(\alpha + c) + \ln(\alpha + g) \\
+\text{s.t. } & l + g + c = 1, g = \tau(1 - l) \text{ and } \tau \in [0, 1]
+\end{align*}
+
+Subsistuting in $l = 1 - g -c$, we get
+
+\begin{align*}
+\max_{c, g \in \R_+^2} & \ln (1 - g - c) + \ln(\alpha + c) + \ln(\alpha + g) \\
+\text{s.t. } & g = \tau(1 - l) \text{ and } \tau \in [0, 1]
+\end{align*}
+
+The FOC with respect to $c$ implies:
+
+$$
+0 = -\frac{1}{1 - g - c} + \frac{1}{\alpha + c} \implies
+1 - g - c = \alpha + c \implies 
+\frac{1 - g -\alpha}{2}  = c
+$$
+
+The FOC with respect to $g$ implies:
+
+$$
+0 = -\frac{1}{1 - g - c} + \frac{1}{\alpha + g} \implies
+1 - g - c = \alpha + g \implies
+\frac{1 - c -\alpha}{2}  = g
+$$
+
+Substituting to find $c$:
+
+$$
+c= \frac{1 - (\frac{1 - c -\alpha}{2}) -\alpha}{2} \implies
+4c = 2 - (1 - c -\alpha) -2\alpha \implies
+c = \frac{1 -\alpha}{3} > 0
+$$
+
+Finding $g$:
+
+$$
+g= \frac{1 - \frac{1 -\alpha}{3} -\alpha}{2} \implies
+6g= 3 - (1 - \alpha) - 3\alpha \implies
+g = \frac{1 -\alpha}{3} > 0
+$$
+
+Finding $l$:
+
+$$
+l = 1 - \frac{1 -\alpha}{3} -\frac{1 -\alpha}{3} \implies l = \frac{1 + 2\alpha}{3} > 0
+$$ 
+
+\pagebreak
+
+Verifying these solution implies an appropriate $\tau$:
+
+$$
+\tau = \frac{g}{1 - l} = \frac{\frac{1 -\alpha}{3}}{1- \frac{1 + 2\alpha}{3}}=\frac{1 -\alpha}{2 - 2\alpha}=\frac{1}{2} \in [0,1]
+$$
+
+Thus, the solution to the Planner's problem is $(l,c,g) = \Big(\frac{1 + 2\alpha}{3}, \frac{1 -\alpha}{3} , \frac{1 -\alpha}{3}  \Big)$.
 
 2. Set up and solve for the Ramsey outcome.
 
