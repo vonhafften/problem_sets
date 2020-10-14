@@ -21,7 +21,7 @@ Let there be a continuum of identical households in the economy, taking actions 
 
 In a competitive equilibrium, household action is consistent with the aggregate, i.e. $x=f(x, y)$. Now for each $y$, let $x = h(y)$ be such that $h(y) = f(h(y), y)$. That is, $(x = h(y), y)$ is a competitive equilibrium.
 
-Let $X = \{x_H, x_l\}, Y = \{y_H, y_L\}$. For the one-period economy, with $\xi_i = x_i$, the payoffs $u(x_i, x_i, y_j)$ is given by the following table of one-period payoffs:
+Let $X = \{x_H, x_L\}, Y = \{y_H, y_L\}$. For the one-period economy, with $\xi_i = x_i$, the payoffs $u(x_i, x_i, y_j)$ is given by the following table of one-period payoffs:
 
 +-------+-------+-------+
 |       | $x_L$ | $x_H$ |
@@ -31,25 +31,123 @@ Let $X = \{x_H, x_l\}, Y = \{y_H, y_L\}$. For the one-period economy, with $\xi_
 | $y_H$ |    0  |   24* |
 +-------+-------+-------+
 
-Here the values $u(\xi_k, x_i, y_j)$ not reported are such that the outcomes with * are competitive equilibria.  For example, $u(\xi_k, x_i, y_j) = -1$ for $k \neq i$ and $i = j$, and $u(\xi_k, x_i, y_j) = 30$ for $k \neq i$ and $i \neq j$. You should convince yourself that this is the case.
+Here the values $u(\xi_k, x_i, y_j)$ not reported are such that the outcomes with * are competitive equilibria.  For example, $u(\xi_k, x_i, y_j) = -1$ for $k \neq i$ and $i = j$, and $u(\xi_k, x_i, y_j) = 30$ for $k \neq i$ and $i \neq j$.\footnote{You should convince yourself that this is the case.}
 
 1. Find the Ramsey outcome, that is when the government has commitment/moves first. Find the outcome when the government cannot commit/moves second (in pure strategies).  We will refer to this case as the Nash equilibrium in pure strategies (NE).
 
+For \textbf{the Ramsey equilibrium}, the government moves first and the household moves second. Thus, employing backward induction to solve a subgame perfect equilibria, we first solve the household problem conditional on each government move. And then based on the household's move, we solve the government's problem.
+
+Conditional on the government playing $y_L$, the household is faced by these payoffs:
+
++----------------------+-------+-------+
+| Conditional on $y_L$ | $x_L$ | $x_H$ |
++----------------------+-------+-------+
+|$\xi_L$               |   12  |   30  |
++----------------------+-------+-------+
+|$\xi_H$               |   -1  |   25  |
++----------------------+-------+-------+
+
+Whether the aggregate households chose $x_L$ or $x_H$, $\xi_L$ is the dominant strategy for an individual household.  By consistency, the aggregate households play $x_L$, so the payoff is 12.
+
+\pagebreak
+
+Conditional on the government playing $y_H$, the household is faced by these payoffs:
+
++----------------------+-------+-------+
+| Conditional on $y_H$ | $x_L$ | $x_H$ |
++----------------------+-------+-------+
+|$\xi_L$               |   0   |   -1  |
++----------------------+-------+-------+
+|$\xi_H$               |   30  |   24  |
++----------------------+-------+-------+
+
+Whether the aggregate households chose $x_L$ or $x_H$, $\xi_H$ is the dominant strategy for an individual household.  By consistency, the aggregate households play $x_H$, so the payoff is 24.
+
+Now the government decides between playing $y_L$ or $y_H$ and chooses $y_H$, so the Ramsey equilibrium is $(\xi_H, x_H, y_H)$ with a payoff of 24.
+
+For \textbf{the Nash Equilibrium in pure strategies}, the household plays first and the government plays second.  Thus, we can solve for the competitive equilibrium using backward induction.  First we solve the government problem conditional on the possible household moves and then solve the household problem.  
+
+Conditional on the aggregated households playing $x_L$, the government will play $y_L$ because 12 is larger than 0 (looking at original payoff table).  Conditional on the aggregated households playing $x_H$, the government will play $y_L$ because 25 is larger than 24.
+
+We now know that the government will always play $y_L$, so the payoffs for an individual household look like the $y_L$ table above.  No matter what the aggregate households play, it's best for individual households to play $\xi_L$.  By consistency, aggregate households play $x_L$.  Thus, the NE is $(\xi_L, x_L, y_L)$ with a payoff of 12.
+
 2. Suppose the economy is repeated 5 times. Can the Ramsey outcome be supported in any period?
+
+No, the Ramsey outcome cannot be supported in any period. Define $(\xi_i, x_i, y_i)$ as the moves of the individual households, aggregate households, and governments in $i$th repetition. If the economy is repeated 5 times, we can think of repeated game as 10 subsequent moves starting with the household, then the government, then the household, then the government, etc.  We can solve this game using backward induction.  
+
+Consider the fifth period.  Notice that this repetition is equivalent to the single shot of NE from #1, so we know that the the government plays $y_L$ and before which individual households play $\xi_L$ and aggregate households play $x_L$.
+
+Consider the fourth period. The government knows that in the next period the households will play $x_L$ regardless of what it play in the current period, so there's no reason for the government to change what it would play in the one shot NE setup. Thus, the government plays $y_L$. Similarly, individual households play $\xi_L$ and in aggregate play $x_L$.
+
+Consider the third, second, and first periods.  The logic is the same as in the fourth period.  Thus, the Ramsey outcome cannot be supported in any period.
+
+\pagebreak
 
 Now consider the expanded version of the previous economy.  The payoffs $u(x_i, x_i, y_j)$ is given by the following the following table of one-period payoffs:
 
-+-------+--------+-------+-------+
-|       | $x_LL$ | $x_L$ | $x_H$ |
-+-------+--------+-------+-------+
-| $y_LL$|    2*  |    6  | 10    |
-+-------+--------+-------+-------+
-| $y_L$ |    1   |   12* | 25    |
-+-------+--------+-------+-------+
-| $y_H$ |   -1   |   0   |   24* |
-+-------+--------+-------+-------+
++--------+--------+-------+-------+
+|        |$x_{LL}$| $x_L$ | $x_H$ |
++--------+--------+-------+-------+
+|$y_{LL}$|    2*  |    6  | 10    |
++--------+--------+-------+-------+
+| $y_L$  |    1   |   12* | 25    |
++--------+--------+-------+-------+
+| $y_H$  |   -1   |   0   |   24* |
++--------+--------+-------+-------+
 
 3. What are the NEs? Suppose the economy is repeated 3 times, with agents discounting future utilities by $\beta = 0.9$. Can the Ramsey outcome be supported in any period?
+
+In \textbf{the Ramsey equilibrium}, the government plays first and households play second. We can apply backward induction.  Conditional that the government plays $y_{LL}$, the individual household cannot do better off than playing $\xi_{LL}$ whatever is played by the aggregate household. So it plays $\xi_{LL}$ and, by consistency, the aggregate household plays $x_{LL}$.
+
++-----------------------+--------+-------+-------+
+|Conditional on $y_{LL}$|$x_{LL}$| $x_L$ | $x_H$ |
++-----------------------+--------+-------+-------+
+|$\xi_{LL}$             |    2   |    30 |   30  |
++-----------------------+--------+-------+-------+
+|$\xi_L$                |    -1  |    6  |   30  |
++-----------------------+--------+-------+-------+
+| $\xi_H$               |    -1  |   30  |   10  |
++-----------------------+--------+-------+-------+
+
+Conditional that the government plays $y_{L}$, the individual household cannot do better off than playing $\xi_{L}$ whatever is played by the aggregate household. So it plays $\xi_{L}$ and, by consistency, the aggregate household plays $x_{L}$.
+
++----------------------+--------+-------+-------+
+| Conditional on $y_L$ |$x_{LL}$| $x_L$ | $x_H$ |
++----------------------+--------+-------+-------+
+|$\xi_{LL}$            |    1   |  -1   |    30 |
++----------------------+--------+-------+-------+
+|$\xi_L$               |    30  |    12 |   30  |
++----------------------+--------+-------+-------+
+| $\xi_H$              |    30  |   -1  |   25  |
++----------------------+--------+-------+-------+
+
+Conditional that the government plays $y_{H}$, the individual household cannot do better off than playing $\xi_{H}$ whatever is played by the aggregate household. So it plays $\xi_{H}$ and, by consistency, the aggregate household plays $x_{H}$.
+
++----------------------+--------+-------+-------+
+| Conditional on $y_H$ |$x_{LL}$| $x_L$ | $x_H$ |
++----------------------+--------+-------+-------+
+|$\xi_{LL}$            |    -1  |  30   |    -1 |
++----------------------+--------+-------+-------+
+|$\xi_L$               |    30  |    0  |   -1  |
++----------------------+--------+-------+-------+
+| $\xi_H$              |    30  |   30  |   24  |
++----------------------+--------+-------+-------+
+
+Now consider the government problem.  If it plays $y_{LL}$, aggregate households play $x_{LL}$ and the payoff is 2. If it plays $y_{L}$, aggregate households play $x_{L}$ and the payoff is 12. If it plays $y_{H}$, aggregate households play $x_{H}$ and the payoff is 24. Thus, the government plays $y_H$. Thus, the Ramsey equilibrium is $(\xi_H, x_H, y_H)$.
+
+In the \textbf{Nash equilibrium in pure strategy}, households play first and the government plays second.  If aggregated households play $x_{LL}$, the government plays $y_{LL}$ because $\max\{2, 1, -1\}=2$.  If aggregated households play $x_L$, the government plays $y_L$ because $\max\{6, 12, 0\}=12$.  If aggregated households play $x_H$, the government plays $y_L$ because $\max\{10, 25, 24\}=25$.
+
+Now let's consider the individual household problem. As we see in the table above, if the government plays $y_{LL}$, the payoffs of the individual household plays $\xi_{LL}$ and, by consistency, the aggregate household plays $x_{LL}$. Thus, we have no commitment equilibrium at $(\xi_{LL}, x_{LL}, y_{LL})$.
+
+As we see from the other table above, if the government play $y_L$, the individual household cannot do better off than playing $\xi_L$.  Thus, individual household plays $\xi_L$, and by consistency, the aggregate household plays $x_L$.  So there is second no commitment equilibrium at $(\xi_{L}, x_{L}, y_{L})$.
+
+Consider repeating the economy 3 times.  The Ramsey equilibrium can be supported in the first two period.  Consider the timeline of moves $x_H, y_H, x_H, y_H, x_L, y_L$ and the household adopting a grime trigger strategy that punishes the government with $x_{LL}$ for the rest of the game if it deviates.  This threat is credible because individual households do not have an incentive to deviate from playing $\xi_{LL}$. 
+
+Since the final period is the same as the one-shot, both the government choosing $y_L$ and aggregate household choosing $x_L$ as well as the government choosing $y_{LL}$ and aggregate household choosing $x_{LL}$. 
+
+Consider the government's decision in the second period. Conditional that the government did not deviate in the first period, the aggregate household play $x_H$. If the government plays $y_L$, then in the final period aggregate households punish the government with $x_{LL}$ and the government plays $y_{LL}$.  The payoff associated with this outcome is $25 + \beta 2 = 26.8$.  If the government plays $y_H$, then the aggregate households play $x_L$ in the final period and the government plays $y_L$.  The payoff associated with this outcome is $25 + \beta 12 = 35.8$.  Thus, the government does not deviate and plays $y_H$.  The individual households, knowing that the government will not deviate, play $\xi_H$ and thus aggregate households play $x_H$.
+
+Consider the first period.  Say the aggregate households play $x_H$. If the government deviates and plays $y_L$, the households punish the government with $x_{LL}$ in the second and third periods.  The payoff associated with this outcome is $25 + \beta 2 + \beta^2 2 = 28.42$.  If the government does not deviate and plays $y_H$, the rest of the game proceeds as explained in the previous paragraph, so the payoff is $24 + \beta 24 +\beta^2 12 = 55.32$.  Thus, the government does not deviate. The individual households, knowing that the government will not deviate, play $\xi_H$ and thus aggregate households play $x_H$.
 
 \pagebreak
 
@@ -58,7 +156,7 @@ Now consider the expanded version of the previous economy.  The payoffs $u(x_i, 
 Let there be a unit measure of households with preferences over leisure, (private) consumption, and public goods ($l, c, g$), defined by the utility
 
 $$
-u(l, c, g) = \ln l \ln(\alpha + c) + \ln(\alpha + g), \alpha \in (0,0.5)
+u(l, c, g) = \ln l + \ln(\alpha + c) + \ln(\alpha + g), \alpha \in (0,0.5)
 $$
 
 Each household is endowed with 1 unit of time, which can be spent on leisure or labor.  Production is linear in labor, i.e. the economy resource constraint is $\bar{l} + g + \bar{c} = 1$ where $\bar{l}, \bar{c}$ are aggregate leisure and consumption.  To provide the public good, the government can levy a flat proportional tax $\tau$ on labor. That is $g = \tau(1-l)$.

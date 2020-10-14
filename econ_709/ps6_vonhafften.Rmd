@@ -1,0 +1,136 @@
+---
+title: "ECON 709 - PS 6"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/11/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+1. Let $X$ be distributed Bernoulli $P(X = 1) = p$ and $P(X = 0) = 1-p$ for some unknown parameter $0 < p < 1$.
+
+(a) Verify the probability mass function can be written as $f(x) = p^x (1-p)^{(1-x)}$.
+
+$$
+f(1) = p^1 (1-p)^{(1-1)}=p=P(X=1)
+$$
+$$
+f(0) = p^0 (1-p)^{(1-0)}=1-p=P(X=0)
+$$
+
+(b) Find the log-likelihood function $\ell_n(\theta)$.
+
+$$
+\ell_n(\theta) 
+= \sum_{i=1}^n\ln(f(x_i|\theta)) 
+= \sum_{i=1}^n\ln(p^{x_i} (1-p)^{(1-x_i)}) 
+= \sum_{i=1}^n [x_i \ln(p)+(1-x_i)\ln (1-p)]
+= \ln(p) \sum_{i=1}^n x_i + \ln (1-p)\Big(n-\sum_{i=1}^n x_i\Big)
+$$
+
+(c) Find the MLE $\hat{p}$ for $p$.
+
+\begin{align*}
+\frac{\partial \ell_n}{\partial p} &= 0 \\
+\frac{\partial}{\partial p}\Bigg[\ln(p) \sum_{i=1}^n x_i + \ln (1-p)\Big(n-\sum_{i=1}^n x_i\Big) \Bigg] &= 0\\ \frac{\sum_{i=1}^n x_i}{p} - \frac{\Big(n-\sum_{i=1}^n x_i\Big)}{1-p} &= 0 \\
+\sum_{i=1}^n x_i &= pn-p\sum_{i=1}^n x_i + p\sum_{i=1}^n x_i \\
+\hat{p} &= \frac{1}{n}\sum_{i=1}^n x_i\\
+\end{align*}
+
+2. Let $X$ be distributed Pareto with density $f(x) = \frac{\alpha}{x^{1+\alpha}}$ for $x \ge 1$. The unknown parameter is $\alpha > 0$.
+
+(a) Find the log-likelihood function $\ell_n(\alpha)$.
+
+
+
+(b) Find the MLE $\hat{\alpha}_n$ for $\alpha$.
+
+
+
+
+3. Let $X$ be distributed Cauchy with density $f(x) = \frac{1}{\pi(1+(x-\theta)^2)}$ for $x \in \R$. The unknown parameter is $\theta$.
+
+(a) Find the log-likelihood function $\ell_n(\theta)$.
+
+
+
+(b) Find the first-order condition for the MLE $\hat{\theta}$ for $\theta$.  You will not be able to solve for $\hat{\theta}$.
+
+
+
+4. Let $X$ be distributed double exponential (or Laplace) with density $f(x) = \frac{1}{2} \exp(-|x - \theta|)$ for $x \in \R$. The unknown parameter is $\theta$.
+
+(a) Find the log-likelihood function $\ell_n(\theta)$.
+
+
+
+(b) Extra challenge: Find the MLE $\hat{\theta}$ for $\theta$. This is challenging as it is not simply solving the FOC due to the nondifferentiability of the density function.
+
+
+
+5. Take the Pareto model $f(x) = \alpha x^{-1-\alpha}, x \ge 1$. Calculate the information for $\alpha$ using the second derivative.
+
+
+
+6. Take the model $f(x) = \theta \exp(-\theta x), x \ge 0, \theta > 0$.
+
+(a) Find the Cramer-Rao lower bound for $\theta$.
+
+
+
+(b) Recall the MLE $\hat{\theta}_n$ for $\theta$ for Problem 1. Notice that this is a function of the sample mean. Use this formula and the delta method to find the asymptotic distribution for $\hat{\theta}_n$.
+
+
+
+(c) Find the asymptotic distribution for $\hat{\theta}_n$ using the general formula for the asymptotic distribution of MLE introduced in Section 6. Do you find the same answer as in part (b)?
+
+
+
+7. In the Bernoulli model, you found the asymptotic distribution of the MLE in Problem 2(c).
+
+(a) Propose an estimator of $V$, the asymptotic variance.
+
+
+
+(b) Show that this estimator is consistent for $V$ as $n \to \infty$.
+
+
+
+(c) Propose a standard error $s(\hat{p_n})$ for the MLE $\hat{p}_n$.\footnote{Recall that the standard error is supposed to approximate the variance of $\hat{p}_n$, not that of the variance of $\sqrt{n}(\hat{p}_n - p$. What would be a reasonable approximation of the variance of $\hat{p}_n$ once you have a reasonable approximation of the variance of $\sqrt{n}(\hat{p}_n - p)$ from part (b)?}
+
+
+
+8. Consider the MLE for the upper bound of the uniform distribution in the Uniform Boundary example in Section 3. Assume that $\{X_1, ..., X_n\}$ is a random sample from $Uniform[0, \theta]$. The general asymptotic distribution formula in Section 6 does not apply here because $\ell_n(\theta)$ is not differentiable at the MLE.  But you can derive the asymptotic distribution using the definition of convergences in distribution. Do so by following the steps below.
+
+(a) Let $F_X$ denote the CDF of $Uniform[0, \theta]$. Calculate $F_X(c)$ for all $c \in \R$ based on the PDF of $Uniform[0, \theta]$.
+
+
+
+(b) Show that the CDF of $n(\hat{\theta}_n - \theta): F_{n(\hat{\theta}_n - \theta)}(x) = \Pr(\max_{i=1, ..., n}(n(X_i - \theta)) \le x) = (F_X(\theta + \frac{x}{n}))^n$.
+
+
+
+(c) Recall that $\lim_{n \to \infty}(1 + \frac{y}{n})^n  = e^y$ for any $y \in \R$. Derive the limit of $F_{n(\hat{\theta}_n - \theta)}(x)$ for all fixed $x \in \R$. (Hint: consider the case where $x < 0$ and the case where $x \ge 0$ separately).
+
+
+
+(d) Conclude that $n(\hat{\theta}_n - \theta) \to_d -Z$ for $Z$ being an exponential distribution with parameter $\theta$.
+
+
+
+9. Take the model $X \sim N(\mu, \sigma^2)$. Propose a test for $H_0: \mu = 1$ against $H_1: \mu \neq 1$.
+
+
+
+10. Take the model $X \sim N(\mu, 1)$. Consider testing $H_0 : \mu \in \{0, 1\}$ against $H_1 : \mu \notin \{0, 1\}$. Consider the test statistic $T = \min \{|\sqrt{n} \bar{X}_n|, |\sqrt{n} (\bar{X}_n-1)|\}$ Let the critical value be the $1 - \alpha$ quantile of the random variable $\min\{|Z|, |Z - \sqrt{n}|\}$, where $Z \sim N(0, 1)$. Show that $\Pr(T > c | \mu = 1) = \alpha$. Conclude that the size of the test $\phi_n = 1(T > c)$ is $\alpha$.\footnote{Use the fact that $Z$ and $-Z$ have the same distribution. This is an example where the null distribution is the same under different points in a composite null. The test $\phi_n = 1(T > c)$ is called a similar test because $\inf_{\theta_0 \in \Theta_0} \Pr(T > c | \theta = \theta_0= \sup_{\theta_0 \in \Theta_0} \Pr(T > c | \theta = \theta_0$.}
+
+
