@@ -139,7 +139,7 @@ In the \textbf{Nash equilibrium in pure strategy}, households play first and the
 
 Now let's consider the individual household problem. As we see in the table above, if the government plays $y_{LL}$, the payoffs of the individual household plays $\xi_{LL}$ and, by consistency, the aggregate household plays $x_{LL}$. Thus, we have no commitment equilibrium at $(\xi_{LL}, x_{LL}, y_{LL})$.  As we see from the other table above, if the government play $y_L$, the individual household cannot do better off than playing $\xi_L$.  Thus, individual household plays $\xi_L$, and by consistency, the aggregate household plays $x_L$.  So there is second no commitment equilibrium at $(\xi_{L}, x_{L}, y_{L})$.
 
-Consider repeating the economy 3 times.  The Ramsey equilibrium can be supported in the first two period.  Consider the timeline of moves $x_H, y_H, x_H, y_H, x_L, y_L$ and the household adopting a grime trigger strategy that punishes the government with $x_{LL}$ for the rest of the game if it deviates.  This threat is credible because individual households do not have an incentive to deviate from playing $\xi_{LL}$. 
+Consider repeating the economy 3 times.  The Ramsey equilibrium can be supported in the first two period.  Consider the timeline of moves $x_H, y_H, x_H, y_H, x_L, y_L$ and the household adopting a grim trigger strategy that punishes the government with $x_{LL}$ for the rest of the game if it deviates.  This threat is credible because individual households do not have an incentive to deviate from playing $\xi_{LL}$. 
 
 Since the final period is the same as the one-shot, both the government choosing $y_L$ and aggregate household choosing $x_L$ as well as the government choosing $y_{LL}$ and aggregate household choosing $x_{LL}$. 
 
@@ -162,7 +162,7 @@ The Planner maximizes utility subject to resource feasibility and the government
 \text{s.t. } & l + g + c = 1, g = \tau(1 - l) \text{ and } \tau \in [0, 1]
 \end{align*}
 
-Subsistuting in $l = 1 - g -c$, we get
+Substituting in $l = 1 - g -c$, we get
 
 \begin{align*}
 \max_{c, g} & \ln (1 - g - c) + \ln(\alpha + c) + \ln(\alpha + g) \\
@@ -219,7 +219,7 @@ In the Ramsey outcome, the government moves first and the household moves second
 \text{s.t. } & c \le (1-l)(1-\tau)
 \end{align*}
 
-Since the household's income is increasing in $c$, they will consume their entire discretionary income. We can subsitute in $c = (1-l)(1-\tau)$:
+Since the household's income is increasing in $c$, they will consume their entire discretionary income. We can substitute in $c = (1-l)(1-\tau)$:
 
 $$
 \max_{l} \ln l + \ln(\alpha + (1-l)(1-\tau)) + \ln(\alpha + g) \\
@@ -282,7 +282,7 @@ for (i in 1:length(alpha)) {
 }
 
 g_re <- (tau_re*(1-tau_re) - tau_re*alpha)/(2*(1-tau_re))
-l_re <- (alpha + (1-tau_re))/(2*(1-tau_re))
+l_re <- (alpha + 1-tau_re)/(2*(1-tau_re))
 c_re <- (1-tau_re - alpha)/2
 
 par(mfrow = c(1, 2))
@@ -402,4 +402,4 @@ lines(x=alpha, y= log(l_re) + log(alpha + c_re) + log(alpha + g_re), col = "blue
 
 5. Suppose the economy is repeated for infinite periods, with discount factor $\beta < 1$. For high enough $\beta$, can the Ramsey outcome be sustained?
 
-
+Yes.  As seen in #4, the utility from the Ramsey outcome is higher than the utility from the Nash equilibrium at every $\alpha$. If the household adopts a grim trigger strategy (play Ramsey outcome unless the government deviates and then plays Nash equilibrium for eternity) and if $\beta$ is high enough, the difference in the discounted utilities would discourage the government from deviating.
