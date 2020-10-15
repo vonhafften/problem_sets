@@ -1,0 +1,138 @@
+---
+title: "ECON 711 - PS 5"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/19/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1. Rationalizing Demand
+
+Suppose you observe the following data on prices, wealth, and chosen consumption bundles for a certain consumer at four points in time:
+
++-----+-----------+-------------+
+| $w$ | $p$       | $x$         |
++-----+-----------+-------------+
+| 100 | (5, 5, 5) | (12, 4, 4)  |
++-----+-----------+-------------+
+| 100 | (7, 4, 5) | (9, 3, 5)   |
++-----+-----------+-------------+
+| 100 | (2, 4, 1) | (27, 9, 10) |
++-----+-----------+-------------+
+| 150 | (7, 4, 5) | (15, 5, 5)  |
++-----+-----------+-------------+
+
+(a) Are the data consistent with Walras Law?
+
+Yes.
+
+\begin{align*}
+(5, 5, 5) \cdot (12, 4, 4) &= 100\\
+(7, 4, 5) \cdot (9, 3, 5) &= 100\\
+(2, 4, 1) \cdot (27, 9, 10) &= 100\\
+(7, 4, 5) \cdot (15, 5, 5) &= 150
+\end{align*}
+
+(b) Can these data be rationalized by a continuous, monotonic and concave utility function?\footnote{Hint: you don't need to calculate the cost of every bundle at every price; if $x^i > x^j$, then $p \cdot x^i > p \cdot x^j$ for any $p >> 0$.}
+
+By Afriat's Theorem, we know that if data satisfy GARP, then there exists a LNS, continuous, concave, monotonic utility function that rationalizes the data.
+
+  - Consider $x^1$ and $x^2$.  $x^1 \cdot p^1 = (12, 4, 4) \cdot (5, 5, 5) = 100$ and $x^2 \cdot p^1 = (9, 3, 5) \cdot (5, 5, 5) = 85$.  So $x^1 \succ^D x^2$.
+
+  - Consider $x^1$ and $x^3$. Notice $x^3>x^1$. By the hint, $p \cdot x^3 > p \cdot x^1$ for any $p >> 0$. So $x^3 \succ^D x^1$.
+
+  - Consider $x^1$ and $x^4$. Notice $x^4>x^1$. By the hint, $x^4 \succ^D x^1$.
+
+  - Consider $x^2$ and $x^3$. Notice $x^3>x^2$. By the hint, $x^3 \succ^D x^2$.
+
+  - Consider $x^2$ and $x^4$. Notice $x^4 > x^2$. By the hint, $x^4 \succ^D x^2$.
+
+  - Consider $x^3$ and $x^4$. Notice $x^3 > x^4$. By the hint, $x^3 \succ^D x^4$.
+
+Thus, $x^3 \succ^D x^4 \succ^D x^1 \succ^D x^2$.  The data satisfy GARP.
+
+\pagebreak
+
+# Question 2. Aggregating Demand
+
+Suppose there are $n$ consumers, and consumer $i \in \{1, 2, ..., n\}$ has indirect utility function $v^i = a_i(p) + b(p)w_i$ where $\{a_i\}_{i=1}^n$ and $b$ are differentiable functions from $\R_+^k$ to $\R$.
+
+(a) Use Roy's Identity to calculate each consumer's Marshallian demand $x^i(p, w_i)$.
+
+Since $\{a_i\}_{i=1}^n$ and $b$ are differentiable, $v^i$ is differentiable. 
+
+$$
+\frac{\partial v^i}{\partial w_i} = b(p)
+$$
+
+$$
+\frac{ \partial v^i }{\partial p} = \frac{\partial a_i}{\partial p} + \frac{\partial b}{\partial p}w_i
+$$
+
+By Roy's Identity,
+
+$$
+x^i(p, w_i) = - \frac{  \partial v^i /\partial p}{\partial v/\partial w_i} = -\frac{\frac{\partial a_i}{\partial p} + \frac{\partial b}{\partial p}w_i}{b(p)}
+$$
+
+(b) Calculate the Marshallian demand $X(p, W)$ of a "representative consumer" with wealth $W$ and indirect utility function $V(p, W) = \sum_{i=1}^n a_i(p) + b(p)W$ show that $X(p, \sum_{i=1}^n w_i) = \sum_{i=1}^nx^i(p, w_i)$.
+
+$$
+\frac{\partial V}{\partial W} = b(p)
+$$
+
+$$
+\frac{\partial V}{\partial p} = \sum_{i=1}^n \frac{\partial a_i}{\partial p} + \frac{\partial b}{\partial p}W
+$$
+
+By Roy's identity,
+
+$$
+X(p, W) = -\frac{  \partial V /\partial p}{\partial V/\partial W} = -\frac{\sum_{i=1}^n \frac{\partial a_i}{\partial p} + \frac{\partial b}{\partial p}W}{b(p)}
+$$
+
+$$
+X(p, \sum_{i=1}^n w_i) 
+= \frac{\sum_{i=1}^n a'_i(p) + b'(p)\sum_{i=1}^n w_i}{b(p)}\\
+= \frac{\sum_{i=1}^n [a'_i(p) + b'(p)w_i]}{b(p)}\\
+= \sum_{i=1}^n \frac{a'_i(p) + b'(p)w_i}{b(p)}\\
+= \sum_{i=1}^n x^i(p, w_i)
+$$
+
+\pagebreak
+
+# Question 3. Homothetic Preferences
+
+Complete, transitive preferences $\succsim$ on $\R^k_+$ are called homothetic if for all $x, y \in \R^k_+$ and all $t > 0$, $x \succsim y \iff tx \succsim ty$.
+
+(a) Show that if preferences are homothetic, Marhallian demand is homogeneous of degree 1 in wealth: for any $t > 0, x(p, tw) = tx(p, w)$.
+
+(b) Show that if preferences are homothetic, monotone, and continuous, they can be represented by a utility function which is homogeneous of degree 1. (Hint try the utility function we used to prove existsnce of a utility function in class.)
+
+(c) Show that given (a) and (b), the indirect utility function takes he form $v(p, w) = b(p)w$ for some function $b$.
+
+\pagebreak
+
+# Question 4. Quasilinear Utility
+
+Let $X = \R \times \R^{k-1}_+$ (allow positive or negative consumption of the first good), suppose utility $u(x) = x_1 + U(x_2, ..., x_k)$ is quasilinear, and fix the price of the first good $p_1=1$.
+
+(a) Show that Marshallian demand for goods 2 through $k$ does not depend on wealth.
+
+(b) Show that indirect utility can be written as $v(p, w) = w + \tilde{v}(p)$ for some function $\tilde{v}$.
+
+(c) Show the expenditure function can be written as $e(p, u) = u - f(p)$ for some function $f$.
+
+(d) Show that the Hicksian demand for goods 2 through $k$ does not depend on target utility.
+
+(e) Show that Compensating Variation and Equivalent Variation are the same when the price of good $i \neq 1$ changes, and also equal to Consumer Surplus.
