@@ -352,54 +352,138 @@ So $c$ equals $c = (1-(\alpha + 1/2))/2 = 1/4-\alpha/2$.  By consistency, $\bar{
 
 4. Comment on the differences between the above 3 outcomes, and the reason as to why they are different.
 
-Black lines are the solution to social planner's problem, blue lines are the Ramsey equilibrium, and red lines are the Nash equilibrium.
+Below are plotted the variables of interest across the 3 outcomes. Black lines represent the solution to social planner's problem (SPP), blue lines represent the Ramsey equilibrium (RE), and red lines represent the Nash equilibrium (NE).
 
 ``` {r, echo=FALSE}
 par(mfrow=c(1, 2))
 
-plot(1, type = "n", xlim = c(0, 0.5), ylim = c(0, 1), xlab = "alpha", ylab = "leisure (l)", xaxs = "i", yaxs = "i")
-
 l_sp <- (1+2*alpha)/3
 l_ne <- alpha + 0.5
+
+g_sp <- (1-alpha)/3
+g_ne <- 0.25 - alpha/2
+
+c_sp <- (1-alpha)/3
+c_ne <- 0.25 - alpha/2
+
+u_sp <- log(l_sp) + log(alpha + c_sp) + log(alpha + g_sp)
+u_re <- log(l_re) + log(alpha + c_re) + log(alpha + g_re)
+u_ne <- log(l_ne) + log(alpha + c_ne) + log(alpha + g_ne)
+
+plot(1, type = "n", xlim = c(0, 0.5), ylim = c(0, 1), xlab = "alpha", ylab = "tax rate (tau)", xaxs = "i", yaxs = "i")
+
+lines(x=alpha, y = tau_re, col ="blue")
+abline(h=0.5, col = "black")
+abline(h=0.5, col = "red", lty=2)
+
+legend("topright", 
+       c("SPP", "RE", "NE"), 
+       lty=1, 
+       col = c("black", "blue", "red"),
+       cex=0.7,
+       bty = "n")
+
+plot(1, type = "n", xlim = c(0, 0.5), ylim = c(0, 1), xlab = "alpha", ylab = "leisure (l)", xaxs = "i", yaxs = "i")
 
 lines(x=alpha, y= l_sp, col = "black")
 lines(x=alpha, y= l_ne, col = "red")
 lines(x=alpha, y= l_re, col = "blue")
 
-plot(1, type = "n", xlim = c(0, 0.5), ylim = c(0, 1), xlab = "alpha", ylab = "private consumption (c)", xaxs = "i", yaxs = "i")
+legend("bottomright", 
+       c("SPP", "RE", "NE"), 
+       lty=1, 
+       col = c("black", "blue", "red"),
+       cex=0.7,
+       bty = "n")
 
-c_sp <- (1-alpha)/3
-c_ne <- 0.25 - alpha/2
+plot(1, type = "n", xlim = c(0, 0.5), ylim = c(0, 1), xlab = "alpha", ylab = "private consumption (c)", xaxs = "i", yaxs = "i")
 
 lines(x=alpha, y= c_sp, col = "black")
 lines(x=alpha, y= c_ne, col = "red")
 lines(x=alpha, y= c_re, col = "blue")
-```
 
-``` {r, echo=FALSE}
-par(mfrow=c(1, 2))
+legend("topright", 
+       c("SPP", "RE", "NE"), 
+       lty=1, 
+       col = c("black", "blue", "red"),
+       cex=0.7,
+       bty = "n")
 
 plot(1, type = "n", xlim = c(0, 0.5), ylim = c(0, 1), xlab = "alpha", ylab = "public goods (g)", xaxs = "i", yaxs = "i")
-
-g_sp <- (1-alpha)/3
-g_ne <- 0.25 - alpha/2
 
 lines(x=alpha, y= g_sp, col = "black")
 lines(x=alpha, y= g_ne, col = "red")
 lines(x=alpha, y= g_re, col = "blue")
 
+legend("topright", 
+       c("SPP", "RE", "NE"), 
+       lty=1, 
+       col = c("black", "blue", "red"),
+       cex=0.7,
+       bty = "n")
+
+par(mfrow=c(1, 1))
+
 plot(1, type = "n", xlim = c(0, 0.5), ylim = c(-4, -1), xlab = "alpha", ylab = "utility", xaxs = "i", yaxs = "i")
 
-g_sp <- (1-alpha)/3
-g_ne <- 0.25 - alpha/2
+lines(x=alpha, y= u_sp, col = "black")
+lines(x=alpha, y= u_ne, col = "red")
+lines(x=alpha, y= u_re, col = "blue")
 
-lines(x=alpha, y= log(l_sp) + log(alpha + c_sp) + log(alpha + g_sp), col = "black")
-lines(x=alpha, y= log(l_ne) + log(alpha + c_ne) + log(alpha + g_ne), col = "red")
-lines(x=alpha, y= log(l_re) + log(alpha + c_re) + log(alpha + g_re), col = "blue")
+legend("bottomright", 
+       c("SPP", "RE", "NE"), 
+       lty=1, 
+       col = c("black", "blue", "red"),
+       cex=0.7,
+       bty = "n")
 ```
+
+In the NE, the government taxes at the SPP level, so households work less to avoid taxes.  Thus, the level of private consumption and public goods is lower.  In the RE, the government incentives households to work more with a lower tax rate.  Thus, household spend more time working.  However, with the lower tax rate, there is less public goods (the RE and NE of public goods is roughly the same), so the major change is household consume more in RE compared to their consumption in NE.  The household's higher private consumption in the RE means that their utility sits between the utility associated with the NE and the utility associated with the SPP.  The difference between the RE and the NE increases as $\alpha$ increases, so the utility associated with the RE increases relative to the utility from the NE as $\alpha$ increases.  The utility from the RE stays below the SPP because in the RE there's still an underprovision of public goods.
 
 \pagebreak
 
 5. Suppose the economy is repeated for infinite periods, with discount factor $\beta < 1$. For high enough $\beta$, can the Ramsey outcome be sustained?
 
 Yes.  As seen in #4, the utility from the Ramsey outcome is higher than the utility from the Nash equilibrium at every $\alpha$. If the household adopts a grim trigger strategy (play Ramsey outcome unless the government deviates and then plays Nash equilibrium for eternity) and if $\beta$ is high enough, the difference in the discounted utilities would discourage the government from deviating.
+
+If the government does not deviate, the utility is the discounted Ramsey equilibrium into eternity:
+
+$$
+\sum_{i=0}^{\infty} \beta^i u(l_{RE}, c_{RE}, g_{RE}) =  \frac{1}{1-\beta} u(l_{RE}, c_{RE}, g_{RE})
+$$
+
+If the government deviates, the utility is one period of overtaxing the household's Ramsey labor decision (define $c_{RE}' = (1-\tau_{NE})(1-l_{RE})$ and $g_{RE}' = \tau_{NE}(1-l_{RE})$) and the Nash equilibrium for eternity:
+
+\begin{align*}
+&u(l_{RE}, c_{RE}', g_{RE}') + \sum_{i=1}^{\infty} \beta^i u(l_{NE}, c_{NE}, g_{NE}) = u(l_{RE},  c_{RE}', g_{RE}') + \frac{\beta}{1-\beta} u(l_{NE}, c_{NE}, g_{NE}) 
+\end{align*}
+
+For the government to not deviate, the following inequality needs to hold:
+
+\begin{align*}
+\frac{1}{1-\beta} u(l_{RE}, c_{RE}, g_{RE}) >& u(l_{RE},  c_{RE}', g_{RE}') + \frac{\beta}{1-\beta} u(l_{NE}, c_{NE}, g_{NE}) \\
+\implies
+\beta >& \frac{u(l_{RE},  c_{RE}', g_{RE}') - u(l_{RE}, c_{RE}, g_{RE})}{u(l_{RE},  c_{RE}', g_{RE}') - u(l_{NE}, c_{NE}, g_{NE})}
+\end{align*}
+
+The figure shows values for $\beta$ that can sustain the Ramsey outcome.
+
+```{r, echo = FALSE}
+tau_re_prime <- 1/2
+
+g_re_prime <- (tau_re_prime)*(1-l_re)
+c_re_prime <- (1-tau_re_prime)*(1-l_re)
+
+u_re_prime <- log(l_re) + log(alpha + c_re_prime) + log(alpha + g_re_prime)
+
+beta <- (u_re - u_re_prime)/(u_ne - u_re_prime)
+
+beta[1] <- .5
+
+plot(1, type = "n", xlim = c(0, 0.5), ylim = c(0, 1), xlab = "alpha", ylab = "beta", xaxs = "i", yaxs = "i")
+
+lines(y=beta, x=alpha)
+
+polygon(y = c(beta, rep(1, length(beta))), x = c(alpha, rev(alpha)), col = "gray")
+
+```
