@@ -29,13 +29,13 @@ $$
 
 (b) Find the log-likelihood function $\ell_n(\theta)$.
 
-$$
+\begin{align*}
 \ell_n(\theta) 
-= \sum_{i=1}^n\ln(f(x_i|\theta)) 
-= \sum_{i=1}^n\ln(p^{x_i} (1-p)^{(1-x_i)}) 
-= \sum_{i=1}^n [x_i \ln(p)+(1-x_i)\ln (1-p)]
-= \ln(p) \sum_{i=1}^n x_i + \ln (1-p)\Big(n-\sum_{i=1}^n x_i\Big)
-$$
+&= \sum_{i=1}^n\ln(f(x_i|\theta)) \\
+&= \sum_{i=1}^n\ln(p^{x_i} (1-p)^{(1-x_i)}) \\
+&= \sum_{i=1}^n [x_i \ln(p)+(1-x_i)\ln (1-p)] \\
+&= \ln(p) \sum_{i=1}^n x_i + \ln (1-p)\Big(n-\sum_{i=1}^n x_i\Big)
+\end{align*}
 
 (c) Find the MLE $\hat{p}$ for $p$.
 
@@ -46,36 +46,73 @@ $$
 \hat{p} &= \frac{1}{n}\sum_{i=1}^n x_i\\
 \end{align*}
 
+\pagebreak
+
 2. Let $X$ be distributed Pareto with density $f(x) = \frac{\alpha}{x^{1+\alpha}}$ for $x \ge 1$. The unknown parameter is $\alpha > 0$.
 
 (a) Find the log-likelihood function $\ell_n(\alpha)$.
 
-
+\begin{align*}
+\ell_n(\alpha) 
+&= \sum_{i=1}^n\ln(f(x_i|\alpha)) \\
+&= \sum_{i=1}^n\ln\Bigg(\frac{\alpha}{x_i^{1+\alpha}}\Bigg) \\
+&= \sum_{i=1}^n\ln\alpha - \sum_{i=1}^n\ln x_i^{1+\alpha} \\
+&= n\ln\alpha - (1+\alpha)\sum_{i=1}^n\ln x_i \\
+\end{align*}
 
 (b) Find the MLE $\hat{\alpha}_n$ for $\alpha$.
 
-
-
+$$
+\frac{\partial \ell_n}{\partial \alpha}  =  0 \implies
+\frac{n}{\hat{\alpha}_n} - \sum_{i=1}^n\ln x_i = 0 \implies
+\hat{\alpha}_n = \frac{n}{\sum_{i=1}^n\ln x_i}
+$$
 
 3. Let $X$ be distributed Cauchy with density $f(x) = \frac{1}{\pi(1+(x-\theta)^2)}$ for $x \in \R$. The unknown parameter is $\theta$.
 
 (a) Find the log-likelihood function $\ell_n(\theta)$.
 
-
+\begin{align*}
+\ell_n(\theta) 
+&= \sum_{i=1}^n\ln(f(x_i|\theta)) \\
+&= \sum_{i=1}^n\ln\Bigg(\frac{1}{\pi(1+(x_i-\theta)^2)}\Bigg) \\
+&=  - \sum_{i=1}^n\ln(\pi) - \sum_{i=1}^n\ln\Big(1+(x_i-\theta)^2\Big) \\
+&=  - n \ln(\pi) - \sum_{i=1}^n\ln\Big(1+(x_i-\theta)^2\Big) \\
+\end{align*}
 
 (b) Find the first-order condition for the MLE $\hat{\theta}$ for $\theta$.  You will not be able to solve for $\hat{\theta}$.
 
+$$
+\frac{\partial \ell_n}{\partial \theta}  =  0 \implies 0 - \sum_{i=1}^n\frac{2(x_i-\theta)(-1)}{1+(x_i-\theta)^2} \implies \sum_{i=1}^n\frac{2(x_i-\theta)}{1+(x_i-\theta)^2}
+$$
 
+\pagebreak
 
 4. Let $X$ be distributed double exponential (or Laplace) with density $f(x) = \frac{1}{2} \exp(-|x - \theta|)$ for $x \in \R$. The unknown parameter is $\theta$.
 
 (a) Find the log-likelihood function $\ell_n(\theta)$.
 
+\begin{align*}
+\ell_n(\theta) 
+&= \sum_{i=1}^n\ln(f(x_i|\theta)) \\
+&= \sum_{i=1}^n\ln\Bigg(\frac{1}{2} \exp(-|x_i - \theta|)\Bigg) \\
+&= -\sum_{i=1}^n\ln(2) + \sum_{i=1}^n\ln(\exp(-|x_i - \theta|)) \\
+&= -n\ln(2) - \sum_{i=1}^n|x_i - \theta| \\
+\end{align*}
 
+(b) Extra challenge: Find the MLE $\hat{\theta}_n$ for $\theta$. This is challenging as it is not simply solving the FOC due to the nondifferentiability of the density function.
 
-(b) Extra challenge: Find the MLE $\hat{\theta}$ for $\theta$. This is challenging as it is not simply solving the FOC due to the nondifferentiability of the density function.
+$$
+\ell_n(\theta) = -n\ln(2) - \sum_{i=1}^n|x_i - \theta| = -n\ln(2) - \sum_{i=1}^n((x_i - \theta)^2)^{1/2}
+$$
 
+$\ell_n(\theta)$ is now differentiable.
 
+$$
+\frac{\partial \ell_n}{\partial \theta} = -  (1/2)\sum_{i=1}^n((x_i - \theta)^2)^{-1/2}(2(x_i - \theta))(-1) = \sum_{i=1}^n\frac{x_i - \theta}{|x_i - \theta|}
+$$
+
+If $x_i > \theta$, $\frac{x_i - \theta}{|x_i - \theta|} = 1$ and if $x_i < \theta$, $\frac{x_i - \theta}{|x_i - \theta|} = -1$.
 
 5. Take the Pareto model $f(x) = \alpha x^{-1-\alpha}, x \ge 1$. Calculate the information for $\alpha$ using the second derivative.
 
