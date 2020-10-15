@@ -151,27 +151,21 @@ Consider the first period.  Say the aggregate households play $x_H$. If the gove
 
 ## Static taxation
 
-Let there be a unit measure of households with preferences over leisure, (private) consumption, and public goods ($l, c, g$), defined by the utility
-
-$$
-u(l, c, g) = \ln l + \ln(\alpha + c) + \ln(\alpha + g), \alpha \in (0,0.5)
-$$
-
-Each household is endowed with 1 unit of time, which can be spent on leisure or labor.  Production is linear in labor, i.e. the economy resource constraint is $\bar{l} + g + \bar{c} = 1$ where $\bar{l}, \bar{c}$ are aggregate leisure and consumption.  To provide the public good, the government can levy a flat proportional tax $\tau$ on labor. That is $g = \tau(1-l)$.
+Let there be a unit measure of households with preferences over leisure, (private) consumption, and public goods ($l, c, g$), defined by the utility $u(l, c, g) = \ln l + \ln(\alpha + c) + \ln(\alpha + g), \alpha \in (0,0.5)$. Each household is endowed with 1 unit of time, which can be spent on leisure or labor.  Production is linear in labor, i.e. the economy resource constraint is $\bar{l} + g + \bar{c} = 1$ where $\bar{l}, \bar{c}$ are aggregate leisure and consumption.  To provide the public good, the government can levy a flat proportional tax $\tau$ on labor. That is $g = \tau(1-l)$.
 
 1. Set up and solve the Planner's problem.
 
 The Planner maximizes utility subject to resource feasibility and the government budget constraint with consistency ($\bar{l}=l$ and $\bar{c} = c$):
 
 \begin{align*}
-\max_{l, c, g \in \R_+^3} & \ln l + \ln(\alpha + c) + \ln(\alpha + g) \\
+\max_{l, c, g} & \ln l + \ln(\alpha + c) + \ln(\alpha + g) \\
 \text{s.t. } & l + g + c = 1, g = \tau(1 - l) \text{ and } \tau \in [0, 1]
 \end{align*}
 
 Subsistuting in $l = 1 - g -c$, we get
 
 \begin{align*}
-\max_{c, g \in \R_+^2} & \ln (1 - g - c) + \ln(\alpha + c) + \ln(\alpha + g) \\
+\max_{c, g} & \ln (1 - g - c) + \ln(\alpha + c) + \ln(\alpha + g) \\
 \text{s.t. } & g = \tau(1 - l) \text{ and } \tau \in [0, 1]
 \end{align*}
 
@@ -187,7 +181,6 @@ The FOC with respect to $g$ implies:
 
 $$
 0 = -\frac{1}{1 - g - c} + \frac{1}{\alpha + g} \implies
-1 - g - c = \alpha + g \implies
 \frac{1 - c -\alpha}{2}  = g
 $$
 
@@ -195,50 +188,44 @@ Substituting to find $c$:
 
 $$
 c= \frac{1 - (\frac{1 - c -\alpha}{2}) -\alpha}{2} \implies
-4c = 2 - (1 - c -\alpha) -2\alpha \implies
 c = \frac{1 -\alpha}{3} > 0
 $$
 
-Finding $g$:
+Finding $g$ and $l$:
 
 $$
 g= \frac{1 - \frac{1 -\alpha}{3} -\alpha}{2} \implies
-6g= 3 - (1 - \alpha) - 3\alpha \implies
 g = \frac{1 -\alpha}{3} > 0
-$$
-
-Finding $l$:
-
-$$
+\text{  and  }
 l = 1 - \frac{1 -\alpha}{3} -\frac{1 -\alpha}{3} \implies l = \frac{1 + 2\alpha}{3} > 0
 $$ 
-
-\pagebreak
 
 Verifying these solution implies an appropriate $\tau$:
 
 $$
-\tau = \frac{g}{1 - l} = \frac{\frac{1 -\alpha}{3}}{1- \frac{1 + 2\alpha}{3}}=\frac{1 -\alpha}{2 - 2\alpha}=\frac{1}{2} \in [0,1]
+\tau = \frac{g}{1 - l} = \frac{\frac{1 -\alpha}{3}}{1- \frac{1 + 2\alpha}{3}}=\frac{1}{2} \in [0,1]
 $$
 
 Thus, the solution to the Planner's problem is $(l,c,g) = \Big(\frac{1 + 2\alpha}{3}, \frac{1 -\alpha}{3} , \frac{1 -\alpha}{3}  \Big)$.
 
+\pagebreak
+
 2. Set up and solve for the Ramsey outcome.
 
-In the Ramsey outcome, the government moves first and the household moves second.  Specifically the government chooses $\tau$ and since the individual household cannot change the aggregate $g = (1-\tau)\bar{l}$ is also fixed.  Thus, we first solve the individual household problem conditional on $\tau$ and $g$. The individual household's income is $(1-l)$ and they pay $(1-l)\tau$ in taxes, so their discretionary income is $(1-l)(1-\tau)$.  Thus the household problem is:
+In the Ramsey outcome, the government moves first and the household moves second.  Specifically the government chooses $\tau$ and, since the individual household cannot change $\bar{l}$, $g$ is also fixed.  Thus, we first solve the individual household problem conditional on $\tau$ and $g$. The individual household's real income is $(1-l)$ and they pay $(1-l)\tau$ in taxes, so their discretionary real income is $(1-l)(1-\tau)$.  Thus, the household problem is:
 
 \begin{align*}
-\max_{c, l \in \R^2_+} & \ln l + \ln(\alpha + c) + \ln(\alpha + g) \\
+\max_{c, l} & \ln l + \ln(\alpha + c) + \ln(\alpha + g) \\
 \text{s.t. } & c \le (1-l)(1-\tau)
 \end{align*}
 
 Since the household's income is increasing in $c$, they will consume their entire discretionary income. We can subsitute in $c = (1-l)(1-\tau)$:
 
 $$
-\max_{l \in \R^2_+} \ln l + \ln(\alpha + (1-l)(1-\tau)) + \ln(\alpha + g) \\
+\max_{l} \ln l + \ln(\alpha + (1-l)(1-\tau)) + \ln(\alpha + g) \\
 $$
 
-Thus, the FOC implies
+Thus, the FOC with respect to $l$ implies
 
 $$
 \frac{1}{l} - \frac{1-\tau}{\alpha + (1-l)(1-\tau)} + 0= 0 
@@ -249,7 +236,7 @@ $$
 Thus, $c$ is:
 
 $$
-c = \Bigg(1-\Bigg(\frac{\alpha + (1-\tau)}{2(1-\tau)} \Bigg)\Bigg)(1-\tau) = \frac{(1-\tau) - \alpha}{2}
+c = \Bigg(1-\Bigg(\frac{\alpha + (1-\tau)}{2(1-\tau)} \Bigg)\Bigg)(1-\tau) = \frac{1-\tau - \alpha}{2}
 $$
 
 By consistency, $\bar{l} = l = \frac{\alpha + (1-\tau)}{2(1-\tau)}$ and $\bar{c} = c = \frac{(1-\tau) - \alpha}{2}$. This implies that $g$ equals:
@@ -260,20 +247,158 @@ $$
 
 Now let us consider the government problem:
 
+\begin{align*}
+& \max_{\tau} \ln \Bigg( \frac{\alpha + (1-\tau)}{2(1-\tau)} \Bigg) + \ln\Bigg(\alpha + \frac{(1-\tau) - \alpha}{2}\Bigg) + \ln\Bigg(\alpha + \frac{\tau(1-\tau) - \tau\alpha}{2(1-\tau)}\Bigg) \\
+&= \max_{\tau} \ln \Bigg( \frac{\alpha - \tau + 1}{2 - 2\tau} \Bigg) + \ln\Bigg(\frac{1-\tau + \alpha}{2}\Bigg) + \ln\Bigg(\frac{2(1-\tau)\alpha +\tau(1-\tau) - \tau\alpha}{2-2\tau}\Bigg)\\
+&= \max_{\tau} \ln \Big( \alpha - \tau + 1 \Big) - \ln \Big( 2 - 2\tau \Big) + \ln\Big(1-\tau + \alpha\Big) - \ln\Big(2\Big) + \ln\Big(2(1-\tau)\alpha +\tau(1-\tau) - \tau\alpha\Big) - \ln\Big(2-2\tau\Big) \\
+&= \max_{\tau} \ln\Big(2(1-\tau)\alpha +\tau(1-\tau) - \tau\alpha\Big) + 2 \ln \Big( \alpha - \tau + 1 \Big) - 2\ln \Big( 2 - 2\tau \Big) - \ln\Big( 2 \Big)
+\end{align*}
+
+The FOC with respect to $\tau$ implies
+
 $$
-\max_{\tau \in [0,1]} \ln \Bigg( \frac{\alpha + (1-\tau)}{2(1-\tau)} \Bigg) + \ln\Bigg(\alpha + \frac{(1-\tau) - \alpha}{2}\Bigg) + \ln\Bigg(\alpha + \frac{\tau(1-\tau) - \tau\alpha}{2(1-\tau)}\Bigg)  \\
-=\max_{\tau \in [0,1]} \ln \Bigg( \frac{\alpha - \tau + 1}{2 - 2\tau} \Bigg) + \ln\Bigg(\frac{1-\tau + \alpha}{2}\Bigg) + \ln\Bigg(\frac{2\alpha +(1- 3\alpha) \tau - \tau^2}{2-2\tau}\Bigg)
+0 = \frac{1- 3 \alpha - 2\tau}{2(1-\tau) \alpha +\tau(1-\tau) - \tau\alpha} + \frac{4}{2 - 2\tau} - \frac{2}{\alpha - \tau + 1}
 $$
 
-The FOC implies
+Numerically solving the FOC for $\tau$ for a grid of $\alpha$ between 0 and 0.5, we get the figure on the left.  Plugging $\tau$ in for $g$, $c$, and $l$ we get the figure on the right.
 
-$$
-\Bigg( \frac{2(1-\tau)}{\alpha + (1-\tau)} \Bigg) + \Bigg(\frac{2}{(1-\tau) + \alpha}\Bigg) 
-$$
+``` {r, echo = FALSE, warning = FALSE,message = FALSE}
+library(tidyverse)
+library(rootSolve)
+
+alpha <- (0:(0.5*100))/100
+tau_re <- NA
+
+f <- function(x, alpha) {
+  term1 <- (1 - 3 * alpha - 2 * x)/(2 * (1 - x) * alpha + x * (1 - x) - x * alpha)
+  term2 <- 4/(2 - 2 * x) 
+  term3 <- (-2)/(alpha - x + 1)
+  
+  return(term1 + term2 +term3)
+}
+
+for (i in 1:length(alpha)) {
+  tau_re[i] <- min(uniroot.all(f, lower = 0.01, upper = 0.99, alpha = alpha[i]))
+}
+
+g_re <- (tau_re*(1-tau_re) - tau_re*alpha)/(2*(1-tau_re))
+l_re <- (alpha + (1-tau_re))/(2*(1-tau_re))
+c_re <- (1-tau_re - alpha)/2
+
+par(mfrow = c(1, 2))
+
+plot(x = alpha, y = tau_re, type = "l", ylab = "tax rate (tau)", ylim=c(0,1), xaxs = "i", yaxs = "i")
+
+plot(1, type = "n", ylim = c(0, 1), xlim = c(0, 0.5), xlab = "alpha", ylab = "", xaxs = "i", yaxs = "i")
+
+lines(x=alpha, y=l_re)
+lines(x=alpha, y=g_re, col = "red")
+lines(x=alpha, y=c_re, col = "blue")
+
+text("leisure (l)", x= .3, y=.8)
+text("private consumption (c)", y= .35, x=.25, col = "blue")
+text("public goods (g)", x= .15, y=0.05, col = "red")
+
+```
+
+\pagebreak
 
 3. Set up and solve for the NE outcome.
 
+For the NE, the household moves first and the government moves second.  Thus, the government problem conditional on $\bar{l}$ and $\bar{c}$ is:
+
+\begin{align*}
+\max_{g, \tau} & \ln \bar{l} + \ln(\alpha + \bar{c}) + \ln(\alpha + g) \\
+\text{s.t. } & g = (1-\bar{l})\tau
+\end{align*}
+
+We can substitute in $\bar{c} = 1 - g - \bar{l}$ and $g = (1-l)\tau$:
+
+$$
+\max_{\tau} \ln \bar{l} + \ln(\alpha + (1 - (1-\bar{l})\tau - \bar{l})) + \ln(\alpha + (1-\bar{l})\tau) \\
+\max_{\tau} \ln \bar{l} + \ln(\alpha + 1 - (1-\bar{l})\tau - \bar{l}) + \ln(\alpha + (1-\bar{l})\tau) \\
+$$
+
+FOC with respect to $\tau$ imply
+
+$$
+0=\frac{1-\bar{l}}{\alpha + (1-\bar{l})\tau} - \frac{1-\bar{l}}{\alpha + 1 - (1-\bar{l})\tau - \bar{l}}
+\implies 2(1-\bar{l})\tau = 1 - \bar{l}
+\implies \tau = \frac{1}{2}
+$$
+
+Now, let us consider the individual household's problem. As mentioned in #2, the individual household's real discretionary income is $(1-\tau)(1-l)$ and the individual household cannot change $\bar{l}$.  At $\tau = 1/2$, discretionary real income is $(1-l)/2$.  Thus, the household problem is:
+
+\begin{align*}
+\max_{c, l} & \ln l + \ln(\alpha + c) + \ln(\alpha + g) \\
+\text{s.t. } & c \le (1-l)/2
+\end{align*}
+
+Since the household's income is increasing in $c$, they will consume their entire discretionary income:
+
+$$
+\max_{l} \ln l + \ln(\alpha + (1-l)/2) + \ln(\alpha + g) \\
+$$
+
+FOC with respect to $l$ imply
+
+$$
+\frac{1}{l} + \frac{-1/2}{\alpha + (1-l)/2} = 0 \implies 2\alpha + 1-l = l \implies l = \alpha + 1/2
+$$
+
+So $c$ equals $c = (1-(\alpha + 1/2))/2 = 1/4-\alpha/2$.  By consistency, $\bar{l} = l = \alpha + 1/2$ and $\bar{c} = c = 1/4-\alpha/2$.  So $g = (1-\alpha + 1/2)/2 = 1/4 - \alpha/2$.  Thus, the NE is $(l,c,g) = \Big(1/2 + \alpha, 1/4-\alpha/2 , 1/4-\alpha/2  \Big)$.
+
+\pagebreak
+
 4. Comment on the differences between the above 3 outcomes, and the reason as to why they are different.
+
+Black lines are the solution to social planner's problem, blue lines are the Ramsey equilibrium, and red lines are the Nash equilibrium.
+
+``` {r, echo=FALSE}
+par(mfrow=c(1, 2))
+
+plot(1, type = "n", xlim = c(0, 0.5), ylim = c(0, 1), xlab = "alpha", ylab = "leisure (l)", xaxs = "i", yaxs = "i")
+
+l_sp <- (1+2*alpha)/3
+l_ne <- alpha + 0.5
+
+lines(x=alpha, y= l_sp, col = "black")
+lines(x=alpha, y= l_ne, col = "red")
+lines(x=alpha, y= l_re, col = "blue")
+
+plot(1, type = "n", xlim = c(0, 0.5), ylim = c(0, 1), xlab = "alpha", ylab = "private consumption (c)", xaxs = "i", yaxs = "i")
+
+c_sp <- (1-alpha)/3
+c_ne <- 0.25 - alpha/2
+
+lines(x=alpha, y= c_sp, col = "black")
+lines(x=alpha, y= c_ne, col = "red")
+lines(x=alpha, y= c_re, col = "blue")
+```
+
+``` {r, echo=FALSE}
+par(mfrow=c(1, 2))
+
+plot(1, type = "n", xlim = c(0, 0.5), ylim = c(0, 1), xlab = "alpha", ylab = "public goods (g)", xaxs = "i", yaxs = "i")
+
+g_sp <- (1-alpha)/3
+g_ne <- 0.25 - alpha/2
+
+lines(x=alpha, y= g_sp, col = "black")
+lines(x=alpha, y= g_ne, col = "red")
+lines(x=alpha, y= g_re, col = "blue")
+
+plot(1, type = "n", xlim = c(0, 0.5), ylim = c(-4, -1), xlab = "alpha", ylab = "utility", xaxs = "i", yaxs = "i")
+
+g_sp <- (1-alpha)/3
+g_ne <- 0.25 - alpha/2
+
+lines(x=alpha, y= log(l_sp) + log(alpha + c_sp) + log(alpha + g_sp), col = "black")
+lines(x=alpha, y= log(l_ne) + log(alpha + c_ne) + log(alpha + g_ne), col = "red")
+lines(x=alpha, y= log(l_re) + log(alpha + c_re) + log(alpha + g_re), col = "blue")
+```
+
+\pagebreak
 
 5. Suppose the economy is repeated for infinite periods, with discount factor $\beta < 1$. For high enough $\beta$, can the Ramsey outcome be sustained?
 
