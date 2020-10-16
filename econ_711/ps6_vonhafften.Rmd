@@ -115,12 +115,22 @@ $$
 
 Complete, transitive preferences $\succsim$ on $\R^k_+$ are called homothetic if for all $x, y \in \R^k_+$ and all $t > 0$, $x \succsim y \iff tx \succsim ty$.
 
-(a) Show that if preferences are homothetic, Marhallian demand is homogeneous of degree 1 in wealth: for any $t > 0, x(p, tw) = tx(p, w)$.
+(a) Show that if preferences are homothetic, Marshallian demand is homogeneous of degree 1 in wealth: for any $t > 0, x(p, tw) = tx(p, w)$.
 
-(b) Show that if preferences are homothetic, monotone, and continuous, they can be represented by a utility function which is homogeneous of degree 1. (Hint try the utility function we used to prove existsnce of a utility function in class.)
+Fix $w \in \R_+$ and $p \in \R^k_+$. Let $\succsim_H$ be a homothetic preference relation that can be represented by a utility function $u$.  Let $x^* := x(p, w) = \arg \max_{x \in B(p, w)} u(x)$ and $x' \in B(p, w)$. By definition, $x^* \succsim_H x'$. Since $\succsim_H$ is homothetic, $tx^* \succsim_H tx'$ for $t > 0$.  Since the budget set is linear, $tx^*, tx' \in B(p, tw)$.  Since $tx'$ represents an arbitrary element of $B(p, tw)$, $tx^* = \arg \max_{x \in B(p, tw)} u(x) = x(p, tw)$. Therefore, Marshallian demand is homogeneous of degree 1 in wealth.
+
+(b) Show that if preferences are homothetic, monotone, and continuous, they can be represented by a utility function which is homogeneous of degree 1. (Hint try the utility function we used to prove existence of a utility function in class.)
+
+Let $\succsim_H$ be a homothetic, monotone, and continuous preference relation. Since $\succsim_H$ is homothetic, it is also complete and transitive.  Thus, $\succsim_H$ can be represented by utility function $u$ such that, for $x \in \R^k_+$, $u(x) = \alpha$ where $x \succsim_H \alpha e$ and $\alpha e \succsim_H x$ and $e = (1, ..., 1)$. Thus, because $\succsim_H$ is homothetic, $tx \succsim_H t \alpha e$ and $t \alpha e \succsim_H tx$ for $t > 0$, so $u(tx) = t\alpha$.
 
 (c) Show that given (a) and (b), the indirect utility function takes the form $v(p, w) = b(p)w$ for some function $b$.
 
+Fix $w \in \R_+$ and $p \in \R^k_+$. Since Marshallian demand and utility functions associated with homothetic preferences are homogeneous of degree 1:
+
+$$
+v(p, w) = u(x(p,w)) = u(wx(p,1)) = wu(x(p,1)) = wb(p)
+$$
+where $b(p) = u(x(p,1))$.
 \pagebreak
 
 # Question 4. Quasilinear Utility
@@ -129,7 +139,7 @@ Let $X = \R \times \R^{k-1}_+$ (allow positive or negative consumption of the fi
 
 (a) Show that Marshallian demand for goods 2 through $k$ does not depend on wealth.
 
-First, notice that $u$ represents LNS preferences; for any $x = (x_1, x_2, ..., x_k) \in X$ and $\varepsilon >0$, let $x' = (x_1+\varepsilon, x_2, ..., x_k) \in X$. 
+Notice that $u$ represents LNS preferences; for any $x = (x_1, x_2, ..., x_k) \in X$ and $\varepsilon >0$, let $x' = (x_1+\varepsilon, x_2, ..., x_k) \in X$. 
 
 $$
 ||x' - x|| = ||(x_1+\varepsilon, x_2, ..., x_k) - (x_1, x_2, ..., x_k) || = ||(\varepsilon, 0, ..., 0)|| = \varepsilon
