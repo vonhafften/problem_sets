@@ -119,7 +119,7 @@ Complete, transitive preferences $\succsim$ on $\R^k_+$ are called homothetic if
 
 (b) Show that if preferences are homothetic, monotone, and continuous, they can be represented by a utility function which is homogeneous of degree 1. (Hint try the utility function we used to prove existsnce of a utility function in class.)
 
-(c) Show that given (a) and (b), the indirect utility function takes he form $v(p, w) = b(p)w$ for some function $b$.
+(c) Show that given (a) and (b), the indirect utility function takes the form $v(p, w) = b(p)w$ for some function $b$.
 
 \pagebreak
 
@@ -128,6 +128,27 @@ Complete, transitive preferences $\succsim$ on $\R^k_+$ are called homothetic if
 Let $X = \R \times \R^{k-1}_+$ (allow positive or negative consumption of the first good), suppose utility $u(x) = x_1 + U(x_2, ..., x_k)$ is quasilinear, and fix the price of the first good $p_1=1$.
 
 (a) Show that Marshallian demand for goods 2 through $k$ does not depend on wealth.
+
+First, notice that $u$ represents LNS preferences; for any $x = (x_1, x_2, ..., x_k) \in X$ and $\varepsilon >0$, let $x' = (x_1+\varepsilon, x_2, ..., x_k) \in X$. 
+
+$$
+||x' - x|| = ||(x_1+\varepsilon, x_2, ..., x_k) - (x_1, x_2, ..., x_k) || = ||(\varepsilon, 0, ..., 0)|| = \varepsilon
+$$
+
+$$
+u(x_1+\varepsilon, x_2, ..., x_k) = x_1 + \varepsilon + U(x_2, ..., x_k) > x_1  + U(x_2, ..., x_k) = u(x_1, x_2, ..., x_k) \implies x' \succ x
+$$
+
+Because $u$ represents LNS preferences, we know Walras' Law hold and the budget constraint holds with equality. Thus, we can substitute in $x_1 = w - p_2x_2 - ... - p_kx_k$ into Marshallian demand:
+
+\begin{align*}
+x(p, w) &= \arg \max_{x \in B(p, w)} u(x) \\
+&= \arg \max_{x \in B(p, w)} \{x_1 + U(x_2, ..., x_k) \} \\
+&= \arg \max \{w - p_2x_2 - ... - p_kx_k + U(x_2, ..., x_k) \} \\
+&= \arg \max \{- p_2x_2 - ... - p_kx_k + U(x_2, ..., x_k) \}
+\end{align*}
+
+So Marshallian demand does not depend on $w$.
 
 (b) Show that indirect utility can be written as $v(p, w) = w + \tilde{v}(p)$ for some function $\tilde{v}$.
 
