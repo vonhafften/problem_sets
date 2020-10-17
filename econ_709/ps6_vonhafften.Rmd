@@ -103,19 +103,21 @@ $$
 
 (b) Extra challenge: Find the MLE $\hat{\theta}_n$ for $\theta$. This is challenging as it is not simply solving the FOC due to the nondifferentiability of the density function.
 
+I consider the median $x_i$ as a candidate for the MLE $\hat{\theta}_n$. Without loss of generality, let us consider an ordered sample $x_1 < x_2 <...< x_{n-1} < x_n$. Consider even $n$:
+
 $$
 \ell_n(\theta) = -n\ln(2) - \sum_{i=1}^n|x_i - \theta| = -n\ln(2) - \sum_{i=1}^n((x_i - \theta)^2)^{1/2}
 $$
 
-$\ell_n(\theta)$ is now differentiable.
+$\ell_n(\theta)$ is differentiable at $\theta \neq x_i$ for all $i = 1, ..., n$.  In particular, it is differentiable at the median, defined as any point strictly between $x_{\lfloor n/2 \rfloor}$ and $x_{\lceil n/2 \rceil}$.
 
 $$
 \frac{\partial \ell_n}{\partial \theta} = -  (1/2)\sum_{i=1}^n((x_i - \theta)^2)^{-1/2}(2(x_i - \theta))(-1) = \sum_{i=1}^n\frac{x_i - \theta}{|x_i - \theta|}
 $$
 
-If $x_i > \theta$, $\frac{x_i - \theta}{|x_i - \theta|} = 1$ and if $x_i < \theta$, $\frac{x_i - \theta}{|x_i - \theta|} = -1$.
+If $x_i > \theta$, $\frac{x_i - \theta}{|x_i - \theta|} = 1$ and if $x_i < \theta$, $\frac{x_i - \theta}{|x_i - \theta|} = -1$.  If $\theta$ is any point between $x_{\lfloor n/2 \rfloor}$ and $x_{\lceil n/2 \rceil}$, then there is an equal number of $x_i$ less than $\hat{\theta}_n$ and $x_i$ larger than $\hat{\theta}_n$, so $\frac{\partial \ell_n}{\partial \theta} = 0$.  Thus, the median is the MLE $\hat{\theta}_n$.
 
-...
+Consider case when $n$ is odd.  Since the median equals $x_{(n+1)/2}$, the $\ell_n(\theta)$ is not differentiable at proposed MLE estimator. Construct a new sample $\{y_1, ..., y_{n-1}\}$ when $y_i = x_i$ and $y_j = x_{j+1}$ for $i =1, ..., (n-1)/2$ and $j = (n+1)/2,..., n-1$. This sample omits the median observation $x_{(n+1)/2}$. By the logic above, $\ell_{n-1}(\theta)$ is maximized at any point between $y_{(n-1)/2} = x_{(n-1)/2}$ and $y_{(n+1)/2} = x_{(n+3)/2}$ including $x_{(n+1)/2}$.  Now, consider the sample with $x_{(n+1)/2}$.  Notice that $\ell_n(\theta) = \ell_{n-1} (\theta) - \ln(2) - |x_{(n+1)/2} - \hat{\theta}_{n}|$. For any $\hat{\theta}_{n} \neq x_{(n+1)/2}$, $|x_{(n+1)/2} - \hat{\theta}_{n}| > 0$, so it reduces the log-likelihood function.  If $\hat{\theta}_{n} = x_{(n+1)/2}$, $|x_{(n+1)/2 \rceil} - \hat{\theta}_{n}| = 0$.  Thus, the median is the MLE $\hat{\theta}_n$.
 
 \pagebreak
 
