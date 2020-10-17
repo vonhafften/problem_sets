@@ -44,6 +44,7 @@ $$
 \frac{\partial}{\partial p}\Bigg[\ln(p) \sum_{i=1}^n x_i + \ln (1-p)\Big(n-\sum_{i=1}^n x_i\Big) \Bigg] &= 0\\ \frac{\sum_{i=1}^n x_i}{p} - \frac{\Big(n-\sum_{i=1}^n x_i\Big)}{1-p} &= 0 \\
 \sum_{i=1}^n x_i &= pn-p\sum_{i=1}^n x_i + p\sum_{i=1}^n x_i \\
 \hat{p} &= \frac{1}{n}\sum_{i=1}^n x_i\\
+\hat{p} &= \bar{X}_n
 \end{align*}
 
 \pagebreak
@@ -149,7 +150,7 @@ Thus, the Cramer-Rao lower bound is $(nI_0)^{-1} = (n\theta_0^{-2})^{-1}= \theta
 
 \pagebreak
 
-(b) Recall the MLE $\hat{\theta}_n$ for $\theta$ for Problem 1. Notice that this is a function of the sample mean. Use this formula and the delta method to find the asymptotic distribution for $\hat{\theta}_n$.
+(b) Find the MLE $\hat{\theta}_n$ for $\theta$. Notice that this is a function of the sample mean. Use this formula and the delta method to find the asymptotic distribution for $\hat{\theta}_n$.
 
 The log-likelihood function $\ell_n(\theta)$ is
 
@@ -197,37 +198,75 @@ $$
 
 \pagebreak
 
-7. In the Bernoulli model, you found the asymptotic distribution of the MLE in Problem 2(c).
+7. In the Bernoulli model, you found the asymptotic distribution of the MLE in Problem 1(c).
 
 (a) Propose an estimator of $V$, the asymptotic variance.
 
-
+In 1(c), we found that $\hat{p} = \bar{X}_n$.  So, by the CLT, we know that $\sqrt{n}(\hat{p} - p) \to_d N(0, \sigma^2)$ where $\sigma^2 = Var(X)$. Thus, $V$ should be an estimator for $Var(X)$. Since $X$ is Bernoulli, consider $\bar{X}_n (1- \bar{X}_n)$.
 
 (b) Show that this estimator is consistent for $V$ as $n \to \infty$.
 
+By the WLLN, $\bar{X}_n \to_p p$. Define $g$ as $g(x) = x(1-x)$. By the continuous mapping theorem, $\bar{X}_n (1- \bar{X}_n) = g(\bar{X}_n) \to_p g(p) = p(1-p)=Var(X)$.
 
+(c) Propose a standard error $s(\hat{p}_n)$ for the MLE $\hat{p}_n$.\footnote{Recall that the standard error is supposed to approximate the variance of $\hat{p}_n$, not that of the variance of $\sqrt{n}(\hat{p}_n - p)$. What would be a reasonable approximation of the variance of $\hat{p}_n$ once you have a reasonable approximation of the variance of $\sqrt{n}(\hat{p}_n - p)$ from part (b)?}
 
-(c) Propose a standard error $s(\hat{p_n})$ for the MLE $\hat{p}_n$.\footnote{Recall that the standard error is supposed to approximate the variance of $\hat{p}_n$, not that of the variance of $\sqrt{n}(\hat{p}_n - p$. What would be a reasonable approximation of the variance of $\hat{p}_n$ once you have a reasonable approximation of the variance of $\sqrt{n}(\hat{p}_n - p)$ from part (b)?}
-
-
+Based on (a) and (b), consider $s(\hat{p}_n) = \frac{\sqrt{\bar{X}_n (1- \bar{X}_n)}}{\sqrt{n}}$.
 
 8. Consider the MLE for the upper bound of the uniform distribution in the Uniform Boundary example in Section 3. Assume that $\{X_1, ..., X_n\}$ is a random sample from $Uniform[0, \theta]$. The general asymptotic distribution formula in Section 6 does not apply here because $\ell_n(\theta)$ is not differentiable at the MLE.  But you can derive the asymptotic distribution using the definition of convergences in distribution. Do so by following the steps below.
 
 (a) Let $F_X$ denote the CDF of $Uniform[0, \theta]$. Calculate $F_X(c)$ for all $c \in \R$ based on the PDF of $Uniform[0, \theta]$.
 
+$$
+F_X(c) = \int_\infty^c f_X(x) dx =
+\begin{cases}
+0, c < 0 \\
+c /\theta, 0 \le c < \theta\\
+1, \theta \le c \\
+\end{cases}
+$$
 
+Because $\int_0^c \frac{1}{\theta} dx = \frac{c}{\theta}$.
 
 (b) Show that the CDF of $n(\hat{\theta}_n - \theta): F_{n(\hat{\theta}_n - \theta)}(x) = \Pr(\max_{i=1, ..., n}(n(X_i - \theta)) \le x) = (F_X(\theta + \frac{x}{n}))^n$.
 
+In Section 3, we found that $\hat{\theta}_n= \max_{i=1,...,n} X_i$. Because $n(\hat{\theta}_n - \theta) = n(\max_{i=1,...,n} ( X_i) - \theta) = \max_{i=1, ..., n}(n(X_i - \theta))$. Thus, $F_{n(\hat{\theta}_n - \theta)}(x) = \Pr(\max_{i=1, ..., n}(n(X_i - \theta)) \le x)$. Furthermore,
 
+\begin{align*}
+\Pr\Big(\max_{i=1, ..., n}(n(X_i - \theta)) \le x\Big) 
+&= \Pr(n(X_i - \theta) \le x \; \forall i = 1, ..., n) \\
+&= \Pi_{i=1}^n \Pr(n(X_i - \theta) \le x) \\
+&=\Pr(n(X_i - \theta) \le x)^n \\
+&=\Pr\Bigg(X_i \le \frac{x}{n} + \theta\Bigg)^n \\
+&= \Bigg(F_X\Bigg(\theta + \frac{x}{n}\Bigg)\Bigg)^n
+\end{align*}
 
-(c) Recall that $\lim_{n \to \infty}(1 + \frac{y}{n})^n  = e^y$ for any $y \in \R$. Derive the limit of $F_{n(\hat{\theta}_n - \theta)}(x)$ for all fixed $x \in \R$. (Hint: consider the case where $x < 0$ and the case where $x \ge 0$ separately).
+\pagebreak
 
+(c) Recall that $\lim_{n \to \infty}(1 + \frac{y}{n})^n  = e^y$ for any $y \in \R$. Derive the limit of $F_{n(\hat{\theta}_n - \theta)}(x)$ for all fixed $x \in \R$.\footnote{Hint: consider the case where $x < 0$ and the case where $x \ge 0$ separately.}
 
+Fix $x \in \R$.  If $x < 0$,
+
+\begin{align*}
+\lim_{n \to \infty} F_{n(\hat{\theta}_n - \theta)}(x) 
+&= \lim_{n \to \infty} \Bigg(F_X\Bigg(\theta + \frac{x}{n}\Bigg)\Bigg)^n\\
+&= \lim_{n \to \infty} \Bigg(\theta^{-1} \Bigg(\theta+ \frac{x}{n}\Bigg)\Bigg)^n \\
+&= \lim_{n \to \infty} \Bigg(\theta^{-1}\Bigg(\theta \Bigg(1+ \frac{x/\theta}{n}\Bigg)\Bigg)\Bigg)^n \\
+&= \lim_{n \to \infty} \Bigg(1+ \frac{x/\theta}{n}\Bigg)^n \\
+&= e^{x/\theta}
+\end{align*}
+
+If $x \ge 0$,
+
+\begin{align*}
+\lim_{n \to \infty} F_{n(\hat{\theta}_n - \theta)}(x) 
+&=\lim_{n \to \infty} \Bigg(F_X\Bigg(\theta + \frac{x}{n}\Bigg)\Bigg)^n\\
+&=\lim_{n \to \infty} (1)^n\\
+&=1
+\end{align*}
 
 (d) Conclude that $n(\hat{\theta}_n - \theta) \to_d -Z$ for $Z$ being an exponential distribution with parameter $\theta$.
 
-
+Since $F_{n(\hat{\theta}_n - \theta)}(x) \to e^{x/\theta}$, $f_{n(\hat{\theta}_n - \theta)}(x) = \frac{\partial}{\partial x} F_{n(\hat{\theta}_n - \theta)}(x) \to \frac{\partial}{\partial x} e^{x/\theta} = \frac{e^{x/\theta}}{\theta}$. Thus, $f_{n(\hat{\theta}_n - \theta)}(-x) = \frac{e^{-x/\theta}}{\theta}$, which the density function of an exponential distribution with parameter $\theta$.  So $n(\hat{\theta}_n - \theta) \to_d -Z$ for $Z$ being an exponential distribution with parameter $\theta$.
 
 9. Take the model $X \sim N(\mu, \sigma^2)$. Propose a test for $H_0: \mu = 1$ against $H_1: \mu \neq 1$.
 
