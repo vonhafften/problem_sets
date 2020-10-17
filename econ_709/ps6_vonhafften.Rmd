@@ -114,23 +114,88 @@ $$
 
 If $x_i > \theta$, $\frac{x_i - \theta}{|x_i - \theta|} = 1$ and if $x_i < \theta$, $\frac{x_i - \theta}{|x_i - \theta|} = -1$.
 
+...
+
+\pagebreak
+
 5. Take the Pareto model $f(x) = \alpha x^{-1-\alpha}, x \ge 1$. Calculate the information for $\alpha$ using the second derivative.
 
+The information for $\alpha$ is
 
+\begin{align*}
+I_0 
+&=-E\Bigg[\frac{\partial^2}{\partial^2\alpha} \log (\alpha X^{-1-\alpha}) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
+&= -E\Bigg[\frac{\partial^2}{\partial^2\alpha} (-1-\alpha)(\log \alpha +\log X) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
+&= -E\Bigg[\frac{\partial^2}{\partial^2\alpha} (-\log \alpha - \log X - \alpha\log \alpha - \alpha\log X) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
+&= -E\Bigg[\frac{\partial}{\partial\alpha} \Big(-\frac{1}{\alpha} - \log \alpha -1- \log X\Big) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
+&= -E\Bigg[\frac{1}{\alpha^2} - \frac{1}{\alpha} \Bigg|_{\alpha = \alpha_0}\Bigg]\\
+&= \frac{1}{\alpha_0} - \frac{1}{\alpha_0^2}
+\end{align*}
 
 6. Take the model $f(x) = \theta \exp(-\theta x), x \ge 0, \theta > 0$.
 
 (a) Find the Cramer-Rao lower bound for $\theta$.
 
+\begin{align*}
+I_0
+&=-E\Bigg[\frac{\partial^2}{\partial^2\theta} \log (\theta \exp(-\theta X)) \Bigg|_{\theta = \theta_0}\Bigg] \\
+&=-E\Bigg[\frac{\partial^2}{\partial^2\theta} \log (\theta)-\theta X  \Bigg|_{\theta = \theta_0}\Bigg] \\
+&=-E\Bigg[\frac{\partial}{\partial\theta} \frac{1}{\theta}-\theta  \Bigg|_{\theta = \theta_0}\Bigg] \\
+&=-E\Bigg[ -\frac{1}{\theta^2}  \Bigg|_{\theta = \theta_0}\Bigg] \\
+&=\frac{1}{\theta_0^2}
+\end{align*}
 
+Thus, the Cramer-Rao lower bound is $(nI_0)^{-1} = (n\theta_0^{-2})^{-1}= \theta_0^{2}/n$.
+
+\pagebreak
 
 (b) Recall the MLE $\hat{\theta}_n$ for $\theta$ for Problem 1. Notice that this is a function of the sample mean. Use this formula and the delta method to find the asymptotic distribution for $\hat{\theta}_n$.
 
+The log-likelihood function $\ell_n(\theta)$ is
 
+\begin{align*}
+\ell_n(\theta) 
+&= \sum_{i=1}^n\ln(f(x_i|\theta))\\
+&= \sum_{i=1}^n\ln(\theta \exp(-\theta x_i))\\
+&= \sum_{i=1}^n(\ln(\theta) -\theta x_i)\\
+&= n\ln(\theta) - \theta \sum_{i=1}^n x_i\\
+&= n\ln(\theta) - n\theta \bar{X}_n
+\end{align*}
+
+Thus, $\hat{\theta}_n$ is
+
+$$
+\frac{\partial\ell_n}{\partial \theta} = 0 \implies 0 = \frac{n}{\hat{\theta}_n} - n \bar{X}_n \implies \hat{\theta}_n = \frac{1}{\bar{X}_n}
+$$
+
+By the delta method, $\sqrt{n} (\hat{\theta}_n - \theta_0 ) \to_d N(0, V)$ where $V = \Big((-1)\Big(\frac{1}{\theta_0}\Big)^{-2}\Big)^2\sigma^2 = \sigma^2\theta_0^{4}$ and $\sigma^2 = Var(X) = \frac{1}{\theta_0^2}$. Therefore, $\sqrt{n} (\hat{\theta}_n - \theta_0 ) \to_d N(0, \theta_0^2)$
 
 (c) Find the asymptotic distribution for $\hat{\theta}_n$ using the general formula for the asymptotic distribution of MLE introduced in Section 6. Do you find the same answer as in part (b)?
 
+From Section 6, we have that 
 
+$$
+\sqrt{n}(\hat{\theta}_n - \theta_0) \to_d N(0, I_0^{-1})
+$$
+
+The information of $\theta$ is 
+
+\begin{align*}
+I_0 
+&= -E \Bigg[\frac{\partial^2}{\partial^2\theta} \log(\theta \exp(-\theta X))\Bigg|_{\theta = \theta_0}\Bigg]\\
+&= -E \Bigg[\frac{\partial^2}{\partial^2\theta} \Big( \log(\theta) -\theta X  \Big) \Bigg|_{\theta = \theta_0}\Bigg]\\
+&= -E \Bigg[\frac{\partial}{\partial\theta} \Big( \theta^{-1} - X \Big) \Bigg|_{\theta = \theta_0}\Bigg]\\
+&= -E \Bigg[-\theta^{-2} \Bigg|_{\theta = \theta_0}\Bigg] \\
+&= \theta_0^{-2}
+\end{align*}
+
+Therefore, we get the same asymptotic distribution:
+
+$$
+\sqrt{n}(\hat{\theta}_n - \theta_0) \to_d N(0, \theta_0^{2})
+$$
+
+\pagebreak
 
 7. In the Bernoulli model, you found the asymptotic distribution of the MLE in Problem 2(c).
 
