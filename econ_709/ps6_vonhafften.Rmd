@@ -128,11 +128,11 @@ The information for $\alpha$ is
 \begin{align*}
 I_0 
 &=-E\Bigg[\frac{\partial^2}{\partial^2\alpha} \log (\alpha X^{-1-\alpha}) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
-&= -E\Bigg[\frac{\partial^2}{\partial^2\alpha} (-1-\alpha)(\log \alpha +\log X) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
-&= -E\Bigg[\frac{\partial^2}{\partial^2\alpha} (-\log \alpha - \log X - \alpha\log \alpha - \alpha\log X) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
-&= -E\Bigg[\frac{\partial}{\partial\alpha} \Big(-\frac{1}{\alpha} - \log \alpha -1- \log X\Big) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
-&= -E\Bigg[\frac{1}{\alpha^2} - \frac{1}{\alpha} \Bigg|_{\alpha = \alpha_0}\Bigg]\\
-&= \frac{1}{\alpha_0} - \frac{1}{\alpha_0^2}
+&= -E\Bigg[\frac{\partial^2}{\partial^2\alpha} (\log \alpha + (-1-\alpha)\log X) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
+&= -E\Bigg[\frac{\partial^2}{\partial^2\alpha} (\log \alpha - \log X - \alpha \log X) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
+&= -E\Bigg[\frac{\partial}{\partial\alpha} (\alpha^{-1} - \log X) \Bigg|_{\alpha = \alpha_0}\Bigg]\\
+&= -E\Bigg[(-1)\alpha^{-2} \Bigg|_{\alpha = \alpha_0}\Bigg]\\
+&= \alpha^{-2}
 \end{align*}
 
 6. Take the model $f(x) = \theta \exp(-\theta x), x \ge 0, \theta > 0$.
