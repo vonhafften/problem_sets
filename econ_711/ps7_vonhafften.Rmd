@@ -1,0 +1,51 @@
+---
+title: "ECON 711 - PS 7"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/25/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# A Risky Investment
+
+You have wealth $w > 0$ and preferences over lotteries represented by a von Neumann-Morgenstern expected utility function with Bernoulli utility $u$ which is strictly increasing, twice differentiable, and weakly concave.  Your friend wants you to invest in his startup; you can choose any amount $a \le w$ to invest, and your investment will either triple in value (with probability $p$) or become worthless (with probability $1-p$).  Your expected utility if you invest $a$ is therefore
+
+$$
+U(a) = pu(w-a+3a) + (1-p)u(w-a) = pu(w+2a) + (1-p)u(w-a)
+$$
+
+(a) Show that if $u$ is linear, then you invest all your wealth if $p > \frac{1}{2}$ and nothing if $p < \frac{1}{3}$.
+
+From here on, assume $p > \frac{1}{3}$, so the expected value of the investment is positive; and assume that you are strictly risk-averse ($u''< 0$).
+
+(b) Show that it's optimal to invest a strictly positive amount. (You can do this by showing that $U'(0)>0$ - the marginal expected utility of increasing $a$ is positive when $a=0$.)
+
+(c) Show that $U(a)$ is strictly concave in $a$, so that expect at a corner solution, the first-order condition is necessary and sufficient to find $a^*$.
+
+(d) Show that if $u'(0)$ is infinite, it's not optimal to invest all your wealth; and that if $u'(0)$ is finite, then there's a cutoff $\bar{p}$ such that it's optimal to invest all of your wealth if $p \ge \bar{p}$.
+
+From here on, assume that either $u'(0)$ is infinite or $p \in (\frac{1}{3}, \bar{p})$, so the optimal level of investment $a^*$ is strictly positive but below $w$.
+
+(e) Show that if $u(x) = 1 - e^{-cx}$ (the Constant Absolute Risk Aversion or CARA utility function), your optimal investment $a^*$ does not depend on $w$.
+
+(f) For general $u$, show that if your Coefficient of Absolute Risk Aversion $A(x) = -\frac{u''(x)}{u'(x)}$ is decreasing, you invest more as $w$ increases.
+
+Now reframe the question as deciding what fraction $t$ of your wealth to invest; writing $a = tw$,
+
+$$
+U(t) = pu(w(1+2t)) + (1-p)u(w(1-t))
+$$
+
+(g) Show that if $u(x) = \frac{1}{1-\rho} x^{1-\rho}$, with $\rho \le 1$ and $\rho \neq 0$ (the Constant Relative Risk Aversion or CRRA utility function), you invest the same fraction of your wealth regardless of $w$.
+
+(h) For general $u$, show that if your Coefficient of Relative Risk Aversion $R(x) = -\frac{xu''(x)}{xu'(x)}$ is increasing, you invest a smaller fraction of your wealth as $w$ increases.
