@@ -1,0 +1,182 @@
+---
+title: "ECON 712 - PS 7"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "10/22/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1 Overlapping generations with housing
+
+Consider the following 2-period OG model.  Agents earn $y$ when young and 0 when old.  There is a fixed supply of housing $H^s=1$.  Agents utility function is given by
+
+$$
+U(c_t^t, h_t, c_{t+1}^t) = \ln(c_t^t) + \alpha h_t + \beta c_{t+1}^t
+$$
+
+where $c_t^t$ is the period $t$ consumption, $h_t$ is the period $t$ housing choice, and $c_{t+1}^t$ is the period $t+1$ consumption of a person born in period $t$.  The initial old hold the stock of housing. Assume that $1 + \alpha > \beta y$.
+
+1. Write down and solve the planner's problem.
+
+\begin{align*}
+\max_{c_1^0,\{h_t, c_t^t, c_{t}^{t-1}\}_{\forall t} \ge 0} & \beta c_1^0 + \sum_{t=1}^\infty U(c_t^t, h_t, c_{t}^{t-1})\\
+\text{s.t. } & c_t^t + c_{t}^{t-1} \le y \text{ and } h_t \le H^s
+\end{align*}
+
+Since $U$ in increasing in $c_t^t, c_{t}^{t-1}$, we know that the consumption resource constraint and housing resource constraint will hold at equality $h_t = H^s=1$. Substituting in the utility function,
+
+\begin{align*}
+\max_{c_1^0,\{c_t^t, c_{t}^{t-1}\}_{\forall t} \ge 0} & \beta c_1^0 + \sum_{t=1}^\infty \ln(c_t^t) + \alpha + \beta c_{t}^{t-1}\\
+\text{s.t. } & c_t^t + c_{t}^{t-1} = y
+\end{align*}
+
+The lagrangian is 
+
+$$
+\Lf = \beta c_1^0 + \sum_{t=1}^\infty \ln(c_t^t) + \alpha + \beta c_{t+1}^t + \lambda(y-c_t^t - c_{t}^{t-1})
+$$
+
+\pagebreak
+
+The first order conditions imply:
+
+\begin{align*}
+\frac{\partial \Lf}{\partial c_t^t} = 0 &\implies \frac{1}{c_t^t}-\lambda = 0 \implies \lambda = \frac{1}{c_t^t} \\
+\frac{\partial \Lf}{\partial c_t^{t-1}} = 0 &\implies \beta-\lambda = 0 \implies \beta=\lambda \implies c_t^t = \frac{1}{\beta} \\
+\frac{\partial \Lf}{\partial \lambda} = 0 &\implies y - c_t^t - c_{t}^{t-1} = 0 \implies c_{t}^{t-1} = y - \frac{1}{\beta} 
+\end{align*}
+
+The social planner's solution is $\{c_t^t, h_t, c_{t+1}^t\} = \Big\{\frac{1}{\beta}, 1, y - \frac{1}{\beta}\Big\}$.
+
+2. If $p_t$ is the period $t$ price of a house, solve for a competitive equilibrium with housing in the following parts:
+
+(a) What is the optimization problem facing a young agent?
+
+\begin{align*}
+\max_{c_t^t, h_t, c_{t+1}^t} & \ln(c_t^t) + \alpha h_t + \beta c_{t+1}^t \\
+\text{s.t. } & c_t^t + p_t h_t \le y\\
+             & c_{t+1}^t \le p_{t+1}h_t
+\end{align*}
+
+(b) What are the market clearing conditions?
+
+  - Goods Market: $c_t^t +c_t^{t-1} = y$
+  - Housing Market: $h_t = H_s = 1$
+
+(c) Define a competitive general equilibrium.
+
+A competitive general equilibrium is an allocation of goods where agents optimize and markets clear.
+
+(d) Solve for an agent's optimal housing and consumption decision rules. How does housing depend on the current and future price of houses?\footnote{If you choose to solve the problem without imposing non-negativity constraints, you should verify the conditions under which consumption and housing choices are non-negative.}
+
+Since $U$ is increasing in $c_t^t$, $h_t$, and $c_{t+1}^t$, the household will consume until budget constraints hold at equality.  So we can rewrite the household problem:
+
+$$
+\max_{h_t} \ln(y -p_t h_t) + \alpha h_t + \beta p_{t+1}h_t \\
+$$
+
+FOCs with respect to $h_t$ imply:
+
+$$
+\frac{-p_t}{y -p_t h_t} + \alpha + \beta p_{t+1} = 0 \implies \frac{y -p_t h_t}{p_t} = \frac{1}{\alpha + \beta p_{t+1}} \implies h_t = \frac{y}{p_t}-\frac{1}{\alpha + \beta p_{t+1}}\\
+$$
+$$
+c_t^t = y - p_t\Bigg(\frac{y}{p_t}-\frac{1}{\alpha + \beta p_{t+1}}\Bigg) = \frac{1}{p_t(\alpha + \beta p_{t+1})}\\
+$$
+$$
+c_{t+1}^t = p_{t+1}\Bigg(\frac{y}{p_t}-\frac{1}{\alpha + \beta p_{t+1}}\Bigg) = \frac{yp_{t+1}}{p_t}-\frac{p_{t+1}}{\alpha + \beta p_{t+1}}
+$$
+
+If $p_t$, $p_{t+1}$, and $\frac{y}{p_t}-\frac{1}{\alpha + \beta p_{t+1}}$ are nonnegative, $c_t^t$, $c_{t+1}^t$, and $h_t$ are nonnegative.
+
+(e) Solve for the law of motion for house price in equilibrium and graph it in $(p_t, p_{t+1})$ space.  Assume that $p_t < y$.
+
+From housing market clearing condition ($h_t = H_s = 1$):
+
+\begin{align*}
+\frac{y}{p_t}-\frac{1}{\alpha + \beta p_{t+1}} &= 1 \\
+y (\alpha + \beta p_{t+1}) &= p_t(\alpha + \beta p_{t+1} + 1) \\
+y \alpha + y \beta p_{t+1} &= p_t\alpha + p_t\beta p_{t+1} + p_t \\
+y \beta p_{t+1} -p_t\beta p_{t+1} &= p_t\alpha + p_t - y \alpha \\
+p_{t+1} &= \frac{p_t\alpha + p_t - y \alpha}{y \beta  -p_t\beta } \\
+p_{t+1} &= \frac{p_t - (y-p_t) \alpha}{(y-p_t)\beta } \\
+p_{t+1} &= \frac{p_t}{\beta(y-p_t)}- \frac{\alpha}{\beta}
+\end{align*}
+
+The non-negativity constraint on $p_{t+1}$ implies a lower bound on $p_t$:
+
+$$
+p_{t+1} \ge 0 
+\implies \frac{p_t}{\beta(y-p_t)}- \frac{\alpha}{\beta} \ge 0 
+\implies p_t \ge \frac{\alpha}{1+\alpha} y 
+$$
+
+```{r, echo = FALSE}
+y <- 1
+
+alpha <- 0.99999
+
+beta <- 0.999
+
+p_bar <- (beta *y - 1 -alpha + sqrt((1-beta * y +alpha)^2 + 4*beta *alpha *y))/(2*beta)
+
+plot(1, type = "n", ylab = "p_(t+1)", xlab = "p_t", xlim = c(alpha/(1 + alpha)*y, y), ylim = c(0, 10), xaxs = "i", yaxs = "i", axes = FALSE)
+box()
+if (1 + alpha < beta * y) print("Error")
+
+p_t <- (0:(1*100))/100
+
+p_t_1 <- p_t/(beta*(y-p_t))- (alpha/beta)
+
+lines(x=p_t, y=p_t_1)
+
+abline(h=p_bar, v=p_bar, lty=2)
+
+mtext(side = 1, text = "p_bar", at = p_bar)
+mtext(side = 1, text = "y", at = y)
+mtext(side = 1, text = "alpha/(1 + alpha)y", at = alpha/(1 + alpha)*y)
+mtext(side = 4, text = "p_bar", at = p_bar)
+```
+
+\pagebreak
+
+(f) Solve for a steady state house price level.
+
+Let $\bar{p} = p_{t+1} = p_t$:
+
+\begin{align*}
+\bar{p} &= \frac{\bar{p}}{\beta(y-\bar{p})}- \frac{\alpha}{\beta}\\
+\bar{p} &= \frac{\bar{p} - \alpha(y-\bar{p})}{\beta(y-\bar{p})}\\
+\beta(y-\bar{p})\bar{p} &= \bar{p} - \alpha(y-\bar{p})\\
+\beta y \bar{p}-\beta\bar{p}^2 &= \bar{p} - \alpha y + \alpha\bar{p}\\
+0 &= \beta\bar{p}^2+ \bar{p}-\beta y \bar{p} + \alpha\bar{p} - \alpha y \\
+0 &= \beta\bar{p}^2+ (1-\beta y +\alpha)\bar{p} - \alpha y\\
+\bar{p} &= \frac{-(1-\beta y +\alpha) \pm \sqrt{(1-\beta y +\alpha)^2 - 4\beta (- \alpha y)}}{2\beta}\\
+\bar{p} &= \frac{\beta y - 1 -\alpha \pm \sqrt{(1-\beta y +\alpha)^2 + 4\beta \alpha y}}{2\beta}
+\end{align*}
+
+Notice that since $1 + \alpha > \beta y$, $\frac{\beta y - 1 -\alpha - \sqrt{(1-\beta y +\alpha)^2 + 4\beta \alpha y}}{2\beta}$ is negative. Thus, since $\bar{p}$ is nonnegative, 
+
+$$
+\bar{p} = \frac{\beta y - 1 -\alpha + \sqrt{(1-\beta y +\alpha)^2 + 4\beta \alpha y}}{2\beta}
+$$
+
+(g) Does the competitive equilibrium implement the planner's allocation in a steady state?
+
+Let us consider the steady state level of housing consumption $\bar{h}$, consumption of the young $\bar{c}_0$, and consumption of the old $\bar{c}_1$.  For $\bar{h}$, the competitive equilibrium achieves the planner's allocation because the housing market clears, so $\bar{h} = 1$.  Since budget constraints hold at equality, 
+
+$$
+\bar{h} = 1 \implies \bar{c}_1 = \bar{p} = \frac{\beta y - 1 -\alpha + \sqrt{(1-\beta y +\alpha)^2 + 4\beta \alpha y}}{2\beta} \text{ and } \bar{c}_0=y-\bar{c}_1.
+$$
+
+So the consumption of the young and old in the competitive equilibrium do not match the planner's allocation in the steady state.
