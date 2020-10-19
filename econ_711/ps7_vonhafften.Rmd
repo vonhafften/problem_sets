@@ -75,7 +75,7 @@ $$
 U'(w) = 2pu'(w+2(w)) - (1-p)u'(w-(w)) = 2pu'(3w) - (1-p)u'(0) 
 $$
 
-Thus, if $u'(0)$ is infinite, $U'(w) = -\infty$, so you're infinitely better off investing $w - \varepsilon$ instead of $w$.
+Thus, if $u'(0)$ is infinite, $U'(w) = -\infty$, so you're infinitely better off investing $w - \varepsilon$ instead of $w$ for a small positive $\varepsilon$.
 
 If $u'(0)$ is finite, the first order condition is:
 
