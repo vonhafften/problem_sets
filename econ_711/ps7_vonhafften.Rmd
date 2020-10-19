@@ -75,12 +75,12 @@ $$
 U'(w) = 2pu'(w+2(w)) - (1-p)u'(w-(w)) = 2pu'(3w) - (1-p)u'(0) 
 $$
 
-Thus, if $u'(0)$ is infinite, $U'(w) = -\infty$, so the first order condition cannot hold at $w$.
+Thus, if $u'(0)$ is infinite, $U'(w) = -\infty$, so you're infinitely better off investing $w - \varepsilon$ instead of $w$.
 
 If $u'(0)$ is finite, the first order condition is:
 
 $$
-0 = 2pu'(3w) - (1-p)u'(0) \implies \bar{p} = \frac{u'(0)}{2u'(3w)+u'(0)}
+U'(w) = 0 \implies 2pu'(3w) - (1-p)u'(0) = 0 \implies \bar{p} = \frac{u'(0)}{2u'(3w)+u'(0)}
 $$
 
 Thus, if $p \ge \bar{p}$ investing all of your wealth is optimal.
