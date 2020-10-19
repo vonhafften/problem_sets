@@ -80,7 +80,7 @@ Thus, if $u'(0)$ is infinite, $U'(w) = -\infty$, so the first order condition ca
 If $u'(0)$ is finite, the first order condition is:
 
 $$
-0 = 2\bar{p}u'(3w) - (1-\bar{p})u'(0) \implies \bar{p} = \frac{u'(0)}{2u'(3w)+u'(0)}
+0 = 2pu'(3w) - (1-p)u'(0) \implies \bar{p} = \frac{u'(0)}{2u'(3w)+u'(0)}
 $$
 
 Thus, if $p \ge \bar{p}$ investing all of your wealth is optimal.
@@ -89,7 +89,43 @@ From here on, assume that either $u'(0)$ is infinite or $p \in (\frac{1}{3}, \ba
 
 (e) Show that if $u(x) = 1 - e^{-cx}$ (the Constant Absolute Risk Aversion or CARA utility function), your optimal investment $a^*$ does not depend on $w$.
 
+$$
+U(a) = p(1 - e^{-c(w+2a)}) + (1-p)(1 - e^{-c(w-a)}) = p(1 - e^{-cw}e^{-2ac}) + (1-p)(1 - e^{-cw}e^{ac})
+$$
+
+The first order condition implies
+
+\begin{align*}
+U'(a) &= 0 \\
+\implies  p(- e^{-cw}e^{-2ac}(-2c)) + (1-p)(- e^{-cw}e^{ac}(c)) &= 0 \\
+\implies  2pe^{-2ac} &= (1-p)e^{ac} \\
+\implies  a^* &= \frac{3c\ln(1-p)}{\ln(2p)}
+\end{align*}
+
+Thus, $a^*$ does not depend on $w$.
+
+\pagebreak
+
 (f) For general $u$, show that if your Coefficient of Absolute Risk Aversion $A(x) = -\frac{u''(x)}{u'(x)}$ is decreasing, you invest more as $w$ increases.
+
+Notice that if $U'(a)$ is strictly increasing in $w$ at $a=a^*(w)$, then $a^*$ is strictly increasing in $w$ because $a^*(w) = \arg\max U(a)$, $U$ is differentiable and strictly concave in $a$, and $U'(a)$ is strictly increasing in $w$ when $U'(a)=0$.
+
+From (b), we found $U'(a)$, so
+
+\begin{align*}
+\frac{\partial}{\partial w}(U'(a)) 
+&= 2pu''(w+2a) - (1-p)u''(w-a) \\
+&= -2pu'(w+2a)\Bigg(- \frac{u''(w+2a)}{u'(w+2a)}\Bigg) + (1-p)u'(w-a)\Bigg(-\frac{u''(w-a)}{u'(w-a)}\Bigg) \\
+&= -2pu'(w+2a)A(w+2a) + (1-p)u'(w-a)A(w-a)
+\end{align*}
+
+At the optimum, $U'(a) = 0 \implies 2pu'(w+2a) = (1-p)u'(w-a)$. Thus, because $A$ is decreasing $\implies A(w+2a^*)<A(w-a^*)$,
+
+$$
+\frac{\partial}{\partial w}(U'(a))\Bigg|_{a=a^*(w)}=(1-p)u'(w-a^*)(A(w-a^*)-A(w+2a^*))>0
+$$
+
+Thus, you invest more as $w$ increases.
 
 Now reframe the question as deciding what fraction $t$ of your wealth to invest; writing $a = tw$,
 
@@ -99,4 +135,41 @@ $$
 
 (g) Show that if $u(x) = \frac{1}{1-\rho} x^{1-\rho}$, with $\rho \le 1$ and $\rho \neq 0$ (the Constant Relative Risk Aversion or CRRA utility function), you invest the same fraction of your wealth regardless of $w$.
 
-(h) For general $u$, show that if your Coefficient of Relative Risk Aversion $R(x) = -\frac{xu''(x)}{xu'(x)}$ is increasing, you invest a smaller fraction of your wealth as $w$ increases.
+$$
+U(t) = p\frac{1}{1-\rho} \Big(w(1+2t)\Big)^{1-\rho} + (1-p)\frac{1}{1-\rho} \Big(w(1-t)\Big)^{1-\rho}\\
+$$
+
+First order conditions imply:
+
+\begin{align*}
+U'(t) &= 0 \\
+\implies p\frac{1-\rho}{1-\rho} \Big(w(1+2t)\Big)^{-\rho}(2w) + (1-p)\frac{1-\rho}{1-\rho} \Big(w(1-t)\Big)^{-\rho} (-w) &= 0\\
+2wp \Big(w(1+2t)\Big)^{-\rho}  -w(1-p) \Big(w(1-t)\Big)^{-\rho} &= 0\\
+\implies 2 p (1+2t)^{-\rho} -(1-p) (1-t)^{-\rho} &= 0\\
+\end{align*}
+
+Since the above equation does not depend upon $w$, $t^*$ does not depend upon $w$, so you invest the same fraction of your wealth regardless of $w$.
+
+\pagebreak
+
+(h) For general $u$, show that if your Coefficient of Relative Risk Aversion $R(x) = -\frac{xu''(x)}{u'(x)}$ is increasing, you invest a smaller fraction of your wealth as $w$ increases.
+
+\begin{align*}
+U'(t) &= 2wpu'(w(1+2t)) + (1-p)u'(w(1-t))(-w) \\
+&=2wpu'(w(1+2t)) - w(1-p)u'(w(1-t)) \\
+\frac{\partial}{\partial w}(U'(t)) &= 2pu'(w(1+2t)) + 2wpu''(w(1+2t))(1+2t) \\
+&- (1-p)u'(w(1-t)) - w(1-p)u''(w(1-t))(1-t)\\
+\end{align*}
+
+At the optimum, $U'(t) = 0 \implies 2pu'(w(1+2t)) = (1-p)u'(w(1-t))$
+
+\begin{align*}
+\frac{\partial}{\partial w}(U'(t)) \Bigg|_{t=t^*(w)} 
+&= 2wpu''(w(1+2t))(1+2t) - w(1-p)u''(w(1-t))(1-t)\\
+&= -2pu'(w(1+2t))\Bigg(-w(1+2t)\frac{u''(w(1+2t))}{u'(w(1+2t))}\Bigg) \\
+&+ (1-p)u'(w(1-t))\Bigg(-w(1-t)\frac{u''(w(1-t))(1-t)}{u'(w(1-t))(1-t)}\Bigg)\\
+&= -2pu'(w(1+2t))R(w(1+2t)) + (1-p)u'(w(1-t))R(w(1-t))\\
+&= 2pu'(w(1+2t))(R(w(1-t)) - R(w(1+2t)))
+\end{align*}
+
+Thus, since $R$ is increasing $\implies R(w(1-t)) < R(w(1+2t))$, so $\frac{\partial}{\partial w}(U'(t)) |_{t=t^*(w)} < 0$. Therefore, you invest a smaller fraction of your wealth as $w$ increases.
