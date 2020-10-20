@@ -1,0 +1,118 @@
+---
+title: "ECON 709 - Midterm Cheatsheet"
+author: "Alex von Hafften"
+date: "10/20/2020"
+output: pdf_document
+geometry: margin=1cm
+header-includes:
+- \AtBeginDocument{\let\maketitle\relax}
+- \pagenumbering{gobble}
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\mtx}{\text{mtx}}
+- \newcommand{\crd}{\text{crd}}
+classoption:
+- twocolumn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# ECON 709 Midterm Cheatsheet
+
+\begin{itemize}
+\item $P(A) = 1 - P(A^c)$
+\item If $A \subseteq B$ then $P(A) \leq P(B)$
+\item Boole's inequality: $P(A \cup B) \leq P(A) + P(B)$
+\item Bonferroni's inequality: $P(A\cap B) \geq P(A) + P(B) - 1$
+\item Bayes' Rule: $P(B|A) = \frac{P(A \cap B)}{P(A)} = \frac{P(A|B)P(B)}{P(A)} = \frac{P(A|B)P(B)}{P(A|B)P(B) + P(A|B^c)P(B^c)}$
+\item $A,B$ are independent if $P(A \cap B) = P(A)P(B)$. If $P(A)>0$ this implies $P(B) = P(B|A).$
+\item A group of events are jointly independent if for any subset $J\subseteq \{ 1,\dots,k\}$, $P(\cap_{j \in J}A_j) = \prod_{j\in J}A_j.$
+\end{itemize}
+
+\begin{center}
+\line(1,0){250}
+\end{center}
+
+\begin{itemize}
+\item $\lim_{x \rightarrow \infty}F(x) = 1, \lim_{x \rightarrow -\infty}F(x) = 0; $ $F$ is non-decreasing; $F$ is right-continuous.
+\item $F_Y(y) = P(g(X) \leq y) = P(X \leq g^{-1}(y) = F_X(g^{-1}(y))$ if $g$ is strictly increasing. Differentiate to find the pdf. If decreasing then the inequality sign flips and to flip back you get $F_{Y}(y)= 1 -F_X(h(y))$
+\item Let $X$ have PDF $f_X(x), Y = g(X),$ where $g$ is a monotone function. Suppose that $f_X(X)$ is continuous on $X$ and that $g^{-1}(y)$ has a continuous derivative on $Y$. Then the PDF of Y is given by:
+\begin{align*}
+f_Y(y) = \begin{cases} f_X(g^{-1}(y)|\frac{d}{dy}g^{-1}(y)|\\ 0, \text{else}\end{cases}
+\end{align*}
+\end{itemize}
+
+\begin{itemize}
+\item $E(X) = \sum_{x \in X}f_{X}x \text{ or } \int_{-\infty}^{\infty} xf_X(x)dx$
+\item $M_{X}(t) = E[exp(tX)]$
+\item $\frac{d^{m}}{dt^m}M(t)|_{t=0} = E(X^m)$
+\end{itemize}
+
+\begin{center}
+\line(1,0){250}
+\end{center}
+
+\begin{itemize}
+\item $f_{X,Y}(x,y) = \frac{\partial^2}{\partial x \partial y}F_{X,Y}(x,y)$
+\item $f_{X}(x) = \int_{-\infty}^{\infty} f_{X,Y}(x,v)dv$
+\item $f_{Y|X}(y|x) = \frac{f_{X,Y}(x,y}{f_{X}(x)}$
+\item $A,B$ independent if $P(X\in A,Y \in B) = P(X\in A)P(Y \in B)$ or $F_{X,Y}(x,y) = F_{X}(x) F_Y(y)$ or $f_{X,Y}(x,y) = f_X(x) f_Y(y)$
+\item $X,Y$ independent then $E(g(X)h(Y))=E(g(X))E(h(Y))$
+\item $E[Y|X=x] =\int_{-\infty}^{\infty} yf_{Y|X}(y|x)dy$
+\item $E[Y|X=x] \frac{\int_{-\infty}^{\infty}yf_{X,Y}(x,y)dy}{\int_{-\infty}^{\infty}f_{X,Y}(x,y)dy}$
+\item $E(E[Y|X]) = E(Y)$
+\item $Var(Y) = E[Var(Y|X)] + Var(E(Y|X))$
+\item $Cov(X,Y) = E((X-EX)(Y-EY)) = E(X(Y-EY)) = E(XY) - EXEY$
+\item $Corr(X,Y) = \frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}$
+\item A variance-covariance matrix is symmetric and positive semi-definite.
+\item If $g$ is one to one and $Y=g(X) $ then $f_Y(y) = f_X(g^{-1})(y))|J|$
+\item A matrix is psd if its eigenvalues are nonnegative and nsd if its eigenvalues are nonpositive.
+\end{itemize}
+
+\begin{center}
+\line(1,0){250}
+\end{center}
+
+\begin{itemize}
+\item An estimator of $\theta$ is unbiased if $E(\hat{\theta}) = \theta $.
+\item Jensen's inequality: If $X$ is a random variable and $f$ is convex then $f(E[X]) \leq E[f(X)]$
+\item $Var(\bar{X}_n) = \sigma_X^2/n$
+\item $s^2 = \frac{n}{n-1} \sum_i (X_i - \bar{X}_n)^2$ is an unbiased estimator of the variance.
+\item $t$ statistic: $t = \sqrt{n}(\bar{X}_n - \mu)/s$
+\item $I_n - n^{-1} 1_n1_n'$ is idempotent.
+\end{itemize}
+
+\begin{center}
+\line(1,0){250}
+\end{center}
+
+\begin{itemize}
+\item A sequence of random variables converges in probability to $Z$ as $n \rightarrow \infty$ if $\forall \epsilon>0$ we have $\lim_{n\rightarrow \infty}P(|Z_n - Z|\geq \epsilon) = 0.$ Notated $Z_n \rightarrow_p Z$ as $n \rightarrow \infty$
+\item WLLN: $\bar{X}_n \rightarrow_p \mu$ as $n\rightarrow \infty$.
+\item If an estimator $\hat{\theta}_n$ for $\theta$ converges in probability to $\theta$ then $\hat{\theta}_n$ is consistent for $\theta$.
+\item Markov's inequality: $P(|X|\geq \lambda) \leq \frac{E(|X|)}{\lambda}$.
+\item Chebychev's inequality: $P(|X - \mu| \geq \lambda) \leq \frac{Var(X)}{\lambda^2}$
+\item CMT: If $Z_n \rightarrow_p z $ as $n\rightarrow \infty$ and $g$ is continuous then $g(Z_n) \rightarrow_p g(z)$ as $n\rightarrow \infty$.
+\item A sequence of random variables converges in distribution to $Z$ if $P(Z_n\leq x)\rightarrow P(Z\leq x)$
+\item CLT: If $X_i$ iid with $E(X_i) = \mu,Var(X_i) \rightarrow_d N(0,\sigma^2)$ (multivariate version uses covariance matrix instead of $\sigma^2$).
+\item Delta Method: If $\sqrt{n}(\hat{\theta}_n - \theta) \rightarrow_d N(0,\sigma^2)$ and $g$ is continuously differentiable in an open neighborhood of $\theta$. Then $\sqrt{n}(g(\hat{\theta}_n) - g(\theta))\rightarrow_d N(0,V)$ where $V = (g'(\theta))^2\sigma^2$.
+\item mulitvariate: $V = H(\theta)\Sigma H(\theta)'$ where $H(\theta) = \frac{\partial}{\partial \theta'}$
+
+$$h(\theta) = \begin{pmatrix} \frac{\partial h_1(\theta)}{\partial \theta_1} & \dots &  \frac{\partial h_1(\theta)}{\partial \theta_n} \\ \dots & \dots & \dots \\  \frac{\partial h_n(\theta)}{\partial \theta_1} & \dots &  \frac{\partial h_n(\theta)}{\partial \theta_n} \end{pmatrix}$$
+\end{itemize}
+
+\begin{center}
+\line(1,0){250}
+\end{center}
+
+\begin{itemize}
+\item Find MLE: write down log likelihood ($f(x|\theta)$) and take FOC, and check second order conditions to ensure negative!
+\item $S = \frac{\partial}{\partial \theta}log(f(X|\theta)).$
+\item $I_0 = E[SS'] = -E\left[ \frac{\partial^2}{\partial\theta\partial\theta'}log f(X|\theta)|_{\theta = \theta_0} \right]$
+\item Note: for intuition note that we have log likelihood and $log''(x) =  (\frac{1}{x})' = -\frac{1}{x^2}$ so $log''(x) =- (log'(x))^2.$
+\item CRLB: $Var(\hat{\theta}_n) \geq (nI_0)^{-1}$ and CR efficient is when this holds with equality.
+\end{itemize}
