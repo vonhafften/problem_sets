@@ -1,6 +1,6 @@
 ---
 title: "ECON 709 - Midterm Cheatsheet"
-author: "Alex von Hafften"
+author: "Michael Nattinger and Alex von Hafften"
 date: "10/20/2020"
 output: pdf_document
 geometry: margin=1cm
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # ECON 709 Midterm Cheatsheet
 
 \begin{itemize}
-\item $P(A) = 1 - P(A^c)$
+\item $P(A) = 1 - P(A^c)$\footnote{Michael Nattinger wrote this cheatsheet. Alex von Hafften tweaked it.}
 \item If $A \subseteq B$ then $P(A) \leq P(B)$
 \item Boole's inequality: $P(A \cup B) \leq P(A) + P(B)$
 \item Bonferroni's inequality: $P(A\cap B) \geq P(A) + P(B) - 1$
@@ -44,12 +44,8 @@ knitr::opts_chunk$set(echo = TRUE)
 \begin{align*}
 f_Y(y) = \begin{cases} f_X(g^{-1}(y)|\frac{d}{dy}g^{-1}(y)|\\ 0, \text{else}\end{cases}
 \end{align*}
-\end{itemize}
-
-\begin{itemize}
 \item $E(X) = \sum_{x \in X}f_{X}x \text{ or } \int_{-\infty}^{\infty} xf_X(x)dx$
-\item $M_{X}(t) = E[exp(tX)]$
-\item $\frac{d^{m}}{dt^m}M(t)|_{t=0} = E(X^m)$
+\item $M_{X}(t) = E[exp(tX)]$ and $\frac{d^{m}}{dt^m}M(t)|_{t=0} = E(X^m)$
 \end{itemize}
 
 \begin{center}
