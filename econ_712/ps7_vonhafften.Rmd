@@ -91,7 +91,7 @@ $$
 \frac{-p_t}{y -p_t h_t} + \alpha + \beta p_{t+1} = 0 \implies \frac{y -p_t h_t}{p_t} = \frac{1}{\alpha + \beta p_{t+1}} \implies h_t = \frac{y}{p_t}-\frac{1}{\alpha + \beta p_{t+1}}\\
 $$
 $$
-c_t^t = y - p_t\Bigg(\frac{y}{p_t}-\frac{1}{\alpha + \beta p_{t+1}}\Bigg) = \frac{1}{p_t(\alpha + \beta p_{t+1})}\\
+c_t^t = y - p_t\Bigg(\frac{y}{p_t}-\frac{1}{\alpha + \beta p_{t+1}}\Bigg) = \frac{p_t}{\alpha + \beta p_{t+1}}\\
 $$
 $$
 c_{t+1}^t = p_{t+1}\Bigg(\frac{y}{p_t}-\frac{1}{\alpha + \beta p_{t+1}}\Bigg) = \frac{yp_{t+1}}{p_t}-\frac{p_{t+1}}{\alpha + \beta p_{t+1}}

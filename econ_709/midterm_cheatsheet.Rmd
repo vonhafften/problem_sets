@@ -42,7 +42,7 @@ knitr::opts_chunk$set(echo = TRUE)
 \item $F_Y(y) = P(g(X) \leq y) = P(X \leq g^{-1}(y) = F_X(g^{-1}(y))$ if $g$ is strictly increasing. Differentiate to find the pdf. If decreasing then the inequality sign flips and to flip back you get $F_{Y}(y)= 1 -F_X(h(y))$
 \item Let $X$ have PDF $f_X(x), Y = g(X),$ where $g$ is a monotone function. Suppose that $f_X(X)$ is continuous on $X$ and that $g^{-1}(y)$ has a continuous derivative on $Y$. Then the PDF of Y is given by:
 \begin{align*}
-f_Y(y) = \begin{cases} f_X(g^{-1}(y)|\frac{d}{dy}g^{-1}(y)|\\ 0, \text{else}\end{cases}
+f_Y(y) = \begin{cases} f_X(g^{-1}(y))|\frac{d}{dy}g^{-1}(y)|& y \in Y\\ 0, &\text{otherwise}\end{cases}
 \end{align*}
 \item $E(X) = \sum_{x \in X}f_{X}x \text{ or } \int_{-\infty}^{\infty} xf_X(x)dx$
 \item $M_{X}(t) = E[exp(tX)]$ and $\frac{d^{m}}{dt^m}M(t)|_{t=0} = E(X^m)$
