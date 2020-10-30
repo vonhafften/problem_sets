@@ -1,0 +1,138 @@
+---
+title: "ECON 711B - Problem Set 1"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "11/2/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Show that if pure strategy $t_i \in S_i$ is strictly dominated, then so is any mixed strategy $\sigma_i \in \Delta S_i$ with $t_i$ in its support.
+
+Let $t_i \in S_i$ be strictly dominated by $x_i \in \Delta (S_i)$ where $x_i$.  For any $\sigma_i \in \Delta (S_i)$ and $a \in [0,1]$, $u(x_i, s_{-i}) > u(\sigma_i, s_{-i}) \implies pu(x_i, s_{-i})+(1-p)u(\sigma_i, s_{-i}) > pu(t_i, s_{-i})+(1-p)u(\sigma_i, s_{-i})$ for all $s_{-i} \in S_{-i}$.
+
+Combine t_i with a mix of other strategies.  That combination is dominated by that mix of other strategies combined with x_i.
+
+\pagebreak
+
+2. Two travelers returning home from a remote island where they bought identical antiques discover that the airline has managed to smash them. The airline manager decides to use the following scheme to determine the compensation that the airline will give each traveler: Each traveler will separately report the cost of the antique, stating an integer number of dollars between 2 and 500. If both report the same number of dollars, then the airline will give each of them that number of dollars. If they report different numbers of dollars, then the traveler who stated the smaller number will be given the amount he stated plus a bonus of 2 dollars; the traveler who stated the higher number will be given the amount stated by the other traveler minus a penalty of 2 dollars. Suppose that each traveler cares only about maximizing the expected number of dollars he receives from the airline.
+
+(a) Define the normal form game corresponding to the story above by specifying the set of players $N$, their strategy sets $S_i$, and their payoff functions $u_i$.
+
+The normal form game is a triple $(N, S, u)$ where the finite set of players is $N = \{1, 2\}$, the set of pure strategy profiles is $S = S_1 \times S_2$ where $S_1 = S_2 = \{2, ..., 500\}$ and the payoff function of player $i$ is
+
+\begin{align*}
+u(s_1, s_2) = 
+\begin{cases} 
+(s_1 + 2, s_1 - 2) & \text{ if } s_1 < s_2 \\
+(s_1, s_2)         & \text{ if } s_1 = s_2 \\
+(s_2 - 2, s_2 + 2) & \text{ if } s_1 > s_2 \\
+\end{cases}
+\end{align*}
+
+(b) Suppose player 1 believes that the highest action in $S_2$ that receives positive probability is $\bar{s_2} > 2$. Show that given this belief, player 1's best response must be less than $\bar{s_2}$.
+
+(c) If there is common knowledge of rationality between the players, what is the appropriate prediction of play in this game?
+
+Consider $(500, 500)$. Since both players report the same amount they both receive 500. If Player 1 stated 499, she would be receive 501, so she's better off.  Thus, switching to (499, 500)....
+
+\pagebreak
+
+3. Consider the following normal form fame:
+
++-------+-------+-------+-------+
+|       | $L$   | $C$   | $R$   |
++-------+-------+-------+-------+
+| $T$   | 0, 4  | 5, 6  | 8, 7  |
++-------+-------+-------+-------+
+| $B$   | 2, 9  | 6, 5  | 5, 1  |
++-------+-------+-------+-------+
+
+(a) Are any pure strategies in this game strictly dominated? If so, then for each such strategy $s_i$, identify all dominating strategies that do not put positive probability on $s_i$.
+
+For Player 1, no pure strategies are strictly dominated.  Since Player 1 has only two actions, a pure strategy would have to be dominated by the other pure strategy (i.e. no need to check for mixed strategies that dominate).  We can see that neither $T$ dominates $B$ nor vice versa because Player 1 is better off playing $B$ when Player 2 plays $L$ ($u_1(B, L) = 2 > 0 = u_1(T, L)$) and Player 1 is better off playing $T$ and when Player 2 plays $R$ ($u_1(T, R) = 8 > 5 = u_1(B, R)$).
+
+For Player 2, no pure strategies are strictly dominated either. First off, similar comparisons as above show that no pure strategies are dominated by other pure strategies. Second, let's consider if some mixed strategy dominating a pure strategy. Since $u_2(T, L) < u_2(T, C) < u_2(T, R)$ and $u_2(B, L) > u_2(B, C) > u_2(B, R)$, the only possibility is that a mixture of $L$ and $R$ could strictly dominate $C$.  Assume for sake a contradiction that there exists some $\lambda \in [0,1]$ such that $\lambda L \bigoplus(1-\lambda)R$ strictly dominates $C$.  This implies that $\lambda 4 + (1-\lambda)7 > 6 \implies \lambda < \frac{1}{3}$.  Furthermore, this implies that $\lambda 9 + (1-\lambda)1 > 5 \implies \lambda > \frac{1}{2}$. This is a contradiction.  No such mixed strategy exists.
+
+(b) If there is common knowledge of rationality between the players, what should our prediction of play in this game be?
+
+To find the Nash equilibria, we first consider pure strategies:
+
+  - Say Player 1 thinks Player 2 will play $L$.  Player 1's best response to $L$ is to play $B$.  Player 2's best response to $B$ is play $L$.  Thus, $(B, L)$ is a Nash equilibrium.
+  - Say Player 1 thinks Player 2 will play $C$.  Player 1's best response to $C$ is to play $B$.  Above we say that Player 2's best response to $B$ is to play $L$. Thus, $C$ is not rationalizable.
+  - Say Player 1 thinks Player 2 will play $R$.  Player 1's best reponse to $R$ is to play $T$.  Player 2's best response to $T$ is to play $R$.  Thus, $(T, R)$ is a Nash equilibrium.
+  
+Now let us consider mixed strategies.  Let $\sigma_T$ be the probability that Player 1 plays $T$ and $\sigma_L$ be the probability that Player 2 plays $L$. Thus, $1- \sigma_T$ is the probability that Player 1 plays $B$ and, since we eliminate $C$ as a non-rationalizable strategy, $1-\sigma_L$ is the probability that Player 2 plays $R$. For $\sigma_L$ and $\sigma_T$ to be a Nash equilibrium:
+
+$$
+4 \sigma_L + 9 (1-\sigma_L) = 7 \sigma_L + (1-\sigma_L) \implies \sigma_L = \frac{8}{11}
+$$
+
+$$
+8 (1-\sigma_T) = 2 \sigma_T + 5(1-\sigma_L) \implies \sigma_T = \frac{3}{5}
+$$
+\pagebreak
+
+4. Which pure strategies are rationalizable in the following normal form game? Explain.
+
++-------+-------+-------+-------+-------+-------+
+|       | $a$   | $b$   | $c$   | $d$   | $e$   |
++-------+-------+-------+-------+-------+-------+
+| $A$   | 2, 1  | 1, 2  | -1, -6|-3, -4 | -1, -6|
++-------+-------+-------+-------+-------+-------+
+| $B$   | 0, 0  | 2,1   | 1,2   | 0, 0  | -1, -6|
++-------+-------+-------+-------+-------+-------+
+| $C$   | -5, -1| -4,-1 | 2,1   | 1,2   | -1, -6|
++-------+-------+-------+-------+-------+-------+
+| $D$   | 1, 2  | -4,-1 | 0,0   | 2, 1  | -1, -6|
++-------+-------+-------+-------+-------+-------+
+| $E$   | -5, -1| -4,-1 | 0,0   | 0, 0  | 2, 1  |
++-------+-------+-------+-------+-------+-------+
+
+There are two rationalizable cycles of pure strategies: $(E, e)$ and $(A, a), (A, b), (B, b), (B, c), (C, c), (C, d), (D, d), (D, a)$.
+
+For $(E, e)$, say Player 1 thinks that Player 2 will play $e$.  Player 1's best reponse to $e$ is to play $E$.  In turn, Player 2's best response to $E$ is $e$.  Thus, $(E, e)$ is rationalizable.
+
+For the longer rationalizable cycle, say Player 1 thinks that Player 2 will play $a$. 
+
+  - Player 1's best response to $a$ is to play $A$.
+  - Player 2's best response to $A$ is to play $b$.
+  - Player 1's best response to $b$ is to play $B$.
+  - Player 2's best response to $B$ is to play $c$.
+  - Player 1's best response to $c$ is to play $C$.
+  - Player 2's best response to $C$ is to play $d$.
+  - Player 1's best response to $d$ is to play $D$.
+  - Player 2's best response to $D$ is to play $a$.
+
+Thus, $(A, a), (A, b), (B, b), (B, c), (C, c), (C, d), (D, d)$, and $(D, a)$ are all rationalizable.
+
+\pagebreak
+
+5. Two firms have developed drugs to cure a rare disease. For each firm, if it chooses to seek FDA approval for the drug, it pays a cost $c > 0$. If only one firm seeks approval, it captures the entire market for this cure and gets revenue $R > 0$. If both firms seeks approval, each only gets a smaller amount of revenue $0 < r < R$. If a firm decides not to seek approval, it gets a payoff of zero.
+
+(a) Set up this simultaneous-move, two player game. Carefully define the players, their strategy sets, and their payoffs.
+
+The normal form of the game is a triple $(N, S, u)$ where $N = \{1, 2\}$, $S = S_1 \times S_2$ with $S_1 = S_2 = \{A, B\}$ and $u(s_1, s_2) =$
+
++---------+------------+----------+
+|         | $s_2=A$    | $s_2=B$  |
++---------+------------+----------+
+| $s_1=A$ | $r-c, r-c$ | $R-c, 0$ |
++---------+------------+----------+
+| $s_1=B$ | $0, R-c$   | $0, 0$   |
++---------+------------+----------+
+
+(b) Under what conditions on $(R, r, c)$ is it strictly dominant for each firm to seek approval for its drug? Under what conditions is seeking approval strictly dominated?
+
+For $A$ to be a strictly dominant strategy for Firm 1, the payoff associated with playing $A$ must be higher no matter Firm 2's action. If Firm 2 plays $A$, a higher payoff for Firm 1 playing $A$ implies $r-c > 0 \implies r > c$. If Firm 2 plays $B$, a higher payoff for Firm 1 playing $A$ implies $R-c > 0 \implies R > c$. The same argument applies for Firm 2 based on Firm 1's actions because the payoffs are symmetric.
+
+For $A$ to be strictly dominated for Firm 1, the payoff associated with playing $B$ must be higher no matter Firm 2's action. If Firm 2 plays $A$, a higher payoff for Firm 1 playing $B$ implies $r-c < 0 \implies r < c$. If Firm 2 plays $B$, a higher payoff for Firm 1 playing $B$ implies $R-c < 0 \implies R < c$. The same argument applies for Firm 2 based on Firm 1's actions because the payoffs are symmetric.
