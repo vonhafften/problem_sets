@@ -134,7 +134,7 @@ Then:
 
 ### Principle of Optimality
 
-- Let $\{c_t^*\}_{t=0}^{T}$ solve sequential problem above.  with initial $x_0\ge 0$. From law of motion $x_{t+1} = R(x_t - c_t + y_t)$, we can derive $\{x_t^*\}$.
+- Let $\{c_t^*\}_{t=0}^{T}$ solve sequence problem above.  with initial $x_0\ge 0$. From law of motion $x_{t+1} = R(x_t - c_t + y_t)$, we can derive $\{x_t^*\}$.
 
 - For arbitrary dates $0 \le a < b \le T-1$, let $x_a^*$ and $x_{b+1}^*$ be optimal states at those dates. Then the solution to the subproblem is still $\{c_t^*\}_a^b$:
 
@@ -177,6 +177,8 @@ $$
 
 ## Lecture 2 - HH Optimization over Infinity Time Horizon
 
+We'll consider the consumption-saving problem from last class but over an infinite horizon:
+
 $$
 \max_{\{c_t\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t u(c_t) \\
 \text{ s.t. } x_{t+1} = R(x_t - c_t + y), \\
@@ -186,7 +188,7 @@ $$
 
 $c_0, c_1, c_2, ...$
 
-### Recursive Formulation
+### Recursive Formulation of Consumption-Savings Problem
 
 $$
 V(x_0) = \max_{\{c_t\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t u(c_t) \\
@@ -195,18 +197,23 @@ $$
 
 - Since $u$ is bounded and $0 < \beta < 1 \implies |V(x_0)| < \infty$.
 
-$$
+- These notes is all about justifying that we can break apart the maximum and apply it to today's value and the rest of time so that the consumer problem becomes:
+
+\begin{align*}
 V(x_0) 
-= \max_{\{c_t\}_{t=1}^\infty} \bigg\{ u(c_0) +  \sum_{t=0}^\infty \beta^t u(c_t) \bigg\} \\
-= \max_{c_0} \bigg\{ u(c_0) +  \beta \max_{\{c_t\}_{t=1}^\infty} \sum_{s=0}^\infty \beta^s u(c_{s+1}) \bigg\}
-$$
+&= \max_{\{c_t\}_{t=1}^\infty} \bigg\{ u(c_0) +  \sum_{t=0}^\infty \beta^t u(c_t) \bigg\} \\
+&= \max_{c_0} \bigg\{ u(c_0) +  \beta \max_{\{c_t\}_{t=1}^\infty} \sum_{s=0}^\infty \beta^s u(c_{s+1}) \bigg\} \\
+&= \max_{c_0} \{ u(c_0) + \beta V(x_1) \} \\
+\text{ s.t. } x_1 &= R(x_0 + y - c_0)
+\end{align*}
 
-$$
-V(x_0) = \max_{c_0} \{ u(c_0) + \beta V(x_1) \} \\
-\text{ s.t. } x_1 = R(x_0 + y - c_0)
-$$
+- Under what conditions, can we find a solution to the sequence problem by using this recursive formulation?
 
-### Seq. Problem (SP)
+### Sequence Problem (SP)
+
+- Consider more general notation following Stokey, Lucas, and Prescott.
+
+- Let $F$ be the objective function that we're maximizing.  $x_t$ is savings; it is the state variable.  We can reformulate $F$ to be the utility function on consumption from above.
 
 $$
 V^*(x_0) = \sup_{\{ x_{t+1} \}} \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1}) \text{ s.t. } x_{t+1} \in \Gamma(x_t), x_0 \text{ given.}
@@ -222,63 +229,104 @@ $$
 
 - $\Pi(x_0) = \{\{x_t\}_{t=0}^\infty: x_{t+1} \in \Gamma(x_t)\}$ is the set of feasible plans.
 
-### Functional Equation (FE)
+### Recursive Formulation
 
-- $V(x) = \sup_{y \in \Gamma(x)} \{F(x, y) + \beta V(y)\}$
+- The Functional Equation (FE) (aka the Bellman equation) is $V(x) = \sup_{y \in \Gamma(x)} \{F(x, y) + \beta V(y)\}$.
 
-- $|V^*(x_0)| < \infty \implies V^*(x_0) \ge U(x) = \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1}) \; \forall x \in \Pi(x_0)$.  In addition, for any $\varepsilon > 0$, $V^*(x_0) \le U(x) + \varepsilon$ for some $x \in \Pi(x_0)$.
+- Today's question is when is $V^*$ equal to $V$.  If so, we've made forward progress because solving for a function is easier than solving for an infinite series.
 
-- Similarly, $|V^*(x_0)| < \infty \implies V(x_0) \ge F(x_0, y) + \beta V(y) \; \forall y \in \Gamma(x_0)$ and $V(x_0) \le  F(x_0, y) + \beta V(y) + \varepsilon$ for some $y \in \Gamma(x_0)$.
+- What do we know about $V^*$ and $V$?
+
+- To make things easier, assume $|V^*(x_0)| < \infty$ and $|V(x_0)| < \infty$.
+
+- Define $U(x) := \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1})$ and $U(x) := \sum_{t=0}^n \beta^t F(x_t, x_{t+1})$ for some $x \in \Pi(x_0)$.
+
+- Thus, we know that the solution to the SP $V^*(x_0) \ge U(x) \; \forall x \in \Pi(x_0)$.
+
+- In addition, we know that for any $\varepsilon > 0$, the solution to the SP $V^*(x_0) \le U(x) + \varepsilon$ for some $x \in \Pi(x_0)$.
+
+- Similarly, we know that the FE $V(x_0) \ge F(x_0, y) + \beta V(y) \; \forall y \in \Gamma(x_0)$ and $V(x_0) \le  F(x_0, y) + \beta V(y) + \varepsilon$ for some $y \in \Gamma(x_0)$.
 
 Theorem: 
 
-- Suppose $\Gamma(x)$ is nonempty $\forall x \in X$. Suppose $\forall x_0 \in X$ and $x \in \Pi(x_0)$, $\lim_{n \to \infty} \sum_{t=0}^n \beta^t F(x_t, x_{t+1})$ exists. 
-- Then if $V$ solves (FE) and $\lim_{n \to \infty} \beta^n V(x_n) = 0$ $\forall x \in \Pi(x_0)$, $\forall x_0$, then $V = V^*$.
+- Suppose $\Gamma(x)$ is nonempty $\forall x \in X$. 
 
-\pagebreak
+- Suppose $\forall x_0 \in X$ and $x \in \Pi(x_0)$, $\lim_{n \to \infty} \sum_{t=0}^n \beta^t F(x_t, x_{t+1})$ exists. 
+
+- Then if $V$ solves (FE) and
+
+- $\lim_{n \to \infty} \beta^n V(x_n) = 0$ $\forall x \in \Pi(x_0)$, $\forall x_0$ (a tail boundedness restriction)
+
+- Then $V = V^*$ (i.e., $V$ solves the sequence problem).
 
 Proof: 
 
-- Suppose $|V| < \infty$ and $|V^*| < \infty$.
+- Suppose $|V| < \infty$ and $|V^*| < \infty$ (not necessarily, but convienent).
 
-- (FE) $\forall x \in \Pi(x_0)$:
+- Say we have a solution $V$ of the Bellman equation (FE).
+
+- By definition, we know that $\forall x \in \Pi(x_0)$:
 
 \begin{align*}
 V(x_0) 
 & \ge F(x_0, x_1) + \beta V(x_1) \\
 & \ge F(x_0, x_1) + \beta  F(x_1, x_2) + \beta^2 V(x_2) \\
+& ... \\
 & \ge U_n(x) + \beta^{n+1}V(x_{n+1})
 \end{align*}
 
-- Take $\lim_{n \to \infty}$: $V(x_0) \ge U(x) = \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1})$ $\forall x \in \Pi(x_0)$.
+- Take $\lim_{n \to \infty}$: 
 
-- (FE) $\implies \exists x_1 \in \Gamma(x_0), x_2 \in \Gamma(x_1), ...$
+$$
+V(x_0) \ge U(x) = \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1}) \; \forall x \in \Pi(x_0)
+$$
 
-- Choose $\{\delta_t\}$ s.t. $\sum_{t=0}^n \beta^t \delta_t \le \varepsilon/2$.
+- [We're halfway done; we showed that $V$ dominates for all feasible plans, and we now need to show that we can get within $\varepsilon$ away with some feasible plan.]
+
+- Having a solution to the FE also implies that $\exists x_1 \in \Gamma(x_0), x_2 \in \Gamma(x_1), ...$ such that
 
 $$
 V(x_t) \le F(x_t, x_{t+1}) + V(x_{t+1})+ \delta_{t+1} \; \forall t
 $$
+
+- Where $\{\delta_t\}$ s.t. $\sum_{t=0}^\infty \beta^t \delta_t \le \varepsilon/2$.
+
 \begin{align*}
 \implies V(x_0) 
-&\le F(x_0, x_1) + V(x_1)+ \delta_1 \\
-&\le \sum_{t=0}^n \beta^t F(x_t, x_{t+1}) + \beta^{n+1}V(x_{n+1})+ \sum_{t=1}^{n+1} \beta^{t-1} \delta_t \\
-n \to \infty \implies V(x_0) &\le \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1}) + \varepsilon
+&\le F(x_0, x_1) + V(x_1) + \delta_1 \\
+&... \\
+&\le \sum_{t=0}^n \beta^t F(x_t, x_{t+1}) + \beta^{n+1}V(x_{n+1})+ \sum_{t=1}^{n+1} \beta^{t-1} \delta_t
 \end{align*}
 
-### Contractions
+- For sufficiently large $n$, we can bound $\beta^{n+1}V(x_{n+1})$ by $\varepsilon/2$.
 
-- $T: S \to S$ on $(S, \mu)$ metric space is a contraction if $\mu(Tx, Ty) \le \beta \mu(x, y)$ $\forall x, y \in S$.
+- By construction $\sum_{t=1}^{n+1} \beta^{t-1} \delta_t \le \sum_{t=0}^\infty \beta^t \delta_t \le \varepsilon/2$.
 
-Theorem: 
+- Taking the limit as $n \to \infty$:
+
+$$
+V(x_0) \le \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1}) + \varepsilon
+$$
+
+### Background on Contractions
+
+- An $T: S \to S$ on $(S, \mu)$ metric space is a contraction if $\mu(Tx, Ty) \le \beta \mu(x, y)$ $\forall x, y \in S$.
+
+Contraction Mapping Theorem: 
 
 - If $(S, \mu)$ is complete and $T$ is a contraction, then $T$ has a unique fixed point, $Tv = v$.
 
-- And for any $v_0 \in S$, $\mu(T^n v_0, v) \le \beta^n\mu(v_0, v) \iff \lim_{n \to \infty} T^n v_0 \to v$.
+- And for any $v_0 \in S$, $\mu(T^n v_0, v) \le \beta^n\mu(v_0, v) \iff \lim_{n \to \infty} T^n v_0 = v$.
 
 Corollary:
 
-- $S' \subseteq S$, $S'$ closed, $T(S') \subseteq S' \implies v \in S'$.  Moreover $T(S') \subseteq S'' \subset S'$, then $v \in S''$.
+- Suppose $S' \subseteq S$, $S'$ closed.
+
+- Then $T(S') \subseteq S' \implies v \in S'$.  
+
+- Moreover, if $T(S') \subseteq S'' \subset S'$, then $v \in S''$.
+
+- The last part of this corollary is helpful if we're thinking about strictly increasing functions because we need weak inequalities to get a closed subset.
 
 Blackwell Sufficient Conditions:
 
@@ -286,39 +334,43 @@ Blackwell Sufficient Conditions:
 
 - $B(X)$ is the set of bounded functions $f: X \to \R$. 
 
-- Let $||f|| = \sup_{x \in X}| f(x) |$ and $\mu(f, g) = ||f -g||$.
+- Let $||f|| = \sup_{x \in X}| f(x) | \implies \mu(f, g) = ||f -g||$.  Thus, this metric space is complete.
 
 - Suppose $T: B(X) \to B(X)$ satisfies monotonicity and discounting.
 
-- [Monotonicity: $f, g \in B(X), f(x) \le g(x)$ $\forall x \in X$, then $Tf(x) \le Tg(x)$ $\forall x \in X$.]
+    - Monotonicity: $f, g \in B(X), f(x) \le g(x)$ $\forall x \in X$, then $Tf(x) \le Tg(x)$ $\forall x \in X$.
 
-- [Discounting: $\exists \beta \in (0, 1)$ s.t. $T(f + a)(x) \le Tf(x) + \beta a$, $a > 0$, $f \in B(X)$.]
+    - Discounting: $\exists \beta \in (0, 1)$ s.t. $T(f + a)(x) \le Tf(x) + \beta a$ where $a > 0$ and $f \in B(X)$.
 
 - Then $T$ is a contraction with modulus $\beta$.
 
-### Bellman equations
+\pagebreak
 
-- ($\Gamma 1$): $X \in \R^\ell$ is convex, $\Gamma: X \to X$ nonempty, compact-valued, and continuous.
+### Applying Blackwell to Bellman Equations
 
-- ($F1$): $F: A \to \R$ is bounded and continuous with $0 < \beta < 1$.
+- Recall we have only made some weak assumptions (nonempty and tail boundedness). Now, we're added a few more assumptions about the feasible set ($\Gamma 1$) and the objective function ($F1$):
 
-- $C(X)$ is the set of continuous functions on $X$. Let $f \in C(X)$ and $||f|| = \sup_{x \in X}| f(x) |$.
+- ($\Gamma 1$): $X \in \R^\ell$ is convex. $\Gamma: X \to X$ nonempty, compact-valued, and continuous (uhc and lhc). [These assumptions are similar to those in the theorem of the maximum.]
 
-- Bellman operator: $(Tf)(x) = \max_{y \in \Gamma(x)}\{F(x, y) + \beta f(y)\}$.
+- ($F1$): $F: A \to \R$ is bounded and continuous with $0 < \beta < 1$ (recall $A = \graph \Gamma$).
 
-- Bellman equation: $Tv = v$.
+- Define $C(X)$ as the metric space of bounded continuous functions on $X$ with $||f|| = \sup_{x \in X}| f(x) |$. [This metric space is complete.]
+
+- Define the Bellman operator as $(Tf)(x) = \max_{y \in \Gamma(x)}\{F(x, y) + \beta f(y)\}$ for $f \in C(X)$.
+
+- With $T$ defined this way, the Bellman equation is the fixed point of the Bellman operator: $Tv = v$.
 
 Theorem:
 
 - Under ($\Gamma 1$) and ($F1$).
 
-- $T: C(X) \to C(X)$ is a contraction, hence there is a unique fixed point ($v \in C(X)$ s.t. $v=Tv$) and $v_0 \in C(X)$, $||T^nv_0 - v|| \le \beta^n ||v_0 - v||$.
+- The Bellman operator $T: C(X) \to C(X)$ is a contraction, hence $T$ has a unique fixed point (i.e., $v \in C(X)$ s.t. $v=Tv$) and $v_0 \in C(X)$, $||T^nv_0 - v|| \le \beta^n ||v_0 - v||$.
 
-- Moreover, optimal policy correspondence $G(x) = \{y \in \Gamma(x): V(x) = F(x, y) + \beta V(y)\}$ is compact-valued and uhc.
+- Moreover, the optimal policy correspondence $G(x) = \{y \in \Gamma(x): V(x) = F(x, y) + \beta V(y)\}$ is compact-valued and uhc (conclusions from the Theorem of the Maximum).
 
 Proof: 
 
-- $T: C \to C$.
+- The Bellman operator is in fact an operator.  $T: C \to C$ by the Theorem of the Maximum.
 
 - $f, g \in C(X), f \le g$.
 
@@ -340,4 +392,4 @@ T(f(x) + a)
 = Tf(x) + \beta a
 $$
 
-
+- By Blackwell, $T$ is a contraction. By CMT, the Bellman equation has a unique solution.
