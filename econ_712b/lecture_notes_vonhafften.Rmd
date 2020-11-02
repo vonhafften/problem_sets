@@ -1,0 +1,343 @@
+---
+title: "ECON 712B - Lecture Notes"
+author: "Alex von Hafften"
+date: "10/31/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lecture 1 - HH Optimization over Finite Time Horizon
+
+- Consumption-savings problem for $T < \infty$.
+
+### Preferences
+
+$$
+\sum_{t=1}^T \beta^t u(c_t) \text{ where } 0 < \beta < 1
+$$
+
+- Assumptions about preferences: $u$ is strictly increasing, strictly concave, and continuously differentiable ($C^2$).
+- We also often assume that utility is bounded ($|u(c)| < K \forall c$) and Inada conditions hold ($\lim_{c \to 0} u'(c) = +\infty$ and $\lim_{c \to +\infty} u'(c) = 0$).
+- Think log utility.
+
+### Constraints
+
+- $R$ is gross interest rate ($R = 1 + r$ where $r$ is net interest rate).
+- $\{y_t\}_{t=0}^T$ is labor income.
+- $x_0$ is initial wealth.
+- Intertemporal budget constraint:
+
+$$
+\sum_{t=0}^T \bigg(\frac{1}{R}\bigg)^t c_t \le \sum_{t=0}^T \bigg(\frac{1}{R}\bigg)^t  y_t + x_0
+$$
+
+- $s_t$ is savings.
+- Flow budget constraint implies law of motion for wealth:
+
+$$
+s_t = x_t - c_t + y_t \implies x_{t+1} = Rs_t = R(x_t-c_t+y_t)
+$$
+
+- Intertemporal budget constraint embeds assumption that HH can borrow any amount at rate $r$ as long as budget constraint is satisfied.
+
+### HH Problem
+
+$$
+\max_{\{c_t\}_{t=0}^T} \sum_{t=1}^T \beta^t u(c_t) \\
+\text{ s.t. } \sum_{t=0}^T \bigg(\frac{1}{R}\bigg)^t c_t \le \sum_{t=0}^T \bigg(\frac{1}{R}\bigg)^t  y_t + x_0
+$$
+
+- Where $x_0 \ge 0$ and $y_t \ge 0 \forall t$.
+
+- Since $u(c_t)$ continuous, $U_T(c) = \sum_{t=1}^T \beta^t u(c_t)$ is continuous on $c= \{c_0, ..., c_t\}$.
+
+- Given $\{y_t\}_{t=0}^T$, the feasible set (below) is a compact subset of $\R^T$ by Heine-Borel.
+
+$$
+0 \le \sum_{t=0}^T \bigg(\frac{1}{R}\bigg)^t c_t \le \sum_{t=0}^T \bigg(\frac{1}{R}\bigg)^t  y_t + x_0
+$$
+
+- Existence: Close, bounded subset of $\R_+^T$ are compact $\implies \exists c^*$ that maximizes $U(c)$ subject to budget constraint (Weinstrass).
+
+- Uniqueness: Since the feasible set is convex and $U(c)$ is strictly concave (because $u(c^*)$ is strictly concave), $\exists$ unique $c^*$ that maximizes $U(c)$ subject to budget constraint.
+
+- The Lagrangian is:
+
+$$
+\Lf = \sum_{t=1}^T \beta^t u(c_t) + \lambda \Bigg[ \sum_{t=0}^T \bigg(\frac{1}{R}\bigg)^t (y_t - c_t)  + x_0  \Bigg]
+$$
+
+### Recursive Formulation
+
+- We use backward induction.
+
+- At $T$, choose $x_T$ given $\max u(c_T)$ s.t. $c_T \le x_T +y_T$. $x_{T+1} = 0 \implies c_T = x_T + y_T$.  So, $V_T(x) = u(x+y_T)$.
+
+- At $T-1$, choose $x_{T_1}$. From law of motion, $x_T = Rs_{T-1} = R(x_{T-1} - c_{T-1} + y_{T-1})$.
+
+$$
+\max_{c_{T-1}} \Bigg\{ u(c_{T-1}) + \beta u(R(x_{T-1} - c_{T-1} + y_{T-1}) + y_T)  \Bigg\} \\ \text{ s.t. } 0 \le c_{T-1} \le \min\{\bar{c}(x): c_T=0\}
+$$
+
+- For simplicity, $y_t = y > 0 \; \forall t$, so $\bar{c}(x) = \frac{R(x+y)+y}{R}$. (HH cannot borrow so much in period $T-1$ that they can't pay it all back in period $T$).
+
+$$
+V_{T-1} (x) = \max_c\{u(c) + \beta V_T(R(x-c+y))\} \text{ s.t. } 0  \le c \le \bar{c}(x)
+$$
+
+- $c(x)$ is continuous.
+
+- Policy function $\{c_t\} \implies c_t(x)$.
+
+- Thus, the Bellman equation is
+
+$$
+V_t(x) = \max_{0 \le c \le \bar{c}} \{u(c) + \beta V_{t+1}(R(x-c+y))\}
+$$
+
+- A Bellman equation is the key result of the theory of dynamic programming.
+
+### Theorem of the Maximum
+
+- Lower hemi-continuous (lhc): $\forall y \in \Gamma(x), \{x_n\} \to x, \exists \{y_n\}$ s.t. $y_n \to y$ and $y_n \in \Gamma(x_n)$.
+
+- Upper hemi-continuous (uhc): $\{x_n\} \to x$, all $\{y_n\}$ s.t. $y_n \in \Gamma(x), y \in \Gamma(x)$.
+
+Suppose:
+
+- $x \in X \subseteq \R^L$
+
+- $y \in Y \subseteq \R^M$
+
+- $f: X \times Y \to \R$ is continuous.
+
+- $\Gamma : X \rightrightarrows Y$ compact-valued and continuous (uhc and lhc).
+
+Then:
+
+- $h(x) = \max_{y \in \Gamma(x)} f(x, y)$ is continuous.
+
+- $G(x) = \{y \in \Gamma(x) : f(x, y) = h(x)\}$ is nonempty, compact-valued, and uhc.
+
+- In the HH problem, the theorem of the maximum implies that $V_T(x)$ is continuous.
+
+### Principle of Optimality
+
+- Let $\{c_t^*\}_{t=0}^{T}$ solve sequential problem above.  with initial $x_0\ge 0$. From law of motion $x_{t+1} = R(x_t - c_t + y_t)$, we can derive $\{x_t^*\}$.
+
+- For arbitrary dates $0 \le a < b \le T-1$, let $x_a^*$ and $x_{b+1}^*$ be optimal states at those dates. Then the solution to the subproblem is still $\{c_t^*\}_a^b$:
+
+$$
+\max_{\{c_t\}_{t=a}^b} \sum_{t=a}^b \beta^{t-1} u(c_t) \\
+\text{ s.t. } x_{t+1} = R(x_t - c_t + y_t) \text{ and given } x_a^*, x_{b+1}^*
+$$
+
+### Back to Consumer Probem - FOC and Euler Equations
+
+- In period $T-1$,
+
+$$
+V_{T-1} (x) = \max_{0 \le c \le \bar{c}} \{ u(c) + \beta V_T(R(x-c+y))\}
+$$
+
+- Inada conditions rule out corner solutions $\implies$ $c^*$ is interior.
+
+- Strictly concave, differentiable function and convex choice set $\implies$ FOC determine optimal choice.
+
+- FOC: $u'(c) = \beta R V_T'(R(x-c+y))$.
+
+- Because $V_T(x) = u(x+y) \implies V_T'(x) = u'(x+y)$, FOC $\implies u'(c) = \beta R u'(R(x-c+y) + y)$ (Euler Equation).
+
+- Using policy function $c_{t-1} = c(x)$, $u'(c_{T-1}) = \beta R u'(c_T) \implies$
+
+$$
+u'(c_{t}) = \beta R u'(c_{t+1})
+$$
+
+- Since $u$ is strictly concave ($u'' < 0$) $\implies$ consumption smoothing.
+
+- $\beta R = 1 \implies u'(c_t) = u'(c_{t+1}) \implies c_t = \bar{c}$.
+
+- $\beta R < 1 \implies u'(c_t) < u'(c_{t+1}) \implies c_t > c_{t+1}$.
+
+- $\beta R > 1 \implies u'(c_t) > u'(c_{t+1}) \implies c_t < c_{t+1}$.
+
+\pagebreak
+
+## Lecture 2 - HH Optimization over Infinity Time Horizon
+
+$$
+\max_{\{c_t\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t u(c_t) \\
+\text{ s.t. } x_{t+1} = R(x_t - c_t + y), \\
+c_t \ge 0, \\
+x_0 \text{ given.}
+$$
+
+$c_0, c_1, c_2, ...$
+
+### Recursive Formulation
+
+$$
+V(x_0) = \max_{\{c_t\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t u(c_t) \\
+\text{ s.t. } x_{t+1} = R(x_t - c_t + y)
+$$
+
+- Since $u$ is bounded and $0 < \beta < 1 \implies |V(x_0)| < \infty$.
+
+$$
+V(x_0) 
+= \max_{\{c_t\}_{t=1}^\infty} \bigg\{ u(c_0) +  \sum_{t=0}^\infty \beta^t u(c_t) \bigg\} \\
+= \max_{c_0} \bigg\{ u(c_0) +  \beta \max_{\{c_t\}_{t=1}^\infty} \sum_{s=0}^\infty \beta^s u(c_{s+1}) \bigg\}
+$$
+
+$$
+V(x_0) = \max_{c_0} \{ u(c_0) + \beta V(x_1) \} \\
+\text{ s.t. } x_1 = R(x_0 + y - c_0)
+$$
+
+### Seq. Problem (SP)
+
+$$
+V^*(x_0) = \sup_{\{ x_{t+1} \}} \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1}) \text{ s.t. } x_{t+1} \in \Gamma(x_t), x_0 \text{ given.}
+$$
+
+- $\Gamma(x_t)$ is the feasible correspondence.
+
+- $x_t \in X$
+
+- $A = \graph \Gamma = \{(x, y) \in X \times X : y \in \Gamma(x)\}$
+
+- $F: A \to \R$
+
+- $\Pi(x_0) = \{\{x_t\}_{t=0}^\infty: x_{t+1} \in \Gamma(x_t)\}$ is the set of feasible plans.
+
+### Functional Equation (FE)
+
+- $V(x) = \sup_{y \in \Gamma(x)} \{F(x, y) + \beta V(y)\}$
+
+- $|V^*(x_0)| < \infty \implies V^*(x_0) \ge U(x) = \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1}) \; \forall x \in \Pi(x_0)$.  In addition, for any $\varepsilon > 0$, $V^*(x_0) \le U(x) + \varepsilon$ for some $x \in \Pi(x_0)$.
+
+- Similarly, $|V^*(x_0)| < \infty \implies V(x_0) \ge F(x_0, y) + \beta V(y) \; \forall y \in \Gamma(x_0)$ and $V(x_0) \le  F(x_0, y) + \beta V(y) + \varepsilon$ for some $y \in \Gamma(x_0)$.
+
+Theorem: 
+
+- Suppose $\Gamma(x)$ is nonempty $\forall x \in X$. Suppose $\forall x_0 \in X$ and $x \in \Pi(x_0)$, $\lim_{n \to \infty} \sum_{t=0}^n \beta^t F(x_t, x_{t+1})$ exists. 
+- Then if $V$ solves (FE) and $\lim_{n \to \infty} \beta^n V(x_n) = 0$ $\forall x \in \Pi(x_0)$, $\forall x_0$, then $V = V^*$.
+
+\pagebreak
+
+Proof: 
+
+- Suppose $|V| < \infty$ and $|V^*| < \infty$.
+
+- (FE) $\forall x \in \Pi(x_0)$:
+
+\begin{align*}
+V(x_0) 
+& \ge F(x_0, x_1) + \beta V(x_1) \\
+& \ge F(x_0, x_1) + \beta  F(x_1, x_2) + \beta^2 V(x_2) \\
+& \ge U_n(x) + \beta^{n+1}V(x_{n+1})
+\end{align*}
+
+- Take $\lim_{n \to \infty}$: $V(x_0) \ge U(x) = \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1})$ $\forall x \in \Pi(x_0)$.
+
+- (FE) $\implies \exists x_1 \in \Gamma(x_0), x_2 \in \Gamma(x_1), ...$
+
+- Choose $\{\delta_t\}$ s.t. $\sum_{t=0}^n \beta^t \delta_t \le \varepsilon/2$.
+
+$$
+V(x_t) \le F(x_t, x_{t+1}) + V(x_{t+1})+ \delta_{t+1} \; \forall t
+$$
+\begin{align*}
+\implies V(x_0) 
+&\le F(x_0, x_1) + V(x_1)+ \delta_1 \\
+&\le \sum_{t=0}^n \beta^t F(x_t, x_{t+1}) + \beta^{n+1}V(x_{n+1})+ \sum_{t=1}^{n+1} \beta^{t-1} \delta_t \\
+n \to \infty \implies V(x_0) &\le \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1}) + \varepsilon
+\end{align*}
+
+### Contractions
+
+- $T: S \to S$ on $(S, \mu)$ metric space is a contraction if $\mu(Tx, Ty) \le \beta \mu(x, y)$ $\forall x, y \in S$.
+
+Theorem: 
+
+- If $(S, \mu)$ is complete and $T$ is a contraction, then $T$ has a unique fixed point, $Tv = v$.
+
+- And for any $v_0 \in S$, $\mu(T^n v_0, v) \le \beta^n\mu(v_0, v) \iff \lim_{n \to \infty} T^n v_0 \to v$.
+
+Corollary:
+
+- $S' \subseteq S$, $S'$ closed, $T(S') \subseteq S' \implies v \in S'$.  Moreover $T(S') \subseteq S'' \subset S'$, then $v \in S''$.
+
+Blackwell Sufficient Conditions:
+
+- $X \subseteq \R^n$
+
+- $B(X)$ is the set of bounded functions $f: X \to \R$. 
+
+- Let $||f|| = \sup_{x \in X}| f(x) |$ and $\mu(f, g) = ||f -g||$.
+
+- Suppose $T: B(X) \to B(X)$ satisfies monotonicity and discounting.
+
+- [Monotonicity: $f, g \in B(X), f(x) \le g(x)$ $\forall x \in X$, then $Tf(x) \le Tg(x)$ $\forall x \in X$.]
+
+- [Discounting: $\exists \beta \in (0, 1)$ s.t. $T(f + a)(x) \le Tf(x) + \beta a$, $a > 0$, $f \in B(X)$.]
+
+- Then $T$ is a contraction with modulus $\beta$.
+
+### Bellman equations
+
+- ($\Gamma 1$): $X \in \R^\ell$ is convex, $\Gamma: X \to X$ nonempty, compact-valued, and continuous.
+
+- ($F1$): $F: A \to \R$ is bounded and continuous with $0 < \beta < 1$.
+
+- $C(X)$ is the set of continuous functions on $X$. Let $f \in C(X)$ and $||f|| = \sup_{x \in X}| f(x) |$.
+
+- Bellman operator: $(Tf)(x) = \max_{y \in \Gamma(x)}\{F(x, y) + \beta f(y)\}$.
+
+- Bellman equation: $Tv = v$.
+
+Theorem:
+
+- Under ($\Gamma 1$) and ($F1$).
+
+- $T: C(X) \to C(X)$ is a contraction, hence there is a unique fixed point ($v \in C(X)$ s.t. $v=Tv$) and $v_0 \in C(X)$, $||T^nv_0 - v|| \le \beta^n ||v_0 - v||$.
+
+- Moreover, optimal policy correspondence $G(x) = \{y \in \Gamma(x): V(x) = F(x, y) + \beta V(y)\}$ is compact-valued and uhc.
+
+Proof: 
+
+- $T: C \to C$.
+
+- $f, g \in C(X), f \le g$.
+
+- $T$ is monotone:
+
+$$
+(Tf)(x) 
+= \max_{y \in \Gamma(x)} \{ F(x, y) + \beta f(y) \} 
+\le \max_{y \in \Gamma(x)} \{ F(x, y) + \beta g(y) \} 
+= (Tg)(x)
+$$
+
+- $T$ discounts:
+
+$$
+T(f(x) + a) 
+= \max_{y \in \Gamma(x)} \{ F(x, y) + \beta (f(y)+a) \}
+= \max_{y \in \Gamma(x)} \{ F(x, y) + \beta f(y) \} + \beta a
+= Tf(x) + \beta a
+$$
+
+
