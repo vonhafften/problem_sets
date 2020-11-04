@@ -1,0 +1,167 @@
+---
+title: "ECON 711B - Problem Set 2"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "11/9/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+- \usepackage{bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Each of $n \ge 2$ players can make contributions $s_i \in [0, w]$ to the production of some public good, where $w > 0$ and $s_i$ is the contribution of player $i$: Their payoff functions are given by $\pi_i(s_1, s_2, ..., s_n) = n \min\{s_1, s_2,...,s_n\} - s_i$. Find all pure strategy Nash equilibria in the game.
+
+There are pure Nash equilibria at $s_i = \bar{s}$ $\forall i \in \{1, ..., n\}$ $\forall \bar{s} \in [0, w]$.
+
+Either $s_i > \min\{s_1,...,s_n\}$ or $s_i = \min\{s_1,...,s_n\}$.  If $s_i > \min\{s_1,...,s_n\}$, player $i$ has an incentive to contribute $\min\{s_1,...,s_n\}$ instead because $n \min\{s_1,...,s_n\} - s_i < n \min\{s_1,...,s_n\} - \min\{s_1,...,s_n\}$.  If $s_i = \min\{s_1,...,s_n\}$, player $i$ does not have an incentive to contribute more because $n \min\{s_1,...,s_n\} - \min\{s_1,...,s_n\} > n \min\{s_1,...,s_n\} - s_i'$ for $s_i'> \min\{s_1,...,s_n\}$. Nor does she have an incentive to less because $n \min\{s_1,...,s_n\} - \min\{s_1,...,s_n\} = (n-1)\min\{s_1,...,s_n\} > (n-1)s_i''$ for $s_i'' < \min\{s_1,...,s_n\}$. Thus, all player have an incentive to play $\min\{s_1,...,s_n\}$.
+
+2. Donald and Joe are competing for three voters. Each candidate decides how much to spend on campaigning in voter $i$'s area. Denote Donald's expenditure in area $i$ by $a_i$ and Joe's expenditures by $b_i$. The total budget for each candidate is 1; so $\sum_{i=1}^3 a_i = \sum_{i=1}^3 b_i = 1$  Voter $i$ votes for Donald if and only if $a_i > b_i$: Similarly, Voter $i$ votes for Joe if and only if $b_i > a_i$: The candidate with more votes wins the election.
+
+(a) Formulate the above strategic situation as a normal form game between Donald and Joe.
+
+The normal form game is a triple of the players $N$, the strategies $S = S_D \times S_J$, and the payoffs $u$:
+
+$$
+N = \{\text{Donald}, \text{Joe}\}
+$$
+
+$$
+S_D = \{(a_1, a_2, a_3) \in \R^3_+: a_1 + a_2 + a_3 = 1\}
+$$
+
+$$
+S_J = \{(b_1, b_2, b_3) \in \R^3_+: b_1 + b_2 + b_3 = 1\}
+$$
+
+$$
+u_D((a_1, a_2, a_3), (b_1, b_2, b_3)) = \mathbbm{1}(a_1 > b_1)+\mathbbm{1}(a_2 > b_2)+\mathbbm{1}(a_3 > b_3)
+$$
+
+$$
+u_J((a_1, a_2, a_3), (b_1, b_2, b_3)) = \mathbbm{1}(b_1 > a_1)+\mathbbm{1}(b_2 > a_2)+\mathbbm{1}(b_3 > a_3)
+$$
+
+\pagebreak
+
+(b) Show that there are no pure strategy Nash equilibria in this game.
+
+Suppose for sake of a contradiction there exists a pure strategy Nash equilibrium $(a_1^*, a_2^*, a_3^*, b_1^*, b_2^*, b_3^*)$. There are three cases: Donald and Joe tie, Donald wins, and Joe wins.
+
+If Donald and Joe tie, then 
+
+$$
+a_1^*=a_2^*=a_3^*=b_1^*=b_2^*=b_3^*=\frac{1}{3}
+$$
+
+$$
+u_D((a_1^*, a_2^*, a_3^*), (b_1^*, b_2^*, b_3^*)) = u_J((a_1^*, a_2^*, a_3^*), (b_1^*, b_2^*, b_3^*)) = 0
+$$
+
+If instead Joe played $(b_1^* + \varepsilon, b_2^* + \varepsilon, b_3^* - 2 \varepsilon)$ for $\varepsilon \in (0, 1/6]$, he would be better off: 
+
+$$
+u_J((a_1^*, a_2^*, a_3^*), (b_1^* + \varepsilon, b_2^* + \varepsilon, b_3^* - 2 \varepsilon)) = 2
+$$
+
+So, this is not a Nash equilibrium.
+
+For Donald to win, he would have needed to spend more in two areas than Joe.  Without loss of generality, let the areas where Donald won be 1 and 2, so we know that $a_1^*>b_1^*$ and $a_2^*>b_2^*$. In addition, assume that $a_1^* \le a_2^*$. Since Joe and Donald use their entire budgets, we know that $b_3^* = 1 - b_1^* - b_2^* > 1 - a_1^* - a_2^* = a_3^*$. If Joe instead played $(a_1^* + \varepsilon, b_2^* + (b_1^* - a_1^* - \varepsilon) + (b_3^* - a_3^* - \varepsilon), a_3^* + \varepsilon)$ for $\varepsilon \in (0, (1 - a_1^* - a_3^*)/2]$, Joe would win in 1 and 3, so he would be better off.\footnote{This strategy is valid: $a_1^* + \varepsilon + b_2^* + (b_1^* - a_1^* - \varepsilon) + (b_3^* - a_3^* - \varepsilon) + a_3^* + \varepsilon = b_1^* + b_2^* + b_3^* = 1$ and $b_2^* + (b_1^* - a_1^* - \varepsilon) + (b_3^* - a_3^* - \varepsilon) = 1 - a_1^* - a_3^* - 2\varepsilon \ge 0$.} Thus, this is not a Nash equilibrium.
+
+If Joe wins, there's a similar argument about how Donald would have an incentive to shift around money to win two areas.
+
+\pagebreak
+
+3. Alice and Bob are collaborating on a project and simultaneously decide on adopting one of the three available technologies $T_1, T_2, T_3$. For $i = \{1, 2, 3\}$, Alice and Bob get a payoff of $i$; when both of them use the same technology $T_i$. In all other cases, they receive a payoff of zero.
+
+(a) Formulate the above strategic situation as a normal form game between Alice and Bob.
+
+The normal form game is a triple of the players $N$, the strategies $S = S_A \times S_B$, and the payoffs $u$:
+
+$$
+N = \{\text{Alice}, \text{Bob}\}
+$$
+
+$$
+S_A = \{T_1, T_2, T_3\}
+$$
+
+$$
+S_B = \{t_1, t_2, t_3\}
+$$
+
+$u(s_a, s_b)=$
+
++------+------+------+------+
+|      |$t_1$ |$t_2$ |$t_3$ |
++------+------+------+------+
+|$T_1$ | 1    | 0    | 0    |
++------+------+------+------+
+|$T_2$ | 0    | 2    | 0    |
++------+------+------+------+
+|$T_3$ | 0    | 0    | 3    |
++------+------+------+------+
+
+
+(b) Describe the set of rationalizable strategies and compute all Nash equilibria (pure and mixed) of the game.
+
+$(T_1, t_1)$, $(T_2, t_2)$, and $(T_3, t_3)$ are all pure Nash equilibria because Alice would not change her strategy based on Bob playing his and vice versa.  So all actions are rationalizable because they are best responses depending on the action of the other player.
+
+The simplex below shows the best response of Alice to Bob's strategies:
+
+```{r, echo = FALSE}
+simplex <- function(x,
+                    y,
+                    label = expression(italic(t)[1], italic(t)[2], italic(t)[3]),
+                    ...) {
+  # empty plot
+  op <- par(mar=c(1,0,0,0) + 0.1, pty="s")
+  plot(x=c(-0.2,1.2), y=c(-0.2,1.2), type="n", axes=FALSE, xlab="", ylab="")
+
+  # triangle (borders)
+  points(x=c(0,0.5,1,0), y=c(0,0.5*sqrt(3),0,0), type="l")
+
+  # transform the points
+  xx <- 0.5*(1-x+y)
+  yy <- 0.5*sqrt(3)*(1-x-y)
+
+  # plot points
+  points(x=xx, y=yy, ...)
+
+  # labels
+  if (!is.null(label)) {
+    text(x=0.5, y=0.5*sqrt(3), pos=3, labels=label[3])
+    text(x=0.0, y=0.0, pos=2, labels=label[1])
+    text(x=1.0, y=0.0, pos=4, labels=label[2])
+  }
+  
+  # restore plotting parameters
+  par(op)
+}
+
+x <- seq(from=0, to=1, length.out=100)^2
+y <- 0.5*(1-x) + rnorm(length(x), 0, 0.05*(1-x))
+simplex(x=x, y=y, type="l", lwd=2, col="red")
+```
+
+4. Suppose there are two firms in a market. Each firm's cost function is the same, given by $C_i(q_i) = q_i$ for $i=1, 2$ where $q_i$ is the output of firm $i$. If the firms' total output is $Q$ i.e., $Q = q_1 + q_2$, then the market price is $P(Q) = \begin{cases} 2 - Q \text{ if } Q \le 2, \\ 0 \text{ if } Q > 2 \end{cases}$. For $i=1, 2$, firm $i$'s revenue and profit are given by $R_i(q_1, q_2) = q_i P(q_1 + q_2)$ and $\pi_i(q_1, q_2) = q_i P(q_1 + q_2) - C_i(q_i)$ respectively.
+
+(a) Suppose that both the firms maximize their profits and this is common knowledge. Compute the equilibrium quantities and profits of both the firms.
+
+(b) Now suppose that firm 1 maximizes $\frac{3}{4} \pi_1(q_1, q_2) + \frac{1}{4} R_1(q_1, q_2)$ (i.e., firm 1 puts a weight of 3/4 on its profit and a weight of 1/4 on its revenue) and firm 2 maximizes profit and this is common knowledge. Now compute the equilibrium quantities and profits of both the firms.
+
+(c) Compare the equilibrium profits of the two firms in the above two cases.
+
+5. Let there be a continuum of participants choosing a time $t \in [0, 1]$ to attend a seminar on Zoom which starts at $t = 1$. At $t \ge 0$, the organizer allows the participants to join the seminar. Participants do not want to join the seminar too early or too late, but they also want to arrive when there are lots of others already present. Each agent's payoff is $u(t)v(q)$, where $u(t) = t(1-t)$ is the fundamental payoff of joining the seminar at time $t$, and $v(q) = 1 + q + \frac{1}{4}q^2$ is the strategic quantile payoff of being at the $q$ quantile of those joining.
+
+(a) Solve for the symmetric Nash equilibrium quantile function $Q(t)$ of the Zoom seminar participation game. Can there be a terminal rush? 
+
+(b) During what times do people join the seminar i.e., what is the support of $Q$?
+

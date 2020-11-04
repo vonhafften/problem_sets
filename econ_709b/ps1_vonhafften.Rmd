@@ -1,0 +1,130 @@
+---
+title: "ECON 709B - Problem Set 1"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "11/11/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\var}{\text{var}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. 2.1 - 2.2\footnote{These problems come from \textit{Econometrics} by Bruce Hansen, revised on October 23, 2020.}
+
+Find $E[E[E[Y|X_1, X_2, X_3]|X_1, X_2]|X_1]$.
+
+Using the law of iterated expectations,
+
+$$
+E[E[E[Y|X_1, X_2, X_3]|X_1, X_2]|X_1]
+=E[E[Y|X_1, X_2]|X_1]
+=E[Y|X_1]
+$$
+
+If $E[Y|X]=a+bX$, find $E[YX]$ as a function of moments of $X$.
+
+Using the law of iterated expectations,
+
+$$
+E[YX] = E[E[YX|X]] = E[XE[Y|X]] = E[X(a+bX)]=E[aX+bX^2]=aE[X]+bE[X^2]
+$$
+
+2. 2.3 Prove conclusion (4) of Theorem 2.4.
+
+If $E|Y| < \infty$ then for any function $h(x)$ such that $E|h(X)e| < \infty$ then $E[h(X)e] = 0$.
+
+Proof: Using the law of iterated expectations, Theorem 2.3, and conclusion (1) (i.e., $E[e | X] = 0$),
+
+$$
+E[h(X)e] = E[E[h(X)e|X]] = E[h(X)E[e|X]]= E[h(X)(0)]=E[0]=0
+$$
+
+$\square$
+
+\pagebreak
+
+3. 2.4
+
+Suppose that the random variables $Y$ and $X$ only take the values 0 and 1, and have the following joint probability distribution
+
++------+------+------+
+|      |$X=0$ |$X=1$ |
++------+------+------+
+|$Y=0$ |.1    | .2   |
++------+------+------+
+|$Y=1$ |.4    | .3   |
++------+------+------+
+
+Find $E[Y|X]$, $E[Y^2|X]$ and $\var[Y|X]$ for $X=0$, $X=1$.
+
+\begin{align*}
+E[Y|X=0] &= (1)P[Y=1|X=0] + (0)P[Y=0|X=0] = (1)(.4)/(.5)=.8 \\
+E[Y|X=1] &= (1)P[Y=1|X=1] + (0)P[Y=0|X=1] = (1)(.3)/(.5)=.6 \\
+E[Y^2|X=0] &= (1)^2P[Y=1|X=0] + (0)^2P[Y=0|X=0] = (1)^2(.4)/(.5)=.8 \\
+E[Y^2|X=1] &= (1)^2P[Y=1|X=1] + (0)^2P[Y=0|X=1] = (1)^2(.3)/(.5)=.6 \\
+\var[Y|X=0] &= E[Y^2|X=0] - (E[Y|X=0])^2 = (.8)-(.8)^2 = 0.16 \\
+\var[Y|X=1] &= E[Y^2|X=1] - (E[Y|X=1])^2 = (.6)-(.6)^2 = 0.24
+\end{align*}
+
+4. 2.5 (c)
+
+Show that $\sigma^2(X)$ is the best predictor of $e^2$ given $X$. 
+
+Show that $\sigma^2(X)$ minimizes the mean-squared error and is thus the best predictor.
+
+........
+
+
+
+5. 2.8
+
+Suppose that $Y$ is discrete-valued, taking values only on the non-negative integers, and the conditional distribution of $Y$ given $X = x$ is Poisson:
+
+$$
+P[Y=j|X=x] = \frac{\exp(-x'\beta)(x'\beta)^j}{j!}, j=0, 1, 2,...
+$$
+
+Compute $E[Y|X]$ and $\var[Y|X]$. Does this justify a linear regression model of the form $Y=X'\beta + e$?\footnote{Hint: $P[Y=j] = \frac{\exp(-\lambda)(\lambda)^j}{j!}$, then $E[Y] = \lambda$ and $\var[Y] = \lambda$.}
+
+Using the hint, we know that $E[Y|X] = x'\beta$ and $\var[Y|X] = x'\beta$.
+
+Yes, this justifies a linear regression model because $E[e|X] = E[Y - X'\beta | X] = E[Y|X] - E[X'\beta | X] = x'\beta - x'\beta = 0$.
+
+6. 2.10 - 2.14 Explain your answers.
+
+If $Y=X\beta + e, X \in \R$, and $E[e|X] = 0$, then $E[X^2e] = 0$.
+
+True, based on the law of iterated expectation:
+
+$$
+E[X^2e] = E[E[X^2e|X]] = E[X^2E[e|X]]= E[X^2(0)]=E[0]=0
+$$
+
+If $Y=X\beta + e, X \in \R$, and $E[Xe] = 0$, then $E[X^2e] = 0$.
+
+False, for a counter example, assume $X \sim N(0,1)$ and $e$ is a degenerate random variable equal to 1. Notice that $E[Xe]=E[X] =0$ and $E[X^2e]=E[X^2]=1$.
+
+If $Y=X'\beta + e$, and $E[e|X] = 0$, then $e$ is independent of $X$.
+
+False, for a counter example...
+
+If $Y=X'\beta + e$, and $E[Xe] = 0$, then $E[e|X]=0$.
+
+False, for a counter example, assume $X \sim N(0,1)$ and $e$ is a degenerate random variable equal to 1. Notice that $E[Xe]=E[X] =0$ and $E[e|X]=E[e]=1$.
+
+If $Y=X'\beta + e$, and $E[e|X] = 0$, and $E[e^2|X]=\sigma^2$, then $e$ is independent of $X$.
+
+False,
+
+7. 2.16
+
+
+
+8. 4.1 - 4.6
