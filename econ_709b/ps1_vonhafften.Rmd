@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 1. 2.1 - 2.2\footnote{These problems come from \textit{Econometrics} by Bruce Hansen, revised on October 23, 2020.}
 
-Find $E[E[E[Y|X_1, X_2, X_3]|X_1, X_2]|X_1]$.
+2.1 Find $E[E[E[Y|X_1, X_2, X_3]|X_1, X_2]|X_1]$.
 
 Using the law of iterated expectations,
 
@@ -28,7 +28,7 @@ E[E[E[Y|X_1, X_2, X_3]|X_1, X_2]|X_1]
 =E[Y|X_1]
 $$
 
-If $E[Y|X]=a+bX$, find $E[YX]$ as a function of moments of $X$.
+2.2 If $E[Y|X]=a+bX$, find $E[YX]$ as a function of moments of $X$.
 
 Using the law of iterated expectations,
 
@@ -50,9 +50,7 @@ $\square$
 
 \pagebreak
 
-3. 2.4
-
-Suppose that the random variables $Y$ and $X$ only take the values 0 and 1, and have the following joint probability distribution
+3. 2.4 Suppose that the random variables $Y$ and $X$ only take the values 0 and 1, and have the following joint probability distribution
 
 +------+------+------+
 |      |$X=0$ |$X=1$ |
@@ -73,19 +71,13 @@ E[Y^2|X=1] &= (1)^2P[Y=1|X=1] + (0)^2P[Y=0|X=1] = (1)^2(.3)/(.5)=.6 \\
 \var[Y|X=1] &= E[Y^2|X=1] - (E[Y|X=1])^2 = (.6)-(.6)^2 = 0.24
 \end{align*}
 
-4. 2.5 (c)
-
-Show that $\sigma^2(X)$ is the best predictor of $e^2$ given $X$. 
-
-Show that $\sigma^2(X)$ minimizes the mean-squared error and is thus the best predictor.
+4. 2.5 (c) Show that $\sigma^2(X)$ is the best predictor of $e^2$ given $X$. Show that $\sigma^2(X)$ minimizes the mean-squared error and is thus the best predictor.
 
 ........
 
 
 
-5. 2.8
-
-Suppose that $Y$ is discrete-valued, taking values only on the non-negative integers, and the conditional distribution of $Y$ given $X = x$ is Poisson:
+5. 2.8 Suppose that $Y$ is discrete-valued, taking values only on the non-negative integers, and the conditional distribution of $Y$ given $X = x$ is Poisson:
 
 $$
 P[Y=j|X=x] = \frac{\exp(-x'\beta)(x'\beta)^j}{j!}, j=0, 1, 2,...
@@ -99,7 +91,7 @@ Yes, this justifies a linear regression model because $E[e|X] = E[Y - X'\beta | 
 
 6. 2.10 - 2.14 Explain your answers.
 
-If $Y=X\beta + e, X \in \R$, and $E[e|X] = 0$, then $E[X^2e] = 0$.
+2.10 If $Y=X\beta + e, X \in \R$, and $E[e|X] = 0$, then $E[X^2e] = 0$.
 
 True, based on the law of iterated expectation:
 
@@ -107,24 +99,70 @@ $$
 E[X^2e] = E[E[X^2e|X]] = E[X^2E[e|X]]= E[X^2(0)]=E[0]=0
 $$
 
-If $Y=X\beta + e, X \in \R$, and $E[Xe] = 0$, then $E[X^2e] = 0$.
+2.11 If $Y=X\beta + e, X \in \R$, and $E[Xe] = 0$, then $E[X^2e] = 0$.
 
 False, for a counter example, assume $X \sim N(0,1)$ and $e$ is a degenerate random variable equal to 1. Notice that $E[Xe]=E[X] =0$ and $E[X^2e]=E[X^2]=1$.
 
-If $Y=X'\beta + e$, and $E[e|X] = 0$, then $e$ is independent of $X$.
+2.12 If $Y=X'\beta + e$, and $E[e|X] = 0$, then $e$ is independent of $X$.
 
 False, for a counter example...
 
-If $Y=X'\beta + e$, and $E[Xe] = 0$, then $E[e|X]=0$.
+2.13 If $Y=X'\beta + e$, and $E[Xe] = 0$, then $E[e|X]=0$.
 
 False, for a counter example, assume $X \sim N(0,1)$ and $e$ is a degenerate random variable equal to 1. Notice that $E[Xe]=E[X] =0$ and $E[e|X]=E[e]=1$.
 
-If $Y=X'\beta + e$, and $E[e|X] = 0$, and $E[e^2|X]=\sigma^2$, then $e$ is independent of $X$.
+2.14 If $Y=X'\beta + e$, and $E[e|X] = 0$, and $E[e^2|X]=\sigma^2$, then $e$ is independent of $X$.
 
-False,
+False,...
 
-7. 2.16
-
-
+7. 2.16 Let $X$ and $Y$ have the joint density $f(x, y) = \frac{3}{2} (x^2 + y^2)$ on $0 \le x \le 1, 0 \le y \le 1$. Compute the coefficients of the best linear predictor $Y = \alpha + \beta X + e$. Compute the conditional expectation $m(x) = E[Y|X=x]$. Are the best linear predictor and conditional expectation different?
 
 8. 4.1 - 4.6
+
+4.1 For some integer $k$, set $\mu_k = E[Y^k]$.
+
+(a) Construct an estimator $\hat{\mu}_k$ for $\mu_k$.
+
+...
+
+(b) Show that $\hat{\mu}_k$ is unbaised for $\mu_k$.
+
+...
+
+(c) Calculate the variance of $\hat{\mu}_k$, say $\var[\hat{\mu}_k]$. What assumption is needed for $\var[\hat{\mu}_k]$ to be finite?
+
+...
+
+(d) Propose an estimator of $\var[\hat{\mu}_k]$.
+
+...
+
+4.2 Calculate $E[(\bar{Y} - \mu)^3]$, the skewness of $\bar{y}$. Under what conditions is it zero?
+
+...
+
+4.3 Explain the difference between $\bar{Y}$ and $\mu$. Explain the difference between $n^{-1}\sum_{i=1}^n X_i X_i'$ and $E{X_i X_i'}$.
+
+...
+
+4.4 True or False. If $Y_i = X_i \beta + e_i, X_i \in \R, E[x_i|X_i] = 0$, and $\hat{e}_i$ is the OLS residual from the regression of $Y_i$ on $X_i$, then $\sum_{i=1}^nX_i^2 \hat{e}_i = 0$.
+
+...
+
+4.5  Prove (4.15) and (4.16).
+
+(4.15) $E[\hat{\beta}|X] = \beta$
+
+...
+
+(4.16) $\var[\hat{\beta}|X] = (X'X)^{-1}(X' \Omega X) (X'X)^{-1}$
+
+...
+
+4.6 Prove Theorem 4.5.
+
+Theorem 4.5 Generalized Guass-Markov
+
+In the linear regression model (Assumption 4.2) and $\Omega > 0$, if $\tilde{\beta}$ is a linear unbiased estimator of $\beta$ then $\var[\tilde{\beta}|X] \ge (X' \Omega^{-1}X)^{-1}$
+
+...

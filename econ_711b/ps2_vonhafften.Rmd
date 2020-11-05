@@ -114,42 +114,70 @@ $u(s_a, s_b)=$
 
 $(T_1, t_1)$, $(T_2, t_2)$, and $(T_3, t_3)$ are all pure Nash equilibria because Alice would not change her strategy based on Bob playing his and vice versa.  So all actions are rationalizable because they are best responses depending on the action of the other player.
 
-The simplex below shows the best response of Alice to Bob's strategies:
+Let's now consider Alice's best response based on her beliefs of Bob's strategies using a simplex.  Let $t_1, t_2, t_3$ denote the probability that Bob plays $t_1, t_2, t_3$, respectively. Thus,
 
-```{r, echo = FALSE}
-simplex <- function(x,
-                    y,
-                    label = expression(italic(t)[1], italic(t)[2], italic(t)[3]),
+$$
+u_A(T_1) = (1) t_1 + (0) t_2 + (0) t_3 = t_1
+$$
+$$
+u_A(T_2) = (0) t_1 + (2) t_2 + (0) t_3 = 2t_2
+$$
+$$
+u_A(T_3) = (0) t_1 + (0) t_2 + (3) t_3 = 3t_3
+$$
+
+Thus, $T_1 \sim T_2 \implies t_1 = 2t_2$ including $\{(0,0,1), (2/3, 1/3, 0)\}$.  $T_2 \sim T_3 \implies 2t_2 = 3t_3$ including $\{(1,0,0), (0, 3/5, 2/5)\}$. $T_1 \sim T_3 \implies t_1 = 3t_3$ including $\{(0,1,0), (3/4, 0, 1/4)\}$.  Finally, $T_1 \sim T_2 \sim T_3 \implies t_1 = 3(1-t_1-t_2)$ and $t_1 = 2t_2 \implies (6/11, 3/11, 2/11)$. These mixed strategies are represented by the simplex below:
+
+```{r, echo = FALSE, fig.align='center'}
+simplex <- function(label = c("(1,0,0)", "(0,1,0)", "(0,0,1)"),
                     ...) {
   # empty plot
   op <- par(mar=c(1,0,0,0) + 0.1, pty="s")
-  plot(x=c(-0.2,1.2), y=c(-0.2,1.2), type="n", axes=FALSE, xlab="", ylab="")
+  plot(x=c(-0.2,1.2), y=c(-0.2,1.2), type="n", 
+       axes=FALSE, xlab="", ylab="")
 
   # triangle (borders)
   points(x=c(0,0.5,1,0), y=c(0,0.5*sqrt(3),0,0), type="l")
 
-  # transform the points
-  xx <- 0.5*(1-x+y)
-  yy <- 0.5*sqrt(3)*(1-x-y)
-
-  # plot points
-  points(x=xx, y=yy, ...)
-
   # labels
   if (!is.null(label)) {
-    text(x=0.5, y=0.5*sqrt(3), pos=3, labels=label[3])
-    text(x=0.0, y=0.0, pos=2, labels=label[1])
-    text(x=1.0, y=0.0, pos=4, labels=label[2])
+    text(x=0.5, y=0.5*sqrt(3), pos=3, labels=label[3], cex = .7)
+    text(x=0.0, y=0.0, pos=2, labels=label[1], cex = .7)
+    text(x=1.0, y=0.0, pos=4, labels=label[2], cex = .7)
   }
   
   # restore plotting parameters
   par(op)
 }
 
-x <- seq(from=0, to=1, length.out=100)^2
-y <- 0.5*(1-x) + rnorm(length(x), 0, 0.05*(1-x))
-simplex(x=x, y=y, type="l", lwd=2, col="red")
+simplex()
+
+polygon(x=c(0,  1/8, 0.363, 1/3), y=c(0,  1/8*sqrt(3), 0.5*sqrt(3)*2/11, 0), col = "lightblue")
+polygon(x=c(0.5, 4/5, 0.363, 1/8), y=c(0.5*sqrt(3), (2/5)*0.5*sqrt(3), 0.5*sqrt(3)*2/11, 1/8*sqrt(3)), col = "pink")
+polygon(x=c(1, 4/5, 0.363, 1/3), y=c(0, (2/5)*0.5*sqrt(3), 0.5*sqrt(3)*2/11, 0), col = "lightgreen")
+
+points(x = 1/3, y=0, pch = 16)
+text(x = 1/3, y=0, pos = 1, "(2/3, 1/3, 0)", cex = .7)
+segments(x1 = 1/3, y1 = 0, x0=0.5, y0=0.5*sqrt(3))
+
+points(x=1/8, y=1/8*sqrt(3), pch = 16)
+text(x=1/8, y=1/8*sqrt(3), pos = 2, "(3/4, 0, 1/4)", cex = .7)
+segments(x1=1/8, y1=1/8*sqrt(3), x0=1, y0=0)
+
+points(x=4/5, y=(2/5)*0.5*sqrt(3), pch = 16)
+text(x=4/5, y=(2/5)*0.5*sqrt(3), pos = 4, "(0, 3/5, 2/5)", cex = .7)
+segments(x1=4/5, y1=(2/5)*0.5*sqrt(3), x0=0, y0=0)
+
+points(x=0.5, y=0.5*sqrt(3), pch=16)
+points(x=0.0, y=0.0, pch=16)
+points(x=1.0, y=0.0, pch=16)
+
+points(x=0.363, y=0.5*sqrt(3)*2/11, pch=16)
+text(x=0.363, y=0.5*sqrt(3)*2/11, pos = 4, "(6/11, 3/11, 2/11)", cex = .7)
+
 ```
+
+Since the game is symmetic, there are mixed Nash equilibrium at $(2/3T_1 + 1/3T_2, 2/3 t_1 + 1/3 t_2)$, $(3/5 T_2+ 2/5 T_3, 3/5 t_2 + 2/5 t_3)$, $(3/4 T_1 + 1/4 T_3, 3/4 t_1 + 1/4 t_3)$, and $(6/11 T_1 + 3/11 T_2 + 2/11 T_3, 6/11 t_1 + 3/11 t_2 + 2/11 t_3)$.
 
 4. Suppose there are two firms in a market. Each firm's cost function is the same, given by $C_i(q_i) = q_i$ for $i=1, 2$ where $q_i$ is the output of firm $i$. If the firms' total output is $Q$ i.e., $Q = q_1 + q_2$, then the market price is $P(Q) = \begin{cases} 2 - Q \text{ if } Q \le 2, \\ 0 \text{ if } Q > 2 \end{cases}$. For $i=1, 2$, firm $i$'s revenue and profit are given by $R_i(q_1, q_2) = q_i P(q_1 + q_2)$ and $\pi_i(q_1, q_2) = q_i P(q_1 + q_2) - C_i(q_i)$ respectively.
 

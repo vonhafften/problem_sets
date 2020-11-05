@@ -1,0 +1,82 @@
+---
+title: "ECON 712B - Problem Set 1"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "11/11/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Suppose that a consumer has nonseparable preferences of the form: $\sum_{t=0}^\infty \beta^t u(c_t, c_{t-1})$ which represent habit persistence in consumption. With assets $A_t$, the consumer faces
+the flow constraint: $A_{t+1} = R (A_t - c_t)$, where $R$ is the constant gross return, and $A_0$ and $c_{-1}$ are given.
+
+(a) Write down the Bellman equation for this problem, and state assumptions that will ensure that its solution is unique, with a strictly increasing, strictly concave value function that is differentiable on the interior of the feasible set. Then derive the conditions for maximization.
+
+...
+
+(b) Show that if $u(c_t, c_{t-1}) =\log c_t + \gamma \log c_{t-1}$, then the optimal saving policy is independent of past consumption. In particular, show that the optimal policy function is to save a constant fraction of current assets.
+
+...
+
+(c) For more general preferences, will the independence result in part (b) hold? Discuss why or why not.
+
+...
+
+2. In many cases we work with unbounded return functions for which many of the standard results do not apply. However in some cases we can find an upper bound on the value function and iterate on the Bellman operator. For example, consider the problem of a firm with capital stock $x$ today and $y$ in the next period, with profit function: $F(x, y) = ax - \frac{1}{2}bx^2-\frac{1}{2}c(y-x)^2$, here $a, b, c > 0$, with the last term representing adjustment costs. Suppose the firm discounts future profits at rate $r$, so that its discount factor is $\delta = \frac{1}{1+r}$. The firm then chooses its capital stock in the future to maximize discounted profits over an infinite horizon, given an initial capital $x_0$.
+
+(a) Write down the sequence problem and the Bellman equation for the problem. Define the Bellman operator $T$ as the right side of the Bellman equation for an arbitrary continuation value function.
+
+...
+
+(b) Suppose that we allow for negative capital levels. Then show that $F$ is unbounded below, but is bounded above by $a^2/2b$. Deduce that the value function $v$ is bounded above by: $\hat{v} = \frac{a^2}{2b(1-\delta)}$.
+
+...
+
+(c) Find $T\hat{v}$. Show that $T\hat{v} \le \hat{v}$.
+
+...
+
+(d) Show by induction that $T^n\hat{v}$ takes the form $(T^n\hat{v})(x) = \alpha_n x - \frac{1}{2} \beta_n x^2 + \gamma_n$ and find recursive expressions for $\alpha_n, \beta_n$, and $\gamma_n$.
+
+...
+
+(e) Using the previous part, find $\lim_{n \to \infty} T^n \hat{v}$ and show that the limit function satisfies the Bellman equation.
+
+...
+
+3. Consider a firm that seeks to maximize the present discounted value of its net profit stream: $\sum_{t=0}^\infty (\frac{1}{R})^t [\pi(k_t) - \gamma(I_t)]$ where $\pi(k)$ is the firm's profit function which depends on its capital stock, $\gamma(I)$ is its cost of investment, and $R > 1$ is the gross interest rate. Assume that $\pi$ is strictly increasing, strictly concave, and continuously differentiable with: $\lim_{k \to 0} \pi'(k) = \infty, \lim_{k \to \infty} \pi'(k) = 0$. The cost function $\gamma$ is strictly increasing, strictly convex, and continuously differentiable with: $\gamma'(0)=0, \lim_{I \to \infty} \gamma'(I) = \infty$. Capital depreciates at rate $\delta$ so the law of motion for capital is: $k_{t+1} = (1-\delta) k_t + I_t$. The initial capital stock $k_0 \ge 0$ is given.
+
+(a) Formulate the Bellman equation for this problem and derive the conditions for maximization.
+
+...
+
+(b) Is there a steady steady state in this system? Is it unique? How would the steady state be affected by an increase in the interest rate $R$? Interpret your result.
+
+...
+
+(c) Suppose $\gamma(I) = \frac{1}{2} I^2$ and $\pi(k) = \Pi_0-\frac{1}{2}(k-k^*)^2$ for some large positive constants $k^*$ and $\Pi_0$. (Ignore the fact that these functions may not satisfy the conditions above.) Derive the difference equations for $I_t$ and $k_t$ and sketch a phase diagram illustrating the saddle path. Sketch the transitional dynamics associated with an increase in the interest rate $R$.
+
+...
+
+4. Consider an optimal growth model in which households value government spending as well as private consumption. That is, suppose that households have the preferences: $\sum_{t=0}^\infty \beta^t \frac{(c_t G_t^\eta)^{1-\gamma}}{1-\gamma}$ where $c_t$ is private consumption, $G_t$ is government spending, and $\eta > 0$ is a substitution parameter. Assume $\beta \in (0, 1)$ and $\gamma > 1$. Government spending follows an exogenous path which is known with certainty at date 0. Further, the government spending is financed by foreign aid and thus does not require private resources. A benevolent social planner seeks to maximize agents' utility subject to the feasibility constraint: $k_{t+1} = (1 - \delta) k_t + f(k_t) - c_t$ with $k_0$ given. The social planner cannot alter the path of government spending. The production function $f(k)$ is strictly concave and satisfies: $\lim_{k \to 0}f'(k) = + \infty, \lim_{k \to +\infty}f'(k) = 0$.
+
+(a) Formulate the Bellman equation for the social planner's problem and derive the conditions for maximization. Find the difference equations governing the evolution of consumption and capital along an optimal path.
+
+...
+
+(b) When government spending grows at a constant rate $g$, is there a steady state in this economy? Is it unique?
+
+...
+
+(c) What happens to consumption and capital if there is a once and for all unexpected increase in $g$, the growth rate of government spending? How does this depend on the agents' preferences for government spending? Consider both the transitional dynamics (qualitatively) and long-run effects (analytically), and interpret your results.
+
+...
