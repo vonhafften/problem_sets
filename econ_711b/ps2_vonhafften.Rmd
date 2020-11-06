@@ -15,6 +15,8 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
 ```
 
 1. Each of $n \ge 2$ players can make contributions $s_i \in [0, w]$ to the production of some public good, where $w > 0$ and $s_i$ is the contribution of player $i$: Their payoff functions are given by $\pi_i(s_1, s_2, ..., s_n) = n \min\{s_1, s_2,...,s_n\} - s_i$. Find all pure strategy Nash equilibria in the game.
@@ -183,13 +185,135 @@ Since the game is symmetic, there are mixed Nash equilibrium at $(2/3T_1 + 1/3T_
 
 (a) Suppose that both the firms maximize their profits and this is common knowledge. Compute the equilibrium quantities and profits of both the firms.
 
+The game is symmetric.  This game represents a Cournot duopoly.  Clearly $Q$ isn't going to be higher than 2 because revenue will be zero and costs positive. If $Q \le 2$, the profit for firm 1 is
+
+$$
+\pi_1(q_1, q_2) = q_1 (2 - q_1 - q_2) - q_1 = q_1 - q_1^2 - q_1q_2
+$$
+
+FOC:
+
+$$
+0 = 1 - 2q_1^* - q_2^* \implies q_2^* = 1 - 2q_1^*
+$$
+
+Since the game is symmetric, the FOC $\pi_2$ is $q_1^* = 1 - 2q_2^*$.  Thus, in equilibrium, $q_1^* = 1 - 2(1 - 2q_1^*) = -1+4q_1^* \implies q_1^*= \frac{1}{3}$. Similarly, $q_2^*= \frac{1}{3}$. Thus, $Q=2/3$ and $P(2/3) = 4/3$. $\pi_1(1/3, 1/3) = \pi_2(1/3, 1/3) = (1/3)(4/3)-1/3=1/9$.
+
 (b) Now suppose that firm 1 maximizes $\frac{3}{4} \pi_1(q_1, q_2) + \frac{1}{4} R_1(q_1, q_2)$ (i.e., firm 1 puts a weight of 3/4 on its profit and a weight of 1/4 on its revenue) and firm 2 maximizes profit and this is common knowledge. Now compute the equilibrium quantities and profits of both the firms.
 
+The FOC for firm 2 is the same as (a).  Similarly for the The objective function for firm 1 is  
+
+$$
+\frac{3}{4} \pi_1(q_1, q_2) + \frac{1}{4} R_1(q_1, q_2) = \frac{3}{4}(q_1 - q_1^2 - q_1q_2) + \frac{1}{4}(2q_1 - q_1^2 - q_1q_2) = \frac{5}{4}q_1 - q_1^2 - q_1q_2
+$$
+
+FOC:
+
+$$
+0 = \frac{5}{4} - 2q_1^* - q_2^* \implies q_2^* = \frac{5}{4} - 2q_1^*
+$$
+
+Plugging in the FOC for firm 2:
+
+$$
+q_2^* = \frac{5}{4} - 2(1 - 2q_2^*) \implies q_2^* = \frac{1}{4} \implies q_1^* = 1 - 2(\frac{1}{4}) = \frac{1}{2}
+$$
+
+Thus, $Q=3/4$ and $P(3/4) = 5/4$. $\pi_1(1/2, 1/4) = (1/2)(5/4)-(1/2) = 1/8$ and $\pi_2(1/2, 1/4) = (1/4)(5/4)-(1/4) = 1/16$.
+
 (c) Compare the equilibrium profits of the two firms in the above two cases.
+
+The graph below shows how the best response functions change when firm 1 maximizes the different objective function:
+
+```{r, echo = FALSE}
+
+plot(1, type = "n", xlim=c(0, 1), ylim =c(0, 1), xlab="q_1*", ylab = "q_2*", xaxs="i", yaxs="i")
+
+segments(x0=0, x1=1/2, y0=1, y1=0)
+segments(y0=0, y1=1/2, x0=1, x1=0)
+segments(x0=0, x1=5/8, y0=5/4, y1=0, col ="red")
+
+points(x=1/3, y=1/3)
+points(x=1/2, y=1/4, col ="red")
+
+```
+
+When both firms maximize profit, they act symmetrically and both produce 1/3 and both have profit 1/9.  When firm 1 changes to maximizing the weighted average of profit and revenue, it shrinks production to 1/4 allowing firm 2 to ramp up production to 1/2. Thus, the total output insteads to 3/4, which lowers the price.  Thus, firm 1 profits 1/16 and firm 2 profits 1/8.
+
+\pagebreak
 
 5. Let there be a continuum of participants choosing a time $t \in [0, 1]$ to attend a seminar on Zoom which starts at $t = 1$. At $t \ge 0$, the organizer allows the participants to join the seminar. Participants do not want to join the seminar too early or too late, but they also want to arrive when there are lots of others already present. Each agent's payoff is $u(t)v(q)$, where $u(t) = t(1-t)$ is the fundamental payoff of joining the seminar at time $t$, and $v(q) = 1 + q + \frac{1}{4}q^2$ is the strategic quantile payoff of being at the $q$ quantile of those joining.
 
 (a) Solve for the symmetric Nash equilibrium quantile function $Q(t)$ of the Zoom seminar participation game. Can there be a terminal rush? 
 
+This game is a war of attrition because after a certain point there's a fundamental reason to act (join the Zoom call), but there's a strategic reason to delay (waiting for more people to join the call).  Clearly, there's no reason to join the call until the maximum of $u(t)$ where $t = \lambda$: 
+
+$$
+u(t) = t(1-t) \implies \lambda = 1/2
+$$
+
+Thus, equating the payoff from joining at $\lambda$ before anyone has joined and joining later when $Q(t)$ have joined is 
+
+\begin{align*}
+v(0)u(\lambda) &= v(Q(t))u(t) \\
+\implies (1)\frac{1}{4} &= (1-Q(t)+\frac{1}{4}(Q(t))^2)t(1-t) \\
+\implies 0 &= \Bigg( 4-\frac{1}{t(1-t)} \Bigg) + 4Q(t) + (Q(t))^2 \\
+\end{align*}
+
+$$
+Q(t) = \frac{-4 + \sqrt{4^2-4(1)\Big( 4-\frac{1}{t(1-t)}\Big)}}{2} = -2 + \sqrt{\frac{1}{t(1-t)}}
+$$
+
+As mentioned, no one joins the call until $\lambda = 1/2$, so $Q(t) = 0$ $\forall t \in [0, 1/2)$.  Furthermore, the maximum of $Q(t)$ is 1 so
+
+$$
+1=-2 + \sqrt{\frac{1}{t(1-t)}} \implies 0 = t - t^2-1/9 \implies t = \frac{3+\sqrt{5}}{6}
+$$
+
+Therefore the $Q(t)$ is the following:
+
+\begin{align*}
+Q(t) = \begin{cases} 
+0,                            &\text{ if } t < 1/2,\\
+-2 + \sqrt{\frac{1}{t(1-t)}}, &\text{ if } 1/2 \le t < (3+\sqrt{5})/6,\\
+1,                            &\text{ if } t \ge (3+\sqrt{5})/6
+\end{cases}
+\end{align*}
+
+```{r, echo = FALSE}
+plot(1, type = "n", xlim = c(0,1), ylim = c(0,1), xlab = "t", ylab = "Q(t)")
+
+df <- tibble(t = seq(0, 1, .001)) %>%
+  mutate(q_t = -2 + sqrt(1/(t*(1-t))),
+         q_t = case_when(t < 1/2 ~ 0,
+                         t > (3 + sqrt(5))/6 ~ 1,
+                         TRUE ~ q_t))
+
+lines(x=df$t, y=df$q_t)
+
+abline(v = 1/2, lty=2, col = "red")
+
+text("t = 1/2", x = 0.5, y = 0.8, pos = 2, cex = .7, col = "red")
+
+abline(v = (3 + sqrt(5))/6, lty=2, col = "blue")
+
+text("t = (3 + sqrt(5))/6", x = (3 + sqrt(5))/6, y = 0, pos = 2, cex = .7, col = "blue")
+
+```
+
+To determine whether there is a terminal rush from $\tilde{q}$ to 1, equate:
+
+\begin{align*}
+\frac{1}{1-\tilde{q}} \int_{\tilde{q}}^1 v(x) dx &= v(\tilde{q}) \\
+\implies \frac{1}{1-\tilde{q}} \int_{\tilde{q}}^1 1+x + \frac{1}{4} x^2 dx &= 1 + \tilde{q} + \frac{1}{4} \tilde{q}^2\\
+\implies \frac{1}{1-\tilde{q}}  \Bigg[ x + \frac{1}{2}x^2 + \frac{1}{12} x^3 \Bigg]_{\tilde{q}}^1 &= 1 + \tilde{q} + \implies \frac{1}{4} \tilde{q}^2 \\
+\implies 7 - 12 \tilde{q} + 3 \tilde{q}^2 + 2 \tilde{q}^3 &= 0 \\
+\implies \tilde{q} &= 1 \text{ or } \tilde{q} = -7/2
+\end{align*}
+
+We can disregard $\tilde{q} = -7/2$ because it is outside of $[0,1]$.  Since $\tilde{q}=1$, there cannot be a terminal rush.
+
 (b) During what times do people join the seminar i.e., what is the support of $Q$?
+
+People join the call at $t \in [1/2, (3+\sqrt{5})/6]$.  Before $t=1/2$, no one joins the call and everyone joins by $t=(3+\sqrt{5})/6$.
 

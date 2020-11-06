@@ -1,0 +1,100 @@
+---
+title: "ECON 711B - Voting Game"
+author: "Alex von Hafften"
+date: "11/5/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+- \usepackage{bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Ideas for setup:
+
+- Continuum of players.
+
+- Discrete choices: Vote and not vote. Democratic vote for democrats; republicans vote for republicans.
+
+Stylized facts:
+
+- Costly voting.
+
+- Signal from voting increases with income.
+
+Result:
+
+- Voting rates increase with income.
+
+
+## Higher income and voting
+
+- Two types of players: R and D.
+
+- If more Rs vote than Ds, Rs win and Rs get payoff $x$.  If more Ds vote than Rs, Ds win and Ds get payoff $x \in \R_+$.
+
+- There is a continuum of each type of players.  For each type, player $w \in [0,1]$ earns $w$ per unit of time.
+
+- It takes $c \in (0,1)$ units of time to vote.  So the cost of voting is $cw$.
+
+- The benefit of voting is a signal of your in-group-ness.  The strength of the signal is $f(w)$. Assume that $f$ is strictly increasing ($f' > 0$) and strictly convex ($f'' > 0$).
+
+- If no one is voting, everyone has an incentive to vote because their party would win.
+
+- The payoff for a D is
+
++------+---------+-----------+
+|$u_D=$| R wins  | D wins    |
++------+---------+-----------+
+|$v=1$ |$f(w)-cw$|$f(w)-cw+x$|
++------+---------+-----------+
+|$v=0$ | $0$     |$x$        |
++------+---------+-----------+
+
+- The payoff for a R is
+
++------+---------+-----------+
+|$u_R=$| D wins  | R wins    |
++------+---------+-----------+
+|$v=1$ |$f(w)-cw$|$f(w)-cw+x$|
++------+---------+-----------+
+|$v=0$ | $0$     |$x$        |
++------+---------+-----------+
+
+- Since the unit mass of an individual is zero, they cannot sway the result of the election.
+
+- Voting is a dominant strategy if $cw < f(w)$.
+
+- Not voting is a dominant strategy if $cw > f(w)$
+
+```{r, echo = FALSE}
+
+c <- 0.4
+
+x <- seq(0, 1, .01)
+
+v_p <- x^2-c*x
+
+nv_p <- rep(0, times = 101)
+
+plot(1, type = "n", xlim=c(0,1), ylim = c(min(v_p), max(v_p)), xlab = "w", ylab = "Payoff")
+
+lines(x=x, y=v_p, col = "blue")
+text("u(v=1)", x = 0.8, y=0.4, pos = 2, col ="blue")
+
+lines(x=x, y=nv_p, col = "red")
+text("u(v=0)", x = 1, y=0.1, pos = 2, col="red")
+
+abline(v= c)
+text("f(w) = cw", x = c, y=0.4, pos = 2)
+```
+
+- Result is lower income agents don't vote and higher income agents vote despite the higher time-cost trade-off.
+
