@@ -77,13 +77,7 @@ E[Y^2|X=1] &= (1)^2P[Y=1|X=1] + (0)^2P[Y=0|X=1] = (1)^2(.3)/(.5)=.6 \\
 
 
 
-5. 2.8 Suppose that $Y$ is discrete-valued, taking values only on the non-negative integers, and the conditional distribution of $Y$ given $X = x$ is Poisson:
-
-$$
-P[Y=j|X=x] = \frac{\exp(-x'\beta)(x'\beta)^j}{j!}, j=0, 1, 2,...
-$$
-
-Compute $E[Y|X]$ and $\var[Y|X]$. Does this justify a linear regression model of the form $Y=X'\beta + e$?\footnote{Hint: $P[Y=j] = \frac{\exp(-\lambda)(\lambda)^j}{j!}$, then $E[Y] = \lambda$ and $\var[Y] = \lambda$.}
+5. 2.8 Suppose that $Y$ is discrete-valued, taking values only on the non-negative integers, and the conditional distribution of $Y$ given $X = x$ is Poisson: $P[Y=j|X=x] = \frac{\exp(-x'\beta)(x'\beta)^j}{j!}, j=0, 1, 2,...$. Compute $E[Y|X]$ and $\var[Y|X]$. Does this justify a linear regression model of the form $Y=X'\beta + e$?\footnote{Hint: $P[Y=j] = \frac{\exp(-\lambda)(\lambda)^j}{j!}$, then $E[Y] = \lambda$ and $\var[Y] = \lambda$.}
 
 Using the hint, we know that $E[Y|X] = x'\beta$ and $\var[Y|X] = x'\beta$.
 
@@ -105,17 +99,121 @@ False, for a counter example, assume $X \sim N(0,1)$ and $e$ is a degenerate ran
 
 2.12 If $Y=X'\beta + e$, and $E[e|X] = 0$, then $e$ is independent of $X$.
 
-False, for a counter example...
+False, for a counter example, assume $X = (X_1, ..., X_k)'$ and $U= (U_1, ..., U_k)'$ where $X_1,...,X_k$ and $U_1, ..., U_k$ are independently distributed standard normal.  Let $e = X'U$.  Thus, conditional on $X$, $e$ is distributed $N(0, X'X)$, so $E[e|X]=0$, but $X$ and $e$ are not independent.
 
 2.13 If $Y=X'\beta + e$, and $E[Xe] = 0$, then $E[e|X]=0$.
 
-False, for a counter example, assume $X \sim N(0,1)$ and $e$ is a degenerate random variable equal to 1. Notice that $E[Xe]=E[X] =0$ and $E[e|X]=E[e]=1$.
+False, for a counter example, assume $X = (X_1, ..., X_k)'$ where $X_1,...,X_k \sim N(0,1)$ and $e$ is a degenerate random variable equal to 1. Notice that $E[Xe]=E[X] =0$ and $E[e|X]=E[e]=1$.
 
 2.14 If $Y=X'\beta + e$, and $E[e|X] = 0$, and $E[e^2|X]=\sigma^2$, then $e$ is independent of $X$.
 
-False,...
+False, ...
+
+\pagebreak
 
 7. 2.16 Let $X$ and $Y$ have the joint density $f(x, y) = \frac{3}{2} (x^2 + y^2)$ on $0 \le x \le 1, 0 \le y \le 1$. Compute the coefficients of the best linear predictor $Y = \alpha + \beta X + e$. Compute the conditional expectation $m(x) = E[Y|X=x]$. Are the best linear predictor and conditional expectation different?
+
+Best Linear Predictor (BLP):
+
+$$
+f_X(x) 
+= \int_{-\infty}^\infty f(x,y) dy 
+= \int_0^1 \frac{3}{2} (x^2 + y^2) dy 
+= \frac{3}{2} \Bigg[x^2y+\frac{y^3}{3} \Bigg]_{y=0}^1
+= \frac{3}{2}x^2 + \frac{1}{2}
+$$
+
+$$
+E[X] 
+= \int_0^1 x \Bigg( \frac{3}{2}x^2 + \frac{1}{2} \Bigg) dx 
+= \Bigg[\frac{3}{8}x^4 + \frac{1}{4}x^2 \Bigg]_0^1 
+= \frac{5}{8}
+$$
+
+$$
+E[X^2] 
+= \int_0^1 x^2 \Bigg( \frac{3}{2}x^2 + \frac{1}{2} \Bigg) dx 
+= \Bigg[\frac{3}{10}x^5 + \frac{1}{6}x^3 \Bigg]_0^1 
+= \frac{7}{15}
+$$
+
+Since the joint distribution is symmetric, $E[Y] = \frac{5}{8}$ and $E[Y^2] = \frac{7}{15}$.
+
+\begin{align*} 
+E[XY]
+&= \int_0^1\int_0^1 xy \frac{3}{2} (x^2 + y^2) dxdy\\
+&= \frac{3}{2} \int_0^1\int_0^1 x^3y + xy^3 dxdy\\
+&= \frac{3}{2} \int_0^1 \Bigg[ \frac{x^4y}{4} + \frac{x^2y^3}{2} \Bigg]_{x=0}^1 dy\\
+&= \frac{3}{2} \int_0^1 \frac{y}{4} + \frac{y^3}{2} dy\\
+&= \frac{3}{2} \Bigg[ \frac{y^2}{8} + \frac{y^4}{8} \Bigg]_0^1\\
+&= \frac{3}{8}
+\end{align*} 
+
+\begin{align*} 
+S(\alpha, \beta) 
+&=E[(Y- \alpha - \beta X)^2] \\
+&=  E[Y^2- \alpha Y - \beta XY - \alpha Y + \alpha^2 + \alpha\beta X - \beta XY+ \alpha\beta X  + \beta^2 X^2] \\
+&=  E[Y^2] - \alpha E[Y] - \beta E[XY] - \alpha E[Y] + \alpha^2 + \alpha\beta E[X] - \beta E[XY] + \alpha\beta E[X]  + \beta^2 E[X^2] \\
+&=  \frac{7}{15} - \frac{5}{8} \alpha  - \frac{3}{8} \beta  - \frac{5}{8} \alpha  + \alpha^2 + \frac{5}{8} \alpha\beta  - \frac{3}{8} \beta  + \frac{5}{8} \alpha \beta + \frac{7}{15} \beta^2  \\
+&=  \frac{7}{15} - \frac{5}{4} \alpha - \frac{3}{4} \beta  + \alpha^2 + \frac{5}{4} \alpha \beta + \frac{7}{15} \beta^2  \\
+\end{align*} 
+
+FOC [$\alpha$]:
+
+$$
+0 = - \frac{5}{4} +2\alpha + \frac{5}{4} \beta \implies
+\beta = 1- \frac{8}{5} \alpha
+$$
+
+\pagebreak
+
+FOC [$\beta$]:
+
+$$
+0 = - \frac{3}{4} + \frac{5}{4} \alpha + \frac{14}{15} \beta \implies
+45 = 75 \alpha + 56 \beta 
+$$
+
+$$
+45 = 75 \alpha + 56 \Bigg(1- \frac{8}{5} \alpha\Bigg) 
+\implies \alpha = \frac{55}{73} 
+\implies \beta = \frac{-15}{73} 
+$$
+
+Conditional Expectation Function (CEF):
+
+$$
+f_{Y|X} (y|x) 
+= \frac{f(x, y)}{f_X(x)} 
+= \frac{\frac{3}{2} (x^2 + y^2)}{\frac{3}{2}x^2 + \frac{1}{2}}
+= \frac{3 x^2 + 3y^2}{3x^2 + 1}
+$$
+
+$$
+m(x) 
+= E[Y|X=x] 
+= \int_{-\infty}^\infty y f_{Y|X} (y|x) dy 
+= \int_0^1 \frac{3 x^2y + 3y^3}{3x^2 + 1} dy 
+= \Bigg[ \frac{\frac{3}{2} x^2y^2 + \frac{3}{4}y^4}{3x^2 + 1} \Bigg]_{y=0}^1
+= \frac{6 x^2 + 3}{12x^2 + 4}
+$$
+
+```{r, echo = FALSE}
+plot(1, type = "n", xlim=c(0,1), ylim = c(.5,.8), xlab = "x", ylab="y")
+
+x= seq(0, 1, .01)
+
+cef = (6 * x^2 + 3)/(12 * x^2 + 4)
+blp = 55/73 -15/73 *x
+
+lines(x=x, y=cef, col = "red")
+lines(x=x, y=blp, col = "blue")
+
+text("CEF", col = "red", x= .1, y=.75, pos =3)
+text("BLP", col = "blue", x= .1, y=.7)
+```
+
+\pagebreak
 
 8. 4.1 - 4.6
 
@@ -123,19 +221,34 @@ False,...
 
 (a) Construct an estimator $\hat{\mu}_k$ for $\mu_k$.
 
-...
+$$
+\hat{\mu}_k = \frac{1}{n} \sum_{i=0}^n Y_i^k
+$$
 
-(b) Show that $\hat{\mu}_k$ is unbaised for $\mu_k$.
+(b) Show that $\hat{\mu}_k$ is unbiased for $\mu_k$.
 
-...
+$$
+E[\hat{\mu}_k] = E\Bigg[\frac{1}{n} \sum_{i=0}^n Y_i^k \Bigg] = \frac{1}{n} \sum_{i=0}^n E[Y_i^k] = \frac{1}{n} \sum_{i=0}^n \mu_k = \mu_k
+$$
 
 (c) Calculate the variance of $\hat{\mu}_k$, say $\var[\hat{\mu}_k]$. What assumption is needed for $\var[\hat{\mu}_k]$ to be finite?
 
-...
+We need to assume that $\mu_{2k} < \infty$ for $\var[\hat{\mu}_k]$ to be finite:
+
+$$
+\var[\hat{\mu}_k] 
+= \var \Bigg[ \frac{1}{n} \sum_{i=0}^n Y_i^k \Bigg] 
+= \frac{1}{n^2} \sum_{i=0}^n \var [Y_i^k ] 
+= \frac{1}{n^2} \sum_{i=0}^n (E[Y_i^{2k} ] - E[Y_i^k ]^2)
+= \frac{1}{n^2} \sum_{i=0}^n (\mu_{2k} - \mu_k^2) 
+= \frac{\mu_{2k} - \mu_k^2}{n}
+$$
 
 (d) Propose an estimator of $\var[\hat{\mu}_k]$.
 
-...
+$$
+\frac{\hat{\mu}_{2k} - \hat{\mu}_k^2}{n}  = \frac{\sum_{i=0}^n Y_i^{2k} - (\sum_{i=0}^n Y_i^{k})^2}{n}
+$$
 
 4.2 Calculate $E[(\bar{Y} - \mu)^3]$, the skewness of $\bar{y}$. Under what conditions is it zero?
 
@@ -161,7 +274,7 @@ False,...
 
 4.6 Prove Theorem 4.5.
 
-Theorem 4.5 Generalized Guass-Markov
+Theorem 4.5 Generalized Gauss-Markov
 
 In the linear regression model (Assumption 4.2) and $\Omega > 0$, if $\tilde{\beta}$ is a linear unbiased estimator of $\beta$ then $\var[\tilde{\beta}|X] \ge (X' \Omega^{-1}X)^{-1}$
 
