@@ -222,13 +222,13 @@ text("BLP", col = "blue", x= .1, y=.7)
 (a) Construct an estimator $\hat{\mu}_k$ for $\mu_k$.
 
 $$
-\hat{\mu}_k = \frac{1}{n} \sum_{i=0}^n Y_i^k
+\hat{\mu}_k = \frac{1}{n} \sum_{i=1}^n Y_i^k
 $$
 
 (b) Show that $\hat{\mu}_k$ is unbiased for $\mu_k$.
 
 $$
-E[\hat{\mu}_k] = E\Bigg[\frac{1}{n} \sum_{i=0}^n Y_i^k \Bigg] = \frac{1}{n} \sum_{i=0}^n E[Y_i^k] = \frac{1}{n} \sum_{i=0}^n \mu_k = \mu_k
+E[\hat{\mu}_k] = E\Bigg[\frac{1}{n} \sum_{i=1}^n Y_i^k \Bigg] = \frac{1}{n} \sum_{i=1}^n E[Y_i^k] = \frac{1}{n} \sum_{i=1}^n \mu_k = \mu_k
 $$
 
 (c) Calculate the variance of $\hat{\mu}_k$, say $\var[\hat{\mu}_k]$. What assumption is needed for $\var[\hat{\mu}_k]$ to be finite?
@@ -237,22 +237,42 @@ We need to assume that $\mu_{2k} < \infty$ for $\var[\hat{\mu}_k]$ to be finite:
 
 $$
 \var[\hat{\mu}_k] 
-= \var \Bigg[ \frac{1}{n} \sum_{i=0}^n Y_i^k \Bigg] 
-= \frac{1}{n^2} \sum_{i=0}^n \var [Y_i^k ] 
-= \frac{1}{n^2} \sum_{i=0}^n (E[Y_i^{2k} ] - E[Y_i^k ]^2)
-= \frac{1}{n^2} \sum_{i=0}^n (\mu_{2k} - \mu_k^2) 
+= \var \Bigg[ \frac{1}{n} \sum_{i=1}^n Y_i^k \Bigg] 
+= \frac{1}{n^2} \sum_{i=1}^n \var [Y_i^k ] 
+= \frac{1}{n^2} \sum_{i=1}^n (E[Y_i^{2k} ] - E[Y_i^k ]^2)
+= \frac{1}{n^2} \sum_{i=1}^n (\mu_{2k} - \mu_k^2) 
 = \frac{\mu_{2k} - \mu_k^2}{n}
 $$
 
 (d) Propose an estimator of $\var[\hat{\mu}_k]$.
 
 $$
-\frac{\hat{\mu}_{2k} - \hat{\mu}_k^2}{n}  = \frac{\sum_{i=0}^n Y_i^{2k} - (\sum_{i=0}^n Y_i^{k})^2}{n}
+\frac{\hat{\mu}_{2k} - \hat{\mu}_k^2}{n}  = \frac{\sum_{i=1}^n Y_i^{2k} - (\sum_{i=1}^n Y_i^{k})^2}{n}
 $$
 
 4.2 Calculate $E[(\bar{Y} - \mu)^3]$, the skewness of $\bar{y}$. Under what conditions is it zero?
 
-...
+$$
+E[\bar{Y}]=\mu
+$$
+
+$$
+E[\bar{Y}^2] = \var[\bar{Y}] + E[\bar{Y}]^2=\frac{\sigma^2}{n}+\mu^2
+$$
+
+$$
+E[\bar{Y}^3] 
+= E\Bigg[\Bigg(\frac{1}{n}\sum_{i=1}^n Y_i\Bigg)^3\Bigg]
+= \frac{1}{n^3}E\Bigg[\sum_{i=1}^n\sum_{j=1}^n\sum_{k=1}^n Y_iY_jY_k\Bigg]
+= \frac{1}{n^3} E\Bigg[\sum_{i=1}^n  Y_i^3 + \sum_{i=1}^n\sum_{j\neq i}^n Y_iY_j^2 + \sum_{i=1}^n\sum_{j \neq i}^n\sum_{k \neq i, k \neq j}^n Y_iY_jY_k \Bigg]
+$$
+
+$$
+E[(\bar{Y} - \mu)^3] \\
+= E[(\bar{Y} - \mu)^3]\\
+= E[\bar{Y}^3 -3\mu\bar{Y}^2 +3\mu^2\bar{Y} - \mu^3]\\
+= E[\bar{Y}^3] -3\mu E[\bar{Y}^2] +3\mu^2 E[ \bar{Y} ] - \mu^3
+$$
 
 4.3 Explain the difference between $\bar{Y}$ and $\mu$. Explain the difference between $n^{-1}\sum_{i=1}^n X_i X_i'$ and $E{X_i X_i'}$.
 

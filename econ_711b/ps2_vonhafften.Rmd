@@ -238,7 +238,7 @@ points(x=1/2, y=1/4, col ="red")
 
 ```
 
-When both firms maximize profit, they act symmetrically and both produce 1/3 and both have profit 1/9.  When firm 1 changes to maximizing the weighted average of profit and revenue, it shrinks production to 1/4 allowing firm 2 to ramp up production to 1/2. Thus, the total output insteads to 3/4, which lowers the price.  Thus, firm 1 profits 1/16 and firm 2 profits 1/8.
+When both firms maximize profit, they act symmetrically and both produce 1/3 and both have profit 1/9.  When firm 1 changes to maximizing the weighted average of profit and revenue, it expands production to 1/2 causing firm 2 to shrink production to 1/4. Thus, the total output insteads to 3/4, which lowers the price.  Thus, firm 1 profits 1/8 and firm 2 profits 1/16.
 
 \pagebreak
 
