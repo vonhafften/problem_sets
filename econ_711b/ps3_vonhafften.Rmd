@@ -1,0 +1,66 @@
+---
+title: "ECON 711B - Problem Set 3"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "11/15/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+- \usepackage{bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+1. (Arms race with market power) Two (expected payoff maximizing) gangs are competing in an arms race. Each of them likes having more weapons $w_i$ but dislikes having a different amount than the other agent. Obtaining weapons is costly, with the price of weapons increasing in the average quantity of weapons purchased.  The price of weapons is $P(\bar{w}) = \rho + \alpha \bar{w}$ where $\bar{w}$ is the average amount of weapons purchased. Each gang's payoff is $u_i(w_i, w_j) = \gamma w_i - \beta (w_i - w_j)^2 - P(\bar{w}) w_i$. All parameters $\alpha, \beta, \gamma$ and $\rho$ are strictly positive, and $\gamma > \rho$.
+
+(a) Explain the economic intuition of the assumption that $\gamma > \rho$. What does this assumption guarantee?
+
+Insures positive payoff when no one has any weapons.  At least someone is going to buy some weapons.  No corner solution.
+
+$$
+u_i(w_i, w_j) 
+= \gamma w_i - \beta (w_i - w_j)^2 - w_i (\rho + \alpha \bar{w}) \\
+= (\gamma - \rho) w_i - \beta (w_i - w_j)^2 - \alpha w_i \bar{w}
+$$
+
+(b) Under what condition(s) is this game supermodular?
+
+The game is supermodular if payoffs $u_i(w_i, w_j)$ has increasing differences for $i$ and $j$.
+
+$$
+u_i(w_i, w_j) 
+= \gamma w_i - \beta (w_i - w_j)^2 - \Bigg(\rho + \alpha \Bigg(\frac{w_i + w_j}{2}\Bigg)\Bigg) w_i\\
+= \gamma w_i - \beta (w_i - w_j)^2 - \rho w_i - \frac{\alpha w_i^2}{2} - \frac{\alpha w_i w_j }{2} 
+$$
+
+$$
+\frac{\partial u_i}{\partial w_i} = \gamma - 2\beta (w_i - w_j) - \rho - \alpha w_i - \frac{\alpha w_j }{2} 
+$$
+
+$$
+\frac{\partial^2 u_i}{\partial w_i \partial w_j} = 2\beta - \alpha/2
+$$
+
+If $4\beta \ge \beta$, then the game is supermodular.
+
+(c) Find the symmetric pure-strategy Nash equilibrium.
+
+$$
+(\gamma - \rho) - (2\beta+\alpha)w_i - (2\beta+\alpha/2)w_j 
+$$
+
+(d) In the Nash equilibrium you found in part (c), how does the equilibrium quantity of weapons change with each parameter? Provide intuition for each effect.
+
+(e) Does there exist an equilibrium in which one or both gangs choose to have no weapons? If so, find such an equilibrium; if not, show why not.
+
+(f) Can this game support a mixed strategy Nash equilibrium? If so, find such an equilibrium. If not, explain why it cannot exist.
+
+(g) Suppose both gangs have the equilibrium quantity of weapons from part (c). A horde of goblins suddenly invades the area. Because weapons can be used to fight goblins, the inherent value $\gamma$ of weapons increases. However, the goblins also steal all the money of gang 2, leaving that gang unable to purchase new weapons. How does gang 1’s weapons quantity respond to this shock? How does the magnitude of this response compare to the magnitude if both gangs were able to respond?

@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 2.1 Find $E[E[E[Y|X_1, X_2, X_3]|X_1, X_2]|X_1]$.
 
-Using the law of iterated expectations,
+By the law of iterated expectations,
 
 $$
 E[E[E[Y|X_1, X_2, X_3]|X_1, X_2]|X_1]
@@ -30,7 +30,7 @@ $$
 
 2.2 If $E[Y|X]=a+bX$, find $E[YX]$ as a function of moments of $X$.
 
-Using the law of iterated expectations,
+By the conditioning theorem,
 
 $$
 E[YX] = E[E[YX|X]] = E[XE[Y|X]] = E[X(a+bX)]=E[aX+bX^2]=aE[X]+bE[X^2]
@@ -40,7 +40,7 @@ $$
 
 If $E|Y| < \infty$ then for any function $h(x)$ such that $E|h(X)e| < \infty$ then $E[h(X)e] = 0$.
 
-Proof: Using the law of iterated expectations, Theorem 2.3, and conclusion (1) (i.e., $E[e | X] = 0$),
+Proof: Let $h$ be a function such that $E|h(X)e| < \infty$.  By the conditioning theorem and conclusion (1) of Theorem 2.4 (i.e., $E[e | X] = 0$),
 
 $$
 E[h(X)e] = E[E[h(X)e|X]] = E[h(X)E[e|X]]= E[h(X)(0)]=E[0]=0
@@ -73,9 +73,34 @@ E[Y^2|X=1] &= (1)^2P[Y=1|X=1] + (0)^2P[Y=0|X=1] = (1)^2(.3)/(.5)=.6 \\
 
 4. 2.5 (c) Show that $\sigma^2(X)$ is the best predictor of $e^2$ given $X$. Show that $\sigma^2(X)$ minimizes the mean-squared error and is thus the best predictor.
 
-........
+For $S(X)$ some predictor of $e^2$ given $X$:
 
+\begin{align*}
+E[(e^2 - S(X))^2] 
+&= E[(e^2 - \sigma^2(X) + \sigma^2(X) - S(X))^2] \\
+&= E[(e^2 - \sigma^2(X))^2] + 2E[(e^2 - \sigma^2(X))(\sigma^2(X) - S(X))] + E[(\sigma^2(X) - S(X))^2]
+\end{align*}
 
+The middle term is zero:
+
+\begin{align*}
+E[(e^2 - \sigma^2(X))(\sigma^2(X) - S(X))] 
+&= E[E[(e^2 - \sigma^2(X))(\sigma^2(X) - S(X))|X]]\\
+&= E[E[(e^2 - \sigma^2(X))|X](\sigma^2(X) - S(X))]\\
+&= E[(E[(e^2|X] - E[\sigma^2(X)|X])(\sigma^2(X) - S(X))]\\
+&= E[(\sigma^2(X) - \sigma^2(X))(\sigma^2(X) - S(X))]\\
+&= 0
+\end{align*}
+
+Thus,
+
+$$
+E[(e^2 - S(X))^2] = E[(e^2 - \sigma^2(X))^2] + E[(\sigma^2(X) - S(X))^2]
+$$
+
+The choice of $S$ does not change the first term and the second term is minimized when $S(X) = \sigma^2(X)$.  Thus, $\sigma^2(X)$ is the best predictor of $e^2$.
+
+\pagebreak
 
 5. 2.8 Suppose that $Y$ is discrete-valued, taking values only on the non-negative integers, and the conditional distribution of $Y$ given $X = x$ is Poisson: $P[Y=j|X=x] = \frac{\exp(-x'\beta)(x'\beta)^j}{j!}, j=0, 1, 2,...$. Compute $E[Y|X]$ and $\var[Y|X]$. Does this justify a linear regression model of the form $Y=X'\beta + e$?\footnote{Hint: $P[Y=j] = \frac{\exp(-\lambda)(\lambda)^j}{j!}$, then $E[Y] = \lambda$ and $\var[Y] = \lambda$.}
 
@@ -87,7 +112,7 @@ Yes, this justifies a linear regression model because $E[e|X] = E[Y - X'\beta | 
 
 2.10 If $Y=X\beta + e, X \in \R$, and $E[e|X] = 0$, then $E[X^2e] = 0$.
 
-True, based on the law of iterated expectation:
+True, by the conditioning theorem:
 
 $$
 E[X^2e] = E[E[X^2e|X]] = E[X^2E[e|X]]= E[X^2(0)]=E[0]=0
@@ -107,7 +132,7 @@ False, for a counter example, assume $X = (X_1, ..., X_k)'$ where $X_1,...,X_k \
 
 2.14 If $Y=X'\beta + e$, and $E[e|X] = 0$, and $E[e^2|X]=\sigma^2$, then $e$ is independent of $X$.
 
-False, ...
+False, for a counter example, assume $X = (X_1, ..., X_k)'$ where $X_i \sim N(0,1)$ and $Z = (Z_1,...Z_k)$ where $Z_i \sim N(1, \sigma^2/x_i^2)$.  Thus, $E[Z_i|X_i] = 1$ and $\var[Z_i|X_i]=\sigma^2/x_i^2$.  Define $Y := X'Z$.  Notice that $E[Y|X] = E[X'Z|X] = X'E[Z|X] = \sum_{i=1}^nX_i$, so $\beta = (1, ..., 1)'$. Define $e := Y - E[Y|X] = Y - \sum_{i=1}^n X_i = X'(Z-1)$. Notice that $E[e|X] = E[Y - E[Y|X]|X]=0$ and $E[e^2|X] = E[X'(Z-1)(Z-1)'X|X] = X'E[(Z-1)(Z-1)'|X]X = X'E[(Z-1)(Z-1)'|X]X = X'\var[Z]X=X'(X'\sigma^2X)^{-1}X = \sigma^2$.  However, $X$ and $e$ are not independent.
 
 \pagebreak
 
@@ -222,7 +247,7 @@ text("BLP", col = "blue", x= .1, y=.7)
 (a) Construct an estimator $\hat{\mu}_k$ for $\mu_k$.
 
 $$
-\hat{\mu}_k = \frac{1}{n} \sum_{i=1}^n Y_i^k
+\hat{\mu}_k := \frac{1}{n} \sum_{i=1}^n Y_i^k
 $$
 
 (b) Show that $\hat{\mu}_k$ is unbiased for $\mu_k$.
@@ -233,7 +258,7 @@ $$
 
 (c) Calculate the variance of $\hat{\mu}_k$, say $\var[\hat{\mu}_k]$. What assumption is needed for $\var[\hat{\mu}_k]$ to be finite?
 
-We need to assume that $\mu_{2k} < \infty$ for $\var[\hat{\mu}_k]$ to be finite:
+We need to assume that $|\mu_{2k}| < \infty$ for $\var[\hat{\mu}_k]$ to be finite:
 
 $$
 \var[\hat{\mu}_k] 
@@ -247,55 +272,78 @@ $$
 (d) Propose an estimator of $\var[\hat{\mu}_k]$.
 
 $$
-\frac{\hat{\mu}_{2k} - \hat{\mu}_k^2}{n}  = \frac{\sum_{i=1}^n Y_i^{2k} - (\sum_{i=1}^n Y_i^{k})^2}{n}
+\frac{\hat{\mu}_{2k} - \hat{\mu}_k^2}{n}  = \frac{n^{-1}\sum_{i=1}^n Y_i^{2k} - (n^{-1}\sum_{i=1}^n Y_i^{k})^2}{n}
 $$
+
+\pagebreak
 
 4.2 Calculate $E[(\bar{Y} - \mu)^3]$, the skewness of $\bar{y}$. Under what conditions is it zero?
 
-$$
-E[\bar{Y}]=\mu
-$$
+\begin{align*}
+E[(\bar{Y} - \mu)^3] 
+&= E\Bigg[\Bigg(\Bigg(\frac{1}{n}\sum_{i=1}^nY_i\Bigg)-\mu\Bigg)^3\Bigg]\\
+&= E\Bigg[\Bigg(\frac{1}{n}\Bigg(\Bigg(\sum_{i=1}^nY_i\Bigg)-n\mu\Bigg)\Bigg)^3\Bigg]\\
+&= E\Bigg[\Bigg(\frac{1}{n}\Bigg(\sum_{i=1}^n(Y_i-\mu)\Bigg)\Bigg)^3\Bigg]\\
+&= \frac{1}{n^3}E\Bigg[\Bigg(\sum_{i=1}^n(Y_i-\mu)\Bigg)^3\Bigg]\\
+&= \frac{1}{n^3}E\Bigg[\sum_{i=1}^n(Y_i-\mu)^3 + 3 \sum_{i=1}^n\sum_{j=1; j\neq i}^n(Y_i-\mu)^2(Y_j-\mu) +\sum_{i=1}^n\sum_{j=1;j\neq i}^n\sum_{k=1; k\neq i; k \neq j}^n (Y_i-\mu)(Y_j-\mu)(Y_k-\mu) \Bigg]\\
+&= \frac{1}{n^3}\Big(\sum_{i=1}^nE[(Y_i-\mu)^3] + 3 \sum_{i=1}^n\sum_{j=1; j\neq i}^n E[(Y_i-\mu)^2]E[Y_j-\mu] \\
+&+ \sum_{i=1}^n\sum_{j=1;j\neq i}^n\sum_{k=1; k\neq i; k \neq j}^n E[Y_i-\mu]E[Y_j-\mu]E[Y_k-\mu] \Big)\\
+&= \frac{1}{n^3}\Big(\sum_{i=1}^nE[(Y_i-\mu)^3] \\
+&= \frac{1}{n^3}\Big(nE[(Y_i-\mu)^3] \Big)\\
+&= \frac{E[(Y_i-\mu)^3]}{n^2}
+\end{align*}
 
-$$
-E[\bar{Y}^2] = \var[\bar{Y}] + E[\bar{Y}]^2=\frac{\sigma^2}{n}+\mu^2
-$$
+The skewness of $\bar{y}$ is zero if the skewness of $Y_i$ is zero ($E[(Y_i - \mu)^3]=0$).  The skewness of $\bar{y}$ approaches zero as $n$ gets large.
 
-$$
-E[\bar{Y}^3] 
-= E\Bigg[\Bigg(\frac{1}{n}\sum_{i=1}^n Y_i\Bigg)^3\Bigg]
-= \frac{1}{n^3}E\Bigg[\sum_{i=1}^n\sum_{j=1}^n\sum_{k=1}^n Y_iY_jY_k\Bigg]
-= \frac{1}{n^3} E\Bigg[\sum_{i=1}^n  Y_i^3 + \sum_{i=1}^n\sum_{j\neq i}^n Y_iY_j^2 + \sum_{i=1}^n\sum_{j \neq i}^n\sum_{k \neq i, k \neq j}^n Y_iY_jY_k \Bigg]
-$$
+4.3 Explain the difference between $\bar{Y}$ and $\mu$. Explain the difference between $n^{-1}\sum_{i=1}^n X_i X_i'$ and $E[X_i X_i']$.
 
-$$
-E[(\bar{Y} - \mu)^3] \\
-= E[(\bar{Y} - \mu)^3]\\
-= E[\bar{Y}^3 -3\mu\bar{Y}^2 +3\mu^2\bar{Y} - \mu^3]\\
-= E[\bar{Y}^3] -3\mu E[\bar{Y}^2] +3\mu^2 E[ \bar{Y} ] - \mu^3
-$$
+The difference between $\bar{Y}$ and $\mu$ is $\bar{Y}$ is a statement about a sample and $\mu$ is a statement about a population. Namely, $\bar{Y}$ is the sample mean and $\mu$ is the population mean.  Similarly, $n^{-1}\sum_{i=1}^n X_i X_i'$ is the sample variance and $E[X_i X_i']$ is the population variance.
 
-4.3 Explain the difference between $\bar{Y}$ and $\mu$. Explain the difference between $n^{-1}\sum_{i=1}^n X_i X_i'$ and $E{X_i X_i'}$.
+\pagebreak
 
-...
+4.4 True or False. If $Y_i = X_i \beta + e_i, X_i \in \R, E[e_i|X_i] = 0$, and $\hat{e}_i$ is the OLS residual from the regression of $Y_i$ on $X_i$, then $\sum_{i=1}^nX_i^2 \hat{e}_i = 0$.
 
-4.4 True or False. If $Y_i = X_i \beta + e_i, X_i \in \R, E[x_i|X_i] = 0$, and $\hat{e}_i$ is the OLS residual from the regression of $Y_i$ on $X_i$, then $\sum_{i=1}^nX_i^2 \hat{e}_i = 0$.
+False. Counter example with simulated data:
 
-...
+```{r}
+beta <- 2
+x <- runif(n = 100)
+e <- rnorm(n=100)
+
+y <- x * beta + e
+
+beta_hat <- as.numeric((y %*% x)/(x %*% x))
+print(beta_hat)
+
+e_hat <- y - x * beta_hat
+
+print(sum(x^2 %*% e_hat))
+```
 
 4.5  Prove (4.15) and (4.16).
 
 (4.15) $E[\hat{\beta}|X] = \beta$
 
-...
+Since $E[Y|X]=E[X\beta + e|X] = E[X\beta|X] + E[e|x]= X\beta$,
+
+$$
+E[\hat{\beta}|X] = E[(X'X)^{-1}X'Y|X] = (X'X)^{-1}X'E[Y|X] = (X'X)^{-1}X'X\beta = \beta
+$$
 
 (4.16) $\var[\hat{\beta}|X] = (X'X)^{-1}(X' \Omega X) (X'X)^{-1}$
 
-...
+Since $\var[Y|X] = \var[X\beta + e|X] = \var[e|X] = \Omega$,
 
-4.6 Prove Theorem 4.5.
+\begin{align*}
+\var[\hat{\beta}|X] 
+&= E[(\hat{\beta}- \beta)(\hat{\beta}- \beta)'|X] \\
+&= E[((X'X)^{-1}X'e)((X'X)^{-1}X'e)'|X] \\
+&= E[(X'X)^{-1}(X'ee'X)(X'X)^{-1}|X] \\
+&= (X'X)^{-1}(X'E[ee'|X]X)(X'X)^{-1} \\
+&= (X'X)^{-1}(X'\var[e|X]X)(X'X)^{-1} \\
+&= (X'X)^{-1}(X'\Omega X)(X'X)^{-1} \\
+\end{align*}
 
-Theorem 4.5 Generalized Gauss-Markov
+4.6 Prove Generalized Gauss-Markov Theorem (Theorem 4.5):  In the linear regression model (Assumption 4.2) and $\Omega > 0$, if $\tilde{\beta}$ is a linear unbiased estimator of $\beta$ then $\var[\tilde{\beta}|X] \ge (X' \Omega ^{-1}X)^{-1}$
 
-In the linear regression model (Assumption 4.2) and $\Omega > 0$, if $\tilde{\beta}$ is a linear unbiased estimator of $\beta$ then $\var[\tilde{\beta}|X] \ge (X' \Omega^{-1}X)^{-1}$
-
-...
+Let $A$ be any $n \times k$ function of $X$ of such that $A'X = I_k$. The estimator $\tilde{\beta} = A'Y$ is unbiased: $E[\tilde{\beta}|X] = E[A'Y|X] = E[A'(X\beta + e)|X]= E[A'X\beta|X] + E[A'e|X] = \beta$. The variance of $\tilde{\beta}$ is $\var[\tilde{\beta}|X] = A' \Omega A$
