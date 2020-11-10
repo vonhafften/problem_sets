@@ -309,14 +309,10 @@ False. Counter example with simulated data:
 beta <- 2
 x <- runif(n = 100)
 e <- rnorm(n=100)
-
 y <- x * beta + e
-
 beta_hat <- as.numeric((y %*% x)/(x %*% x))
 print(beta_hat)
-
 e_hat <- y - x * beta_hat
-
 print(sum(x^2 %*% e_hat))
 ```
 
@@ -344,6 +340,15 @@ Since $\var[Y|X] = \var[X\beta + e|X] = \var[e|X] = \Omega$,
 &= (X'X)^{-1}(X'\Omega X)(X'X)^{-1} \\
 \end{align*}
 
-4.6 Prove Generalized Gauss-Markov Theorem (Theorem 4.5):  In the linear regression model (Assumption 4.2) and $\Omega > 0$, if $\tilde{\beta}$ is a linear unbiased estimator of $\beta$ then $\var[\tilde{\beta}|X] \ge (X' \Omega ^{-1}X)^{-1}$
+4.6 Prove Generalized Gauss-Markov Theorem (Theorem 4.5):  In the linear regression model (Assumption 4.2) and $\Omega > 0$, if $\tilde{\beta}$ is a linear unbiased estimator of $\beta$ then $\var[\tilde{\beta}|X] \ge (X' \Omega ^{-1}X)^{-1}$.
 
-Let $A$ be any $n \times k$ function of $X$ of such that $A'X = I_k$. The estimator $\tilde{\beta} = A'Y$ is unbiased: $E[\tilde{\beta}|X] = E[A'Y|X] = E[A'(X\beta + e)|X]= E[A'X\beta|X] + E[A'e|X] = \beta$. The variance of $\tilde{\beta}$ is $\var[\tilde{\beta}|X] = A' \Omega A$
+Let $\tilde{\beta}$ be a linear unbiased estimator. Thus, $\tilde{\beta} = A'y$ for some $A$ that is $n \times k$ where $A'X = I_k$.  The variance of $\tilde{\beta}$ is $\var[\tilde{\beta}|X] = \var[A'y|X] = A' \var[y|X] A = A' \var[e|X] A = A' \Omega A$.  Defining $C= A - \Omega^{-1}X(X'\Omega^{-1}X)^{-1}$:\footnote{Notice that $X'C=X'(A - \Omega^{-1}X(X'\Omega^{-1}X)^{-1})=I-I=0$.}
+
+\begin{align*}
+A' \Omega A &= (C + \Omega^{-1}X(X'\Omega^{-1}X)^{-1})' \Omega (C + \Omega^{-1}X(X'\Omega^{-1}X)^{-1}) \\
+&= C' \Omega C + C' \Omega \Omega^{-1}X(X'\Omega^{-1}X)^{-1} + (\Omega^{-1}X(X'\Omega^{-1}X)^{-1})' \Omega C + (\Omega^{-1}X(X'\Omega^{-1}X)^{-1})' \Omega (\Omega^{-1}X(X'\Omega^{-1}X)^{-1}) \\
+&= C' \Omega C + C'X(X'\Omega^{-1}X)^{-1} + (X(X'\Omega^{-1}X)^{-1})' C + (\Omega^{-1}X(X'\Omega^{-1}X)^{-1})' (X(X'\Omega^{-1}X)^{-1}) \\
+&= (\Omega^{1/2}C')(\Omega^{1/2}C) + (X'\Omega^{-1}X)^{-1}
+\end{align*}
+
+Since $(\Omega^{1/2}C')(\Omega^{1/2}C) \ge 0 \implies \var[\tilde{\beta}|X] \ge (X' \Omega ^{-1}X)^{-1}$.
