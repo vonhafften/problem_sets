@@ -1,7 +1,7 @@
 ---
 title: "ECON 712B - Problem Set 1"
 author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
-date: "11/11/2020"
+date: "11/12/2020"
 output: pdf_document
 header-includes:
 - \newcommand{\N}{\mathbb{N}}
@@ -16,8 +16,7 @@ header-includes:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-1. Suppose that a consumer has nonseparable preferences of the form: $\sum_{t=0}^\infty \beta^t u(c_t, c_{t-1})$ which represent habit persistence in consumption. With assets $A_t$, the consumer faces
-the flow constraint: $A_{t+1} = R (A_t - c_t)$, where $R$ is the constant gross return, and $A_0$ and $c_{-1}$ are given.
+1. Suppose that a consumer has nonseparable preferences of the form: $\sum_{t=0}^\infty \beta^t u(c_t, c_{t-1})$ which represent habit persistence in consumption. With assets $A_t$, the consumer faces the flow constraint: $A_{t+1} = R (A_t - c_t)$, where $R$ is the constant gross return, and $A_0$ and $c_{-1}$ are given.
 
 (a) Write down the Bellman equation for this problem, and state assumptions that will ensure that its solution is unique, with a strictly increasing, strictly concave value function that is differentiable on the interior of the feasible set. Then derive the conditions for maximization.
 
@@ -31,51 +30,360 @@ the flow constraint: $A_{t+1} = R (A_t - c_t)$, where $R$ is the constant gross 
 
 ...
 
-2. In many cases we work with unbounded return functions for which many of the standard results do not apply. However in some cases we can find an upper bound on the value function and iterate on the Bellman operator. For example, consider the problem of a firm with capital stock $x$ today and $y$ in the next period, with profit function: $F(x, y) = ax - \frac{1}{2}bx^2-\frac{1}{2}c(y-x)^2$, here $a, b, c > 0$, with the last term representing adjustment costs. Suppose the firm discounts future profits at rate $r$, so that its discount factor is $\delta = \frac{1}{1+r}$. The firm then chooses its capital stock in the future to maximize discounted profits over an infinite horizon, given an initial capital $x_0$.
+\pagebreak
+
+2. In many cases, we work with unbounded return functions for which many of the standard results do not apply. However in some cases we can find an upper bound on the value function and iterate on the Bellman operator. For example, consider the problem of a firm with capital stock $x$ today and $y$ in the next period, with profit function: $F(x, y) = ax - \frac{1}{2}bx^2-\frac{1}{2}c(y-x)^2$, here $a, b, c > 0$, with the last term representing adjustment costs. Suppose the firm discounts future profits at rate $r$, so that its discount factor is $\delta = \frac{1}{1+r}$. The firm then chooses its capital stock in the future to maximize discounted profits over an infinite horizon, given an initial capital $x_0$.
 
 (a) Write down the sequence problem and the Bellman equation for the problem. Define the Bellman operator $T$ as the right side of the Bellman equation for an arbitrary continuation value function.
 
-...
+Sequence problem:
+
+$$
+\max_{\{x_t\}_{t=0}^\infty}\Bigg\{\sum_{t=0}^\infty \delta^t \Bigg[ ax_t - \frac{1}{2}bx_t^2 - \frac{1}{2}c(x_{t+1}-x_t)^2 \Bigg]\Bigg\}
+$$
+$$
+\text{s.t. } x_0 \text{ given.}
+$$
+
+Bellman equation:
+
+$$
+V(x) = \max_{y}\Bigg\{ ax - \frac{1}{2}bx^2 - \frac{1}{2}c(y-x)^2 + \delta V(y)\Bigg\}
+$$
+
+Bellman operator:
+
+$$
+T(v)(x) = \max_{y}\Bigg\{ ax - \frac{1}{2}bx^2 - \frac{1}{2}c(y-x)^2 + \delta v(y)\Bigg\}
+$$
 
 (b) Suppose that we allow for negative capital levels. Then show that $F$ is unbounded below, but is bounded above by $a^2/2b$. Deduce that the value function $v$ is bounded above by: $\hat{v} = \frac{a^2}{2b(1-\delta)}$.
 
-...
+Fixing $a$, $b$, and $c$, the limit of $F$ as in all directions is $-\infty$:
+
+$$
+\lim_{y \to \infty}ax - \frac{1}{2}bx^2 - \frac{1}{2}c(y-x)^2 = -\infty
+$$
+$$
+\lim_{y \to -\infty}ax - \frac{1}{2}bx^2 - \frac{1}{2}c(y-x)^2 = -\infty
+$$
+
+$$
+\lim_{x \to \infty}ax - \frac{1}{2}bx^2 - \frac{1}{2}c(y-x)^2 = -\infty
+$$
+$$
+\lim_{x \to -\infty}ax - \frac{1}{2}bx^2 - \frac{1}{2}c(y-x)^2 = -\infty
+$$
+
+Thus, $F$ is unbounded below. Furthermore, $F$ has a maximum at $F(a/b, a/b) = \frac{a^2}{2b}$:
+
+FOC [$y$]: 
+
+$$
+- c(y-x) = 0 \implies y=x
+$$
+
+FOC [$x$]:
+
+$$
+a - bx + c(y-x) =0 \implies x = a/b \implies y = a/b
+$$
+
+
+$$
+F(a/b, a/b) = a(a/b) - \frac{1}{2}b(a/b)^2 - \frac{1}{2}c(a/b-a/b)^2 = \frac{a^2}{b} - \frac{1}{2}\frac{a^2}{b} = \frac{a^2}{2b}
+$$
+
+Thus, $F$ is bounded above.  Thus, we know that the value function at $x_0$ is bounded above by the upper bound on the profit function:
+
+$$
+\hat{v} = \frac{a^2}{2b} + \delta \hat{v} \implies \hat{v} = \frac{a^2}{2b(1-\delta)}
+$$
 
 (c) Find $T\hat{v}$. Show that $T\hat{v} \le \hat{v}$.
 
-...
+$$
+T\hat{v}(x) = \max_{y}\Bigg\{ ax - \frac{1}{2}bx^2 - \frac{1}{2}c(y-x)^2 + \delta\frac{a^2}{2b(1-\delta)} \Bigg\} \\
+$$
+
+FOC [$y$]:
+
+$$
+-c(y-x)=0 \implies y = x
+$$
+
+$$
+\implies T\hat{v}(x) = ax - \frac{1}{2}bx^2 + \delta\frac{a^2}{2b(1-\delta)} \le \frac{a^2}{2b} - \delta\frac{a^2}{2b(1-\delta)} = \frac{a^2}{2b} = \hat{v}
+$$
 
 (d) Show by induction that $T^n\hat{v}$ takes the form $(T^n\hat{v})(x) = \alpha_n x - \frac{1}{2} \beta_n x^2 + \gamma_n$ and find recursive expressions for $\alpha_n, \beta_n$, and $\gamma_n$.
 
-...
+In part (c), we showed that the base step holds where $\alpha_1 = a$, $\beta_1 = b$, and $\gamma_1 = \delta\frac{a^2}{2b(1-\delta)}$. For the induction step,
+
+\begin{align*}
+T^{n+1}(\hat{v})(x) 
+&= T(T^{n}(\hat{v})(x)) \\
+&= T\Bigg(\alpha_n x - \frac{1}{2} \beta_n x^2 + \gamma_n\Bigg) \\
+&= \max_{y}\Bigg\{ ax - \frac{1}{2}bx^2 - \frac{1}{2}c(y-x)^2 + \delta \Bigg(\alpha_n x - \frac{1}{2} \beta_n x^2 + \gamma_n\Bigg)\Bigg\}\\
+&= ax - \frac{1}{2}bx^2 - \frac{1}{2}c(x-x)^2 + \delta \Bigg(\alpha_n x - \frac{1}{2} \beta_n x^2 + \gamma_n\Bigg)\\
+&= ax - \frac{1}{2}bx^2 + \delta \Bigg(\alpha_n x - \frac{1}{2} \beta_n x^2 + \gamma_n\Bigg)\\
+&= (a+\delta\alpha_n)x - \frac{1}{2}(b+\delta \beta_n)x^2 + \delta \gamma_n\\
+&= \alpha_{n+1} x - \frac{1}{2} \beta_{n+1} x^2 + \gamma_{n+1}
+\end{align*}
+
+where $\alpha_{n+1} = a + \delta\alpha_n$, $\beta_{n+1} = b+\delta \beta_n$, and $\gamma_{n+1} = \delta \gamma_n$.
+
+\pagebreak
 
 (e) Using the previous part, find $\lim_{n \to \infty} T^n \hat{v}$ and show that the limit function satisfies the Bellman equation.
 
-...
+Notice that $\alpha_n = a + \delta a + \delta^2a ... + \delta^{n-1}a = a \sum_{y=1}^{n} \delta^{t-1}$, so $\lim_{n \to \infty} \alpha_n = \frac{a}{1-\delta}$.  Similarly, $\beta_n = b + \delta b + \delta^2 b ... + \delta^{n-1} b = b \sum_{y=1}^{n} \delta^{t-1}$, so $\lim_{n \to \infty} \beta_n = \frac{b}{1-\delta}$.  In constrast, $\gamma_n = \delta^n\frac{a^2}{2b(1-\delta)}$, so $\lim_{n \to \infty} \gamma_n = 0$.  Thus,
+
+$$
+\tilde{V} = \lim_{n \to \infty} T^n\hat{v} = \frac{a}{1-\delta} x - \frac{b}{2(1-\delta)} x^2
+$$
+
+Applying $T$ to $\tilde{V}$ is 
+
+\begin{align*}
+T(\tilde{V})(x) 
+&= \max_{y}\Bigg\{ ax - \frac{1}{2}bx^2 - \frac{1}{2}c(y-x)^2 + \delta \Bigg(\frac{a}{1-\delta} x - \frac{b}{2(1-\delta)} x^2\Bigg)\Bigg\}\\
+&= ax - \frac{1}{2}bx^2 - \frac{1}{2}c(x-x)^2 + \delta \Bigg(\frac{a}{1-\delta} x - \frac{b}{2(1-\delta)} x^2\Bigg)\\
+&= ax - \frac{1}{2}bx^2 + \delta \Bigg(\frac{a}{1-\delta} x - \frac{b}{2(1-\delta)} x^2\Bigg)\\
+&= \frac{a - \delta a + \delta a}{1-\delta} x - \frac{b-\delta b +\delta b}{2(1-\delta)} x^2 \\
+&= \frac{a}{1-\delta} x - \frac{b}{2(1-\delta)} x^2 \\
+&= \tilde{V}
+\end{align*}
+
+\pagebreak
 
 3. Consider a firm that seeks to maximize the present discounted value of its net profit stream: $\sum_{t=0}^\infty (\frac{1}{R})^t [\pi(k_t) - \gamma(I_t)]$ where $\pi(k)$ is the firm's profit function which depends on its capital stock, $\gamma(I)$ is its cost of investment, and $R > 1$ is the gross interest rate. Assume that $\pi$ is strictly increasing, strictly concave, and continuously differentiable with: $\lim_{k \to 0} \pi'(k) = \infty, \lim_{k \to \infty} \pi'(k) = 0$. The cost function $\gamma$ is strictly increasing, strictly convex, and continuously differentiable with: $\gamma'(0)=0, \lim_{I \to \infty} \gamma'(I) = \infty$. Capital depreciates at rate $\delta$ so the law of motion for capital is: $k_{t+1} = (1-\delta) k_t + I_t$. The initial capital stock $k_0 \ge 0$ is given.
 
 (a) Formulate the Bellman equation for this problem and derive the conditions for maximization.
 
-...
+After substituting in $I_t = k_{t+1} - (1-\delta) k_t$ into the sequence problem, the Bellman equation becomes
+
+$$
+V(k) = \max_{k'} \Bigg \{ \pi(k) - \gamma(k' - (1-\delta)k) + \frac{1}{R}V(k')\Bigg\}
+$$
+
+FOC:
+
+$$
+0 = - \gamma'(k' - (1-\delta)k) + \frac{1}{R} V'(k')
+$$
+
+The marginal cost of investment today equals the discounted marginal benefit of the level of capital tomorrow. 
+
+Envelope condition:
+
+$$
+V'(k) = \pi'(k) - \gamma'(k' - (1-\delta)k)(- (1-\delta))
+$$
+
+The marginal benefit of capital is both the marginal profit today and avoided investment costs (subject to depreciation).
+
+Combining FOC and envelope condition:
+
+$$
+R\gamma'(k' - (1-\delta)k) = \pi'(k') + (1-\delta)\gamma'(k'' - (1-\delta)k')
+$$
+
+This is a second order difference equation for capital, which implies the amount of investment.
 
 (b) Is there a steady steady state in this system? Is it unique? How would the steady state be affected by an increase in the interest rate $R$? Interpret your result.
 
-...
+In steady state, $\bar{k}=k=k'=k''$, so $\bar{I} = \delta\bar{k}$:
+
+$$
+ R\gamma'(\delta\bar{k}) = \pi'(\bar{k}) + (1-\delta)\gamma'(\delta\bar{k}) \\
+\implies \frac{\pi'(\bar{k})}{\gamma'(\delta\bar{k})} = R - 1 + \delta
+$$
+
+First, notice that $R - 1 + \delta>0$.  Second, since $\pi(k)$ is strictly increasing, strictly concave, and continuously differentiable, $\pi'(k)$ is strictly positive, strictly decreasing, and continuous.  Since $\gamma(I)$ is strictly increasing, strictly convex, and continuously differentiable, $\gamma'(I)$ is strictly positive, strictly increasing, and continuous.  Thus, $g(k) = \frac{\pi'(k)}{\gamma'(\delta k)}$ is strictly positive, strictly decreasing, and continuous.  Furthermore, by the Inada conditions assumed for $\pi'(k)$ and $\gamma'(I)$, $\lim_{k \to \infty}g(k) = 0$ and $\lim_{k \to 0}g(k) = \infty$. Therefore, there exists a unique steady state.
+
+When $R$ increases, $g(\bar{k})$ increases.  Since above we said that $g(k)$ is descreasing, an increase in $R$ would result in a decrease in $\bar{k}$.  Since $\bar{I} = \delta\bar{k}$, it would also result in a decrease in $I$.
 
 (c) Suppose $\gamma(I) = \frac{1}{2} I^2$ and $\pi(k) = \Pi_0-\frac{1}{2}(k-k^*)^2$ for some large positive constants $k^*$ and $\Pi_0$. (Ignore the fact that these functions may not satisfy the conditions above.) Derive the difference equations for $I_t$ and $k_t$ and sketch a phase diagram illustrating the saddle path. Sketch the transitional dynamics associated with an increase in the interest rate $R$.
 
-...
+For $\Delta k = 0$, we know from the law of motion of capital that $I = \delta k$.
+
+From the specified functional forms for $\gamma(I)$ and $\pi(k)$, we know that:
+
+$$
+\gamma'(I)=I
+$$
+
+$$
+\pi'(k) = - (k-k^*)=k^* - k
+$$
+
+Plugging these into the difference equation for capital to find the equation for $\Delta I = 0$:
+
+\begin{align*}
+\implies R\gamma'(I) &= \pi'(k') + (1-\delta)\gamma'(I) \\
+\implies R I &= k^* - k' + (1-\delta)I\\
+\implies k' &= k^*  + (1-\delta-R)I
+\end{align*}
+
+```{r, echo = FALSE}
+library(shape)
+
+delta <- .1
+r <- 1.5
+k_star <- 5
+
+k_bar <- k_star/(1 + delta*(r - 1 + delta))
+i_bar <- delta * k_bar
+
+k <- seq(0, 10, .01)
+
+k_no_change <- delta*k
+i_no_change <- (k - k_star)/(1 - delta - r)
+
+saddle_path <- delta * k_bar + (1/7)*k_star/(1 + delta*(r - 1 + delta)) - (1/7)*k
+
+plot(main = "Phase Diagram", 1, type = "n", xlim = c(0, 10), ylim = c(0, 1), ylab = "I", xlab = "k", xaxs="i", yaxs="i", axes = FALSE)
+
+box()
+
+lines(x=k, y=k_no_change, col = "red")
+lines(x=k, y=i_no_change, col = "blue")
+lines(x=k, y=saddle_path, col = "forestgreen")
+
+points(x=k_bar, y=i_bar, pch=19)
+
+Arrows(x0=c(1, 6, 4, 9), 
+       x1=c(2, 7, 3, 8), 
+       y0=c(.8, .8, .2, .2), 
+       y1=c(.8, .8, .2, .2))
+
+Arrows(x0=c(1, 6, 4, 9), 
+       x1=c(1, 6, 4, 9), 
+       y0=c(.8, .8, .2, .2), 
+       y1=c(.7, .9, .1, .3))
+
+text(expression(paste(Delta, "I = ", 0)), x=3.75, y=.9, col="blue")
+text(expression(paste(Delta, "k = ", 0)), x=9, y=.8, col="red")
+text("Saddle Path", x=9, y=.1, col = "forestgreen")
+
+segments(x0=0, x1=k_bar, y0=i_bar, y1=i_bar, lty=2)
+segments(x0=k_bar, x1=k_bar, y0=0, y1=i_bar, lty=2)
+
+mtext(side = 1, "k_bar", at = k_bar)
+mtext(side = 2, "I_bar", at = i_bar)
+
+```
+
+```{r, echo = FALSE}
+library(shape)
+
+delta <- .1
+r1 <- 1.5
+r2 <- 3
+k_star <- 5
+
+k_bar1 <- k_star/(1 + delta*(r1 - 1 + delta))
+k_bar2 <- k_star/(1 + delta*(r2 - 1 + delta))
+i_bar1 <- delta * k_bar1
+i_bar2 <- delta * k_bar2
+
+k <- seq(0, 10, .01)
+
+k_no_change <- delta*k
+i_no_change1 <- (k - k_star)/(1 - delta - r1)
+i_no_change2 <- (k - k_star)/(1 - delta - r2)
+
+saddle_path1 <- delta * k_bar1 + (1/7)*k_star/(1 + delta*(r1 - 1 + delta)) - (1/7)*k
+saddle_path2 <- delta * k_bar2 + (1/7)*k_star/(1 + delta*(r2 - 1 + delta)) - (1/7)*k
+
+plot(main = "Transition to Higher R", 1, type = "n", xlim = c(0, 10), ylim = c(0, 1), ylab = "I", xlab = "k", xaxs="i", yaxs="i", axes = FALSE)
+
+box()
+
+lines(x=c(k_bar1, k_bar1, k_bar2), y=c(i_bar1, delta * k_bar2 + (1/7)*k_star/(1 + delta*(r2 - 1 + delta)) - (1/7)*k_bar1, i_bar2))
+
+lines(x=k, y=k_no_change, col = "red")
+lines(x=k, y=i_no_change1, col = "blue")
+lines(x=k, y=saddle_path1, col = "forestgreen")
+lines(x=k, y=i_no_change2, col = "blue", lty=2)
+lines(x=k, y=saddle_path2, col = "forestgreen", lty=2)
+
+points(x=k_bar1, y=i_bar1, pch=19)
+points(x=k_bar2, y=i_bar2, pch=8)
+
+text(expression(paste(Delta, "I = ", 0)), x=3.75, y=.9, col="blue")
+text(expression(paste(Delta, "k = ", 0)), x=9, y=.8, col="red")
+text("Saddle Path", x=9, y=.1, col = "forestgreen")
+text("Transition Path", x=k_bar1, y=i_bar1, pos = 4)
+
+
+```
+
+\pagebreak
 
 4. Consider an optimal growth model in which households value government spending as well as private consumption. That is, suppose that households have the preferences: $\sum_{t=0}^\infty \beta^t \frac{(c_t G_t^\eta)^{1-\gamma}}{1-\gamma}$ where $c_t$ is private consumption, $G_t$ is government spending, and $\eta > 0$ is a substitution parameter. Assume $\beta \in (0, 1)$ and $\gamma > 1$. Government spending follows an exogenous path which is known with certainty at date 0. Further, the government spending is financed by foreign aid and thus does not require private resources. A benevolent social planner seeks to maximize agents' utility subject to the feasibility constraint: $k_{t+1} = (1 - \delta) k_t + f(k_t) - c_t$ with $k_0$ given. The social planner cannot alter the path of government spending. The production function $f(k)$ is strictly concave and satisfies: $\lim_{k \to 0}f'(k) = + \infty, \lim_{k \to +\infty}f'(k) = 0$.
 
 (a) Formulate the Bellman equation for the social planner's problem and derive the conditions for maximization. Find the difference equations governing the evolution of consumption and capital along an optimal path.
 
-...
+Substituting in $c_t = (1 - \delta) k_t + f(k_t) - k_{t+1}$, the sequence problem becomes:
+
+$$
+\sum_{t=0}^\infty \beta^t \frac{(((1 - \delta) k_t + f(k_t) - k_{t+1}) G_t^\eta)^{1-\gamma}}{1-\gamma}
+$$
+
+Thus, the Bellman equation is
+
+$$
+V(k) = \max_{k'} \Bigg\{ \frac{(((1 - \delta) k + f(k) - k') G^\eta)^{1-\gamma}}{1-\gamma} + \beta V(k') \Bigg\}
+$$
+
+FOC:
+
+$$
+0 = -(((1 - \delta) k + f(k) - k') G^\eta)^{-\gamma}G^\eta + \beta V'(k') \\
+\implies ((1 - \delta) k + f(k) - k')^{-\gamma}G^{\eta(1-\gamma)} = \beta V'(k')
+$$
+
+Envelope condition:
+
+$$
+V'(k) = ((1 - \delta) k + f(k) - k')^{-\gamma}((1 - \delta)+f'(k))G^{\eta(1-\gamma)}
+$$
+
+FOC and envelope conditions imply:
+
+\begin{align*}
+((1 - \delta) k + f(k) - k')^{-\gamma} G^{\eta(1-\gamma)} &= \beta ((1 - \delta) k' + f(k') - k'')^{-\gamma}((1 - \delta)+f'(k'))(G')^{\eta(1-\gamma)} \\
+\implies \frac{((1 - \delta) k + f(k) - k')^{-\gamma}}{((1 - \delta) k' + f(k') - k'')^{-\gamma}} &= \beta ((1 - \delta)+f'(k'))  \frac{(G')^{\eta(1-\gamma)}}{G^{\eta(1-\gamma)}}\\
+\implies \Bigg(\frac{(1 - \delta) k' + f(k') - k''}{(1 - \delta) k + f(k) - k'}\Bigg)^{\gamma} &= \beta ((1 - \delta)+f'(k'))  \Bigg(\frac{G'}{G}\Bigg)^{\eta(1-\gamma)} \\
+\implies \Bigg(\frac{c'}{c}\Bigg)^{\gamma}  &= \beta ((1 - \delta)+f'(k')) \Bigg(\frac{G'}{G}\Bigg)^{\eta(1-\gamma)}
+\end{align*}
+
+This equation and the feasibility constraint (i.e., $k' = (1 - \delta) k + f(k) - c$) describe sufficiently describe the evolution of consumption and capital along an optimal path.
+
+\pagebreak
 
 (b) When government spending grows at a constant rate $g$, is there a steady state in this economy? Is it unique?
 
-...
+If government spending grows at a constant rate $g$, then $G' = G(1+g)$:
+
+$$
+\Bigg(\frac{c'}{c}\Bigg)^{\gamma}  = \beta ((1 - \delta)+f'(k')) \Bigg(\frac{G(1+g)}{G}\Bigg)^{\eta(1-\gamma)}\\
+\implies \Bigg(\frac{c'}{c}\Bigg)^{\gamma}  = \beta ((1 - \delta)+f'(k')) (1+g)^{\eta(1-\gamma)}\\
+$$
+
+If there's a steady state in the economy then $c = c'=\bar{c}$ and $k=k'=\bar{k}$:
+
+\begin{align*}
+\Bigg(\frac{\bar{c}}{\bar{c}}\Bigg)^{\gamma} &= \beta ((1 - \delta)+f'(\bar{k})) (1+g)^{\eta(1-\gamma)}\\
+\implies 1  &= \beta ((1 - \delta)+f'(\bar{k})) (1+g)^{\eta(1-\gamma)}\\
+\implies f'(\bar{k}) &= \frac{1}{\beta(1+g)^{\eta(1-\gamma)}} - (1 - \delta)
+\end{align*}
+
+$$
+\bar{k} = (1 - \delta) \bar{k} + f(\bar{k}) - \bar{c} \implies \bar{c} = f(\bar{k}) - \delta \bar{k}
+$$
 
 (c) What happens to consumption and capital if there is a once and for all unexpected increase in $g$, the growth rate of government spending? How does this depend on the agents' preferences for government spending? Consider both the transitional dynamics (qualitatively) and long-run effects (analytically), and interpret your results.
 

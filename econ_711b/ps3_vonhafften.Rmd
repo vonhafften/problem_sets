@@ -38,29 +38,53 @@ The game is supermodular if payoffs $u_i(w_i, w_j)$ has increasing differences f
 $$
 u_i(w_i, w_j) 
 = \gamma w_i - \beta (w_i - w_j)^2 - \Bigg(\rho + \alpha \Bigg(\frac{w_i + w_j}{2}\Bigg)\Bigg) w_i\\
-= \gamma w_i - \beta (w_i - w_j)^2 - \rho w_i - \frac{\alpha w_i^2}{2} - \frac{\alpha w_i w_j }{2} 
+= (\gamma - \rho ) w_i - \beta (w_i - w_j)^2 - \frac{\alpha w_i^2}{2} - \frac{\alpha w_i w_j }{2} 
 $$
 
 $$
-\frac{\partial u_i}{\partial w_i} = \gamma - 2\beta (w_i - w_j) - \rho - \alpha w_i - \frac{\alpha w_j }{2} 
+\frac{\partial u_i}{\partial w_i} = \gamma - \rho - 2\beta (w_i - w_j)  - \alpha w_i - \frac{\alpha w_j }{2} 
 $$
 
 $$
 \frac{\partial^2 u_i}{\partial w_i \partial w_j} = 2\beta - \alpha/2
 $$
 
-If $4\beta \ge \beta$, then the game is supermodular.
+If $4\beta \ge \alpha$, then the game is supermodular.
 
 (c) Find the symmetric pure-strategy Nash equilibrium.
 
+In a symmetric pure-strategy Nash equilibrium, players have the same strategy $w_i=w_j$:
+
 $$
-(\gamma - \rho) - (2\beta+\alpha)w_i - (2\beta+\alpha/2)w_j 
+u_i(w_i, w_i) 
+= \gamma w_i - \beta (w_i - w_i)^2 - (\rho + \alpha w_i) w_i \\
+= (\gamma - \rho) w_i - \alpha w_i^2 \\
+$$
+
+FOC [$w_i$]:
+
+$$
+0 = (\gamma - \rho) - 2\alpha w_i 
+\implies w_i^* = \frac{\gamma - \rho}{2 \alpha}
 $$
 
 (d) In the Nash equilibrium you found in part (c), how does the equilibrium quantity of weapons change with each parameter? Provide intuition for each effect.
+
+\begin{align*}
+\uparrow \gamma &\to \uparrow w_i^* \\
+\uparrow \rho &\to \downarrow w_i^* \\
+\uparrow \alpha &\to \downarrow w_i^* \\
+\end{align*}
+
+$\gamma$ is the ...
+
+$\rho$ is the ...
+
+$\alpha$ is the ...
 
 (e) Does there exist an equilibrium in which one or both gangs choose to have no weapons? If so, find such an equilibrium; if not, show why not.
 
 (f) Can this game support a mixed strategy Nash equilibrium? If so, find such an equilibrium. If not, explain why it cannot exist.
 
 (g) Suppose both gangs have the equilibrium quantity of weapons from part (c). A horde of goblins suddenly invades the area. Because weapons can be used to fight goblins, the inherent value $\gamma$ of weapons increases. However, the goblins also steal all the money of gang 2, leaving that gang unable to purchase new weapons. How does gang 1’s weapons quantity respond to this shock? How does the magnitude of this response compare to the magnitude if both gangs were able to respond?
+
