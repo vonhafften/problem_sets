@@ -9,6 +9,7 @@ header-includes:
 - \newcommand{\R}{\mathbb{R}}
 - \newcommand{\Q}{\mathbb{Q}}
 - \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
 - \usepackage{bm}
 ---
 
@@ -20,15 +21,127 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (a) Write down the Bellman equation for this problem, and state assumptions that will ensure that its solution is unique, with a strictly increasing, strictly concave value function that is differentiable on the interior of the feasible set. Then derive the conditions for maximization.
 
-...
+Bellman equation:
 
-(b) Show that if $u(c_t, c_{t-1}) =\log c_t + \gamma \log c_{t-1}$, then the optimal saving policy is independent of past consumption. In particular, show that the optimal policy function is to save a constant fraction of current assets.
+\begin{align*}
+V(A_t, c_{t-1}) &= \max_{(A_{t+1}, c_t)} \{u(c_t, c_{t-1}) + \beta V(A_{t+1}, c_t)\} \\
+\text{ s.t. } A_{t+1} &= R (A_t - c_t) \\
+\implies V(A_t, c_{t-1}) &= \max_{c_t} \{u(c_t, c_{t-1}) + \beta V(R (A_t - c_t), c_t)\}
+\end{align*}
 
-...
+In lecture, we made seven assumptions about the feasible correspondence and the objective function to characterize the solution as outlined in the problem.  The feasible correspondence is $\Gamma(A_t) = \{[0, RA_t]\}$ and the objective function is $F=u$.
+
+- ($\Gamma 1$):$\Gamma$ is nonempty, compact-valued, and continuous (uhc and lhc)
+
+- ($\Gamma 2$): $\Gamma$ is monotone ($x \le x' \implies \Gamma(x) \subseteq \Gamma(x')$).
+
+- ($\Gamma 3$): $\Gamma$ is convex.
+
+- ($F 1$): The objective function $F: A \to \R$ is bounded and continuous with $0 < \beta < 1$ [here, the objective function is $u$].
+
+- ($F 2$) $\forall y$, $F( \cdot, y)$ is strictly increasing.
+
+- ($F 3$) $F$ is strictly concave in $(x, y)$.
+
+- ($F 4$) $F: A \to \R$ is continuously differentiable on the interior of the feasible set.  
+
+The assumptions on the feasible correspondence are trivially satisfied with how it is defined.  Under ($\Gamma 1$) and ($F1$), the solution is unique.  Under ($\Gamma 1$), ($\Gamma 2$), ($F1$), and ($F2$), the solution is strictly increasing.  Under ($\Gamma 1$), ($\Gamma 3$), ($F1$), and ($F3$), the solution is strictly concave. Under ($\Gamma 1$), ($\Gamma 3$), ($F1$), ($F3$), and ($F4$), the solution is continuously differentiable on the interior of the feasible set.
+
+\pagebreak
+
+FOC [$c_t$]:
+
+\begin{align*}
+0 &= u_1(c_t, c_{t-1}) + \beta [V_1(R (A_t - c_t), c_t) (-R) + V_2(R (A_t - c_t), c_t)] \\
+\implies \beta RV_1(R (A_t - c_t), c_t) &= u_1(c_t, c_{t-1}) + \beta V_2(R (A_t - c_t), c_t)\\
+\implies \beta RV_1(A_{t+1}, c_t) &= u_1(c_t, c_{t-1}) + \beta V_2(A_{t+1}, c_t) \\
+\implies \beta RV_1(A_{t}, c_{t-1}) &= u_1(c_{t-1}, c_{t-2}) + \beta V_2(A_{t}, c_{t-1})
+\end{align*}
+
+Envelope conditions:
+
+\begin{align*}
+V_1(A_t, c_{t-1}) &= \beta RV_1(R (A_t - c_t), c_t)\\
+V_2(A_t, c_{t-1}) &= u_2(c_t, c_{t-1}) \implies V_2(A_{t+1}, c_{t}) = u_2(c_{t+1}, c_{t})
+\end{align*}
+
+Combining the FOC and envelope conditions:
+
+$$
+V_1(A_t, c_{t-1}) = u_1(c_t, c_{t-1}) + \beta u_2(c_{t+1}, c_{t})
+$$
+
+Substituting into the FOC
+
+$$
+\beta R[u_1(c_t, c_{t-1}) + \beta u_2(c_{t+1}, c_{t})] = u_1(c_{t-1}, c_{t-2}) + \beta V_2(A_{t}, c_{t-1})\\
+$$
+
+Substituting in the second envelope condition,
+
+\begin{align*}
+\beta R[u_1(c_t, c_{t-1}) + \beta u_2(c_{t+1}, c_{t})] &= u_1(c_{t-1}, c_{t-2}) + \beta u_2(c_t, c_{t-1}) \\
+\implies \beta R u_1(c_{t-1}, c_{t-2}) + \beta^2 R u_2(c_{t}, c_{t-1}) &= u_1(c_{t-2}, c_{t-3}) + \beta u_2(c_{t-1}, c_{t-2})
+\end{align*}
+
+(b) Show that if $u(c_t, c_{t-1}) = \log c_t + \gamma \log c_{t-1}$, then the optimal saving policy is independent of past consumption. In particular, show that the optimal policy function is to save a constant fraction of current assets.
+
+With this form of the utility function, the sequence problem becomes:
+
+\begin{align*}
+\max_{\{c_t\}_{t=0}^\infty} \Bigg\{ \sum_{t=0}^\infty \beta^t (\log c_t + \gamma \log c_{t-1}) \Bigg\}
+&= \max_{\{c_t\}_{t=0}^\infty} \Bigg\{ \sum_{t=0}^\infty \beta^t \log c_t + \beta^t \gamma \log c_{t-1} \Bigg\}\\
+&= \max_{\{c_t\}_{t=0}^\infty} \Bigg\{ \sum_{t=0}^\infty \beta^t \log c_t + \gamma \beta \sum_{t=0}^\infty \beta^{t-1}  \log c_{t-1} \Bigg\}\\
+&= \max_{\{c_t\}_{t=0}^\infty}\Bigg\{ \sum_{t=0}^\infty \beta^t \log c_t + \gamma \beta \sum_{t=-1}^\infty \beta^{t}  \log c_{t} \Bigg\}\\
+&= \max_{\{c_t\}_{t=0}^\infty}\Bigg\{ \sum_{t=0}^\infty \beta^t \log c_t + \gamma \beta \sum_{t=0}^\infty \beta^{t}  \log c_{t} \Bigg\} + \gamma \beta \beta^{-1}  \log c_{-1}\\
+&= (1+\gamma \beta) \max_{\{c_t\}_{t=0}^\infty} \Bigg\{ \sum_{t=0}^\infty \beta^t \log c_t \Bigg\}+ \gamma  \log c_{-1}\\
+\text{ s.t. } A_{t+1} = R (A_t - c_t)\\
+\end{align*}
+
+Thus, optimal saving policy is independent of past consumption and collapses to solving the simpler problem:
+
+$$
+\max_{\{c_t\}_{t=0}^\infty} \Bigg\{\sum_{t=0}^\infty \beta^t \log c_t \Bigg\} \text{ s.t. } A_{t+1} = R (A_t - c_t)\\
+$$
+
+The associated Bellman equation is
+
+$$
+V(A) = \max_{c} \{\log(c) + \beta V(R(A-c))\}
+$$
+
+FOC:
+
+$$
+0 = \frac{1}{c} + \beta V'(R(A-c))(-R) \implies \frac{1}{c} = \beta R V'(A')
+$$
+
+Envelope condition:
+
+$$
+V'(A) = \beta V'(R(A-c))(R) \implies V'(A) = \beta R V'(A') \implies V'(A') = \beta R V'(A'')
+$$
+
+Combining the FOC and envelope conditions:
+
+$$
+\frac{1}{\beta Rc} = \frac{1}{c'} \implies \beta Rc = c' \implies \beta R \Bigg( A-\frac{A'}{R}\Bigg) = A'-\frac{A''}{R}
+$$
+
+If the HH consumes a constant fraction of their savings, then $A'=R \lambda A$ and $A'' = R^2 \lambda^2 A$:
+
+\begin{align*}
+\beta R \Bigg( A-\frac{R \lambda A}{R}\Bigg) &= R \lambda A-\frac{R^2 \lambda^2 A}{R} \\
+\implies \beta R  A - \beta R \lambda A &= R \lambda A- R \lambda^2 A\\
+\implies \lambda^2- (\beta+1) \lambda + \beta &= 0 \\
+\implies \lambda &= \beta \text{ or } \lambda = 1
+\end{align*}
+
+Clearly, $\lambda \neq 1$ because the HH would not be consuming anything. So the HH saves $\beta$ fraction of their savings and consumer $1-\beta$ fraction of their savings each period.
 
 (c) For more general preferences, will the independence result in part (b) hold? Discuss why or why not.
 
-...
+No, because we were able to separate preferences over consumption in different time periods in part (b).
 
 \pagebreak
 
@@ -137,7 +250,7 @@ where $\alpha_{n+1} = a + \delta\alpha_n$, $\beta_{n+1} = b+\delta \beta_n$, and
 
 (e) Using the previous part, find $\lim_{n \to \infty} T^n \hat{v}$ and show that the limit function satisfies the Bellman equation.
 
-Notice that $\alpha_n = a + \delta a + \delta^2a ... + \delta^{n-1}a = a \sum_{y=1}^{n} \delta^{t-1}$, so $\lim_{n \to \infty} \alpha_n = \frac{a}{1-\delta}$.  Similarly, $\beta_n = b + \delta b + \delta^2 b ... + \delta^{n-1} b = b \sum_{y=1}^{n} \delta^{t-1}$, so $\lim_{n \to \infty} \beta_n = \frac{b}{1-\delta}$.  In constrast, $\gamma_n = \delta^n\frac{a^2}{2b(1-\delta)}$, so $\lim_{n \to \infty} \gamma_n = 0$.  Thus,
+Notice that $\alpha_n = a + \delta a + \delta^2a ... + \delta^{n-1}a = a \sum_{y=1}^{n} \delta^{t-1}$, so $\lim_{n \to \infty} \alpha_n = \frac{a}{1-\delta}$.  Similarly, $\beta_n = b + \delta b + \delta^2 b ... + \delta^{n-1} b = b \sum_{y=1}^{n} \delta^{t-1}$, so $\lim_{n \to \infty} \beta_n = \frac{b}{1-\delta}$.  In contrast, $\gamma_n = \delta^n\frac{a^2}{2b(1-\delta)}$, so $\lim_{n \to \infty} \gamma_n = 0$.  Thus,
 
 $$
 \tilde{V} = \lim_{n \to \infty} T^n\hat{v} = \frac{a}{1-\delta} x - \frac{b}{2(1-\delta)} x^2
@@ -202,7 +315,7 @@ $$
 
 First, notice that $R - 1 + \delta>0$.  Second, since $\pi(k)$ is strictly increasing, strictly concave, and continuously differentiable, $\pi'(k)$ is strictly positive, strictly decreasing, and continuous.  Since $\gamma(I)$ is strictly increasing, strictly convex, and continuously differentiable, $\gamma'(I)$ is strictly positive, strictly increasing, and continuous.  Thus, $g(k) = \frac{\pi'(k)}{\gamma'(\delta k)}$ is strictly positive, strictly decreasing, and continuous.  Furthermore, by the Inada conditions assumed for $\pi'(k)$ and $\gamma'(I)$, $\lim_{k \to \infty}g(k) = 0$ and $\lim_{k \to 0}g(k) = \infty$. Therefore, there exists a unique steady state.
 
-When $R$ increases, $g(\bar{k})$ increases.  Since above we said that $g(k)$ is descreasing, an increase in $R$ would result in a decrease in $\bar{k}$.  Since $\bar{I} = \delta\bar{k}$, it would also result in a decrease in $I$.
+When $R$ increases, $g(\bar{k})$ increases.  Since above we said that $g(k)$ is decreasing, an increase in $R$ would result in a decrease in $\bar{k}$.  Since $\bar{I} = \delta\bar{k}$, it would also result in a decrease in $I$.
 
 (c) Suppose $\gamma(I) = \frac{1}{2} I^2$ and $\pi(k) = \Pi_0-\frac{1}{2}(k-k^*)^2$ for some large positive constants $k^*$ and $\Pi_0$. (Ignore the fact that these functions may not satisfy the conditions above.) Derive the difference equations for $I_t$ and $k_t$ and sketch a phase diagram illustrating the saddle path. Sketch the transitional dynamics associated with an increase in the interest rate $R$.
 
@@ -368,23 +481,36 @@ This equation and the feasibility constraint (i.e., $k' = (1 - \delta) k + f(k) 
 
 If government spending grows at a constant rate $g$, then $G' = G(1+g)$:
 
-$$
-\Bigg(\frac{c'}{c}\Bigg)^{\gamma}  = \beta ((1 - \delta)+f'(k')) \Bigg(\frac{G(1+g)}{G}\Bigg)^{\eta(1-\gamma)}\\
-\implies \Bigg(\frac{c'}{c}\Bigg)^{\gamma}  = \beta ((1 - \delta)+f'(k')) (1+g)^{\eta(1-\gamma)}\\
-$$
+\begin{align}
+\Bigg(\frac{c'}{c}\Bigg)^{\gamma}  &= \beta ((1 - \delta)+f'(k')) \Bigg(\frac{G(1+g)}{G}\Bigg)^{\eta(1-\gamma)} \\
+\implies \Bigg(\frac{c'}{c}\Bigg)^{\gamma}  &= \beta ((1 - \delta)+f'(k')) (1+g)^{\eta(1-\gamma)}
+\end{align}
 
 If there's a steady state in the economy then $c = c'=\bar{c}$ and $k=k'=\bar{k}$:
 
-\begin{align*}
+\begin{align}
 \Bigg(\frac{\bar{c}}{\bar{c}}\Bigg)^{\gamma} &= \beta ((1 - \delta)+f'(\bar{k})) (1+g)^{\eta(1-\gamma)}\\
 \implies 1  &= \beta ((1 - \delta)+f'(\bar{k})) (1+g)^{\eta(1-\gamma)}\\
 \implies f'(\bar{k}) &= \frac{1}{\beta(1+g)^{\eta(1-\gamma)}} - (1 - \delta)
-\end{align*}
+\end{align}
 
-$$
-\bar{k} = (1 - \delta) \bar{k} + f(\bar{k}) - \bar{c} \implies \bar{c} = f(\bar{k}) - \delta \bar{k}
-$$
+\begin{align}
+\bar{k} &= (1 - \delta) \bar{k} + f(\bar{k}) - \bar{c} \\
+\implies \bar{c} &= f(\bar{k}) - \delta \bar{k}
+\end{align}
+
+\pagebreak
 
 (c) What happens to consumption and capital if there is a once and for all unexpected increase in $g$, the growth rate of government spending? How does this depend on the agents' preferences for government spending? Consider both the transitional dynamics (qualitatively) and long-run effects (analytically), and interpret your results.
 
-...
+In the long run, an increase from $g$ to $g'$ increases the steady state capital level.  We can see this analytically by applying to concavity of the production function to Equation (5) in (b).
+
+$$
+f'(\bar{k}) = \frac{1}{\beta(1+g)^{\eta(1-\gamma)}} - (1 - \delta) > \frac{1}{\beta(1+g')^{\eta(1-\gamma)}} - (1 - \delta) = f'(\bar{k}') \implies \bar{k} < \bar{k}'
+$$
+
+The change in long-run consumption is not clear.  From Equation (7) in (b), we know that if $f'(\bar{k}) > \delta$, then long-term consumption increases if $g$ increases. Otherwise, long-term consumption would decrease.
+
+In the short-run, an increase from $g$ to $g'$ does not effect capital because it is fixed.  But it increases the RHS of Equation (2) in (b) causing consumption to increase. Thus, the HH saves less, so capital is less in the following period.  This process continues until the economy converges to the new steady state.
+
+These effects both transitional and long-run effects are larger for higher $\eta$.  This makes sense because if the HH cares more about government spending, a change in its growth will effect their utility more causing larger changes to optimal behavior.
