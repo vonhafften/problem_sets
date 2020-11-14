@@ -101,7 +101,26 @@ $$
 
 This amount is larger than zero because $2\beta > \alpha \implies 2\beta > \alpha/2$.  Thus, there is no equilibrium in which one gang has weapons and the other gang does not.
 
+\pagebreak
+
 (f) Can this game support a mixed strategy Nash equilibrium? If so, find such an equilibrium. If not, explain why it cannot exist.
+
+This game does not support a mixed strategy Nash equilibrium because the best response to an arbitrary mixed strategy is a pure strategy.  Let gang $j$ play a mixed strategy and gang $i$ maximizes their expected payoff:
+
+\begin{align*}
+& \max_{w_i} \{ E_{w_j}[u_i(w_i, w_j)] \} \\
+&= \max_{w_i} \{ E_{w_j}[(\gamma - \rho) w_i - \beta (w_i - w_j)^2 -  (\alpha/2)w_i^2 - (\alpha/2) w_i w_j] \} \\
+&= \max_{w_i} \{ (\gamma - \rho) w_i - \beta (w_i^2 - 2w_iE_{w_j}[w_j] + E_{w_j}[w_j^2]) -  (\alpha/2)w_i^2 - (\alpha/2) w_i E_{w_j}[w_j] \} 
+\end{align*}
+
+FOC [$w_i$]:
+
+$$
+0 = (\gamma - \rho) - 2\beta w_i^* + 2E_{w_j}[w_j] -  \alpha w_i^* - (\alpha/2) E_{w_j}[w_j] \\
+\implies w_i^* = \frac{(\gamma - \rho)  + 2E_{w_j}[w_j] - (\alpha/2) E_{w_j}[w_j]}{2\beta + \alpha}
+$$
+
+Thus, gang $i$'s best response only depends on the expected value of gang $j$'s mixed strategy, so it is a pure-strategy.  Thus, the game does not support a mixed-strategy Nash equilibrium.
 
 (g) Suppose both gangs have the equilibrium quantity of weapons from part (c). A horde of goblins suddenly invades the area. Because weapons can be used to fight goblins, the inherent value $\gamma$ of weapons increases. However, the goblins also steal all the money of gang 2, leaving that gang unable to purchase new weapons. How does gang 1’s weapons quantity respond to this shock? How does the magnitude of this response compare to the magnitude if both gangs were able to respond?
 
@@ -155,18 +174,7 @@ In the 2-player game, gangs buy 2/3 of the weapons they buy in the continuum gam
 
 (a) Find all symmetric pure strategy Nash equilibria.
 
-Since there's a continuum of agents, no single agent's guess alters the average.  Let us first find an interior solution.  The FOC is
-
-$$
-0 = 2(x_i - \alpha) - 2(x_i - \bar{x})
-$$
-
-In a symmetric equilibrium, all agents guess the same number so the agent's $i$ guess is the average guess:
-
-$$
-0 = 2(x_i - \alpha) - 2(x_i - x_i)  \\
-\implies x_i = \alpha
-$$
+Since there's a continuum of agents, no single agent's guess alters the average.  Let us first find an interior solution.  The FOC is $0 = 2(x_i - \alpha) - 2(x_i - \bar{x})$. In a symmetric equilibrium, all agents guess the same number so the agent's $i$ guess is the average guess: $0 = 2(x_i - \alpha) - 2(x_i - x_i)  \implies x_i = \alpha$.
 
 If all agents guess $\alpha$, then agent $i$ have no incentive to change their guess because $u_i(x_i; \alpha, \alpha) = (x_i - \alpha)^2 - (x_i - \alpha)^2 = 0$ for all $x_i \in [0, 1]$. Thus, all agents guessing $\alpha$ is a Nash equilibrium.
 
@@ -196,13 +204,13 @@ Let $q(x)$ be a quantile function $\R$ such that $E[q(x)] = \bar{x} = \alpha$.  
 
 In part (a), we found that degenerate Nash equilibriums where all agents guess 0 and 1.  These equilibria do not extend to the unbounded domain because agents always have an incentive to guess higher (lower) if the average guess is larger (smaller) than $\alpha$.  Say all agents guess $y \in \R \implies \bar{x} = y$. Consider agent $i$ guessing $y' > y$:
 
-$$
-u_i(y'; y, \alpha) - u_i(y; y, \alpha) \\
-=  [(y' - \alpha)^2 - (y' - y)^2] - [(y - \alpha)^2 - (y - y)^2] \\
-= [(y')^2 - 2\alpha y'+\alpha^2] - [(y')^2 - 2y'y + y^2] - [y^2 - 2\alpha y + \alpha^2]\\
-= (y')^2 - 2\alpha y'+\alpha^2 - (y')^2 + 2y'y - y^2 - y^2 + 2\alpha y - \alpha^2 \\
-=  2y(y' - y) - 2\alpha (y' - y)  \\
-$$
+\begin{align*}
+u_i(y'; y, \alpha) - u_i(y; y, \alpha)
+&=  [(y' - \alpha)^2 - (y' - y)^2] - [(y - \alpha)^2 - (y - y)^2] \\
+&= [(y')^2 - 2\alpha y'+\alpha^2] - [(y')^2 - 2y'y + y^2] - [y^2 - 2\alpha y + \alpha^2]\\
+&= (y')^2 - 2\alpha y'+\alpha^2 - (y')^2 + 2y'y - y^2 - y^2 + 2\alpha y - \alpha^2 \\
+&=  2y(y' - y) - 2\alpha (y' - y)  
+\end{align*}
 
 If $y' > y > \alpha$, agent $i$ is better off guessing $y'$ than $y$.  Similarly if $y' < y < \alpha$, agent $i$ is better off guessing $y'$ than $y$.  Thus, all agents choosing $y$ is not a Nash equilibrium.
 
@@ -224,58 +232,9 @@ q_i^* = 1 + ((1 + (q_i^*-1)^{1/3})-1)^{1/3} = 1 + ((q_i^*-1)^{1/3})^{1/3} \\
 \implies q_i^*-1 = (q_i^*-1)^{1/9}
 $$
 
-This equation is true for $q_i^* = 0$, $q_i^* = 1$, and $q_i^* = 2$. Thus, there are pure-strategy Nash equilibriums at $(0, 0)$, $(1, 1)$, and $(2, 2)$.
+This equation holds for $q_i^* = 0$, $q_i^* = 1$, and $q_i^* = 2$. Thus, there are pure-strategy Nash equilibriums at $(0, 0)$, $(1, 1)$, and $(2, 2)$.
 
-In addition to pure-strategy Nash equilibriums, there's four mixed-strategy Nash equilibriums: 
-
-a. Players mix between $(0, 0)$ and $(1, 1)$.
-b. Players mix between $(1, 1)$ and $(2, 2)$.
-c. Players mix between $(0, 0)$ and $(2, 2)$.
-d. Players mix between $(0, 0)$, $(1, 1)$, and $(2, 2)$.
-
-The payoffs at these levels are summarized in the table below.
-
-+----------+-------------+------------+----------+
-|          |$q_j=0$      |$q_j=1$     |$q_j=2$   |
-+----------+-------------+------------+----------+
-|$q_i=0$   | $(0,0)$     | $(0, -1/2)$|$(0, -2)$ |
-+----------+-------------+------------+----------+
-|$q_i=1$   | $(-1/2, 0)$ |$(1/2, 1/2)$|$(3/2, 0)$|
-+----------+-------------+------------+----------+
-|$q_i=2$   | $(-2, 0)$   | $(0,3/2)$  |$(2, 2)$  |
-+----------+-------------+------------+----------+
-
-For a., let $\sigma_a$ be the probability that player $j$ plays 0 and $1-\sigma_a$ the probability that player $j$ plays 1. Player $i$ is indifferent between playing 0 and 1 if 
-
-\begin{align*}
-\sigma_a u_i(0, 0) + (1-\sigma_a) u_i(0, 1) &= \sigma_a u_i(1, 0) + (1-\sigma_a) u_i(1, 1) \\
-\sigma_a (0) + (1-\sigma_a) (0) &= \sigma_a (-1/2) + (1-\sigma_a) (1/2) \\
-\sigma_a &= 1/2  \\
-\end{align*}
-
-By symmetry, the same $\sigma_a$ holds for $j$ to be indifferent, so there's a mixed strategy Nash equilibrium of $(0, 0)$ with 1/2 probability and $(1, 1)$ with 1/2 probability.
-
-For b., let $\sigma_b$ be the probability that player $j$ plays 1 and $1-\sigma_b$ the probability that player $j$ plays 2. Player $i$ is indifferent between playing 1 and 2 if 
-
-\begin{align*}
-\sigma_b u_i(1, 1) + (1-\sigma_b) u_i(1, 2) &= \sigma_b u_i(2, 1) + (1-\sigma_b) u_i(2, 2) \\
-\implies \sigma_b (1/2) + (1-\sigma_b) (3/2) &= \sigma_b (0) + (1-\sigma_b) (2) \\
-\implies \sigma_b &= 1/2 \\
-\end{align*}
-
-By symmetry, the same $\sigma_b$ holds for $j$ to be indifferent, so there's a mixed strategy Nash equilibrium of $(1, 1)$ with 1/2 probability and $(2, 2)$ with 1/2 probability.
-
-For c., let $\sigma_c$ be the probability that player $j$ plays 0 and $1-\sigma_c$ the probability that player $j$ plays 2. Player $i$ is indifferent between playing 0 and 2 if 
-
-\begin{align*}
-\sigma_c u_i(0, 0) + (1-\sigma_c) u_i(0, 2) &= \sigma_c u_i(2, 0) + (1-\sigma_c) u_i(2, 2) \\
-\sigma_c (0) + (1-\sigma_c) (0) &= \sigma_c (-2) + (1-\sigma_c) (2) \\
-\sigma_c &= 1/2 \\
-\end{align*}
-
-By symmetry, the same $\sigma_c$ holds for $j$ to be indifferent, so there's a mixed strategy Nash equilibrium of $(0, 0)$ with 1/2 probability and $(2, 2)$ with 1/2 probability.
-
-For d., notice that no matter how player $j$ mixes playing $q_j=0$, $q_j=1$, and $q_j=2$, the payoff for $i$ is zero.  Thus, the expected payoff for $i$ to play $q_i=0$ is zero.  That means that the expected payoff for $i$ to play $q_i=1$ and $q_i=2$ needs to both be zero.  For the expected payoff from $q_i=2$ to equal zero, it requires that player $j$ plays $q_j=0$ and $q_j = 2$ with equal probability.  However, if player $j$ plays $q_j=0$ and $q_j = 2$ with equal probability, that means the expected payoff for player $i$ playing $q_j = 1$ is strictly positive.  Thus, there is no mixed-strategy Nash equilibrium that combines $(0, 0)$, $(1, 1)$, and $(2, 2)$.
+Since the payoff function is strictly quasi-concave in $q_i$, there are no mixed-strategy Nash equilibriums.
 
 \pagebreak
 
