@@ -52,17 +52,17 @@ If $4\beta \ge \alpha$, the game is supermodular.
 FOC [$w_i$]:
 
 $$
-0 = (\gamma - \rho) - 2\beta (w_i^* - w_j)  - \alpha w_i^* - (\alpha/2) w_j 
+0 = (\gamma - \rho) - 2\beta (w_i^* - w_j)  - \alpha w_i^* - (\alpha/2) w_j \\
+\implies  w_i^* = \frac{\gamma - \rho}{\alpha +2\beta} + \frac{4\beta - \alpha}{2\alpha +4\beta} w_j \\
 $$
 \pagebreak
 
 For a symmetric pure-strategy Nash equilibrium $w_j = w_i^*$:
 
-\begin{align*}
-0 &= (\gamma - \rho) - 2\beta (w_i^* - w_i^*)  - \alpha w_i^* - (\alpha/2) w_i^* \\
-\implies \gamma - \rho &= \alpha w_i^* + (\alpha/2) w_i^* \\
-\implies w_i^* &= \frac{2\gamma - 2\rho}{3\alpha} \\
-\end{align*}
+$$
+w_i^* = \frac{\gamma - \rho}{\alpha +2\beta} + \frac{4\beta - \alpha}{2\alpha +4\beta} w_i^* \\
+\implies w_i^* = \frac{2\gamma - 2\rho}{3\alpha} \\
+$$
 
 Thus, the symmetric pure-strategy Nash equilibrium is both gangs buying $\frac{2\gamma - 2\rho}{3\alpha }$ weapons.
 
@@ -85,79 +85,238 @@ $\beta$ measures the disutility associated with having a different amount of wea
 
 (e) Does there exist an equilibrium in which one or both gangs choose to have no weapons? If so, find such an equilibrium; if not, show why not.
 
-First, let us consider the candidate equilibrium in which both gangs choose to have no weapons.  For this candidate to be an equilibrium, it cannot be profitable for gang $i$ to deviate to buying $\varepsilon > 0$ amount of weapons:
-
-\begin{align*}
-u_i(0, 0) &\ge u_i(\varepsilon, 0) \\
-(\gamma - \rho) (0) - \beta (0 - 0)^2 -  (\alpha/2)(0)^2 - (\alpha/2) (0) (0) &\ge (\gamma - \rho) \varepsilon - \beta (\varepsilon - (0))^2 -  (\alpha/2)\varepsilon^2 - (\alpha/2) \varepsilon (0)\\
-0 &\ge (\gamma - \rho) \varepsilon - \beta \varepsilon^2 -  (\alpha/2)\varepsilon^2 \\
-\varepsilon(\beta + \alpha/2) &\ge \gamma - \rho  \\
-\end{align*}
-
-We know that the RHS is strictly positive.  For any $\beta$ and $\alpha$, we can choose $\varepsilon$ small enough to make the LHS arbitrary close to zero and break the inequality. Thus, both gang having zero weapons is not an equilibrium because there's an incentive for each gang to deviate and buy some weapons.
-
-Second, let us consider the candidate equilibrium in which one gang has weapons and the other does not.  For this candidate to be an equilibrium, it cannot be profitable for the gang without weapons to buy $\varepsilon > 0$ weapons.
-
-\begin{align*}
-u_i(0, w_j) &\ge u_i(\varepsilon, w_j) \\
-(\gamma - \rho) (0) - \beta ((0) - w_j)^2 -  (\alpha/2)(0)^2 - (\alpha/2) (0) w_j &\ge (\gamma - \rho) \varepsilon - \beta (\varepsilon - w_j)^2 -  (\alpha/2)\varepsilon^2 - (\alpha/2) \varepsilon w_j \\
-- \beta w_j^2 &\ge (\gamma - \rho) \varepsilon - \beta (\varepsilon - w_j)^2 -  (\alpha/2)\varepsilon^2 - (\alpha/2) \varepsilon w_j\\
-- \beta w_j^2 &\ge (\gamma - \rho) \varepsilon - \beta (\varepsilon^2 - 2w_j\varepsilon + w_j^2) -  (\alpha/2)\varepsilon^2 - (\alpha/2) \varepsilon w_j\\
-0 &\ge (\gamma - \rho) \varepsilon - \beta (\varepsilon^2 - 2w_j\varepsilon) -  (\alpha/2)\varepsilon^2 - (\alpha/2) \varepsilon w_j \\
-0 &\ge (\gamma - \rho) - \beta (\varepsilon - 2w_j) -  (\alpha/2)\varepsilon - (\alpha/2) w_j \\
-0 &\ge (\gamma - \rho) - \beta \varepsilon + 2\beta w_j -  (\alpha/2)\varepsilon - (\alpha/2) w_j \\
-(\alpha/2) w_j - 2\beta w_j &\ge (\gamma - \rho) - \beta \varepsilon -  (\alpha/2)\varepsilon \\
-w_j &\ge \frac{(\gamma - \rho) - \beta \varepsilon -  (\alpha/2)\varepsilon}{(\alpha/2) - 2\beta }
-\end{align*}
-
-Thus, if the game is not supermodular (i.e., $\alpha > 4 \beta$), it's profitable for gang $i$ to have zero weapons if gang $j$ has $\tilde{w_j}$ weapons:
+Assume $w_j = 0$. 
 
 $$
-\tilde{w_j} = \frac{2\gamma - 2\rho}{\alpha - 4\beta }
+w_i^* = \frac{\gamma - \rho}{\alpha +2\beta} + \frac{4\beta - \alpha}{2\alpha +4\beta} (0) \\
+\implies w_i^* = \frac{\gamma - \rho}{2\beta - \alpha}
 $$
+
+We know that $\frac{\gamma - \rho}{2\beta - \alpha} \neq 0$ because $\gamma - \rho > 0$, so both gangs having no weapons is not an equilibrium.  If $2\beta > \alpha$, $\frac{\gamma - \rho}{2\beta - \alpha} > 0$.  Now let us determine whether $w_i^* = 0$ is a best response to $w_j = \frac{\gamma - \rho}{2\beta - \alpha}$:
+
+$$
+w_i^* = \frac{\gamma - \rho}{\alpha +2\beta} + \frac{4\beta - \alpha}{2\alpha +4\beta} \frac{\gamma - \rho}{2\beta - \alpha} \\
+\implies w_i^* = \frac{\gamma - \rho}{\alpha +2\beta} + \frac{4\beta - \alpha}{2\beta - \alpha} \frac{\gamma - \rho}{2\alpha +4\beta}
+$$
+
+This amount is larger than zero because $2\beta > \alpha \implies 2\beta > \alpha/2$.  Thus, there is no equilibrium in which one gang has weapons and the other gang does not.
 
 (f) Can this game support a mixed strategy Nash equilibrium? If so, find such an equilibrium. If not, explain why it cannot exist.
 
-If the game is supermodular ($\alpha \le 4 \beta$), then the only Nash equilibrium is symmetric pure-strategy Nash equilibrium $(\frac{2\gamma - 2\rho}{3\alpha }, \frac{2\gamma - 2\rho}{3\alpha })$.
-
-If the game is not supermodular ($\alpha > 4 \beta$), then there are three pure-strategy Nash equilibriums:
-
-1. The symmetric equilibrium $(\frac{2\gamma - 2\rho}{3\alpha }, \frac{2\gamma - 2\rho}{3\alpha })$.
-2. Gang 1 with $\frac{2\gamma - 2\rho}{\alpha - 4\beta }$ weapons and gang 2 with zero.
-3. Gang 2 with $\frac{2\gamma - 2\rho}{\alpha - 4\beta }$ weapons and gang 1 with zero.
-
-Thus, there are four mixed strategy Nash equilibriums:
-
-a. Mixing between 1. and 2.
-b. Mixing between 2. and 3.
-c. Mixing between 1. and 3.
-d. Mixing between 1., 2., and 3.
-
-Let us find the Nash equilibrium that mixes 2. and 3.
-
-$$
-u_i\Bigg(0, \frac{2\gamma - 2\rho}{\alpha - 4\beta }\Bigg) = 0
-$$
-
-$$
-u_i\Bigg(\frac{2\gamma - 2\rho}{\alpha - 4\beta }, 0\Bigg) 
-= (\gamma - \rho) \Bigg(\frac{2\gamma - 2\rho}{\alpha - 4\beta }\Bigg) - \beta \Bigg(\Bigg(\frac{2\gamma - 2\rho}{\alpha - 4\beta }\Bigg) - (0)\Bigg)^2 -  (\alpha/2)\Bigg(\frac{2\gamma - 2\rho}{\alpha - 4\beta }\Bigg)^2 - (\alpha/2) \Bigg(\frac{2\gamma - 2\rho}{\alpha - 4\beta }\Bigg) (0) \\
-= (\gamma - \rho) \Bigg(\frac{2\gamma - 2\rho}{\alpha - 4\beta }\Bigg) - \beta \Bigg(\frac{2\gamma - 2\rho}{\alpha - 4\beta }\Bigg)^2 -  (\alpha/2)\Bigg(\frac{2\gamma - 2\rho}{\alpha - 4\beta }\Bigg)^2 \\
-=  \Bigg(\frac{2(\gamma - \rho)^2}{\alpha - 4\beta }\Bigg) - (\beta + (\alpha/2)) \Bigg(\frac{2\gamma - 2\rho}{\alpha - 4\beta }\Bigg)^2 
-$$
-
 (g) Suppose both gangs have the equilibrium quantity of weapons from part (c). A horde of goblins suddenly invades the area. Because weapons can be used to fight goblins, the inherent value $\gamma$ of weapons increases. However, the goblins also steal all the money of gang 2, leaving that gang unable to purchase new weapons. How does gang 1’s weapons quantity respond to this shock? How does the magnitude of this response compare to the magnitude if both gangs were able to respond?
 
-2. Consider the game from question 1, but now with a continuum of gangs. Let the payoffs now depend on the average weapons quantity $\bar{q}$, rather than that of any single other gang: $u_i(w_i, \bar{w}) = \gamma w_i - \beta (w_i - \bar{w})^2 - P(\bar{q}) w_i$.  Find the symmetric pure strategy Nash equilibrium. How and why does the equilibrium quantity of weapons differ from the equilibrium quantity in the two-gang game?
+Gang 1's weapons quantity increased due to the shock.  The magnitude of the increase is greater than it would be if both gangs could purchase weapons because gang 2 would also purchase more weapons and thus increasing the market price.
 
-3. A continuum of agents plays a guessing game, in which each agent $i$ guesses a number $x_i \in [0, 1]$. Agents prefer to guess numbers closer to some commonly known constant $\alpha \in (0, 1)$, and dislike guessing further from the average value $\bar{x}$. Each agent's payoff is $u_i(x_i; \bar{x}, \alpha) = (x_i - \alpha)^2 - (x_i - \bar{x})^2$.
+More formally, both gangs have $w_1 = w_2 = \frac{2\gamma - 2\rho}{3\alpha}$ weapons.  Let $\gamma' > \gamma$.  If both gangs have sufficient funds, they would want $w_1' = w_2' = \frac{2\gamma' - 2\rho}{3\alpha}$ weapons.  However, if gang 2 has no money then they are stuck at $w_2'' = \frac{2\gamma - 2\rho}{3\alpha}$.  The price function becomes $P(\bar{w}) = \rho + \alpha (w_1'' + \frac{2\gamma' - 2\rho}{3\alpha})/2$ and gang 1's payoff function becomes:
+
+\begin{align*}
+u_1\Bigg(w_1'', \frac{2\gamma - 2\rho}{3\alpha}\Bigg) 
+&= \gamma' w_1'' - \beta \Bigg(w_1'' - \frac{2\gamma - 2\rho}{3\alpha}\Bigg)^2 - \Bigg(\rho + \alpha \Bigg(w_1'' + \frac{2\gamma' - 2\rho}{3\alpha}\Bigg)/2\Bigg) w_1'' \\
+&= (\gamma' - \rho) w_1'' - \beta \Bigg(w_1'' - \frac{2\gamma - 2\rho}{3\alpha}\Bigg)^2 - (\alpha/2) (w_1'')^2 - w_1''\frac{\gamma' - \rho}{3}
+\end{align*}
+
+FOC [$w_1''$]:
+
+\begin{align*}
+0 &= (\gamma' - \rho) - 2\beta \Bigg(w_1'' - \frac{2\gamma - 2\rho}{3\alpha}\Bigg) - \alpha w_1'' - \frac{\gamma' - \rho}{3} \\
+\implies w_1'' &= \frac{2\alpha(\gamma' - \rho) + 4\beta (\gamma - \rho) }{3\alpha (2\beta + \alpha ) }
+\end{align*}
+
+So, $w_1'' > w_1' > w_1$.
+
+\pagebreak
+
+2. Consider the game from question 1, but now with a continuum of gangs. Let the payoffs now depend on the average weapons quantity $\bar{w}$, rather than that of any single other gang: $u_i(w_i, \bar{w}) = \gamma w_i - \beta (w_i - \bar{w})^2 - P(\bar{w}) w_i$.  Find the symmetric pure strategy Nash equilibrium. How and why does the equilibrium quantity of weapons differ from the equilibrium quantity in the two-gang game?
+
+Since there is a continuum of gangs, a single gang does not change $\bar{w}$.
+
+$$
+u_i(w_i, \bar{w}) = \gamma w_i - \beta (w_i - \bar{w})^2 - ( \rho + \alpha \bar{w}) w_i
+$$
+
+FOC [$w_i$]:
+
+$$
+0 = \gamma- 2\beta (w_i^* - \bar{w})-( \rho + \alpha \bar{w})
+$$
+
+In a symmetric equilibrium $w_i^* = \bar{w}$:
+
+$$
+0 = \gamma - 2\beta (w_i^* - w_i^*) - ( \rho + \alpha w_i^*) \\
+w_i^* = \frac{\gamma - \rho}{\alpha} \\
+$$
+
+In the 2-player game, gangs buy 2/3 of the weapons they buy in the continuum game.  It's lower because, in the 2-player game, a single gang's move changes the market price.  This is a similar result to the Cournot duopoly in Problem Set 2.
+
+\pagebreak
+
+3. A continuum of agents plays a guessing game, in which each agent $i$ guesses a number $x_i \in [0, 1]$. Agents prefer to guess numbers further from some commonly known constant $\alpha \in (0, 1)$, and dislike guessing further from the average value $\bar{x}$. Each agent's payoff is $u_i(x_i; \bar{x}, \alpha) = (x_i - \alpha)^2 - (x_i - \bar{x})^2$.
 
 (a) Find all symmetric pure strategy Nash equilibria.
 
+Since there's a continuum of agents, no single agent's guess alters the average.  Let us first find an interior solution.  The FOC is
+
+$$
+0 = 2(x_i - \alpha) - 2(x_i - \bar{x})
+$$
+
+In a symmetric equilibrium, all agents guess the same number so the agent's $i$ guess is the average guess:
+
+$$
+0 = 2(x_i - \alpha) - 2(x_i - x_i)  \\
+\implies x_i = \alpha
+$$
+
+If all agents guess $\alpha$, then agent $i$ have no incentive to change their guess because $u_i(x_i; \alpha, \alpha) = (x_i - \alpha)^2 - (x_i - \alpha)^2 = 0$ for all $x_i \in [0, 1]$. Thus, all agents guessing $\alpha$ is a Nash equilibrium.
+
+Now, let us find any corner solutions.  If all agents guess $0$, then $\bar{x} = 0$.  Let us consider if agent $i$ have any incentive to deviate:
+
+$$
+u_i(x_i; 0, \alpha) = (x_i - \alpha)^2 - x_i^2 = x_i^2 - 2x_i\alpha + \alpha^2 - x_i^2 = \alpha^2 - 2x_i\alpha
+$$
+
+The above equation is maximized at $x_i = 0$.  Thus, all agents guessing $0$ is a Nash equilibrium.
+
+Similarly, if all agents guess 1 $\implies \bar{x} =1$.  Agent $i$'s utility function is
+
+$$
+u_i(x_i; 1, \alpha) = (x_i - \alpha)^2 - (x_i-1)^2 = x_i^2 - 2x_i\alpha + \alpha^2 - x_i^2 +2x_i - 1 = \alpha^2 + 2(1-\alpha)x_i - 1
+$$
+
+The above equation is maximized at $x_i = 1$. Thus, all agents guessing $1$ is a Nash equilibrium.
+
 (b) Recall that with a continuum of agents, a Nash equilibrium can be characterized by a quantile function, regardless of whether it is achieved using asymmetric pure strategies or with randomization. Describe all non-degenerate quantile functions that are Nash equilibria in this game, excluding the equilibria found in part (a).
+
+In part (a), we found that, if all other agents guess $\alpha$, agent $i$ cannot become better off by guessing any other number.  This notion extends to any distribution of guesses where the average guess is $\alpha$.  Let $q(x)$ be a quantile function over $[0,1]$ such that $E[q(x)] = \bar{x} = \alpha$.  Agent $i$ has no reason to deviate from her guess because $u_i(x_i; \alpha, \alpha) = (x_i - \alpha)^2 - (x_i - \alpha)^2 = 0$.  Thus, $q(x)$ is a Nash equilibrium.
 
 (c) Now suppose agents can choose any $x \in \R$. Describe all Nash equilibria.
 
+Let $q(x)$ be a quantile function $\R$ such that $E[q(x)] = \bar{x} = \alpha$.  Agent $i$ has no reason to deviate from her guess because $u_i(x_i; \alpha, \alpha) = (x_i - \alpha)^2 - (x_i - \alpha)^2 = 0$.  Thus, $q(x)$ is a Nash equilibrium.
+
+In part (a), we found that degenerate Nash equilibriums where all agents guess 0 and 1.  These equilibria do not extend to the unbounded domain because agents always have an incentive to guess higher (lower) if the average guess is larger (smaller) than $\alpha$.  Say all agents guess $y \in \R \implies \bar{x} = y$. Consider agent $i$ guessing $y' > y$:
+
+$$
+u_i(y'; y, \alpha) - u_i(y; y, \alpha) \\
+=  [(y' - \alpha)^2 - (y' - y)^2] - [(y - \alpha)^2 - (y - y)^2] \\
+= [(y')^2 - 2\alpha y'+\alpha^2] - [(y')^2 - 2y'y + y^2] - [y^2 - 2\alpha y + \alpha^2]\\
+= (y')^2 - 2\alpha y'+\alpha^2 - (y')^2 + 2y'y - y^2 - y^2 + 2\alpha y - \alpha^2 \\
+=  2y(y' - y) - 2\alpha (y' - y)  \\
+$$
+
+If $y' > y > \alpha$, agent $i$ is better off guessing $y'$ than $y$.  Similarly if $y' < y < \alpha$, agent $i$ is better off guessing $y'$ than $y$.  Thus, all agents choosing $y$ is not a Nash equilibrium.
+
+\pagebreak
+
 4. Two players choose numbers in $\R$. Their payoffs are $u_i(q_i, q_j) = q_i + q_i(q_j-1)^{1/3}-\frac{1}{2}q_i^2$. Find all Nash equilibria of this game.
 
-5. Two players play a game of Rock, Paper, Scissors. In this game, each player simultaneously chooses a strategy from the set fRock, Paper, Scissorsg. Paper beats Rock: if one player chooses Paper and the other chooses Rock, the player choosing Paper receives a payoff of 10, and the other player receives a payoff of 10. Similarly, Scissors beats Paper, and Rock beats Scissors. If both players choose the same pure strategy, each receives a payoff of 0. Players can also choose mixed strategies. However, in order to implement a mixed strategy, a player must rent a randomizing device. The rental costs 1 unit of payoffs. Find all Nash equilibria of this game.
+FOC [$q_i$]:
+
+$$
+0 = 1 + (q_j-1)^{1/3}-q_i^* \\
+\implies q_i^* = 1 + (q_j-1)^{1/3}
+$$
+
+The game is symmetric so we can plug in $q_j^* = 1 + (q_i-1)^{1/3}$:
+
+$$
+q_i^* = 1 + ((1 + (q_i^*-1)^{1/3})-1)^{1/3} = 1 + ((q_i^*-1)^{1/3})^{1/3} \\
+\implies q_i^*-1 = (q_i^*-1)^{1/9}
+$$
+
+This equation is true for $q_i^* = 0$, $q_i^* = 1$, and $q_i^* = 2$. Thus, there are pure-strategy Nash equilibriums at $(0, 0)$, $(1, 1)$, and $(2, 2)$.
+
+In addition to pure-strategy Nash equilibriums, there's four mixed-strategy Nash equilibriums: 
+
+a. Players mix between $(0, 0)$ and $(1, 1)$.
+b. Players mix between $(1, 1)$ and $(2, 2)$.
+c. Players mix between $(0, 0)$ and $(2, 2)$.
+d. Players mix between $(0, 0)$, $(1, 1)$, and $(2, 2)$.
+
+The payoffs at these levels are summarized in the table below.
+
++----------+-------------+------------+----------+
+|          |$q_j=0$      |$q_j=1$     |$q_j=2$   |
++----------+-------------+------------+----------+
+|$q_i=0$   | $(0,0)$     | $(0, -1/2)$|$(0, -2)$ |
++----------+-------------+------------+----------+
+|$q_i=1$   | $(-1/2, 0)$ |$(1/2, 1/2)$|$(3/2, 0)$|
++----------+-------------+------------+----------+
+|$q_i=2$   | $(-2, 0)$   | $(0,3/2)$  |$(2, 2)$  |
++----------+-------------+------------+----------+
+
+For a., let $\sigma_a$ be the probability that player $j$ plays 0 and $1-\sigma_a$ the probability that player $j$ plays 1. Player $i$ is indifferent between playing 0 and 1 if 
+
+\begin{align*}
+\sigma_a u_i(0, 0) + (1-\sigma_a) u_i(0, 1) &= \sigma_a u_i(1, 0) + (1-\sigma_a) u_i(1, 1) \\
+\sigma_a (0) + (1-\sigma_a) (0) &= \sigma_a (-1/2) + (1-\sigma_a) (1/2) \\
+\sigma_a &= 1/2  \\
+\end{align*}
+
+By symmetry, the same $\sigma_a$ holds for $j$ to be indifferent, so there's a mixed strategy Nash equilibrium of $(0, 0)$ with 1/2 probability and $(1, 1)$ with 1/2 probability.
+
+For b., let $\sigma_b$ be the probability that player $j$ plays 1 and $1-\sigma_b$ the probability that player $j$ plays 2. Player $i$ is indifferent between playing 1 and 2 if 
+
+\begin{align*}
+\sigma_b u_i(1, 1) + (1-\sigma_b) u_i(1, 2) &= \sigma_b u_i(2, 1) + (1-\sigma_b) u_i(2, 2) \\
+\implies \sigma_b (1/2) + (1-\sigma_b) (3/2) &= \sigma_b (0) + (1-\sigma_b) (2) \\
+\implies \sigma_b &= 1/2 \\
+\end{align*}
+
+By symmetry, the same $\sigma_b$ holds for $j$ to be indifferent, so there's a mixed strategy Nash equilibrium of $(1, 1)$ with 1/2 probability and $(2, 2)$ with 1/2 probability.
+
+For c., let $\sigma_c$ be the probability that player $j$ plays 0 and $1-\sigma_c$ the probability that player $j$ plays 2. Player $i$ is indifferent between playing 0 and 2 if 
+
+\begin{align*}
+\sigma_c u_i(0, 0) + (1-\sigma_c) u_i(0, 2) &= \sigma_c u_i(2, 0) + (1-\sigma_c) u_i(2, 2) \\
+\sigma_c (0) + (1-\sigma_c) (0) &= \sigma_c (-2) + (1-\sigma_c) (2) \\
+\sigma_c &= 1/2 \\
+\end{align*}
+
+By symmetry, the same $\sigma_c$ holds for $j$ to be indifferent, so there's a mixed strategy Nash equilibrium of $(0, 0)$ with 1/2 probability and $(2, 2)$ with 1/2 probability.
+
+For d., notice that no matter how player $j$ mixes playing $q_j=0$, $q_j=1$, and $q_j=2$, the payoff for $i$ is zero.  Thus, the expected payoff for $i$ to play $q_i=0$ is zero.  That means that the expected payoff for $i$ to play $q_i=1$ and $q_i=2$ needs to both be zero.  For the expected payoff from $q_i=2$ to equal zero, it requires that player $j$ plays $q_j=0$ and $q_j = 2$ with equal probability.  However, if player $j$ plays $q_j=0$ and $q_j = 2$ with equal probability, that means the expected payoff for player $i$ playing $q_j = 1$ is strictly positive.  Thus, there is no mixed-strategy Nash equilibrium that combines $(0, 0)$, $(1, 1)$, and $(2, 2)$.
+
+\pagebreak
+
+5. Two players play a game of Rock, Paper, Scissors. In this game, each player simultaneously chooses a strategy from the set $\{$Rock, Paper, Scissors$\}$. Paper beats Rock: if one player chooses Paper and the other chooses Rock, the player choosing Paper receives a payoff of 10, and the other player receives a payoff of 10. Similarly, Scissors beats Paper, and Rock beats Scissors. If both players choose the same pure strategy, each receives a payoff of 0. Players can also choose mixed strategies. However, in order to implement a mixed strategy, a player must rent a randomizing device. The rental costs 1 unit of payoffs. Find all Nash equilibria of this game.
+
+There are no pure-strategy Nash equilibriums.  For example, say player 1 plays Rock and player 2 plays Scissors.  Rock beats Scissors, so player 1 gets a payoff of 10 and player 2 gets a payoff of -10.  Player 2 has an incentive to change to Paper to beat Rock.  Then Player 1 has an incentive to play Scissors to beat Paper. Then Player 2 has an incentive to play Rock to beat Scissors.  Similarly, if both players play Rock (for example), player 1 has an incentive to switch to Paper. Thus, there are no pure-strategy Nash equilibriums.
+
+For mixed-strategy Nash equilibrium, consider player 2 playing Rock with $R$ probability, Scissors with $S$ probability, and Paper with $P$ probability.  The expected payoff of player 1 playing Rock is
+
+$$
+R(0) + P(-10)+S(10) -1= 10S-10P-1
+$$
+
+The expected payoff of player 1 playing Paper is
+
+$$
+R(10) + P(0)+S(-10) -1= 10S-10R-1
+$$
+
+The expected payoff of player 1 playing Scissors is
+
+$$
+R(-10) + P(10)+S(0) -1= 10P-10R-1
+$$
+
+For player 1 to be indifferent between her options:
+
+$$
+10P-10R-1 = 10S-10R-1 = 10S-10P-1 \implies P-R = S-R = S-P \implies R=P=S=\frac{1}{3}
+$$
+
+Thus, her expected payoff from a mixed-strategy is
+
+$$
+1/3(10)+1/3(-10)-1 = -1
+$$
+
+Now consider her expected payoff from playing any pure-strategy
+
+$$
+1/3(10)+1/3(-10) = 0
+$$
+
+Thus, player 1's best response to a mixed strategy is to play pure strategy.  Thus, there are Nash equilibriums.
