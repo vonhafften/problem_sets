@@ -1,0 +1,84 @@
+---
+title: "ECON 711 - Midterm Cheatsheet"
+author: "Michael Nattinger and Alex von Hafften"
+date: "11/16/2020"
+output: pdf_document
+geometry: margin=1cm
+header-includes:
+- \AtBeginDocument{\let\maketitle\relax}
+- \pagenumbering{gobble}
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\mtx}{\text{mtx}}
+- \newcommand{\crd}{\text{crd}}
+classoption:
+- twocolumn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# ECON 711 Midterm Cheatsheet
+
+## Nash Equilibria
+
+1. Apply IDS$_\infty$.
+
+2. Find all "best response cycles".
+
+3. Look for a Nash equilibrium on support of each cycle.
+
+## Nash Equilibria in Continuous Games
+
+- With a continuum of actions, if the payoff function is strictly quasi-concave in one's own action, then there are no mixed Nash equilibria.
+
+- A \textbf{war of attrition} has a fundamental reason to stop $u(t)$ opposed by a strategic incentive $v(q)$ to outlast other players ($v(q) \uparrow$). e.g. costly war
+
+- A \textbf{pre-emption game} has a fundamental reason to delay $u(t)$ opposed by a strategic incentive $v(q)$ to pre-empt other players ($v(q) \downarrow$). e.g. bank run
+
+- A Nash equilibrium is a quantile function $Q$ whose support contains only maximum payoffs, where quantile $q = Q(t)$ stops at time $t$.
+  
+  - Let $\lambda = \arg \max u(t)$.
+  - In pre-emption game, solve $v(1)u(\lambda) = v(Q(t))u(t)$.
+  - In war of attribution, solve $v(0)u(\lambda) = v(Q(t))u(t)$.
+  
+- Initial rush (cdf jumps from 0 to some $q$):
+
+$$
+\frac{1}{q} \int_0^q v(x) dx = v(q)
+$$
+
+- Terminal rush (cdf jumps from some $q$ to 1):
+
+$$
+\frac{1}{1-q} \int_q^1 v(x) dx = v(q)
+$$
+
+## Supermodular Games
+
+- A \textbf{supermodular game} is a game of strategic complements.  It has payoffs $u_i(s_i, s_{-i})$ with increasing differences $\forall i$.
+
+- $f(x, \theta)$ has \textbf{increasing differences} if for all $x' \ge x$ and $\theta' \ge \theta$:
+
+$$
+f(x', \theta') - f(x, \theta') \ge f(x', \theta) - f(x, \theta)
+$$
+
+- If $f$ is continuously differentiable $f$ has ID if $\frac{\partial f}{\partial x} \uparrow \theta$ or $\frac{\partial^2 f}{\partial x \partial \theta} \ge 0$.
+
+- A \textbf{submodular game} is a game of strategic substitutes.  It has payoffs $u_i(s_i, s_{-i})$ withh decreasing differences $\forall i$.
+
+- $f(x, \theta)$ has \textbf{decreasing differences} if $f(x, -\theta)$ has increasing differences.
+
+## Bayesian Nash Equilibrium
+
+- In \textbf{pooling equilibria}, different types take the same action.
+
+- In \textbf{separating equilibria}, different types take the different action.
+
+## Correlated Equilibria
+
+- Correlated Equilibria are supportable if obeying the signal is incentive compatible.
