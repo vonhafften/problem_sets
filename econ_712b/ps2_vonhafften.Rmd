@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (a) From conditions characterizing the equilibrium, find a system of equations that the endogenous variables $C_0$, $N_0$, $W_0$, $r_0$ must solve in a balanced growth path. (Initial capital $K_0$ is given.)
 
-In a competitive equilibrium, households optimize, firms optimize, and markets clear.\footnote{Note on notation: In the original problem set, it specifies $w_t$ as wages that grow over time.  Here, I define $W_t$ as the real wage rate on labor $N_t$ and $w_t$ as the real wage rate on effective labor $A_tN_t$. In addition, I define $r_t$ as the real rental rate on capital.}
+In a competitive equilibrium, households optimize, firms optimize, and markets clear.\footnote{Note on notation: The original problem set specifies $w_t$ as the wages that grow over time.  Here, $W_t$ is the real wage rate on labor $N_t$ and $w_t$ is the real wage rate on effective labor $A_tN_t$. In addition, $r_t$ is the real rental rate on capital.}
 
 The household problem is 
 
@@ -37,7 +37,7 @@ $$
 \max_{\{K_t^d, N_t^d\}_{t=0}^\infty} \sum_{t=0}^\infty p_t(F(K_t^d, A_t N_t^d) - r_tK_t^d - W_tN_t^d)
 $$
 
-Normalize consumption, capital, investment, and wages by technology: $c_t = \frac{C_t}{A_t}$, $k_t = \frac{K_t}{A_t}$, $i_t = \frac{I_t}{A_t}$, and $w_t = \frac{W_t}{A_t}$.
+Transform consumption, capital, investment, and wages by dividing by technology: $c_t = \frac{C_t}{A_t}$, $k_t = \frac{K_t}{A_t}$, $i_t = \frac{I_t}{A_t}$, and $w_t = \frac{W_t}{A_t}$.
 
 \pagebreak
 
@@ -77,14 +77,8 @@ The household problem becomes:
 & A_{t+1}k_{t+1} = (1 - \delta) A_{t}k_{t} + A_{t}i_{t} \\
 \implies
 \max_{\{(c_t, N_t, i_t, k_t)\}_{t=0}^\infty} & \sum_{t=0}^\infty \beta^t u(A_tc_t, 1-N_t) \\
-\text{s.t. } & \sum_{t=0}^\infty p_t (c_t + i_t - r_t k_t - w_t N_t) = 0 \\
-& i_{t} = (1+g)k_{t+1} - (1 - \delta) k_{t} \\
-\implies
-\max_{\{(c_t, N_t, i_t, k_t)\}_{t=0}^\infty} & \sum_{t=0}^\infty \beta^t u(A_tc_t, 1-N_t) \\
 \text{s.t. } & \sum_{t=0}^\infty p_t (c_t + (1+g)k_{t+1} - (1 - \delta) k_{t} - r_t k_t - w_t N_t) = 0
 \end{align*}
-
-\pagebreak
 
 Define Legrangian:
 
@@ -94,83 +88,91 @@ $$
 + \lambda\Bigg[\sum_{t=0}^\infty p_t (c_t + (1+g)k_{t+1} - (1 - \delta) k_{t} - r_t k_t - w_t N_t)\Bigg]
 $$
 
+\pagebreak
+
 FOC [$c_t$]:\footnote{Note on notation: $u_1$ is the derivative with respect to the first argument of $u$ and $u_2$ is the derivative with respect to the second argument of $u$.}
 
-$$
-0 = \beta^t u_1(A_tc_t, 1-N_t)A_t + \lambda p_t \\
+\begin{align*}
+0 &= \beta^t u_1(A_tc_t, 1-N_t)A_t + \lambda p_t \\
 \implies
--\lambda = \frac{\beta^t u_1(A_tc_t, 1-N_t)A_t}{p_t}
+-\lambda &= \frac{\beta^t u_1(A_tc_t, 1-N_t)A_t}{p_t}
+\end{align*}
+
+FOC [$N_t$]:
+
+\begin{align*}
+0 &= \beta^t u_2(A_tc_t, 1-N_t) (-1) - \lambda p_tw_t \\
+\implies
+-\lambda &=  -\frac{\beta^t u_2(A_tc_t, 1-N_t)}{p_tw_t}
+\end{align*}
+
+Combining the FOCs with respect to $c_t$ and $N_t$, we get the following relationship:
+
+\begin{align*}
+\frac{\beta^t u_1(A_tc_t, 1-N_t)A_t}{p_t} &= -\frac{\beta^t u_2(A_tc_t, 1-N_t)}{p_tw_t} \\
+\implies
+u_1(A_tc_t, 1-N_t) &= -\frac{1}{A_t w_t}u_2(A_t c_t, 1-N_t) \\
+\end{align*}
+
+In equilibrium, markets clear:
+
+\begin{align*}
+k_t &= k_t^d &(\text{Capital Market})\\
+N_t &= N_t^d &(\text{Labor Market})\\
+F(A_tk_t, A_tN_t) &= (c_t + k_t)A_t &(\text{Goods Market})
+\end{align*}
+
+Finally, the law of capital can be rewritten with our transformed variables:
+
+\begin{align*}
+k_{t+1}A_{t+1} &= (1 - \delta) k_tA_t + F(A_tk_t, A_tN_t)A_t - c_tA_t \\
+\implies k_{t+1}(1+g) &= (1 - \delta) k_t + F(A_tk_t, A_tN_t) - c_t
+\end{align*}
+
+On a balanced growth path, we know that $k_{t+1} = k_t$:
+
+$$
+k_t (g + \delta) + c_t=  F(A_t k_t, A_t N_t) 
 $$
 
-FOC [$c_{t+1}$]:
+At $t=0$, there are four equations that characterize the four unknown variables $(C_0, N_0, W_0, r_0)$:
 
-$$
-0 = \beta^{t+1} u_1(A_{t+1}c_{t+1}, 1-N_{t+1})A_{t+1} + \lambda p_{t+1} \\
+\begin{align}
+F_1(K_0, A_0 N_0) &= r_0\\
+F_2(K_0, A_0 N_0) &= \frac{W_0}{A_0}\\
+u_1(C_0, 1 - N_t) &= -\frac{1}{W_0} u_2(C_0, 1-N_0)\\
+K_0 (g + \delta) + C_0 &= A_0F(K_0, A_0 N_0)
+\end{align}
+
+(b) Show that if preferences are of the form: $u(C, 1-N) = \begin{cases} \frac{C^{1-\gamma}}{1-\gamma}h(1-N), \gamma > 0, \gamma \neq 1 \\ \log C + h(1-N), \gamma = 1 \end{cases}$ for some function $h$, then there will be a balanced growth path.
+
+The FOCs with respect to $c_t$ and $c_{t+1}$ of the Legrangian to solve the household problem imply a consumption Euler equation:
+
+\begin{align*}
+\frac{\beta^t u_1(A_tc_t, 1-N_t)A_t}{p_t} &= \frac{\beta^{t+1} u_1(A_{t+1}c_{t+1}, 1-N_{t+1})A_{t+1}}{p_{t+1}} \\ 
 \implies 
--\lambda = \frac{\beta^{t+1} u_1(A_{t+1}c_{t+1}, 1-N_{t+1})A_{t+1}}{p_{t+1}}
-$$
-
-FOC [$c_t$] and FOC [$c_{t+1}$] imply:
-
-$$
-\frac{\beta^t u_1(A_tc_t, 1-N_t)A_t}{p_t} = \frac{\beta^{t+1} u_1(A_{t+1}c_{t+1}, 1-N_{t+1})A_{t+1}}{p_{t+1}} \\ 
-\implies 
-u_1(A_tc_t, 1-N_t) = \frac{\beta (1 + g )}{q_{t+1}}u_1(A_{t+1}c_{t+1}, 1-N_{t+1})
-$$
+u_1(A_tc_t, 1-N_t) &= \frac{\beta (1 + g )}{q_{t+1}}u_1(A_{t+1}c_{t+1}, 1-N_{t+1})
+\end{align*}
 
 where $q_{t+1} = \frac{p_{t+1}}{p_t}$.
 
-FOC [$N_t$]
+The FOCs with respect to $N_t$ and $N_{t+1}$ of the Legrangian to solve the household problem imply a labor supply Euler equation:
 
-$$
-0 = \beta^t u_2(A_tc_t, 1-N_t) (-1) - \lambda p_tw_t N_t
-$$
+\begin{align*}
+\frac{\beta^t u_2(A_tc_t, 1-N_t)}{p_tw_t} &=  \frac{\beta^{t+1} u_2(A_{t+1}c_{t+1}, 1-N_{t+1})}{p_{t+1}w_{t+1}} \\ 
+\implies 
+u_2(A_tc_t, 1-N_t) &= \frac{\beta}{q_{t+1}v_{t+1}} u_2(A_{t+1}c_{t+1}, 1-N_{t+1})\\ 
+\end{align*}
 
-FOC [$N_{t+1}$]
+where $v_{t+1} = \frac{w_{t+1}}{w_t}$.
 
-$$
-0 = \beta^{t+1} u_2(A_{t+1}c_{t+1}, 1-N_{t+1}) (-1) - \lambda p_{t+1} w_{t+1} N_{t+1}
-$$
+The Legrangian also implies a no arbitrage condition, by taking the derivative with respect to $k_{t+1}$:
 
-These conditions imply
-
-$$
-w_tu_1(C_t, 1-N_t) = - u_2(C_t, 1-N_t)
-$$
-
-No arbitrage condition:
-
-$$
-p_t = (r_{t+1} + 1 - \delta)p_{t+1}
-$$
-
-The law of motion of capital implies:
-
-$$
-\frac{K_{t+1}}{A_t}\frac{A_{t+1}}{A_{t+1}} = (1-\delta) \frac{K_t}{A_t} + \frac{F(K_t, A_t N_t)}{A_t} - \frac{C_t}{A_t}\\
+\begin{align*}
+0 &= \lambda p_t (1+g) - \lambda p_{t+1}(1 - \delta) - \lambda p_{t+1} r_{t+1} \\
 \implies
-k_{t+1}(1+g) = (1-\delta) k_t + \frac{F(K_t, A_t N_t)}{A_t} - c_t
-$$
-
-Ryan's write-up:
-
-Check for upper and lower case variables:
-
-$$
-V(k_t) = \max_{k+1, N_t} \{ u((1-\delta)) K_t + F(K_t, A_tN_t) - K_{t+1}, 1-N_t) + \beta V(k_{t+1}) \}
-$$
-
-$$
-F(K_t, A_t, N_t) - K_tr_t - wA_tN_t
-$$
-
-1. $F_1(k, N) = r$
-2. $F_N(k, N) = \frac{W}{A_t}$
-3. $u_1(C, 1-N) = \beta u_1((1+g)C_0, 1-N)(\frac{1-\delta}{v} + (1+g))$
-4. $u_1(C_0, 1-N)(W) = u_2(C_0, 1-N)$
-5. $k_0(1+g) = (1-\delta)k_0 + F(k, N_t) - c_t$
-
-(b) Show that if preferences are of the form: $u(C, 1-N) = \begin{cases} \frac{C^{1-\gamma}}{1-\gamma}h(1-N), \gamma > 0, \gamma \neq 1 \\ \log C + h(1-N), \gamma = 1 \end{cases}$ for some function $h$, then there will be a balanced growth path.
+\frac{p_{t+1}}{p_t} &= \frac{1+g}{(1 - \delta) + r_{t+1} }
+\end{align*}
 
 (c) Can we characterize the qualitative dynamics using a phase diagram in the same way that we did in the case of inelastic labor supply? For example, suppose $u(C, 1 - N) = \log C + h(1 - N)$, that we are on a balanced growth path and then there is an increase in the rate of depreciation $\delta$. Can you say what happens both upon impact of the shock and in the long run?
 
@@ -205,11 +207,138 @@ of wealth.)
 
 \pagebreak
 
-3. This problem considers the computation of the optimal growth model. An infinitely lived representative household owns a stock of capital which it rents to firms. The household’s capital stock $K$ depreciates at rate $\delta$. Households do not value leisure and are endowed with one unit of time each period with which they can supply labor $N$ to
-firms. They have standard time additive expected utility preferences with discount factor $\beta$ and period utility $u(c)$. Firms produce output according to the production
-function $zF(K, N)$ where $z$ is the level of technology.
+3. This problem considers the computation of the optimal growth model. An infinitely lived representative household owns a stock of capital which it rents to firms. The household’s capital stock $K$ depreciates at rate $\delta$. Households do not value leisure and are endowed with one unit of time each period with which they can supply labor $N$ to firms. They have standard time additive expected utility preferences with discount factor $\beta$ and period utility $u(c)$. Firms produce output according to the production function $zF(K, N)$ where $z$ is the level of technology.
 
 (a) First, write a computer program that solves the planners problem to determine the optimal allocation in the model. Set $\beta = 0.95$, $\delta = 0.1$, $z = 1$, $u(c) = c^{1-\gamma}/(1 - \gamma)$ with $\gamma = 2$, and $F(K, N) = K^{0.35}N^{0.65}$. Plot the optimal policy function for $K$ and the phase diagram with the $\Delta K = 0$ and $\Delta c = 0$ lines along with the saddle path (which is the decision rule $c(K)$).
+
+The planners problem is very similar to the one discussed in lecture 4:
+
+\begin{align*}
+\max_{\{c_t, n_t, k_{t+1}\}_{t=0}^\infty} & \sum_{t=0}^\infty \beta^t u(c_t) \\
+\text{s.t. } & c_t + k_{t+1} - (1-\delta)k_t \le zF(k_t, n_t) \\
+& 0 \le n_t \le 1 \\
+& c_t \ge 0 
+\end{align*}
+
+It is optimal for households to supply $n_t = 1$ for all $t$ because leisure is not valued.  Define $F(k_t, 1) = f(k_t)$.  The recursive formulation of the planners problem is
+
+$$
+V(k) = \max_{k'} \{u(zf(k) + (1-\delta)k - k') + \beta V(k')\}
+$$
+
+FOC [$k'$]:
+
+$$
+0=u'(zf(k) + (1-\delta) k - k')(-1) + \beta V'(k')
+$$
+
+Envelope condition:
+
+$$
+V'(k) = u'(zf(k) + (1-\delta) k - k')(zf'(k)+(1-\delta))
+$$
+
+Imply an Euler condition:
+
+$$
+u'(zf(k) + (1-\delta) k - k') = \beta u'(zf(k') + (1-\delta) k' - k'')(zf'(k')+(1-\delta)) 
+$$
+
+The Euler equation and the law of motion of capital are two difference equation for the two unknowns:
+
+\begin{align}
+k' &= zf(k) + (1-\delta)k - c \\
+u'(c) &= \beta u'(c')(zf'(k')+(1-\delta))
+\end{align}
+
+In a steady state $\bar{k} = k = k'$ and $\bar{c} = c = c'$:
+
+\begin{align*}
+u'(\bar{c}) &= \beta u'(\bar{c})(zf(\bar{k})+(1-\delta)) \\
+\implies f'(\bar{k}) &= \frac{\beta^{-1} - (1-\delta)}{z} \\
+\bar{c} &= zf(\bar{k}) -\delta \bar{k} 
+\end{align*}
+
+Plugging in the provided functional forms:
+
+\begin{align*}
+\bar{k} &= \Bigg(\frac{\beta^{-1} - (1-\delta)}{0.35z}\Bigg)^{(-1/0.65)} \\
+\bar{c} &= z\bar{k}^{0.35} - \delta \bar{k} 
+\end{align*}
+
+For $\Delta k = 0$, equation (5) implies:
+
+$$
+k = zf(k) + (1-\delta)k - c \implies c = zf(k) - \delta k
+$$
+
+Plugging in the provided functional forms:
+
+$$
+c = zk^{0.35} - \delta k
+$$
+
+For $\Delta c = 0$, equations (5) and (6) imply:
+
+$$
+f'(zf(k) + (1-\delta)k - c) = \frac{\frac{1}{\beta}-(1-\delta)}{z}
+$$
+
+Plugging in the provided functional forms:
+
+\begin{align*}
+0.35(zk^{0.35} + (1-\delta)k - c)^{-0.65} &= \frac{\frac{1}{\beta}-(1-\delta)}{z} \\
+\implies  c &= zk^{0.35} + (1-\delta)k - \Bigg(\frac{\frac{1}{\beta}-(1-\delta)}{0.35z}\Bigg)^{1/(-0.65)}
+\end{align*}
+
+```{r, echo = FALSE}
+
+beta <- 0.95
+delta <- 0.1
+z <- 1
+gamma <- 2
+
+cd_k <- 0.35
+cd_l <- 0.65
+
+k_bar <- ((beta^(-1)-(1-delta))/(cd_k * z))^(1/(cd_k-1))
+c_bar <- z * k_bar^cd_k - delta * k_bar
+
+k <- seq(0, 5, by = 0.01)
+
+k_no_change <- z * k ^ cd_k - delta * k
+c_no_change <- z * k ^ cd_k + (1-delta) * k - k_bar
+
+######
+
+maxkap <- 10
+minkap <- 0
+inckap <- 0.01
+kap <- seq(from = minkap, to = maxkap, by = inckap)
+nkap <- length(kap)
+
+v <- rep(0, n=nkap)
+tv <- rep(0, n=nkap)
+decis <- rep(0, n=nkap)
+tdecis <- rep(0, n=nkap)
+cons <- matrix(rep(0, n=nkap*nkap), nrow = nkap)
+util <- matrix(rep(0, n=nkap*nkap), nrow = nkap)
+vint <- matrix(rep(0, n=nkap*nkap), nrow = nkap)
+test <- 10
+
+while (test == 0)
+  cons <- 
+######
+
+plot(1, type = "n", xlim = c(0, 5), ylim = c(-5, 5), xlab = "k", ylab = "c")
+
+abline(h=0)
+
+points(x=k_bar, y=c_bar)
+
+lines(x=k, y=k_no_change, col = "red")
+lines(x=k, y=c_no_change, col = "blue")
+```
 
 (b) Re-do your calculations with $\gamma = 1.01$. What happens to the steady state? What happens to the saddle path? Interpret your answer.
 
