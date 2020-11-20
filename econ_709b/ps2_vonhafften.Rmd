@@ -16,6 +16,8 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
 ```
 
 1. 3.2\footnote{These problems come from \textit{Econometrics} by Bruce Hansen, revised on October 23, 2020.} Consider the OLS regression of the $n \times 1$ vector $y$ on the $n \times k$ matrix $X$. Consider an alternative
@@ -138,21 +140,165 @@ $$
 
 ...
 
-3.22 
+3.22 You estimate a least squares regression $y_i = X_{1i}' \tilde{\beta_1} + \tilde{u}_i$ and then regress the residuals on another set of regressors $\tilde{u}_i = X_{2i}' \tilde{\beta_2} + \tilde{e}_i$.  Does this second regression give you the same estimated coefficients as from estimation of a least squares regression on both set of regressors? $y_i = X_{1i}' \hat{\beta_1} + X_{2i}' \hat{\beta_2} + \hat{e}_i$.  In other words, is it true that $\tilde{\beta_2} = \hat{\beta_2}$? Explain your reasoning.
 
 ...
 
-3.23
+3.23 The data matrix is $(y, X)$ with $X = [X_1 \; X_2]$, and consider the transformed regressor matrix $z = [X_1, X_2 - X_1]$. Suppose you do a least squares regression of $y$ on $X$, and a least squares regression of $y$ on $Z$.  Let $\hat{\sigma}^2$ and $\tilde{\sigma}^2$ denote the residual variance estimates from the two regressions. Give a formula relating $\hat{\sigma}^2$ and $\tilde{\sigma}^2$? (Explain your reasoning.)
 
 ...
 
-6. 3.24
+\pagebreak
 
-...
+6. 3.24 Use the dataset from Section 3.22 and the sub-sample used for equation (3.50) (see Section 3.25 for data construction).
 
-3.25
+(a) Estimate equation (3.50) and compute the equation $R^2$ and sum of squared errors.
 
-...
+```{r setup_libraries, eval = FALSE}
+library(tidyverse)
+```
+
+```{r q324a}
+cps09mar <- read_delim("cps09mar.txt",
+                       delim = "\t",
+                       col_names = c("age", "female", "hisp", "education", "earnings", 
+                                     "hours", "week", "union", "uncov", "region", "race",
+                                     "maritial"),
+                       col_types = "dddddddddddd") %>%
+  mutate(experience = age - education - 6,
+         experience_2 = (experience^2)/100,
+         wage = earnings / (hours*week),
+         l_wage = log(wage),
+         constant = 1) %>%
+  filter(race == 4,
+         maritial == 7,
+         female == 0,
+         experience < 45)
+
+y <- cps09mar$l_wage
+
+x <- cps09mar %>%
+  select(education, experience, experience_2, constant) %>%
+  as.matrix() %>%
+  unname()
+
+n <- dim(x)[1]
+i <- diag(nrow = n, ncol = n)
+
+# Estimate Equation 3.50
+beta <- solve(t(x) %*% x) %*% t(x) %*% y
+print(beta)
+p_x <- x %*% solve(t(x) %*% x) %*% t(x)
+m_x <- i - p_x
+e_hat <- m_x %*% y
+sse_a <- sum(e_hat^2)
+print(sse_a)
+y_bar <- mean(y)
+r_squared_a <- 1 - sse_a/sum((y-y_bar)^2)
+print(r_squared_a)
+```
+
+(b) Re-estimate the slope on education using the residual regression approach. Regress log(wage) on experience and its square, regress education on experience and its square, and the residuals on the residuals.  Report the estimates from this final regression, along with the equation $R^2$ and sum of squared errors.  Does the slope coefficient equal the value in (3.50)? Explain.
+
+```{r q324b}
+x_1 <- cps09mar %>%
+  select(experience, experience_2, constant) %>%
+  as.matrix() %>%
+  unname()
+
+m_x_1 <- i - x_1 %*% solve(t(x_1) %*% x_1) %*% t(x_1)
+
+z <- cps09mar$education
+
+u_hat <- m_x_1 %*% z
+v_hat <- m_x_1 %*% y
+
+beta_1 <- (t(u_hat) %*% u_hat)^(-1) %*% t(u_hat) %*% v_hat
+print(beta_1)
+
+m_u_hat <- i - u_hat %*% (t(u_hat) %*% u_hat)^(-1) %*% t(u_hat)
+d_hat <- m_u_hat %*% v_hat
+sse_b <- sum(d_hat^2)
+print(sse_b)
+v_hat_bar <- mean(v_hat)
+r_squared_b <- 1 - sse_b/sum((v_hat - v_hat_bar)^2)
+print(r_squared_b)
+```
+
+(c) Are the $R^2$ and sum of squared errors from parts (a) and (b) equal? Explain.
+
+The SSE is the same between (a) and (b) because the residuals are the same no matter if you do a partition regression or a regression with all variables at once.  The $R^2$ in part (b) is lower than in part (a).  Since the SSE is the same, both parts have the same denominator. Because there is some explanatory power from the first regression, the denominator is larger in part (a) than in part (b).
+
+3.25 Estimate equation (3.50) as in part (a) of the previous question. Let $\hat{e}_i$ be the OLS residual, $\hat{Y}_i$ the predicted value from the regression, $X_{1i}$ be education and $X_{2i}$ be experience.  
+
+Numerically calculate the following:
+
+```{r q325}
+x1 <- x[,1]
+x2 <- x[,2]
+
+p_x <- x %*% solve(t(x) %*% x) %*% t(x)
+m_x <- i - p_x
+
+y_hat <- p_x %*% y
+e_hat <- m_x %*% y
+```
+
+\pagebreak
+
+(a) $\sum_{i=1}^n \hat{e}_i$
+
+```{r q325a}
+sum(e_hat)
+```
+
+(b) $\sum_{i=1}^n X_{1i} \hat{e}_i$
+
+```{r q325b}
+sum(x1 * e_hat)
+```
+
+(c) $\sum_{i=1}^n X_{2i} \hat{e}_i$
+
+```{r q325c}
+sum(x2 * e_hat)
+```
+
+(d) $\sum_{i=1}^n X_{1i}^2 \hat{e}_i$
+
+```{r q325d}
+sum(x1^2 * e_hat)
+```
+
+(e) $\sum_{i=1}^n X_{2i}^2 \hat{e}_i$
+
+```{r q325e}
+sum(x2^2 * e_hat)
+```
+
+(f) $\sum_{i=1}^n \hat{Y}_i \hat{e}_i$
+
+```{r q325f}
+sum(y_hat * e_hat)
+```
+
+(g) $\sum_{i=1}^n X_{1i} \hat{e}_i^2$
+
+```{r q325g}
+sum(x1 * e_hat^2)
+```
+
+Are these calculations consistent with the theoretical properties of OLS? Explain.
+
+Yes.  When working with a computer, there is always some rounding, so we should interpret very small numbers as zero in terms of consistency with the theoretical predictions.
+
+(a) The sum of residuals is zero.
+(b) Residuals are orthogonal to any partition of $X$.
+(c) Residuals are orthogonal to any partition of $X$.
+(d) [No particular theoretical property.]
+(e) Note that squared experience is a column in $X$, so it is a partition of $X$. Residuals are orthogonal to any partition of $X$.  
+(f) Residuals are orthogonal to fitted values.
+(g) [No particular theoretical property.]
 
 \pagebreak
 
@@ -192,6 +338,8 @@ $$
 = \Bigg(\begin{pmatrix} X_1X_1 & X_1\\ X_2X_1 \end{pmatrix}[X_1 \; X_2]\Bigg)^{-1}\begin{pmatrix} X_1 \\ X_2 \end{pmatrix}y
 $$
 
+...
+
 (b) Let $\hat{y} = X \hat{\beta}$. Now, consider the OLS regression of $\hat{y}$ on $X_1$ that yields the OLS estimator $\hat{\hat{\beta_1}}$. What is $E[\hat{\hat{\beta_1}}|X]$? (Simpllify your answer.) Is $\hat{\hat{\beta_1}}$ an unbiased estimator of $\beta_1$?
 
 ...
@@ -204,4 +352,6 @@ $$
 
 ...
 
-What is $\var(\tilde{\tilde{\beta}}|X)$? Simply your answer.
+(e) What is $\var(\tilde{\tilde{\beta}}|X)$? Simply your answer.
+
+...
