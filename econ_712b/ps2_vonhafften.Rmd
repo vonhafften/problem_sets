@@ -126,14 +126,14 @@ F(A_tk_t, A_tN_t) &= (c_t + k_t)A_t &(\text{Goods Market})
 Finally, the law of capital can be rewritten with our transformed variables:
 
 \begin{align*}
-k_{t+1}A_{t+1} &= (1 - \delta) k_tA_t + F(A_tk_t, A_tN_t)A_t - c_tA_t \\
-\implies k_{t+1}(1+g) &= (1 - \delta) k_t + F(A_tk_t, A_tN_t) - c_t
+k_{t+1}A_{t+1} &= (1 - \delta) k_tA_t + F(A_tk_t, A_tN_t) - c_tA_t \\
+\implies k_{t+1}(1+g) &= (1 - \delta) k_t + F(k_t, N_t) - c_t
 \end{align*}
 
 On a balanced growth path, we know that $k_{t+1} = k_t$:
 
 $$
-k_t (g + \delta) + c_t=  F(A_t k_t, A_t N_t) 
+k_t (g + \delta) + c_t=  F(k_t, N_t) 
 $$
 
 At $t=0$, there are four equations that characterize the four unknown variables $(C_0, N_0, W_0, r_0)$:
@@ -142,10 +142,17 @@ At $t=0$, there are four equations that characterize the four unknown variables 
 F_1(K_0, A_0 N_0) &= r_0\\
 F_2(K_0, A_0 N_0) &= \frac{W_0}{A_0}\\
 u_1(C_0, 1 - N_t) &= -\frac{1}{W_0} u_2(C_0, 1-N_0)\\
-K_0 (g + \delta) + C_0 &= A_0F(K_0, A_0 N_0)
+K_0 (g + \delta) + C_0 &= A_0F(K_0, N_0)
 \end{align}
 
 (b) Show that if preferences are of the form: $u(C, 1-N) = \begin{cases} \frac{C^{1-\gamma}}{1-\gamma}h(1-N), \gamma > 0, \gamma \neq 1 \\ \log C + h(1-N), \gamma = 1 \end{cases}$ for some function $h$, then there will be a balanced growth path.
+
+If $\gamma \neq 1$, power utility preferences imply:
+
+\begin{align*}
+u_1(C, 1-N) &= C^{-\gamma}h(1-N) \\
+u_2(C, 1-N) &= \frac{C^{1-\gamma}}{1-\gamma}h'(1-N)
+\end{align*}
 
 The FOCs with respect to $c_t$ and $c_{t+1}$ of the Legrangian to solve the household problem imply a consumption Euler equation:
 
@@ -155,30 +162,87 @@ The FOCs with respect to $c_t$ and $c_{t+1}$ of the Legrangian to solve the hous
 u_1(A_tc_t, 1-N_t) &= \frac{\beta (1 + g )}{q_{t+1}}u_1(A_{t+1}c_{t+1}, 1-N_{t+1})
 \end{align*}
 
-where $q_{t+1} = \frac{p_{t+1}}{p_t}$.
+where $q_{t+1} = \frac{p_{t+1}}{p_t}$.  The functional form for utility implies:
+
+\begin{align*}
+(A_t c_t)^{-\gamma} h(1-N_t) &= \frac{\beta (1 + g )}{q_{t+1}}(A_{t+1}c_{t+1})^{-\gamma}h(1-N_{t+1}) \\
+c_t^{-\gamma} h(1-N_t) &= \frac{\beta (1 + g )}{q_{t+1}}(1+g)^{-\gamma}c_{t+1}^{-\gamma}h(1-N_{t+1})
+\end{align*}
+
+On the balanced growth, $\bar{N} = N_t = N_{t+1}$, $\bar{c} = c_t = c_{t+1}$, and $\bar{q} = q_{t+1}$:
+
+$$
+\bar{q}= \beta (1 + g )^{1-\gamma}
+$$
 
 The FOCs with respect to $N_t$ and $N_{t+1}$ of the Legrangian to solve the household problem imply a labor supply Euler equation:
 
 \begin{align*}
 \frac{\beta^t u_2(A_tc_t, 1-N_t)}{p_tw_t} &=  \frac{\beta^{t+1} u_2(A_{t+1}c_{t+1}, 1-N_{t+1})}{p_{t+1}w_{t+1}} \\ 
 \implies 
-u_2(A_tc_t, 1-N_t) &= \frac{\beta}{q_{t+1}v_{t+1}} u_2(A_{t+1}c_{t+1}, 1-N_{t+1})\\ 
+u_2(A_tc_t, 1-N_t) &= \frac{\beta}{q_{t+1}}\frac{w_{t}}{w_{t+1}} u_2(A_{t+1}c_{t+1}, 1-N_{t+1})
 \end{align*}
 
-where $v_{t+1} = \frac{w_{t+1}}{w_t}$.
+The functional form for utility implies:
 
-The Legrangian also implies a no arbitrage condition, by taking the derivative with respect to $k_{t+1}$:
+\begin{align*}
+\frac{(A_tc_t)^{1-\gamma}}{1-\gamma}h'(1-N_t) &= \frac{\beta}{q_{t+1}}\frac{w_{t}}{w_{t+1}} \frac{(A_{t+1}c_{t+1})^{1-\gamma}}{1-\gamma}h'(1-N_{t+1}) \\
+c_t^{1-\gamma}h'(1-N_t) &= \frac{\beta}{q_{t+1}}\frac{w_{t}}{w_{t+1}} c_{t+1}^{1-\gamma}(1+g)^{1-\gamma}h'(1-N_{t+1}) \\
+\end{align*}
+
+On the balanced growth, $\bar{N} = N_t = N_{t+1}$, $\bar{c} = c_t = c_{t+1}$, and $\bar{q} = q_{t+1}$:
+
+$$
+\bar{q} \frac{w_{t}}{w_{t+1}} = \beta (1+g)^{1-\gamma} \\
+\implies w_{t} = w_{t+1}
+$$
+
+The Legrangian also implies a "no arbitrage condition", by taking the derivative with respect to $k_{t+1}$:
 
 \begin{align*}
 0 &= \lambda p_t (1+g) - \lambda p_{t+1}(1 - \delta) - \lambda p_{t+1} r_{t+1} \\
-\implies
-\frac{p_{t+1}}{p_t} &= \frac{1+g}{(1 - \delta) + r_{t+1} }
+\implies 
+q_{t+1} &= \frac{1+g}{(1 - \delta) + r_{t+1} }
 \end{align*}
+
+On the balanced growth, $\bar{q} = q_{t+1}$ and $\bar{r} = r_{t+1}$:
+
+\begin{align*}
+\beta (1 + g )^{1-\gamma} = \bar{q} &= \frac{1+g}{(1 - \delta) + \bar{r} } \\
+\implies 
+\bar{r} &= \frac{(1 + g)^{\gamma}}{\beta} - (1 - \delta) 
+\end{align*}
+
+The firm problem implies the values of $\bar{k}$ and $\bar{N}$:
+
+\begin{align*}
+F_1(\bar{k}, \bar{N}) &= \bar{r} \\
+F_2(\bar{k}, \bar{N}) &= \bar{w} \\
+\end{align*}
+
+Finally, the law of motion for capital implies the value of $\bar{c}$:
+
+$$
+\bar{c} =  F(\bar{k}, \bar{N}) - \bar{k} (g + \delta)
+$$
+
+Therefore, a balanced growth path exists.
 
 (c) Can we characterize the qualitative dynamics using a phase diagram in the same way that we did in the case of inelastic labor supply? For example, suppose $u(C, 1 - N) = \log C + h(1 - N)$, that we are on a balanced growth path and then there is an increase in the rate of depreciation $\delta$. Can you say what happens both upon impact of the shock and in the long run?
 
-(d) Now suppose that $h$ is a constant function, so that labor is inelastically supplied, and suppose $\gamma > 1$. Show that we can summarize the equilibrium as a system of equations governing the evolution of consumption and capital per unit of effective labor: $c_t = C_t/A_t$ and $k_t = K_t/A_t$. Find the balanced growth path
-levels of $c_t$ and $k_t$.
+No, since labor, consumption and capital all endongenous.  All three can change in response to an increase in $\delta$. We need to know the production function to determine the impact of the shock in the short and long run.
+
+(d) Now suppose that $h$ is a constant function, so that labor is inelastically supplied, and suppose $\gamma > 1$. Show that we can summarize the equilibrium as a system of equations governing the evolution of consumption and capital per unit of effective labor: $c_t = C_t/A_t$ and $k_t = K_t/A_t$. Find the balanced growth path levels of $c_t$ and $k_t$.
+
+If $h$ is a constant function, then $N_t = 1$ for all $t$.  The equations from part (b) hold here, in particular:
+
+\begin{align*}
+c_t^{-\gamma} &= \frac{\beta (1 + g )}{q_{t+1}}(1+g)^{-\gamma}c_{t+1}^{-\gamma} \\
+q_{t+1} &= \frac{1+g}{(1 - \delta) + r_{t+1} } \\
+k_{t+1}(1 + g) &= (1 - \delta) k_t + F(k_t, N_t) - c_t
+\end{align*}
+
+
 
 (e) Now suppose the economy is on the balanced growth path, and then there is a fall in the rate of technological change $g$. By analyzing the qualitative dynamics of the economy, discuss what happens to $c_t$ and $k_t$ at the time of the change and in the long run.
 
@@ -359,7 +423,7 @@ Plugging in the provided functional forms:
 \implies  c &= zk^{0.35} + (1-\delta)k - \Bigg(\frac{\frac{1}{\beta}-(1-\delta)}{0.35z}\Bigg)^{1/(-0.65)}
 \end{align*}
 
-```{r setup_model, echo = FALSE, eval = FALSE}
+```{r setup_model, echo = FALSE}
 # parameters
 beta <- 0.95
 delta <- 0.1
@@ -376,7 +440,7 @@ k <- seq(min_k, max_k, by = inc_k)
 n <- length(k)
 ```
 
-```{r solve_ss, echo = FALSE, eval = FALSE}
+```{r solve_ss, echo = FALSE}
 solve_ss <- function() {
   # Steady state values
   k_bar <<- ((beta^(-1)-(1-delta))/(cd_k * z))^(1/(cd_k-1))
@@ -389,7 +453,7 @@ solve_ss <- function() {
 
 ```
 
-```{r solve_bellman_equation, echo = FALSE, eval = FALSE}
+```{r solve_bellman_equation, echo = FALSE}
 # Solves bellman equation based on parameters above.
 solve_bellman <- function() {
   ones <- rep(1, times=n)
@@ -429,7 +493,7 @@ solve_bellman <- function() {
 }
 ```
 
-```{r plots_a, echo = FALSE, eval = FALSE}
+```{r plots_a, echo = FALSE}
 solve_ss()
 
 solve_bellman()
@@ -460,7 +524,7 @@ text(x= 1.5, y=.5, "Saddle Path")
 
 $\gamma$ does not appear in the steady state equations nor the equations consistent with $\Delta k = 0$ and $\Delta c = 0$, so the steady state is unaffected. The saddle path rotates about the steady state with the saddle path higher on the left of the steady state and lower on the right.  With $\gamma$ shifted down from 2 to 1.01, the utility function drops off more slowly as $c$ approaches zero.  Thus, when the economy is below the steady state, the household consumes less with a lower $\gamma$.
 
-```{r plots_b, echo = FALSE, fig.height=4.25, eval = FALSE}
+```{r plots_b, echo = FALSE, fig.height=4.25}
 z <- 1
 gamma <- 2
 
@@ -510,7 +574,7 @@ text(x= 2.5, y=.75, expression(paste("Saddle Path (", gamma, " = 2)")))
 
 Both the steady state level of consumption and capital increases.  After the unexpected permanay increase to total factor productivity, consumption jumps up to be on the new saddle path then the economy moves along the saddle path to the new steady state path. 
 
-```{r plots_c, echo = FALSE, eval = FALSE}
+```{r plots_c, echo = FALSE}
 gamma <- 2
 z <- 1
 
