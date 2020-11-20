@@ -15,6 +15,7 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
 
 1. In class, we only considered the growth model with inelastic labor supply. This problem relaxes that restriction. Consider the benchmark neoclassical growth model, with production function: $Y_t = F(K_t, A_t N_t)$ where $Y_t$ is output, $K_t$ is capital, $A_t$ is technology, and $N_t$ is labor, and $F$ has constant returns to scale and satisfies the usual assumptions. Technology grows exogenously at rate $g$: $A_{t+1} = (1+g) A_t$.  Capital depreciates at rate $\delta$ so (imposing the aggregate feasibility condition) we can write the law of motion for the capital stock as: $K_{t+1} = (1 - \delta) K_t + Y_t - C_t$. The representative household has time additive preferences given by: $\sum_{t=0}^\infty \beta^t u(C_t, 1 - N_t)$.  The population size is fixed, but the labor input $N_t \in [0,1]$ is now endogenous. This problem will consider the existence of a balanced growth path, which is defined as an equilibrium allocation where consumption, capital, wages $W_t$, and output all grow at the same constant rate, while interest rates $r_t$ and labor $N_t$ are constant.
@@ -189,21 +190,88 @@ levels of $c_t$ and $k_t$.
 
 (a) Formulate the consumer’s utility maximization problem in the space of shock contingent consumption sequences. Exactly what is this space? Exactly what does the expectations operator $E(\cdot)$ mean here? Be explicit.
 
+Thus, the consumer's expected utility maximization problem is
+
 $$
-E_0 \Bigg[\sum_{t=0}^\infty \frac{\beta^t}{1- \gamma}(A_{t-1}S_{t-1} -S_t)^{1-\gamma} \Bigg]
+\max_{\{c_t\}_{t=0}^\infty} E_0 \Bigg[ \sum_{t=0}^\infty \frac{\beta^t c_t^{1-\gamma}}{1- \gamma} \Bigg] \\
+\text{s.t. } x_t \le A_{t-1}(x_{t-1} - c_{t-1})
 $$
 
+The probability space is the sample space $\Omega = \{A_h, A_l\}$, the $\sigma$-algebra $\mathcal{F} = \{\emptyset, \{A_h\}, \{A_l\}, \{A_h, A_l\}\}$, and the probability measure $Q: \mathcal{F} \to [0, 1]$ such that $Q(A_h) = \pi$, $Q(A_l) = 1-\pi$, and $Q(\emptyset) = Q(\{A_h, A_l\}) = 0$. Equivalently, as discussed in lecture, we can represent $Q$ as a Markov transition matrix that does not depend on the current state: 
+
+$$
+\begin{bmatrix} \pi & 1- \pi\\ \pi & 1- \pi \end{bmatrix}
+$$
+
+The expectations operator averages total discounted utility of different shock contingent consumption sequences weighted by the probability of those shocks.
 
 (b)  State the Bellman equation for this problem. It is easiest to have the consumer choose savings $s_t = x_t - c_t$. Argue that the relevant state variable for the problem is the cum-return wealth $A_{t-1}s_{t-1}$. Prove that the optimal value function is continuous, increasing, and concave in this state. How can you handle the unboundedness of the utility function?
 
+Define $s_t = x_t - c_t = A_{t-1}s_{t-1} - c_t$. Furthermore, the probability measure does not depend on the current state for future shock. Thus, the consumption-savings decision by the household in $t$ depends only on $A_{t-1}s_{t-1}$. Therefore, the Bellman equation is:
+
 $$
-V(A_{t-1}, S_{t-1}) = \max_{s_t} \frac{(A_{t-1}s_{t-1} - s_t)^{1-\gamma}}{1-\gamma} + \beta[\pi V(A_h s_t) + (1-\pi)V(A_l s_t)]
+V(As) = \max_{s'} \Bigg\{ \frac{(As - s')^{1-\gamma}}{1-\gamma} + \beta E\Big[V(A' s')\Big] \Bigg\}
 $$
 
-(c) Solve the Bellman equation and obtain the corresponding optimal policy function. (Hint: guess that the optimal function consists of saving a constant fraction
-of wealth.)
+We can substitute in the probability-weighted average of the continuation value:
+
+$$
+V(As) = \max_{s'} \Bigg\{ \frac{(As - s')^{1-\gamma}}{1-\gamma} + \beta\Big[\pi V(A_h s') + (1-\pi)V(A_l s')\Big] \Bigg\}
+$$
+
+Define the feasible cooresponendence as the values of savings that result in nonnegative consumption: $\Gamma(x) = [0, x]$. Define the objective function $F(x, y) = u(x-y) = \frac{(x - y)^{1-\gamma}}{1-\gamma}$. The optimal value function is unique, continuous, increasing, and concave based on the following conditions:
+
+- ($\Gamma 1$): $\Gamma$ nonempty, compact-valued, and continuous.
+
+- ($\Gamma 2$): $\Gamma$ is monotone (i.e., $x \le x' \implies \Gamma(x) \subseteq \Gamma(x')$).
+
+- ($\Gamma 3$): $\Gamma$ is convex.
+
+- ($F 1$): $F$ and continuous with $0 < \beta < 1$. Although $u$ (and by extension $F$) is not bounded, the value function is guaranteed to be finite because $A_h \beta < 1$ and $u$ is concave. In other words, after factoring in return on savings, the discounted utility of a unit of consumption descreases over time.
+
+- ($F 2$) $\forall y$, $F( \cdot, y)$ is strictly increasing.
+
+- ($F 3$) $F$ is strictly concave in $(x, y)$:
+
+$$
+\frac{\partial^2 F}{\partial^2 x} = \frac{\partial^2 F}{\partial^2 y} = -\gamma(x - y)^{-\gamma-1} < 0
+$$
+
+- ($F 4$) $F$ is continuously differentiable on the interior of the feasible set. 
+
+(c) Solve the Bellman equation and obtain the corresponding optimal policy function. (Hint: guess that the optimal function consists of saving a constant fraction of wealth.)
+
+FOC [$s'$]:
+
+$$
+(As - s')^{-\gamma} =  \beta\pi V(A_h s')A_h + \beta(1-\pi)V(A_l s')A_l
+$$
+
+Envelope Condition:
+
+$$
+V'(As) = (As - s')^{-\gamma} 
+$$
+
+FOC and envelope condition combine to result in a Euler equation:
+
+$$
+(As - s')^{-\gamma} =  \beta\pi (A_hs' - s''_h)^{-\gamma}A_h + \beta(1-\pi)(A_ls' - s''_l)^{-\gamma}A_l
+$$
+
+where $s''_h$ is the savings in two periods if $A' = A_h$ and $s''_l$ is the savings in two periods if $A' = A_l$. Guess that the optimal function is saving a constant fraction of wealth: $s' = f(As) = pAs$ where $p \in \R_+ \implies s''_h = p^2AA_hs$ and $s''_l = p^2AA_ls$
+
+\begin{align*}
+(As - pAs)^{-\gamma} &= \beta\pi (A_hpAs - p^2AA_hs)^{-\gamma}A_h + \beta(1-\pi)(A_lpAs - p^2AA_ls)^{-\gamma}A_l \\
+(As)^{-\gamma}(1 - p)^{-\gamma} &= \beta\pi (A_hpAs)^{-\gamma}(1-p)^{-\gamma}A_h + \beta(1-\pi)(1-p)^{-\gamma}(A_lpAs)^{-\gamma}A_l \\
+1 &= \beta\pi (A_hp)^{-\gamma}A_h + \beta(1-\pi)(A_lp)^{-\gamma}A_l \\
+p^{\gamma} &= \beta\pi A_h^{1-\gamma} + \beta(1-\pi)A_l^{1-\gamma} \\
+p &= (\beta\pi A_h^{1-\gamma} + \beta(1-\pi)A_l^{1-\gamma})^{(1/\gamma)}
+\end{align*}
 
 (d)  How do you know that the consumption sequence generated by this policy function is the unique solution of the original sequence problem?
+
+Based on the assumptions outlined in part (b), this policy function solve the original sequence problem and it is unique.
 
 \pagebreak
 
@@ -291,55 +359,209 @@ Plugging in the provided functional forms:
 \implies  c &= zk^{0.35} + (1-\delta)k - \Bigg(\frac{\frac{1}{\beta}-(1-\delta)}{0.35z}\Bigg)^{1/(-0.65)}
 \end{align*}
 
-```{r, echo = FALSE}
-
+```{r setup_model, echo = FALSE, eval = FALSE}
+# parameters
 beta <- 0.95
 delta <- 0.1
 z <- 1
 gamma <- 2
+cd_k <- 0.35 # cobb-douglas coefficient on capital
+cd_l <- 0.65 # cobb-douglas coefficient on labor
 
-cd_k <- 0.35
-cd_l <- 0.65
+# capital grid
+min_k <- 0.005
+max_k <- 5
+inc_k <- 0.005
+k <- seq(min_k, max_k, by = inc_k)
+n <- length(k)
+```
 
-k_bar <- ((beta^(-1)-(1-delta))/(cd_k * z))^(1/(cd_k-1))
-c_bar <- z * k_bar^cd_k - delta * k_bar
+```{r solve_ss, echo = FALSE, eval = FALSE}
+solve_ss <- function() {
+  # Steady state values
+  k_bar <<- ((beta^(-1)-(1-delta))/(cd_k * z))^(1/(cd_k-1))
+  c_bar <<- z * k_bar^cd_k - delta * k_bar
 
-k <- seq(0, 5, by = 0.01)
+  # phase diagram
+  k_no_change <<- z * k ^ cd_k - delta * k
+  c_no_change <<- z * k ^ cd_k + (1-delta) * k - k_bar
+}
 
-k_no_change <- z * k ^ cd_k - delta * k
-c_no_change <- z * k ^ cd_k + (1-delta) * k - k_bar
+```
 
-######
+```{r solve_bellman_equation, echo = FALSE, eval = FALSE}
+# Solves bellman equation based on parameters above.
+solve_bellman <- function() {
+  ones <- rep(1, times=n)
+  
+  # initialize value grid and decision rule grid
+  v <- rep(0, times=n)
+  decision <- rep(0, times=n)
+  
+  # create consumption and utility matrixes
+  # (columns are different values of k; rows are values of k')
+  c_matrix <- z*(ones %*% t(k))^cd_k + (1-delta)*(ones %*% t(k)) - k %*% t(ones)
+  utility_matrix <- (c_matrix^(1-gamma))/(1-gamma)
+  utility_matrix[c_matrix < 0|!is.finite(utility_matrix)] <- -1000
+  
+  test <- 10
+  while (test != 0) {
+    # create value matrix for all different k and k' values
+    value_matrix <- utility_matrix + beta * v %*% t(ones)
+    
+    # find column max with max utility
+    tv <- apply(value_matrix, 2, max)
+    tdecision <- apply(value_matrix, 2, which.max)
+    
+    # loop ends if no changes from previous iteration
+    test <- max(tdecision - decision)
+    
+    # update value grid and decision rule
+    decision <- tdecision
+    v <- tv
+  }
+  
+  # capital and consumption decision rule
+  policy_function <<- tibble(k = k, k_prime = min_k + decision*inc_k) %>%
+    mutate(c = z*k_prime^cd_k + (1-delta)*k - k_prime)
+  
+  v <<- v
+}
+```
 
-maxkap <- 10
-minkap <- 0
-inckap <- 0.01
-kap <- seq(from = minkap, to = maxkap, by = inckap)
-nkap <- length(kap)
+```{r plots_a, echo = FALSE, eval = FALSE}
+solve_ss()
 
-v <- rep(0, n=nkap)
-tv <- rep(0, n=nkap)
-decis <- rep(0, n=nkap)
-tdecis <- rep(0, n=nkap)
-cons <- matrix(rep(0, n=nkap*nkap), nrow = nkap)
-util <- matrix(rep(0, n=nkap*nkap), nrow = nkap)
-vint <- matrix(rep(0, n=nkap*nkap), nrow = nkap)
-test <- 10
+solve_bellman()
 
-while (test == 0)
-  cons <- 
-######
+plot(x=policy_function$k, y=policy_function$k_prime, type = "l", xaxs = "i", yaxs = "i", ylim=c(0, 5), xlim=c(0, 5), xlab = "k", ylab = "k'", main = "Policy Function: k'(k)")
 
-plot(1, type = "n", xlim = c(0, 5), ylim = c(-5, 5), xlab = "k", ylab = "c")
+plot(x=k, y=v, type = "l", xaxs = "i", yaxs = "i", xlim=c(0, 5), main = "Value Function")
+
+plot(1, type = "n", xlim = c(1, 5), ylim = c(0, 3), xlab = "k", ylab = "c", xaxs = "i", yaxs = "i", main = "Phase Diagram")
 
 abline(h=0)
 
-points(x=k_bar, y=c_bar)
-
 lines(x=k, y=k_no_change, col = "red")
 lines(x=k, y=c_no_change, col = "blue")
+lines(x=policy_function$k, y=policy_function$c)
+
+points(x=k_bar, y=c_bar, pch = 16)
+
+text(x= 2, y=1.5, expression(paste(Delta, "k = 0")), col = "red")
+text(x= 4, y=2, expression(paste(Delta, "c = 0")), col = "blue")
+text(x= 1.5, y=.5, "Saddle Path")
+
 ```
+
+\pagebreak
 
 (b) Re-do your calculations with $\gamma = 1.01$. What happens to the steady state? What happens to the saddle path? Interpret your answer.
 
+$\gamma$ does not appear in the steady state equations nor the equations consistent with $\Delta k = 0$ and $\Delta c = 0$, so the steady state is unaffected. The saddle path rotates about the steady state with the saddle path higher on the left of the steady state and lower on the right.  With $\gamma$ shifted down from 2 to 1.01, the utility function drops off more slowly as $c$ approaches zero.  Thus, when the economy is below the steady state, the household consumes less with a lower $\gamma$.
+
+```{r plots_b, echo = FALSE, fig.height=4.25, eval = FALSE}
+z <- 1
+gamma <- 2
+
+solve_ss()
+
+solve_bellman()
+
+z <- 1
+gamma <- 1.01
+
+policy_function_old <- policy_function
+
+solve_bellman()
+
+plot(x=policy_function$k, y=policy_function_old$k_prime, type = "l", xlab = "k", ylab = "k'", main = "Policy Function: k'(k)", xaxs = "i", yaxs = "i", ylim = c(0, 5), xlim = c(0, 5))
+
+abline(h=k_bar, v=k_bar, lty =3)
+
+lines(x=policy_function$k, y=policy_function$k_prime, col = "forestgreen", lty=2)
+text(x= 1, y=2.5, expression(paste(gamma, " = 1.01")), col = "forestgreen")
+text(x= 1.5, y=.75, expression(paste(gamma, " = 2")))
+
+mtext("k_bar", at = k_bar, side = 1)
+mtext("k_bar", at = k_bar, side = 2)
+
+plot(1, type = "n", xlim = c(1, 5), ylim = c(0, 3), xlab = "k", ylab = "c", xaxs = "i", yaxs = "i", main = "Phase Diagram")
+
+abline(h=0)
+
+lines(x=k, y=k_no_change, col = "red")
+lines(x=k, y=c_no_change, col = "blue")
+lines(x=policy_function$k, y=policy_function$c, col = "forestgreen", lty=2)
+lines(x=policy_function_old$k, y=policy_function_old$c)
+
+points(x=k_bar, y=c_bar, pch = 16)
+
+text(x= 2, y=1.5, expression(paste(Delta, "k = 0")), col = "red")
+text(x= 4, y=2, expression(paste(Delta, "c = 0")), col = "blue")
+text(x= 2, y=.5, expression(paste("Saddle Path (", gamma, " = 1.01)")), col = "forestgreen")
+text(x= 2.5, y=.75, expression(paste("Saddle Path (", gamma, " = 2)")))
+
+```
+
+\pagebreak
+
 (c) Now with $\gamma = 2$ assume that there is an unexpected permanent increase of 20% in total factor productivity, so now $z = 1.2$. What happens to the steady state levels of consumption and capital? Assuming the economy is initially in the steady state with $z = 1$, what happens to consumption and capital after the increase in $z$?
+
+Both the steady state level of consumption and capital increases.  After the unexpected permanay increase to total factor productivity, consumption jumps up to be on the new saddle path then the economy moves along the saddle path to the new steady state path. 
+
+```{r plots_c, echo = FALSE, eval = FALSE}
+gamma <- 2
+z <- 1
+
+solve_ss()
+solve_bellman()
+
+k_bar_old <- k_bar
+c_bar_old <- c_bar
+k_no_change_old <- k_no_change
+c_no_change_old <- c_no_change
+
+policy_function_old <- policy_function
+
+z <- 1.2
+
+solve_ss()
+solve_bellman()
+
+transition_path_k <- c(k_bar_old, policy_function[policy_function$k >= k_bar_old & policy_function$k <= k_bar, ]$k) 
+transition_path_c <- c(c_bar_old, policy_function[policy_function$k >= k_bar_old & policy_function$k <= k_bar, ]$c) 
+
+plot(1, type = "n", xlim = c(1, 5), ylim = c(0, 3), xlab = "k", ylab = "c", xaxs = "i", yaxs = "i", main = "Phase Diagram")
+
+abline(h=0)
+
+lines(x =transition_path_k, y = transition_path_c, lwd =3, col = "yellow")
+
+lines(x=k, y=k_no_change_old, col = "red")
+lines(x=k, y=c_no_change_old, col = "blue")
+lines(x=k, y=k_no_change, col = "red", lty=5)
+lines(x=k, y=c_no_change, col = "blue", lty=5)
+
+lines(x=policy_function_old$k, y=policy_function_old$c)
+lines(x=policy_function$k, y=policy_function$c, lty=5)
+
+points(x=k_bar, y=c_bar)
+points(x=k_bar_old, y=c_bar_old, pch = 16)
+
+text(x= 2, y=1.5, expression(paste(Delta, "k = 0")), col = "red")
+text(x= 4, y=2, expression(paste(Delta, "c = 0")), col = "blue")
+text(x= 1.5, y=.5, "Saddle Path")
+
+legend("topleft", c("z = 1", "z = 1.2"), lty = c(1, 5))
+```
+
+\pagebreak
+
+## Appendix to Problem 3: R code to solve Bellman Equation
+
+```{r appendix1, ref.label='setup_model', eval = FALSE}
+```
+
+```{r appendix2, ref.label='solve_bellman_equation', eval = FALSE}
+```
