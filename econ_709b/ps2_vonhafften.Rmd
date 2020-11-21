@@ -54,7 +54,7 @@ The OLS estimates and residuals from the regression of $y$ on $Z$:
 &= (I-X(X'X)^{-1}X')e
 \end{align*}
 
-Thus, the OLS estimates from the regression of $y$ on $Z$ are those from the regression of $y$ on $X$ pre-multipled by $C^{-1}$ and the residuals are the same in both regressions.
+Thus, the OLS estimates from the regression of $y$ on $Z$ are those from the regression of $y$ on $X$ pre-multiplied by $C^{-1}$ and the residuals are the same in both regressions.
 
 \pagebreak
 
@@ -101,7 +101,7 @@ We know from exercise 3.5 that $X_1' \hat{e} = 0$ where $X = [X_1 \; X_2]$. Choo
 
 3.12 A dummy variable takes on only the values 0 and 1.  It is used for categorical data, such as an individual's gender.  Let $D_1$ and $D_2$ be vectors of 1's and 0's, with the $i$th element of $D_1$ equaling 1 and that of $D_2$ equaling 0 if the person is a man, and the reserve if the person is a woman.  Suppose that there are $n_1$ men and $n_2$ women in the sample.  Consider fitting the following three equations by OLS: (3.53) $y = \mu + D_1 \alpha_1 + D_2 \alpha_2 + e$, (3.54) $y = D_1 \alpha_1 + D_2 \alpha_2 + e$, and (3.55) $y = \mu + D_1 \phi + e$. Can all three equations be estimated by OLS? Explain if not.
 
-If gender is binary and all people in the sample indentify either as a man or woman, then only (3.54) and (3.55) can be estimated using OLS.  In (3.53) $X$ does not have full ($\rank(X) = 1 \neq 2$) because $D_1 = 1_n - D_2$, so $X'X$ is not invertible.
+If gender is binary and all people in the sample identify either as a man or woman, then only (3.54) and (3.55) can be estimated using OLS.  In (3.53) $X$ does not have full ($\rank(X) = 1 \neq 2$) because $D_1 = 1_n - D_2$, so $X'X$ is not invertible.
 
 If gender is not binary, so $D_1 \neq 1_n - D_2$, then all three equations can be estimated using OLS.
 
@@ -124,33 +124,119 @@ $$
 1_n'D_2 = n_2
 $$
 
-3.13 Let $D_1$ and $D_2$ be defined as in the previous excerise.
+3.13 Let $D_1$ and $D_2$ be defined as in the previous exercise.
 
 (a)  In the OLS regression $Y = D_1 \hat{\gamma_1} + D_2 \hat{\gamma_2} + \hat{u}$. Show that $\hat{\gamma_1}$ is the sample mean of the dependent variance among the men in the sample ($\bar{y}_1$) and that $\hat{\gamma_2}$ is the sample mean the women in the sample ($\bar{y}_2$)
 
-...
+\begin{align*}
+\begin{pmatrix} \hat{\gamma_1} \\ \hat{\gamma_2} \end{pmatrix} 
+&= \Bigg(\begin{pmatrix} D_1' \\ D_2' \end{pmatrix} (D_1 \; D_2)\Bigg)^{-1}\begin{pmatrix} D_1' \\ D_2' \end{pmatrix}y \\
+&= \begin{pmatrix} D_1'D_1 & D_1'D_2 \\ D_2'D_1 & D_2'D_2 \end{pmatrix}^{-1}\begin{pmatrix} D_1'y \\ D_2'y \end{pmatrix} \\
+&= \begin{pmatrix} n_1 & 0 \\ 0 & n_2 \end{pmatrix}^{-1}\begin{pmatrix} D_1'y \\ D_2'y \end{pmatrix} \\
+&= \begin{pmatrix} (D_1'y)/n_1 \\ (D_2'y)/n_2 \end{pmatrix} \\
+&= \begin{pmatrix} \bar{y}_1 \\ \bar{y}_2 \end{pmatrix} \\
+\end{align*}
 
-(b) 
+(b) Let $X$ $(n \times k)$ be an additional matrix of regressors.  Describe in words the transformations $y^* = y - D_1 \bar{y}_1 - D_2 \bar{y}_2$ and $X^* = X - D_1 \bar{X}_1' - D_2 \bar{X}_2'$ where $\bar{X}_1'$ and $\bar{X}_1'$ are the $k \times 1$ means of the regressors for men and women, respectively.
 
-4. 3.16 Consider two least squares regressions $y = X_1 \tilde{\beta}_1 + \tilde{e}$ and $y = X_1 \hat{\beta}_1 + X_2 \hat{\beta}_2 + \hat{e}$. Let $R_1^2$ and $R_2^2$ be the $R$-squared from the two regressions.  Show that $R_2^2 \ge R_1^2$.  Is there a case (explain) when these is equality $R_2^2 = R_1^2$?
+For men ($D_1 = 1$ and $D_2 = 0$), the transformations become:
 
-...
+\begin{align*}
+y^* &= y - D_1 \bar{y}_1 \\
+X^* &= X - D_1 \bar{X}_1'
+\end{align*}
 
-5. 3.21 Consider the least squares regression estimators $y_i = X_{1i}\hat{\beta}_1 +  X_{2i}\hat{\beta}_2 + \hat{e}_i$ and the "one regressor at a time" regression estimators $y_i = X_{1i}\tilde{\beta}_1 + \tilde{e}_{1i}$ and $y_i = X_{2i}\tilde{\beta}_2 + \tilde{e}_{2i}$.  Under what condition does $\tilde{\beta}_1 = \hat{\beta}_1$ and $\tilde{\beta}_2 = \hat{\beta}_2$?
+For women ($D_1 = 0$ and $D_2 = 1$), the transformations become:
 
-...
+\begin{align*}
+y^* &= y - D_2 \bar{y}_2 \\
+X^* &= X - D_2 \bar{X}_2'
+\end{align*}
 
-3.22 You estimate a least squares regression $y_i = X_{1i}' \tilde{\beta_1} + \tilde{u}_i$ and then regress the residuals on another set of regressors $\tilde{u}_i = X_{2i}' \tilde{\beta_2} + \tilde{e}_i$.  Does this second regression give you the same estimated coefficients as from estimation of a least squares regression on both set of regressors? $y_i = X_{1i}' \hat{\beta_1} + X_{2i}' \hat{\beta_2} + \hat{e}_i$.  In other words, is it true that $\tilde{\beta_2} = \hat{\beta_2}$? Explain your reasoning.
-
-...
-
-3.23 The data matrix is $(y, X)$ with $X = [X_1 \; X_2]$, and consider the transformed regressor matrix $z = [X_1, X_2 - X_1]$. Suppose you do a least squares regression of $y$ on $X$, and a least squares regression of $y$ on $Z$.  Let $\hat{\sigma}^2$ and $\tilde{\sigma}^2$ denote the residual variance estimates from the two regressions. Give a formula relating $\hat{\sigma}^2$ and $\tilde{\sigma}^2$? (Explain your reasoning.)
-
-...
+Thus, these transformations demean the dependent variable and the regressors using the group means.
 
 \pagebreak
 
-6. 3.24 Use the dataset from Section 3.22 and the sub-sample used for equation (3.50) (see Section 3.25 for data construction).
+4. 3.16 Consider two least squares regressions $y = X_1 \tilde{\beta}_1 + \tilde{e}$ and $y = X_1 \hat{\beta}_1 + X_2 \hat{\beta}_2 + \hat{e}$. Let $R_1^2$ and $R_2^2$ be the $R$-squared from the two regressions.  Show that $R_2^2 \ge R_1^2$.  Is there a case (explain) when these is equality $R_2^2 = R_1^2$?
+
+Notice that both $R_1^2$ and $R_1^2$ have the same denominator $\sum_{i=1}^n (y_i - \bar{y})^2$.  Thus, we can show that $R_1^2 \le R_2^2$ by showing $\sum_{i=1}^n \tilde{e}^2 \ge \sum_{i=1}^n \hat{e}^2$.
+
+By the Frisch-Waugh-Lovell Theorem, $\hat{e}$ may be computed by regressing $y$ on $X_1$ to obtain residuals $\tilde{e}$, regressing $X_2$ on $X_1$ to obtain residuals $\hat{X}_2$, and regressing $\tilde{e}$ on $\hat{X}_2$ to obtaining fitted values $\tilde{Z}$ and residuals $\hat{e}$. Thus,
+
+$$
+\tilde{e}'\tilde{e} = (\tilde{Z} + \hat{e})'(\tilde{Z} + \hat{e}) = \tilde{Z}'\tilde{Z} + 2\tilde{Z}'\hat{e}+ \hat{e}'\hat{e} = \tilde{Z}'\tilde{Z} + \hat{e}'\hat{e} \ge \hat{e}'\hat{e}
+$$
+
+Because $\tilde{Z}$ and $\hat{e}$ are orthogonal.
+
+Yes, $R_2^2 = R_1^2$ if $X_2$ does not contain any information that helps explain variation in $y$. That is, $X_2$ and $y$ are orthogonal.
+
+5. 3.21 Consider the least squares regression estimators $y_i = X_{1i}\hat{\beta}_1 +  X_{2i}\hat{\beta}_2 + \hat{e}_i$ and the "one regressor at a time" regression estimators $y_i = X_{1i}\tilde{\beta}_1 + \tilde{e}_{1i}$ and $y_i = X_{2i}\tilde{\beta}_2 + \tilde{e}_{2i}$.  Under what condition does $\tilde{\beta}_1 = \hat{\beta}_1$ and $\tilde{\beta}_2 = \hat{\beta}_2$?
+
+If $X_1$ and $X_2$ are orthogonal, $\tilde{\beta}_1 = \hat{\beta}_1$ and $\tilde{\beta}_2 = \hat{\beta}_2$. By the Frisch-Waugh-Lovell Theorem, $\hat{\beta_2}$ may be computed by regressing $y$ on $X_1$ to obtaining $\tilde{\beta_1}$ residuals $\tilde{e}$, regressing $X_2$ on $X_1$ to obtain residuals $\tilde{X}_2$, and regressing $\tilde{e}$ on $\hat{X}_2$ to obtaining $\hat{\beta_2}$.  If $X_1$ and $X_2$ are orthogonal, then $\tilde{X}_2 = X_2$, so $\tilde{\beta_1} = \hat{\beta}_1$. Similar logic applies for $\tilde{\beta_2} = \hat{\beta}_2$.
+
+3.22 You estimate a least squares regression $y_i = X_{1i}' \tilde{\beta_1} + \tilde{u}_i$ and then regress the residuals on another set of regressors $\tilde{u}_i = X_{2i}' \tilde{\beta_2} + \tilde{e}_i$.  Does this second regression give you the same estimated coefficients as from estimation of a least squares regression on both set of regressors? $y_i = X_{1i}' \hat{\beta_1} + X_{2i}' \hat{\beta_2} + \hat{e}_i$.  In other words, is it true that $\tilde{\beta_2} = \hat{\beta_2}$? Explain your reasoning.
+
+Not necessarily.  Only if $X_1$ and $X_2$ are orthogonal, $\tilde{\beta_2} = \hat{\beta_2}$.  We need to consider the comovement between $X_1$ and $X_2$.  If there's no comovement (they are orthogonal), then we can regress them one at a time.
+
+3.23 The data matrix is $(y, X)$ with $X = [X_1 \; X_2]$, and consider the transformed regressor matrix $Z = [X_1, X_2 - X_1]$. Suppose you do a least squares regression of $y$ on $X$, and a least squares regression of $y$ on $Z$.  Let $\hat{\sigma}^2$ and $\tilde{\sigma}^2$ denote the residual variance estimates from the two regressions. Give a formula relating $\hat{\sigma}^2$ and $\tilde{\sigma}^2$? (Explain your reasoning.)
+
+We show that $\hat{\sigma}^2=\tilde{\sigma}^2$ by showing that the projection matrix for the regression of $y$ on $X$ and the projection matrix for the regression of $y$ on $Z$ are equal thus the annilihator matrices are equal and thus the residuals are equal.
+
+The projection matrix for the regression of $y$ on $X$ is
+
+\begin{align*}
+P_X &= X(X'X)^{-1}X' \\
+&= [X_1 \; X_2]([X_1 \; X_2]'[X_1 \; X_2])^{-1}[X_1 \; X_2]' \\
+&= [X_1 \; X_2]\begin{bmatrix} X_1'X_1 & X_1'X_2 \\ X_2'X_1 & X_2'X_2 \\\end{bmatrix}^{-1}[X_1 \; X_2]' \\
+&= [X_1 \; X_2]\begin{bmatrix} \frac{X_2'X_2}{X_1'X_1X_2'X_2 - X_1'X_2X_2'X_1} & -\frac{X_1'X_2}{X_1'X_1X_2'X_2 - X_1'X_2X_2'X_1} \\ -\frac{X_2'X_1}{X_1'X_1X_2'X_2 - X_1'X_2X_2'X_1} & \frac{X_1'X_1}{X_1'X_1X_2'X_2 - X_1'X_2X_2'X_1} \\\end{bmatrix}[X_1 \; X_2]' \\
+&= \begin{bmatrix} \frac{X_1X_2'X_2 - X_2X_2'X_1}{X_1'X_1X_2'X_2 - X_1'X_2X_2'X_1} & \frac{X_2X_1'X_1 - X_1X_1'X_2}{X_1'X_1X_2'X_2 - X_1'X_2X_2'X_1}\end{bmatrix}[X_1 \; X_2]' \\
+&= \frac{X_1X_2'X_2X_1' - X_2X_2'X_1X_1' + X_2X_1'X_1X_2' - X_1X_1'X_2X_2'}{X_1'X_1X_2'X_2 - X_1'X_2X_2'X_1}
+\end{align*}
+
+Thus, the projection matrix for the regression of $y$ on $Z$ is
+
+$$
+P_Z = \frac{Z_1Z_2'Z_2Z_1' - Z_2Z_2'Z_1Z_1'+ Z_2Z_1'Z_1Z_2' - Z_1Z_1'Z_2Z_2'}{Z_1'Z_1Z_2'Z_2 - Z_1'Z_2Z_2'Z_1}
+$$
+
+The numerator of $P_Z$ simplifies to the numerator of $P_X$:
+
+\begin{align*}
+& Z_1Z_2'Z_2Z_1' - Z_2Z_2'Z_1Z_1'+ Z_2Z_1'Z_1Z_2' - Z_1Z_1'Z_2Z_2' \\
+&= X_1(X_2 - X_1)'(X_2 - X_1)X_1' - (X_2 - X_1)(X_2 - X_1)'X_1X_1' + (X_2 - X_1)X_1'X_1(X_2 - X_1)' \\
+&- X_1X_1'(X_2 - X_1)(X_2 - X_1)' \\
+&= X_1(X_2'X_2 -2 X_1'X_2 +X_1'X_1)X_1' - (X_2X_2' - X_1X_2' - X_2X_1' + X_1X_1')X_1X_1' \\
+&+ (X_2X_1'X_1 - X_1X_1'X_1)(X_2 - X_1)' - X_1X_1'(X_2X_2' - X_1X_2' - X_2X_1'+X_1X_1') \\
+&= X_1X_2'X_2X_1' - 2 X_1X_1'X_2X_1' +X_1X_1'X_1X_1'
+- X_2X_2'X_1X_1' + X_1X_2'X_1X_1' + X_2X_1'X_1X_1' - X_1X_1'X_1X_1' \\
+&+ X_2X_1'X_1X_2' - X_1X_1'X_1X_2' - X_2X_1'X_1X_1' + X_1X_1'X_1X_1'
+- X_1X_1'X_2X_2' + X_1X_1'X_1X_2' + X_1X_1'X_2X_1' - X_1X_1'X_1X_1' \\
+&= X_1X_2'X_2X_1' - X_2X_2'X_1X_1' + X_2X_1'X_1X_2' - X_1X_1'X_2X_2'
+\end{align*}
+
+The denominator of $P_Z$ simplifies to the denominator of $P_X$:
+
+\begin{align*}
+&Z_1'Z_1Z_2'Z_2 - Z_1'Z_2Z_2'Z_1 \\
+&= X_1'X_1(X_2 - X_1)'(X_2 - X_1) - X_1'(X_2 - X_1)(X_2 - X_1)'X_1\\
+&=X_1'X_1(X_2'X_2 - 2X_1'X_2 + X_1'X_1) - X_1'(X_2X_2' - X_1X_2' - X_2X_1' + X_1X_1')X_1\\
+&=(X_1'X_1X_2'X_2 - 2X_1'X_1X_1'X_2 + X_1'X_1X_1'X_1) - (X_1'X_2X_2'X_1 - X_1'X_1X_2'X_1 - X_1'X_2X_1'X_1 + X_1'X_1X_1'X_1)\\
+&=X_1'X_1X_2'X_2 - 2X_1'X_1X_1'X_2 + X_1'X_1X_1'X_1 - X_1'X_2X_2'X_1 + X_1'X_1X_2'X_1 + X_1'X_2X_1'X_1 - X_1'X_1X_1'X_1\\
+&=X_1'X_1X_2'X_2 - X_1'X_2X_2'X_1\\
+\end{align*}
+
+Thus, $P_Z$ and $P_X$ are equal:
+
+$$
+P_Z = \frac{X_1X_2'X_2X_1' - X_2X_2'X_1X_1' + X_2X_1'X_1X_2' - X_1X_1'X_2X_2'}{X_1'X_1X_2'X_2 - X_1'X_2X_2'X_1} = P_X
+$$
+
+Thus, $M_Z = I - P_Z = I - P_X = M_X \implies \tilde{e} = M_Z y = M_X y = \hat{e} \implies \tilde{\sigma}^2 = \hat{\sigma}^2$.
+
+\pagebreak
+
+6. 3.24 Use the data set from Section 3.22 and the sub-sample used for equation (3.50) (see Section 3.25 for data construction).
 
 (a) Estimate equation (3.50) and compute the equation $R^2$ and sum of squared errors.
 
@@ -306,52 +392,88 @@ Yes.  When working with a computer, there is always some rounding, so we should 
 
 (a) Consider the OLS regression of $y$ on $X$ that yields the OLS estimator $\hat{\beta}$. What is $E[\hat{\beta}_1|X]$? Simplify your answer.
 
-From lecture, we have that 
-
 $$
-\hat{\beta_1} = (X_1'X_1)^{-1}X_1'(y-X_2 \hat{\beta_2})
+E[\hat{\beta} | X] = E[(X'X)^{-1}X'y | X] = (X'X)^{-1}X'E[y | X] = (X'X)^{-1}X'X\beta = \beta 
 $$
 
-$$
-\hat{\beta_2} = (X_2'M_1X_2)^{-1}X_2'M_1y
-$$
+Thus, $E[\hat{\beta}_1|X] = \beta_1$.
 
-So, 
+(b) Let $\hat{y} = X \hat{\beta}$. Now, consider the OLS regression of $\hat{y}$ on $X_1$ that yields the OLS estimator $\hat{\hat{\beta_1}}$. What is $E[\hat{\hat{\beta_1}}|X]$? (Simplify your answer.) Is $\hat{\hat{\beta_1}}$ an unbiased estimator of $\beta_1$?
 
-$$
-E[\hat{\beta_2}|X] = E[(X_2'M_1X_2)^{-1}X_2'M_1y|X] \\
-= 
-$$
+\begin{align*}
+E[\hat{\hat{\beta_1}}|X] 
+&= E[(X_1'X_1)^{-1}X_1'\hat{y}|X] \\
+&= (X_1'X_1)^{-1}X_1'E[X \hat{\beta}|X] \\
+&= (X_1'X_1)^{-1}X_1'XE[\hat{\beta}|X] \\
+&= (X_1'X_1)^{-1}X_1'X \beta \\
+&= (X_1'X_1)^{-1}X_1'(X_1\beta_1 + X_2\beta_2) \\
+&= (X_1'X_1)^{-1}X_1'X_1\beta_1 + (X_1'X_1)^{-1}X_1'X_2\beta_2 \\
+&= \beta_1 + (X_1'X_1)^{-1}X_1'X_2\beta_2
+\end{align*}
 
-and
-
-$$
-E[\hat{\beta}_1|X] 
-= E[(X_1'X_1)^{-1}X_1'(y-X_2 \hat{\beta_2})|X] \\
-= E[(X_1'X_1)^{-1}X_1'y|X] - E[(X_1'X_1)^{-1}X_1'X_2 \hat{\beta_2}|X] \\
-= (X_1'X_1)^{-1}X_1'E[y|X] - (X_1'X_1)^{-1}X_1'X_2 E[\hat{\beta_2}|X] \\
-$$
-
-$$
-\hat{\beta} = (X'X)^{-1}X'y \\
-\implies \begin{pmatrix} \hat{\beta_1} \\ \hat{\beta_2} \end{pmatrix} = \Bigg(\begin{pmatrix} X_1 \\ X_2 \end{pmatrix}[X_1 \; X_2]\Bigg)^{-1}\begin{pmatrix} X_1 \\ X_2 \end{pmatrix}y\\
-= \Bigg(\begin{pmatrix} X_1X_1 & X_1\\ X_2X_1 \end{pmatrix}[X_1 \; X_2]\Bigg)^{-1}\begin{pmatrix} X_1 \\ X_2 \end{pmatrix}y
-$$
-
-...
-
-(b) Let $\hat{y} = X \hat{\beta}$. Now, consider the OLS regression of $\hat{y}$ on $X_1$ that yields the OLS estimator $\hat{\hat{\beta_1}}$. What is $E[\hat{\hat{\beta_1}}|X]$? (Simpllify your answer.) Is $\hat{\hat{\beta_1}}$ an unbiased estimator of $\beta_1$?
-
-...
+$\hat{\hat{\beta_1}}$ is generally not a unbiased estimator of $\beta_1$.  If $X_1$ and $X_2$ are orthogonal ($X_1'X_2 = 0$) or $\beta_2 = 0$, then it is an unbiased estimator of $\beta_1$.
 
 (c) Consider the OLS regression of $y$ on $X_1$ that yields the OLS estimator $\tilde{\beta}_1$.  Let $\tilde{y} = X_1\tilde{\beta}_1$. Now consider the OLS regression of $\tilde{y}$ on $X$ that yields the OLS estimator $\tilde{\tilde{\beta}}$. How is $\tilde{\tilde{\beta}}$ related to $\tilde{\beta}_1$? (Provide a mapping between $\tilde{\tilde{\beta}}$ and $\tilde{\beta}_1$ that does not involve $X$.)
 
-...
+$$
+\tilde{\beta}_1 = (X_1'X_1)^{-1}X_1'y
+$$
+
+$$
+\tilde{\tilde{\beta}} = (X'X)^{-1}X'\tilde{y} = (X'X)^{-1}X'X_1\tilde{\beta}_1 = \Gamma \tilde{\beta}_1
+$$
+
+Notice that $\Gamma$ is $k \times k_1$.  It is a $k_1 \times k_1$ identity matrix with $k_2$ rows of zeros below:
+
+$$
+\Gamma = \begin{pmatrix} 
+I_{k_1} \\
+0_{k_2 \times k_1}
+\end{pmatrix}
+$$
+
+\pagebreak
 
 (d) What is the $R^2$ for the OLS regression of $\tilde{y}$ on $X$ (from part (c))? Simplify your answer.
 
-...
+The annihilator matrix is
+
+$$
+M = I_n - X(X'X)X'
+$$
+
+Thus, the residuals are
+
+\begin{align*}
+\tilde{\tilde{e}} 
+&= M\tilde{y} \\
+&= (I_n - X(X'X)X')(X_1\tilde{\beta}_1) \\
+&= X_1\tilde{\beta}_1 - X(X'X)X'X_1\tilde{\beta}_1\\
+&= X_1\tilde{\beta}_1 - X\Gamma \tilde{\beta}_1 \\
+&= X_1\tilde{\beta}_1 - X_1 \tilde{\beta}_1  \\
+&= 0
+\end{align*}
+
+Thus, $R^2 = 1$.
 
 (e) What is $\var(\tilde{\tilde{\beta}}|X)$? Simply your answer.
 
-...
+\begin{align*}
+\var(\tilde{\beta}_1|X) 
+&= \var((X_1'X_1)^{-1}X_1'y|X)\\
+&= (X_1'X_1)^{-1}X_1'\var(y|X)((X_1'X_1)^{-1}X_1')'\\
+&= (X_1'X_1)^{-1}X_1'\sigma^2I((X_1'X_1)^{-1}X_1')'\\
+&= \sigma^2(X_1'X_1)^{-1}X_1'X_1(X_1'X_1)^{-1}\\
+&= \sigma^2(X_1'X_1)^{-1}\\
+\end{align*}
+
+\begin{align*}
+\var(\tilde{\tilde{\beta}}|X) 
+&= \var(\Gamma\tilde{\beta}_1|X) \\
+&= \Gamma\var(\tilde{\beta}_1|X) \Gamma' \\
+&= \Gamma\sigma^2(X_1'X_1)^{-1} \Gamma' \\
+&= \sigma^2\Gamma(X_1'X_1)^{-1} \Gamma' \\
+&= \sigma^2\begin{pmatrix}
+(X_1'X_1)^{-1} & 0_{k_1 \times k_2} \\
+0_{k_2 \times k_1}  & 0_{k_2 \times k_2} \end{pmatrix} 
+\end{align*}
