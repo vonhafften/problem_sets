@@ -1,0 +1,55 @@
+---
+title: "ECON 709B - Problem Set 4"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "12/8/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\var}{\text{var}}
+- \newcommand{\rank}{\text{rank}}
+- \newcommand{\twiddle}{\tilde}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+1. 7.29 Use the subsample of the CPS that you used for problems 3.24 and 3.25 (instead of the subsample requested in the problem)  
+
+```{r setup_libraries, eval = FALSE}
+library(tidyverse)
+```
+
+```{r q324a}
+cps09mar <- read_delim("cps09mar.txt",
+                       delim = "\t",
+                       col_names = c("age", "female", "hisp", "education", "earnings", 
+                                     "hours", "week", "union", "uncov", "region", "race",
+                                     "maritial"),
+                       col_types = "dddddddddddd") %>%
+  mutate(experience = age - education - 6,
+         experience_2 = (experience^2)/100,
+         wage = earnings / (hours*week),
+         l_wage = log(wage),
+         constant = 1) %>%
+  filter(race == 4,
+         maritial == 7,
+         female == 0,
+         experience < 45)
+
+y <- cps09mar$l_wage
+
+x <- cps09mar %>%
+  select(education, experience, experience_2, constant) %>%
+  as.matrix() %>%
+  unname()
+
+n <- dim(x)[1]
+i <- diag(nrow = n, ncol = n)
+```

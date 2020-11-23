@@ -16,7 +16,6 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
 library(tidyverse)
 ```
 
@@ -260,17 +259,13 @@ cps09mar <- read_delim("cps09mar.txt",
          maritial == 7,
          female == 0,
          experience < 45)
-
 y <- cps09mar$l_wage
-
 x <- cps09mar %>%
   select(education, experience, experience_2, constant) %>%
   as.matrix() %>%
   unname()
-
 n <- dim(x)[1]
 i <- diag(nrow = n, ncol = n)
-
 # Estimate Equation 3.50
 beta <- solve(t(x) %*% x) %*% t(x) %*% y
 print(beta)
@@ -291,17 +286,12 @@ x_1 <- cps09mar %>%
   select(experience, experience_2, constant) %>%
   as.matrix() %>%
   unname()
-
 m_x_1 <- i - x_1 %*% solve(t(x_1) %*% x_1) %*% t(x_1)
-
 z <- cps09mar$education
-
 u_hat <- m_x_1 %*% z
 v_hat <- m_x_1 %*% y
-
 beta_1 <- (t(u_hat) %*% u_hat)^(-1) %*% t(u_hat) %*% v_hat
 print(beta_1)
-
 m_u_hat <- i - u_hat %*% (t(u_hat) %*% u_hat)^(-1) %*% t(u_hat)
 d_hat <- m_u_hat %*% v_hat
 sse_b <- sum(d_hat^2)
@@ -322,10 +312,8 @@ Numerically calculate the following:
 ```{r q325}
 x1 <- x[,1]
 x2 <- x[,2]
-
 p_x <- x %*% solve(t(x) %*% x) %*% t(x)
 m_x <- i - p_x
-
 y_hat <- p_x %*% y
 e_hat <- m_x %*% y
 ```
