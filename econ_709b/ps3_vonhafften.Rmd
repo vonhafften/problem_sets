@@ -175,25 +175,170 @@ sum(x1 * e_hat^2)
 
 2. 7.2 Take the model $y = X' \beta + e$ with $E[Xe] = 0$. Define the ridge regression estimator: $\hat{\beta} = (\sum_{i=1}^n X_i X_i' + \lambda I_k)^{-1}(\sum_{i=1}^n X_i Y_i)$ here $\lambda > 0$ is a fixed constant. Find the probability limit of $\hat{\beta}$ as $n \to \infty$. Is $\hat{\beta}$ consistent for $\beta$?
 
-...
+$$
+\hat{\beta} = \Bigg(\frac{1}{n}\Big(\sum_{i=1}^n X_i X_i' + \lambda I_k\Big)\Bigg)^{-1}\Bigg(\frac{1}{n}\sum_{i=1}^n X_i Y_i\Bigg) = \Bigg(\frac{1}{n}\sum_{i=1}^n X_i X_i' + \frac{1}{n}\lambda I_k\Bigg)^{-1}\Bigg(\frac{1}{n}\sum_{i=1}^n X_i Y_i\Bigg)
+$$
+
+As $n \to \infty$, 
+
+$$
+\frac{1}{n}\lambda I_k \to 0
+$$
+
+Furthermore, by the weak law of large numbers,
+
+$$
+\frac{1}{n}\sum_{i=1}^n X_i X_i' \to_p E[X_i X'_i]
+$$
+
+$$
+\frac{1}{n}\sum_{i=1}^n X_i Y_i \to_p E[X_i Y_i]
+$$
+
+Thus, $\hat{\beta}$ is consistent: $\hat{\beta} \to_p (E[X_i X'_i])^{-1}E[X_i Y_i] = \beta$.
 
 7.3 For the ridge regression estimator, set $\lambda = cn$ where $c > 0$ is fixed as $n \to \infty$. Find the probability limit of $\hat{\beta}$ as $n \to \infty$.
 
-...
+$$
+\hat{\beta} = (\sum_{i=1}^n X_i X_i' + cn I_k)^{-1}(\sum_{i=1}^n X_i Y_i) = \Bigg(\frac{1}{n}\sum_{i=1}^n X_i X_i' + c I_k\Bigg)^{-1}\Bigg(\frac{1}{n}\sum_{i=1}^n X_i Y_i\Bigg)
+$$
 
-7.4 Verify some of the calculations reported in Section 7.4. Specifically, suppose that $X_1$ and $X_2$ only take the values $\{-1, +1\}$, symmetrically, with $P[X_1 = X_2 = 1] = P[X_1 = X_2 = -1] = 3/8$, $P[X_1 = 1, X_2 = -1] = P[X_1 = -1, X_{2i} = 1] = 1/8$, $E[e_i^2 | X_1 = X_2] = 5/4$, and $E[e_i^2 | X_1 \neq X_2] = 1/4$.
+Thus, $\hat{\beta}$ is not consistent: $\hat{\beta} \to_p  (E[X_i X'_i] + cI_k)^{-1}E[X_i Y_i] < \beta$
 
-...
+7.4 Verify some of the calculations reported in Section 7.4. Specifically, suppose that $X_1$ and $X_2$ only take the values $\{-1, +1\}$, symmetrically, with $P[X_1 = X_2 = 1] = P[X_1 = X_2 = -1] = 3/8$, $P[X_1 = 1, X_2 = -1] = P[X_1 = -1, X_2 = 1] = 1/8$, $E[e_i^2 | X_1 = X_2] = 5/4$, and $E[e_i^2 | X_1 \neq X_2] = 1/4$. Verify the following:
+
+(a) $E[X_1]=0$
+
+\begin{align*}
+E[X_1] 
+&= P[X_1 = 1] - P[X_1 = -1] \\
+&= P[X_1 = X_2 = 1] + P[X_1 = 1, X_2 = -1] - P[X_1 = X_2 = -1] - P[X_1 = -1, X_2 = 1] \\
+&= 3/8 + 1/8 - 3/8 - 1/8 \\
+&= 0
+\end{align*}
+
+\pagebreak
+
+(b) $E[X_1^2]=1$
+
+If $X_1 = 1$, then $X_1^2 = 1$.  If $X_1 = -1$, then $X_1^2 = 1$.  Thus $X_1^2 = 1$ for all $X_1$. Thus, trivially, $E[X_1^2] = 1$.
+
+(c) $E[X_1 X_2] = \frac{1}{2}$
+
+\begin{align*}
+E[X_1 X_2]
+&= P[X_1 = X_2 = 1] - P[X_1 = 1, X_2 = -1] + P[X_1 = X_2 = -1] - P[X_1 = -1, X_2 = 1] \\
+&= 3/8 - 1/8 + 3/8 - 1/8 \\
+&= 1/2
+\end{align*}
+
+(d) $E[e^2] = 1$
+
+\begin{align*}
+E[e^2]
+&= P[X_1 = X_2]E[e_i^2 | X_1 = X_2] + P[X_1 \neq X_2]E[e_i^2 | X_1 \neq X_2] \\
+&= (P[X_1 = X_2 = 1] + P[X_1 = X_2 = -1])E[e_i^2 | X_1 = X_2] \\
+&+ (P[X_1 = 1, X_2 = -1] + P[X_1 = -1, X_2 = 1])E[e_i^2 | X_1 \neq X_2] \\
+&= (3/8 + 3/8)(5/4) + (1/8 + 1/8)(1/4) \\
+&= (3/4)(5/4) + (1/4)(1/4) \\
+&= (15/16) + (1/16) \\
+&= 1
+\end{align*}
+
+(e) $E[X_1^2 e^2] = 1$
+
+Notice that $X_1^2 = 1$ for $X_1 = -1$ or $X_1 = 1$, so
+
+\begin{align*}
+E[X_1^2 e^2] 
+&= E[e^2] \\
+&= 1
+\end{align*}
+
+(f) $E[X_1 X_2 e^2] = \frac{7}{8}$
+
+\begin{align*}
+E[X_1 X_2 e^2]
+&= P[X_1 = X_2]E[e^2| X_1 = X_2] - P[X_1 \neq X_2]E[e^2| X_1 \neq X_2] \\
+&= (3/4)E[e^2| X_1 = X_2] - (1/4)E[e^2| X_1 \neq X_2] \\
+&= (3/4)(5/4) - (1/4)(1/4) \\
+&= 7/8 \\
+\end{align*}
 
 3. 7.8 Find the asymptotic distribution of $\sqrt{n}(\hat{\sigma}^2 - \sigma^2)$ as $n \to \infty$.
 
-...
+Let us assume OLS 1, 2, 3, and 4. Let us further assume that $E[e_i^4]$ exists.  From Theorem 7.4, we know that $\hat{\sigma}^2 \to_p \sigma^2$.  Using equation 7.18:
 
-4. 7.9a The model is $Y = X \beta + e$ with $E[e|X] = 0$ and $x \in \R$. Consider the two estimators: $\hat{\beta} = \frac{\sum_{i=1}^n X_i Y_i}{\sum_{i=1}^n X_i^2}$ and $\tilde{\beta} = \frac{1}{n} \sum_{i=1}^n \frac{Y_i}{X_i}$. Under the stated assumptions are both estimators consistent for $\beta$?
+\begin{align*}
+\sqrt{n}(\hat{\sigma}^2 - \sigma^2) 
+&= \sqrt{n}\Bigg[\frac{1}{n} \sum_{i=1}^n e_i^2 - 2\Bigg(\frac{1}{n} \sum_{i=1}^n e_i X_i' \Bigg)(\hat{\beta} - \beta) + (\hat{\beta} - \beta)'\Bigg( \frac{1}{n} \sum_{i=1}^n X_i X_i' \Bigg)(\hat{\beta} - \beta) - \sigma^2\Bigg] \\
+&= \sqrt{n}\Bigg(\frac{1}{n} \sum_{i=1}^n e_i^2- \sigma^2\Bigg) - 2\Bigg(\frac{1}{n} \sum_{i=1}^n e_i X_i' \Bigg)\sqrt{n}(\hat{\beta} - \beta) + (\hat{\beta} - \beta)'\Bigg( \frac{1}{n} \sum_{i=1}^n X_i X_i' \Bigg)\sqrt{n}(\hat{\beta} - \beta)
+\end{align*}
 
-...
+We can consider each term individually.  By the central limit theorem, the first term is
 
-5. 7.10 In the homoskedastic regression model $y = X'\beta + e$ with $E[e | X] = 0$ and $E[e^2 | X] = \sigma^2$ suppose $\hat{\beta}$ is the OLS estimator of $\beta$ with covariance matrix estiamtor $\hat{V}_{\hat{\beta}}$ based on a sample of size $n$. Let $\hat{sigma}^2$ be the estimator of $\sigma^2$. You wish to forecast an out-of-sample value of $Y_{n+1}$ given that $X_{n+1} = x$. Thus the available information is the sample, the estimates $(\hat{\beta}, \hat{V}_{\hat{\beta}}, \hat{\sigma}^2)$, the residuals $\hat{e}_i$, and the out-of-sample value of the regressors $X_{n+1}$.
+$$
+\sqrt{n}\Bigg(\frac{1}{n} \sum_{i=1}^n e_i^2- \sigma^2\Bigg) \to_d N(0, V)
+$$
+
+where $V = Var(e_i^2) = E[e_i^4]-(E[e_i^2])^2$.
+
+The other terms converge based on results we discussed in lecture that depend on the weak law of large numbers or the central limit theorem:
+
+$$
+\frac{1}{n} \sum_{i=1}^n e_i X_i' \to_p E[e_i X_i']=0
+$$
+
+$$
+\sqrt{n}(\hat{\beta} - \beta) \to_d N(0, \sigma^2E(X_iX_i')^{-1})
+$$
+
+$$
+\hat{\beta} - \beta \to_p 0
+$$
+
+$$
+\frac{1}{n} \sum_{i=1}^n X_i X_i' \to_p E[X_i X_i'] < \infty
+$$
+
+Therefore, $\sqrt{n}(\hat{\sigma}^2 - \sigma^2)  \to_d N(0, E[e_i^4]-(E[e_i^2])^2)$.
+
+4. 7.9a The model is $Y = X \beta + e$ with $E[e|X] = 0$ and $X \in \R$. Consider the two estimators: $\hat{\beta} = \frac{\sum_{i=1}^n X_i Y_i}{\sum_{i=1}^n X_i^2}$ and $\tilde{\beta} = \frac{1}{n} \sum_{i=1}^n \frac{Y_i}{X_i}$. Under the stated assumptions are both estimators consistent for $\beta$?
+
+$$
+\hat{\beta} 
+= \frac{\sum_{i=1}^n X_i (X_i \beta + e)}{\sum_{i=1}^n X_i^2} 
+= \frac{\sum_{i=1}^n X_i^2 \beta}{\sum_{i=1}^n X_i^2} + \frac{\sum_{i=1}^n X_i e_i}{\sum_{i=1}^n X_i^2} 
+= \beta + \frac{\frac{1}{n}\sum_{i=1}^n X_i e_i}{\frac{1}{n}\sum_{i=1}^n X_i^2} 
+$$
+
+By the weak law of large numbers,
+
+$$
+\frac{1}{n}\sum_{i=1}^n X_i X_i \to_p E[X X]
+$$
+
+$$
+\frac{1}{n}\sum_{i=1}^n X_i e_i \to_p E[X e] = E[E[e|X]X] = 0
+$$
+
+Thus, $\hat{\beta} \to_p \beta$.
+
+$$
+\tilde{\beta} = \frac{1}{n} \sum_{i=1}^n \frac{X_i \beta + e_i}{X_i} =  \beta + \frac{1}{n} \sum_{i=1}^n \frac{e_i}{X_i}
+$$
+
+By the weak law of large numbers,
+
+$$
+\frac{1}{n} \sum_{i=1}^n \frac{e_i}{X_i} \to_p E[\frac{e_i}{X_i}] = E[\frac{1}{X_i}E[e_i|X_i]] = 0
+$$
+
+Thus, $\tilde{\beta} \to_p \beta$.
+
+\pagebreak
+
+5. 7.10 In the homoskedastic regression model $y = X'\beta + e$ with $E[e | X] = 0$ and $E[e^2 | X] = \sigma^2$ suppose $\hat{\beta}$ is the OLS estimator of $\beta$ with covariance matrix estimator $\hat{V}_{\hat{\beta}}$ based on a sample of size $n$. Let $\hat{\sigma}^2$ be the estimator of $\sigma^2$. You wish to forecast an out-of-sample value of $Y_{n+1}$ given that $X_{n+1} = x$. Thus the available information is the sample, the estimates $(\hat{\beta}, \hat{V}_{\hat{\beta}}, \hat{\sigma}^2)$, the residuals $\hat{e}_i$, and the out-of-sample value of the regressors $X_{n+1}$.
 
 (a) Find a point forecast of $Y_{n+1}$.
 
@@ -203,19 +348,29 @@ sum(x1 * e_hat^2)
 
 ...
 
-6. 7.13 Consider an iid sample $\{Y_i, X_i\}, i=1, ..., n$ where $Y$ and $X$ are scalar. Consider the reverrse projection model $X = Y \gamma + u$ with $E[Yu] = 0$ and define the parameter of interest as $\theta = 1/\gamma$.
+6. 7.13 Consider an iid sample $\{Y_i, X_i\}, i=1, ..., n$ where $Y$ and $X$ are scalar. Consider the reverse projection model $X = Y \gamma + u$ with $E[Yu] = 0$ and define the parameter of interest as $\theta = 1/\gamma$.
 
 (a) Propose an estimator $\hat{\gamma}$ of $\gamma$.
 
-...
+$$
+\hat{\gamma} = (\sum_{i=1}^n Y_i^2)^{-1} \sum_{i=1}^n Y_i X_i
+$$
 
 (b) Propose an estimator $\hat{\theta}$ of $\theta$.
 
-...
+$$
+\hat{\theta} = (\sum_{i=1}^n Y_i X_i)^{-1} \sum_{i=1}^n Y_i^2
+$$
 
 (c) Find the asymptotic distribution of $\hat{\theta}$.
 
-...
+$$
+\hat{\theta} = (\sum_{i=1}^n Y_i (Y_i \gamma + u_i))^{-1} \sum_{i=1}^n Y_i^2
+$$
+
+$$
+\sqrt{n}(\hat{\theta} - \theta) = 
+$$
 
 (d) Find an asymptotic standard error for $\hat{\theta}$.
 
@@ -249,7 +404,7 @@ sum(x1 * e_hat^2)
 
 ...
 
-(c) Is the author correct? Does the reported infromation support the author's claim?
+(c) Is the author correct? Does the reported information support the author's claim?
 
 ...
 
@@ -257,7 +412,7 @@ sum(x1 * e_hat^2)
 
 ...
 
-9. Suppose $y_i = 1 + x_i \gamma + \varepsilon_i$, where $y_i, x_i, \varepsilon_i$ are scalar.  Define $w_i = (1 \; x_i)'$ and $\beta = (1 \; \gamma)'$. Assume that $x_i$ has a dicrete distribution: $P(x_i = 1) = P(x_i = 4/3) = P(x_i = 5/3) = P(x_i = 1/4)$. We will use the following assumptions: (A0) $(y_i, x_i)$ iid, (A1) $E(\varepsilon_i | w_i) = 0$, (A1') $E(w_i \varepsilon_i)=0$, and (A2) $\var(\varepsilon_i | w_i) = \sigma^2$. Assume that you will observe data $(y_1, x_1), ..., (y_n, x_n)$ (a sample of size $n$). Below state any additional assumptions needed to obtain your answers. Consider the following OLS estimator freom regressing $y_i$ on $w_i$ using only observations where $x_i = 1$ or $x_i = 2$: $\hat{\beta} = [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i y_i 1 \{x_i \in \{1, 2\}\}$ where $1\{A\}$ is an indicator function for the event $A$.
+9. Suppose $y_i = 1 + x_i \gamma + \varepsilon_i$, where $y_i, x_i, \varepsilon_i$ are scalar.  Define $w_i = (1 \; x_i)'$ and $\beta = (1 \; \gamma)'$. Assume that $x_i$ has a discrete distribution: $P(x_i = 1) = P(x_i = 4/3) = P(x_i = 5/3) = P(x_i = 1/4)$. We will use the following assumptions: (A0) $(y_i, x_i)$ iid, (A1) $E(\varepsilon_i | w_i) = 0$, (A1') $E(w_i \varepsilon_i)=0$, and (A2) $\var(\varepsilon_i | w_i) = \sigma^2$. Assume that you will observe data $(y_1, x_1), ..., (y_n, x_n)$ (a sample of size $n$). Below state any additional assumptions needed to obtain your answers. Consider the following OLS estimator from regressing $y_i$ on $w_i$ using only observations where $x_i = 1$ or $x_i = 2$: $\hat{\beta} = [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i y_i 1 \{x_i \in \{1, 2\}\}$ where $1\{A\}$ is an indicator function for the event $A$.
 
 (a) Under (A0) and (A1), does $\hat{\beta} \to^p \beta$?
 
@@ -271,7 +426,7 @@ sum(x1 * e_hat^2)
 
 ...
 
-(d) Consider the folloing OLS estimator from regressing $y_i$ on $w_i$ using only observation where $x_i = \frac{4}{3}$ or $x_i = \frac{5}{3}$: $\hat{\hat{\beta}} = [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{\frac{4}{3}, \frac{5}{3}\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i y_i 1 \{x_i \in \{\frac{4}{3}, \frac{5}{3}\}\}$. Let $\hat{\beta}_2$ and $\hat{\hat{\beta}}_2$ denote the second elements of $\hat{\beta}$ and $\hat{\hat{\beta}}$. Note that $\hat{\beta}_2$ and $\hat{\hat{\beta}}_2$  are estimators for $\gamma$. Under (A0), (A1), and (A2), which estimator for $\gamma$ do you prefer $\hat{\beta}_2$ and $\hat{\hat{\beta}}_2$? Explain.
+(d) Consider the following OLS estimator from regressing $y_i$ on $w_i$ using only observation where $x_i = \frac{4}{3}$ or $x_i = \frac{5}{3}$: $\hat{\hat{\beta}} = [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{\frac{4}{3}, \frac{5}{3}\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i y_i 1 \{x_i \in \{\frac{4}{3}, \frac{5}{3}\}\}$. Let $\hat{\beta}_2$ and $\hat{\hat{\beta}}_2$ denote the second elements of $\hat{\beta}$ and $\hat{\hat{\beta}}$. Note that $\hat{\beta}_2$ and $\hat{\hat{\beta}}_2$  are estimators for $\gamma$. Under (A0), (A1), and (A2), which estimator for $\gamma$ do you prefer $\hat{\beta}_2$ and $\hat{\hat{\beta}}_2$? Explain.
 
 ...
 

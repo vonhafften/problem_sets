@@ -1,0 +1,374 @@
+---
+title: "ECON 711B - Problem Set 4"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "11/30/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+- \usepackage{bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+1. Two agents are bidding for a good in an auction. Their valuations $v_1$ and $v_2$ for the good are private information to them, and are drawn from the $U[0, 1]$ distribution. The players submit simultaneous bids. Whoever offers the higher bid wins the auction, and ties are broken by a coin flip. Once a winner is declared, the payment is randomly determined. With probability $p$, the winner pays his own bid, and the loser pays nothing; with probability $q$, the winner pays the loser’s bid, and the loser pays nothing; with probability $1-p-q$, the winner pays nothing, but the loser pays their own bid. Assume $1/2 < p + q \le 1$.
+
+(a) Formally define this as a Bayesian game.
+
+The players are $N = \{1, 2\}$. Action sets are $A_1 = A_2 = \R_+$.  The type spaces are $\Theta_1 = \Theta_2 = [0, 1]$, with prior distribution $P(v_i \le x) = x$ for each $i$.  The expected payoffs are symmetric, with
+
+\begin{align*}
+u_i(b_i, b_j; v_i) = 
+\begin{cases} 
+v_i - p b_i - q b_j, &\text{if } b_i > b_j \\
+(0.5)(v_i - p b_i - q b_j) - (0.5)(1-p-q)b_i,  &\text{if } b_i = b_j \\
+-(1-p-q)b_i, &\text{if } b_i < b_j
+\end{cases}
+\end{align*}
+
+(b) Suppose that player $i$ conjectures that player $j$ bids $b_j = b(v_j)$, where $b(\cdot)$ is a continuously differentiable, strictly increasing function. Write out player $i$’s expected payoff from bidding $b_i$, given his own valuation $v_i$.
+
+Since $b(\cdot)$ is a continuously differentiable, strictly increasing function, the probability that $b_i = b_j$ is zero.  Thus, player $i$'s expected payoff of bidding $b_i$:
+
+\begin{align*}
+\pi_i (b_i)
+&= \int_0^{b^{-1}(b_i)}(v_i - p b_i - q b(v_j))dv_j -
+(1-p-q)b_iP(b_i < b(v_j)) \\
+&= \int_0^{b^{-1}(b_i)}(v_i - p b_i - q b(v_j))dv_j -
+(1-p-q)b_i(1-b^{-1}(b_i))
+\end{align*}
+
+\pagebreak
+
+(c) Solve for the symmetric linear Bayesian Nash equilibrium.
+
+FOC [$b_i$]:
+
+\begin{align*}
+0 &= (v_i - p b_i - q b(b^{-1}(b_i))) \frac{1}{b'(b^{-1}(b_i))} + \int_0^{b^{-1}(b_i)}(-p)dv_j - (1-p-q)(1-b^{-1}(b_i)) - (1-p-q)b_i \frac{-1}{b'(b^{-1}(b_i))}\\
+0 &= (v_i - p b_i - q b(b^{-1}(b_i))) \frac{1}{b'(b^{-1}(b_i))} -pb^{-1}(b_i) - (1-p-q)(1-b^{-1}(b_i)) - (1-p-q)b_i \frac{-1}{b'(b^{-1}(b_i))}
+\end{align*}
+
+Substituting in $b_i = b(v_i)$ and $b^{-1}(b_i) = v_i$:
+
+\begin{align*}
+0 &= (v_i - p b(v_i) - q b(v_i)) \frac{1}{b'(v_i)} -pv_i - (1-p-q)(1-v_i) + (1-p-q)b(v_i) \frac{1}{b'(v_i)} \\
+\implies b'(v_i)(pv_i + (1-p-q)(1-v_i)) &=  v_i + (1-2p-2q)b(v_i)
+\end{align*}
+
+Assume linear bidding function: $b(v_i) = \alpha v_i + \beta \implies b'(v_i) = \alpha$:
+
+\begin{align}
+\alpha p v_i + \alpha(1-p-q)(1-v_i) &=  v_i + (1-2p-2q)(\alpha v_i + \beta) \\
+\implies \alpha p v_i + \alpha-\alpha p-\alpha q-v_i\alpha+v_i\alpha p+v_i\alpha q &=  v_i + \alpha v_i-2p\alpha v_i-2q\alpha v_i \\
+&+ \beta-2\beta p-2\beta q \\
+\implies 4\alpha p v_i + \alpha-\alpha p-\alpha q + 3 v_i\alpha q &=  v_i + 2\alpha v_i + \beta-2\beta p-2\beta q 
+\end{align}
+
+If $v_i = 0$:
+
+\begin{align}
+\alpha-\alpha p-\alpha q &= \beta-2\beta p-2\beta q \\
+\implies \alpha(1- p- q) &= \beta(1-2 p-2 q)
+\end{align}
+
+If $p+q = 1$:
+
+$$
+\alpha(1- 1) =  \beta(1-2) \implies \beta = 0 
+$$
+
+Thus, Eq. (4) becomes:
+
+$$
+4\alpha p v_i + \alpha-\alpha p-\alpha q + 3 v_i\alpha q =  v_i + 2\alpha v_i
+$$
+
+Ryan's answer:
+
+$$
+b(v_{i})=(1/(3+p))*v_{i}+(p+q-1)/( (3+p)*(2*(p+q)-1)  )
+$$
+
+(d) How does the equilibrium bidding strategy from part (c) change as $p$ and $q$ change? How does it change as $p \rightarrow 1$ (and $q \rightarrow 0$) and as $q \rightarrow 1$ (and $p \rightarrow 0$)? How does this equilibrium bidding strategy behave as $q \rightarrow 1/2$ and $p \rightarrow 0$?
+
+...
+
+\pagebreak
+
+2. Let players $N = \{1, 2\}$ play a game in which each agent has the pure strategy set $A_1 = A_2 = \{A, B\}$, with payoffs in the following table. $\beta_1$ and $\beta_2$ are constants, and may be positive, negative or zero.
+
++-------+-------+-------+
+|       | $A$   | $B$                |
++-------+-------+--------------------+
+| $A$   | 1, 1  | 0, 2               |
++-------+-------+--------------------+
+| $B$   | 2, 0  | $\beta_1, \beta_2$ |
++-------+-------+--------------------+
+
+(a) Suppose $\beta_1 = \beta_2 = \beta$, and this is common knowledge. For every value of $\beta$, find rationalizable strategies and all Nash equilibria.  (Hint: You only need to consider the cases of $\beta > 0$, $\beta < 0$, and $\beta = 0$.)
+
+Case 1: $\beta > 0$
+
+$B$ is a dominant strategy for both players, so $\{B\}$ is the set of rationalizable strategies for each players and $(B, B)$ is a Nash equilibrium.
+
+Case 2: $\beta = 0$
+
+The payoffs are 
+
++-------+-------+-------+
+|       | $A$   | $B$   |
++-------+-------+-------+
+| $A$   | 1, 1  | 0, 2  |
++-------+-------+-------+
+| $B$   | 2, 0  | 0, 0  |
++-------+-------+-------+
+
+The best response to $A$ is $B$ and the best response to $B$ is either $A$ or $B$.  So $\{A, B\}$ is the set of rationalizable strategies for each players.  $(A, B), (B, A), (B, B)$ are pure-strategy Nash equilibria.
+
+Say player 2 plays $A$ will probability $\sigma_2$, player 1 is indifferent between playing $A$ and $B$ if:
+
+$$
+(1) \sigma_2 + (0)(1-\sigma_2) = (2) \sigma_2 + (0)(1-\sigma_2) \implies \sigma_2 = 0
+$$
+
+Thus, there are no mixed strategy Nash equilibria.
+
+Case 3: $\beta < 0$
+
+The best response to $B$ is to play $A$ and the best response to $A$ is play $B$. Thus, the set of rationalizable strategies is $\{A, B\}$ for each player.  $(A, B)$ and $(B, A)$ are pure-strategy Nash equilibria.
+
+Say player 2 plays $A$ will probability $\sigma_2$, player 1 is indifferent between playing $A$ and $B$ if:
+
+\begin{align*}
+(1) \sigma_2 + (0)(1-\sigma_2) = (2) \sigma_2 + (\beta)(1-\sigma_2) \\
+\sigma_2  =  \frac{\beta}{\beta - 1}
+\end{align*}
+
+Since the game is symmetric, there is a mixed-strategy Nash equilibrium at $(\frac{\beta}{\beta - 1}A + \frac{- 1}{\beta - 1}B, \frac{\beta}{\beta - 1}A + \frac{- 1}{\beta - 1}B)$.
+
+(b) Now suppose $\beta_1$ and $\beta_1$ are private information, randomly drawn from some distribution $F$ with support on the entire real line. Each player $i$ observes their own $\beta_i$, but not that of their opponent. Formally define this as Bayesian game, and find the Bayesian Nash equilibrium.
+
+The players are $N = \{1, 2\}$. The action sets $A_1 = A_2 = \{A, B\}$. The type set $\Theta_1 = \Theta_2 = \R$ with $p: \Theta_1 \times \Theta_2 \to \R$ following distribution $F$. The payoff function is
+
+$$
+u_i(a_i, a_j, \theta_i) = 
+\begin{cases} 
+1 \text{, if } a_i = A \text{ and } a_j = A\\
+0 \text{, if } a_i = A \text{ and } a_j = B\\
+2 \text{, if } a_i = B \text{ and } a_j = A\\
+\theta_i\text{, if } a_i = B \text{ and } a_j = B \end{cases}
+$$
+
+The Bayesian Nash equilibrium is...
+
+If $\beta_i > 0$, $B$ is a dominant strategy for player $i$. If $\beta_i < 0$, $(B, A) \succ (A, A)$ and $(A, B) \succ (B, B)$. 
+
+(c) Suppose a mediator wants to induce a correlated equilibrium. If $\beta_1, \beta_2 > 0$, what correlated equilibrium (or equilibria) can be achieved?
+
+...
+
+(d) Suppose a mediator wants to induce a correlated equilibrium that randomizes over outcomes $(A,B)$, $(B,A)$ and $(A,A)$ with probabilities $p$, $p$ and $1 - 2p$ respectively, where $p \in [0, 1/2]$. For what values of $\beta_1$ and $\beta_2$ is this desired randomization a correlated equilibrium? How does this constraint change with $p$?
+
+...
+
+\pagebreak
+
+3. Fifty clever game theorists are sitting at a conference (pre-pandemic). Out of them, ten have bad breath and 40 do not. Per usual, no one is able to tell if their own breath is bad, but all can tell anyone else’s bad breath. If someone knows his breath is bad, it is a dominant strategy to take the walk of shame to the elevator leading to the mouthwash and water fountain. An elevator arrives precisely every minute. A visitor arrives, sniffs, and leaves, announcing to all, "Wow, what bad breath!" Everyone correctly interprets this as "At least one game theorist has bad breath." What will happen after the announcement? Precisely specify the time it happens.
+
+This problem is a generalization of the blushing ladies common knowledge puzzle.  In this problem, we have $n$ ladies (i.e., game theorists) where $k \le n$ have dirty faces (i.e., have bad breath) and blushing corresponds to the walk of shame.\footnote{For simplicity, we could limit the number of "affected" players to less than $n - 1$, so that all players observe both affected and unaffected players.  If $k = n-1$, then the one unaffected player observes only affected players.  Does that change things?...} We proceed by induction.
+
+Label the game theorists 1, ..., 50.
+
+Someone takes the walk of shame to the elevator.  To prove this, assume for sake of a contradiction that no one takes the walk of shame to the elevator.  This assumption means that game theorist 1 supposes that they do not bad breath.  Furthermore, game theorist 1 supposes that game theorist 2 supposes game theorist 2 does not have bad breath, game theorist 1 supposes that game theorist 2 supposes that game theorist 3 supposes that game theorist 3 does not have bad breath, and so on.  Finally, game theorist 1 supposes that game theorist 50 realizes she must have bad breath because at least one game theorist has bad breath.  Thus, game theorist 
+
+\pagebreak
+
+4. Arthur and Beatrix compete in a race. At the start of the race, both players are 6 steps away from the finish line. Who gets the first turn is determined by a toss of a fair coin; the players then alternate turns, with the results of all previous turns being observed before the current turn occurs. During a turn, a player chooses from these four options: (I) Do nothing at cost 0. (II) Advance 1 step at cost 2. (III) Advance 2 steps at cost 7. (IV) Advance 3 steps at cost 15. The race ends when the first player crosses the finish line. The winner of the race receives a prize payoff of 20, while the loser gets no prize. Finally, there is discounting: after each turn, payoffs are discounted by a factor of $\delta$, where $\delta$ is less than but very close to 1.
+
+(a) Find all subgame perfect equilibria of this game.\footnote{Hint: In all subgame perfect equilibria, a player’s choice at a decision node only depends on the number of steps he has left and on the number of steps his opponent has left. To help take advantage of this you might want to write down a table.}
+
+Each cell of the table has the optimal move based on the number of steps a player has (the rows) versus the number of steps their opponent has (the columns):
+
++--------+--------+--------+--------+--------+--------+--------+
+|        | 1      | 2      | 3      | 4      | 5      | 6      |
++--------+--------+--------+--------+--------+--------+--------+
+| 1      |  II    |  II    |  II    |  II    |  II    |  II    |
++--------+--------+--------+--------+--------+--------+--------+
+| 2      |  III   |  III   |  III   |  II    |  II    |  II    |
++--------+--------+--------+--------+--------+--------+--------+
+| 3      | IV     | IV     | IV     |  II    |  II    |  II    |
++--------+--------+--------+--------+--------+--------+--------+
+| 4      | I      | I      | I      | II     |  II    | II     |
++--------+--------+--------+--------+--------+--------+--------+
+| 5      | I      | I      | I      | III    |  III   | II     |
++--------+--------+--------+--------+--------+--------+--------+
+| 6      | I      | I      | I      | I      | I      | II     |
++--------+--------+--------+--------+--------+--------+--------+
+
+For explanation of these optimal strategies, let us consider subgames where players are at most $x$ steps away from the end where $x = \{1, 2, 3, 4, 5, 6\}$. The optimal strategies in these subgames are represented by the $x$-by-$x$ matrix in the top left of the table above.
+
+- For $x = 1$, it is optimal to advance one step and claim the prize.
+
+- For $x = 2$, it is optimal to advance the remaining number of steps to claim the prize.  Since the opponent can win in a single move, it is optimal to advance two steps are the higher cost when you are two steps away from the end.
+
+- For $x = 3$, it is again optimal to advances the remaining number of steps to win and claim the prize whether it requires advancing one, two, or three steps.
+
+- For $x = 4$, we know that whichever player gets within three steps of the end wins the game.  If your opponent is four steps away is best to move one step and win on your next turn because your opponent cannot win. Discounting means that you prefer to move a single space this turn and larger jump next turn. However, if you are four steps away and your opponent is closer, no matter what you do, the opponent will win on their next turn.  Thus it is better for you to do nothing and avoid the moving cost.
+
+- For $x = 5$, if you and your opponent is four or five steps away, you know they cannot win on their next turn.  Thus, you will advance either one or two steps and be within distance of winning in a single turn.  If your opponent is within three steps of winning, it is again optimal to do nothing because they can win on their next turn.  Knowing that your opponent will do nothing, if you are within three of winning and your opponent cannot win on their next turn, it is optimal to advance only one step at a time.
+
+- For $x = 6$, if your opponent is six steps away from the end, it is optimal to advance one step because you can win and you know that your opponent knows this and will do nothing.  It is optimal to do nothing if you are six moves away and your opponent is closer because your opponent will win.  If both you and your opponent are six moves away from the end, it is best to advance one position because you know that your opponent will do nothing in subsequent turns.
+
+Thus, the SPNE is for the first mover to advance one step at a time and winning (payoff of 8) and the second mover to do nothing (payoff of 0).
+
+(b)  Suppose that Arthur wins the coin toss. Compare his equilibrium behavior with his optimal behavior in the absence of competition. Provide intuition for any similarities or differences you find.
+
+As we found in part (a), Arthur's equilibrium behavior is to advance one step at a time and claim the prize for a payoff of 8.  This is identical to his optimal behavior absent of competition because Beatrix's optimal behavior is to do nothing after losing the coin toss.  An opponent doing nothing yields the same outcome as optimal behavior without any competition.
+
+\pagebreak
+
+5. Prove directly (i.e., without appealing to the minmax theorem) that in a finite two-player zero-sum game of perfect information, there is a unique subgame perfect equilibrium payoff vector.
+
+We prove that finite two-player zero-sum games of perfect information have unique subgame perfect equilibrium payoff vectors via complete induction on the number of decision nodes in an extensive form of the game.  For clarity of exposition, denote Player A as the first mover and Player B as the second mover.
+
+For the base step, the game is a single decision node at which Player A chooses an action.  Player A will chooose the action associated with the maximum payoff, $\bar{\pi}$.  Since the game is zero-sum, Player B's payoff is $-\bar{\pi}$. The subgame perfect equilibrium payoff vector must be unique otherwise Player A would have not chosen the maximum payoff, which is a contradiction.
+
+Because we are using complete induction, assume that all finite two-player zero-sum game of perfect information with $1,... ,n$ decision nodes have a unique subgame perfect equilibrium payoff vector.
+
+Now consider a finite two-player zero-sum game of perfect information with $n+1$ decision nodes.  At the first decision node, Player A chooses an action from a vector of actions.  For each of these actions, we can consider the associated subgame that has at most $n$ decision nodes.  By the induction hypothesis, there is a unique subgame perfect equilibrium payoff vector for each of these subgames. Thus, by Zermolo's Theorem, Player A chooses an action associated with these subgame payoff vectors.  Player A will chooose the action associated with the maximum payoff, $\bar{\pi}$.  As in the base step, since the game is zero-sum, Player B's payoff is $-\bar{\pi}$. The subgame perfect equilibrium payoff vector must be unique otherwise Player A would have not chosen the maximum payoff, which is a contradiction. 
+
+\pagebreak
+
+6. Two profit maximizing firms, A and B, are engaged in price competition against each other in a market. The demand curve for each firm $i \in \{A, B\}$ is $D_i(p_i, p_j) = d - p_i + \alpha p_j$ where $\alpha \in (0,1)$. Both firms choose prices to maximize profits, and have zero marginal or fixed costs.
+
+(a) Suppose both firms must choose their prices simultaneously. Formalize this as a strategic normal form game and find the Nash equilibrium.
+
+Given $p_i$ and $p_j$, the profit of firm $i$ is
+
+$$
+\pi_i(p_i, p_j) = p_i D_i(p_i, p_j) - 0 = p_i (d - p_i + \alpha p_j) = p_id - p_i^2 + \alpha p_ip_j
+$$
+
+FOC [$p_i$]:
+
+$$
+0 =  d - 2p_i + \alpha p_j \implies BR_i(p_j) = \frac{d + \alpha p_j}{2}
+$$
+
+For a symmetric Nash equilibrium, $BR_A(p_B) = BR_B(p_A) = p^C$ ($C$ for Cournot)
+
+$$
+p^C = \frac{d + \alpha p^C}{2} \implies p^C= \frac{d}{2 - \alpha} 
+$$
+
+(b) Now suppose that firm A chooses its price, then firm B observes A’s decision and chooses its own price. Using backward induction, solve for the subgame perfect equilibrium.
+
+Let us use backward induction.  We know that $BR_B(p_A) = \frac{d + \alpha p_A}{2}$.  Substituting into the payoff function for firm $A$:
+
+$$
+\pi_A(p_A, \frac{d + \alpha p_A}{2}) = p_Ad - p_A^2 + \alpha p_A(\frac{d + \alpha p_A}{2}) = (d+ \frac{d\alpha}{2})p_A +(\frac{\alpha^2}{2}-1)p_A^2
+$$
+
+FOC [$p_A$]:
+
+$$
+0 = (d + \frac{\alpha d}{2}) +2(\frac{\alpha^2}{2}-1)p_A^S \implies p_A^S = \frac{2d +\alpha d}{4 - 2\alpha^2}
+$$
+
+($S$ for Stackelberg). Thus, 
+
+$$
+p_B^S 
+= BR_B(\frac{2d +\alpha d}{4 - 2\alpha^2}) 
+= \frac{d + \alpha \frac{2d +\alpha d}{4 - 2\alpha^2}}{2} 
+= \frac{4d - d\alpha^2 + 2d\alpha}{8 - 4\alpha^2} 
+$$
+
+\pagebreak
+
+(c) How do prices, the profits of each firm, and total profits compare across these two games in equilibrium?
+
+```{r 6c, echo=FALSE}
+d <- 10
+
+alpha <- seq(0.01, .99, by = 0.01)
+
+# Cournot
+p_c <- d/(2-alpha)
+q_c <- d - p_c + alpha*p_c
+pi_c <- p_c * q_c
+Pi_c <- 2*pi_c
+
+# a - Stackelberg leader
+# b - Stackelberg follower
+p_s_a <- (2 * d + alpha * d) / (4 - 2 * alpha^2)
+p_s_b <- (d + alpha * p_s_a)/2
+q_s_a <- d - p_s_a + alpha*p_s_b
+q_s_b <- d - p_s_b + alpha*p_s_a
+pi_s_a <- p_s_a * q_s_a
+pi_s_b <- p_s_b * q_s_b
+Pi_s <- pi_s_a + pi_s_b
+
+# Price
+plot(1, type = "n", xlim = c(0, 1), ylim = c(0, 16), ylab = "price", xlab = "alpha", main = paste0("Price (d = ", d, ")"), xaxs = "i", yaxs = "i")
+
+lines(x = alpha, y = p_c, col = "red")
+lines(x = alpha, y = p_s_a, col = "blue")
+lines(x = alpha, y = p_s_b, col = "forestgreen")
+
+legend("topleft",
+       c("Cournot", 
+         "Stackelberg Leader",
+         "Stackelberg Follower"),
+       col = c("red", "blue", "forestgreen"),
+       lty= 1)
+
+# Quantity
+plot(1, type = "n", xlim = c(0, 1), ylim = c(0, 14), ylab = "quantity", xlab = "alpha", main = paste0("Quantity (d = ", d, ")"), xaxs = "i", yaxs = "i")
+
+lines(x = alpha, y = q_c, col = "red")
+lines(x = alpha, y = q_s_a, col = "blue")
+lines(x = alpha, y = q_s_b, col = "forestgreen")
+
+legend("topleft",
+       c("Cournot", 
+         "Stackelberg Leader",
+         "Stackelberg Follower"),
+       col = c("red", "blue", "forestgreen"),
+       lty= 1)
+
+# Profit
+plot(1, type = "n", xlim = c(0, 1), ylim = c(0, 160), ylab = "profit", xlab = "alpha", main = paste0("Profit (d = ", d, ")"), xaxs = "i", yaxs = "i")
+
+lines(x = alpha, y = pi_c, col = "red")
+lines(x = alpha, y = pi_s_a, col = "blue")
+lines(x = alpha, y = pi_s_b, col = "forestgreen")
+
+legend("topleft",
+       c("Cournot", 
+         "Stackelberg Leader",
+         "Stackelberg Follower"),
+       col = c("red", "blue", "forestgreen"),
+       lty= 1)
+
+# Total Profit
+plot(1, type = "n", xlim = c(0, 1), ylim = c(0, 300), ylab = "total profit", xlab = "alpha", main = paste0("Total Profit (d = ", d, ")"), xaxs = "i", yaxs = "i")
+
+lines(x = alpha, y = Pi_c, col = "red")
+lines(x = alpha, y = Pi_s, col = "blue")
+
+legend("topleft",
+       c("Cournot", 
+         "Stackelberg"),
+       col = c("red", "blue"),
+       lty= 1)
+```

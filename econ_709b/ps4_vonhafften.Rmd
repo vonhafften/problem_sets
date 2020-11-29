@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-1. 7.29 Use the subsample of the CPS that you used for problems 3.24 and 3.25 (instead of the subsample requested in the problem)  
+1. 7.28 Estimate the regression: $\hat{log(wage)} = \beta_1 education + \beta_2 experience + \beta_3 experience^2/100 + \beta_4$.\footnote{Use the subsample of the CPS that you used for problems 3.24 and 3.25 (instead of the subsample requested in the problem)}
 
 ```{r setup_libraries, eval = FALSE}
 library(tidyverse)
@@ -53,3 +53,28 @@ x <- cps09mar %>%
 n <- dim(x)[1]
 i <- diag(nrow = n, ncol = n)
 ```
+
+
+(a) Report the coefficient estimates and robust standard errors.
+
+...
+
+(b) Let $\theta$ be the ratio of the return to one year of education to the return to one year of experience for $experience =10$. Write $\theta$ as a function of the regression coefficients and variables. Compute $\hat{\theta}$ from the estimated model.
+
+...
+
+(c) Write out the formula for the asymptotic standard error for $\hat{\theta}$ as a function of the covariance matrix for $\hat{\beta}$. Compute $s(\hat{\beta})$ from the estimated model.
+
+...
+
+(d) Construct a 90% asymptotic confidence interval for $\theta$ from the estimated model.
+
+...
+
+(e) Compute the regression function at $education = 12$ and $experience = 20$. Compute a 95% confidence interval for the regression function at this point.
+
+...
+
+(f) Consider an out-of-sample individual with 16 years of education and 5 years experience. Construct an 80% forecast interval for their log wage and wage. [To obtain the forecast interval for the wage, apply the exponential function to both endpoints.]
+
+...
