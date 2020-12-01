@@ -338,15 +338,21 @@ Thus, $\tilde{\beta} \to_p \beta$.
 
 \pagebreak
 
-5. 7.10 In the homoskedastic regression model $y = X'\beta + e$ with $E[e | X] = 0$ and $E[e^2 | X] = \sigma^2$ suppose $\hat{\beta}$ is the OLS estimator of $\beta$ with covariance matrix estimator $\hat{V}_{\hat{\beta}}$ based on a sample of size $n$. Let $\hat{\sigma}^2$ be the estimator of $\sigma^2$. You wish to forecast an out-of-sample value of $Y_{n+1}$ given that $X_{n+1} = x$. Thus the available information is the sample, the estimates $(\hat{\beta}, \hat{V}_{\hat{\beta}}, \hat{\sigma}^2)$, the residuals $\hat{e}_i$, and the out-of-sample value of the regressors $X_{n+1}$.
+5. 7.10 In the homoskedastic regression model $y = X'\beta + e$ with $E[e | x] = 0$ and $E[e^2 | X] = \sigma^2$ suppose $\hat{\beta}$ is the OLS estimator of $\beta$ with covariance matrix estimator $\hat{V}_{\hat{\beta}}$ based on a sample of size $n$. Let $\hat{\sigma}^2$ be the estimator of $\sigma^2$. You wish to forecast an out-of-sample value of $Y_{n+1}$ given that $X_{n+1} = x$. Thus the available information is the sample, the estimates $(\hat{\beta}, \hat{V}_{\hat{\beta}}, \hat{\sigma}^2)$, the residuals $\hat{e}_i$, and the out-of-sample value of the regressors $X_{n+1}$.
 
 (a) Find a point forecast of $Y_{n+1}$.
 
-...
+
+
+$$
+\hat{Y}_{n+1} =  x'\hat{\beta}
+$$
 
 (b) Find an estimator of the variance of this forecast.
 
-...
+$$
+\var(\hat{Y}_{n+1}) =  \var(X_{n+1}'\hat{\beta})
+$$
 
 6. 7.13 Consider an iid sample $\{Y_i, X_i\}, i=1, ..., n$ where $Y$ and $X$ are scalar. Consider the reverse projection model $X = Y \gamma + u$ with $E[Yu] = 0$ and define the parameter of interest as $\theta = 1/\gamma$.
 
