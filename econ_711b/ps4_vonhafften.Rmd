@@ -39,11 +39,10 @@ v_i - p b_i - q b_j, &\text{if } b_i > b_j \\
 Since $b(\cdot)$ is a continuously differentiable, strictly increasing function, the probability that $b_i = b_j$ is zero.  Thus, player $i$'s expected payoff of bidding $b_i$:
 
 \begin{align*}
-\pi_i (b_i)
-&= \int_0^{b^{-1}(b_i)}(v_i - p b_i - q b(v_j))dv_j -
-(1-p-q)b_iP(b_i < b(v_j)) \\
-&= \int_0^{b^{-1}(b_i)}(v_i - p b_i - q b(v_j))dv_j -
-(1-p-q)b_i(1-b^{-1}(b_i))
+U_i (b_i | v_i)
+&= \int_0^1 f(v_j)u_i(b_i, b(v_j); v_i) dv_j \\
+&= \int_0^{b^{-1}(b_i)}(v_i - p b_i - q b(v_j))dv_j - (1-p-q)b_iP(b_i < b(v_j)) \\
+&= \int_0^{b^{-1}(b_i)}(v_i - p b_i - q b(v_j))dv_j - (1-p-q)b_i(1-b^{-1}(b_i)) 
 \end{align*}
 
 \pagebreak
@@ -54,7 +53,7 @@ FOC [$b_i$]:
 
 \begin{align*}
 0 &= (v_i - p b_i - q b(b^{-1}(b_i))) \frac{1}{b'(b^{-1}(b_i))} + \int_0^{b^{-1}(b_i)}(-p)dv_j - (1-p-q)(1-b^{-1}(b_i)) - (1-p-q)b_i \frac{-1}{b'(b^{-1}(b_i))}\\
-0 &= (v_i - p b_i - q b(b^{-1}(b_i))) \frac{1}{b'(b^{-1}(b_i))} -pb^{-1}(b_i) - (1-p-q)(1-b^{-1}(b_i)) - (1-p-q)b_i \frac{-1}{b'(b^{-1}(b_i))}
+0 &= (v_i - p b_i - q b(b^{-1}(b_i))) \frac{1}{b'(b^{-1}(b_i))} -pb^{-1}(b_i) - (1-p-q)(1-b^{-1}(b_i)) + (1-p-q)b_i \frac{1}{b'(b^{-1}(b_i))}
 \end{align*}
 
 Substituting in $b_i = b(v_i)$ and $b^{-1}(b_i) = v_i$:
@@ -66,41 +65,70 @@ Substituting in $b_i = b(v_i)$ and $b^{-1}(b_i) = v_i$:
 
 Assume linear bidding function: $b(v_i) = \alpha v_i + \beta \implies b'(v_i) = \alpha$:
 
-\begin{align}
+\begin{align*}
 \alpha p v_i + \alpha(1-p-q)(1-v_i) &=  v_i + (1-2p-2q)(\alpha v_i + \beta) \\
 \implies \alpha p v_i + \alpha-\alpha p-\alpha q-v_i\alpha+v_i\alpha p+v_i\alpha q &=  v_i + \alpha v_i-2p\alpha v_i-2q\alpha v_i \\
 &+ \beta-2\beta p-2\beta q \\
 \implies 4\alpha p v_i + \alpha-\alpha p-\alpha q + 3 v_i\alpha q &=  v_i + 2\alpha v_i + \beta-2\beta p-2\beta q 
-\end{align}
+\end{align*}
 
 If $v_i = 0$:
 
-\begin{align}
-\alpha-\alpha p-\alpha q &= \beta-2\beta p-2\beta q \\
-\implies \alpha(1- p- q) &= \beta(1-2 p-2 q)
-\end{align}
-
-If $p+q = 1$:
-
 $$
-\alpha(1- 1) =  \beta(1-2) \implies \beta = 0 
+\alpha-\alpha p-\alpha q = \beta-2\beta p-2\beta q
 $$
 
-Thus, Eq. (4) becomes:
+If $v_i = 1$:
 
 $$
-4\alpha p v_i + \alpha-\alpha p-\alpha q + 3 v_i\alpha q =  v_i + 2\alpha v_i
+3\alpha p + \alpha + 2\alpha q =  1 + 2\alpha + \beta-2\beta p-2\beta q 
 $$
 
-Ryan's answer:
+Two equations and two unknowns:
 
 $$
-b(v_{i})=(1/(3+p))*v_{i}+(p+q-1)/( (3+p)*(2*(p+q)-1)  )
+\alpha = \frac{1}{4 p + 3 q - 2}
 $$
+
+$$
+\beta = \frac{p + q - 1}{2 - 8 p + 8 p^2 - 7 q + 14 p q + 6 q^2}
+$$
+
+Thus, the symmetric linear Bayesian Nash equilibrium is:
+
+$$
+b(v_i) = \frac{v_i}{4 p + 3 q - 2} + \frac{p + q - 1}{2 - 8 p + 8 p^2 - 7 q + 14 p q + 6 q^2}
+$$
+
+\pagebreak
 
 (d) How does the equilibrium bidding strategy from part (c) change as $p$ and $q$ change? How does it change as $p \rightarrow 1$ (and $q \rightarrow 0$) and as $q \rightarrow 1$ (and $p \rightarrow 0$)? How does this equilibrium bidding strategy behave as $q \rightarrow 1/2$ and $p \rightarrow 0$?
 
-...
+If $p = 1$ and $q = 0$,
+
+$$
+b(v_i) = \frac{v_i}{4 (1) + 3 (0) - 2} + \frac{(1) + (0) - 1}{2 - 8 (1) + 8 (1)^2 - 7 (0) + 14 (1) (0) + 6 (0)^2} = \frac{v_i}{2}
+$$
+
+This mirrors the optimal strategy in a first price auction that was discussed in the TA section.
+
+If $p = 0$ and $q = 1$,
+
+$$
+b(v_i) = \frac{v_i}{4 (0) + 3 (1) - 2} + \frac{(0) + (1) - 1}{2 - 8 (0) + 8 (0)^2 - 7 (1) + 14 (0) (1) + 6 (1)^2} = v_i
+$$
+
+This is the optimal strategy for a second price auction.
+
+If $p \rightarrow 0$ and $q \rightarrow 1/2$,
+
+\begin{align*}
+b(v_i) 
+&= \lim_{p \rightarrow 0, q \rightarrow 1/2}  \frac{v_i}{4 p + 3 q - 2} + \frac{p + q - 1}{2 - 8 p + 8 p^2 - 7 q + 14 p q + 6 q^2} \\
+&= - 2 v_i +\lim_{p \rightarrow 0, q \rightarrow 1/2} \frac{p + q - 1}{2 - 8 p + 8 p^2 - 7 q + 14 p q + 6 q^2}
+\end{align*}
+
+The limit of the intercept diverges to infinite.
 
 \pagebreak
 
@@ -155,40 +183,98 @@ Say player 2 plays $A$ will probability $\sigma_2$, player 1 is indifferent betw
 
 Since the game is symmetric, there is a mixed-strategy Nash equilibrium at $(\frac{\beta}{\beta - 1}A + \frac{- 1}{\beta - 1}B, \frac{\beta}{\beta - 1}A + \frac{- 1}{\beta - 1}B)$.
 
-(b) Now suppose $\beta_1$ and $\beta_1$ are private information, randomly drawn from some distribution $F$ with support on the entire real line. Each player $i$ observes their own $\beta_i$, but not that of their opponent. Formally define this as Bayesian game, and find the Bayesian Nash equilibrium.
+\pagebreak
 
-The players are $N = \{1, 2\}$. The action sets $A_1 = A_2 = \{A, B\}$. The type set $\Theta_1 = \Theta_2 = \R$ with $p: \Theta_1 \times \Theta_2 \to \R$ following distribution $F$. The payoff function is
+(b) Now suppose $\beta_1$ and $\beta_2$ are private information, randomly drawn from some distribution $F$ with support on the entire real line. Each player $i$ observes their own $\beta_i$, but not that of their opponent. Formally define this as Bayesian game, and find the Bayesian Nash equilibrium.
+
+The players are $N = \{1, 2\}$. The action sets $A_1 = A_2 = \{A, B\}$. The type set $\Theta_1 = \Theta_2 = \R$ with $p: \Theta_1 \times \Theta_2 \to \R$ following distribution $F$. For $\beta_i \in \Theta_i$, the payoff function is
 
 $$
-u_i(a_i, a_j, \theta_i) = 
+u_i(a_i, a_j, \beta_i) = 
 \begin{cases} 
 1 \text{, if } a_i = A \text{ and } a_j = A\\
 0 \text{, if } a_i = A \text{ and } a_j = B\\
 2 \text{, if } a_i = B \text{ and } a_j = A\\
-\theta_i\text{, if } a_i = B \text{ and } a_j = B \end{cases}
+\beta_i\text{, if } a_i = B \text{ and } a_j = B \end{cases}
 $$
 
-The Bayesian Nash equilibrium is...
+The expected payoff function is:
 
-If $\beta_i > 0$, $B$ is a dominant strategy for player $i$. If $\beta_i < 0$, $(B, A) \succ (A, A)$ and $(A, B) \succ (B, B)$. 
+$$
+U_i(a_i|\beta_i) = 
+\begin{cases}
+P(a_j = A),& \text{ if } a_i = A \\
+2P(a_j = A) + \beta_i (1-P(a_j = A)),& \text{ if } a_i = B \\
+\end{cases}
+$$
+
+Thus, we know that there is a threshold $\bar{\beta} < 0$, where player $i$ plays $A$ if $\beta_i < \bar{\beta}$, plays $B$ if $\beta_i > \bar{\beta}$, and is indifferent between playing $A$ and $B$ for $\beta_i = \bar{\beta}$. In a sense, when $\beta_i$ is negative, there's a fixed upside from playing $B$ and if $\beta_i$ is low enough it does not make sense to play $B$.  Since the game is symmetric, the same holds for player $j$.  Thus, the threshold $\bar{\beta}$ must satisfy the following equation:
+
+$$
+F(\bar{\beta}) = 2F(\bar{\beta}) + \bar{\beta}(1-F(\bar{\beta}))
+$$
+
+Therefore, $a_i(\beta_i) = \begin{cases} A, \beta_i < \bar{\beta} \\ B, \beta_i \ge \bar{\beta} \end{cases}$ is a Bayesian Nash equilibrium.
 
 (c) Suppose a mediator wants to induce a correlated equilibrium. If $\beta_1, \beta_2 > 0$, what correlated equilibrium (or equilibria) can be achieved?
 
-...
+If $\beta_1, \beta_2 > 0$, then $B$ is a dominant strategy for both players, so the only correlated equilibrium is $(B, B)$.
 
 (d) Suppose a mediator wants to induce a correlated equilibrium that randomizes over outcomes $(A,B)$, $(B,A)$ and $(A,A)$ with probabilities $p$, $p$ and $1 - 2p$ respectively, where $p \in [0, 1/2]$. For what values of $\beta_1$ and $\beta_2$ is this desired randomization a correlated equilibrium? How does this constraint change with $p$?
 
-...
+\begin{align*}
+\rho(A, A) &= 1 - 2p \\
+\rho(A, B) &= \rho(B, A) =p \\
+\rho(B, B) &= 0 \\
+\rho(A) &= \rho(A, A) + \rho(A, B) = 1 - 2p + p = 1 - p\\
+\rho(B) &= \rho(B, A) + \rho(B, B) = p + 0 = p
+\end{align*}
+
+\pagebreak
+
+In a correlated equilibrium the expected payoff from following the signal must be at least at large as the expected payoff from deviating.  The signal for $A$ provides an upper bound on $\beta_i$:
+
+\begin{align*}
+\frac{\rho(A, A)}{\rho(A)}u(A, A) + \frac{\rho(A, B)}{\rho(A)}u(A, B) &\ge 
+\frac{\rho(A, A)}{\rho(A)}u(B, A) + \frac{\rho(A, B)}{\rho(A)}u(B, B) \\
+\implies 
+\frac{1 - 2p}{1 - p}(1) + \frac{p}{1 - p}(0) &\ge 
+\frac{1 - 2p}{1 - p}(2) + \frac{p}{1 - p}\beta_i \\
+\implies 
+- \frac{1 - 2p}{1 - p} &\ge \frac{p}{1 - p}\beta_i \\
+\implies 
+\frac{2p - 1}{p} &\ge \beta_i \\
+\end{align*}
+
+Note that the signal for $B$ does not provide any more information about the constraints on $\beta_i$:
+
+\begin{align*}
+\frac{\rho(B, A)}{\rho(B)}u(B, A) + \frac{\rho(B, B)}{\rho(B)}u(B, B) &\ge 
+\frac{\rho(B, A)}{\rho(B)}u(A, A) + \frac{\rho(B, B)}{\rho(B)}u(A, B) \\
+\implies
+\frac{p}{p}(2) + \frac{(0)}{p}\beta_i &\ge 
+\frac{p}{p}(1) + \frac{(0)}{p}(0)\\ 
+\implies
+2 &\ge 1
+\end{align*}
+
+Thus, $\beta_1, \beta_2 \le \bar{\beta} = \frac{2p - 1}{p}$ where $p \in (0, 1/2]$.  As $p \to 0$, $\bar{\beta} \to - \infty$ and as $p \to 1/2$, $\bar{\beta} \to 0$.
 
 \pagebreak
 
 3. Fifty clever game theorists are sitting at a conference (pre-pandemic). Out of them, ten have bad breath and 40 do not. Per usual, no one is able to tell if their own breath is bad, but all can tell anyone else’s bad breath. If someone knows his breath is bad, it is a dominant strategy to take the walk of shame to the elevator leading to the mouthwash and water fountain. An elevator arrives precisely every minute. A visitor arrives, sniffs, and leaves, announcing to all, "Wow, what bad breath!" Everyone correctly interprets this as "At least one game theorist has bad breath." What will happen after the announcement? Precisely specify the time it happens.
 
-This problem is a generalization of the blushing ladies common knowledge puzzle.  In this problem, we have $n$ ladies (i.e., game theorists) where $k \le n$ have dirty faces (i.e., have bad breath) and blushing corresponds to the walk of shame.\footnote{For simplicity, we could limit the number of "affected" players to less than $n - 1$, so that all players observe both affected and unaffected players.  If $k = n-1$, then the one unaffected player observes only affected players.  Does that change things?...} We proceed by induction.
+The ten game theorists with bad breath take the walk of shame to the tenth elevator.
 
-Label the game theorists 1, ..., 50.
+This problem is a generalization of the blushing ladies common knowledge puzzle.  In this problem, we have $n$ ladies (i.e., game theorists) where $k \le n$ have dirty faces (i.e., have bad breath) and blushing corresponds to the walk of shame. In addition, the elevator arriving every minute explicit marks changes in common knowledge whereas timing is less explicit in the blushing ladies game.
 
-Someone takes the walk of shame to the elevator.  To prove this, assume for sake of a contradiction that no one takes the walk of shame to the elevator.  This assumption means that game theorist 1 supposes that they do not bad breath.  Furthermore, game theorist 1 supposes that game theorist 2 supposes game theorist 2 does not have bad breath, game theorist 1 supposes that game theorist 2 supposes that game theorist 3 supposes that game theorist 3 does not have bad breath, and so on.  Finally, game theorist 1 supposes that game theorist 50 realizes she must have bad breath because at least one game theorist has bad breath.  Thus, game theorist 
+The game theorists with bad breath observe nine game theorists with bad breath.  They do not know whether they have bad breath, so they know that either nine or ten game theorists have bad breath.  In addition, they know that each of the game theorists with bad breath know that either eight or nine other people have bad breath. And so on. The game theorists with good breath observe ten game theorists with bad breath.  Likewise, since they do not know whether they have bad breath or good breath, they know that either ten or eleven game theorists have bad breath.  The good-breathed game theorists likewise can conjecture about what the game theorists with bad breath know.
+
+Before the first elevator arrives, everyone knows that if only one game theorist had bad breath, she would observe zero other people with bad breath and walk to the first elevator because she must be the one with bad breath.  Since everyone observes nine or ten game theorists with bad breath, no one boards the first elevator.  Thus, everyone knows that more than one game theorist has bad breath.
+
+Before the second elevator arrives, everyone knows that if only two game theorists had bad breath, they would observe only one other game theorist with bad breath and since that person didn't board the first elevator, they would know that they too had bad breath.  However, the elevator comes and goes without anyone boarding it.
+
+This process continues for the third, fourth, fifth, sixth, seventh, and eighth elevators.  When the ninth elevator comes and goes the game theorists with bad breath know that there must be ten game theorists with bad breath and since they observe only nine, they realize that they must also have bad breath.  Thus, the ten bad-breathed game theorists take the tenth elevator.  The good-breathed game theorists now know that there are only ten game theorists with bad breath, so no more game theorists board subsequent elevators.
 
 \pagebreak
 
