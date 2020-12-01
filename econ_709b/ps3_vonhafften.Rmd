@@ -343,7 +343,6 @@ Thus, $\tilde{\beta} \to_p \beta$.
 (a) Find a point forecast of $Y_{n+1}$.
 
 
-
 $$
 \hat{Y}_{n+1} =  x'\hat{\beta}
 $$
