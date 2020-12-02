@@ -32,16 +32,139 @@ library(tidyverse)
 
 \pagebreak
 
-2. Suppose that a representative agent has preferences: $E \sum_{t=1}^\infty \beta^t u(c_t)$ over  the single nonstorable consumption good (“fruit”), where $u(c) = c^{1-\gamma}/(1-\gamma)$ for
-$\gamma > 0$. Her endowment of the good is governed by a Markov process with transition function $F(x', x)$.
+2. Suppose that a representative agent has preferences: $E \sum_{t=0}^\infty \beta^t u(c_t)$ over the single nonstorable consumption good (“fruit”), where $u(c) = c^{1-\gamma}/(1-\gamma)$ for $\gamma > 0$. Her endowment of the good is governed by a Markov process with transition function $F(x', x)$.
 
-(a) Define a recursive competitive equilibrium with a market in claims to the endowment process (“trees”).
+(a) Define a recursive competitive equilibrium with a market in claims to the endowment process ("trees").
+
+Let $a_t$ be the representative agent's claim to "trees" in period $t$, $p_t$ be the price of trees in period $t$, and $s_t$ be the stochastic output from each "trees" in period $t$. The representative agent problem is:
+
+\begin{align*}
+\max_{\{c_t, a_{t+1}\}}& E_0 \sum_{t=0}^\infty \beta^t u(c_t) \\
+\text{s.t. } c_t + p_ta_{t+1} &\le (p_t + s_t)a_t
+\end{align*}
+
+where $s_t \sim F(ds', s)$.  We posit that $p_t = p(s_t)$.  The Bellman equation is
+
+\begin{align*}
+V(a, s) &= \max_{\{c, a'\}} \{u(c) + \beta \int V(a', s')F(ds', s)\} \\
+\text{s.t. } c + p(s)a' &\le (p(s) + s)a\\
+c &\ge 0 \\
+0 &\le a' \le 1
+\end{align*}
+
+A recursive competitive equilibrium is continuous pricing function $p(s)$ and a continuous and bounded function $V^*(a, s)$ such that (i) $V^*(a, s)$ solves the Bellman equation and (ii) $\forall s$, $V^*(1, s)$ is attained by $c \ge s$ and $s' = 1$.  Rewriting the state variables $\{a, s\}$ as wealth $(p(s)+s)a$ and substituting $c = c(s) = (p(s) + s)a - p(s)a'$, the Bellman equation becomes:
+
+$$
+V((p(s)+s)a) = \max_{a'} \{u((p(s) + s)a -p(s)a' ) + \beta \int V((p(s')+s')a')F(ds', s)\}
+$$
+
+FOC:
+
+$$
+u'(c(s)) p(s) = \beta \int V'((p(s')+s')a')(p(s')+s')F(ds', s)
+$$
+
+Envelope condition:
+
+$$
+V'((p(s) + s)a) = u'(c(s))
+$$
+
+FOC and envelope condition imply an Euler equation:
+
+$$
+u'(c(s)) = \beta \int u'(c(s'))\frac{p(s')+s'}{p(s)}F(ds', s)
+$$
+
+Defining $R_{t+1} = \frac{p_{t+1} + s_{t+1}}{p_t}$, the Euler equation becomes:
+
+$$
+u'(c_t) = \beta E_t [u'(c_{t+1})R_{t+1}]
+$$
+
+At equilibrium, $c = s$ and $a' = a = 1$.  Thus the pricing function is determined by:
+
+$$
+p(s) = \beta \int \frac{u'(s')}{u'(s)}(p(s')+s')F(ds', s)
+$$
+
+With CRRA utility, the pricing function becomes:
+
+$$
+p(s) = \beta \int \Bigg(\frac{s}{s'}\Bigg)^{\gamma}(p(s')+s')F(ds', s)
+$$
 
 (b) When the consumer has logarithmic utility, $u(c) = \log c$, what is the equilibrium price/dividend ratio of a claim to the entire consumption stream? How does it depend on the distribution of consumption growth?
 
-(c) Suppose there is news at time t that future consumption will be higher. How will prices respond to this news? How does this depend on the consumer’s preferences (which are CRRA, but not necessarily log)? Interpret your results.
+With log utility, the pricing function becomes:
 
-(d) Consider an option which is bought or sold in period t and entitles the current owner to exercise the right to buy one “tree” in period $t + 1$ at the fixed price $\bar{p}$ specified at date $t$. (The buyer may choose not to exercise this option.) Find a formula for the price of this option in terms of the parameters describing preferences and endowments.
+$$
+p(s) = \beta \int \frac{s}{s'}(p(s')+s')F(ds', s)
+$$
+
+Thus, the price/dividend ratio is
+
+$$
+\frac{p(s)}{s} = \frac{\beta \int \frac{s}{s'}(p(s')+s')F(ds', s)}{s} = \beta \int \frac{s}{s'}\frac{p(s')+s'}{s}F(ds', s) =  \beta \int \frac{s}{s'}R'F(ds', s)
+$$
+
+If consumption is growing, the price/dividend is lower than if consumption is shrinking,
+
+$$
+c' > c\implies s' > s \implies \downarrow \frac{p(s)}{s}
+$$
+
+$$
+c' < c \implies s' < s \implies \uparrow \frac{p(s)}{s}
+$$
+
+(c) Suppose there is news at time $t$ that future consumption will be higher. How will prices respond to this news? How does this depend on the consumer’s preferences (which are CRRA, but not necessarily log)? Interpret your results.
+
+The pricing function is:
+
+$$
+p(s) = E\Bigg[ \Bigg(\frac{c}{c'}\Bigg)^{\gamma}(p(s')+s')\Bigg]
+$$
+
+If $c'$ increases, prices drop. A higher $\gamma$ results in a larger drop in price.  For CRRA utility, $1/\gamma$ is the the intertemporal elasticity of substitution (IES).  A higher IES is associated with a stronger preference for consumption smoothing across periods.  If $\gamma$ is lower then $1/\gamma$ is higher, so households have a stronger preference for consumption smoothing.  Thus, the news that future consumption will be higher has less of an effect of today's prices.  If $\gamma$ is higher, then $1/\gamma$ is lower, so households will change their consumption pattern more in response to this news.
+
+\pagebreak
+
+(d) Consider an option which is bought or sold in period $t$ and entitles the current owner to exercise the right to buy one “tree” in period $t + 1$ at the fixed price $\bar{p}$ specified at date $t$. (The buyer may choose not to exercise this option.) Find a formula for the price of this option in terms of the parameters describing preferences and endowments.
+
+The pricing function implies a pricing kernal:
+
+$$
+q(s, s') = \beta \frac{u'(s')}{u'(s)}f(s', s)
+$$
+
+where $f$ is the PDF that corresponds to $F$, or $F(s', s) = \int_{-\infty}^{s'} f(u, s)du$.  
+
+The call option is in-the-money if the strike price $\bar{p}$ is lower than the future market price $p(s')$. So, the payoff function for the call option is 
+
+$$
+g(s') = 
+\begin{cases} 
+p(s') - \bar{p}, & p(s') > \bar{p}\\
+0, & p(s') \le \bar{p}
+\end{cases}
+$$
+
+Thus, the price of the call option is
+
+\begin{align*}
+p^c(s) 
+&= \int_{-\infty}^\infty q(s, s') g(s') ds'\\
+&= \int_{-\infty}^\infty \beta \frac{u'(s')}{u'(s)} (p(s') - \bar{p}) 1\{p(s') > \bar{p}\} f(s', s)ds'\\
+&= \int_{-\infty}^\infty \beta \frac{u'(s')}{u'(s)} (p(s') - \bar{p}) 1\{s' > p^{-1}(\bar{p})\} f(s', s)ds'\\
+&= \int_{p^{-1}(\bar{p})}^\infty \beta \frac{u'(s')}{u'(s)} (p(s') - \bar{p}) f(s', s)ds'
+\end{align*}
+
+The last equality requires $p(\cdot)$ to strictly monotonically increasing in $s$ and thus invertible. With CRRA utility, the call option price formula becomes:
+
+$$
+p^c(s) = \int_{p^{-1}(\bar{p})}^\infty \beta \Bigg(\frac{s}{s'}\Bigg)^{\gamma} (p(s') - \bar{p}) f(s', s)ds'
+$$
 
 \pagebreak
 
@@ -96,14 +219,14 @@ So the eigenvalues are $\lambda_1 = 1$ and $\lambda_2 = 0.8$. For $\lambda_1$,
 0.95x + 0.05y &= y
 \end{align*}
 
-These equations imply that $(0.5, 0.5)'$ is a cooresponding eigenvector. For $\lambda_1$,
+These equations imply that $(0.5, 0.5)'$ is a corresponding eigenvector. For $\lambda_1$,
 
 \begin{align*}
 0.85x + 0.15y &= 0.8x \\
 0.95x + 0.05y &= 0.8y
 \end{align*}
 
-These equations imply that $(0.25, 0.75)'$ is the cooresponding eigenvector.  Double-checking, we see that $(0.25, 0.75)'$ is the stationary distribution:
+These equations imply that $(0.25, 0.75)'$ is the corresponding eigenvector.  Double-checking, we see that $(0.25, 0.75)'$ is the stationary distribution:
 
 $$
 \begin{bmatrix} 0.25 \\ 0.75 \end{bmatrix}\begin{bmatrix} 0.85 & 0.15 \\ 0.05 & 0.95 \end{bmatrix} = \begin{bmatrix} 0.25 \\ 0.75 \end{bmatrix}
@@ -124,7 +247,7 @@ x
 
 (c) Take the following as parameters: $\beta = 0.95, \gamma = 3, r = 0.03, w = 1.1$. Discretize the asset choice into a finite grid. Note that this directly restricts the assets to lie in a compact set. Numerically solve for the value functions by iterating on the Bellman equation.
 
-```{r 3c, echo = FALSE}
+```{r 3c, echo = FALSE, eval = FALSE}
 # parameters
 beta <- .95
 gamma <- 3
@@ -134,115 +257,121 @@ l_low <- 0.7
 l_high <- 1.1
 
 # assets grid
-min_a <- 0.005
-max_a <- 10
-inc_a <- 0.005
+min_a <- 0.01
+max_a <- 5
+inc_a <- min_a
 a <- seq(min_a, max_a, by = inc_a)
 n <- length(a)
 
-ones <- rep(1, times=n)
+# initialize value grid 
+v_low <- rep(0, times=n)
+v_high <- rep(0, times=n)
 
-# initialize value grid and decision rule grid
-v <- rep(0, times=n)
-decision <- rep(0, times=n)
+# initialize decision rule grid
+decision_low <- rep(0, times=n)
+decision_high <- rep(0, times=n)
 
-# create consumption and utility matrixes for high and low labor shocks
+# create consumption matrices
 # (columns are different values of a; rows are values of a')
+ones <- rep(1, times=n)
 c_matrix_low <- w * l_low + (1 + r)*ones %*% t(a)  - a %*% t(ones)
 c_matrix_high <- w * l_high + (1 + r)*ones %*% t(a)  - a %*% t(ones)
 
+# create flow utility matrices and set negative consumption levels to low value
 utility_matrix_low <- (c_matrix_low^(1-gamma))/(1-gamma)
-utility_matrix_high <- (c_matrix_high^(1-gamma))/(1-gamma)
-
 utility_matrix_low[c_matrix_low < 0|!is.finite(utility_matrix_low)] <- -1000
+
+utility_matrix_high <- (c_matrix_high^(1-gamma))/(1-gamma)
 utility_matrix_high[c_matrix_high < 0|!is.finite(utility_matrix_high)] <- -1000
 
-# solve bellman for low labor shocks
+# solve bellman equations:
 test <- 10
 iter <- 1
-while (test != 0) {
-  # create value matrix for all different a and a' values
-  value_matrix <- utility_matrix_low + beta * v %*% t(ones)
+max_iter <- 10000
+
+while (test != 0 & iter < max_iter) {
+  # create value matrix for different a and a' values with transition probabilities 
+  # to next period shock
+  value_matrix_low <- utility_matrix_low + beta * Q[1, 1] * v_low %*% t(ones) + 
+    beta * Q[1, 2] * v_high %*% t(ones)
+  value_matrix_high <- utility_matrix_high + beta * Q[2, 1] * v_low %*% t(ones) + 
+    beta * Q[2, 2] * v_high %*% t(ones)
   
-  # find column max with max utility
-  tv <- apply(value_matrix, 2, max)
-  tdecision <- apply(value_matrix, 2, which.max)
+  # find max utility
+  tv_low <- apply(value_matrix_low, 2, max)
+  tv_high <- apply(value_matrix_high, 2, max)
   
-  # loop ends if no changes from previous iteration
-  test <- max(tdecision - decision)
+  # find column with max utility
+  tdecision_low <- apply(value_matrix_low, 2, which.max)
+  tdecision_high <- apply(value_matrix_high, 2, which.max)
+
+  # update test variable so loop ends if no changes from previous iteration
+  test <- max(tdecision_low - decision_low) + max(tdecision_high - decision_high)
   
-  # update value grid and decision rule
-  decision <- tdecision
-  v <- tv
+  # update value grid
+  v_low <- tv_low
+  v_high <- tv_high
+
+  # update decision rule
+  decision_low <- tdecision_low
+  decision_high <- tdecision_high
+  
   iter <- iter + 1
 }
 
-# capital and consumption decision rule
-policy_function_low <- tibble(a = a, a_prime = min_a + decision*inc_a) %>%
+# save policy function based on decision rule
+policy_function_low <- tibble(a = a, a_prime = min_a + decision_low*inc_a) %>%
   mutate(c = w * l_low + (1 + r)*a  - a_prime)
 
-v_low <- v
-
-# solve bellman for high labor shocks
-test <- 10
-iter <- 1
-while (test != 0) {
-  # create value matrix for all different a and a' values
-  value_matrix <- utility_matrix_high + beta * v %*% t(ones)
-  
-  # find column max with max utility
-  tv <- apply(value_matrix, 2, max)
-  tdecision <- apply(value_matrix, 2, which.max)
-  
-  # loop ends if no changes from previous iteration
-  test <- max(tdecision - decision)
-  
-  # update value grid and decision rule
-  decision <- tdecision
-  v <- tv
-  iter <- iter + 1
-}
-
-# capital and consumption decision rule
-policy_function_high <- tibble(a = a, a_prime = min_a + decision*inc_a) %>%
+policy_function_high <- tibble(a = a, a_prime = min_a + decision_high*inc_a) %>%
   mutate(c = w * l_high + (1 + r)*a  - a_prime)
-
-v_high <- v
 ```
 
 i. Plot the value functions for the high and low values of the labor shocks. Do they appear to have the properties that we have assumed?
 
-Yes, the value function for the high labor shocks is larger than the value function for low labor shocks.  The difference decreases as the level of current assets increases.
+Yes, the value function appears continuous, increasing, and differentiable.  In addition, the value function for the high labor shocks is larger than the value function for low labor shocks.  The difference decreases as the level of current assets increases.
 
-```{r 3ci, echo = FALSE}
-
-plot(1, type = "n", xlim = c(min_a, max_a), ylim = c(-20, -5), 
-     xlab = "Current Assets", ylab = "Utility", main = "Value Function")
+```{r 3ci, echo = FALSE, eval = FALSE}
+plot(1, type = "n", xlim = c(min_a, max_a), ylim = c(-11, -6), 
+     xlab = "Current Assets (a)", ylab = "Utility", main = "Value Function")
 
 lines(x = a, y =v_high, col = "red")
 lines(x = a, y =v_low, col = "blue")
 
-text(x = 4, y= -7, "High Value of Labor Shock", col = "red")
-text(x = 7, y= -13, "Low Value of Labor Shock", col = "blue")
+text(x = 1, y= -7, "High Value of Labor Shock", col = "red")
+text(x = 4, y= -8, "Low Value of Labor Shock", col = "blue")
 ```
 
 \pagebreak
 
 ii. Plot the asset holdings decision rules $a'(a, l_i)$ for the two labor shocks. Is there a value $\bar{a}$ such that $a'(a, l_2) < a$ for all $a \ge \bar{a}$? What do the features of the decision rules suggest about the long-run behavior of assets $a_t$?
 
-```{r 3cii, echo = FALSE}
+As the chart shows at $\bar{a} \approx 2.2575$, $a'(a, l_2) < a$ for all $a \ge \bar{a}$.
 
-plot(1, type = "n", xlim = c(min_a, max_a), ylim = c(0, 10), 
-     xlab = "Current Assets", ylab = "Future Assets")
+The decision rules suggest that when a high labor shock is realized, agents save more than their current asset holdings and when a low labor shock is realized, agents draw down their current asset holdings.  In the long run, the transition matrix implies where along the range from 0 to $\bar{a}$, agents converge to.
+
+```{r 3cii, echo = FALSE, eval = FALSE}
+
+plot(1, type = "n", xlim = c(min_a, max_a), ylim = c(min_a, max_a), 
+     xlab = "Current Assets (a)", ylab = "Future Assets (a')")
 
 lines(x = policy_function_high$a, y =policy_function_high$a_prime, col = "red")
 lines(x = policy_function_low$a, y =policy_function_low$a_prime, col = "blue")
 
-text(x = 2, y= 7, "High Value of Labor Shock", col = "red")
-text(x = 7, y= 2, "Low Value of Labor Shock", col = "blue")
+text(x = 1, y= 2.5, "High Value of Labor Shock", col = "red")
+text(x = 4, y= 2, "Low Value of Labor Shock", col = "blue")
+text(x = 3.5, y= 4, "a' = a")
 
-policy_function_low %>% filter(a == a_prime)
-policy_function_high %>% filter(a == a_prime)
+intersection_low <- policy_function_low %>% 
+  filter(a == a_prime) %>%
+  summarise_all(mean)
+
+intersection_high <- policy_function_high %>% 
+  filter(a == a_prime) %>%
+  summarise_all(mean)
+
+points(x = intersection_low$a, y = intersection_low$a_prime, pch=16, col = "blue")
+points(x = intersection_high$a, y = intersection_high$a_prime, pch=16, col = "red")
 
 abline(a = 0, b = 1, lty = 2)
 ```
@@ -251,9 +380,70 @@ abline(a = 0, b = 1, lty = 2)
 
 (d) To find the stationary distribution over assets and labor, first construct a (large) transition matrix over $(a, l)$. Then starting from an arbitrary initial distribution, iterate until convergence on the mapping from the current distribution into the distribution in the next period. What is the mean of the stationary asset distribution? Plot the (marginal) asset distribution.
 
+```{r 3d, echo = FALSE, eval = FALSE}
+tol <- .05
+diff <- 1000
+
+p_low0 <- matrix(rep(1/n, times = 2*n), ncol = 2)
+p_high0 <- matrix(rep(1/n, times = 2*n), ncol = 2)
+
+p_low <- p_low0
+p_high <- p_high0
+
+iter <- 1
+
+while (diff > tol & iter < max_iter ) {
+
+  p_low <- 0 * p_low0
+  p_high <- 0 * p_high0
+  
+  for (i in 1:n) {
+    if (p_high0[i] > .Machine$double.xmin) {
+      p_high[decision_high[i], 1] <- p_high[decision_high[i]] + p_high0[i, 1] * Q[2, 1]
+      p_high[decision_high[i], 2] <- p_high[decision_high[i]] + p_high0[i, 2] * Q[2, 2]
+    }
+    
+    if (p_low0[i] > .Machine$double.xmin) {
+      p_low[decision_low[i], 1] <- p_low[decision_low[i]] + p_low0[i, 1] * Q[1, 1]
+      p_low[decision_low[i], 2] <- p_low[decision_low[i]] + p_low0[i, 2] * Q[1, 2]
+    }
+    
+  }
+  
+  diff <- sum(abs(p_low - p_low0) + abs(p_high - p_high0))
+  
+  p_low0 <- p_low
+  p_high0 <- p_high
+  
+  iter <- iter + 1
+}
+
+p_low_marginal <- apply(p_low, 1, sum) / sum(p_low)
+p_high_marginal <- apply(p_high, 1, sum) / sum(p_high)
+
+mean_assets_low <- sum(a * p_low_marginal)
+mean_assets_high <- sum(a * p_high_marginal)
+mean_assets <- (mean_assets_low + mean_assets_high)/2
+```
+
+```{r 3d_plot, echo = FALSE, eval = FALSE}
+plot(1, type = "n", xlim = c(min_a, max_a), ylim = c(0, 1), main = "Stationary Asset CDF", xlab = "Current Assets (a)", ylab = "CDF")
+
+lines(x = a, y = cumsum(p_low_marginal), col = "blue")
+lines(x = a, y = cumsum(p_high_marginal), col = "red")
+
+abline(v=mean_assets, lty=2)
+abline(v=mean_assets_low, col = "blue", lty=2)
+abline(v=mean_assets_high, col = "red", lty=2)
+
+```
+
 \pagebreak
 
 ## Appendix
 
 ```{r appendix, ref.label='3c', eval = FALSE}
+```
+
+```{r appendix, ref.label='3d', eval = FALSE}
 ```

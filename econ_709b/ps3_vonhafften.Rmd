@@ -9,6 +9,7 @@ header-includes:
 - \newcommand{\R}{\mathbb{R}}
 - \newcommand{\Q}{\mathbb{Q}}
 - \newcommand{\var}{\text{var}}
+- \newcommand{\cov}{\text{cov}}
 - \newcommand{\rank}{\text{rank}}
 - \newcommand{\twiddle}{\tilde}
 - \usepackage{bm}
@@ -338,19 +339,59 @@ Thus, $\tilde{\beta} \to_p \beta$.
 
 \pagebreak
 
-5. 7.10 In the homoskedastic regression model $y = X'\beta + e$ with $E[e | x] = 0$ and $E[e^2 | X] = \sigma^2$ suppose $\hat{\beta}$ is the OLS estimator of $\beta$ with covariance matrix estimator $\hat{V}_{\hat{\beta}}$ based on a sample of size $n$. Let $\hat{\sigma}^2$ be the estimator of $\sigma^2$. You wish to forecast an out-of-sample value of $Y_{n+1}$ given that $X_{n+1} = x$. Thus the available information is the sample, the estimates $(\hat{\beta}, \hat{V}_{\hat{\beta}}, \hat{\sigma}^2)$, the residuals $\hat{e}_i$, and the out-of-sample value of the regressors $X_{n+1}$.
+5. 7.10 In the homoskedastic regression model $y = X\beta + e$ with $E[e | x] = 0$ and $E[e^2 | X] = \sigma^2$ suppose $\hat{\beta}$ is the OLS estimator of $\beta$ with covariance matrix estimator $\hat{V}_{\hat{\beta}}$ based on a sample of size $n$. Let $\hat{\sigma}^2$ be the estimator of $\sigma^2$. You wish to forecast an out-of-sample value of $Y_{n+1}$ given that $X_{n+1} = x$. Thus the available information is the sample, the estimates $(\hat{\beta}, \hat{V}_{\hat{\beta}}, \hat{\sigma}^2)$, the residuals $\hat{e}_i$, and the out-of-sample value of the regressors $X_{n+1}$.
 
 (a) Find a point forecast of $Y_{n+1}$.
 
+For clarity, the notation I use is:
+
+- $X$ is the in-sample independent variables ($n \times k$ matrix).
+- $y$ is the in-sample dependent variable (vector with $n$ elements).
+- $x_{n+1}$ is the out-of-sample independent variables (vector with $k$ elements).
+- $y_{n+1}$ is the out-of-sample dependent variable (scalar).  It is not part of the available information.
+- $\hat{\beta} = (X'X)^{-1}X'y$ are the OLS coefficients from regressing $y$ on $X$ (vector with $k$ elements). 
+
+The point forecast for the out-of-sample dependent variable $y_{n+1}$ is:
 
 $$
-\hat{Y}_{n+1} =  x'\hat{\beta}
+\hat{y}_{n+1} =  x_{n+1}'\hat{\beta}
 $$
+
+$\hat{y}_{n+1}$ is conditionally unbiased:
+
+\begin{align*}
+E[\hat{y}_{n+1}|X, x_{n+1}] 
+&= E[x_{n+1}'\hat{\beta}|X, x_{n+1}] \\
+&= E[x_{n+1}'(X'X)^{-1}X'y|X, x_{n+1}] \\
+&= x_{n+1}'(X'X)^{-1}X'E[y|X, x_{n+1}] \\
+&= x_{n+1}'(X'X)^{-1}X'E[ X\beta + e|X, x_{n+1}] \\
+&= x_{n+1}'(X'X)^{-1}X' X\beta +x_{n+1}'(X'X)^{-1}X'E[e|X, x_{n+1}] \\
+&= x_{n+1}'\beta
+\end{align*}
 
 (b) Find an estimator of the variance of this forecast.
 
+Define $\hat{e}_{n+1} = y_{n+1} - \hat{y}_{n+1}$ as the prediction error. 
+
 $$
-\var(\hat{Y}_{n+1}) =  \var(X_{n+1}'\hat{\beta})
+\var[\hat{y}_{n+1}|X, x_{n+1}] = \var[\hat{y}_{n+1} - y_{n+1}|X, x_{n+1}] = \var[\hat{e}_{n+1}|X, x_{n+1}]
+$$
+
+Notice that $E[\hat{e}_{n+1}|X, x_{n+1}] = 0$, so
+
+\begin{align*}
+\var[\hat{e}_{n+1}|X, x_{n+1}] 
+&= E[\hat{e}_{n+1}^2|X, x_{n+1}] \\
+&= E[(e_{n+1} - x_{n+1}'(\hat{\beta} - \beta))^2|X, x_{n+1}] \\
+&= E[e_{n+1}^2|X, x_{n+1}] - 2E[e_{n+1}x_{n+1}'(\hat{\beta} - \beta)|X, x_{n+1}] + E[x_{n+1}'(\hat{\beta} - \beta)(\hat{\beta} - \beta)'x_{n+1}|X, x_{n+1}] \\
+&= \sigma^2 - 0 + x_{n+1}'E[(\hat{\beta} - \beta)(\hat{\beta} - \beta)'|X, x_{n+1}]x_{n+1} \\
+&= \sigma^2 + x_{n+1}'V_{\hat{\beta}}x_{n+1}
+\end{align*}
+
+For estimator plug in known quantities:
+
+$$
+\hat{\sigma}^2 + x_{n+1}'\hat{V}_{\hat{\beta}}x_{n+1}
 $$
 
 6. 7.13 Consider an iid sample $\{Y_i, X_i\}, i=1, ..., n$ where $Y$ and $X$ are scalar. Consider the reverse projection model $X = Y \gamma + u$ with $E[Yu] = 0$ and define the parameter of interest as $\theta = 1/\gamma$.
@@ -358,19 +399,23 @@ $$
 (a) Propose an estimator $\hat{\gamma}$ of $\gamma$.
 
 $$
-\hat{\gamma} = (\sum_{i=1}^n Y_i^2)^{-1} \sum_{i=1}^n Y_i X_i
+\hat{\gamma} = \frac{\sum_{i=1}^n Y_i X_i}{\sum_{i=1}^n Y_i^2}
 $$
 
 (b) Propose an estimator $\hat{\theta}$ of $\theta$.
 
 $$
-\hat{\theta} = (\sum_{i=1}^n Y_i X_i)^{-1} \sum_{i=1}^n Y_i^2
+\hat{\theta} = 1/\hat{\gamma} = \frac{\sum_{i=1}^n Y_i^2}{\sum_{i=1}^n Y_iX_i}
 $$
 
 (c) Find the asymptotic distribution of $\hat{\theta}$.
 
 $$
-\hat{\theta} = (\sum_{i=1}^n Y_i (Y_i \gamma + u_i))^{-1} \sum_{i=1}^n Y_i^2
+\sqrt{n}(\hat{\gamma} - \gamma) \to_d N(0,)
+$$
+
+$$
+\hat{\theta} = \frac{\sum_{i=1}^n Y_i (X_i\beta + e_i)}{\sum_{i=1}^n Y_iX_i} = \beta + \frac{\sum_{i=1}^n e_i}{\sum_{i=1}^n Y_iX_i}
 $$
 
 $$
@@ -381,63 +426,232 @@ $$
 
 ...
 
-7.14 Take the model $Y = X_1 \beta_1 + X_2 \beta_2 + e_i$ and $E[X_i e_i] = 0$ with both $\beta_1 \in \R$ and $\beta_2 \in \R$, and define the parameter $\theta = \beta_1 \beta_2$.
+7.14 Take the model $y = X_1 \beta_1 + X_2 \beta_2 + e_i$ and $E[X_i e_i] = 0$ with both $\beta_1 \in \R$ and $\beta_2 \in \R$, and define the parameter $\theta = \beta_1 \beta_2$.
 
 (a) What is the appropriate estimator $\hat{\theta}$ for $\theta$?
 
-...
+Regress $y$ on $X_1$ and $X_2$ to get $\hat{\beta_1}$ and $\hat{\beta_2}$.  Define $\hat{\theta} = \hat{\beta_1} \hat{\beta_2}$.
 
 (b) Find the asymptotic distribution of $\hat{\theta}$ under standard regularity conditions.
 
-...
+Under standard regularity conditions,
+
+$$
+\sqrt{n} (\hat{\beta_1}- \beta) \sim N(0, )
+$$
 
 (c) Show how to calculate an asymptotic 95% confidence interval for $\theta$.
 
 ...
 
-7.15 Take the linear model $Y = X\beta + e$ with $E[e|X] = 0$ and $X_i \in \R$. Consider the estimator $\hat{\beta} = \frac{\sum_{i=1}^n X_i^3 Y_i}{\sum_{i=1}^n X_i^4}$. Find the asymptotic distribution of $\hat{n}(\hat{\beta} - \beta)$ as $n \to \infty$.
+7.15 Take the linear model $Y = X\beta + e$ with $E[e|X] = 0$ and $X_i \in \R$. Consider the estimator $\hat{\beta} = \frac{\sum_{i=1}^n X_i^3 Y_i}{\sum_{i=1}^n X_i^4}$. Find the asymptotic distribution of $\sqrt{n}(\hat{\beta} - \beta)$ as $n \to \infty$.
 
-...
+Rewrite $\hat{\beta}$ in terms of $\beta$:
+
+\begin{align*}
+\hat{\beta} 
+&= \frac{\sum_{i=1}^n X_i^3 Y_i}{\sum_{i=1}^n X_i^4} \\
+&= \frac{\sum_{i=1}^n X_i^3 (X_i\beta + e_i)}{\sum_{i=1}^n X_i^4} \\
+&= \frac{\sum_{i=1}^n X_i^4 \beta + \sum_{i=1}^nX_i^3e_i}{\sum_{i=1}^n X_i^4} \\
+&= \beta + \frac{\sum_{i=1}^nX_i^3e_i}{\sum_{i=1}^n X_i^4}
+\end{align*}
+
+Using the weak law of large numbers and the central limit theorem:
+
+\begin{align*}
+\sqrt{n}(\hat{\beta} - \beta) 
+&= \sqrt{n}\frac{\sum_{i=1}^nX_i^3e_i}{\sum_{i=1}^n X_i^4} \\
+&= \sqrt{n}(\frac{1}{n}\sum_{i=1}^nX_i^3e_i-0)\frac{1}{\frac{1}{n}\sum_{i=1}^n X_i^4} \\
+&\to_d N(0, E(X_i^6e_i^2)) \frac{1}{E(X_i^4)}\\
+&= N(0, \frac{E(X_i^6e_i^2)}{E(X_i^4)}) 
+\end{align*}
+
+Because $E(X_i^3 e_i) = E(X_i^3 E(e_i|X_i))=0$.
 
 7.17 An economist reports a set of parameter estimates, including the coefficient estimates $\hat{\beta}_1 = 1.0$, $\hat{\beta}_2 = 0.8$, and standard errors $s(\hat{\beta}_1) = 0.07$ and $s(\hat{\beta}_2) = 0.07$. The author writes "The estimates show that $\beta_1$ is larger than $\beta_2$."
 
-(a) Write down  the formula for an asymptotic 95% confidence interval for $\theta = \beta_1 - \beta_2$, expressed as a function of $\hat{\beta}_1$, $\hat{\beta}_2$, $s(\hat{\beta}_1)$, $s(\hat{\beta}_2)$, and $\hat{\rho}$, where $\hat{\rho}$ is the estimated correlation between $\hat{\beta}_1$ and $\hat{\beta}_2$.
+(a) Write down the formula for an asymptotic 95% confidence interval for $\theta = \beta_1 - \beta_2$, expressed as a function of $\hat{\beta}_1$, $\hat{\beta}_2$, $s(\hat{\beta}_1)$, $s(\hat{\beta}_2)$, and $\hat{\rho}$, where $\hat{\rho}$ is the estimated correlation between $\hat{\beta}_1$ and $\hat{\beta}_2$.
 
-...
+Define estimator $\hat{\theta}$ for $\theta$:
+
+$$
+\hat{\theta} = \hat{\beta_1} - \hat{\beta_2}
+$$
+
+The variance of $\hat{\theta}$ is:
+
+$$
+\var(\hat{\theta}) 
+= \var(\hat{\beta_1} - \hat{\beta_2}) \\
+= \var(\hat{\beta_1}) + \var(\hat{\beta_2}) - 2\cov(\hat{\beta_1}, \hat{\beta_2}) \\
+= \var(\hat{\beta_1}) + \var(\hat{\beta_2}) - 2\rho\sqrt{\var(\hat{\beta_1})\var(\hat{\beta_2})}
+$$
+
+Thus, the standard error of $\hat{\theta}$ is:
+
+$$
+s(\hat{\theta}) = \sqrt{s(\hat{\beta_1})^2 + s(\hat{\beta_2})^2 - 2\hat{\rho}s(\hat{\beta_1})s(\hat{\beta_2})}
+$$
+
+Since $\sqrt{n}(\hat{\beta}_1-\beta_1)$ and $\sqrt{n}(\hat{\beta}_2-\beta_2)$ are assymptotically normal, $\sqrt{n}(\hat{\theta} - \theta)$ is asymptotically normal. Thus, the an asymptotic 95% confidence interval for $\theta$ is:
+
+\begin{align*}
+& [\hat{\theta} - 1.96 s(\theta), \hat{\theta} + 1.96 s(\theta)]\\
+&= \Bigg[(\hat{\beta_1} - \hat{\beta_2}) - 1.96 \sqrt{s(\hat{\beta_1})^2 + s(\hat{\beta_2})^2 - 2\hat{\rho}s(\hat{\beta_1})s(\hat{\beta_2})}, 
+(\hat{\beta_1} - \hat{\beta_2}) + 1.96 \sqrt{s(\hat{\beta_1})^2 + s(\hat{\beta_2})^2 - 2\hat{\rho}s(\hat{\beta_1})s(\hat{\beta_2})}\Bigg] \\
+&= \Bigg[0.2 - 1.96 \sqrt{0.0098(1 - \hat{\rho})}, 0.2 + 1.96 \sqrt{0.0098(1 - \hat{\rho})}\Bigg]
+\end{align*}
 
 (b) Can $\hat{\rho}$ be calculated from the reported information?
 
-...
+Yes, we are unable to calculate $\hat{\rho}$ from the reported information.
 
 (c) Is the author correct? Does the reported information support the author's claim?
 
-...
+No, the reported evidence only supports for the author's claim for some value of $\hat{\rho}$.  We know that $\hat{\rho}$ is bounded between -1 and 1.  If $\hat{\rho} = -1$, the confidence interval is $[-0.074, 0.474]$, so we cannot reject the null hypothesis that $\hat{\theta} = 0$. If $\hat{\rho} = 1$, the confidence interval is $\{0.2\}$, which supports the claim.
 
 8. 7.19 Take the model $y = X'\beta + e$ with $E[Xe] = 0$ and suppose you have observations $i = 1, ..., 2n$ (The number of observations is $2n$.) You randomly split the sample in half, (each has $n$ observations), calculate $\hat{\beta_1}$ by least squares on the first sample, and $\hat{\beta_2}$ by least squares on the second sample. What is the asymptotic distribution of $\sqrt{n} (\hat{\beta_1} - \hat{\beta_2})$?
 
-...
+Note that
 
-9. Suppose $y_i = 1 + x_i \gamma + \varepsilon_i$, where $y_i, x_i, \varepsilon_i$ are scalar.  Define $w_i = (1 \; x_i)'$ and $\beta = (1 \; \gamma)'$. Assume that $x_i$ has a discrete distribution: $P(x_i = 1) = P(x_i = 4/3) = P(x_i = 5/3) = P(x_i = 1/4)$. We will use the following assumptions: (A0) $(y_i, x_i)$ iid, (A1) $E(\varepsilon_i | w_i) = 0$, (A1') $E(w_i \varepsilon_i)=0$, and (A2) $\var(\varepsilon_i | w_i) = \sigma^2$. Assume that you will observe data $(y_1, x_1), ..., (y_n, x_n)$ (a sample of size $n$). Below state any additional assumptions needed to obtain your answers. Consider the following OLS estimator from regressing $y_i$ on $w_i$ using only observations where $x_i = 1$ or $x_i = 2$: $\hat{\beta} = [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i y_i 1 \{x_i \in \{1, 2\}\}$ where $1\{A\}$ is an indicator function for the event $A$.
+$$
+\sqrt{n} (\hat{\beta_1} - \hat{\beta_2}) = \sqrt{n} (\hat{\beta_1} - \beta) - \sqrt{n}(\hat{\beta_2} - \beta) 
+$$
+
+If observations are iid and $E(x_ix_i')$ is finite and nonsingular, 
+
+$$
+\sqrt{n} (\hat{\beta_1} - \beta) \to_d N(0, V)
+$$
+$$
+\sqrt{n} (\hat{\beta_2} - \beta) \to_d N(0, V)
+$$
+
+where $V = E(x_ix_i')^{-1}E(x_ix_i'e^2)E(x_ix_i')^{-1}$.  If observations are independent, then $\hat{\beta_1}$ and $\hat{\beta_2}$ are independent:
+
+$$
+\sqrt{n} (\hat{\beta_1} - \hat{\beta_2}) \sim N(0, 2V)
+$$
+
+9. Suppose $y_i = 1 + x_i \gamma + \varepsilon_i$, where $y_i, x_i, \varepsilon_i$ are scalar.  Define $w_i = (1 \; x_i)'$ and $\beta = (1 \; \gamma)'$. Assume that $x_i$ has a discrete distribution: $P(x_i = 1) = P(x_i = 4/3) = P(x_i = 5/3) = P(x_i = 2) = 1/4$. We will use the following assumptions: (A0) $(y_i, x_i)$ iid, (A1) $E(\varepsilon_i | w_i) = 0$, (A1') $E(w_i \varepsilon_i)=0$, and (A2) $\var(\varepsilon_i | w_i) = \sigma^2$. Assume that you will observe data $(y_1, x_1), ..., (y_n, x_n)$ (a sample of size $n$). Below state any additional assumptions needed to obtain your answers. Consider the following OLS estimator from regressing $y_i$ on $w_i$ using only observations where $x_i = 1$ or $x_i = 2$: $\hat{\beta} = [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i y_i 1 \{x_i \in \{1, 2\}\}$ where $1\{A\}$ is an indicator function for the event $A$.
 
 (a) Under (A0) and (A1), does $\hat{\beta} \to^p \beta$?
 
-...
+\begin{align*}
+\hat{\beta} 
+&= [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i y_i 1 \{x_i \in \{1, 2\}\} \\
+&= [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i (w_i'\beta + \varepsilon_i) 1 \{x_i \in \{1, 2\}\} \\
+&= \beta + [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i\varepsilon_i 1 \{x_i \in \{1, 2\}\}
+\end{align*}
+
+By the weak law of large numbers,
+
+\begin{align*}
+\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\} 
+&\to_p E[w_i w_i' 1 \{x_i \in \{1, 2\}\}] \\
+\frac{1}{n} \sum_{i=1}^n w_i\varepsilon_i 1 \{x_i \in \{1, 2\}\} 
+&\to_p E[w_i \varepsilon_i 1 \{x_i \in \{1, 2\}\}] \\
+&= E[w_i E[\varepsilon_i|w+i] 1 \{x_i \in \{1, 2\}\}] \\
+&= 0 \\
+\end{align*}
+
+Therefore, $\hat{\beta}  \to_p \beta$.
 
 (b) Under (A0) and (A1'), does $\hat{\beta} \to^p \beta$?
 
-...
+A similar setup to (a) gets us:
+
+$$
+E[w_i \varepsilon_i 1 \{x_i \in \{1, 2\}\}]
+$$
+
+Under (A1'), this expectation does not generally equal zero.  So, (A1') is insufficient is ensure that $\hat{\beta}$ converges in probability to $\beta$.
 
 (c) Under (A0), (A1), and (A2), what is the asymptotic distribution of $\sqrt{n} (\hat{\beta} - \beta)$? Simplify as much as possible.
 
-...
+\begin{align*}
+\sqrt{n} (\hat{\beta} - \beta) 
+&= \sqrt{n} [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i\varepsilon_i 1 \{x_i \in \{1, 2\}\} \\
+&= [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}\frac{1}{\sqrt{n}} \sum_{i=1}^n w_i\varepsilon_i 1 \{x_i \in \{1, 2\}\}
+\end{align*}
+
+By the weak law of large number,
+
+$$
+\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{1, 2\}\} \to_p E[ w_i w_i' 1 \{x_i \in \{1, 2\}\}]
+$$
+
+By the central limit theorem,
+
+$$
+\frac{1}{\sqrt{n}} \sum_{i=1}^n w_i\varepsilon_i 1 \{x_i \in \{1, 2\}\} \to_d N(0, V)
+$$
+
+\begin{align*}
+V 
+&= \var(w_i\varepsilon_i 1 \{x_i \in \{1, 2\}\}) \\
+&= E[(w_i\varepsilon_i 1 \{x_i \in \{1, 2\}\})(w_i\varepsilon_i 1 \{x_i \in \{1, 2\}\})'] \\
+&= E[\varepsilon_i^2 1 \{x_i \in \{1, 2\}\}w_iw_i'] \\
+&= E[E[\varepsilon_i^2|w_i] 1 \{x_i \in \{1, 2\}\}w_iw_i'] \\
+&= E[\sigma^2 1 \{x_i \in \{1, 2\}\}w_iw_i'] \\
+&= \sigma^2 E[1 \{x_i \in \{1, 2\}\}\begin{bmatrix} 1 & x_i \\x_i & x_i^2\end{bmatrix}] \\
+&= \sigma^2 [P(x_i = 1)\begin{bmatrix} 1 & 1 \\1 & 1 \end{bmatrix} + P(x_i = 2)\begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}] \\
+&= \sigma^2 [\begin{bmatrix} 1/4 & 1/4 \\1/4 & 1/4 \end{bmatrix} + \begin{bmatrix} 1/4 & 1/2 \\ 1/2 & 1 \end{bmatrix}] \\
+&= \sigma^2  \begin{bmatrix} 1/2 & 3/4 \\ 3/4 & 5/4 \end{bmatrix} \\
+\end{align*}
+
+Thus, $\sqrt{n} (\hat{\beta} - \beta) \to_d N(0, W)$ where
+
+\begin{align*}
+W 
+&= E[ w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}VE[ w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1} \\
+&= \sigma^2 E[ w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1}E[1 \{x_i \in \{1, 2\}\}w_iw_i']E[ w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1} \\
+&= \sigma^2 E[ w_i w_i' 1 \{x_i \in \{1, 2\}\}]^{-1} \\
+&= \sigma^2 \begin{bmatrix} 1/2 & 3/4 \\ 3/4 & 5/4 \end{bmatrix}^{-1} \\
+&= \sigma^2 \begin{bmatrix} 20 & -12 \\ -12 & 8 \end{bmatrix}^{-1}
+\end{align*}
 
 (d) Consider the following OLS estimator from regressing $y_i$ on $w_i$ using only observation where $x_i = \frac{4}{3}$ or $x_i = \frac{5}{3}$: $\hat{\hat{\beta}} = [\frac{1}{n} \sum_{i=1}^n w_i w_i' 1 \{x_i \in \{\frac{4}{3}, \frac{5}{3}\}\}]^{-1}\frac{1}{n} \sum_{i=1}^n w_i y_i 1 \{x_i \in \{\frac{4}{3}, \frac{5}{3}\}\}$. Let $\hat{\beta}_2$ and $\hat{\hat{\beta}}_2$ denote the second elements of $\hat{\beta}$ and $\hat{\hat{\beta}}$. Note that $\hat{\beta}_2$ and $\hat{\hat{\beta}}_2$  are estimators for $\gamma$. Under (A0), (A1), and (A2), which estimator for $\gamma$ do you prefer $\hat{\beta}_2$ and $\hat{\hat{\beta}}_2$? Explain.
 
-...
+$\hat{\beta}_2$ is preferred to $\hat{\hat{\beta}}_2$ because it is more efficient (it has lower variance).  Applying the same logic as in part (a), we can show that $\hat{\hat{\beta}}_2$ is consistent.
+
+To see that $\hat{\beta}_2$ has lower variance, consider the matrix scaling up $\sigma^2$:
+
+\begin{align*}
+E[1 \{x_i \in \{\frac{4}{3}, \frac{5}{3}\}\}w_iw_i'] ^{-1}
+&= (P(x_i = \frac{4}{3})\begin{bmatrix} 1 & 4/3 \\4/3 & 16/9 \end{bmatrix} + P(x_i = \frac{5}{3})\begin{bmatrix} 1 & 5/3 \\ 5/3 & 25/9 \end{bmatrix})^{-1} \\
+&= (\begin{bmatrix} 1/4 & 4/12 \\4/12 & 16/36 \end{bmatrix} + \begin{bmatrix} 1/4 & 5/12 \\ 5/12 & 25/36 \end{bmatrix})^{-1}\\
+&= (\begin{bmatrix} 1/2 & 9/12 \\ 9/12 & 41/36 \end{bmatrix})^{-1}\\
+&= \begin{bmatrix} 164 & -108 \\ -108 & 72 \end{bmatrix}
+\end{align*}
+
+Since $\sigma^2 > 0 \implies 72\sigma^2 > 8\sigma^2$, so the variance of $\hat{\hat{\beta}}_2$ is larger than the variance of $\hat{\beta}_2$.
 
 (e) Consider the OLS estimator, $\hat{\alpha}$, from regressing $y_i$ on $x_i$ (no constant term) using only the observation where $x_i = 1$ or $x_i = 2$.  Under (A0), (A1), and (A2), what is the probability limit of $\hat{\alpha}$? 
 
-...
+\begin{align*}
+\hat{\alpha} 
+&= \frac{\frac{1}{n} \sum_{i=1}^n x_iy_i1 \{x_i \in \{1, 2\}\}}{\frac{1}{n} \sum_{i=1}^n x_i^21 \{x_i \in \{1, 2\}\}} \\
+&= \frac{\frac{1}{n} \sum_{i=1}^n x_i(1+x_i\gamma+ \varepsilon_i)1 \{x_i \in \{1, 2\}\}}{\frac{1}{n} \sum_{i=1}^n x_i^21 \{x_i \in \{1, 2\}\}} \\
+&= \frac{\frac{1}{n} \sum_{i=1}^n x_i1 \{x_i \in \{1, 2\}\}}{\frac{1}{n} \sum_{i=1}^n x_i^21 \{x_i \in \{1, 2\}\}} + \gamma + \frac{\frac{1}{n} \sum_{i=1}^n x_i\varepsilon_i1 \{x_i \in \{1, 2\}\}}{\frac{1}{n} \sum_{i=1}^n x_i^21 \{x_i \in \{1, 2\}\}} \\
+&\to_p \frac{E[x_i1 \{x_i \in \{1, 2\}\}]}{E[x_i^21 \{x_i \in \{1, 2\}\}]} + \gamma + \frac{E[x_i\varepsilon_i1 \{x_i \in \{1, 2\}\}]}{ E[x_i^21 \{x_i \in \{1, 2\}\}]} \\
+\end{align*}
+
+$$
+E[x_i] = (1 + 2)/4 = 3/4
+$$
+
+$$
+E[x_i^2] = (1 + 4)/4 = 5/4
+$$
+
+$$
+E[x_i\varepsilon_i1 \{x_i \in \{1, 2\}\}] = E[x_iE[\varepsilon_i|w_i]1 \{x_i \in \{1, 2\}\}] = 0
+$$
+
+$$
+\hat{\alpha} \to_p \gamma + (3/4)/(5/4) = \gamma + 3/5 
+$$
 
 (f) Let $\alpha$ denote your answer to part (e). Under (A0), (A1), and (A2), what is the asymptotic distribution of $\sqrt{n}(\hat{\alpha} - \alpha)$?
 
