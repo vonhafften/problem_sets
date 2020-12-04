@@ -1,7 +1,7 @@
 ---
 title: "ECON 709B - Problem Set 4"
 author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
-date: "12/8/2020"
+date: "12/10/2020"
 output: pdf_document
 header-includes:
 - \newcommand{\N}{\mathbb{N}}
@@ -71,10 +71,56 @@ i <- diag(nrow = n, ncol = n)
 
 ...
 
-(e) Compute the regression function at $education = 12$ and $experience = 20$. Compute a 95% confidence interval for the regression function at this point.
+2. 8.1 In the model $y = X_1' \beta_1 + X_2' \beta_2 + e$, show directly from definition (8.3) that the CLS estimate of $\beta = (\beta_1, \beta_2)$ subject to the constraint that $\beta_2 = 0$ is the OLS regression of $y$ on $X_1$.
 
 ...
 
-(f) Consider an out-of-sample individual with 16 years of education and 5 years experience. Construct an 80% forecast interval for their log wage and wage. [To obtain the forecast interval for the wage, apply the exponential function to both endpoints.]
+3. 8.3 In the model $y = X_1' \beta_1 + X_2' \beta_2 + e$, with $\beta_1$ and $\beta_2$ each $k \times 1$, find the CLS estimate of $\beta = (\beta_1, \beta_2)$ subject to the constraint that $\beta_1 = \beta_2$.
+
+...
+
+4. 8.4(a) In the linear projection model $y = \alpha + X'\beta +e$ consider the restriction $\beta = 0$. Find the constrained least squares (CLS) estimator of $\alpha$ under the restriction $\beta = 0$.
+
+...
+
+5. 8.22 Take the linear model $y = X_1\beta_1 + X_2\beta_2 + e$ with $E[Xe] = 0$. Consider the resitriction $\beta_1/\beta_2 = 2$
+
+(a) Find an explicit expression for the constrained least squares (CLS) estimator $\tilde{\beta} = (\tilde{\beta}_1, \tilde{\beta}_2)$ of $\beta = (\beta_1, \beta_2)$ under the restriction. Your answer should be specific to the restriction. It should not be a generic formula for an abstract general restriction.
+
+...
+
+(b) Derive the asymptotic distribution of $\tilde{\beta}_1$ under the assumption that the restriction is true.
+
+...
+
+6. 9.1 Prove that if an additional regressor $X_{k+1}$ is added to $X$, Theil’s adjusted $\bar{R}^2$ increases if and only if $|T_{k_1}| > 1$, where $T_{k-1} = \hat{\beta}_{k+1}/s(\hat{\beta}_{k+1}$ is the t-ratio for $\hat{\beta}_{k+1}$ and $s(\hat{\beta}_{k+1}) = (s^2[(X' X)^{-1}]_{k-1,k+1})^{1/2}$ is the homoskedasticity-formula standard error.
+
+...
+
+9.2 You have two independent samples $(Y_{1i}, X_{1i})$ and $(Y_{2i}, X_{2i})$ both with sample sizes $n$ which satisfy $Y_1 = X_1\beta_1 + e_1$ and $Y_2 = X_2\beta_2 +e_2$, where $E[X_1e_1] = 0$ and $E[X_2e_2] = 0$. Let $\hat{\beta}_1$ and $\hat{\beta}_2$ be the OLS estimates of $\beta_1 \in R_k$ and $\beta_2 \in R_k$.
+
+(a) Find the asymptotic distribution of $\sqrt{n}((\hat{\beta}_2 - \hat{\beta}_1) - (\beta_2 - \beta_1))$ as $n \to \infty$.
+
+...
+
+(b) Find an appropriate test statistic for $H0 : \beta_2 = \beta_1$.
+
+...
+
+(c) Find the asymptotic distribution of this statistic under $H_0$.
+
+...
+
+7. 9.4 Let $W$ be a Wald statistic for $H_0 : \theta = 0$ versus $H_1 : \theta \neq 0$, where $\theta$ is $q \times 1$. Since $W \to_d \chi_q^2$ under $H_0$, someone suggests the test "Reject $H_0$ if $W < c_1$ or $W > c_2$ where $c_1$ is the $\alpha/2$ quantile of $\chi_q^2$ and $c_2$ is the $1 - \alpha/2$ quantile of $\chi_q^2$."
+
+(a) Show that the asymptotic size of the test is $\alpha$.
+
+...
+
+(b) Is this a good test of $H_0$ versus $H_1$? Why or why not?
+
+...
+
+8. 9.7 Take the model $y = X \beta_1 + X^2 \beta_2 + e$ with $E[e|X] = 0$ where $y$ is wages (dollars per hour) and $X$ is age. Describe how you would test the hypothesis that the expected wage for a 40-year-old worker is $20 an hour.
 
 ...
