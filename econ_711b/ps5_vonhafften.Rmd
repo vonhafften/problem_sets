@@ -50,22 +50,26 @@ Similar to the second round, the player who lost the coin toss in any round $n \
 
 4. A unit mass of coffee lovers are uniformly located on a street, denoted by the $[0, 1]$ interval. There are two coffee shops, namely coffee shop 1 and coffee shop 2. First, each coffee shop $i \in \{1, 2\}$ selects location $x_i \in [0, 1]$ simultaneously. Then, observing $(x_1, x_2)$, each coffee shop $i \in \{1, 2\}$ sets a price $p_i \ge 0$ for its own coffee, simultaneously. A coffee lover located in $w$ is to pay cost $c(w - y)^2$ to go to a shop located at $y$, where $c > 0$. Given the locations $x_1$ and $x_2$ and prices $p_1$ and $p_2$, each coffee lover buys coffee from the shop with the lowest total cost, which is the sum of the price and the cost to go to the shop. (If the total cost is the same, she flips a coin to choose the shop to buy.) Compute the  subgame-perfect Nash equilibria in the above game.
 
-We use backward induction.  Given $x_i$ and $x_j$ and $p_i$ and $p_j$, consumers buy their coffee from coffee shop $i$ if
+We use backward induction.  Given $x_i$, $x_j$, $p_i$, and $p_j$, consumers buy their coffee from coffee shop $i$ if
 
 \begin{align*}
 c(w - x_i)^2 + p_i &< c(w - x_j)^2 + p_j \\
-c(w^2 - 2x_iw +x_i^2) + p_i &< c(w^2 - 2x_jw +x_j^2) + p_j \\
-cw^2 - 2cx_iw + cx_i^2 + p_i &< cw^2 - 2cx_jw + cx_j^2 + p_j \\
-w &<  \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}
+\implies c(w^2 - 2x_iw +x_i^2) + p_i &< c(w^2 - 2x_jw +x_j^2) + p_j \\
+\implies cw^2 - 2cx_iw + cx_i^2 + p_i &< cw^2 - 2cx_jw + cx_j^2 + p_j \\
+\implies w &<  \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}
 \end{align*}
 
-Because $w$ is uniformly distributed on $[0, 1]$.  Thus, given $x_i$, $x_j$, $p_i$, and $p_j$, total revenue for coffee shop $i$ is
+Thus, coffee shop $i$ sells to the following quantity of consumers:
 
-\begin{align*}
-p_i \int_0^1 1\{ w  <  \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}\} dw
-&= p_i \int_0^{\frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}} dw \\
-&= p_i \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)} 
-\end{align*}
+$$
+\int_0^1 1\{ w  <  \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}\} dw = \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)} 
+$$
+
+Because $w$ is uniformly distributed on $[0, 1]$. Thus, the total revenue for coffee shop $i$ is
+
+$$
+p_i \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)} 
+$$
 
 FOC [$p_i$]:
 
@@ -74,7 +78,7 @@ FOC [$p_i$]:
 0 &= c(x_j^2-x_i^2) + p_j - 2p_i^*
 \end{align*}
 
-Guess that the subgame nash equilibrium is symmetric ($p_j = p_i^*$):
+Guess that pricing is symmetric in the subgame perfect nash equilibrium is symmetric:
 
 \begin{align*}
 0 &= c(x_j^2 - x_i^2) - p_i^* \\
@@ -89,10 +93,4 @@ $$
 = \frac{(x_i - x_j)(x_i + x_j)}{2(x_j- x_i)}
 = \frac{(-1)(x_i - x_j)(x_i + x_j)}{2(x_i- x_j)}
 = \frac{-(x_i + x_j)}{2}
-$$
-
-Now, consider coffee shop $i$'s location choice.  Given $x_i$ and $x_j$, the total revenue for coffee shop $i$ is
-
-$$
-c(x_j^2 - x_i^2)\frac{(x_i^2 - x_j^2)}{2(x_j- x_i)}
 $$
