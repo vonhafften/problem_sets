@@ -18,17 +18,174 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-1.  An endowment economy consists of two types of consumers indexed by $i = 1, 2$. There is one nonstorable consumption good. Consumer 1 has initial endowment stream $e^1_0 = 1$ while consumer 2 has initial endowment $e^2_0 = 0$. At some random date $s > 0$ the endowments will switch so $e^1_t = 0$ and $e^2_t = 1$ for all $t \ge s$. Suppose the switch happens with probability $\delta$ each period until it is realized. Both consumers have preferences ordered by $E_0 \sum_{t=0}^\infty \beta^t \log c_t^i$. For this problem you can either consider an Arrow-Debreu market structure or a recursive equilibrium with a sequential market structure. For the Arrow-Debreu market, consider a single market at date zero with claims to consumption in any future date and any state. For the recursive structure, consider a market each period in claims to the two "trees,"" and use backward induction to find the values after and then before the switch of the endowments.
+1.  An endowment economy consists of two types of consumers indexed by $i = 1, 2$. There is one nonstorable consumption good. Consumer 1 has initial endowment stream $e^1_0 = 1$ while consumer 2 has initial endowment $e^2_0 = 0$. At some random date $s > 0$ the endowments will switch so $e^1_t = 0$ and $e^2_t = 1$ for all $t \ge s$. Suppose the switch happens with probability $\delta$ each period until it is realized. Both consumers have preferences ordered by $E_0 \sum_{t=0}^\infty \beta^t \log c_t^i$. For this problem you can either consider an Arrow-Debreu market structure or a recursive equilibrium with a sequential market structure. For the Arrow-Debreu market, consider a single market at date zero with claims to consumption in any future date and any state. For the recursive structure, consider a market each period in claims to the two "trees," and use backward induction to find the values after and then before the switch of the endowments.
 
 (a) Define a competitive equilibrium for this economy for your choice of market structure, being explicit about the objects which make up the equilibrium and the conditions they must satisfy.
 
+I approach this problem using an Arrow-Debreu market structure.  There is a Markov state $s_t \in \{0, 1\}$ that governs the realization of endowment uncertainty.  The Markov state starts at $s_0 = 0$ (i.e., $P(s_0 = 0) = 1$) and the transition kernel is  
+
+\begin{align*}
+P(s_{t+1} = 0 | s_t = 0) &= 1 - \delta \\
+P(s_{t+1} = 1 | s_t = 0) &= \delta \\
+P(s_{t+1} = 0 | s_t = 1) &= 0 \\
+P(s_{t+1} = 1 | s_t = 1) &= 1
+\end{align*}
+
+Thus, the associated Markov transition matrix is:
+
+$$
+Q = \begin{bmatrix} 1 - \delta & \delta \\ 0 & 1\end{bmatrix}
+$$
+
+Based on this Markov state, the endowments $e_t^1 = e^1(s_t)$ and $e_t^2 = e^2(s_t)$ are defined as 
+
+\begin{align*}
+e^1(s_t) &= 1 - s_t \\
+e^2(s_t) &= s_t
+\end{align*}
+
+Define $s^t = (s_0, s_1, s_2, ..., s_t)$ as the history of shock up to and including period $t$. Define preferences for consumer $i$ over state-contigent consumption plans $c^i = \{c_t^i (s^t)\}_{t=0}^\infty$ as:
+
+\begin{align*}
+U^i(c^i) = \sum_{t=0}^\infty \beta^t \sum_{s^t} \log (c_t^i(s^t)) \pi_t(s^t)
+\end{align*}
+
+Consumers trade dated, state-contingent claims to consumption at date 0 at price $q_t^0(s^t)$.  Thus, budget constraint of consumer $i$ is:
+
+\begin{align*}
+\sum_{t=0}^\infty \sum_{s^t} q_t^0(s^t) c_t^i(s^t) \le \sum_{t=0}^\infty \sum_{s^t}q^0_t(s^t) e^i(s_t)
+\end{align*}
+
+Thus, the problem of consumer $i$ is:
+
+\begin{align*}
+\max_{\{c_t^i(s^t)\}_{i=0}^\infty} &\sum_{t=0}^\infty \beta^t \sum_{s^t} \log (c_t^i(s^t)) \pi_t(s^t) \\
+\text{s.t. } &\sum_{t=0}^\infty \sum_{s^t} q_t^0(s^t) c_t^i(s^t) \le \sum_{t=0}^\infty \sum_{s^t}q^0_t(s^t) e^i(s_t)
+\end{align*}
+
+A competitive equilibrium is a price system $\{q_t^0(s^t)\}_{t=0}^\infty$ and an allocation $\{c^1, c^2\}$ such that consumers optimize (i.e., $c^i$ solves the problem of consumer $i$) and markets clear (i.e., $e^1(s_t) + e^2(s_t) = c_t^1(s^t) + c_t^2(s^t)$ for all $s^t$).
+
 (b) Compute a competitive equilibrium, finding the consumption allocation and the prices (as of date zero) of claims to each consumer’s endowment process.
+
+Attach Lagrange multipler $\mu_i$ on the budget constraint for consumer $i$:
+
+$$
+\max_{\{c_t^i(s^t)\}_{i=0}^\infty} \sum_{t=0}^\infty \beta^t \sum_{s^t} \log (c_t^i(s^t)) \pi_t(s^t) + \mu_i \sum_{t=0}^\infty \sum_{s^t} q_t^0(s^t) (e^i(s_t) - c_t^i(s^t))
+$$
+
+Thus, the FOC with respect to $c_t^i(s^t)$ is:
+
+$$
+\beta^t \frac{\pi_t(s^t)}{c_t^i(s^t)} = \mu_iq_t^0 (s^t)
+$$
+
+The ratio of the FOC for consumer 1 and consumer 2 imply that their consumption is constant (because they each consume a constant fraction of the total endowment, which is constant):
+
+$$
+\frac{\beta^t \frac{P(s^t | s_0 = 0)}{c_t^1(s^t)}}{\beta^t \frac{P(s^t | s_0 = 0)}{c_t^2(s^t)}} = \frac{\mu_1 q_t^0 (s^t)}{\mu_2 q_t^0 (s^t)} \\
+\implies
+c_t^1(s^t) = (\frac{\mu_1}{\mu_2})^{-1}c_t^2(s^t) \\
+$$
+
+Thus, define $\bar{c}^1$ as consumer 1's consumption and $\bar{c}^2$ consumer 2's consumption.  Substituting the FOC into the budget constraint:
+
+\begin{align*}
+\sum_{t=0}^\infty \sum_{s^t} (\beta^t \frac{\pi_t(s^t)}{c_t^i(s^t)\mu_i}) (e^i(s_t) - c_t^i(s^t)) &= 0\\
+\sum_{t=0}^\infty \sum_{s^t} (\beta^t \frac{\pi_t(s^t)}{\bar{c}^i(1/\bar{c}^i)}) (e^i(s_t) - \bar{c}^i) &= 0\\
+\sum_{t=0}^\infty \sum_{s^t} (\beta^t \pi_t(s^t)) (e^i(s_t) - \bar{c}^i) &= 0\\
+\sum_{t=0}^\infty \beta^t  \sum_{s^t} \pi_t(s^t) e^i(s_t) - \sum_{t=0}^\infty  \beta^t\sum_{s^t} \pi_t(s^t) \bar{c}^i &= 0\\
+\sum_{t=0}^\infty \beta^t  \sum_{s^t} \pi_t(s^t) e^i(s_t) &= \sum_{t=0}^\infty  \beta^t \bar{c}^i\\
+\sum_{t=0}^\infty \beta^t  \sum_{s^t} \pi_t(s^t) e^i(s_t) &= \frac{1}{1-\beta} \bar{c}^i\\
+\bar{c}^i &= (1-\beta)\sum_{t=0}^\infty \beta^t  \sum_{s^t} \pi_t(s^t) e^i(s_t) 
+\end{align*}
+
+As of period $t$, the expected endowment of consumer 1 is:
+
+\begin{align*}
+\sum_{s^t} \pi_t(s^t) e^1(s_t)
+&= (1)(1) + (1-\delta)(1) + (1 - \delta)(1-\delta)(1) + ... + (1-\delta)^t(1) \\
+&= \sum_{l=0}^{t}(1-\delta)^l \\
+&= \frac{1-(1-\delta)^{t+1}}{1-(1-\delta)}\\
+&= \frac{1-(1-\delta)^{t+1}}{\delta}
+\end{align*}
+
+Thus, consumer 1's consumption is:
+
+\begin{align*}
+\bar{c}^1 
+&= (1-\beta)\sum_{t=0}^\infty \beta^t  \frac{1-(1-\delta)^{t+1}}{\delta} \\
+&= \frac{1 - \beta}{1 - \beta + \beta \delta}
+\end{align*}
+
+So the consumer 2's consumption is:
+
+$$
+\bar{c}^2 = 1 -\bar{c}^1 = \frac{\beta \delta}{1 - \beta + \beta \delta}
+$$
+
+To find prices, notice that $\pi(s^0) = 1$. Normalizing $q_0^0 (s^0) = 1$, the FOC implies that
+
+$$
+\mu_i = \frac{1}{c_0^i(s^0)} = \frac{1}{\bar{c}^i}
+$$
+
+We can substitute this equation into the FOC for period $t$:
+
+\begin{align*}
+q_t^0 (s^t) 
+&= \beta^t \frac{\pi_t(s^t)}{c_t^i(s^t)\mu_i}\\
+&= \beta^t \frac{\pi_t(s^t)c_0^i(s^0)}{c_t^i(s^t)}\\
+&= \beta^t \frac{\pi_t(s^t)\bar{c}^i}{\bar{c}^i}\\
+&= \beta^t \pi_t(s^t)
+\end{align*}
+
+For the prices of the claims to consumer 1's endowments, we need to consider histories that do not include the endowment process switch.  For these histories, $\pi(s^t) = \delta^t$.  For the prices of the claims to consumer 2's endowments, we need to consider histories that include the endowment process switch. For these histories, notice that $\pi(s^t) = \pi(s^s) = \delta^{s-1}(1-\delta)$ when $s^t$ is a history with $s_l = 0$ for $l = 1,..., s - 1$ and $s_l = 1$ for $l = s, ..., t$.  Therefore,
+
+$$
+q_t^0 (s^t) =
+\begin{cases}
+\beta^t \delta^t & \text{if } s_l = 0 \; \forall l =\{1,...,t\}\\
+\beta^t \delta^{s-1}(1-\delta), & \text{if } s_l = 0 \; \forall l =\{1,...,s-1\} \text{ and } s_l = 0 \; \forall l =\{s,...,t\}
+\end{cases}
+$$
+
 
 (c) What is price of a claim to the aggregate endowment? What is the risk-free interest rate?
 
+A claim bought in period 0 to the aggregate endowment in period $t$, $q_t^0$, does not depend on the history of shocks $s^t$ because the aggregate endowment does not change based on the shocks.  Thus, the FOC from part (B) implies that $q_t^0 = \beta^t$ (i.e., set $\pi_t = 1$).
+
+This claim to the aggregate endowment in period $t$ can be thought of a $t$-period risk-free bond that pays off one unit of consumption good in period $t$ and costs $\beta^t$.  With no arbitrage, this bond is equivalent to rolling over $t$ 1-period risk-free bonds that pay off one unit of consumption and cost $\beta$. Thus, the return on these one-period risk-free bonds (i.e., the risk-free interest rate) is $R = \frac{1}{\beta}$.
+
 (d) Now suppose that $\lambda \in (0, 1)$ is the Pareto weight on consumer 1 with $1 - \lambda$ the weight on consumer 2. Formulate the social planner’s problem and characterize the solution of the Pareto optimal allocation for a given $\lambda$.
 
+The social planner's problem is:
+
+\begin{align*}
+\max_{\{(c_t^1, c_t^2)\}_{t=1}^\infty} & \lambda \sum_{t=1}^\infty \beta^t \log c_t^1 + (1 - \lambda) \sum_{t=1}^\infty \beta^t \log c_t^2 \\
+\text{s.t. } & c_t^1 + c_t^2 = 1
+\end{align*}
+
+The problem can be rewritten as:
+
+$$
+\max_{\{c_t^1\}_{t=1}^\infty} \lambda \sum_{t=1}^\infty \beta^t \log c_t^1 + (1 - \lambda) \sum_{t=1}^\infty \beta^t \log (1 - c_t^1)
+$$
+
+FOC ($c_t^1$):
+
+$$
+\frac{\lambda \beta^t}{c_t^1} = \frac{(1 - \lambda) \beta^t}{1 - c_t^1}
+$$
+
+$$
+\implies c_t^1 = \lambda \implies c_t^2 = 1 - \lambda
+$$
+
 (e) Relate the competitive equilibrium that you found earlier with the Pareto optima. Is the competitive equilibrium optimal? (Can you find a particular $\lambda$ so that they are equivalent?) For a given $\lambda$, can you find a way to decentralize the Pareto optimum as a competitive equilibrium?
+
+In part (c), we found that the solution to social planner's problem is for each consumer to consumer their Pareto weight.  In part (b), we found that consumer consume a constant amount.  Thus, we can set the Pareto weight to the fraction consumed in the competitive equilibrium: $\lambda = \frac{1 - \beta}{1 - \beta + \beta \delta}$.
+
+Yes, based on a $\lambda$, we can alter the endowment functions to achieve the Pareto optimum.  In part (b), we found that the fraction of the aggregate endowment consumed by each consumer depended on their expected total endowment.  If you adjust the endowment amount you can achieve the Pareto optimum as a competitive equilibrium.
 
 \pagebreak
 
@@ -247,7 +404,7 @@ x
 
 (c) Take the following as parameters: $\beta = 0.95, \gamma = 3, r = 0.03, w = 1.1$. Discretize the asset choice into a finite grid. Note that this directly restricts the assets to lie in a compact set. Numerically solve for the value functions by iterating on the Bellman equation.
 
-```{r 3c, echo = FALSE, eval = FALSE}
+```{r 3c, echo = FALSE}
 # parameters
 beta <- .95
 gamma <- 3
@@ -331,7 +488,7 @@ i. Plot the value functions for the high and low values of the labor shocks. Do 
 
 Yes, the value function appears continuous, increasing, and differentiable.  In addition, the value function for the high labor shocks is larger than the value function for low labor shocks.  The difference decreases as the level of current assets increases.
 
-```{r 3ci, echo = FALSE, eval = FALSE}
+```{r 3ci, echo = FALSE}
 plot(1, type = "n", xlim = c(min_a, max_a), ylim = c(-11, -6), 
      xlab = "Current Assets (a)", ylab = "Utility", main = "Value Function")
 
@@ -350,7 +507,7 @@ As the chart shows at $\bar{a} \approx 2.2575$, $a'(a, l_2) < a$ for all $a \ge 
 
 The decision rules suggest that when a high labor shock is realized, agents save more than their current asset holdings and when a low labor shock is realized, agents draw down their current asset holdings.  In the long run, the transition matrix implies where along the range from 0 to $\bar{a}$, agents converge to.
 
-```{r 3cii, echo = FALSE, eval = FALSE}
+```{r 3cii, echo = FALSE}
 
 plot(1, type = "n", xlim = c(min_a, max_a), ylim = c(min_a, max_a), 
      xlab = "Current Assets (a)", ylab = "Future Assets (a')")
@@ -380,7 +537,7 @@ abline(a = 0, b = 1, lty = 2)
 
 (d) To find the stationary distribution over assets and labor, first construct a (large) transition matrix over $(a, l)$. Then starting from an arbitrary initial distribution, iterate until convergence on the mapping from the current distribution into the distribution in the next period. What is the mean of the stationary asset distribution? Plot the (marginal) asset distribution.
 
-```{r 3d, echo = FALSE, eval = FALSE}
+```{r 3d, echo = FALSE}
 tol <- .05
 diff <- 1000
 
@@ -426,7 +583,7 @@ mean_assets_high <- sum(a * p_high_marginal)
 mean_assets <- (mean_assets_low + mean_assets_high)/2
 ```
 
-```{r 3d_plot, echo = FALSE, eval = FALSE}
+```{r 3d_plot, echo = FALSE}
 plot(1, type = "n", xlim = c(min_a, max_a), ylim = c(0, 1), main = "Stationary Asset CDF", xlab = "Current Assets (a)", ylab = "CDF")
 
 lines(x = a, y = cumsum(p_low_marginal), col = "blue")
