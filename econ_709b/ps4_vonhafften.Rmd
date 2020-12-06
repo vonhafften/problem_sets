@@ -11,6 +11,7 @@ header-includes:
 - \newcommand{\var}{\text{var}}
 - \newcommand{\rank}{\text{rank}}
 - \newcommand{\twiddle}{\tilde}
+- \newcommand{\Lfn}{\mathcal{L}}
 - \usepackage{bm}
 ---
 
@@ -20,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-1. 7.28 Estimate the regression: $\hat{log(wage)} = \beta_1 education + \beta_2 experience + \beta_3 experience^2/100 + \beta_4$.\footnote{Use the subsample of the CPS that you used for problems 3.24 and 3.25 (instead of the subsample requested in the problem)}
+1. 7.28 Estimate the regression: $\hat{\log(wage)} = \beta_1 education + \beta_2 experience + \beta_3 experience^2/100 + \beta_4$.\footnote{Use the subsample of the CPS that you used for problems 3.24 and 3.25 (instead of the subsample requested in the problem)}
 
 ```{r setup_libraries, eval = FALSE}
 library(tidyverse)
@@ -54,73 +55,438 @@ n <- dim(x)[1]
 i <- diag(nrow = n, ncol = n)
 ```
 
-
 (a) Report the coefficient estimates and robust standard errors.
 
-...
+```{r 728a}
+# OLS regression
+beta <- solve(t(x) %*% x) %*% (t(x) %*% y)
+
+# residuals
+p_x <- x %*% solve(t(x) %*% x) %*% t(x)
+m_x <- i - p_x
+e_hat <- m_x %*% y
+
+# heteroskedastic asymptotic variance
+omega_hat <- solve(t(x) %*% x) %*% 
+  (t(x) %*% diag(as.numeric(e_hat^2)) %*% x) %*% 
+  solve(t(x) %*% x)
+robust_se <- t(t(sqrt(diag(omega_hat))))
+print(beta)
+print(robust_se)
+```
 
 (b) Let $\theta$ be the ratio of the return to one year of education to the return to one year of experience for $experience =10$. Write $\theta$ as a function of the regression coefficients and variables. Compute $\hat{\theta}$ from the estimated model.
 
-...
+Taking partial derivatives of the regression equation with respect to $education$ and $experience$, the return to one year of education is $\beta_1$ and the return to one year of experience is $\beta_2 + 2\beta_3 experience / 100$.  Thus the ratio at $experience = 10$ is $\theta = \frac{\beta_1}{\beta_2 + \beta_3 / 5}$.
 
-(c) Write out the formula for the asymptotic standard error for $\hat{\theta}$ as a function of the covariance matrix for $\hat{\beta}$. Compute $s(\hat{\beta})$ from the estimated model.
+$$
+\hat{\theta} = \frac{\hat{\beta}_1}{\hat{\beta}_2 + \hat{\beta}_3/5} \approx \frac{0.1443}{0.0426 + (-0.0951)/5} \approx 6.1090
+$$
 
-...
+```{r 728b}
+theta_hat <- beta[1]/(beta[2]+beta[3]/5)
+print(theta_hat)
+```
+
+(c) Write out the formula for the asymptotic standard error for $\hat{\theta}$ as a function of the covariance matrix for $\hat{\beta}$. Compute $s(\hat{\theta})$ from the estimated model.
+
+Use the delta method.  Define $h(\beta) = \frac{\beta_1}{\beta_2 + \beta_3 / 5}$.  Thus,
+
+$$
+H(\beta) = 
+\frac{\partial}{\partial \beta'}h(\beta) = \begin{pmatrix}
+\frac{1}{\beta_2 + \beta_3 / 5} &
+\frac{-\beta_1}{(\beta_2 + \beta_3 / 5)^2} &
+\frac{-\beta_1/5}{(\beta_2 + \beta_3 / 5)^2} &
+0
+\end{pmatrix}
+$$
+
+Thus, the asymptotic variance of $\theta = g(\beta)$ is $H(\beta) \Omega H(\beta)'$.  We can estimate it with $H(\hat{\beta}) \hat{\Omega} H(\hat{\beta})'$.
+
+```{r 728c}
+H_hat_beta <- t(c(1/(beta[2]+beta[3]/5), 
+                -beta[1]/((beta[2]+beta[3]/5)^2), 
+                (-beta[1]/5)/((beta[2]+beta[3]/5)^2), 
+                0))
+theta_se <- sqrt(H_hat_beta %*% omega_hat %*% t(H_hat_beta))
+print(theta_se)
+```
 
 (d) Construct a 90% asymptotic confidence interval for $\theta$ from the estimated model.
 
-...
+The confidence interval is $[\hat{\theta} - CV_\alpha s(\hat{\theta}), \hat{\theta} + CV_\alpha s(\hat{\theta})]$:
+
+```{r 728d}
+cv <- qnorm(p =  .95)
+
+theta_ci <- c(theta_hat - cv * theta_se, theta_hat + cv * theta_se)
+print(theta_ci)
+```
 
 2. 8.1 In the model $y = X_1' \beta_1 + X_2' \beta_2 + e$, show directly from definition (8.3) that the CLS estimate of $\beta = (\beta_1, \beta_2)$ subject to the constraint that $\beta_2 = 0$ is the OLS regression of $y$ on $X_1$.
 
-...
+The CLS estimator is
 
-3. 8.3 In the model $y = X_1' \beta_1 + X_2' \beta_2 + e$, with $\beta_1$ and $\beta_2$ each $k \times 1$, find the CLS estimate of $\beta = (\beta_1, \beta_2)$ subject to the constraint that $\beta_1 = \beta_2$.
+\begin{align*}
+\tilde{\beta} 
+&= \arg \min_{\beta_2 = 0} SSE(\beta) \\ 
+&= \arg \min_{\beta_2 = 0} (y - X_1\beta - X_2 \beta_2)'(y - X_1\beta - X_2 \beta_2)
+\end{align*}
 
-...
+Define Legrangian:
+
+\begin{align*}
+\Lfn 
+&= (y - X_1\beta_1 - X_2 \beta_2)'(y - X_1\beta_1 - X_2 \beta_2) - \lambda'(\beta_2 - 0)\\
+&= y'y - \beta_1'X_1'y -\beta_2'X_2'y - y'X_1\beta_1 + \beta_1'X_1'X_1\beta_1 + \beta_2'X_2'X_1\beta_1 - y'X_2\beta_2 + \beta_1'X_1'X_2\beta_2 + \beta_2'X_2'X_2\beta_2 + \lambda'\beta_2
+\end{align*}
+
+FOC [$\beta_1$]:
+
+\begin{align*}
+0 &= - X_1'y  - X_1'y + 2X_1'X_1\tilde{\beta}_1 + X_1'X_2\tilde{\beta}_2' + X_1'X_2\tilde{\beta}_2 \\
+\implies 0 &= - 2X_1'y + 2X_1'X_1\tilde{\beta}_1 + 2X_1'X_2\tilde{\beta}_2'
+\end{align*}
+
+FOC [$\lambda$]:
+
+$$
+\tilde{\beta}_2 = 0
+$$
+
+Combining FOCs:
+
+\begin{align*}
+0 &= - 2X_1'y + 2X_1'X_1\tilde{\beta}_1 \\
+\implies \tilde{\beta}_1 &= (X_1'X_1)^{-1}X_1'y \\
+\end{align*}
+
+\pagebreak
+
+3. 8.3 In the model $y = X_1' \beta_1 + X_2' \beta_2 + e$, with $\beta_1$ and $\beta_2$ each $k \times 1$, find the CLS estimate of $\beta = (\beta_1, \beta_2)$ subject to the constraint that $\beta_1 = -\beta_2$.
+
+The CLS estimator is
+
+$$
+\tilde{\beta} = \arg \min_{\beta_1 = -\beta_2} (y - X_1\beta - X_2 \beta_2)'(y - X_1\beta - X_2 \beta_2)
+$$
+
+Define Legrangian:
+
+\begin{align*}
+\Lfn 
+&= (y - X_1\beta_1 - X_2 \beta_2)'(y - X_1\beta_1 - X_2 \beta_2) - \lambda'(\beta_2 - \beta_1)\\
+&= y'y - \beta_1'X_1'y -\beta_2'X_2'y - y'X_1\beta_1 + \beta_1'X_1'X_1\beta_1 + \beta_2'X_2'X_1\beta_1 - y'X_2\beta_2 + \beta_1'X_1'X_2\beta_2 + \beta_2'X_2'X_2\beta_2 + \lambda'(\beta_2 + \beta_1)
+\end{align*}
+
+FOC [$\beta_1$]:
+
+\begin{align*}
+0 &= - X_1'y  - X_1'y + 2X_1'X_1\tilde{\beta}_1 + X_1'X_2\tilde{\beta}_2' + X_1'X_2\tilde{\beta}_2 + \lambda \\
+\implies 0 &= - 2X_1'y + 2X_1'X_1\tilde{\beta}_1 + 2X_1'X_2\tilde{\beta}_2' + \lambda
+\end{align*}
+
+FOC [$\lambda$]:
+
+$$
+\tilde{\beta}_1 = -\tilde{\beta}_2
+$$
+
+These FOCs imply a value for lambda:
+
+\begin{align*}
+0 &= - 2X_1'y + 2X_1'X_1\tilde{\beta}_1 - 2X_1'X_2\tilde{\beta}_1' + \lambda \\
+\lambda &= 2X_1'y - 2X_1'X_1\tilde{\beta}_1 + 2X_1'X_2\tilde{\beta}_1'
+\end{align*}
+
+FOC [$\beta_2$]:
+
+\begin{align*}
+0 &= - X_2'y  - X_2'y + 2X_2'X_2\tilde{\beta}_2 + X_2'X_1\tilde{\beta}_1' + X_2'X_1\tilde{\beta}_1 + \lambda \\
+\implies 0 &= - 2X_2'y + 2X_2'X_2\tilde{\beta}_2 + 2X_2'X_1\tilde{\beta}_1' + \lambda
+\end{align*}
+
+Thus, the estimator is
+
+\begin{align*}
+0 &= - 2X_2'y - 2X_2'X_2\tilde{\beta}_1 + 2X_2'X_1\tilde{\beta}_1' + 2X_1'y - 2X_1'X_1\tilde{\beta}_1 + 2X_1'X_2\tilde{\beta}_1'\\
+( X_1'X_1 -  X_2'X_1 -  X_1'X_2 +  X_2'X_2) \tilde{\beta}_1 &= X_1'y - X_2'y \\
+ \tilde{\beta}_1  
+ &= ( X_1'X_1 -  X_2'X_1 -  X_1'X_2 +  X_2'X_2)^{-1}(X_1'y - X_2'y) \\
+ &= ((X_1 - X_2)'(X_1 - X_2))^{-1}(X_1 - X_2)'y \\
+ &= -\tilde{\beta}_2
+\end{align*}
+
+\pagebreak
 
 4. 8.4(a) In the linear projection model $y = \alpha + X'\beta +e$ consider the restriction $\beta = 0$. Find the constrained least squares (CLS) estimator of $\alpha$ under the restriction $\beta = 0$.
 
-...
+$$
+\begin{pmatrix}\tilde{\alpha} \\ \tilde{\beta}\end{pmatrix} = \arg \min_{\beta = 0} (y - \alpha - X\beta)'(y - \alpha - X\beta)
+$$
 
-5. 8.22 Take the linear model $y = X_1\beta_1 + X_2\beta_2 + e$ with $E[Xe] = 0$. Consider the resitriction $\beta_1/\beta_2 = 2$
+Define legrangian:
+
+$$
+\Lfn = (y - \alpha - X\beta)'(y - \alpha - X\beta) + \lambda' \beta
+$$
+
+FOC [$\alpha$]:
+
+$$
+0 = \vec{1}(y - \tilde{\alpha} - X\tilde{\beta})
+$$
+
+FOC [$\lambda$]:
+
+$$
+\tilde{\beta} = 0
+$$
+
+$$
+\implies \tilde{\alpha} = \frac{1}{n} \sum_{i=1}^n y_i
+$$
+
+5. 8.22 Take the linear model $y = X_1\beta_1 + X_2\beta_2 + e$ with $E[Xe] = 0$. Consider the restriction $\beta_1/\beta_2 = 2$
 
 (a) Find an explicit expression for the constrained least squares (CLS) estimator $\tilde{\beta} = (\tilde{\beta}_1, \tilde{\beta}_2)$ of $\beta = (\beta_1, \beta_2)$ under the restriction. Your answer should be specific to the restriction. It should not be a generic formula for an abstract general restriction.
 
-...
+We can rewrite the constraint as a linear constraint:
+
+$$
+\beta_1/\beta_2 = 2 \implies = \beta_1-2\beta_2 = 0
+$$
+
+Thus, the definition of the estimator is
+
+$$
+\tilde{\beta} = \arg \min_{\beta_1-2\beta_2 = 0} (y - X_1\beta_1 - X_2\beta_2)'(y - X_1\beta_1 - X_2\beta_2)
+$$
+
+Define a legrangian:
+
+\begin{align*}
+\Lfn 
+&= (y - X_1\beta_1 - X_2\beta_2)'(y - X_1\beta_1 - X_2\beta_2) + \lambda' (\beta_1-2\beta_2)\\
+&= y'y + \beta_1^2X_1'X_1+ \beta_2^2X_2'X_2 - 2\beta_1 y'X_1 - 2\beta_2 y'X_2 + 2\beta_1\beta_2 X_1'X_2 + \lambda' (\beta_1-2\beta_2)
+\end{align*}
+
+FOC [$\theta$]:
+
+$$
+\tilde{\beta}_1 = 2\tilde{\beta}_2
+$$
+
+FOC [$\beta_1$]:
+
+\begin{align*}
+0 &= - 2X_1'y + 2X_1'X_1\tilde{\beta}_1 + 2X_1'X_2\tilde{\beta}_2 + \tilde{\lambda} \\
+\implies \tilde{\lambda} &= 2X_1'y - 4X_1'X_1\tilde{\beta}_2 - 2X_1'X_2\tilde{\beta}_2
+\end{align*}
+
+\pagebreak
+
+FOC [$\beta_2$]:
+
+\begin{align*}
+0 &= - 2X_2'y + 2X_2'X_2\tilde{\beta}_2 + 2X_2'X_1\tilde{\beta}_1 - 2 \tilde{\lambda} \\
+0 &= - X_2'y + X_2'X_2\tilde{\beta}_2 + 2X_2'X_1\tilde{\beta}_2 -  (2X_1'y - 4X_1'X_1\tilde{\beta}_2 - 2X_1'X_2\tilde{\beta}_2) \\
+2X_1'y + X_2'y &= X_2'X_2\tilde{\beta}_2 + 4X_2'X_1\tilde{\beta}_2 + 4X_1'X_1\tilde{\beta}_2 \\
+(2X_1 + X_2)'y &= (X_2'X_2 + 4X_2'X_1 + 4X_1'X_1)\tilde{\beta}_2 \\
+\tilde{\beta}_2 &= ((2X_1 + X_2)'(2X_1 + X_2))^{-1}(2X_1 + X_2)'y \\
+\tilde{\beta}_1 &= 2\tilde{\beta}_2 = 2((2X_1 + X_2)'(2X_1 + X_2))^{-1}(2X_1 + X_2)'y \\
+\end{align*}
 
 (b) Derive the asymptotic distribution of $\tilde{\beta}_1$ under the assumption that the restriction is true.
 
-...
+$$
+\sqrt{n}(\tilde{\beta}_1 - \beta_1) = \sqrt{n}(2\tilde{\beta}_2 - \beta_2) = 2\sqrt{n}(\tilde{\beta}_2 - \beta_2) 
+$$
 
-6. 9.1 Prove that if an additional regressor $X_{k+1}$ is added to $X$, Theil’s adjusted $\bar{R}^2$ increases if and only if $|T_{k_1}| > 1$, where $T_{k-1} = \hat{\beta}_{k+1}/s(\hat{\beta}_{k+1}$ is the t-ratio for $\hat{\beta}_{k+1}$ and $s(\hat{\beta}_{k+1}) = (s^2[(X' X)^{-1}]_{k-1,k+1})^{1/2}$ is the homoskedasticity-formula standard error.
+$$
+\sqrt{n}(\tilde{\beta}_2 - \beta_2) = \sqrt{n}((2X_1 + X_2)'(2X_1 + X_2))^{-1}(2X_1 + X_2)'e = \frac{\frac{1}{\sqrt{n}}\sum_{i=1}^n(2X_{i1} + X_{2i})e_{i}}{\frac{1}{n}\sum_{i=1}^n(2X_{i1} + X_{2i})^2}
+$$
 
-...
+By WLLN, 
+
+$$
+\frac{1}{n}\sum_{i=1}^n(2X_{i1} + X_{2i})^2 \to_p E[(2X_{i1} + X_{2i})^2]
+$$
+
+By CLT,
+
+$$
+\frac{1}{\sqrt{n}}(2X_{i1} + X_{2i})e_{i} \to_d N(0, E[(2X_{i1} + X_{2i})^2e_{i}^2])
+$$
+
+Thus, 
+
+$$
+\sqrt{n}(\tilde{\beta}_1 - \beta_1) \to N \Bigg(0, \frac{E[(2X_{i1} + X_{2i})^2e_{i}^2]}{E[(2X_{i1} + X_{2i})^2]^2} \Bigg)
+$$
+
+6. 9.1 Prove that if an additional regressor $X_{k+1}$ is added to $X$, Theil’s adjusted $\bar{R}^2$ increases if and only if $|T_{k+1}| > 1$, where $T_{k+1} = \hat{\beta}_{k+1}/s(\hat{\beta}_{k+1})$ is the t-ratio for $\hat{\beta}_{k+1}$ and $s(\hat{\beta}_{k+1}) = (s^2[(X' X)^{-1}]_{k+1,k+1})^{1/2}$ is the homoskedasticity-formula standard error.
+
+Regressing $y$ on $X$ results in $\hat{\beta} = (X'X)^{-1}X'y$, $\hat{\varepsilon} = y - X \hat{\beta}$, and $\bar{R}^2_{k+1}$. Regressing $y$ on $X$ with the restriction that $\beta_{k+1} = 0$ results in 
+
+$$
+\tilde{\beta} = \hat{\beta} - (X'X)^{-1}[0_k \; 1]'([0_k \; 1](X'X)^{-1}[0_k \; 1]')^{-1}\hat{\beta}_{k+1}
+$$
+
+The regression also results in $\tilde{\varepsilon} = y - X \tilde{\beta}$ and $\bar{R}^2_k$.  We can rewrite $\tilde{\varepsilon}$ as the following:
+
+$$
+\tilde{\varepsilon} = y - X\tilde{\beta} = y - X\hat{\beta} - X(\tilde{\beta} - \hat{\beta}) = \hat{\varepsilon} - X(\tilde{\beta} - \hat{\beta})
+$$
+
+\pagebreak
+
+Thus, because $X \hat{\varepsilon} =0$,
+
+$$
+\tilde{\varepsilon}'\tilde{\varepsilon}  = (\hat{\varepsilon} - X(\tilde{\beta} - \hat{\beta}))'(\hat{\varepsilon} - X(\tilde{\beta} - \hat{\beta}))= \hat{\varepsilon}'\hat{\varepsilon} + (\tilde{\beta} - \hat{\beta})'(X'X)(\tilde{\beta} - \hat{\beta})
+$$
+
+Therefore, the difference between the squared residuals is
+
+\begin{align*}
+\tilde{\varepsilon}'\tilde{\varepsilon} - \hat{\varepsilon}'\hat{\varepsilon}
+&= (\tilde{\beta} - \hat{\beta})'(X'X)(\tilde{\beta} - \hat{\beta}) \\
+&= \hat{\beta}_{k+1}([(X'X)^{-1}]_{k+1, k+1})^{-1}[0_k \; 1](X'X)^{-1}(X'X)(X'X)^{-1}[0_k \; 1]'([(X'X)^{-1}]_{k+1, k+1})^{-1} \hat{\beta}_{k+1}\\
+&= \hat{\beta}_{k+1}([(X'X)^{-1}]_{k+1, k+1})^{-1}[0_k \; 1](X'X)^{-1}[0_k \; 1]'([(X'X)^{-1}]_{k+1, k+1})^{-1}\hat{\beta}_{k+1}  \\
+&= \hat{\beta}_{k+1}([(X'X)^{-1}]_{k+1, k+1})^{-1}[(X'X)^{-1}]_{k+1, k+1}([(X'X)^{-1}]_{k+1, k+1})^{-1} \hat{\beta}_{k+1}\\
+&= \frac{\hat{\beta}_{k+1}^2}{[(X'X)^{-1}]_{k+1, k+1}}
+\end{align*}
+
+Thus, the adjusted R-squared is higher iff the t-statistic is at least 1.
+
+\begin{align*}
+\bar{R}^2_{k+1} &> \bar{R}^2_k \\
+\iff 
+1 - \frac{(n-1)\hat{\varepsilon}'\hat{\varepsilon}}{(n-k-1)\sum_i (y_i - \bar{y})} &> 1 - \frac{(n-1)\tilde{\varepsilon}'\tilde{\varepsilon}}{(n-k)\sum_i (y_i - \bar{y})} \\
+\iff 
+\frac{1}{n-k}\tilde{\varepsilon}'\tilde{\varepsilon} &> \frac{1}{n-k-1} \hat{\varepsilon}'\hat{\varepsilon}\\
+\iff 
+(n -k -1)(\tilde{\varepsilon}'\tilde{\varepsilon} - \hat{\varepsilon}'\hat{\varepsilon}) &> \hat{\varepsilon}'\hat{\varepsilon}\\
+\iff
+\frac{\tilde{\varepsilon}'\tilde{\varepsilon} - \hat{\varepsilon}'\hat{\varepsilon}}{\frac{1}{n-k-1}\hat{\varepsilon}'\hat{\varepsilon}} &> 1 \\
+\iff
+\frac{\hat{\beta}_{k+1}^2}{\frac{1}{n-k-1}\hat{\varepsilon}'\hat{\varepsilon}[(X'X)^{-1}]_{k+1, k+1}} &> 1 \\
+\iff
+\frac{\hat{\beta}_{k+1}^2}{s(\hat{\beta}_{k+1})^2} &> 1 \\
+\iff
+\Bigg|\frac{\hat{\beta}_{k+1}}{s(\hat{\beta}_{k+1})}\Bigg| &> 1 \\
+\iff
+\Bigg|T_{k+1}\Bigg| &> 1
+\end{align*}
 
 9.2 You have two independent samples $(Y_{1i}, X_{1i})$ and $(Y_{2i}, X_{2i})$ both with sample sizes $n$ which satisfy $Y_1 = X_1\beta_1 + e_1$ and $Y_2 = X_2\beta_2 +e_2$, where $E[X_1e_1] = 0$ and $E[X_2e_2] = 0$. Let $\hat{\beta}_1$ and $\hat{\beta}_2$ be the OLS estimates of $\beta_1 \in R_k$ and $\beta_2 \in R_k$.
 
 (a) Find the asymptotic distribution of $\sqrt{n}((\hat{\beta}_2 - \hat{\beta}_1) - (\beta_2 - \beta_1))$ as $n \to \infty$.
 
-...
+$$
+\sqrt{n}((\hat{\beta}_2 - \hat{\beta}_1) - (\beta_2 - \beta_1)) \\
+=\sqrt{n}(\hat{\beta}_2 - \beta_2) - \sqrt{n}(\hat{\beta}_1- \beta_1)
+$$
 
-(b) Find an appropriate test statistic for $H0 : \beta_2 = \beta_1$.
+$$
+\sqrt{n}(\hat{\beta}_1 - \beta_1) \to N(0, V_1)
+$$
 
-...
+$$
+V_1 = E(X_{1i}'X_{1i})^{-1} E(X_{1i}'X_{1i}e_1^{2}) E(X_{1i}'X_{1i})^{-1}
+$$
+
+$$
+\sqrt{n}(\hat{\beta}_2 - \beta_2) \to_d N(0, V_2)
+$$
+
+$$
+V_2 = E(X_{2i}'X_{2i})^{-1} E(X_{2i}'X_{2i}e_2^{2}) E(X_{2i}'X_{2i})^{-1}
+$$
+
+By the continuous mapping theorem and the independence of the subsamples:
+
+$$
+\sqrt{n}((\hat{\beta}_2 - \hat{\beta}_1) - (\beta_2 - \beta_1)) \to_d N(0, V_1 + V_2)
+$$
+
+(b) Find an appropriate test statistic for $H_0 : \beta_2 = \beta_1$.
+
+We can use a Wald test statistic: 
+
+\begin{align*}
+\hat{\theta} &= \hat{\beta}_2 - \hat{\beta}_1\\
+\theta_0 &= 0\\
+\hat{V}_{\hat{\theta}} &= \hat{V}_1 + \hat{V}_2\\
+\hat{V}_1 &= n(X_{1}'X_{1})^{-1} (X_{1}'diag(\hat{e}_1^{2})X_{1}) (X_{1}'X_{1})^{-1}\\
+\hat{V}_2 &= n(X_{2}'X_{2})^{-1} (X_{2}'diag(\hat{e}_2^{2})X_{2}) (X_{2}'X_{2})^{-1}\\
+W &= (\hat{\theta} - \theta_0)' \hat{V}_{\hat{\theta}}^{-1} (\hat{\theta} - \theta_0)\\
+&= (\hat{\beta}_2 - \hat{\beta}_1)'(\hat{V}_1 + \hat{V}_2)^{-1}(\hat{\beta}_2 - \hat{\beta}_1)
+\end{align*}
 
 (c) Find the asymptotic distribution of this statistic under $H_0$.
 
-...
+From (a), we know that 
+
+$$
+\sqrt{n}((\hat{\beta}_2 - \hat{\beta}_1) - (\beta_2 - \beta_1)) \to_d N(0, V_1 + V_2)
+$$
+
+By the WLLN,
+
+\begin{align*}
+\hat{V}_1 &\to_p V_1\\
+\hat{V}_2 &\to_p V_2 \\
+\implies \hat{V}_1 + \hat{V}_2 &\to_p V_1 + V_2
+\end{align*}
+
+Thus, 
+
+$$
+W \to_d \chi^2_k
+$$
+
+\pagebreak
 
 7. 9.4 Let $W$ be a Wald statistic for $H_0 : \theta = 0$ versus $H_1 : \theta \neq 0$, where $\theta$ is $q \times 1$. Since $W \to_d \chi_q^2$ under $H_0$, someone suggests the test "Reject $H_0$ if $W < c_1$ or $W > c_2$ where $c_1$ is the $\alpha/2$ quantile of $\chi_q^2$ and $c_2$ is the $1 - \alpha/2$ quantile of $\chi_q^2$."
 
 (a) Show that the asymptotic size of the test is $\alpha$.
 
-...
+The asymptotic size of the test is
+
+$$
+\lim_{n \to \infty} P(W < c_1|H_0 \text{ true}) + P(W > c_2|H_0 \text{ true}) = \alpha/2 + (1-(1 - \alpha/2)) = \alpha
+$$
 
 (b) Is this a good test of $H_0$ versus $H_1$? Why or why not?
 
-...
+No, a lower point estimate $\hat{\theta}$ will result in rejection even though it is closer to the null hypothesis.  Thus, this test has low power.
 
-8. 9.7 Take the model $y = X \beta_1 + X^2 \beta_2 + e$ with $E[e|X] = 0$ where $y$ is wages (dollars per hour) and $X$ is age. Describe how you would test the hypothesis that the expected wage for a 40-year-old worker is $20 an hour.
+8. 9.7 Take the model $y = X \beta_1 + X^2 \beta_2 + e$ with $E[e|X] = 0$ where $y$ is wages (dollars per hour) and $X$ is age. Describe how you would test the hypothesis that the expected wage for a 40-year-old worker is \$20 an hour.
 
-...
+The expected wage for a 40-year-old worker is \$20 an hour $\implies 20 = 40  \beta_1 + 1600 \beta_2 \implies 0 = 2  \beta_1 + 80 \beta_2 - 1$.  Define $\theta = 2  \beta_1 + 80 \beta_2 - 1$. We construct a test with $H_0: \theta = 0$ and $H_1: \theta \neq 0$. Let $\hat{\theta} = 2  \hat{\beta}_1 + 80 \hat{\beta}_2 - 1$.  Now, we find the asymptotic variance of $\hat{\theta}$:
+
+\begin{align*}
+\sqrt{n}(\hat{\theta} - \theta) 
+&= \sqrt{n}((2  \hat{\beta}_1 + 80 \hat{\beta}_2 - 1) - (2  \beta_1 + 80 \beta_2 - 1))\\
+&= 2\sqrt{n}(\hat{\beta}_1 - \beta_1) + 80 \sqrt{n}(\hat{\beta}_2 - \beta_2)
+\end{align*}
+
+Thus, $\sqrt{n}(\hat{\theta} - \theta) \to_d N (0, V_\theta)$ where 
+
+\begin{align*}
+V_\theta 
+&= \begin{pmatrix} 2 & 80 \end{pmatrix} V_\beta \begin{pmatrix} 2 \\ 80 \end{pmatrix} \\
+&= \begin{pmatrix} 2V_\beta^{11} + 80V_\beta^{21} & 2V_\beta^{12} + 80V_\beta^{22} \end{pmatrix} \begin{pmatrix} 2 \\ 80 \end{pmatrix} \\
+&= 4V_\beta^{11} + 160V_\beta^{21} + 160V_\beta^{12} + 6400V_\beta^{22}
+\end{align*}
+
+Thus, we can estimate the standard error of $\theta$ as $s(\hat{\theta}) = \sqrt{4\hat{V}_\beta^{11} + 160\hat{V}_\beta^{21} + 160\hat{V}_\beta^{12} + 6400\hat{V}_\beta^{22}}$ where:
+
+$$
+\hat{V}_\beta = n(X'X)^{-1}(X'diag(\hat{e}^2)X)(X'X)^{-1}
+$$
+
+Define the test statistic as $T = \theta/s(\hat{\theta})$.  Over the null hypothesis, the test statistic is asymptotically standard normal, so we reject if $|T| > c_{1 - \alpha/2}$ where $c_{1 - \alpha/2}$ is the $1-\alpha/2$ percentile of a standard normal distribution a pre-specified $\alpha$.
