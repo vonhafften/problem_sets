@@ -50,106 +50,117 @@ Similar to the second round, the player who lost the coin toss in any round $n \
 
 4. A unit mass of coffee lovers are uniformly located on a street, denoted by the $[0, 1]$ interval. There are two coffee shops, namely coffee shop 1 and coffee shop 2. First, each coffee shop $i \in \{1, 2\}$ selects location $x_i \in [0, 1]$ simultaneously. Then, observing $(x_1, x_2)$, each coffee shop $i \in \{1, 2\}$ sets a price $p_i \ge 0$ for its own coffee, simultaneously. A coffee lover located in $w$ is to pay cost $c(w - y)^2$ to go to a shop located at $y$, where $c > 0$. Given the locations $x_1$ and $x_2$ and prices $p_1$ and $p_2$, each coffee lover buys coffee from the shop with the lowest total cost, which is the sum of the price and the cost to go to the shop. (If the total cost is the same, she flips a coin to choose the shop to buy.) Compute the  subgame-perfect Nash equilibria in the above game.
 
-We use backward induction by first considering the coffee lovers choice of coffee shop given $x_1$, $x_2$, $p_1$, and $p_2$, then the pricing decision by the coffee shops given $x_1$ and $x_2$, and finally the location decision by the coffee shops.
+We use backward induction by considering the coffee lovers choice of coffee shop given $x_1$, $x_2$, $p_1$, and $p_2$, then the pricing decision by the coffee shops given $x_1$ and $x_2$, and finally the location decision by the coffee shops.
 
-First, consider the coffee lovers choice of coffee shop given $x_1$, $x_2$, $p_1$, and $p_2$.  Consumers are indifferent between coffee shop $i$ and $j$ if
+First, let's consider the case where the coffee shop pick the same location.  If $x_i = x_j$ and $p_i < p_j$, then coffee shop $i$ serves the entire mass of costumers and coffee shop $j$ does not serve anyone. If $x_1 = x_2$ and $p_1 = p_2$, then each coffee shop serves coffee to 1/2 because everyone along the $[0, 1]$ interval is indifferent between going to either shop and flips a coin.  In this case, each coffee shop has the incentive to undercut the other to serve the entire unit mass until $p_1 = p_2 = 0$.
 
-$$
-c(w - x_i)^2 + p_i = c(w - x_j)^2 + p_j
-$$
-
-For $x_i \neq x_j$, 
+Now, let's consider the case when coffee shops choose different locations.  Without loss of generality, assume that $x_1 < x_2$. Thus, consumers are indifferent between coffee shop 1 and 2 if
 
 \begin{align*}
-c(w^2 - 2x_iw +x_i^2) + p_i &= c(w^2 - 2x_jw +x_j^2) + p_j \\
-\implies cw^2 - 2cx_iw + cx_i^2 + p_i &= cw^2 - 2cx_jw + cx_j^2 + p_j \\
-\implies 2cw(x_j-  2cx_i)  &= c(x_j^2 - x_i^2) + p_j - p_i \\
-\implies w &=  \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}
+c(w - x_1)^2 + p_1 &= c(w - x_2)^2 + p_2\\
+\implies c(w^2 - 2x_1w +x_1^2) + p_1 &= c(w^2 - 2x_2w +x_2^2) + p_2 \\
+\implies cw^2 - 2cx_1w + cx_1^2 + p_1 &= cw^2 - 2cx_2w + cx_2^2 + p_2 \\
+\implies 2cw(x_2 -  2cx_1)  &= c(x_2^2 - x_1^2) + p_2 - p_1 \\
+\implies \bar{w} &:=  \frac{c(x_2^2-x_1^2) + p_2 - p_1}{2c(x_2- x_1)}
 \end{align*}
 
-Thus, if $x_i < x_j$, then coffee shop $i$ serves the consumers located below the cutoff:
+Thus, coffee shop 1 serves the consumers below the cutoff $w \in[0, \bar{w})$ and coffee shop 2 serves the consumers above the cutoff $w \in [\bar{w}, 1]$.  Since consumers are uniformly distributed, the quantity of consumers served by coffee shop 1 is $\bar{w}$ and the quantity of consumers served by coffee shop 2 is $1 - \bar{w}$.  Now let's consider the pricing decision by by each coffee shop given $x_1$ and $x_2$.  The total revenue for coffee shop 1 is:
 
 $$
-w \in \Bigg[0, \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}\Bigg)
+p_1 \bar{w} =  \frac{p_1c(x_2^2-x_1^2) + p_1p_2 - p_1^2}{2c(x_2- x_1)}
 $$
 
-So coffee shop $i$ serves this quantity of consumers:
+FOC [$p_1$]:
+
+\begin{align*}
+0 &= \frac{c(x_2^2-x_1^2) + p_2 - 2p_1}{2c(x_2- x_1)} \\
+p_1^*(x_1, x_2, p_2) &= \frac{c(x_2^2-x_1^2) + p_2}{2}
+\end{align*}
+
+The total revenue for coffee shop 2 is:
 
 $$
-\int_0^1 1\{ w  <  \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}\} dw = \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)} 
+p_2(1-\bar{w}) = p_2(1-\frac{c(x_2^2-x_1^2) + p_2 - p_1}{2c(x_2- x_1)}) = p_2 -\frac{p_2c(x_2^2-x_1^2) + p_2^2 - p_1p_2}{2c(x_2- x_1)}
 $$
-
-Because $w$ is uniformly distributed on $[0, 1]$. If $x_i > x_j$, then coffee shop $i$ serves the consumer located above the 
-
-$$
-w \in \Bigg[\frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}, 1\Bigg]
-$$
-
-So coffee shop $i$ serves this quantity of consumers:
-
-$$
-\int_0^1 1\{ w  >  \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}\} dw = 1 - \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)} 
-$$
-
-If $x_i = x_j$ and $p_i < p_j$, then coffee shop $i$ serves the entire mass of costumers.  If $x_i = x_j$ and $p_i > p_j$, then coffee shop $j$ serves the entire mass of costumers and coffee shop $i$ does not serve anyone.  If $x_i = x_j$ and $p_i = p_j$, then each coffee shop serves coffee to 1/2 because everyone along the $[0, 1]$ interval is indifferent between going to either shop and flips a coin.  
 
 \pagebreak
 
-The table below summarizes the quantity of consumers served by coffee shop $i$ given $x_i$, $x_j$, $p_i$, and $p_j$:
-
-+--------------+---------------------------------------------------+----------------------------+-----------------------------------------------------+
-|              | $x_i < x_j$                                       | $x_i = x_j$                | $x_i > x_j$                                         |
-+--------------+---------------------------------------------------+----------------------------+-----------------------------------------------------+
-| $p_i > p_j$  | $\frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}$ |  0                         | $1-\frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}$ |
-+--------------+---------------------------------------------------+----------------------------+-----------------------------------------------------+
-| $p_i = p_j$  | $\frac{c(x_j^2-x_i^2)}{2c(x_j- x_i)}$             |  1/2                       | $1-\frac{c(x_j^2-x_i^2)}{2c(x_j- x_i)}$             |
-+--------------+---------------------------------------------------+----------------------------+-----------------------------------------------------+
-| $p_i < p_j$  | $\frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}$ |  1                         | $1-\frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)}$ |
-+--------------+---------------------------------------------------+----------------------------+-----------------------------------------------------+
-
-Second, let us consider the pricing decision by the coffee shops given $x_i$ and $x_j$.  First, consider the case in which $x_i = x_j$.  Clearly, each coffee shop has the incentive to undercut the other to serve the entire unit mass so $p_i = p_j = 0$.
-
-Now let us evaluate the best response function for coffee shop $i$ based on $x_i$, $x_j$, and $p_j$ when $x_i \neq x_j$. If $x_i < x_j$, the total revenue for coffee shop $i$ is:
-
-$$
-p_i \frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)} 
-$$
-
-FOC [$p_i$]:
+FOC [$p_2$]:
 
 \begin{align*}
-0 &= \frac{c(x_j^2-x_i^2) + p_j - 2p_i^*}{2c(x_j- x_i)} \\
-p_i^*(x_i, x_j, p_j) &= \frac{c(x_j^2-x_i^2) + p_j}{2}
+0 &= 1 -\frac{c(x_2^2-x_1^2) + 2p_2 - p_1}{2c(x_2- x_1)} \\
+2c(x_2- x_1) &= c(x_2^2-x_1^2) + 2p_2 - p_1 \\
+p_2^*(x_2, x_1, p_1) &= \frac{2c(x_2- x_1) - c(x_2^2-x_1^2) + p_1}{2}
 \end{align*}
 
-If $x_i > x_j$, the total revenue for coffee shop $i$ is:
-
-$$
-p_i(1-\frac{c(x_j^2-x_i^2) + p_j - p_i}{2c(x_j- x_i)})
-$$
-
-FOC [$p_i$]:
+If both coffee shops anticipate that their competitor is best responding:
 
 \begin{align*}
-0 &= 1-\frac{c(x_j^2-x_i^2) + p_j - 2p_i^*}{2c(x_j- x_i)} \\
-2c(x_j- x_i) &= c(x_j^2-x_i^2) + p_j - 2p_i^* \\
-p_i^*(x_i, x_j, p_j) &= \frac{c(x_j^2-x_i^2) - 2c(x_j- x_i) + p_j}{2}
+p_1^*(x_1, x_2) &= p_1^*(x_1, x_2, p_2^*(x_2, x_1, p_1^*)) \\
+\implies p_1^* &= \frac{c(x_2^2-x_1^2) + \frac{2c(x_2- x_1) - c(x_2^2-x_1^2) + p_1^*}{2}}{2} \\
+\implies \frac{3p_1^*}{4} &= \frac{c(x_2^2-x_1^2)}{4} + \frac{c(x_2- x_1)}{2}\\
+\implies p_1^*(x_1, x_2) &= \frac{2c(x_2- x_1)}{3} + \frac{c(x_2^2-x_1^2)}{3}
 \end{align*}
+
+\begin{align*}
+p_2^*(x_1, x_2) 
+&= p_2^*(x_1, x_2, p_1^*) \\
+&= \frac{2c(x_2- x_1) - c(x_2^2-x_1^2) + \frac{c(x_2^2-x_1^2)}{3} + \frac{2c(x_2- x_1)}{3}}{2}\\
+&= \frac{4c(x_2- x_1)}{3} - \frac{c(x_2^2-x_1^2)}{3}
+\end{align*}
+
+At these prices, $\bar{w}$ simplies to:
+
+\begin{align*}
+\bar{w} 
+&= \frac{c(x_2^2-x_1^2) + \frac{4c(x_2- x_1)}{3} - \frac{c(x_2^2-x_1^2)}{3} - (\frac{2c(x_2- x_1)}{3} + \frac{c(x_2^2-x_1^2)}{3})}{2c(x_2- x_1)} \\
+&= \frac{c(x_2^2-x_1^2) + \frac{2c(x_2- x_1)}{3} - \frac{2c(x_2^2-x_1^2)}{3}}{2c(x_2- x_1)} \\
+&= \frac{2c(x_2- x_1) + c(x_2^2-x_1^2)}{6c(x_2- x_1)}
+\end{align*}
+
+$$
+1 - \bar{w} = 1 - \frac{2c(x_2- x_1) + c(x_2^2-x_1^2)}{6c(x_2- x_1)} = \frac{c(x_2^2-x_1^2)-4c(x_2- x_1)}{6c(x_2- x_1)}
+$$
+
+Now, we turn to the location decision.  The total revenue of coffee shop 1 is:
+
+$$
+p_1^*\bar{w} 
+= \Bigg(\frac{2c(x_2- x_1)}{3} + \frac{c(x_2^2-x_1^2)}{3}\Bigg)\frac{2c(x_2- x_1) + c(x_2^2-x_1^2)}{6c(x_2- x_1)}\\
+= \frac{1}{18}c(x_1 + x_2 + 2)^2(x_2 - x_1)
+$$
 
 \pagebreak
 
-Now let us combine these best response functions so that both coffee shops are best responding to each other. If $x_i < x_j$, we can use the first best response function for $i$ and the second best response function for $j$. If both coffee shops are best responding to each other we can substitute in the best response function:
+FOC [$x_1$]:
 
 \begin{align*}
-p_i^* &= \frac{c(x_j^2-x_i^2) + (\frac{c(x_i^2-x_j^2) - 2c(x_i- x_j) + p_i^*}{2})}{2} \\
-\implies p_i^* &= \frac{c(x_j^2-x_i^2)}{2} + \frac{c(x_i^2-x_j^2)}{4} - \frac{c(x_i- x_j)}{2} + \frac{p_i^*}{4} \\
-\implies \frac{3p_i^*}{4} &= \frac{c(x_j^2-x_i^2)}{4}  - \frac{c(x_i- x_j)}{2} \\
-\implies p_i^*(x_i, x_j) &= \frac{c(x_j^2-x_i^2)}{3}  - \frac{2c(x_i- x_j)}{3}
+0 &= -\frac{1}{18}c[3(x_1^*)^2 + 2x_1^*x_2 + 8x_1^* - x_2^2 + 4] \\
+0 &= 3(x_1^*)^2 + (2x_2+ 8)x_1^* + (4 - x_2^2)\\
+x_1^*(x_2) &= \frac{-(2x_2+ 8) \pm \sqrt{(2x_2+ 8)^2 - 4(3)(4 - x_2^2)}}{2(3)}\\
+&= \frac{-2x_2- 8 + \sqrt{4x_2^2 + 32x_2 + 64 - 48 + 12x_2^2}}{6}\\
+&= \frac{-2x_2- 8 + 4\sqrt{x_2^2 + 2x_2 + 1}}{6} \\
+&= \frac{-x_2- 4 + 2(x_2 + 1)}{3}\\
+&= \frac{x_2- 2}{3}
 \end{align*}
 
-If $x_i > x_j$, coffee shop $j$ will price as above, so the best response function for $i$ is:
+The total revenue for coffee shop 2 is:
 
 $$
-p_i^*(x_i, x_j) = \frac{c(x_j^2-x_i^2) - 2c(x_j- x_i) + \frac{c(x_i^2-x_j^2)}{3}  - \frac{2c(x_j- x_i)}{3}}{2}\\
-= \frac{c(x_j^2-x_i^2)}{3} - \frac{4c(x_j- x_i)}{3}
+p_2^*(1-\bar{w}) 
+= (\frac{4c(x_2- x_1)}{3} - \frac{c(x_2^2-x_1^2)}{3})\frac{c(x_2^2-x_1^2)-4c(x_2- x_1)}{6c(x_2- x_1)}\\
+= \frac{1}{18}c(x_1+x_2-4)^2(x_1 - x_2)
 $$
+
+FOC [$x_2$]:
+
+\begin{align*}
+0 &= \frac{1}{18}c(x_1^2 - 2x_1x_2^* - 3(x_2^*)^2 + 16(x_2^*) - 16) \\
+\implies 
+0 &= 3(x_2^*)^2 + (2x_1-16)x_2^* + (16 - x_1^2)  \\
+x_2^*(x_1) &= \frac{-(2x_1-16) \pm \sqrt{(2x_1-16)^2 - 4(3)(16 - x_1^2)}}{2(3)}\\
+&= \frac{16-2x_1 \pm \sqrt{(4x_1^2-64x_1+256) - 192 + 12x_1^2}}{6}\\
+&= \frac{8-x_1 \pm 2\sqrt{x_1^2-4x_1+4}}{3} \\
+&= \frac{8-x_1 \pm 2(x_1 - 2)}{3}\\
+&= \frac{x_1 +4}{3}\\
+\end{align*}
