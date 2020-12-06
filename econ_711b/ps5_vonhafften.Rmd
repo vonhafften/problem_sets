@@ -122,7 +122,7 @@ $$
 1 - \bar{w} = 1 - \frac{2c(x_2- x_1) + c(x_2^2-x_1^2)}{6c(x_2- x_1)} = \frac{c(x_2^2-x_1^2)-4c(x_2- x_1)}{6c(x_2- x_1)}
 $$
 
-Now, we turn to the location decision.  The total revenue of coffee shop 1 is:
+Thus, the total revenue of coffee shop 1 given $x_1$ and $x_2$ is:
 
 $$
 p_1^*\bar{w} 
@@ -132,19 +132,7 @@ $$
 
 \pagebreak
 
-FOC [$x_1$]:
-
-\begin{align*}
-0 &= -\frac{1}{18}c[3(x_1^*)^2 + 2x_1^*x_2 + 8x_1^* - x_2^2 + 4] \\
-0 &= 3(x_1^*)^2 + (2x_2+ 8)x_1^* + (4 - x_2^2)\\
-x_1^*(x_2) &= \frac{-(2x_2+ 8) \pm \sqrt{(2x_2+ 8)^2 - 4(3)(4 - x_2^2)}}{2(3)}\\
-&= \frac{-2x_2- 8 + \sqrt{4x_2^2 + 32x_2 + 64 - 48 + 12x_2^2}}{6}\\
-&= \frac{-2x_2- 8 + 4\sqrt{x_2^2 + 2x_2 + 1}}{6} \\
-&= \frac{-x_2- 4 + 2(x_2 + 1)}{3}\\
-&= \frac{x_2- 2}{3}
-\end{align*}
-
-The total revenue for coffee shop 2 is:
+The total revenue for coffee shop 2 given $x_1$ and $x_2$ is:
 
 $$
 p_2^*(1-\bar{w}) 
@@ -152,15 +140,73 @@ p_2^*(1-\bar{w})
 = \frac{1}{18}c(x_1+x_2-4)^2(x_1 - x_2)
 $$
 
-FOC [$x_2$]:
+Now let's turn to the location decision. We need to set away from the assumption that $x_1 < x_2$ because each coffee shop does not know whether they will be the higher or lower coffee shop when choosing their location.  For both of the total revenue functions, we see that their maximum is outside the unit interval, so the coffee shops will choose a corner solution.  To check this intuition, I have plotted the total revenue function for coffee shop 1 with $c = 2$:
+
+```{r five_setup, echo = FALSE}
+c <- 2
+n <- 50
+x_1_grid <- seq(0, 1, length.out = n) %*% t(rep(1, times = n))
+x_2_grid <- rep(1, times = n) %*% t(seq(0, 1, length.out = n))
+tr_upper <- (1/18)*c*(x_1_grid + x_2_grid -4)^2*(x_1_grid - x_2_grid)
+tr_lower <- (1/18)*c*(x_1_grid + x_2_grid + 2)^2*(x_2_grid - x_1_grid)
+tr_upper[x_1_grid <= x_2_grid] <- 0
+tr_lower[x_1_grid > x_2_grid] <- 0
+tr <- tr_upper + tr_lower
+```
+
+```{r five_plot, echo = FALSE}
+persp(z = tr, xlab = "x_1", ylab = "x_2", 
+      zlab = "Total Revenue of 1", ticktype = "detailed", 
+      nticks = 2, theta = 0)
+```
+
+Furthermore, I wrote code that iterates back and forth over each players' decisions. The loop quickly converges on a corner solution with one coffee shop at 0 and the other coffee shop at 1. Therefore the subgame perfect Nash equilibrium is one coffee shop at zero and the other coffee shop at 1 with both coffee shops charging $c$:
 
 \begin{align*}
-0 &= \frac{1}{18}c(x_1^2 - 2x_1x_2^* - 3(x_2^*)^2 + 16(x_2^*) - 16) \\
-\implies 
-0 &= 3(x_2^*)^2 + (2x_1-16)x_2^* + (16 - x_1^2)  \\
-x_2^*(x_1) &= \frac{-(2x_1-16) \pm \sqrt{(2x_1-16)^2 - 4(3)(16 - x_1^2)}}{2(3)}\\
-&= \frac{16-2x_1 \pm \sqrt{(4x_1^2-64x_1+256) - 192 + 12x_1^2}}{6}\\
-&= \frac{8-x_1 \pm 2\sqrt{x_1^2-4x_1+4}}{3} \\
-&= \frac{8-x_1 \pm 2(x_1 - 2)}{3}\\
-&= \frac{x_1 +4}{3}\\
+p_1^*(0, 1) &= \frac{2c(1- 0)}{3} + \frac{c(1^2-0^2)}{3} = c \\
+p_2^*(0, 1) &= \frac{4c(1- 0)}{3} - \frac{c(1^2-0^2)}{3} = c
 \end{align*}
+
+\pagebreak
+
+## Appendix
+
+```{r, ref.label='five_setup', eval=FALSE}
+```
+
+```{r five_loop}
+max_iter <- 100
+# starting location
+x_1 <- 5
+x_2 <- 10
+test <- 100
+iter <- 0
+# coffee shop 1 adjusting location first 
+while (iter < max_iter & test > 0) {
+  tx_1 <- which.max(tr[, x_2])
+  tx_2 <- which.max(tr[tx_1, ])
+  test <- abs(tx_1 - x_1) + abs(tx_2 - x_2)
+  x_1 <- tx_1
+  x_2 <- tx_2
+  iter <- iter + 1
+}
+x_1_grid[x_1, x_1]
+x_2_grid[x_2, x_2]
+# starting location
+x_1 <- 5
+x_2 <- 10
+test <- 100
+iter <- 0
+# coffee shop 2 adjusting location first 
+while (iter < max_iter & test > 0) {
+  tx_2 <- which.max(tr[x_1, ])
+  tx_1 <- which.max(tr[, tx_2])
+  test <- abs(tx_1 - x_1) + abs(tx_2 - x_2)
+  x_1 <- tx_1
+  x_2 <- tx_2
+  iter <- iter + 1
+}
+x_1_grid[x_1, x_1]
+x_2_grid[x_2, x_2]
+```
+
