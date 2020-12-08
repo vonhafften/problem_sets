@@ -1,0 +1,518 @@
+---
+title: "ECON 712B - Problem Set 4"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "12/10/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(markovchain)
+library(knitr)
+```
+
+1. In Problem #3 on Problem Set 3 the wage and rate of return were given. Now suppose instead that they are determined from an aggregate production function, $Y = K^{\alpha}N^{1-\alpha}$, and an aggregate law of motion for the capital stock: $K' = (1-\delta)K + I$.  Assume that $\alpha = 0.36$ and $\delta = 0.08$.
+
+(a) Find the equilibrium levels of the capital stock, the real wage, and the real interest rate.
+
+...
+
+(b) Plot the equilibrium distributions of income and consumption distribution. Compare the relative degree of inequality in the two distributions.
+
+...
+
+(c) Now suppose that the borrowing constraint is loosened so that households face the debt limit $a_t \ge -2$ (rather than $a_t \ge 0$). What happens to the equilibrium results from part (a)?
+
+...
+
+\pagebreak
+
+2. In Problem #3 on Problem Set 2 we calculated the solution of a deterministic optimal growth model. We now revisit that model, but add stochastic productivity shocks. Recall that we have the following specification: An infinitely-lived representative household owns a stock of capital which it rents to firms. The household’s capital stock $K$ depreciates at rate $\delta$. Households do not value leisure and are endowed with one unit of time each period with which they can supply labor $N$ to firms. They have standard time additive expected utility preferences with discount factor $\beta$ and period utility $u(c)$. Firms produce output according to the production function $zF(K, N)$ where $z$ is the level of technology. Set $\beta =0.95$, $\delta = 0.1$, $u(c) = c^{1 - \gamma}/(1 - \gamma)$ with $\gamma = 2$, and $F(K, N) = K^{0.35}N^{0.65}$. Before we set $z = 1$ but now we consider a Markov chain where for productivity where $z_t \in \{0.8, 1.2\}$ with transition matrix $P = [0.9, 0.1; 0.1, 0.9]$.
+
+(a) Now solve for the optimal policy function $K_0 = g(K, z)$ and implied policy $c = c(K, z)$. Compare them to the solution in the deterministic case where $z_t \equiv 1$. How do they differ?
+
+The policy function for both $k'$ and $c$ is higher than the deterministic case for the high productivity shock and lower for the low productivity shock.
+
+```{r setup_model, echo = FALSE, eval = FALSE}
+# parameters
+beta <- 0.95
+delta <- 0.1
+z_d <- 1
+gamma <- 2
+cd_k <- 0.35 # cobb-douglas coefficient on capital
+cd_l <- 0.65 # cobb-douglas coefficient on labor
+
+# additional parameters for stochastic model
+z_l <- .8
+z_h <- 1.2
+p_ll <- .9
+p_hl <- .1
+p_lh <- .1
+p_hh <- .9
+
+# capital grid
+min_k <- 0.005
+max_k <- 10
+inc_k <- 0.005
+k <- seq(min_k, max_k, by = inc_k)
+n <- length(k)
+```
+
+```{r solve_ss, echo = FALSE, eval = FALSE}
+solve_ss_d <- function() {
+  # Steady state values
+  k_bar <<- ((beta^(-1)-(1-delta))/(cd_k * z_d))^(1/(cd_k-1))
+  c_bar <<- z_d * k_bar^cd_k - delta * k_bar
+}
+```
+
+```{r solve_bellman_equation, echo = FALSE, eval = FALSE}
+# Solves bellman equation based on parameters above.
+solve_bellman_d <- function() {
+  ones <- rep(1, times=n)
+  
+  # initialize value grid and decision rule grid
+  v <- rep(0, times=n)
+  decision <- rep(0, times=n)
+  
+  # create consumption and utility matrixes
+  # (columns are different values of k; rows are values of k')
+  c_matrix <- z_d*(ones %*% t(k))^cd_k + (1-delta)*(ones %*% t(k)) - k %*% t(ones)
+  utility_matrix <- (c_matrix^(1-gamma))/(1-gamma)
+  utility_matrix[c_matrix < 0|!is.finite(utility_matrix)] <- -1000
+  
+  test <- 10
+  while (test != 0) {
+    # create value matrix for all different k and k' values
+    value_matrix <- utility_matrix + beta * v %*% t(ones)
+    
+    # find column max with max utility
+    tv <- apply(value_matrix, 2, max)
+    tdecision <- apply(value_matrix, 2, which.max)
+    
+    # loop ends if no changes from previous iteration
+    test <- max(tdecision - decision)
+    
+    # update value grid and decision rule
+    decision <- tdecision
+    v <- tv
+  }
+  
+  # capital and consumption decision rule
+  policy_function_d <<- tibble(k = k, k_prime = min_k + decision*inc_k) %>%
+    mutate(c = z_d*k_prime^cd_k + (1-delta)*k - k_prime)
+  
+  v_d <<- v
+}
+
+# Solves bellman equation based on parameters above.
+solve_bellman_s <- function() {
+  ones <- rep(1, times=n)
+  
+  # initialize value grid and decision rule grid
+  v_l <- rep(0, times=n)
+  v_h <- rep(0, times=n)
+  
+  decision_l <- rep(0, times=n)
+  decision_h <- rep(0, times=n)
+  
+  # create consumption and utility matrixes
+  # (columns are different values of k; rows are values of k')
+  c_l_matrix <- z_l*(ones %*% t(k))^cd_k + (1-delta)*(ones %*% t(k)) - k %*% t(ones)
+  c_h_matrix <- z_h*(ones %*% t(k))^cd_k + (1-delta)*(ones %*% t(k)) - k %*% t(ones)
+  
+  utility_l_matrix <- (c_l_matrix^(1-gamma))/(1-gamma)
+  utility_h_matrix <- (c_h_matrix^(1-gamma))/(1-gamma)
+  
+  utility_l_matrix[c_l_matrix < 0|!is.finite(utility_l_matrix)] <- -1000
+  utility_h_matrix[c_h_matrix < 0|!is.finite(utility_h_matrix)] <- -1000
+  
+  test <- 10
+  while (test != 0) {
+    # create value matrix for all different k and k' values
+    value_l_matrix <- utility_l_matrix + beta * (p_ll * v_l %*% t(ones) + p_lh * v_h %*% t(ones))
+    value_h_matrix <- utility_h_matrix + beta * (p_hl * v_l %*% t(ones) + p_hh * v_h %*% t(ones))
+    
+    # find column max with max utility
+    tv_l <- apply(value_l_matrix, 2, max)
+    tv_h <- apply(value_h_matrix, 2, max)
+    
+    tdecision_l <- apply(value_l_matrix, 2, which.max)
+    tdecision_h <- apply(value_h_matrix, 2, which.max)
+    
+    # loop ends if no changes from previous iteration
+    test <- abs(max(tdecision_l - decision_l))+abs(max(tdecision_h - decision_h))
+    
+    # update value grid and decision rule
+    decision_l <- tdecision_l
+    decision_h <- tdecision_h
+
+    v_l <- tv_l
+    v_h <- tv_h
+  }
+  
+  # capital and consumption decision rule
+  policy_function_l <<- tibble(k = k, k_prime = min_k + decision_l*inc_k) %>%
+    mutate(c = z_l*k_prime^cd_k + (1-delta)*k - k_prime)
+  policy_function_h <<- tibble(k = k, k_prime = min_k + decision_h*inc_k) %>%
+    mutate(c = z_h*k_prime^cd_k + (1-delta)*k - k_prime)
+  
+  v_l <<- v_l
+  v_h <<- v_h
+}
+solve_bellman_d()
+solve_bellman_s()
+```
+
+```{r 2a_plots, echo = FALSE, eval = FALSE}
+plot(1, type = "l", xaxs = "i", yaxs = "i", ylim=c(0,2), xlim=c(min_k, max_k), xlab = "k", ylab = "c", main = "Policy Function: c(k)")
+
+lines(policy_function_d$k, policy_function_d$c)
+lines(policy_function_h$k, policy_function_h$c, col = "red")
+lines(policy_function_l$k, policy_function_l$c, col = "blue")
+
+legend("topleft",
+       c("Deterministic", "Stochastic (High)", "Stochastic (Low)"),
+       col = c("black", "red", "blue"),
+       lty = 1)
+
+plot(1, type = "l", xaxs = "i", yaxs = "i", ylim=c(0, 10), xlim=c(min_k, max_k), xlab = "k", ylab = "k'", main = "Policy Function: k'(k)")
+
+lines(policy_function_d$k, policy_function_d$k_prime)
+lines(policy_function_h$k, policy_function_h$k_prime, col = "red")
+lines(policy_function_l$k, policy_function_l$k_prime, col = "blue")
+
+legend("topleft",
+       c("Deterministic", "Stochastic (High)", "Stochastic (Low)"),
+       col = c("black", "red", "blue"),
+       lty = 1)
+
+```
+
+
+(b) Simulate the model to calculate time series of capital, output, consumption, investment, wages, and interest rates. What is the long run mean of consumption and capital? How do they compare to the deterministic steady state levels?
+
+I ran a simulation with 100,000 periods that is preceded by 1,000 period burn-in period. In the simulation, households build up more saving in case of future negative productivity shocks.  In the table, we see that capital is noticably higher for the simulation.  Investment, consumption, output, and wages are all slightly higher in the simulation than in the deterministic model, which is consistent with households holding a higher amount of capital.  Interest rates are slightly lower due to the increased level of capital.
+
+```{r 2b_stochastic, echo = FALSE, eval = FALSE}
+n_periods <- 100000
+burnin <- 1000
+
+transition <- new("markovchain", 
+    states = c("high", "low"), 
+    transitionMatrix = matrix(c(p_hh, p_lh, p_hl, p_ll), 
+                              nrow = 2, 
+                              dimnames = list(c("high", "low"), 
+                                              c("high", "low"))))
+
+simulation <- tibble(shock = rmarkovchain(n = n_periods + burnin, 
+                                          object = transition),
+                  c = 1.2,
+                  k = 3.6)
+
+for (i in 1:(nrow(simulation)-1)) {
+  
+  index <- policy_function_l$k == simulation$k[i]
+  
+  if (simulation$shock[i] == "low") {
+    simulation$c[i] <- policy_function_l$c[index]
+    simulation$k[i+1] <- policy_function_l$k_prime[index]
+  }
+  
+  if (simulation$shock[i] == "high") {
+    simulation$c[i] <- policy_function_h$c[index] 
+    simulation$k[i+1] <- policy_function_h$k_prime[index]
+  }
+}
+
+simulation <- simulation %>%
+  slice_tail(n = n_periods) %>%
+  mutate(z = case_when(shock == "high" ~ 1.2,
+                       shock == "low" ~ 0.8),
+         y = z * k ^ cd_k,
+         i = y - c,
+         r = z * cd_k * k ^ (cd_k - 1),
+         w = z * cd_l * k ^ cd_k)
+
+results_s <-  simulation %>%
+  pivot_longer(cols = c("c", "k", "y", "i", "r", "w"),
+               names_to = "variable") %>%
+  group_by(variable) %>%
+  summarise(simulation = mean(value, na.rm = TRUE), 
+            .groups = "drop")
+
+```
+
+```{r 2b_deterministic, echo = FALSE, eval = FALSE}
+
+solve_ss_d()
+
+results_d <- tibble(variable = c("c", "i", "k", "r", "w", "y"),
+                    deterministic = c(c_bar,
+                                      z_d * k_bar ^ cd_k - c_bar,
+                                      k_bar,
+                                      z_d * cd_k * k_bar ^ (cd_k - 1),
+                                      z_d * cd_l * k_bar ^ cd_k,
+                                      z_d * k_bar ^ cd_k))
+
+full_join(results_d, results_s, by="variable") %>% 
+  kable(digits = 3)
+
+```
+
+(c) How do the volatility of consumption and investment compare to that of output? What is the correlation between consumption and output? Between interest rates and output?
+
+The volatility of consumption and investment is roughly half of the volatility of output.
+
+The correlation between consumption and output is almost one.  This indicates that consumption and output comove quite closely.  The correlation between interest rates and output is approximately zero, which indicates that output and interest rates are unrelated.
+
+```{r 2c, echo = FALSE, eval = FALSE}
+
+results_s_c <- simulation %>%
+  summarise(c_vol = sd(c),
+            i_vol = sd(i),
+            y_vol = sd(y),
+            c_y_corr = cor(c, y),
+            r_y_corr = cor(r, y)) %>% 
+  pivot_longer(everything(),
+               names_to = "variable",
+               values_to = "simulation")
+
+results_s_c %>%
+  kable(digits = 3)
+```
+
+\pagebreak
+
+3. We now consider a recursive version of the neoclassical model with distorting taxes. An infinitely-lived representative household owns a stock of capital $k$ which it rents to firms. The household’s capital stock depreciates are rate $\delta$, and denote aggregate capital by $K$. Households do not value leisure and are endowed with one unit of time each period with which they can supply labor $N$ to firms. They have standard time additive expected utility preferences with discount factor $\beta$ and period utility $u(c)$. Firms produce output according to the production function $zF(K, N)$ where $z$ is the stochastic level of technology which is Markov with transition function $P(z', z)$. There is also a government which levies a proportional tax $\tau$ on households’ capital income and labor income. The tax rate is the same for both types of income and constant over time. The government uses the proceeds of the taxes to provide households with a lump sum transfer payment $T$ (which may vary over time), and suppose that in equilibrium the government must balance its budget every period.
+
+(a) Define a recursive competitive equilibrium for this economy. Be specific about all of the objects in the equilibrium and the conditions they must satisfy.
+
+The sequence formulation of the household problem is
+
+\begin{align*}
+\sum_{t=0}^\infty & \beta^t E_0[u(c_t)] \\
+\text{s.t. } & c_t + k_{t+1} - (1 - \delta)k_t \le (1-\tau)(w_tN_t^s + r_tk_t) + T_t + \pi_t
+\end{align*}
+
+The household Bellman equation is:
+
+\begin{align}
+V(k, z) &= \max_{c, k'} \{ u(c) + \beta E[V(k', z')]\} \\
+\text{s.t. } & c + k' - (1-\delta)k = (1- \tau)(wN^s + rk) + T + \pi
+\end{align}
+
+The firm problem is static.  In each period, the firm maximizes profit:
+
+\begin{align}
+\max_{K_t, N_t} z_tF(K_t, N_t^d) - r_tK_t - w_tN_t^d
+\end{align}
+
+The govenment budget constraint is
+
+\begin{align}
+T_t = \tau(w_tN_t + r_tk_t)
+\end{align}
+
+A recursive competitive equilibrium is an allocation $\{c_t, k_t, N_t, T_t, K_t, N_t, \pi_t\}_{t=0}^\infty$ and price system $\{w_t, r_t\}_{t=0}^\infty$ such that households optimize [Eq. (1) and (2)] and firms optimize [Eq. (3)], the government budget constraint holds [Eq. (4)], and markets clear: capital $K_t = k_t$, labor $N_t^s = N_t^d$, goods $z_tF(K_t, N_t^d) = c_t + k_{t+1}$.
+
+(b)  Characterize the equilibrium by finding a functional (Euler) equation which the household’s optimal capital accumulation policy must satisfy (i.e. $k'$ as a function of $k, K, z$).
+
+Since households do not value leisure, they will supply their unit of time as labor, so $N_t^s = 1 \implies N_t^d = 1$ by market clearing. Assume the production function is CRS implies that there is no profit in equilibrium $\pi_t = 0$. 
+
+The household Bellman equation can be rewritten as:
+
+$$
+V(k, z) = \max_{k'}\{ u((1 -\tau)(w + rk) + T + (1-\delta)k-k') + \beta E[V(k', z')] \}
+$$
+
+FOC [$k'$]:
+
+$$
+u'(c) = \beta E[V'(k', z')]
+$$
+
+Envelope condition:
+
+$$
+V'(k, z) = u'(c)((1-\tau)r + (1-\delta))
+$$
+
+FOC and envelope condition imply a consumption Euler equation:
+
+$$
+u'(c) = \beta E[u'(c')((1-\tau)r' + (1-\delta))]
+$$
+
+The household's optimal capital accumulation policy must satisfy this equation, which is a function of $k$ through $c$ and $K$ through $r$.
+
+(c) Impose the equilibrium conditions and find a functional equation which the aggregate capital accumulation policy must satisfy.
+
+Solving the (static) firm problem, we find that the rental rate on capital is the marginal product of capital and the wage is the marginal product of labor.
+
+$$
+r = z F_K(K, 1)
+$$
+
+$$
+w = z F_N(K, 1)
+$$
+
+Market clearing implies that $K = k$.  Thus, we can rewrite the consumption Euler equation:
+
+\begin{align}
+u'(c) = \beta E[u'(c')((1-\tau)z' F_K(k', 1) + (1-\delta))]
+\end{align}
+
+In addition, the law of motion of aggregate capital is:
+
+\begin{align}
+k' = zF(k, 1) + (1-\delta)k - c
+\end{align}
+
+(d) Show that when $\delta = 1$, the recursive competitive equilibrium allocation coincides with the solution of a social planner’s problem, but with a different discount factor. Interpret your result.
+
+If $\delta = 1$, (5) and (6) simplify to:
+
+$$
+u'(c) = \beta E[u'(c')(1-\tau)z' F_K(k', 1)]
+$$
+
+$$
+k' = zF(k, 1) - c
+$$
+
+The planner's sequence problem is 
+
+\begin{align*}
+\max_{\{c_t, k_t\}_{t=0}^\infty} & \sum_{t=0}^\infty \beta^t E_0 u (c_t) \\
+\text{s.t. } & c_t + k_{t+1} = z_t F(k_t, 1) \\
+\end{align*}
+
+The Bellman equation is:
+
+\begin{align*}
+V(k) &= \max_{c, k'} \{ u(c) + \beta E [V(k')] \} \\
+\text{s.t. } c + k' &= zF(k, 1) \\
+\implies V(k) &= \max_{k'} \{ u(zF(k, 1) - k') + \beta E [V(k')] \}
+\end{align*}
+
+FOC [$k'$]:
+
+$$
+u'(c) = \beta E [V'(k')] 
+$$
+
+Envelope condition:
+
+$$
+V'(k) = u'(c)zF'(k, 1)
+$$
+
+The FOC and envelope condition imply a consumption Euler condition:
+
+$$
+u'(c) = \beta E [u'(c')z'F'(k', 1)] 
+$$
+
+The discount factor for the planner's problem does not depend on taxes whereas for the competitive equilibrium the proportional tax rate on income distorts the allocation. Taxes decrease the RHS of the Euler equations, so in equilibrium the LHS deceases.  Since $u$ is concavely increasing, the competitive equilibrium is associated with a higher level of consumption.  In essence, the tax on savings causes households to consume more and save less than the optimal allocation.
+
+\pagebreak
+
+4. Consider an endowment economy where a representative agent has recursive preferences of the Epstein-Zin type. That is, the utility $V_t$ of a consumption stream $\{c_s\}_{s=t}^\infty$ is evaluated recursively: $V_t = ((1-\beta)c_t^{1 - \rho} + \beta (E_t V_{t+1}^{1-\alpha})^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}$, where $\rho > 0$ and $\alpha > 0$.  Notice that this is a combination of a CES aggregate (with parameter $\rho$) of current utility of consumption and a risk-adjustment (with parameter $\alpha$) of future utility.
+
+(a)  Show that when $\alpha = \rho$ these preferences collapse to standard expected utility with a power utility function.
+
+If $\gamma = \alpha = \rho$,
+
+\begin{align*}
+V_t &= ((1-\beta)c_t^{1 - \gamma} + \beta (E_t V_t^{1-\gamma})^{\frac{1-\gamma}{1 - \gamma}})^{\frac{1}{1-\gamma}} \\
+\implies V_t^{1-\gamma} &= (1-\beta)c_t^{1 - \gamma} + \beta (E_t V_{t+1}^{1-\gamma}) \\
+\implies W_t &= (1-\beta)c_t^{1 - \gamma} + \beta (E_t W_{t+1})\\
+&= (1-\beta)c_t^{1 - \gamma} + \beta (E_t [(1-\beta)c_{t+1}^{1 - \gamma} + \beta (E_{t+1} W_{t+2})])\\
+&= (1-\beta)c_t^{1 - \gamma} + \beta ((1-\beta)E_t [c_{t+1}^{1 - \gamma}] + \beta E_t [E_{t+1} W_{t+2}])\\
+&= (1-\beta)\sum_{v=t}^{\infty} \beta^vE_t[c_v^{1 - \gamma}]\\
+&= (1-\beta)(1-\gamma)\sum_{v=t}^{\infty} \beta^vE_t[\frac{c_v^{1 - \gamma}}{1-\gamma}]
+\end{align*}
+
+Where $W_t = V_t^{1-\gamma}$.  Since expected utility preferences are unique up to positive affine transformations, these preferences are equivalent to power utility.
+
+(b)  Epstein-Zin preferences allow us to disentangle risk aversion and intertemporal substitution. How are these properties characterized here?
+
+$\rho$ represents the amount of risk aversion across states of the world and $1/\alpha$ is the intertemporal elasticity of substitution.
+
+(c) Find an expression for the intertemporal marginal rate of substitution (stochastic discount factor), which we can define here as: $S_t = \frac{\frac{\partial V_t}{\partial V_{t+1}}\frac{\partial V_{t+1}}{\partial c_{t+1}}}{\frac{\partial V_t}{\partial c_t}}$.
+
+\begin{align*}
+\frac{\partial V_t}{\partial V_{t+1}} 
+&= \frac{1}{1-\rho}((1-\beta)c_t^{1 - \rho} + \beta (E_t [V_{t+1}^{1-\alpha}])^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho} - 1} \beta \frac{1-\rho}{1 - \alpha}(E_t V_{t+1}^{1-\alpha})^{\frac{1-\rho}{1 - \alpha}-1}(1-\alpha)E_t [V_{t+1}^{-\alpha}] \\ 
+&= ((1-\beta)c_t^{1 - \rho} + \beta (E_t [V_{t+1}^{1-\alpha}])^{\frac{1-\rho}{1 - \alpha}})^{\frac{\rho}{1-\rho}} \beta (E_t [V_{t+1}^{1-\alpha}])^{\frac{\alpha-\rho}{1 - \alpha}} E_t [V_{t+1}^{-\alpha}] \\
+&= V_t^{\rho} \beta (E_t [V_{t+1}^{1-\alpha}])^{\frac{\alpha-\rho}{1 - \alpha}} E_t [V_{t+1}^{-\alpha}] 
+\end{align*}
+
+\begin{align*}
+\frac{\partial V_t}{\partial c_t} 
+&= \frac{1}{1-\rho}((1-\beta)c_t^{1 - \rho} + \beta (E_t [V_{t+1}^{1-\alpha}])^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}-1}(1-\beta)(1-\rho)c_t^{-\rho} \\
+&= V_t^{\rho}(1-\beta)c_t^{-\rho}
+\end{align*}
+
+$$
+\implies \frac{\partial V_{t+1}}{\partial c_{t+1}} 
+= V_{t+1}^{\rho}(1-\beta)c_{t+1}^{-\rho}
+$$
+
+\begin{align*}
+S_t 
+&= \frac{\frac{\partial V_t}{\partial V_{t+1}}\frac{\partial V_{t+1}}{\partial c_{t+1}}}{\frac{\partial V_t}{\partial c_t}} \\
+&= \frac{[V_t^{\rho} \beta (E_t [V_{t+1}^{1-\alpha}])^{\frac{\alpha-\rho}{1 - \alpha}} E_t [V_{t+1}^{-\alpha}]]
+[ V_{t+1}^{\rho}(1-\beta)c_{t+1}^{-\rho}]}
+{V_t^{\rho}(1-\beta)c_t^{-\rho}} \\
+&= \frac{ \beta V_{t+1}^{\rho}c_{t+1}^{-\rho} (E_t [V_{t+1}^{1-\alpha}])^{\frac{\alpha-\rho}{1 - \alpha}} E_t [V_{t+1}^{-\alpha}]}
+{c_t^{-\rho}} 
+\end{align*}
+
+\pagebreak
+
+5. Now suppose that the endowment process (fruit from the Lucas tree) has i.i.d. growth rates, that is: $c_{t+1}/c_t = g + \sigma_c \varepsilon_{t+1}$ where $g > 0$ and $\sigma_c > 0$ are constants and $\varepsilon_t \sim N(0, 1)$.
+
+(a) Conjecture a Markov pricing function, then write down the Bellman equation for the representative agent and find his optimality conditions.
+
+Let $s_t$ be the fruit from Lucas trees.  We know that in equilibrium $c_t = s_t$.  Let $a_t$ be the holdings of trees from period $t-1$ to $t$.  Conjecture that the relative prices of tree to fruit is a function of the Markov state $p_t = p(s)$.  Thus, Bellman equation is
+
+\begin{align*}
+V(a(p(s) + s)) &= \max_{c, a'}((1-\beta)c^{1 - \rho} + \beta (E_t V(a'(p(s') + s'))^{1-\alpha})^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}\\
+\text{s.t. } c + a'p(s) &= a(p(s) + s)
+\end{align*}
+
+$$
+\implies V(a(p(s) + s)) = \max_{a'}((1-\beta)( a(p(s) + s) - a'p(s))^{1 - \rho} + \beta (E_t V(a'(p(s') + s'))^{1-\alpha})^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}
+$$
+
+FOC [$a'$]:
+
+...
+
+(b) Define a recursive competitive equilibrium, being specific about the objects which make it up.
+
+...
+
+(c) Show that the value function can be written $V (c_t) = vc_t$ for some constant $v$, and find an expression for $\log S_t$.
+
+...
+
+(d) Find an expression for the risk-free rate. How does this differ from the standard CRRA case?
+
+...
+
+(e) Find an expression for the return on the Lucas tree. How does this differ from the standard CRRA case?
+
+...

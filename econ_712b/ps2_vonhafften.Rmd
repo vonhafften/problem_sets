@@ -450,7 +450,6 @@ solve_ss <- function() {
   k_no_change <<- z * k ^ cd_k - delta * k
   c_no_change <<- z * k ^ cd_k + (1-delta) * k - k_bar
 }
-
 ```
 
 ```{r solve_bellman_equation, echo = FALSE}
