@@ -1022,13 +1022,13 @@ From lecture, we know that the price of a bond is $E[mx]$ where $m$ is the stoch
 
 For the Epstein-Zin preferences, we found that the stochastic discount factor is $S_t$.  Thus, the price of a risk-free bond is $E_t[S_t]$ and the risk-free return is $1/E_t[S_t]$.
 
-For standard CRRA preferences, we found that the stochastic discount factor is $\beta\frac{u'(c_{t+1})}{u'(c_{t})}$.  Thus, the price of a risk-free bond is $E_t [\beta\frac{u'(c_{t+1})}{u'(c_{t})}]$ and the risk-free return is $1/E_t [\beta\frac{u'(c_{t+1})}{u'(c_{t})}]$.
+For standard CRRA preferences, we found that the stochastic discount factor is $\beta \Big( \frac{c_{t+1}}{c_{t}}\Big)^{-\gamma}$.  Thus, the price of a risk-free bond is $E_t \Big[\beta \Big( \frac{c_{t+1}}{c_{t}}\Big)^{-\gamma}\Big]$ and the risk-free return is $1/E_t \Big[\beta  \Big( \frac{c_{t+1}}{c_{t}}\Big)^{-\gamma} \Big]$.
 
 (e) Find an expression for the return on the Lucas tree. How does this differ from the standard CRRA case?
 
 Let $Q(s_t)$ be the price of a claim to the Lucas tree based on the realization of the shock $s_t$.  Thus, the payoff of a claim to the Lucas tree is the price of the tree in the next period plus its fruit: $Q(s_{t+1}) + s_{t+1}$.  Using the formula discussed in part (d), we know that $Q(s_t) = E_t[S_t(Q(s_{t+1}) + s_{t+1})]$.  Thus, the return on the Lucas tree is $1/E_t[S_t(Q(s_{t+1}) + s_{t+1})]$.
 
-With CRRA preferences, the payoff of the claim to the Lucas tree is the same, but the stochastic discount factor is $\beta\frac{u'(c_{t+1})}{u'(c_{t})}$.
+With CRRA preferences, the payoff of the claim to the Lucas tree is the same, but the stochastic discount factor is $\beta \Big( \frac{c_{t+1}}{c_{t}}\Big)^{-\gamma}$.
 
 \pagebreak
 
