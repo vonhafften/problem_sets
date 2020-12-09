@@ -22,17 +22,454 @@ library(knitr)
 
 1. In Problem #3 on Problem Set 3 the wage and rate of return were given. Now suppose instead that they are determined from an aggregate production function, $Y = K^{\alpha}N^{1-\alpha}$, and an aggregate law of motion for the capital stock: $K' = (1-\delta)K + I$.  Assume that $\alpha = 0.36$ and $\delta = 0.08$.
 
+```{r 1_simulation, echo = FALSE, eval=FALSE}
+# parameters
+beta <- 0.95
+gamma <- 3
+alpha <- 0.36
+delta <- 0.08
+l_low <- 0.7
+l_high <- 1.1
+Q <- matrix(c(0.85, 0.05, 0.15, 0.95), nrow = 2)
+
+# capital grid
+min_k <- 0.01
+max_k <- 20
+inc_k <- min_k
+k <- seq(min_k, max_k, by = inc_k)
+n <- length(k)
+ones <- rep(1, times=n)
+
+# initialize value grid 
+v_low <- log(k)
+v_high <- log(k)
+
+# initialize decision rule grid
+decision_low <- rep(0, times=n)
+decision_high <- rep(0, times=n)
+
+# initial guess
+k_demand <- 6
+diff <- 10000
+k_tol <- 0.02
+dist_tol <- .01
+
+iter_master <- 1
+max_iter <- 1000
+
+# Master loop. 
+# - Takes a capital demand level. 
+# - Calculates interest rates and wages. 
+# - Solve the household problem.  
+# - Find marginal distribution of capital supply. 
+# - Check if they are close. 
+# - Then reruns with capital demand that is halfway 
+  # between the previous guess and the implied capital supply.
+
+while (abs(diff) > k_tol & iter_master < max_iter) {
+  print(iter_master)
+  print(paste("Capital Demand:", k_demand))
+
+  # find interest rate from k_demand guess
+  r_low <- alpha * k_demand ^ (alpha - 1) * l_low ^ (1 - alpha)
+  r_high <- alpha * k_demand ^ (alpha - 1) * l_high ^ (1 - alpha)
+  
+  # wages from zero profit condition
+  w_low <- (k_demand ^ (alpha) * l_low ^ (1-alpha) - r_low * k_demand)/l_low
+  w_high <- (k_demand ^ (alpha) * l_high ^ (1-alpha) - r_high * k_demand)/l_high
+  
+  # create consumption matrices
+  # (columns are different values of a; rows are values of a')
+  c_matrix_low <- w_low * l_low + r_low * ones %*% t(k)  + (1-delta) * ones %*% t(k) - 
+    k %*% t(ones)
+  c_matrix_high <- w_high * l_high + r_high * ones %*% t(k) + (1-delta) * ones %*% t(k)  - 
+    k %*% t(ones)
+  
+  # create flow utility matrices and set negative consumption levels to low value
+  utility_matrix_low <- (c_matrix_low^(1-gamma))/(1-gamma)
+  utility_matrix_low[c_matrix_low < 0|!is.finite(utility_matrix_low)] <- -1000
+  
+  utility_matrix_high <- (c_matrix_high^(1-gamma))/(1-gamma)
+  utility_matrix_high[c_matrix_high < 0|!is.finite(utility_matrix_high)] <- -1000
+  
+  test <- 10
+  iter_hh <- 1
+  
+  # solve household bellman equations:
+  while (test != 0 & iter_hh < max_iter) {
+
+    # create value matrix for different a and a' values with transition probabilities 
+    # to next period shock
+    value_matrix_low <- utility_matrix_low + beta * Q[1, 1] * v_low %*% t(ones) + 
+      beta * Q[1, 2] * v_high %*% t(ones)
+    value_matrix_high <- utility_matrix_high + beta * Q[2, 1] * v_low %*% t(ones) + 
+      beta * Q[2, 2] * v_high %*% t(ones)
+    
+    # find max utility
+    tv_low <- apply(value_matrix_low, 2, max)
+    tv_high <- apply(value_matrix_high, 2, max)
+    
+    # find column with max utility
+    tdecision_low <- apply(value_matrix_low, 2, which.max)
+    tdecision_high <- apply(value_matrix_high, 2, which.max)
+    
+    # update test variable so loop ends if no changes from previous iteration
+    test <- max(tdecision_low - decision_low) + max(tdecision_high - decision_high)
+    
+    # update value grid
+    v_low <- tv_low
+    v_high <- tv_high
+    
+    # update decision rule
+    decision_low <- tdecision_low
+    decision_high <- tdecision_high
+    
+    iter_hh <- iter_hh + 1
+  }
+  
+  # Finds marginal distribution of capital supply
+  diff <- 1000
+  dist0 <- matrix(rep(1/(2*n), times = 2*n), ncol = 2)
+  dist <- dist0
+  iter <- 1
+  
+  while (diff > dist_tol & iter < max_iter ) {
+
+    dist <- 0*dist0
+    
+    for (i in 1:n) {
+      for (j in 1:2) {
+        if (dist0[i, j] > .Machine$double.xmin) {
+          if (j == 1){
+            target <- decision_low[i]
+          }
+          if (j == 2){
+            target <- decision_high[i]
+          }
+          
+          dist[target, 1] <- dist[target, 1] + dist0[i, j] * Q[j, 1]
+          dist[target, 2] <- dist[target, 2] + dist0[i, j] * Q[j, 2]
+        }
+      }
+    }
+    
+    diff <- sum(abs(dist - dist0))
+    
+    if (abs(sum(dist) - 1) > .00001 | abs(sum(dist0) - 1) >  .00001 ) {
+      print("PDFs aren't PDF!")
+      
+      plot(dist[,1], type ="l")
+      lines(dist[,2], col = "red")
+      
+      print(sum(dist))
+      print(sum(dist0))
+      
+      break
+    }
+    
+    dist0 <- dist
+    
+    iter <- iter + 1
+  }
+  
+  k_supply <- sum(apply(dist, 1, sum)*k)
+  
+  print(paste("Capital Supply:", k_supply))
+  
+  diff <- k_demand - k_supply
+  iter_master <- iter_master + 1
+  
+  k_demand <- k[which.min(abs(0.9*k_demand + 0.1*k_supply - k))]
+  
+}
+
+# save policy function based on decision rule
+policy_function_low <- tibble(k = k, k_prime = min_k + decision_low*inc_k) %>%
+  mutate(c = w_low * l_low + r_low * k + (1-delta) * k - k_prime)
+  
+policy_function_high <- tibble(k = k, k_prime = min_k + decision_high*inc_k) %>%
+  mutate(c = w_high * l_high + r_high * k + (1-delta) * k - k_prime)
+
+# Don't save the large matrices
+ls()[!(ls() %in% c("c_matrix_high", 
+                   "c_matrix_low", 
+                   "utility_matrix_high", 
+                   "utility_matrix_low", 
+                   "value_matrix_high", 
+                   "value_matrix_low"))] %>%
+  save(list = ., file = "ps4_vonhafften_1a.RData")
+```
+
 (a) Find the equilibrium levels of the capital stock, the real wage, and the real interest rate.
 
-...
+The household Bellman equation becomes:
+
+\begin{align*}
+V(k, l) &= \max_{(c, k')} \Bigg\{\frac{c^{1-\gamma}}{1 - \gamma} + \beta \int V(k', l')Q(l, dl')\Bigg\} \\
+\text{s.t. } & c + k' - (1-\delta)k = lw + rk  \\
+\implies V(k, l) &= \max_{k'} \Bigg\{\frac{(w l + rk + (1-\delta)k - k')^{1-\gamma}}{1 - \gamma} + \beta \int V(k', l')Q(l, dl')\Bigg\}
+\end{align*}
+
+The firm maximizes profit in each period, so that in equilibrium the interest rate equal the marginal product of capital.  The profit function is CRS which implies the wage.
+
+\begin{align*}
+\max_{k, l} & K^{\alpha}N^{1-\alpha} - rK - wN \\
+r &= \alpha K^{\alpha - 1} N^{1-\alpha} \\
+w &= \frac{K^{\alpha}N^{1-\alpha} - rK}{N}
+\end{align*}
+
+Labor is exogenous and market clearing implies that $N = l_t$.  We need to numerically calculate capital.  The process starts with a guess for capital demand, which implies a wage and interest rate based on the firms' problem.  The next step in the process is to solve the household problem, which implies a policy function for consumption and capital holdings.  Then, the policy function implies a stationary distribution for capital, which implies a level of capital supply.  Finally, if the capital supply and the capital demand at the same then they imply that the market clears and are thus the equilibrium values.  Otherwise, the process is repeated with an updated guess for capital demanded.  By Walras' Law, the goods market clears at equilibrium.
+
+
+```{r 1a_results, echo = FALSE}
+load("ps4_vonhafften_1a.RData")
+
+k_bar <- (k_demand + k_supply)/2
+
+r_low <- alpha * k_bar ^ (alpha - 1) * l_low ^ (1 - alpha)
+r_high <- alpha * k_bar ^ (alpha - 1) * l_high ^ (1 - alpha)
+  
+w_low <- (k_bar ^ (alpha) * l_low ^ (1-alpha) - r_low * k_bar)/l_low
+w_high <- (k_bar ^ (alpha) * l_high ^ (1-alpha) - r_high * k_bar)/l_high
+
+stationary_dist <- apply(dist, 2, sum)
+
+tibble(capital = k_bar,
+       wage = w_low*stationary_dist[1] + w_high*stationary_dist[2],
+       interest_rate = r_low*stationary_dist[1] + r_high*stationary_dist[2]) %>% 
+  pivot_longer(cols = everything(),
+               names_to ="variable",
+               values_to = "equilibrium values") %>%
+  kable(digits = 3)
+```
 
 (b) Plot the equilibrium distributions of income and consumption distribution. Compare the relative degree of inequality in the two distributions.
 
-...
+The marginal capital distribution implies a income and consumption distribution.  The consumption values range from 0 to 1.5.  The income ranges from about 0.2 (even at low levels of capital households are providing labor and earning labor income) to 3.
+
+```{r 1b, echo = FALSE}
+load("ps4_vonhafften_1a.RData")
+
+r_low <- alpha * k ^ (alpha - 1) * l_low ^ (1 - alpha)
+w_low <- (k ^ alpha * l_low ^ (1-alpha) - r_low * k)/l_low
+
+r_high <- alpha * k ^ (alpha - 1) * l_high ^ (1 - alpha)
+w_high <- (k ^ alpha * l_high ^ (1-alpha) - r_high * k)/l_high
+
+labor_income_low <- w_low * l_low
+labor_income_high <- w_high * l_high
+
+interest_income_low <- r_low * k
+interest_income_high <- r_high * k
+
+income <- apply(cbind(.25*(interest_income_low+labor_income_low), 
+                      .75*(interest_income_high+labor_income_high)), 1, sum)
+
+pdf <- apply(dist, 1, sum)
+cdf <- cumsum(pdf)
+
+consumption <- delta * k
+
+plot(x = consumption, y = cdf, type="l", xlab = "value", ylim = c(0, 1), xlim=c(0, 3))
+
+lines(x= income, y= cdf, type="l", col = "red")
+
+legend("bottomright",
+       c("consumption", "income"),
+       col = c("black", "red"),
+       lty = 1)
+
+```
 
 (c) Now suppose that the borrowing constraint is loosened so that households face the debt limit $a_t \ge -2$ (rather than $a_t \ge 0$). What happens to the equilibrium results from part (a)?
 
-...
+Following the same procedure as in part (a), but with a capital grid that starts at -2, I find that the equilibrium level of capital is slightly lower with debt than without.  Households have some flexibility to borrow in case of low shocks, so they don't need as much savings. With the lower level of capital, interest rates are slightly higher.  Since capital and labor are complements in production, wages are slightly lower.
+
+```{r 1c_simulation, echo = FALSE, eval=FALSE}
+# This chunk runs the simulation.  No need to run it every time you knit.
+
+# parameters
+beta <- 0.95
+gamma <- 3
+alpha <- 0.36
+delta <- 0.08
+l_low <- 0.7
+l_high <- 1.1
+Q <- matrix(c(0.85, 0.05, 0.15, 0.95), nrow = 2)
+
+# capital grid
+min_k <- -2
+max_k <- 20
+inc_k <- 0.01
+k <- seq(min_k, max_k, by = inc_k)
+n <- length(k)
+ones <- rep(1, times=n)
+
+# initialize value grid 
+v_low <- log(k-min_k+inc_k)
+v_high <- log(k-min_k+inc_k)
+
+# initialize decision rule grid
+decision_low <- rep(0, times=n)
+decision_high <- rep(0, times=n)
+
+# initial guess
+k_demand <- 6
+diff <- 10000
+k_tol <- 0.02
+dist_tol <- .01
+
+iter_master <- 1
+max_iter <- 1000
+
+# Master loop. Takes a capital demand level. Calculates interest rates and wages. Solve the household problem.  Find marginal distribution of capital supply. Check if they are close. Then reruns with capital demand that is halfway between the previous guess and the implied capital supply.
+
+while (abs(diff) > k_tol & iter_master < max_iter) {
+  print(iter_master)
+  print(paste("Capital Demand:", k_demand))
+
+  # find interest rate from k_demand guess
+  r_low <- alpha * k_demand ^ (alpha - 1) * l_low ^ (1 - alpha)
+  r_high <- alpha * k_demand ^ (alpha - 1) * l_high ^ (1 - alpha)
+  
+  # wages from zero profit condition
+  w_low <- (k_demand ^ (alpha) * l_low ^ (1-alpha) - r_low * k_demand)/l_low
+  w_high <- (k_demand ^ (alpha) * l_high ^ (1-alpha) - r_high * k_demand)/l_high
+  
+  # create consumption matrices
+  # (columns are different values of a; rows are values of a')
+  c_matrix_low <- w_low * l_low + r_low * ones %*% t(k)  + (1-delta) * ones %*% t(k) - k %*% t(ones)
+  c_matrix_high <- w_high * l_high + r_high * ones %*% t(k) + (1-delta) * ones %*% t(k)  - k %*% t(ones)
+  
+  # create flow utility matrices and set negative consumption levels to low value
+  utility_matrix_low <- (c_matrix_low^(1-gamma))/(1-gamma)
+  utility_matrix_low[c_matrix_low < 0|!is.finite(utility_matrix_low)] <- -1000
+  
+  utility_matrix_high <- (c_matrix_high^(1-gamma))/(1-gamma)
+  utility_matrix_high[c_matrix_high < 0|!is.finite(utility_matrix_high)] <- -1000
+  
+  test <- 10
+  iter_hh <- 1
+  
+  # solve household bellman equations:
+  while (test != 0 & iter_hh < max_iter) {
+
+    # create value matrix for different a and a' values with transition probabilities 
+    # to next period shock
+    value_matrix_low <- utility_matrix_low + beta * Q[1, 1] * v_low %*% t(ones) + 
+      beta * Q[1, 2] * v_high %*% t(ones)
+    value_matrix_high <- utility_matrix_high + beta * Q[2, 1] * v_low %*% t(ones) + 
+      beta * Q[2, 2] * v_high %*% t(ones)
+    
+    # find max utility
+    tv_low <- apply(value_matrix_low, 2, max)
+    tv_high <- apply(value_matrix_high, 2, max)
+    
+    # find column with max utility
+    tdecision_low <- apply(value_matrix_low, 2, which.max)
+    tdecision_high <- apply(value_matrix_high, 2, which.max)
+    
+    # update test variable so loop ends if no changes from previous iteration
+    test <- max(tdecision_low - decision_low) + max(tdecision_high - decision_high)
+    
+    # update value grid
+    v_low <- tv_low
+    v_high <- tv_high
+    
+    # update decision rule
+    decision_low <- tdecision_low
+    decision_high <- tdecision_high
+    
+    iter_hh <- iter_hh + 1
+  }
+  
+  # Finds marginal distribution of capital supply
+  diff <- 1000
+  dist0 <- matrix(rep(1/(2*n), times = 2*n), ncol = 2)
+  dist <- dist0
+  iter <- 1
+  
+  while (diff > dist_tol & iter < max_iter ) {
+
+    dist <- 0*dist0
+    
+    for (i in 1:n) {
+      for (j in 1:2) {
+        if (dist0[i, j] > .Machine$double.xmin) {
+          if (j == 1) target <- decision_low[i]
+          if (j == 2) target <- decision_high[i]
+          
+          dist[target, 1] <- dist[target, 1] + dist0[i, j] * Q[j, 1]
+          dist[target, 2] <- dist[target, 2] + dist0[i, j] * Q[j, 2]
+        }
+      }
+    }
+    
+    diff <- sum(abs(dist - dist0))
+    dist0 <- dist
+    iter <- iter + 1
+  }
+  
+  k_supply <- sum(apply(dist, 1, sum)*k)
+  print(paste("Capital Supply:", k_supply))
+  diff <- k_demand - k_supply
+  iter_master <- iter_master + 1
+  k_demand <- k[which.min(abs(0.9*k_demand + 0.1*k_supply - k))]
+  
+}
+
+# save policy function based on decision rule
+policy_function_low <- tibble(k = k, k_prime = min_k + decision_low*inc_k) %>%
+  mutate(c = w_low * l_low + r_low * k + (1-delta) * k - k_prime)
+  
+policy_function_high <- tibble(k = k, k_prime = min_k + decision_high*inc_k) %>%
+  mutate(c = w_high * l_high + r_high * k + (1-delta) * k - k_prime)
+
+ls()[!(ls() %in% c("c_matrix_high", "c_matrix_low", "utility_matrix_high", "utility_matrix_low", "value_matrix_high", "value_matrix_low"))] %>%
+  save(list = ., file = "ps4_vonhafften_1c.RData")
+```
+
+```{r 1c_results, echo = FALSE}
+load("ps4_vonhafften_1a.RData")
+
+k_bar <- (k_demand + k_supply)/2
+
+r_low <- alpha * k_bar ^ (alpha - 1) * l_low ^ (1 - alpha)
+r_high <- alpha * k_bar ^ (alpha - 1) * l_high ^ (1 - alpha)
+  
+w_low <- (k_bar ^ (alpha) * l_low ^ (1-alpha) - r_low * k_bar)/l_low
+w_high <- (k_bar ^ (alpha) * l_high ^ (1-alpha) - r_high * k_bar)/l_high
+
+stationary_dist <- apply(dist, 2, sum)
+
+nodebt <- tibble(capital = k_bar,
+       wage = w_low*stationary_dist[1] + w_high*stationary_dist[2],
+       interest_rate = r_low*stationary_dist[1] + r_high*stationary_dist[2]) %>% 
+  pivot_longer(cols = everything(),
+               names_to ="variable",
+               values_to = "baseline")
+
+load("ps4_vonhafften_1c.RData")
+
+k_bar <- (k_demand + k_supply)/2
+
+r_low <- alpha * k_bar ^ (alpha - 1) * l_low ^ (1 - alpha)
+r_high <- alpha * k_bar ^ (alpha - 1) * l_high ^ (1 - alpha)
+  
+w_low <- (k_bar ^ (alpha) * l_low ^ (1-alpha) - r_low * k_bar)/l_low
+w_high <- (k_bar ^ (alpha) * l_high ^ (1-alpha) - r_high * k_bar)/l_high
+
+stationary_dist <- apply(dist, 2, sum)
+
+tibble(capital = k_bar,
+       wage = w_low*stationary_dist[1] + w_high*stationary_dist[2],
+       interest_rate = r_low*stationary_dist[1] + r_high*stationary_dist[2]) %>% 
+  pivot_longer(cols = everything(),
+               names_to ="variable",
+               values_to = "with debt") %>%
+  full_join(nodebt, ., by ="variable") %>%
+  kable(digits = 3)
+```
 
 \pagebreak
 
@@ -42,7 +479,7 @@ library(knitr)
 
 The policy function for both $k'$ and $c$ is higher than the deterministic case for the high productivity shock and lower for the low productivity shock.
 
-```{r setup_model, echo = FALSE, eval = FALSE}
+```{r setup_model, echo = FALSE}
 # parameters
 beta <- 0.95
 delta <- 0.1
@@ -67,7 +504,7 @@ k <- seq(min_k, max_k, by = inc_k)
 n <- length(k)
 ```
 
-```{r solve_ss, echo = FALSE, eval = FALSE}
+```{r solve_ss, echo = FALSE}
 solve_ss_d <- function() {
   # Steady state values
   k_bar <<- ((beta^(-1)-(1-delta))/(cd_k * z_d))^(1/(cd_k-1))
@@ -75,7 +512,65 @@ solve_ss_d <- function() {
 }
 ```
 
-```{r solve_bellman_equation, echo = FALSE, eval = FALSE}
+
+```{r solve_bellman_s, echo = FALSE, eval = FALSE}
+
+# Solves bellman equation based on parameters above.
+solve_bellman_s <- function() {
+  ones <- rep(1, times=n)
+  # initialize value grid and decision rule grid
+  v_l <- rep(0, times=n)
+  v_h <- rep(0, times=n)
+  decision_l <- rep(0, times=n)
+  decision_h <- rep(0, times=n)
+  
+  # create consumption and utility matrixes
+  # (columns are different values of k; rows are values of k')
+  c_l_matrix <- z_l*(ones %*% t(k))^cd_k + (1-delta)*(ones %*% t(k)) - k %*% t(ones)
+  c_h_matrix <- z_h*(ones %*% t(k))^cd_k + (1-delta)*(ones %*% t(k)) - k %*% t(ones)
+  
+  utility_l_matrix <- (c_l_matrix^(1-gamma))/(1-gamma)
+  utility_h_matrix <- (c_h_matrix^(1-gamma))/(1-gamma)
+  utility_l_matrix[c_l_matrix < 0|!is.finite(utility_l_matrix)] <- -1000
+  utility_h_matrix[c_h_matrix < 0|!is.finite(utility_h_matrix)] <- -1000
+  
+  test <- 10
+  while (test != 0) {
+    # create value matrix for all different k and k' values
+    value_l_matrix <- utility_l_matrix + 
+      beta * (p_ll * v_l %*% t(ones) + p_lh * v_h %*% t(ones))
+    value_h_matrix <- utility_h_matrix + 
+      beta * (p_hl * v_l %*% t(ones) + p_hh * v_h %*% t(ones))
+    
+    # find column max with max utility
+    tv_l <- apply(value_l_matrix, 2, max)
+    tv_h <- apply(value_h_matrix, 2, max)
+    tdecision_l <- apply(value_l_matrix, 2, which.max)
+    tdecision_h <- apply(value_h_matrix, 2, which.max)
+    
+    # loop ends if no changes from previous iteration
+    test <- abs(max(tdecision_l - decision_l))+abs(max(tdecision_h - decision_h))
+    
+    # update value grid and decision rule
+    decision_l <- tdecision_l
+    decision_h <- tdecision_h
+    v_l <- tv_l
+    v_h <- tv_h
+  }
+  
+  # capital and consumption decision rule
+  policy_function_l <<- tibble(k = k, k_prime = min_k + decision_l*inc_k) %>%
+    mutate(c = z_l*k_prime^cd_k + (1-delta)*k - k_prime)
+  policy_function_h <<- tibble(k = k, k_prime = min_k + decision_h*inc_k) %>%
+    mutate(c = z_h*k_prime^cd_k + (1-delta)*k - k_prime)
+  
+  v_l <<- v_l
+  v_h <<- v_h
+}
+```
+
+
+```{r solve_bellman_equation_d, echo = FALSE, eval = FALSE}
 # Solves bellman equation based on parameters above.
 solve_bellman_d <- function() {
   ones <- rep(1, times=n)
@@ -114,66 +609,15 @@ solve_bellman_d <- function() {
   v_d <<- v
 }
 
-# Solves bellman equation based on parameters above.
-solve_bellman_s <- function() {
-  ones <- rep(1, times=n)
-  
-  # initialize value grid and decision rule grid
-  v_l <- rep(0, times=n)
-  v_h <- rep(0, times=n)
-  
-  decision_l <- rep(0, times=n)
-  decision_h <- rep(0, times=n)
-  
-  # create consumption and utility matrixes
-  # (columns are different values of k; rows are values of k')
-  c_l_matrix <- z_l*(ones %*% t(k))^cd_k + (1-delta)*(ones %*% t(k)) - k %*% t(ones)
-  c_h_matrix <- z_h*(ones %*% t(k))^cd_k + (1-delta)*(ones %*% t(k)) - k %*% t(ones)
-  
-  utility_l_matrix <- (c_l_matrix^(1-gamma))/(1-gamma)
-  utility_h_matrix <- (c_h_matrix^(1-gamma))/(1-gamma)
-  
-  utility_l_matrix[c_l_matrix < 0|!is.finite(utility_l_matrix)] <- -1000
-  utility_h_matrix[c_h_matrix < 0|!is.finite(utility_h_matrix)] <- -1000
-  
-  test <- 10
-  while (test != 0) {
-    # create value matrix for all different k and k' values
-    value_l_matrix <- utility_l_matrix + beta * (p_ll * v_l %*% t(ones) + p_lh * v_h %*% t(ones))
-    value_h_matrix <- utility_h_matrix + beta * (p_hl * v_l %*% t(ones) + p_hh * v_h %*% t(ones))
-    
-    # find column max with max utility
-    tv_l <- apply(value_l_matrix, 2, max)
-    tv_h <- apply(value_h_matrix, 2, max)
-    
-    tdecision_l <- apply(value_l_matrix, 2, which.max)
-    tdecision_h <- apply(value_h_matrix, 2, which.max)
-    
-    # loop ends if no changes from previous iteration
-    test <- abs(max(tdecision_l - decision_l))+abs(max(tdecision_h - decision_h))
-    
-    # update value grid and decision rule
-    decision_l <- tdecision_l
-    decision_h <- tdecision_h
-
-    v_l <- tv_l
-    v_h <- tv_h
-  }
-  
-  # capital and consumption decision rule
-  policy_function_l <<- tibble(k = k, k_prime = min_k + decision_l*inc_k) %>%
-    mutate(c = z_l*k_prime^cd_k + (1-delta)*k - k_prime)
-  policy_function_h <<- tibble(k = k, k_prime = min_k + decision_h*inc_k) %>%
-    mutate(c = z_h*k_prime^cd_k + (1-delta)*k - k_prime)
-  
-  v_l <<- v_l
-  v_h <<- v_h
-}
 solve_bellman_d()
 solve_bellman_s()
+
+save(list = ls(), file = "ps4_vonhafften_2a.RData")
 ```
 
 ```{r 2a_plots, echo = FALSE, eval = FALSE}
+load("ps4_vonhafften_2a.RData")
+
 plot(1, type = "l", xaxs = "i", yaxs = "i", ylim=c(0,2), xlim=c(min_k, max_k), xlab = "k", ylab = "c", main = "Policy Function: c(k)")
 
 lines(policy_function_d$k, policy_function_d$c)
@@ -204,6 +648,9 @@ legend("topleft",
 I ran a simulation with 100,000 periods that is preceded by 1,000 period burn-in period. In the simulation, households build up more saving in case of future negative productivity shocks.  In the table, we see that capital is noticably higher for the simulation.  Investment, consumption, output, and wages are all slightly higher in the simulation than in the deterministic model, which is consistent with households holding a higher amount of capital.  Interest rates are slightly lower due to the increased level of capital.
 
 ```{r 2b_stochastic, echo = FALSE, eval = FALSE}
+
+load("ps4_vonhafften_2a.RData")
+
 n_periods <- 100000
 burnin <- 1000
 
@@ -250,10 +697,6 @@ results_s <-  simulation %>%
   summarise(simulation = mean(value, na.rm = TRUE), 
             .groups = "drop")
 
-```
-
-```{r 2b_deterministic, echo = FALSE, eval = FALSE}
-
 solve_ss_d()
 
 results_d <- tibble(variable = c("c", "i", "k", "r", "w", "y"),
@@ -263,6 +706,16 @@ results_d <- tibble(variable = c("c", "i", "k", "r", "w", "y"),
                                       z_d * cd_k * k_bar ^ (cd_k - 1),
                                       z_d * cd_l * k_bar ^ cd_k,
                                       z_d * k_bar ^ cd_k))
+
+
+
+save(list = ls(), file = "ps4_vonhafften_2b.RData")
+
+```
+
+```{r 2b_deterministic, echo = FALSE}
+
+load("ps4_vonhafften_2b.RData")
 
 full_join(results_d, results_s, by="variable") %>% 
   kable(digits = 3)
@@ -275,7 +728,10 @@ The volatility of consumption and investment is roughly half of the volatility o
 
 The correlation between consumption and output is almost one.  This indicates that consumption and output comove quite closely.  The correlation between interest rates and output is approximately zero, which indicates that output and interest rates are unrelated.
 
-```{r 2c, echo = FALSE, eval = FALSE}
+```{r 2c, echo = FALSE}
+
+load("ps4_vonhafften_2b.RData")
+
 
 results_s_c <- simulation %>%
   summarise(c_vol = sd(c),
@@ -516,3 +972,20 @@ FOC [$a'$]:
 (e) Find an expression for the return on the Lucas tree. How does this differ from the standard CRRA case?
 
 ...
+
+\pagebreak
+
+## Appendix: Question 1
+
+```{r, ref.label="1_simulation", eval = FALSE}
+```
+
+\pagebreak
+
+## Appendix: Question 2
+
+```{r, ref.label="setup_model", eval = FALSE}
+```
+
+```{r, ref.label="solve_bellman_s", eval = FALSE}
+```
