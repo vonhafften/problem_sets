@@ -945,33 +945,90 @@ S_t
 Let $s_t$ be the fruit from Lucas trees.  We know that in equilibrium $c_t = s_t$.  Let $a_t$ be the holdings of trees from period $t-1$ to $t$.  Conjecture that the relative prices of tree to fruit is a function of the Markov state $p_t = p(s)$.  Thus, Bellman equation is
 
 \begin{align*}
-V(a(p(s) + s)) &= \max_{c, a'}((1-\beta)c^{1 - \rho} + \beta (E_t V(a'(p(s') + s'))^{1-\alpha})^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}\\
-\text{s.t. } c + a'p(s) &= a(p(s) + s)
+V(a(p(s) + s)) &= \max_{c, a'}((1-\beta)c^{1 - \rho} + \beta (E [ (V(a'(p(s') + s')))^{1-\alpha}])^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}\\
+\text{s.t. } & c + a'p(s) = a(p(s) + s)\\
+\implies V(a(p(s) + s)) &= \max_{a'}((1-\beta)( a(p(s) + s) - a'p(s))^{1 - \rho} + \beta (E [(V(a'(p(s') + s')))^{1-\alpha}])^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}\\
 \end{align*}
-
-$$
-\implies V(a(p(s) + s)) = \max_{a'}((1-\beta)( a(p(s) + s) - a'p(s))^{1 - \rho} + \beta (E_t V(a'(p(s') + s'))^{1-\alpha})^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}
-$$
 
 FOC [$a'$]:
 
-...
+\begin{align*}
+(1-\beta)(1-\rho)(a(p(s) + s)-a'p(s))^{-\rho}p(s) \\
+= \beta \frac{1-\rho}{1 - \alpha} (E [(V(a'(p(s') + s')))^{1-\alpha}])^{\frac{\alpha - \rho}{1 - \alpha}}E[(1-\alpha)
+E [(1-\alpha)(V(a'(p(s') + s')))^{-\alpha}V'(a'(p(s') + s'))]
+\end{align*}
+
+Envelope condition:
+
+$$
+V'(a(p(s) + s)) = (1-\beta)( a(p(s) + s) - a'p(s))^{- \rho}(p(c) + c) = (1-\beta)c^{- \rho}(p(c) + c)
+$$
+
+The FOC and envelope condition imply:
+
+$$
+\implies c^{-\rho}p(c) \\
+= \beta (E [(V(a'(p(c') + s')))^{1-\alpha}])^{\frac{\alpha - \rho}{1 - \alpha}}E[
+E [(1-\alpha)(V(a'(p(c') + s')))^{-\alpha}(1 - \rho)(c')^{- \rho}(p(c) + c)]
+$$
+
+$$
+\implies 1 =\beta E\Bigg[S \frac{p(c')+c'}{p(c)}\Bigg]
+$$
 
 (b) Define a recursive competitive equilibrium, being specific about the objects which make it up.
 
-...
+The recursive competitive equilibrium is an allocation $\{a_t, c_t\}_{t=0}^\infty$ and a set of prices $\{p(c_t)\}_{t=0}^\infty$ such that households optimize per their Bellman equation and markets clear (i.e., trees $a_t = 1$ and goods $c_t = s_t$). 
+
+\pagebreak
 
 (c) Show that the value function can be written $V (c_t) = vc_t$ for some constant $v$, and find an expression for $\log S_t$.
 
-...
+Substitute $vc = V(a(p(s) + s))$ and $vc' = V(a(p(s') + s'))$ into the Bellman equation:
+
+\begin{align*}
+vc &= \max_{c, a'}((1-\beta)c^{1 - \rho} + \beta (E [ (vc')^{1-\alpha}])^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}\\
+\implies
+vc &= \max_{c, a'}((1-\beta)c^{1 - \rho} + \beta (E [ v^{1-\alpha}c^{1-\alpha}(g + \sigma_c \varepsilon')^{1-\alpha}])^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}\\
+\implies
+vc &= \max_{c, a'}((1-\beta)c^{1 - \rho} + \beta v^{1-\rho}c^{1-\rho}(E [ (g + \sigma_c \varepsilon')^{1-\alpha}])^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}\\
+\implies
+v &= \max_{c, a'}((1-\beta) + \beta v^{1-\rho}(E [ (g + \sigma_c \varepsilon')^{1-\alpha}])^{\frac{1-\rho}{1 - \alpha}})^{\frac{1}{1-\rho}}
+\end{align*}
+
+Rewriting $S_t$:
+
+\begin{align*}
+\log (S_t) 
+&= \log(\frac{ \beta V_{t+1}^{\rho}c_{t+1}^{-\rho} (E_t [V_{t+1}^{1-\alpha}])^{\frac{\alpha-\rho}{1 - \alpha}} E_t [V_{t+1}^{-\alpha}]}
+{c_t^{-\rho}})\\
+&= \log(\beta) + \rho \log( V_{t+1}) - \rho \log(c_{t+1}) + \frac{\alpha-\rho}{1 - \alpha}\log (E_t [V_{t+1}^{1-\alpha}]) + \log(E_t [V_{t+1}^{-\alpha}]) + \rho \log(c_t)
+\end{align*}
+
+Substituting in $V_{t+1} = v c_{t+1}$
+
+\begin{align*}
+\log (S_t) 
+&= \log(\beta) + \rho \log( v c_{t+1}) - \rho \log(c_{t+1}) + \frac{\alpha-\rho}{1 - \alpha}\log (E_t [(v c_{t+1})^{1-\alpha}]) + \log(E_t [(v c_{t+1})^{-\alpha}]) + \rho \log(c_t)\\
+&= \log(\beta) + \rho \log( v) + \rho\log( c_{t+1}) - \rho \log(c_{t+1}) + \frac{\alpha-\rho}{1 - \alpha}\log (E_t [(v c_{t+1})^{1-\alpha}]) + \log(E_t [(v c_{t+1})^{-\alpha}]) + \rho \log(c_t)\\
+&= \log(\beta) + \rho \log( v) + \frac{\alpha-\rho}{1 - \alpha}\log (E_t [(v c_{t+1})^{1-\alpha}]) + \log(E_t [(v c_{t+1})^{-\alpha}]) + \rho \log(c_t)
+\end{align*}
+
+Thus, $v$ is a function of parameters and not consumption or savings, so it is constant.
 
 (d) Find an expression for the risk-free rate. How does this differ from the standard CRRA case?
 
-...
+From lecture, we know that the price of a bond is $E[mx]$ where $m$ is the stochastic discount factor and $x$ is the payoff of the bond, which is 1 for a risk-free bond.  
+
+For the Epstein-Zin preferences, we found that the stochastic discount factor is $S_t$.  Thus, the price of a risk-free bond is $E_t[S_t]$ and the risk-free return is $1/E_t[S_t]$.
+
+For standard CRRA preferences, we found that the stochastic discount factor is $\beta\frac{u'(c_{t+1})}{u'(c_{t})}$.  Thus, the price of a risk-free bond is $E_t [\beta\frac{u'(c_{t+1})}{u'(c_{t})}]$ and the risk-free return is $1/E_t [\beta\frac{u'(c_{t+1})}{u'(c_{t})}]$.
 
 (e) Find an expression for the return on the Lucas tree. How does this differ from the standard CRRA case?
 
-...
+Let $Q(s_t)$ be the price of a claim to the Lucas tree based on the realization of the shock $s_t$.  Thus, the payoff of a claim to the Lucas tree is the price of the tree in the next period plus its fruit: $Q(s_{t+1}) + s_{t+1}$.  Using the formula discussed in part (d), we know that $Q(s_t) = E_t[S_t(Q(s_{t+1}) + s_{t+1})]$.  Thus, the return on the Lucas tree is $1/E_t[S_t(Q(s_{t+1}) + s_{t+1})]$.
+
+With CRRA preferences, the payoff of the claim to the Lucas tree is the same, but the stochastic discount factor is $\beta\frac{u'(c_{t+1})}{u'(c_{t})}$.
 
 \pagebreak
 
