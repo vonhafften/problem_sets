@@ -1,0 +1,133 @@
+---
+title: "ECON 710A - Problem Set 1"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "2/1/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\var}{\text{var}}
+- \newcommand{\rank}{\text{rank}}
+- \newcommand{\twiddle}{\tilde}
+- \newcommand{\Lfn}{\mathcal{L}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+1. Suppose $(Y, X')'$ is a random vector with $Y = X'\beta_0 \cdot U$ where $E[U|X]=1, E[XX']$ is invertible, and $E[Y^2 + ||X||^2] < \infty$. Furthermore, suppose that $\{(Y_i, X_i')'\}_{i=1}^n$ is a random sample from the distribution of $(Y, X')'$ where $\frac{1}{n} \sum_{i=1}^n X_i X_i'$ is invertible and let $\hat{\beta}$ be the OLS estimator, i.e., $\hat{\beta} = (\frac{1}{n} \sum_{i=1}^n X_i X_i')^{-1} \frac{1}{n} \sum_{i=1}^n X_iY_i$.
+
+(i) Interpret the entries of $\beta_0$ in this model?
+
+...
+
+(ii) Show that $Y=X'\beta_0 + \bar{U}$ where $E[\bar{U}|X]=0$.
+
+...
+
+(iii) Show that $E[X(Y-X'\beta)]=0$ iff $\beta = \beta_0$ and use this to derive OLS as a method of moments estimator.
+
+...
+
+(iv) Show that the OLS estimator is conditionally unbiased, i.e., that $E[\hat{\beta}|X_1, ..., X_n] = \beta_0$.
+
+...
+
+(v) Show that the OLS estimator is consistent, i.e., that $\hat{\beta} \to_p \beta_0$ as $n \to \infty$.
+
+...
+
+2. Let $X$ be a random variable with $E[X^4] < \infty$ and $E[X^2] > 0$. Furthermore, let $\{X_i\}_{i=1}^n$ be a random cample from the distribution of $X$.
+
+(i) For which of the following four statistics can you use the law of large numbers and continuous mapping theorem to show convergence in probability as $n \to \infty$,
+
+$$
+\frac{1}{n} \sum_{i=1}^n X_i^3
+$$
+
+...
+
+$$
+\max_{1 \le i \le n} X_i
+$$
+
+...
+
+$$
+\frac{\sum_{i=1}^n X_i^3}{\sum_{i=1}^n X_i^2}
+$$
+...
+
+$$
+1 \{ \frac{1}{n}\sum_{i=1}^n X_i > 0 \}
+$$
+
+...
+
+(ii) For which of the following three statistics can you use the central limit theorem and continuous mapping to show convergence in distribution as $n \to \infty$,
+
+$$
+W_n := \frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i^2 - E[X_1^2])
+$$
+
+...
+
+
+$$
+W_n^2
+$$
+
+...
+
+
+$$
+\frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i^2 - \overline{X_n^2}) \text{ where } \overline{X_n^2} = \frac{1}{n} \sum_{i=1}^n X_i^2
+$$
+
+...
+
+(iii) Show that $\max_{1 \le i \le n} X_i \to_p 1$ if $X \sim uniform(0, 1)$.
+
+...
+
+(iv) Show that $\Pr(\max_{1 \le i \le n} X_i > M) \to 1$ for any $M \ge 0$ if $X \sim exponential(1)$.
+
+...
+
+3. Suppose that $\{X_i\}_{i=1}^n$ is an iid sequence of $N(0, 1)$ random variables. Let $W$ be independent of $\{X_i\}_{i=1}^n$ with $\Pr(W = 1) = \Pr(W = -1) = 1/2$. Let $Y_i = X_i W$.
+
+(i) Show that $\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \to_d N(0, 1)$ as $n \to \infty$.
+
+...
+
+(ii) Show that $\frac{1}{\sqrt{n}} \sum_{i=1}^n Y_i \to_d N(0, 1)$ as $n \to \infty$.
+
+...
+
+(iii) Show that $Cov(X_i, Y_i) = 0$.
+
+$$
+E[W] = (1)\Pr(W = 1) + (-1)\Pr(W = -1) = (1)(1/2) + (-1)(1/2) = 0
+$$
+
+$$
+E[Y_i] = E[X_i W] = E[X_i] E[W] = 0
+$$
+
+$$
+Cov(X_i, Y_i) = E[(X_i - E[X_i])(Y_i - E[Y_i])] = E[X_iY_i] = E[X_i^2 W] = E[X_i^2] E[W] = (1)(0)=0
+$$
+
+(iv) Does $V := \frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i, Y_i)' \to_d N(0, I_2)$ as $n \to \infty$?
+
+...
+
+(v) How does this exercise related to the Cramer-Wold device introduced in lecture 2?
+
+...

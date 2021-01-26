@@ -1,0 +1,95 @@
+---
+title: "ECON 714A - Problem Set 1"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "2/1/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Consider a neoclassical growth model with preferences $\sum_{t=0}^\infty \beta^t U(C_t)$, production technology $F(K_t)$, and the initial capital endowment $K_0$. Both $U(\cdot)$ and $F(\cdot)$ are strictly increasing, strictly concave and satisfy standard Inada conditions. The capital law of motion is $K_{t+1} = (1 - \delta) K_t + I_t - D_t$ where $D_t$ is a natural disaster shock that destroys a fixed amount of the accumulated capital.
+
+1. Write down the social planner’s problem and derive the inter-temporal optimality condition (the Euler equation).
+
+The social planner’s problem is to maximize the welfare of a representative agent subject to the resource constraint:
+
+\begin{align*}
+\max_{\{C_t, K_{t+1}\}} & \sum_{t=0}^\infty \beta^t U(C_t) \\
+\text{s.t. } & C_t + D_t + K_{t+1} = F(K_t) + (1-\delta)K_t
+\end{align*}
+
+Denote the lagrange multipler with $\beta^t\lambda_t$:
+
+$$
+\sum_{t=0}^\infty \beta^t [U(C_t)+ \lambda_t(F(K_t) + (1-\delta)K_t - C_t - D_t - K_{t+1})]
+$$
+
+FOC [$C_t$]:
+
+$$
+0 = \beta^t [U'(C_t) - \lambda_t] 
+\implies
+U'(C_t) = \lambda_t
+$$
+
+FOC [$K_{t+1}$]:
+
+$$
+0 = - \beta^t \lambda_t + \beta^{t+1} \lambda_{t+1} (F'(K_{t+1}) + (1-\delta)) 
+\implies 
+\lambda_t = \beta \lambda_{t+1} (F'(K_{t+1}) + (1 - \delta)) 
+$$
+
+Thus, the Euler equation is:
+
+$$
+U'(C_t) = \beta U'(C_{t+1}) (F'(K_{t+1}) + (1 - \delta)) 
+$$
+
+\pagebreak
+
+2. Given the steady-state value of $D \ge 0$, write down the system of equations that determines the values of capital $\bar{K}(D)$ and consumption $\bar{C}(D)$ in the steady state. Draw a phase diagram with capital in the horizontal axis and consumption in the vertical axis, show the steady states, draw the arrows representing the direction of change, and the saddle path.
+
+The system of equations can be derived from the Euler equation and the law of motion of capital. In a steady state, $C_t = C_{t+1} = \bar{C}$ and $K_t = K_{t+1} = \bar{K}$. In the steady state, the Euler equation implies
+
+$$
+U'(\bar{C}) = \beta U'(\bar{C}) (F'(\bar{K}) + (1 - \delta)) 
+\implies 
+1 = \beta (F'(\bar{K}) + (1 - \delta))
+$$
+
+In the steady state, the law of motion of capital implies:
+
+$$
+\bar{K} =  (1 - \delta) \bar{K} + F(\bar{K}) - \bar{C} - D 
+\implies
+\bar{C} + D + \delta \bar{K} = F(\bar{K})
+$$
+
+```{r part2, echo = FALSE}
+delta <- 0.01
+alpha <- 1/3
+sigma <- 1
+beta <- .99^(1/12)
+D <- 1
+
+
+```
+
+3. The scientists forecast an earthquake $T$ periods from now that will destroy $D >0$ units of capital. Assuming that economy starts from a steady state with $D= 0$, draw a phase diagram that shows the optimal transition path. Make two separate graphs showing the evolution of capital and consumption in time.
+
+...
+
+4. Assume that $U(C) = \frac{C^{1-\sigma}-1}{1-\sigma}$ and $F(K) =K^\alpha$ and the values of parameters are $\sigma = 1$, $\alpha = 1/3$, $\beta = 0.99^{1/12}$ (monthly model), $\delta = 0.01$, $T= 12$, $D= 1$. Using a shooting algorithm, solve numerically for the optimal transition path and plot dynamics of consumption and capital.
+
+...
