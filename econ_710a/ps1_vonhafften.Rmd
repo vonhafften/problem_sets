@@ -25,90 +25,203 @@ library(tidyverse)
 
 (i) Interpret the entries of $\beta_0$ in this model?
 
-...
+The entries of $\beta_0$ are the average marginal effects of the elements of $X$ on $Y$ conditional on $X$.  It is the average effect because $E[U|X]=1$.  For example, the $i$th element of $\beta_0$ is the average marginal effects of the $i$th element of $\beta_0$.
+
+$$
+E[Y|X] = E[X'\beta_0 \cdot U|X] = X'\beta_0 E[ U|X] =X'\beta_0
+\implies
+\frac{\partial E[Y|X]}{\partial X} = \beta_0
+$$
 
 (ii) Show that $Y=X'\beta_0 + \bar{U}$ where $E[\bar{U}|X]=0$.
 
-...
+Define $\bar{U} := X'\beta_0 \cdot (U-1)$.
+
+$$
+X'\beta_0 + \bar{U} = X'\beta_0 + X'\beta_0 \cdot (U-1) = X'\beta_0 \cdot (1+U-1)=X'\beta_0 \cdot U=Y
+$$
+
+$$
+E[\bar{U}|X]=E[X'\beta_0 \cdot (U-1)|X] = X'\beta_0 \cdot (E[U|X]-1) = X'\beta_0 \cdot (1-1) = 0
+$$
 
 (iii) Show that $E[X(Y-X'\beta)]=0$ iff $\beta = \beta_0$ and use this to derive OLS as a method of moments estimator.
 
-...
+($\Rightarrow$): 
+
+\begin{align*}
+E[X(Y-X'\beta)] &= 0 \\
+\implies E[X(X'\beta_0 + \bar{U}-X'\beta)] &= 0 \\
+\implies E[XX'\beta_0] + E[X\cdot \bar{U}]-E[XX'\beta] &= 0 \\
+\implies \beta_0E[XX'] + E[E[X\cdot\bar{U}|X]]- \beta E[XX'] &= 0 \\
+\implies \beta_0E[XX'] + E[X\cdot E[\bar{U}|X]]- \beta E[XX'] &= 0 \\
+\implies \beta_0E[XX'] + E[X\cdot 0]- \beta E[XX'] &= 0 \\
+\implies \beta_0E[XX'] - \beta E[XX'] &= 0 \\
+\implies \beta_0 &= \beta \\
+\end{align*}
+
+\pagebreak
+
+($\Leftarrow$): 
+
+\begin{align*}
+\beta &= \beta_0 \\
+\implies
+E[X(Y-X'\beta)] 
+&= E[X(X'\beta_0 + \bar{U}-X'\beta)] \\
+&= E[X(X'\beta + \bar{U}-X'\beta)]\\
+&= E[X\bar{U}]\\
+&= E[E[X \cdot \bar{U}|X]]\\
+&= E[X \cdot E[\bar{U}|X]]\\
+&= E[X \cdot 0]\\
+&= 0
+\end{align*}
+
+Therefore, $\beta_0$ is identified by the moment function $g((Y, X')', \beta) = X(Y-X'\beta)$.  Thus, for the random sample $\hat{\beta}^{MM}$ is unique solution to $\frac{1}{n} \sum_{i=1}^n g((Y_i, X_i')', \beta) = 0$:
+
+\begin{align*}
+\frac{1}{n} \sum_{i=1}^n g((Y_i, X_i')', \hat{\beta}^{MM}) &= 0 \\
+\frac{1}{n} \sum_{i=1}^n X_i(Y_i-X_i'\hat{\beta}^{MM}) &= 0 \\
+\frac{1}{n} \sum_{i=1}^n X_iY_i - \frac{1}{n} \sum_{i=1}^n X_iX_i'\hat{\beta}^{MM} &= 0 \\
+\frac{1}{n} \sum_{i=1}^n X_iX_i'\hat{\beta}^{MM} &= \frac{1}{n} \sum_{i=1}^n X_iY_i \\
+\hat{\beta}^{MM} &= \Bigg(\frac{1}{n} \sum_{i=1}^n X_iX_i'\Bigg)^{-1}\Bigg(\frac{1}{n} \sum_{i=1}^n X_iY_i\Bigg)
+\end{align*}
+
+Notice that $\hat{\beta}^{MM} = \hat{\beta}^{OLS}$.
+
+\pagebreak
 
 (iv) Show that the OLS estimator is conditionally unbiased, i.e., that $E[\hat{\beta}|X_1, ..., X_n] = \beta_0$.
 
-...
+\begin{align*}
+E[\hat{\beta}|X_1, ..., X_n] 
+&= E\Bigg[\Bigg(\frac{1}{n} \sum_{i=1}^n X_iX_i'\Bigg)^{-1}\Bigg(\frac{1}{n} \sum_{i=1}^n X_iY_i\Bigg)\Bigg|X_1, ..., X_n\Bigg] \\
+&= \Bigg(\frac{1}{n} \sum_{i=1}^n X_iX_i'\Bigg)^{-1}\Bigg(\frac{1}{n} \sum_{i=1}^n X_iE[Y_i|X_i]\Bigg) \\
+&= \Bigg(\frac{1}{n} \sum_{i=1}^n X_iX_i'\Bigg)^{-1}\Bigg(\frac{1}{n} \sum_{i=1}^n X_iE[X_i'\beta_0 + \bar{U}_i|X_i]\Bigg) \\
+&= \Bigg(\frac{1}{n} \sum_{i=1}^n X_iX_i'\Bigg)^{-1}\Bigg(\frac{1}{n} \sum_{i=1}^n X_i(X_i'\beta_0 + E[\bar{U}_i|X_i])\Bigg) \\
+&= \Bigg(\frac{1}{n} \sum_{i=1}^n X_iX_i'\Bigg)^{-1}\Bigg(\frac{1}{n} \sum_{i=1}^n X_iX_i'\beta_0\Bigg) \\
+&= \beta_0\Bigg(\frac{1}{n} \sum_{i=1}^n X_iX_i'\Bigg)^{-1}\Bigg(\frac{1}{n} \sum_{i=1}^n X_iX_i'\Bigg) \\
+&= \beta_0
+\end{align*}
 
 (v) Show that the OLS estimator is consistent, i.e., that $\hat{\beta} \to_p \beta_0$ as $n \to \infty$.
 
-...
+By the law of large numbers in $\mathcal{L}^1$,
 
-2. Let $X$ be a random variable with $E[X^4] < \infty$ and $E[X^2] > 0$. Furthermore, let $\{X_i\}_{i=1}^n$ be a random cample from the distribution of $X$.
+$$
+\frac{1}{n} \sum_{i=1}^n X_iX_i' \to_p E[XX']
+$$
+$$
+\frac{1}{n} \sum_{i=1}^n X_iY_i \to_p E[XY]
+$$
+
+Since $E[XX']$ is invertible, by the continuous mapping theorem,
+
+\begin{align*}
+\hat{\beta} 
+&\to_p (E[XX'])^{-1}E[XY]\\
+&=(E[XX'])^{-1}E[X(X'\beta_0 + \bar{U})]\\
+&=\beta_0(E[XX'])^{-1}E[XX'] + E[X \cdot \bar{U})]\\
+&=\beta_0
+\end{align*}
+
+\pagebreak
+
+2. Let $X$ be a random variable with $E[X^4] < \infty$ and $E[X^2] > 0$. Furthermore, let $\{X_i\}_{i=1}^n$ be a random sample from the distribution of $X$.
 
 (i) For which of the following four statistics can you use the law of large numbers and continuous mapping theorem to show convergence in probability as $n \to \infty$,
 
-$$
-\frac{1}{n} \sum_{i=1}^n X_i^3
-$$
+(a) $\frac{1}{n} \sum_{i=1}^n X_i^3$
 
-...
+Note that $E[X^4] < \infty \implies E[X^3] <\infty$ and $E[-X^3] <\infty$, so $E[|X^3|] <\infty$. By the law of large numbers,
 
 $$
-\max_{1 \le i \le n} X_i
+\frac{1}{n} \sum_{i=1}^n X_i^3 \to_p E[X^3]
 $$
 
-...
+(b) $\max_{1 \le i \le n} X_i$
+
+We cannot use the law of large numbers and the continuous mapping theorem to show convergence in probability for this statistic.
+
+(c) $\frac{\sum_{i=1}^n X_i^3}{\sum_{i=1}^n X_i^2}$
+
+By the law of large numbers,
 
 $$
-\frac{\sum_{i=1}^n X_i^3}{\sum_{i=1}^n X_i^2}
-$$
-...
-
-$$
-1 \{ \frac{1}{n}\sum_{i=1}^n X_i > 0 \}
+\frac{1}{n}\sum_{i=1}^n X_i^3 \to_p E[X^3] < \infty
 $$
 
-...
+$$
+\frac{1}{n}\sum_{i=1}^n X_i^2 \to_p E[X^2] \in (0, \infty)
+$$
+
+Because $E[X^4] < \infty$.  By the continuous mapping theorem,
+
+$$
+\frac{\sum_{i=1}^n X_i^3}{\sum_{i=1}^n X_i^2} 
+=\frac{\frac{1}{n}\sum_{i=1}^n X_i^3}{\frac{1}{n}\sum_{i=1}^n X_i^2} \to_p\frac{E[X^3]}{E[X^2]}
+$$
+
+(d) $1 \{ \frac{1}{n}\sum_{i=1}^n X_i > 0 \}$
+
+Note that $E[X^4] < \infty \implies E[|X|]< \infty$. By the law of large numbers,
+
+$$
+\frac{1}{n}\sum_{i=1}^n X_i \to_p E[X]
+$$
+
+This indicator function is locally continuous for all neighbors that do not include zero:
+
+- If $E[X] > 0$, $1 \{ \frac{1}{n}\sum_{i=1}^n X_i > 0 \} \to_p 1$ by the CMT. 
+- If $E[X] < 0$, $1 \{ \frac{1}{n}\sum_{i=1}^n X_i > 0 \} \to_p 0$ by the CMT.
+- If $E[X] = 0$, the indicator function is not locally continuous, so we cannot apply the CMT.
+
+\pagebreak
 
 (ii) For which of the following three statistics can you use the central limit theorem and continuous mapping to show convergence in distribution as $n \to \infty$,
 
-$$
-W_n := \frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i^2 - E[X_1^2])
-$$
+(a) $W_n := \frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i^2 - E[X_1^2])$
 
-...
-
+Note that $E[X^4] < \infty \implies E[X^2] < \infty$. Furthermore, $Var(X_1^2) = E[X_1^4]-(E[X_1^2])^2 < \infty$ By the Lindeberg-Levy Lemma (CLT),
 
 $$
-W_n^2
+\frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i^2 - E[X_1^2]) \to_d N(0,E[X_1^4]-(E[X_1^2])^2 )
 $$
 
-...
+(b) $W_n^2$
 
+By the continuous mapping theorem, $W_n^2$ converges in distribution to a scaled chi-squared distribution.
 
-$$
-\frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i^2 - \overline{X_n^2}) \text{ where } \overline{X_n^2} = \frac{1}{n} \sum_{i=1}^n X_i^2
-$$
+(C)$\frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i^2 - \overline{X_n^2}) \text{ where } \overline{X_n^2} = \frac{1}{n} \sum_{i=1}^n X_i^2$
 
-...
+We cannot use the Lindeberg-Levy CLT or CMT to find the asymptotic distribution because they require that the statistic is shifted by its population expection not its sample average.
 
 (iii) Show that $\max_{1 \le i \le n} X_i \to_p 1$ if $X \sim uniform(0, 1)$.
 
 ...
 
-(iv) Show that $\Pr(\max_{1 \le i \le n} X_i > M) \to 1$ for any $M \ge 0$ if $X \sim exponential(1)$.
+(iv) Show that $\Pr(\max_{1 \le i \le n} X_i > M) \to_p 1$ for any $M \ge 0$ if $X \sim exponential(1)$.
 
 ...
+
+\pagebreak
 
 3. Suppose that $\{X_i\}_{i=1}^n$ is an iid sequence of $N(0, 1)$ random variables. Let $W$ be independent of $\{X_i\}_{i=1}^n$ with $\Pr(W = 1) = \Pr(W = -1) = 1/2$. Let $Y_i = X_i W$.
 
 (i) Show that $\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \to_d N(0, 1)$ as $n \to \infty$.
 
-...
+Since $\{X_i\}_{i=1}^n$ is an iid sequence of $N(0, 1)$ random variables, $E[X_i^2] = Var(X_i) = 1 < \infty$ and $E[X_i] = 0$.  By Lindeberg-Levy,
+
+$$
+\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \to_d N(0, 1)
+$$
 
 (ii) Show that $\frac{1}{\sqrt{n}} \sum_{i=1}^n Y_i \to_d N(0, 1)$ as $n \to \infty$.
 
-...
+Notice that a single draw of $W$ determines whether the sign of $X_i$ are flipped.  
+
+- If $W=1$, $Y_i = X_i$ for all $i=1, ..., n$.  Thus, by (i), $\frac{1}{\sqrt{n}} \sum_{i=1}^n Y_i \to_d N(0, 1)$.
+- If $W=-1$, $Y_i = -X_i$ for all $i=1, ..., n$.  Since $N(0, 1)$ is symmetric, $-X_i$ are also distributed iid $N(0, 1)$.  Thus, by (i), $\frac{1}{\sqrt{n}} \sum_{i=1}^n Y_i \to_d N(0, 1)$.
 
 (iii) Show that $Cov(X_i, Y_i) = 0$.
 
@@ -126,7 +239,7 @@ $$
 
 (iv) Does $V := \frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i, Y_i)' \to_d N(0, I_2)$ as $n \to \infty$?
 
-...
+No. Conditional on $W=1$, $X_i$ and $Y_i$ are perfectly coorelated, so $Cov(X_i, Y_i) = 1$.  Conditional on $W=-1$, $X_i$ and $Y_i$ are perfectly inversely coorelated, so $Cov(X_i, Y_i) = -1$.  Since $\Pr(W=1)=\Pr(W=-1)=1/2$, the unconditional covariance is zero, but $V$ cannot converge to a joint normal distribution with zero covariance because the covariance is either always going to one or minus one depending on the value of $W$.
 
 (v) How does this exercise related to the Cramer-Wold device introduced in lecture 2?
 

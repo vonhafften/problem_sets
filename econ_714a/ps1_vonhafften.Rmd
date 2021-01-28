@@ -95,7 +95,7 @@ lom_nochange <- k_grid^alpha - delta*k_grid - d
 
 sp_slope <- 1/55
 
-plot(1, type = "n", xlim=c(min(k_grid), max(k_grid)), ylim=c(0, 5), ylab="Consumption", xlab = "Capital", xaxs="i", yaxs="i", axes = FALSE)
+plot(1, type = "n", xlim=c(min(k_grid), max(k_grid)), ylim=c(0, 5), ylab="Consumption", xlab = "Capital", xaxs="i", yaxs="i", axes = FALSE, main = "Phase Diagram")
 
 box()
 
@@ -133,9 +133,9 @@ text("Saddle Path", x = 360, y=4.5, col = "limegreen")
 
 3. The scientists forecast an earthquake $T$ periods from now that will destroy $D >0$ units of capital. Assuming that economy starts from a steady state with $D= 0$, draw a phase diagram that shows the optimal transition path. Make two separate graphs showing the evolution of capital and consumption in time.
 
-```{r part3, echo = FALSE}
-library(shape)
+The phase diagram below shows the optimal transition path.  At $t = 0$, news arrives about the earthquake and the shock to the capital shock.  Consumption starts at point A in order to build up the capital shock.  At $t = 1,..., T-1$, the economy follows a trajectory from point A to point B that further increases capital and decreases consumption.  At $t=T$, the earthquake strikes and destroys $D$ of the capital shock.  The horizontal distance between point B and point C is $D$.  At $t=T+1, ...$, the economy follows the saddle path back to the steady state from point C to point D.  The initial level of consumption (at point A) must therefore be such that point C is on the saddle path.
 
+```{r part3, echo = FALSE}
 delta <- 0.01
 alpha <- 1/3
 sigma <- 1
@@ -150,12 +150,14 @@ lom_nochange <- k_grid^alpha - delta*k_grid - d
 
 sp_slope <- 1/55
 
-plot(1, type = "n", xlim=c(min(k_grid), max(k_grid)), ylim=c(0, 5), ylab="Consumption", xlab = "Capital", xaxs="i", yaxs="i", axes = FALSE)
+# Phase diagram
+
+plot(1, type = "n", xlim=c(min(k_grid), max(k_grid)), ylim=c(0, 5), ylab="Consumption", xlab = "Capital", xaxs="i", yaxs="i", axes = FALSE, main = "Phase Diagram")
 
 box()
 
-lines(x = c(k_ss, k_ss, k_ss+60, k_ss-70, k_ss),
-      y = c(c_ss, c_ss-1, c_ss-1.25, c_ss-1.25, c_ss),
+lines(x = c(k_ss, k_ss+60, k_ss-70, k_ss),
+      y = c(c_ss-1, c_ss-1.25, c_ss-1.25, c_ss),
       lwd=4,
       col="yellow")
 
@@ -167,18 +169,130 @@ text(expression(paste(Delta, Consumption," = 0")), x = 290, y=.5, col = "blue")
 text(expression(paste(Delta, Capital," = 0")), x = 650, y=.5, col = "red")
 text("Saddle Path", x = 360, y=4.5, col = "limegreen")
 
-text("A", x = k_ss, y=c_ss, col = "black")
-text("B", x = k_ss, y=c_ss-1, col = "black")
-text("C", x = k_ss+60, y=c_ss-1.25, col = "black")
-text("D", x = k_ss-70, y=c_ss-1.25, col = "black")
-```
+text("D", x = k_ss, y=c_ss, col = "black")
+text("A", x = k_ss, y=c_ss-1, col = "black")
+text("B", x = k_ss+60, y=c_ss-1.25, col = "black")
+text("C", x = k_ss-70, y=c_ss-1.25, col = "black")
 
-At $t = 0$, news arrives about the earthquake and the shock to the capital shock.  Consumption drops from point A to point B in order to build up the capital shock.  At $t = 1,..., 11$, the economy follows a trajectory from point B to point C that further increases capital and decreases consumption.  At $t=12$, the earthquake strikes and destroys $D$ of the capital shock.  The horizontal distance between point C and point D is $D$.  At $t=13, ...$, the economy follows the saddle path back to the steady state from point A to point D.  The initial drop in consumption must therefore be such that point D is on the saddle path.
+# Capital
+plot(1, type = "n", xlim=c(0, 25), ylim=c(0, 5), ylab="Capital", xlab = "Time", xaxs="i", yaxs="i", axes=FALSE, main = "Capital Dynamics")
+box()
+lines(x = c(0, 12, 12, 25),
+      y = c(3, 4, 1, 2.5))
+abline(h=3, lty=2)
+mtext(text = "SS", side = 2, at = 3)
+mtext(text = "T",side = 1, at = 12)
+
+# Consumption
+plot(1, type = "n", xlim=c(0, 25), ylim=c(0, 5), ylab="Consumption", xlab = "Time", xaxs="i", yaxs="i", axes=FALSE, main = "Consumption Dynamics")
+box()
+lines(x = c(0, 12, 25),
+      y = c(2, 1, 3))
+abline(h=4, lty=2)
+mtext(text = "SS", side = 2, at = 4)
+mtext(text = "T",side = 1, at = 12)
+
+```
 
 \pagebreak
 
 4. Assume that $U(C) = \frac{C^{1-\sigma}-1}{1-\sigma}$ and $F(K) =K^\alpha$ and the values of parameters are $\sigma = 1$, $\alpha = 1/3$, $\beta = 0.99^{1/12}$ (monthly model), $\delta = 0.01$, $T= 12$, $D= 1$. Using a shooting algorithm, solve numerically for the optimal transition path and plot dynamics of consumption and capital.
 
-```{r part4, echo = FALSE}
+```{r part4_simulation, echo = FALSE}
+# model parameters
+delta <- 0.01
+alpha <- 1/3
+sigma <- 1
+beta <- .99^(1/12)
+d_earthquake <- 1
+t_earthquake <- 12
 
+# Solve SS
+k_ss <- ((1/beta - 1 + delta) / alpha)^(1 / (alpha - 1))
+c_ss <- k_ss^alpha - delta*k_ss
+
+# simulation parameters 
+n_periods <- 500
+c0_min <- 0
+c0_max <- c_ss
+max_iter <- 10000
+iter <- 1
+tolerence <- 0.001
+
+# initialize simulation variables
+k_path <- NULL
+c_path <- NULL
+
+while (iter < max_iter) {
+  c_path[1] <- (c0_max + c0_min)/2
+  k_path[1] <- k_ss
+  
+  # iterate for n_periods
+  for (t in 2:n_periods) {
+    k_path[t] <- (1 - delta) * k_path[t-1] + k_path[t-1] ^ alpha - c_path[t - 1]
+    if (t == t_earthquake) k_path[t] <- k_path[t] - d_earthquake
+    c_path[t] <- c_path[t-1] * beta * (alpha * k_path[t]^(alpha - 1) + 1 - delta)
+  }
+  
+  # c and k value for testing if in SS
+  c_test <- c_path[n_periods]
+  k_test <- k_path[n_periods]
+  
+  # replace infinite test values with large double.
+  if (!is.finite(c_test)) c_test <- .Machine$double.xmax
+  if (!is.finite(k_test)) k_test <- .Machine$double.xmax
+  
+  # Break if within tolerence
+  if (abs(c_test - c_ss) + abs(k_test - k_ss) < tolerence)  break
+  
+  # Update min and max of guess for consumption initial value and iterate counter.
+  if (c_test < c_ss)  c0_min <- c_path[1]
+  if (c_test > c_ss)  c0_max <- c_path[1]
+  iter <- iter + 1
+}
 ```
+
+The phase diagram based on the numerical simulation is below.  The economy starts at A and over the first 11 periods it builds up its capital stock (from A to B).  At $t = 12$, the earthquake destroys 1 unit of the capital stock (from B to C).  Point C is on the saddle path, so over the next many periods, the economy converges on the steady state (point D).  
+
+The dynamics of capital and consumption are also shown below.  In each figure, the black line represents $t=0$, the red line represents $t=12$, and the blue line represent the steady state value.
+
+```{r part4_plots, echo = FALSE}
+plot(y=c_path, x=k_path, type = "l", ylab = "Consumption", xlab = "Capital", main = "Phase Diagram")
+
+k_grid <- seq(from = 0, to = 846, by = 1)
+lom_nochange <- k_grid^alpha - delta*k_grid
+lines(x = k_grid, y = lom_nochange, col = "red")
+
+abline(v = k_ss, col ="blue")
+
+points(x=c(k_path[1], 
+           k_path[t_earthquake-1], 
+           k_path[t_earthquake], 
+           k_ss),
+       y=c(c_path[1], 
+           c_path[t_earthquake-1], 
+           c_path[t_earthquake], 
+           c_ss),
+       pch=19)
+
+text("A", x = k_path[1], y=c_path[1], pos = 3)
+text("B", x = k_path[t_earthquake-1], y=c_path[t_earthquake-1], pos = 3)
+text("C", x = k_path[t_earthquake], y=c_path[t_earthquake], pos = 3)
+text("D", x = k_ss, y=c_ss, pos = 1)
+
+plot(k_path, type = "l", ylab = "Capital", xlab = "Time", main = "Capital Dynamics")
+abline(v = t_earthquake, col = "red")
+abline(v=0)
+abline(h = k_ss, lty =2, col = "blue")
+
+plot(c_path, type = "l", ylab = "Capital", xlab = "Time", main = "Consumption Dynamics")
+abline(v = t_earthquake, col = "red")
+abline(v=0)
+abline(h = c_ss, lty =2, col = "blue")
+```
+
+\pagebreak
+
+# Appendix
+
+```{r appendix, ref.label="part4_simulation", eval = FALSE}
