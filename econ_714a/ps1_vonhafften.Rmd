@@ -65,7 +65,7 @@ The system of equations can be derived from the Euler equation and the law of mo
 $$
 U'(\bar{C}) = \beta U'(\bar{C}) (F'(\bar{K}) + (1 - \delta)) 
 \implies 
-1 = \beta (F'(\bar{K}) + (1 - \delta))
+\bar{K}(D) = \bar{K} = (F')^{-1}\Bigg(\frac{1}{\beta} - (1 - \delta)\Bigg)
 $$
 
 In the steady state, the law of motion of capital implies:
@@ -73,23 +73,112 @@ In the steady state, the law of motion of capital implies:
 $$
 \bar{K} =  (1 - \delta) \bar{K} + F(\bar{K}) - \bar{C} - D 
 \implies
-\bar{C} + D + \delta \bar{K} = F(\bar{K})
+\bar{C} (D) = F(\bar{K}(D)) - D - \delta \bar{K}(D)
 $$
 
+The phase diagram below shows the line where consumption does not change (blue), the line where capital does not change (red), the steady state (green), draw the arrows representing the direction of change, and the saddle path (black).
+
 ```{r part2, echo = FALSE}
+library(shape)
+
 delta <- 0.01
 alpha <- 1/3
 sigma <- 1
 beta <- .99^(1/12)
-D <- 1
+d <- 1
 
+k_ss <- ((1/beta-1+delta)/alpha)^(1/(alpha-1))
+c_ss <- k_ss^alpha - d - delta*k_ss
+
+k_grid <- seq(from = 0, to = 846, by = 1)
+lom_nochange <- k_grid^alpha - delta*k_grid - d
+
+sp_slope <- 1/55
+
+plot(1, type = "n", xlim=c(min(k_grid), max(k_grid)), ylim=c(0, 5), ylab="Consumption", xlab = "Capital", xaxs="i", yaxs="i", axes = FALSE)
+
+box()
+
+x <- c(100, 100, 700, 500)
+y <- c(.5, 4, 4, 1)
+
+points(x, y, pch=16)
+
+Arrows(x0 = x, 
+       y0 = y,
+       x1 = x + 50*c(1, -1, -1, 1),
+       y1 = y,
+       arr.type = "triangle")
+
+Arrows(x0 = x,
+       y0 = y,
+       x1 = x,
+       y1 = y+ .5*c(1, 1, -1, -1),
+       arr.type = "triangle")
+
+
+abline(v=k_ss, col = "blue")
+abline(a = c_ss - k_ss*sp_slope, b = sp_slope, col = "limegreen")
+lines(x = k_grid, y = lom_nochange, col = "red")
+points(y=c_ss, x=k_ss, pch=19, col="black")
+
+text(expression(paste(Delta, Consumption," = 0")), x = 290, y=.5, col = "blue")
+text(expression(paste(Delta, Capital," = 0")), x = 650, y=.5, col = "red")
+text("Steady State", x = 250, y=2.5, col = "black")
+text("Saddle Path", x = 360, y=4.5, col = "limegreen")
 
 ```
 
+\pagebreak
+
 3. The scientists forecast an earthquake $T$ periods from now that will destroy $D >0$ units of capital. Assuming that economy starts from a steady state with $D= 0$, draw a phase diagram that shows the optimal transition path. Make two separate graphs showing the evolution of capital and consumption in time.
 
-...
+```{r part3, echo = FALSE}
+library(shape)
+
+delta <- 0.01
+alpha <- 1/3
+sigma <- 1
+beta <- .99^(1/12)
+d <- 1
+
+k_ss <- ((1/beta-1+delta)/alpha)^(1/(alpha-1))
+c_ss <- k_ss^alpha - d - delta*k_ss
+
+k_grid <- seq(from = 0, to = 846, by = 1)
+lom_nochange <- k_grid^alpha - delta*k_grid - d
+
+sp_slope <- 1/55
+
+plot(1, type = "n", xlim=c(min(k_grid), max(k_grid)), ylim=c(0, 5), ylab="Consumption", xlab = "Capital", xaxs="i", yaxs="i", axes = FALSE)
+
+box()
+
+lines(x = c(k_ss, k_ss, k_ss+60, k_ss-70, k_ss),
+      y = c(c_ss, c_ss-1, c_ss-1.25, c_ss-1.25, c_ss),
+      lwd=4,
+      col="yellow")
+
+abline(v=k_ss, col = "blue")
+abline(a = c_ss - k_ss*sp_slope, b = sp_slope, col = "limegreen")
+lines(x = k_grid, y = lom_nochange, col = "red")
+
+text(expression(paste(Delta, Consumption," = 0")), x = 290, y=.5, col = "blue")
+text(expression(paste(Delta, Capital," = 0")), x = 650, y=.5, col = "red")
+text("Saddle Path", x = 360, y=4.5, col = "limegreen")
+
+text("A", x = k_ss, y=c_ss, col = "black")
+text("B", x = k_ss, y=c_ss-1, col = "black")
+text("C", x = k_ss+60, y=c_ss-1.25, col = "black")
+text("D", x = k_ss-70, y=c_ss-1.25, col = "black")
+```
+
+At $t = 0$, news arrives about the earthquake and the shock to the capital shock.  Consumption drops from point A to point B in order to build up the capital shock.  At $t = 1,..., 11$, the economy follows a trajectory from point B to point C that further increases capital and decreases consumption.  At $t=12$, the earthquake strikes and destroys $D$ of the capital shock.  The horizontal distance between point C and point D is $D$.  At $t=13, ...$, the economy follows the saddle path back to the steady state from point A to point D.  The initial drop in consumption must therefore be such that point D is on the saddle path.
+
+\pagebreak
 
 4. Assume that $U(C) = \frac{C^{1-\sigma}-1}{1-\sigma}$ and $F(K) =K^\alpha$ and the values of parameters are $\sigma = 1$, $\alpha = 1/3$, $\beta = 0.99^{1/12}$ (monthly model), $\delta = 0.01$, $T= 12$, $D= 1$. Using a shooting algorithm, solve numerically for the optimal transition path and plot dynamics of consumption and capital.
 
-...
+```{r part4, echo = FALSE}
+
+```
