@@ -194,15 +194,57 @@ By the continuous mapping theorem, $W_n^2$ converges in distribution to a scaled
 
 (C)$\frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i^2 - \overline{X_n^2}) \text{ where } \overline{X_n^2} = \frac{1}{n} \sum_{i=1}^n X_i^2$
 
-We cannot use the Lindeberg-Levy CLT or CMT to find the asymptotic distribution because they require that the statistic is shifted by its population expection not its sample average.
+We cannot use the Lindeberg-Levy CLT or CMT to find the asymptotic distribution because they require that the statistic is shifted by its population expectation not its sample average.
 
 (iii) Show that $\max_{1 \le i \le n} X_i \to_p 1$ if $X \sim uniform(0, 1)$.
 
-...
+Define $M_n := \max_{1 \le i \le n} X_i$.  Choose $\varepsilon > 0$.  If $\varepsilon \ge 1$, $\Pr(|M_n - 1| \le \varepsilon) = 1\ge 1 - \varepsilon$, so $M_n$ converges in probability to 1. If $\varepsilon < 1$, choose $N \ge \frac{\ln(\varepsilon)}{\ln(1-\varepsilon)}$.  For $n > N$,
 
-(iv) Show that $\Pr(\max_{1 \le i \le n} X_i > M) \to_p 1$ for any $M \ge 0$ if $X \sim exponential(1)$.
+\begin{align*}
+\Pr(|M_n - 1| \le \varepsilon) 
+&= \Pr(1 - M_n \le \varepsilon)\\
+&= \Pr(M_n > 1 - \varepsilon)\\
+&= 1 - \Pr(M_n < 1 - \varepsilon)\\
+&\ge 1 - \prod_{i=1}^n\Pr(X_i < 1 - \varepsilon)\\
+&= 1 - (1 - \varepsilon)^n\\
+&\ge 1 - \varepsilon
+\end{align*}
 
-...
+Therefore, $M_n$ converges in probability to 1.\footnote{Derivations for the last inequality:
+
+\begin{align*}
+1-(1-\varepsilon) &\ge 1-\varepsilon \\
+\iff \varepsilon &\ge (1-\varepsilon)^n \\
+\iff \ln(\varepsilon) &\ge n \ln (1-\varepsilon)\\
+\iff  n &\ge \frac{\ln(\varepsilon)}{\ln (1-\varepsilon)}\\
+\iff  n &\ge N
+\end{align*}
+}
+
+\pagebreak
+
+(iv) Show that $\Pr(\max_{1 \le i \le n} X_i > M) \to 1$ for any $M \ge 0$ if $X \sim exponential(1)$.
+
+Choose $\varepsilon > 0$.  Let $N \ge \frac{\ln(\varepsilon)}{\ln(1-e^{-M})}$.  For $n > N$,
+
+\begin{align*}
+\Bigg| \Pr\Bigg(\max_{1 \le i \le n} X_i > M\Bigg) - 1 \Bigg| 
+&= 1 - \Pr\Bigg(\max_{1 \le i \le n} X_i > M\Bigg) \\
+&= \Pr\Bigg(\max_{1 \le i \le n} X_i \le M\Bigg)\\
+&= [\Pr(X_i \le M)]^n\\
+&= [1-e^{-M}]^n\\
+&\le \varepsilon
+\end{align*}
+
+Thus, $\Pr(\max_{1 \le i \le n} X_i > M) \to 1$.\footnote{Derivations of the last inequality:
+
+\begin{align*}
+(1-e^{-M})^n &\le \varepsilon \\
+\iff n \ln(1-e^{-M}) &\le \ln(\varepsilon)\\
+\iff n > N &\ge \frac{\ln(\varepsilon)}{\ln(1-e^{-M})}
+\end{align*}
+
+}
 
 \pagebreak
 
@@ -239,8 +281,9 @@ $$
 
 (iv) Does $V := \frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i, Y_i)' \to_d N(0, I_2)$ as $n \to \infty$?
 
-No. Conditional on $W=1$, $X_i$ and $Y_i$ are perfectly coorelated, so $Cov(X_i, Y_i) = 1$.  Conditional on $W=-1$, $X_i$ and $Y_i$ are perfectly inversely coorelated, so $Cov(X_i, Y_i) = -1$.  Since $\Pr(W=1)=\Pr(W=-1)=1/2$, the unconditional covariance is zero, but $V$ cannot converge to a joint normal distribution with zero covariance because the covariance is either always going to one or minus one depending on the value of $W$.
+No. Conditional on $W=1$, $X_i$ and $Y_i$ are perfectly correlated, so $Cov(X_i, Y_i) = 1$.  Conditional on $W=-1$, $X_i$ and $Y_i$ are perfectly inversely correlated, so $Cov(X_i, Y_i) = -1$.  Since $\Pr(W=1)=\Pr(W=-1)=1/2$, the unconditional covariance is zero, but $V$ cannot converge to a joint normal distribution with zero covariance because the covariance is either always going to one or minus one depending on the value of $W$.
 
 (v) How does this exercise related to the Cramer-Wold device introduced in lecture 2?
 
-...
+The Cramer-Wold device requires a sequence of random vectors $\{W_n\}_{n=1}^\infty$ converge in distribution to the random vector $W$ iff $t'W_n$ converge in distribution to $t'W$ for any nonrandom vector $t$ with $||t||=1$.  In this exercise, there is no asymptotic distribution that works for all such $t$ vectors.
+
