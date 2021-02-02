@@ -1,0 +1,262 @@
+---
+title: "ECON 713A - Problem Set 1"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "2/5/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+- \usepackage{bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+1. Consider the following non-transferable utility matching problem of three men and three women. Unmatched payoff is zero for both men and women. Does the Gale-Shapley algorithm yield the same outcome if we let women propose to men instead of men propose to women?
+
++--------+--------+--------+--------+
+|        |$W1$    |$W2$    |$W3$    |
++--------+--------+--------+--------+
+|$M1$    |10,5    |8,3     |6,12    |
++--------+--------+--------+--------+
+|$M2$    |4,10    |5,2     |3,20    |
++--------+--------+--------+--------+
+|$M3$    |6,15    |7,1     |8,16    |
++--------+--------+--------+--------+
+
+No.
+
+If men propose first, in the first round, $M1 \to W1$, $M2 \to W2$, and $M3 \to W3$. All women accept because they each have one suitor. The matching is done.
+
+If women propose first, in the first round, $W1 \to M3$, $W2 \to M1$, and $W3 \to M2$. All men accept because they each have one suitor. The matching is done.
+
+What happens if now we switch utilities for women 1 to be (10,5,15) and for women 3 to be (12,16,20).
+
++--------+--------+--------+--------+
+|        |$W1$    |$W2$    |$W3$    |
++--------+--------+--------+--------+
+|$M1$    |10,10   |8,3     |6,12    |
++--------+--------+--------+--------+
+|$M2$    |4,5     |5,2     |3,16    |
++--------+--------+--------+--------+
+|$M3$    |6,15    |7,1     |8,20    |
++--------+--------+--------+--------+
+
+No.
+
+The matching outcome is the same as above if men propose because their utilities are unchanged.
+
+If women propose first, in the first round, $W1 \to M3$, $W2 \to M1$, and $W3 \to M3$. $M1$ accepts $W2$ because he only has one offer. $M3$ accepts $W3$. In the second round, $W2 \to M2$ and $M2$ accepts because he only has one offer.
+
+\pagebreak
+
+2. (Econ 711 - Fall 2010- Q.1) Consider a matching market with two distinct “sides”, metaphorically called "men" and "women", but perhaps better thought of as a professional partnership, likes specialist neuro-surgeons and interns (one-on-one matches). All benefits of the match are as given below. Unmatched individuals earn nothing.
+
++--------+--------+--------+--------+
+|        |$M1$    |$M2$    |$M3$    |
++--------+--------+--------+--------+
+|$W1$    |1,2     |4,3     |3,2     |
++--------+--------+--------+--------+
+|$W2$    |1,3     |2,4     |3,2     |
++--------+--------+--------+--------+
+|$W3$    |2,2     |2,2     |4,4     |
++--------+--------+--------+--------+
+
+(a) Assume that wages are not negotiable, and thus no side transfers are possible. Find all stable matchings. Carefully justify your answer.
+
+We apply the DAA.  
+
+Consider men proposing.  In the first round, $M1 \to W2$, $M2 \to W2$, and $M3 \to W3$.  $W2$ accepts $M2$ and $W3$ accepts $M3$.  In the second round, $M1 \to W1$ and $W1$ accepts $M1$.
+
+Consider women proposing.  In the first round, $W1 \to M2$, $W2 \to M2$, and $W3 \to M3$.  $M2$ accepts $W2$ and $M3$ accepts $W3$.  In the second round, $W1 \to M1$ and $M1$ accepts $W1$.
+
+Notice that the outcome $\{(W1, M1), (W2, M2), (W3, M3)\}$ is the same regardless of which group proposes.  We know that when men propose the outcome is male optimal (and female pessimal) and when women propose the outcome is male pessimal (and female optimal).  Thus, this outcome must be the only stable matching.
+
+(b) From now on, assume side transfers are possible. Let payoffs be the sum of transfers. Find the efficient matching.
+
+The sum of payoffs are summarized below:
+
++--------+--------+--------+--------+
+|        |$M1$    |$M2$    |$M3$    |
++--------+--------+--------+--------+
+|$W1$    |3       |7       |5       |
++--------+--------+--------+--------+
+|$W2$    |4       |6       |5       |
++--------+--------+--------+--------+
+|$W3$    |4       |4       |8       |
++--------+--------+--------+--------+
+
+The efficient matching is $\{(W1, M2), (W2, M1), (W3, M3)\}$ with a total payoff of 19.
+
+\pagebreak
+
+(c) Find with proof the minimum wage for the type 2 man. Hint: Let the wages of women be $w_i$ and wages of men be $v_i$.
+
+With free entry and free exit, wages obey the following 15 constraints:
+
+\begin{align}
+w_1 &\ge 0 \\
+w_2 &\ge 0 \\
+w_3 &\ge 0 \\
+v_1 &\ge 0 \\
+v_2 &\ge 0 \\
+v_3 &\ge 0 \\
+w_1 + v_1 &\ge 3\\
+w_1 + v_2 &= 7\\
+w_1 + v_3 &\ge 5\\
+w_2 + v_1 &= 4\\
+w_2 + v_2 &\ge 6\\
+w_2 + v_3 &\ge 5\\
+w_3 + v_1 &\ge 4\\
+w_3 + v_2 &\ge 4\\
+w_3 + v_3 &= 8
+\end{align}
+
+Since there are no coefficients on any of the variables in the linear constraints and the right-hand-side of all the constraints are integer, we just have to consider integer values for the minimum $v_2$.
+
+Say $v_2 = 0$.
+
+- $(11) \implies w_2 \ge 6$ 
+- $(10) \implies v_1 = 4 - w_2 \le -2$
+- $(2) \implies v_1 \ge 0 \Rightarrow \Leftarrow$
+
+
+Say $v_2 = 1$.
+
+- $(11) \implies w_2 \ge 5$
+- $(10) \implies v_1 = 4 - w_2 \le -1$
+- $(2) \implies v_1 \ge 0 \Rightarrow \Leftarrow$
+
+Say $v_2 = 2$. Let us test whether $(w_1, w_2, w_3, v_1, v_2, v_3) = (5, 4, 7, 0, 2, 1)$ satisfies the 15 constaints above.
+
+- (1), ..., (6) are satisfied.
+- $5+0  = 5 \ge 3 \implies (7)$ is satisfied.
+- $5+2  = 7 \implies (8)$ is satisfied.
+- $5+7  = 12 \ge 5 \implies (9)$ is satisfied.
+- $4+0  = 4 \implies (10)$ is satisfied.
+- $4+2  = 6 \ge 6 \implies (11)$ is satisfied.
+- $4+1  = 5 \implies (12)$ is satisfied.
+- $7+0  = 7 \ge 4 \implies (13)$ is satisfied.
+- $7+2  = 9 \ge 4 \implies (14)$ is satisfied.
+- $7+1  = 8 \implies (15)$ is satisfied.
+
+\pagebreak
+
+Verifying that the minimum wage for the type 2 man is $v_2 = 2$ using linear programming solver in R:
+
+```{r problem2}
+library(lpSolve)
+
+f.obj <- c(0, 0, 0, 0, -1, 0)
+
+f.con <- matrix(c(1, 0, 0, 1, 0, 0,
+                  0, 1, 0, 1, 0, 0,
+                  0, 0, 1, 1, 0, 0,
+                  1, 0, 0, 0, 1, 0,
+                  0, 1, 0, 0, 1, 0,
+                  0, 0, 1, 0, 1, 0,
+                  1, 0, 0, 0, 0, 1,
+                  0, 1, 0, 0, 0, 1,
+                  0, 0, 1, 0, 0, 1),
+                nrow = 9,
+                byrow = TRUE)
+
+f.dir <- c(">=",
+           "==",
+           ">=",
+           "==",
+           ">=",
+           ">=",
+           ">=",
+           ">=",
+           "==")
+
+f.rhs <- c(3,
+           4,
+           4,
+           7,
+           6,
+           4,
+           5,
+           5,
+           8)
+
+lp("max", f.obj, f.con, f.dir, f.rhs)$solution
+
+```
+
+\pagebreak
+
+3. Assume types are drawn uniformly from $[0,1]$. When a type $x$ matches with a type $y$, type $x$ gets payoff $y+axy$, and the payoff to $y$ matching with $x$ is symmetrically $x+axy$. Assume $-1< a <0$.
+
+(a) If these are nontransferable payoffs, who matches with whom?
+
+Assume the payoff from not matching is zero.  
+
+Notice that matching is always weakly preferable to not matching.  For type $x$ matching with type $y$, $a > -1 \implies (1+ax) > 0$ for all $x \in [0, 1]$.  Therefore $y+axy \ge 0$ for all $y \in [0, 1]$.
+
+When types are drawn uniformaly from $[0,1]$, let us treat this matching problem as a continuum of proposers between $[0, 1]$ matching with a continuum of accepters between $[0, 1]$.  Since $(1+ax) > 0$, it is optimal for a type $x$ to match with as high a type $y$ as possible.  Thus, the continuum of proposers
+
+...
+
+(b) Set up a matching market, with wage $w(x)$ for each type $x$. What wage can decentralize this market? (Can any other wage work?)
+
+...
+
+\pagebreak
+
+4. (Double Auctions - The Borrowers) There are 30 students numbered $1,2,3, ...,30$. Even students are lenders and odd students are borrowers. The lenders each have 1000 to lend, and the return available to any lender is 3% plus 0.01% (known as a basis point) times twice his student number. The borrower has a return on a project equal to 3% plus 0.01% times his student number. So a borrower borrows if he can get an interest rate below his project's return, and a lender lends if he can get an interest rate above the return he has available to him. What are all possible market clearing interest rates, and numbers of transactions?
+
+The figure below shows the number of borrowers that are willing to borrow (demand in blue line) and the number of lenders that are willing to lend (supply in black line) at relevant interest rates.  Starting at an interest rate below 3%, all borrowers are willing to borrow and no lenders are willing to lend.  As we increase the interest rate, fewer borrower are willing to borrower and more lenders are willing to lend.  At interest rates between (and including) 3.15% and 3.16%, seven lenders are (weakly) willing to lend and seven borrowers are (weakly) willing to borrow.  Thus, the interval $[3.15\%, 3.16\%]$ is the set of possible market clearing interest rates with seven transactions (red line).
+
+```{r problem4, echo = FALSE}
+students <- 1:30
+
+lenders <- students[students %% 2== 0]
+borrowers <- students[students %% 2== 1]
+
+lenders_returns <- 3 + lenders*0.01
+borrowers_returns <- 3 + borrowers*0.01
+
+market <- tibble(return = seq(2.9, 3.4, by = 0.0005),
+                 supply = 0,
+                 demand = 0)
+
+for (i in 1:nrow(market)) {
+  market[i, ]$supply <- sum(market[i, ]$return > lenders_returns)
+  market[i, ]$demand <- sum(market[i, ]$return < borrowers_returns)
+}
+
+market <- market %>%
+  mutate(is_market_cleared = supply == demand)
+
+plot(1, type = "n", ylim=c(2.95, 3.35), xlim = c(0, 15), 
+     ylab = "Interest Rates", xlab = "Quantity of Transactions")
+
+lines(y=market[market$is_market_cleared, ]$return, 
+      x=market[market$is_market_cleared, ]$supply, 
+      lwd=7, col ="red")
+
+lines(y=market$return, x=market$supply, col = "black")
+lines(y=market$return, x=market$demand, col = "blue")
+
+text(x = 5, y=3, "Supply", col = "black")
+text(x = 5, y=3.3, "Demand", col = "blue")
+text("Market Clearing Rates", col = "red", x=7, y =3.155, pos = 2)
+
+if (FALSE) {
+  market %>% 
+    filter(is_market_cleared) %>% 
+    summarise(max_return = max(return),
+              min_return = min(return), 
+              max_quantity = max(supply),
+              min_quantity = min(supply))
+}
+```

@@ -1,0 +1,52 @@
+---
+title: "ECON 714A - Problem Set 2"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+date: "2/8/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Consider a growth model with preferences $\sum_{t=0}^\infty \beta^t \log C_t$, production function $Y_t=AK_t^\infty$, the capital law of motion $K_{t+1}=K^{1-\delta}_t I^\delta_t$, and the resource constraint $Y_t=C_t+I_t$.
+
+1. Write down the social planner’s problem and derive the Euler equation. Provide the intuition to this optimality condition using the perturbation argument.
+
+...
+
+2. Derive the system of equations that pins down the steady state of the model.
+
+...
+
+3. Log-linearize the equilibrium conditions around the steady state.
+
+...
+
+4. Write down a dynamic system with one state variable and one control variable. Use the Blanchard-Kahn method to solve this system for a saddle path.
+
+...
+
+5. Show that the obtained solution is not just locally accurate, but is in fact the exact solution to the planner’s problem.
+
+...
+
+6. Generalize the (global) solution to the case of stochastic productivity shocks $A_t$.
+
+...
+
+7. The analytical tractability of the model is due to special functional form assumptions, which however, have strong economic implications. What is special about consumption behavior in this model? Provide economic intuition.
+
+...
+
+8. Bonus task: can you introduce labor into preferences and production function without compromising the analytical tractability of the model?
+
+...
