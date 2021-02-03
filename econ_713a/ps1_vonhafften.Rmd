@@ -214,7 +214,7 @@ When types are drawn uniformaly from $[0,1]$, let us treat this matching problem
 
 4. (Double Auctions - The Borrowers) There are 30 students numbered $1,2,3, ...,30$. Even students are lenders and odd students are borrowers. The lenders each have 1000 to lend, and the return available to any lender is 3% plus 0.01% (known as a basis point) times twice his student number. The borrower has a return on a project equal to 3% plus 0.01% times his student number. So a borrower borrows if he can get an interest rate below his project's return, and a lender lends if he can get an interest rate above the return he has available to him. What are all possible market clearing interest rates, and numbers of transactions?
 
-The figure below shows the number of borrowers that are willing to borrow (demand in blue line) and the number of lenders that are willing to lend (supply in black line) at relevant interest rates.  Starting at an interest rate below 3%, all borrowers are willing to borrow and no lenders are willing to lend.  As we increase the interest rate, fewer borrower are willing to borrower and more lenders are willing to lend.  At interest rates between (and including) 3.15% and 3.16%, seven lenders are (weakly) willing to lend and seven borrowers are (weakly) willing to borrow.  Thus, the interval $[3.15\%, 3.16\%]$ is the set of possible market clearing interest rates with seven transactions (red line).
+The figure below shows the number of borrowers that are willing to borrow (demand in blue line) and the number of lenders that are willing to lend (supply in black line) at relevant interest rates.  Starting at an interest rate below 3%, all borrowers are willing to borrow and no lenders are willing to lend.  As we increase the interest rate, fewer borrower are willing to borrower and more lenders are willing to lend.  At interest rates between (and including) 3.20% and 3.21%, five lenders are (weakly) willing to lend and five borrowers are (weakly) willing to borrow.  Thus, the interval $[3.20\%, 3.21\%]$ is the set of possible market clearing interest rates with five transactions (red line).
 
 ```{r problem4, echo = FALSE}
 students <- 1:30
@@ -222,10 +222,10 @@ students <- 1:30
 lenders <- students[students %% 2== 0]
 borrowers <- students[students %% 2== 1]
 
-lenders_returns <- 3 + lenders*0.01
+lenders_returns <- 3 + lenders*0.01*2
 borrowers_returns <- 3 + borrowers*0.01
 
-market <- tibble(return = seq(2.9, 3.4, by = 0.0005),
+market <- tibble(return = seq(2.9, 4, by = 0.0005),
                  supply = 0,
                  demand = 0)
 
@@ -237,19 +237,19 @@ for (i in 1:nrow(market)) {
 market <- market %>%
   mutate(is_market_cleared = supply == demand)
 
-plot(1, type = "n", ylim=c(2.95, 3.35), xlim = c(0, 15), 
+plot(1, type = "n", ylim=c(2.95, 3.65), xlim = c(0, 15), 
      ylab = "Interest Rates", xlab = "Quantity of Transactions")
-
-lines(y=market[market$is_market_cleared, ]$return, 
-      x=market[market$is_market_cleared, ]$supply, 
-      lwd=7, col ="red")
 
 lines(y=market$return, x=market$supply, col = "black")
 lines(y=market$return, x=market$demand, col = "blue")
 
-text(x = 5, y=3, "Supply", col = "black")
-text(x = 5, y=3.3, "Demand", col = "blue")
-text("Market Clearing Rates", col = "red", x=7, y =3.155, pos = 2)
+lines(y=market[market$is_market_cleared, ]$return, 
+      x=market[market$is_market_cleared, ]$supply, 
+      lwd=3, col ="red")
+
+text(x = 2, y=3, "Supply", col = "black")
+text(x = 3, y=3.3, "Demand", col = "blue")
+text("Market Clearing Rates", col = "red", x=5, y =3.205, pos = 4)
 
 if (FALSE) {
   market %>% 

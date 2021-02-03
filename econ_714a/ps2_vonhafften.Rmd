@@ -17,15 +17,92 @@ header-includes:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Consider a growth model with preferences $\sum_{t=0}^\infty \beta^t \log C_t$, production function $Y_t=AK_t^\infty$, the capital law of motion $K_{t+1}=K^{1-\delta}_t I^\delta_t$, and the resource constraint $Y_t=C_t+I_t$.
+Consider a growth model with preferences $\sum_{t=0}^\infty \beta^t \log C_t$, production function $Y_t=AK_t^\alpha$, the capital law of motion $K_{t+1}=K^{1-\delta}_t I^\delta_t$, and the resource constraint $Y_t=C_t+I_t$.
 
 1. Write down the social planner’s problem and derive the Euler equation. Provide the intuition to this optimality condition using the perturbation argument.
+
+The social planner's problem is
+
+\begin{align*}
+\max_{\{C_t, K_t\}_{t=0}^\infty} & \sum_{t=0}^\infty \beta^t \log C_t \\
+\text{s.t. } AK_t^\alpha &= C_t+I_t \\
+K_{t+1} &= K^{1-\delta}_t I^\delta_t \\
+\implies
+\max_{\{C_t, K_t\}_{t=0}^\infty} & \sum_{t=0}^\infty \beta^t \log C_t \\
+\text{s.t. } 0 &= K^{1-\delta}_t (AK_t^\alpha - C_t)^\delta - K_{t+1}
+\end{align*}
+
+The legrangian is
+
+$$
+\sum_{t=0}^\infty \beta^t \log C_t + \lambda_t [K^{1-\delta}_t (AK_t^\alpha - C_t)^\delta - K_{t+1}]
+$$
+
+FOC ($C_t$):
+
+\begin{align*}
+0 &= \frac{\beta^t}{C_t} - \lambda_t \delta K^{1-\delta}_t (AK_t^\alpha - C_t)^{\delta-1} \\
+\lambda_t &= \frac{\beta^t}{C_t\delta K^{1-\delta}_t I_t^{\delta-1}}
+\end{align*}
+
+\pagebreak
+
+FOC ($K_{t+1}$):
+
+\begin{align*}
+0 &= -\lambda_t + \lambda_{t+1}[(1-\delta)  K^{-\delta}_{t+1} (AK_{t+1}^\alpha - C_{t+1})^\delta(-1) + \delta  K^{1-\delta}_{t+1} (AK_{t+1}^\alpha - C_{t+1})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}]\\
+\frac{\lambda_t}{\lambda_{t+1}} &= (\delta-1) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}
+\end{align*}
+
+FOCs imply the consumption Euler equation:
+
+\begin{align*}
+\frac{(\frac{\beta^t}{C_t\delta K^{1-\delta}_t I_t^{\delta-1}})}
+{(\frac{\beta^{t+1}}{C_{t+1} \delta K^{1-\delta}_{t+1} I_{t+1}^{\delta-1}})} 
+&= (\delta-1) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1} \\
+\frac{C_{t+1}  K^{1-\delta}_{t+1} I_{t+1}^{\delta-1}}
+{\beta C_t K^{1-\delta}_t I_t^{\delta-1}}
+&= (\delta-1) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1} \\
+C_{t+1}  
+&= C_t \beta 
+(\frac{ K_t }{K_{t+1} })^{1-\delta}
+(\frac{ I_t}{I_{t+1}})^{\delta-1}
+[(\delta-1) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}] \\
+C_{t+1}  
+&= C_t \beta 
+(\frac{K_t}{I_t})^{1-\delta}
+[(\delta-1) \frac{I_{t+1}}{K_{t+1}} + \delta  A\alpha K_{t+1}^{\alpha-1}]
+\end{align*}
 
 ...
 
 2. Derive the system of equations that pins down the steady state of the model.
 
-...
+In a steady state, $C_t = C_{t+1} = \bar{C}, K_t = K_{t+1} = \bar{K}$, and $I_t = I_{t+1} = \bar{I}$.  
+
+From the law of motion of capital:
+
+$$
+\bar{K}=\bar{K}^{1-\delta} \bar{I}^\delta \implies \bar{K} = \bar{I}
+$$
+
+From the consumption Euler equation and $\bar{K} = \bar{I}$:
+
+$$
+\bar{C} 
+= \bar{C} \beta 
+(\frac{\bar{K}}{\bar{K}})^{1-\delta}
+[(\delta-1) \frac{\bar{K}}{\bar{K}} + \delta  A\alpha \bar{K}^{\alpha-1}] 
+\implies
+\bar{K} = \Bigg(\frac{\frac{1}{\beta} - \delta +1 }
+{\delta  A\alpha}\Bigg)^\frac{1}{\alpha - 1}
+$$
+
+From the resource constraint and $\bar{K} = \bar{I}$:
+
+$$
+A\bar{K}^\alpha = \bar{C}+\bar{K} \implies  \bar{C} = A\bar{K}^\alpha -\bar{K} 
+$$
 
 3. Log-linearize the equilibrium conditions around the steady state.
 
