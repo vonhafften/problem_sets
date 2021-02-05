@@ -42,6 +42,7 @@ FOC ($C_t$):
 
 \begin{align*}
 0 &= \frac{\beta^t}{C_t} - \lambda_t \delta K^{1-\delta}_t (AK_t^\alpha - C_t)^{\delta-1} \\
+\implies 
 \lambda_t &= \frac{\beta^t}{C_t\delta K^{1-\delta}_t I_t^{\delta-1}}
 \end{align*}
 
@@ -51,6 +52,7 @@ FOC ($K_{t+1}$):
 
 \begin{align*}
 0 &= -\lambda_t + \lambda_{t+1}[(1-\delta)  K^{-\delta}_{t+1} (AK_{t+1}^\alpha - C_{t+1})^\delta + \delta  K^{1-\delta}_{t+1} (AK_{t+1}^\alpha - C_{t+1})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}]\\
+\implies
 \frac{\lambda_t}{\lambda_{t+1}} &= (1-\delta) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}
 \end{align*}
 
@@ -60,42 +62,81 @@ FOCs imply the consumption Euler equation:
 \frac{(\frac{\beta^t}{C_t\delta K^{1-\delta}_t I_t^{\delta-1}})}
 {(\frac{\beta^{t+1}}{C_{t+1} \delta K^{1-\delta}_{t+1} I_{t+1}^{\delta-1}})} 
 &= (1-\delta) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1} \\
+\implies
 \frac{C_{t+1}  K^{1-\delta}_{t+1} I_{t+1}^{\delta-1}}
 {\beta C_t K^{1-\delta}_t I_t^{\delta-1}}
 &= (1-\delta) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1} \\
+\implies
 C_{t+1}  
 &= C_t \beta 
 (\frac{ K_t }{K_{t+1} })^{1-\delta}
 (\frac{ I_t}{I_{t+1}})^{\delta-1}
 [(1-\delta) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}] \\
-C_{t+1}  
 &= C_t \beta 
 \Bigg(\frac{K_t}{I_t}\Bigg)^{1-\delta}
-\Bigg[(1-\delta) \frac{I_{t+1}}{K_{t+1}} + \delta  A\alpha K_{t+1}^{\alpha-1}\Bigg]
+\Bigg[(1-\delta) \frac{I_{t+1}}{K_{t+1}} + \delta  A\alpha K_{t+1}^{\alpha-1}\Bigg] \\
+&= C_t \beta 
+\Bigg[(1-\delta) \frac{I_{t+1}}{I_{t}} + \delta \frac{\alpha Y_{t+1}}{I_t}\Bigg]
 \end{align*}
 
 Perturbation argument:
 
-To argue that the EE represents the optimal path, assume we're on the equilibrium path for capital $\{K_t\}_{t=0}^\infty$ and a deviation at some $t$ such that $\tilde{K}_{t+1} < K_{t+1}$. To achieve such a deviation, $\tilde{C}_t = C_t + \Delta$ for some $\Delta > 0$. The feasibility constraint implies that $\tilde{I}_t = I_t - \Delta$.  Thus, capital in period $t+1$ can be approximated as:
+To argue that the EE represents the optimal path, let us consider a deviation from the optimal path for capital and the approximate effect on utility.  In particular, consumption at $t$ increase reducing investment and thus reducing capital in $t+1$ ($\uparrow C_t \to \downarrow I_t \to \downarrow K_{t+1}$).  The reduced capital reduces output in $t+1$ ($\downarrow K_{t+1} \to \downarrow Y_{t+1}$).  Thus to return to the optimal path for capital in $t+2$, investment needs to make up for the lower depreciated capital from $t+1$ reducing consumption ($\uparrow I_{t+1} \to \downarrow C_{t+1}$). In addition, consumption in $t+1$ is reduced both because output in $t+1$ is lower ($\downarrow Y_{t+1} \to \downarrow C_{t+1}$).
+
+Assume we're on the optimal path for capital $\{K_t\}_{t=0}^\infty$ and a deviation at some $t$ such that $\tilde{K}_{t+1} < K_{t+1}$. To achieve such a deviation, $\tilde{C}_t = C_t + \Delta$ for some $\Delta > 0$. The feasibility constraint implies that $\tilde{I}_t = I_t - \Delta$.  Thus, capital in period $t+1$ can be approximated as:
 
 \begin{align*}
 \tilde{K}_{t+1} 
 &= \tilde{K}_t^{1-\delta} \tilde{I}_t^\delta \\
 &= K_t^{1-\delta} (I_t - \Delta)^\delta \\
-&\approx K_t^{1-\delta} I_t^{\delta} - \delta K_t^{1-\delta}I_t^{\delta-1} \Delta \\
-&= K_{t+1} -  K_{t+1}\frac{\delta \Delta}{I_t}
+& \approx K_t^{1-\delta} I_t^{\delta} - \delta K_t^{1-\delta}I_t^{\delta-1} \Delta \\
+&= K_{t+1} -  \Delta\frac{\delta K_{t+1} }{I_t}
 \end{align*}
 
-With lower capital, production in $t+1$ is less:
+\pagebreak
+
+Investment in $t+1$ needs to return capital to the optimal path in $t+2$:
+
+\begin{align*}
+\tilde{K}_{t+2} &= K_{t+2} \\
+\implies \tilde{K}_{t+1}^{1-\delta} \tilde{I}_{t+1}^\delta &= K_{t+1}^{1-\delta} I_{t+1}^\delta \\
+\implies \tilde{I}_{t+1}
+&= I_{t+1} K_{t+1}^{\frac{1-\delta}{\delta}} (K_{t+1} -  K_{t+1}\frac{\delta \Delta}{I_t})^{\frac{\delta-1}{\delta}} \\
+&\approx I_{t+1} K_{t+1}^{\frac{1-\delta}{\delta}} K_{t+1} ^{\frac{\delta-1}{\delta}} 
++ (-  K_{t+1}\frac{\delta \Delta}{I_t}) \frac{\delta-1}{\delta} I_{t+1} K_{t+1}^{\frac{1-\delta}{\delta}} K_{t+1}^{\frac{\delta-1}{\delta}-1}  \\
+&= I_{t+1} + \Delta\frac{(1-\delta)I_{t+1}}{I_t}
+\end{align*}
+
+In addition, with lower capital, production in $t+1$ is less:
 
 \begin{align*}
 \tilde{Y}_{t+1} 
 &= A\tilde{K}_{t+1}^\alpha \\
 &= A\Bigg(K_{t+1} - \frac{\delta K_{t+1} \Delta}{I_t}\Bigg)^\alpha \\
 &\approx  AK_{t+1}^\alpha - A \alpha K_{t+1}^{\alpha - 1}\frac{\delta K_{t+1} \Delta}{I_t}\\ 
-&= Y_{t+1} - Y_{t+1}\frac{ \alpha \delta \Delta}{I_t}
+&= Y_{t+1} - \Delta \frac{ \alpha \delta Y_{t+1}}{I_t}
 \end{align*}
 
+Thus, consumption in $t+1$ is less:
+
+\begin{align*}
+\tilde{Y}_{t+1} &= \tilde{C}_{t+1} + \tilde{I}_{t+1} \\ 
+\implies Y_{t+1} - \Delta\frac{ \alpha \delta Y_{t+1}}{I_t} &= \tilde{C}_{t+1} + (I_{t+1} + \Delta(1-\delta)\frac{I_{t+1}}{I_t}) \\ 
+\implies \tilde{C}_{t+1} 
+&= Y_{t+1} - \Delta\frac{ \alpha \delta Y_{t+1}}{I_t} - I_{t+1} - \Delta \frac{(1-\delta)I_{t+1}}{I_t} \\ 
+&= C_{t+1} - \Delta\Bigg[(1-\delta)\frac{I_{t+1}}{I_t} + \delta \frac{ \alpha  Y_{t+1} }{I_t}\Bigg]
+\end{align*}
+
+At on the optimal path, the discounted marginal utility of deviating from the optimal path is zero:
+
+\begin{align*}
+0 &= u'(\tilde{C}_t) + \beta u'(\tilde{C}_{t+1}) \\
+\implies 0 &= u'(C_t)\Delta - \beta u'(C_{t+1}) \Delta  \Bigg[(1-\delta)\frac{I_{t+1}}{I_t} + \delta \frac{ \alpha  Y_{t+1} }{I_t}\Bigg] \\
+\implies 0 &= C_t^{-1}\Delta - \beta C_{t+1}^{-1} \Delta  \Bigg[(1-\delta)\frac{I_{t+1}}{I_t} + \delta \frac{ \alpha  Y_{t+1} }{I_t}\Bigg]\\
+\implies C_{t+1} &= C_t \beta \Bigg[(1-\delta)\frac{I_{t+1}}{I_t} + \delta \frac{ \alpha  Y_{t+1} }{I_t}\Bigg] \\
+\end{align*}
+
+This equation matches the Euler equation above.
 
 2. Derive the system of equations that pins down the steady state of the model.
 
