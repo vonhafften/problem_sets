@@ -1,6 +1,6 @@
 ---
 title: "ECON 714A - Problem Set 2"
-author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
 date: "2/8/2020"
 output: pdf_document
 header-includes:
@@ -50,8 +50,8 @@ FOC ($C_t$):
 FOC ($K_{t+1}$):
 
 \begin{align*}
-0 &= -\lambda_t + \lambda_{t+1}[(1-\delta)  K^{-\delta}_{t+1} (AK_{t+1}^\alpha - C_{t+1})^\delta(-1) + \delta  K^{1-\delta}_{t+1} (AK_{t+1}^\alpha - C_{t+1})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}]\\
-\frac{\lambda_t}{\lambda_{t+1}} &= (\delta-1) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}
+0 &= -\lambda_t + \lambda_{t+1}[(1-\delta)  K^{-\delta}_{t+1} (AK_{t+1}^\alpha - C_{t+1})^\delta + \delta  K^{1-\delta}_{t+1} (AK_{t+1}^\alpha - C_{t+1})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}]\\
+\frac{\lambda_t}{\lambda_{t+1}} &= (1-\delta) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}
 \end{align*}
 
 FOCs imply the consumption Euler equation:
@@ -59,22 +59,43 @@ FOCs imply the consumption Euler equation:
 \begin{align*}
 \frac{(\frac{\beta^t}{C_t\delta K^{1-\delta}_t I_t^{\delta-1}})}
 {(\frac{\beta^{t+1}}{C_{t+1} \delta K^{1-\delta}_{t+1} I_{t+1}^{\delta-1}})} 
-&= (\delta-1) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1} \\
+&= (1-\delta) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1} \\
 \frac{C_{t+1}  K^{1-\delta}_{t+1} I_{t+1}^{\delta-1}}
 {\beta C_t K^{1-\delta}_t I_t^{\delta-1}}
-&= (\delta-1) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1} \\
+&= (1-\delta) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1} \\
 C_{t+1}  
 &= C_t \beta 
 (\frac{ K_t }{K_{t+1} })^{1-\delta}
 (\frac{ I_t}{I_{t+1}})^{\delta-1}
-[(\delta-1) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}] \\
+[(1-\delta) (\frac{I_{t+1}}{K_{t+1}})^\delta + \delta  (\frac{I_{t+1}}{K_{t+1}})^{\delta-1}A\alpha K_{t+1}^{\alpha-1}] \\
 C_{t+1}  
 &= C_t \beta 
-(\frac{K_t}{I_t})^{1-\delta}
-[(\delta-1) \frac{I_{t+1}}{K_{t+1}} + \delta  A\alpha K_{t+1}^{\alpha-1}]
+\Bigg(\frac{K_t}{I_t}\Bigg)^{1-\delta}
+\Bigg[(1-\delta) \frac{I_{t+1}}{K_{t+1}} + \delta  A\alpha K_{t+1}^{\alpha-1}\Bigg]
 \end{align*}
 
-...
+Perturbation argument:
+
+To argue that the EE represents the optimal path, assume we're on the equilibrium path for capital $\{K_t\}_{t=0}^\infty$ and a deviation at some $t$ such that $\tilde{K}_{t+1} < K_{t+1}$. To achieve such a deviation, $\tilde{C}_t = C_t + \Delta$ for some $\Delta > 0$. The feasibility constraint implies that $\tilde{I}_t = I_t - \Delta$.  Thus, capital in period $t+1$ can be approximated as:
+
+\begin{align*}
+\tilde{K}_{t+1} 
+&= \tilde{K}_t^{1-\delta} \tilde{I}_t^\delta \\
+&= K_t^{1-\delta} (I_t - \Delta)^\delta \\
+&\approx K_t^{1-\delta} I_t^{\delta} - \delta K_t^{1-\delta}I_t^{\delta-1} \Delta \\
+&= K_{t+1} -  K_{t+1}\frac{\delta \Delta}{I_t}
+\end{align*}
+
+With lower capital, production in $t+1$ is less:
+
+\begin{align*}
+\tilde{Y}_{t+1} 
+&= A\tilde{K}_{t+1}^\alpha \\
+&= A\Bigg(K_{t+1} - \frac{\delta K_{t+1} \Delta}{I_t}\Bigg)^\alpha \\
+&\approx  AK_{t+1}^\alpha - A \alpha K_{t+1}^{\alpha - 1}\frac{\delta K_{t+1} \Delta}{I_t}\\ 
+&= Y_{t+1} - Y_{t+1}\frac{ \alpha \delta \Delta}{I_t}
+\end{align*}
+
 
 2. Derive the system of equations that pins down the steady state of the model.
 
@@ -92,9 +113,9 @@ $$
 \bar{C} 
 = \bar{C} \beta 
 (\frac{\bar{K}}{\bar{K}})^{1-\delta}
-[(\delta-1) \frac{\bar{K}}{\bar{K}} + \delta  A\alpha \bar{K}^{\alpha-1}] 
+[(1-\delta) \frac{\bar{K}}{\bar{K}} + \delta  A\alpha \bar{K}^{\alpha-1}] 
 \implies
-\bar{K} = \Bigg(\frac{\frac{1}{\beta} - \delta +1 }
+\bar{K} = \Bigg(\frac{\frac{1}{\beta} - 1 + \delta}
 {\delta  A\alpha}\Bigg)^\frac{1}{\alpha - 1}
 $$
 

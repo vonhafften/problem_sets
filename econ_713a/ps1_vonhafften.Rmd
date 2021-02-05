@@ -1,7 +1,7 @@
 ---
 title: "ECON 713A - Problem Set 1"
-author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, Tyler Welch, and Ryan Mather. I also discussed problems with Emily Case, Sarah Bass, and Danny Edgel.]"
-date: "2/5/2020"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "2/10/2020"
 output: pdf_document
 header-includes:
 - \newcommand{\N}{\mathbb{N}}
@@ -200,15 +200,58 @@ lp("max", f.obj, f.con, f.dir, f.rhs)$solution
 
 Assume the payoff from not matching is zero.  
 
-Notice that matching is always weakly preferable to not matching.  For type $x$ matching with type $y$, $a > -1 \implies (1+ax) > 0$ for all $x \in [0, 1]$.  Therefore $y+axy \ge 0$ for all $y \in [0, 1]$.
+Notice that matching is always weakly preferable to not matching.  For type $x$ matching with type $y$, $a > -1 \implies 1+ax > 0$ for all $x \in [0, 1]$.  Therefore $y+axy \ge 0$ for all $y \in [0, 1]$.
 
-When types are drawn uniformaly from $[0,1]$, let us treat this matching problem as a continuum of proposers between $[0, 1]$ matching with a continuum of accepters between $[0, 1]$.  Since $(1+ax) > 0$, it is optimal for a type $x$ to match with as high a type $y$ as possible.  Thus, the continuum of proposers
+When types are drawn uniformly from $[0,1]$, we can treat this problem as a continuum of proposers $x \in [0, 1]$ matching with a continuum of accepters $y \in [0, 1]$.  Since $1+ax > 0$, it is optimal for both $x$ and $y$ to match with as high a type as possible.  Thus, the entire continuum of proposers to the highest accepter ($y=1$). $y=1$ accepts $x=1$.  And so on.
 
-...
+Thus, there is positive assortive matching.
 
 (b) Set up a matching market, with wage $w(x)$ for each type $x$. What wage can decentralize this market? (Can any other wage work?)
 
-...
+The utility from $x$ and $y$ matching is:
+
+$$
+u(x, y) = (x+axy) + (y+axy) = x+y + 2axy
+$$
+
+There is negative assortative matching (i.e., $x = 1- y$) because the cross partial is negative:
+
+$$
+\frac{\partial^2 u}{\partial x \partial y} = 2a < 0
+$$
+
+The zero-profit condition implies
+
+$$
+\pi(x, y) = 0 \\
+\implies u(x, y) - w(x) - w(y) = 0 \\
+\implies x+y + 2axy - w(x) - w(y) = 0
+$$
+
+Since we're at the optimum:
+
+\begin{align*}
+\frac{\partial \pi}{\partial x} &= 0\\
+\implies 
+1 + 2ay - w'(x) &= 0 \\
+\implies 
+w'(x) &= 1 + 2a(1-x)\\
+&= 1 + 2a-2ax \\
+\implies 
+w(x) &= x +2ax - ax^2 + c
+\end{align*}
+
+for some constant $c$. The zero profit condition implies:
+
+\begin{align*}
+x+y + 2axy - (x +2ax - ax^2 + c) - (y +2ay - ay^2 + c) &= 0 \\
+x+(1-x) + 2ax(1-x) - (x +2ax - ax^2 + c) - ((1-x) +2a(1-x) - a(1-x)^2 + c) &= 0 \\
+1 + 2ax-2ax^2 - x -2ax + ax^2 - c - 1 + x - 2a + 2ax + a - 2ax + ax^2 - c &= 0 \\
+- 2c  - a &= 0 \\
+c &= \frac{-a}{2}
+\end{align*}
+
+Thus, $w(x) =  x +2ax - ax^2 - \frac{a}{2}$.
 
 \pagebreak
 
