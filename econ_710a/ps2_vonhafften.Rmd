@@ -29,15 +29,52 @@ library(knitr)
 
 (i) Does $\hat{\beta}^{IV}_1 \to_p \beta_1$?
 
-...
+Yes.
 
-(ii) Does $\hat{\beta}^{IV}_0 \to_p \beta_0$?
+By the LLN and the CMT, $\hat{Cov}(Z, Y) \to_p Cov(Z, Y)$ and $\hat{Cov}(Z, X ) \to_p Cov(Z, X)$. Notice that 
 
-...
+\begin{align*}
+Cov(Z, U) 
+&= E[(E[Z]-Z)(E[U]-U)]\\
+&= E[E[U]E[Z]-E[U]Z-UE[Z]+UZ]\\
+&= E[E[U|Z]]E[Z]-E[E[E[U|Z]]Z]-E[UE[Z]]+E[UZ]\\
+&= 2E[Z]-E[2Z]-E[E[U|Z]E[Z]]+E[E[U|Z]Z] \\
+&= 2E[Z]-2E[Z]-E[2E[Z]]+E[2Z]\\
+&= 0
+\end{align*}
+
+By the CMT,
+
+\begin{align*}
+\hat{\beta}^{IV}_1 
+&\to_p \frac{Cov(Z, Y)}{Cov(Z, X)} \\
+&= \frac{Cov(Z,  \beta_0 + X \beta_1 + U)}{Cov(Z, X)} \\
+&= \frac{Cov(Z,  \beta_0) + Cov(Z,   X \beta_1) + Cov(Z, U)}{Cov(Z, X)} \\
+&= \frac{ \beta_1 Cov(Z,   X) + Cov(Z, U)}{Cov(Z, X)} \\
+&= \beta_1 + \frac{ Cov(Z, U)}{Cov(Z, X)} \\
+&= \beta_1 + \frac{ 0}{Cov(Z, X)} \\
+&= \beta_1
+\end{align*}
 
 \pagebreak
 
-2. Consider the simulation model $Y = \beta_0 + X \beta_1 + U$ and $X = \pi_0 + Z \pi_1 +V$ with $E[U|Z] = E[V|Z] = 0$ where $E[Y^2 + X^2 + Z^2] < \infty$. Additionally,  let $\{(Y_i, X_i, Z_i)'\}_{i=1}^n$ be a random sample from this model with $\frac{1}{n} \sum_{i=1}^n (Z_i - \bar{Z}_n)^2 > 0$.
+(ii) Does $\hat{\beta}^{IV}_0 \to_p \beta_0$?
+
+No.
+
+By (i) and the LLN,
+
+\begin{align*}
+\hat{\beta}^{IV}_0 
+&= \bar{Y} - \bar{X}\hat{\beta}^{IV}_1 \\
+&\to_p E[Y] - E[X]\beta_1 \\
+&= E[\beta_0 + X \beta_1 + U]- E[X]\beta_1 \\
+&= \beta_0 + E[X] \beta_1 + E[U]- E[X]\beta_1 \\
+&= \beta_0 + E[E[U|Z]] \\
+&= \beta_0 + 2 \\
+\end{align*}
+
+2. Consider the simulation model $Y = \beta_0 + X \beta_1 + U$ and $X = \pi_0 + Z \pi_1 +V$ with $E[U|Z] = E[V|Z] = 0$ where $E[Y^2 + X^2 + Z^2] < \infty$. Additionally, let $\{(Y_i, X_i, Z_i)'\}_{i=1}^n$ be a random sample from this model with $\frac{1}{n} \sum_{i=1}^n (Z_i - \bar{Z}_n)^2 > 0$.
 
 (i) Under what conditions (on $\beta_0, \beta_1, \pi_0, \pi_1$) is $Z$ a valid instrument for $X$?
 
