@@ -71,30 +71,106 @@ By (i) and the LLN,
 &= E[\beta_0 + X \beta_1 + U]- E[X]\beta_1 \\
 &= \beta_0 + E[X] \beta_1 + E[U]- E[X]\beta_1 \\
 &= \beta_0 + E[E[U|Z]] \\
-&= \beta_0 + 2 \\
+&= \beta_0 + 2
 \end{align*}
 
 2. Consider the simulation model $Y = \beta_0 + X \beta_1 + U$ and $X = \pi_0 + Z \pi_1 +V$ with $E[U|Z] = E[V|Z] = 0$ where $E[Y^2 + X^2 + Z^2] < \infty$. Additionally, let $\{(Y_i, X_i, Z_i)'\}_{i=1}^n$ be a random sample from this model with $\frac{1}{n} \sum_{i=1}^n (Z_i - \bar{Z}_n)^2 > 0$.
 
 (i) Under what conditions (on $\beta_0, \beta_1, \pi_0, \pi_1$) is $Z$ a valid instrument for $X$?
 
-...
+For $Z$ to be a valid instrument for $X$, it needs to be exogenous and relevant.  For exogeneoity of the instrument, $E[U|Z] = 0$, which we get by assumption.  For relevance of the instrument, we need that $Cov(Z, X) \neq 0$:
+
+$$
+Cov(Z, X) \neq 0 \iff \frac{Cov(Z, X)}{Var(Z)} = \pi_1  \neq 0
+$$
 
 (ii) Show that $Y = \gamma_0 + Z \gamma_1 + \varepsilon$ with $E[\varepsilon | Z]=0$ where $\gamma_0$, $\gamma_1$, and $\varepsilon$ are some functions of $\beta_0, \beta_1, \pi_0, \pi_1$, $U$, and $V$. In particular show that $\gamma_1 = \pi_1 \beta_1$.
 
-...
+\begin{align*}
+Y 
+&= \beta_0 + (\pi_0 + Z \pi_1 +V) \beta_1 + U \\
+&= \beta_0 + \pi_0\beta_1 + Z \pi_1\beta_1 + V\beta_1 + U \\
+&= \gamma_0 + Z \gamma_1 + \varepsilon
+\end{align*}
+
+where $\gamma_0 = \beta_0 + \pi_0\beta_1$, $\gamma_1 = \pi_1\beta_1$, and $\varepsilon = V\beta_1 + U$.  Notice that $E[\varepsilon|Z] = E[V\beta_1 + U|Z]  = E[V|Z]\beta_1 + E[U|Z] = 0$.
+
+\pagebreak
 
 (iii) Let $\hat{\gamma}_1$ and $\hat{\pi}_1$ denote the OLS estimators of $\gamma_1$ and $\pi_1$, respectively. The ratio $\hat{\gamma}_1/\hat{\pi}_1$ is called the "indirect least squares" estimator of $\beta_1$. How does it compare to the IV estimator of $\beta_1$ that uses $Z$ as an instrument for $X$?
 
-...
+\begin{align*}
+\hat{\beta}_1 
+&= \frac{\hat{Cov}(Y, Z)}{\hat{Cov}(X, Z)} \\
+\hat{\gamma}_1 
+&= \frac{\hat{Cov}(Y, Z)}{\hat{Var}(Z)} \\
+\hat{\pi}_1 
+&= \frac{\hat{Cov}(X, Z)}{\hat{Var}(Z)} \\
+\frac{\hat{\gamma}_1}{\hat{\pi}_1} 
+&= \frac{\frac{\hat{Cov}(Y, Z)}{\hat{Var}(Z)}}{\frac{\hat{Cov}(X, Z)}{\hat{Var}(Z)}} \\
+&= \frac{\hat{Cov}(Y, Z)}{\hat{Cov}(X, Z)} \\
+&= \hat{\beta}_1
+\end{align*}
 
 (iv) Show that $Y = \delta_0 + X \delta_1 + V \delta_2 + \xi$, $Cov(X, \xi) = Cov(V, \xi) = 0$ where $\delta_0, \delta_1, \delta_2$, and $\xi$ are some functions of $\beta_0, \beta_1, Cov(U, V), Var(V), U, V$. In particular, show that $\delta_1 = \beta_1$.
 
-...
+Let $\delta_2 = \frac{Cov(U, V)}{Var(V)}$ and $\xi = U - V \delta_2$ be the linear project of $U$ onto $V$: $U = V\delta_2 + \xi$.
+
+\begin{align*}
+Cov(X, \xi) 
+&= Cov(\pi_0 + Z \pi_1 + V, U - V \delta_2) \\
+&= Cov(Z \pi_1, U ) + Cov(Z \pi_1, V \delta_2) + Cov(V, U) +Cov(V, - V \delta_2) \\
+&=  \pi_1Cov(Z, U ) - \pi_1\delta_2Cov(Z , V ) + Cov(V, U) -  \delta_2 Var(V) \\
+&= 0 + Cov(V, U) -  \frac{Cov(U, V)}{Var(V)} Var(V) \\
+&= 0
+\end{align*}
+
+because $E[U|Z] = E[V|Z] \implies Cov(Z, U ) = Cov(Z, V ) = 0$. Furthermore,
+
+$$
+Cov(V, \xi) = Cov(V, U - V \delta_2) = Cov(V, U) - \delta_2 Var(V) = 0
+$$
+
+Thus,
+
+$$
+Y = \beta_0 + X \beta_1 + (V\delta_2 + \xi) = \delta_0 + X \delta_1 + V \delta_2 + \xi
+$$
+
+where $\delta_0 = \beta_0$ and $\delta_1 = \beta_1$.
+
+\pagebreak
 
 (v) Let $\hat{V}_i = X_i - \hat{\pi}_0 - Z_i \hat{\pi}_1$ where $\hat{\pi}_0$ is the OLS estimator of $\pi_0$. Furthermore, let $\hat{\delta}_1$ be the OLS estimator from a regression of $Y_i$ on $(1,X_i,\hat{V}_i)$; this estimator is called the “control variable” estimator. How does it compare to the IV estimator of $\beta_1$ that uses $Z$ as an instrument for $X$?
 
-...
+Consider an OLS regression of $X$ on $\hat{V}$: $X = \alpha_0 + \alpha_1 \hat{V} + e$:
+
+\begin{align*}
+\hat{\alpha}_1 
+&= \frac{\hat{Cov}(\hat{V}, X)}{\hat{Var}(\hat{V})} \\
+&= \frac{\hat{Cov}(\hat{V}, \hat{V} + \tilde{X})}{\hat{Var}(\hat{V})}\\
+&= \frac{\hat{Var}(\hat{V})}{\hat{Var}(\hat{V})} \\
+&= 1 \\
+\hat{\alpha}_0 
+&= \bar{X} - \hat{\alpha}_1  \bar{\hat{V}} \\
+&= \bar{X} \\
+\hat{e} 
+&= X - \hat{V} \hat{\alpha}_1 - \hat{\alpha}_0 \\
+&= X - \hat{V} - \bar{X}\\
+&= \tilde{X} - \bar{X}
+\end{align*}
+
+where $\tilde{X} = X - \hat{V} = \hat{\pi}_0 + \hat{\pi}_1Z$. Thus, applying the Frisch-Waugh Lovell Theorem, we can derive $\hat{\delta}_1$ by regressing $Y$ on $\tilde{X}$ and a constant term:
+
+\begin{align*}
+\hat{\delta}_1 
+&= \frac{\hat{Cov}(\tilde{X}, Y)}{\hat{Var}(\tilde{X})} \\
+&= \frac{\hat{Cov}(\hat{\pi}_0 + \hat{\pi}_1Z, Y)}{\hat{Var}(\hat{\pi}_0 + \hat{\pi}_1Z)} \\
+&= \frac{\hat{Cov}(Z, Y)}{\hat{\pi}_1\hat{Var}(Z)} \\
+&= \frac{\hat{Var}(Z)\hat{Cov}(Z, Y)}{\hat{Cov}(Z, X) \hat{Var}(Z)} \\
+&= \frac{\hat{Cov}(Z, Y)}{\hat{Cov}(Z, X)} \\
+&= \hat{\beta}_1^{IV}
+\end{align*}
 
 \pagebreak
 
