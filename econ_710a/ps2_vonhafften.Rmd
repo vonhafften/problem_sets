@@ -19,9 +19,13 @@ header-includes:
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+library(haven)
+library(stargazer)
+library(knitr)
+
 ```
 
-1. Suppose $(Y, X, Z)'$ is a vector of random variables such that $Y = \beta_0 + X \beta_1 + U$, $E[U|Z] = 2$ where $Cov(Z, X) \neq 0$ and $E[Y^2 + X^2 + Z^2] < \infty$. Additionally, let $\{(Y_i, X_i, Z_i)'\}_{i=1}^n$ be a random sample from the model with $\hat{Cov}(Z, X) \neq 0$. Recall, the definition from lecture 3 $\hat{\beta}^{IV}_1 = \frac{\hat{Cov}(Z, Y)}{\hat{Cov}(Z, X)} = \frac{\frac{1}{n}\sum_{i=1}^n (Z_i - \bar{Z}_n)(Y_i - \bar{Y}_n)} {\frac{1}{n}\sum_{i=1}^n (Z_i - \bar{Z}_n)(X_i - \bar{X}_n)}$ and $\hat{\beta}^{IV}_0 = \bar{Y} - \bar{X}\hat{\beta}^{IV}_1$.
+1. Suppose $(Y, X, Z)'$ is a vector of random variables such that $Y = \beta_0 + X \beta_1 + U$, $E[U|Z] = 2$ where $Cov(Z, X) \neq 0$ and $E[Y^2 + X^2 + Z^2] < \infty$. Additionally, let $\{(Y_i, X_i, Z_i)'\}_{i=1}^n$ be a random sample from the model with $\hat{Cov}(Z, X) \neq 0$. Recall, the definition from lecture 3: $\hat{\beta}^{IV}_1 = \frac{\hat{Cov}(Z, Y)}{\hat{Cov}(Z, X)} = \frac{\frac{1}{n}\sum_{i=1}^n (Z_i - \bar{Z}_n)(Y_i - \bar{Y}_n)} {\frac{1}{n}\sum_{i=1}^n (Z_i - \bar{Z}_n)(X_i - \bar{X}_n)}$ and $\hat{\beta}^{IV}_0 = \bar{Y} - \bar{X}\hat{\beta}^{IV}_1$.
 
 (i) Does $\hat{\beta}^{IV}_1 \to_p \beta_1$?
 
@@ -30,6 +34,8 @@ library(tidyverse)
 (ii) Does $\hat{\beta}^{IV}_0 \to_p \beta_0$?
 
 ...
+
+\pagebreak
 
 2. Consider the simulation model $Y = \beta_0 + X \beta_1 + U$ and $X = \pi_0 + Z \pi_1 +V$ with $E[U|Z] = E[V|Z] = 0$ where $E[Y^2 + X^2 + Z^2] < \infty$. Additionally,  let $\{(Y_i, X_i, Z_i)'\}_{i=1}^n$ be a random sample from this model with $\frac{1}{n} \sum_{i=1}^n (Z_i - \bar{Z}_n)^2 > 0$.
 
@@ -53,28 +59,150 @@ library(tidyverse)
 
 ...
 
-3. The paper “Children and Their Parents’ Labor Supply: Evidence from Exogenous Variation in Family Size” by J. Angrist and W. Evans (AE98) considers labor supply responses to the number of children in the household. They consider models of the form $Y=\beta_0+X_1\beta_1+X'_2\beta_2+U$ where $Y$ is some measure of the parents’ labor supply, $X_1$ is a binary variable indicating "more than 2 children in the household", and $X_2$ is a vector of (assumed) exogenous variables that control for race, age, and whether any of the children is a boy. For the next two questions we will focus on the case where $Y$ is a binary variable indicating whether the mother worked during the year.
+\pagebreak
+
+3. The paper “Children and Their Parents’ Labor Supply: Evidence from Exogenous Variation in Family Size” by J. Angrist and W. Evans (AE98) considers labor supply responses to the number of children in the household. They consider models of the form $Y=\beta_0+X_1\beta_1+X_2'\beta_2+U$ where $Y$ is some measure of the parents’ labor supply, $X_1$ is a binary variable indicating "more than 2 children in the household", and $X_2$ is a vector of (assumed) exogenous variables that control for race, age, and whether any of the children is a boy. For the next two questions we will focus on the case where $Y$ is a binary variable indicating whether the mother worked during the year.
 
 (i) Provide a causal interpretation of $\beta_1$.
 
-...
+All else equal, $\beta_1$ is the change in the probability that the mother worked during the year if the household has more than two children versus two or fewer children.
 
 (ii) Discuss why or why not you think that $X_1$ could be endogenous. If you think it is, discuss the direction of the (conditional) bias in OLS relative to the causal parameter.
 
-...
+Angrist and Evans (1998) focuses on heteronormative households with one man - a husband - and one woman - a wife. In the U.S., there's a long history of gendered divisions of labor where husbands are more likely to work in the formal labor market outside the home and wives are more likely to work within the home including child-rearing.  I think $X_1$ could be endogenous because parents' labor supply decisions affect the amount of time and money parents have.  Children cost time and money, so parents' labor supply decisions could affect their decision to have more than 2 children in the household. Time and money represent two different directions of conditional bias.  If higher labor supply results in more labor income, then parents have more financial resources for raising children and thus could raise more children.  On the other hand, if higher labor supply results in less time for parenting, then parents may have less children.  Although both effects may be present, my prior is that the latter effect dominates for mother's labor supply decisions, so $X_1 = f(Y)$ where $f$ is a decreasing function in $Y \implies \beta_1$ is biased down.
 
 (iii) Repeat the previous two questions when $Y$ is a binary variable indicating whether the husband worked during the year.
 
-...
+All else equal, $\beta_1$ is the change in the probability that the husband worked during the year if the household has more than two children versus two or fewer children.
+
+Taking this setup as given, I think $\beta_1$ is less likely to be biased if $Y$ just measures the husband's labor decision.  Since both time and money resources are needed to raise children, the "default" outcome in this setup if for the husband to work in the formal labor market regardless of the number of children in the household. Whereas, the wife works in formal labor market with no or few children and focus on child-rearing when there are more children.
 
 (iv) Discuss why or why not you think that the binary variable $Z_1$ which indicates whether the two first children are of the same sex is a valid instrument for $X_1$.
 
-...
+The rationale for the $Z_1$ as a valid instrument for $X_1$ is that parents prefer having children of different sexes. So parents with two male children or two female children are more likely to have a third child than parents with one male child and one female child despite the time and money costs of having children which are likely similar per child regardless of sex.
+
+For an instrument to be valid, it needs to be exogeneous (i.e., $E[U |Z_1]= 0$) and relevant (i.e., $E[ZX']$ is invertible where $Z = (Z_1, X_2')'$ and $X = (X_1, X_2')$).  I think it's plausible that $Z_1$ is exogeneous; I can't think of an argument for why parents' labor supply decisions would change if they have two children of the same sex as opposed to two children of different sex. Furthermore, since a child's sex is more-or-less a 50-50 bernoulli random variable, I think it's plausible that parent's labor supply decision don't affect the sex of their children.
+
+I'm less convinced by relavence; it seems like the time and money cost of an additional child far outweighs impact of a preference for having children with different sexes. Ancedotal evidence suggest that, in some large families (4+ children), the parents kept having children "because they wanted a boy/girl".  I'm not convinved that these families would be smaller if their older children where different sexes.  It seems like the parents had a preference for a lot of children.
 
 (v) Estimate the reduced form regression of $X_1$ on $Z_1$ and $X_2$, do the results suggest that $Z_1$ is relevant?
 
-...
+In the regression results from R above, we can see that the coefficient on `samesex` is statistically signficiant at the 0.1 percent level.  It remains statistically signficiant given a wide variety of specifications for $X_2$.  These results suggests that $Z_1$ is a relevant instrument.
+
+```{r problem3v, echo = FALSE}
+df <- read_dta("AE80.dta")
+
+regression <- lm(morekids ~ 
+     samesex +
+     blackm + hispm + othracem + blackd + hispd + othraced + 
+     agefstm + agefstd + agem1 + aged1 +         
+     boy1st+ boy2nd,                        
+   data = df)
+```
+
+```{r problem3vb, results = "asis", echo = FALSE, warnings = FALSE}
+regression %>%
+  stargazer(single.row = TRUE,header=FALSE)
+```
+
+\pagebreak
 
 (vi) (Attempt to) replicate the first three rows of Table 7 columns 1, 2, 5, 7, and 8 in AE98. Interpret the empirical results in relation to your discussion of the previous questions.
 
-...
+```{r problem3vi, echo = FALSE}
+df2 <- df  %>%
+  mutate(age1m = agem1,
+         age1d = aged1,
+         weeks1m = weeksm1,
+         weeks1d = weeksd1)
+
+results <- NULL
+
+for (which_sample in c("All Women", "Married Women", "Husbands of Married Women")) {
+  for (which_dep_var in c("worked", "weeks1", "hoursw")) {
+    
+    # independent variable
+    if (which_sample == "All Women") sample <- df2
+    else sample <- df2 %>% filter(msample == 1)
+    
+    x_1 <- sample %>% pull(morekids)
+    z_1 <- sample %>% pull(samesex)
+    
+    # control variables
+    if (which_sample == "Husbands of Married Women") var_suffix <- "d"
+    else var_suffix <- "m"
+    
+    x_2 <- sample %>% 
+      select(paste0(c("black", "hisp", "othrace", "agefst", "age1"), var_suffix),
+             "boy1st", "boy2nd", "const") %>%
+      as.matrix()
+    
+    x <- cbind(x_1, x_2)
+    z <- cbind(z_1, x_2)
+    
+    k <- ncol(x)
+    n <- nrow(x)
+    
+    # dependent variables
+    dep_var <- paste0(which_dep_var, var_suffix)
+    y <- sample %>% pull(dep_var) %>% as.numeric()
+    
+    # OLS
+    coefficients <- solve(t(x) %*% x) %*% (t(x) %*% y)
+    residuals <- as.numeric(y - x %*% coefficients)
+    varcov <- solve(t(x) %*% x) * sum(residuals^2) / n
+    
+    results <- bind_rows(results, 
+                         tibble(sample=which_sample,
+                                dependent_variable = which_dep_var,
+                                method = "OLS",
+                                coefficient = round(coefficients[1], 3),
+                                standard_error = round(sqrt(varcov[1, 1]), 3),
+                                p_value = round(2*(1- pt(q = abs(coefficients[1])/sqrt(varcov[1, 1]),
+                                                         df = n-k-1)), 3)))
+    
+    # 2SLS
+    coefficients_1 <- solve(t(z) %*% z) %*% (t(z) %*% x_1)
+    x_1_hat <- as.numeric(z %*% coefficients_1)
+    x_hat <- cbind(x_1_hat, x_2)
+    coefficients_2 <- solve(t(x_hat) %*% x_hat) %*% (t(x_hat) %*% y)
+    residuals_2 <- as.numeric(y - x_hat %*% coefficients_2)
+    varcov <- solve(t(x_hat) %*% x_hat) * sum(residuals_2^2) / n
+
+    results <- bind_rows(results, 
+                         tibble(sample=which_sample,
+                                dependent_variable = which_dep_var,
+                                method = "2SLS",
+                                coefficient = round(coefficients_2[1], 3),
+                                standard_error = round(sqrt(varcov[1, 1]), 3),
+                                p_value = round(2*(1- pt(q = abs(coefficients_2[1])/sqrt(varcov[1, 1]),
+                                                         df = n-k-1)), 3)))
+    
+  }
+}
+
+results %>%
+  mutate(dependent_variable = 
+           case_when(dependent_variable == "worked" ~ "Worked for pay",
+                     dependent_variable == "weeks1" ~ "Weeks worked",
+                     dependent_variable == "hoursw" ~ "Hours/week")) %>%
+  kable()
+```
+
+Across all measures of women's labor supply, the 2SLS coefficient is smaller in magnitude than the OLS coefficient.  This suggests that there is some endogeneity between labor supply choices and having more than 2 children.
+
+The story for married is largely as discussed in (iii).  For married men, the OLS coefficients for worked and weeks worked are significant and negative.  The 2SLS coefficients are not significant meaning that after controlling for the effect of children on labor supply decisions having more children does not affect labor supply decisions.
+
+\pagebreak
+
+# Appendix
+
+## R code for 3(v)
+
+```{r appendix1, ref.label="problem3v", eval = FALSE}
+```
+
+## R code for 3(vi)
+
+```{r appendix2, ref.label="problem3vi", eval = FALSE}
+```
