@@ -20,6 +20,7 @@ library(tidyverse)
 library(lubridate)
 library(quantmod)
 library(mFilter)
+library(stargazer)
 
 loadSymbols(c("PCECC96","GDPC1", "PAYEMS", "GPDIC1"), 
       src = "FRED",
@@ -39,24 +40,31 @@ temp2 <- temp1 %>%
  transmute(date = ymd(index(temp1)),
       consumption = PCECC96,
       output = GDPC1,
-      employment = PAYEMS,
+      labor = PAYEMS,
       investment = GPDIC1) %>%
- filter(!is.na(consumption + output + employment + investment))
+ filter(!is.na(consumption + output + labor + investment))
 
 data <- temp2 %>% 
 mutate(estimation_period = date >= ymd("1980-01-01"),
     consumption = case_when( estimation_period ~ consumption),
     output = case_when( estimation_period ~ output),
-    employment = case_when( estimation_period ~ employment)) %>%
+    labor = case_when( estimation_period ~ labor)) %>%
  filter(date >= ymd("1950-01-01"),
      date <= ymd("2020-10-01"))
 
+consumption_ss <- mean(data$consumption, na.rm = TRUE)
+output_ss <- mean(data$output, na.rm = TRUE)
+labor_ss <- mean(data$labor, na.rm = TRUE)
+investment_ss <- mean(data$investment, na.rm = TRUE)
+
 data %>%
  pivot_longer(-c(date, estimation_period)) %>%
+  remove_missing(na.rm = TRUE) %>%
  ggplot(aes(x=date, y=value, col = name)) +
  geom_line() +
  facet_wrap(~name, scales = "free_y") +
- theme(legend.position = "none")
+ theme(legend.position = "none") +
+  ggtitle("Raw Data")
 
 ```
 
@@ -69,21 +77,23 @@ data %>%
 data_hp_raw <- data %>%
  filter(estimation_period) %>%
  transmute(date,
-      consumption = hpfilter(log(consumption), freq = 1600)$cycle,
-      output = hpfilter(log(output), freq = 1600)$cycle,
-      employment = hpfilter(log(employment), freq = 1600)$cycle) %>%
+      consumption = hpfilter(log(consumption/consumption_ss), freq = 1600)$cycle,
+      output = hpfilter(log(output/output_ss), freq = 1600)$cycle,
+      labor = hpfilter(log(labor/labor_ss), freq = 1600)$cycle) %>%
  full_join(data %>%
         transmute(date,
              estimation_period,
-             investment = hpfilter(log(investment), 
+             investment = hpfilter(log(investment/investment_ss), 
                         freq = 1600)$cycle),
       by = "date") %>%
  arrange(date)
 
 data_hp_raw %>%
  pivot_longer(-c(date, estimation_period)) %>%
+    remove_missing(na.rm = TRUE) %>%
  ggplot(aes(x=date, y=value, col = name)) +
- geom_line() 
+ geom_line() +
+  ggtitle("Data after HP Filter (in log deviations)")
 ```
 
 3. Assume that capital was at the steady-state level in 1950 and the rate of depreciation is $\delta= 0.025$ and use the linearized capital law of motion and the series for investment to estimate the capital stock (in log deviations) in 1980-2020. Justify this approach.
@@ -111,16 +121,109 @@ for (i in 2:nrow(data_hp_raw)) capital <- c(capital, (1-delta)*capital[i-1] + de
 data_hp <- data_hp_raw %>%
  mutate(capital = capital) %>%
  filter(estimation_period) %>%
- select(-investment, -estimation_period)
+ select(-estimation_period)
 
 data_hp %>%
- pivot_longer(-date) %>%
- ggplot(aes(x=date, y=value, col = name)) +
- geom_line() 
+  select(date, output, capital) %>%
+  pivot_longer(-date) %>%
+  ggplot(aes(x=date, y=value, col = name)) +
+  geom_line() +
+  ggtitle("Estimated Capital Stock (in log deviations)")
  
 ```
 
 4. Linearize the equilibrium conditions. Assuming $\alpha= 1/3$, $\sigma= 1$, $\phi= 1$ and the steady-state share of government spendings in GDP equal 1/3, estimate $a_t$, $g_t$ and $\tau_{Lt}$ for 1980-2020.  Run the OLS regression for each of these wedges to compute their persistence parameters $\rho_i$.
+
+Based on the equilibrium conditions, we found during lecture, we can approximate the efficiency wedge:
+
+\begin{align*}
+Y_t &= A_tK_t^\alpha L_t^{1-\alpha} \\
+\implies
+\bar{Y}(1+y_t) &= \bar{A}(1+a_t) \bar{K}^\alpha(1+\alpha k_t) \bar{L}^{(1-\alpha)}(1+(1-\alpha) l_t) \\
+\implies
+(1+y_t) &= (1+a_t) (1+\alpha k_t) (1+(1-\alpha) l_t) \\
+\implies
+a_t &= 1- \frac{1+y_t}{(1+\alpha k_t) (1+(1-\alpha) l_t)}
+\end{align*}
+
+We can approximate the government consumption wedge:
+
+\begin{align*}
+Y_t &= C_t + I_t + G_t \\
+\bar{Y}(1+y_t) &= \bar{C}(1+c_t) + \bar{I}(1+i_t) + \bar{G}(1+g_t) \\
+\bar{Y}y_t &= \bar{C}c_t + \bar{I}i_t + \bar{G}g_t \\
+g_t &= \frac{\bar{Y}y_t - \bar{C}c_t - \bar{I}i_t}{\bar{G}} \\
+\end{align*}
+
+\pagebreak
+
+We can approximate the labor wedge:
+
+\begin{align*}
+U(C_t, L_t) &= \ln(C_t) + \frac{L_t^2}{2} \\
+\implies U_{C_t} &= \frac{1}{C_t} \\
+\implies U_{L_t} &= L_t \\
+F(K_t, L_t) &= K_t^\alpha L_t^{1-\alpha} \\
+\implies F_{L_t} &= (1 -\alpha)K_t^\alpha L_t^{-\alpha} \\
+-\frac{U_{L_t}}{U_{C_t}} &= (1-\tau_{L_t})A_t F_{L_t} \\
+\implies -\frac{(L_t)}{(\frac{1}{C_t})} &= (1-\tau_{L_t})A_t ((1 -\alpha)K_t^\alpha L_t^{-\alpha}) \\
+\implies \tau_{L_t}
+&= 1 + \frac{L_tC_t}{A_t (1 -\alpha)K_t^\alpha L_t^{-\alpha}} \\
+&= 1 + \frac{L_t}{L_t}\frac{C_tL_t}{A_t (1 -\alpha)K_t^\alpha L_t^{-\alpha}} \\
+&= 1 + \frac{L_t^2C_t}{Y_t (1 -\alpha)} \\
+&\approx 1 + \frac{\bar{L}^2(1+2l_t)\bar{C}(1+c_t)}{\bar{Y}(1 + y_t) (1 -\alpha)}
+\end{align*}
+
+```{r problem4, echo=FALSE, results = "asis"}
+alpha <- 1/3
+sigma <- 1
+phi <- 1
+government_ss <- output_ss * (1/3)
+
+data_wedge <- data_hp %>%
+  transmute(date, 
+            efficiency = 1-(1+output)/((1+alpha*capital)*(1 + (1-alpha)*labor)),
+            government = (output_ss * output - consumption_ss * consumption - investment_ss * investment)/government_ss,
+            labor = 1 + (labor_ss^2 * consumption_ss * (1+2*labor)*(1+consumption))/(output_ss*(1+output)*(1-alpha)))
+
+data_wedge_n <- data_wedge %>%
+  transmute(date,
+            efficiency = efficiency /head(efficiency, 1) * 100,
+            government = government /head(government, 1) * 100,
+            labor = labor /head(labor, 1) * 100)
+
+data_wedge_n %>%
+ pivot_longer(-date) %>%
+ ggplot(aes(x=date, y=value, col = name)) +
+ geom_line() +
+  ggtitle("Efficiency, Government, and Labor Wedges (Indexed at 100)")
+
+efficiency_wedge_ols <- lm(efficiency ~ lag(efficiency) - 1, data = data_wedge)
+government_wedge_ols <- lm(government ~ lag(government)- 1, data = data_wedge)
+labor_wedge_ols <- lm(labor ~ lag(labor)- 1, data = data_wedge)
+
+stargazer(efficiency_wedge_ols,
+          government_wedge_ols,
+          labor_wedge_ols,
+          header = FALSE,
+          omit.stat = c("rsq", "f", "ser"),
+          title = "Efficiency, Government, and Labor Wedge Persistance (OLS)")
+```
+
+\pagebreak
+
+5. Write down a code that implements the Blanchard-Kahn method to solve the model. Use the values of parameters, including $\rho_a$, $\rho_g$, and $\rho_{\tau_L}$, obtained above, and assume $\rho_{\tau_I} = 0$ for now.
+
+...
+
+```{r problem5, echo = FALSE}
+
+rho_a <- as.numeric(efficiency_wedge_ols$coef[1])
+rho_g <- as.numeric(government_wedge_ols$coef[1])
+rho_tau_l <- as.numeric(labor_wedge_ols$coef[1])
+rho_tau_i <- 0
+
+```
 
 \pagebreak
 
