@@ -76,12 +76,30 @@ C_t^{-1}
 \Bigg(\frac{K_t}{I_t}\Bigg)^{1-\delta}
 \Bigg[(1-\delta) \frac{I_{t+1}}{K_{t+1}} + \delta  A\alpha K_{t+1}^{\alpha-1}\Bigg] \\
 &= C_{t+1}^{-1}  \beta 
+\Bigg(\frac{K_{t+1}}{I_t}\Bigg)
+\Bigg[(1-\delta) \frac{I_{t+1}}{K_{t+1}} + \delta  A\alpha K_{t+1}^{\alpha-1}\Bigg] \\
+&= C_{t+1}^{-1}  \beta 
 \Bigg[(1-\delta) \frac{I_{t+1}}{I_{t}} + \delta \frac{\alpha Y_{t+1}}{I_t}\Bigg]
+\end{align*}
+
+Or in just in terms of capital and consumption:
+
+\begin{align*}
+C_t^{-1}  
+&= C_{t+1}^{-1}  \beta 
+\Bigg[(1-\delta) \frac{I_{t+1}}{I_{t}} + \delta \frac{\alpha Y_{t+1}}{I_t}\Bigg] \\
+&= C_{t+1}^{-1}  \beta 
+\Bigg[(1-\delta) \frac{Y_{t+1} - C_{t+1}}{Y_{t} - C_{t}} + \delta \frac{\alpha Y_{t+1}}{Y_{t} - C_{t}}\Bigg] \\
+&= C_{t+1}^{-1}  \beta 
+\Bigg[(1-\delta) \frac{AK_{t+1}^\alpha - C_{t+1}}{AK_{t}^\alpha - C_{t}} 
++ \delta \frac{\alpha AK_{t+1}^\alpha}{AK_{t}^\alpha - C_{t}}\Bigg]
 \end{align*}
 
 Perturbation argument:
 
 To argue that the EE represents the optimal path, let us consider a deviation from the optimal path for capital and the approximate effect on utility.  In particular, consumption at $t$ increase reducing investment and thus reducing capital in $t+1$ ($\uparrow C_t \to \downarrow I_t \to \downarrow K_{t+1}$).  The reduced capital reduces output in $t+1$ ($\downarrow K_{t+1} \to \downarrow Y_{t+1}$).  Thus to return to the optimal path for capital in $t+2$, investment needs to make up for the lower depreciated capital from $t+1$ reducing consumption ($\uparrow I_{t+1} \to \downarrow C_{t+1}$). In addition, consumption in $t+1$ is reduced both because output in $t+1$ is lower ($\downarrow Y_{t+1} \to \downarrow C_{t+1}$).
+
+\pagebreak
 
 Assume we're on the optimal path for capital $\{K_t\}_{t=0}^\infty$ and a deviation at some $t$ such that $\tilde{K}_{t+1} < K_{t+1}$. To achieve such a deviation, $\tilde{C}_t = C_t + \Delta$ for some $\Delta > 0$. The feasibility constraint implies that $\tilde{I}_t = I_t - \Delta$.  Thus, capital in period $t+1$ can be approximated as:
 
@@ -92,8 +110,6 @@ Assume we're on the optimal path for capital $\{K_t\}_{t=0}^\infty$ and a deviat
 & \approx K_t^{1-\delta} I_t^{\delta} - \delta K_t^{1-\delta}I_t^{\delta-1} \Delta \\
 &= K_{t+1} -  \Delta\frac{\delta K_{t+1} }{I_t}
 \end{align*}
-
-\pagebreak
 
 Investment in $t+1$ needs to return capital to the optimal path in $t+2$:
 
@@ -126,6 +142,8 @@ Thus, consumption in $t+1$ is less:
 &= Y_{t+1} - \Delta\frac{ \alpha \delta Y_{t+1}}{I_t} - I_{t+1} - \Delta \frac{(1-\delta)I_{t+1}}{I_t} \\ 
 &= C_{t+1} - \Delta\Bigg[(1-\delta)\frac{I_{t+1}}{I_t} + \delta \frac{ \alpha  Y_{t+1} }{I_t}\Bigg]
 \end{align*}
+
+\pagebreak
 
 At on the optimal path, the discounted marginal utility of deviating from the optimal path is zero:
 
@@ -168,6 +186,8 @@ $$
 
 3. Log-linearize the equilibrium conditions around the steady state.
 
+We log-linearize around the steady state.
+
 Output log-deviations around the steady state can be approximated as:
 
 \begin{align*}
@@ -175,6 +195,8 @@ Y_t &= AK_t^\alpha \\
 \implies \bar{Y}(1+y_t) &= A\bar{K}^\alpha(1+\alpha k_t)\\
 \implies y_t &= \alpha k_t
 \end{align*}
+
+\pagebreak
 
 Investment log-deviations around the steady state can be approximated as:
 
@@ -186,12 +208,11 @@ I_t &= Y_t - C_t \\
 i_t &= \frac{\bar{Y}}{\bar{I}}y_t - \frac{\bar{C}}{\bar{I}}c_t \\
 &= \frac{A\bar{K}^\alpha}{\bar{K}}\alpha k_t - \frac{\bar{C}}{\bar{K}}c_t\\
 &= A\bar{K}^{\alpha-1} \alpha k_t - \frac{\bar{C}}{\bar{K}}c_t\\
-&= \phi \alpha k_t - \frac{\bar{C}}{\bar{K}}c_t
+&= \phi \alpha k_t - \frac{\bar{C}}{\bar{K}}c_t \\
+&= \phi \alpha k_t - (\phi - 1) c_t
 \end{align*}
 
-where $\phi \equiv A\bar{K}^{\alpha-1}$.  From the capital steady state, we know that $\delta  \alpha \phi + 1 - \delta = \frac{1}{\beta}$.  
-
-\pagebreak
+where $\phi \equiv A\bar{K}^{\alpha-1}$.  From the capital steady state, we know that $\delta  \alpha \phi + 1 - \delta = \frac{1}{\beta}$ and $\bar{C}/\bar{K} = \phi - 1$.  
 
 Capital log-deviations around the steady state can be approximated from the law of motion of capital as:
 
@@ -200,68 +221,84 @@ K_{t+1} &= K^{1-\delta}_t I^\delta_t \\
 \implies k_{t+1} &= (1-\delta)k_t + \delta i_t \\
 &= (1-\delta)k_t + \delta (\phi \alpha k_t - \frac{\bar{C}}{\bar{K}}c_t)\\
 &= (1-\delta + \delta \phi \alpha )k_t - \delta \frac{\bar{C}}{\bar{K}}c_t \\
-&= \frac{1}{\beta}k_t - \delta \frac{\bar{C}}{\bar{K}}c_t
+&= \frac{1}{\beta}k_t - \delta (\phi - 1) c_t
 \end{align*}
 
-Turning to the Euler equation, define $X_t := (1-\delta) \frac{I_{t+1}}{I_{t}} \implies \bar{X} = 1 -\delta$ and:
+\pagebreak
 
-\begin{align*}
-X_t &= (1-\delta) \frac{I_{t+1}}{I_{t}}\\
-\implies
-x_t &= i_{t+1} - i_t \\
-&= (\phi \alpha k_{t+1} - \frac{\bar{C}}{\bar{K}}c_{t+1}) - (\phi \alpha k_t - \frac{\bar{C}}{\bar{K}}c_t) \\
-&= \phi \alpha (\frac{1}{\beta}k_t - \delta \frac{\bar{C}}{\bar{K}}c_t) - \frac{\bar{C}}{\bar{K}}c_{t+1} - \phi \alpha k_t + \frac{\bar{C}}{\bar{K}}c_t \\
-&= \phi \alpha(\frac{ 1 }{\beta}-1)k_t + (1 - \phi \alpha \delta) \frac{\bar{C}}{\bar{K}}c_t - \frac{\bar{C}}{\bar{K}}c_{t+1} \\
-\end{align*}
-
-Define $Z_t := \delta \frac{\alpha Y_{t+1}}{I_t} \implies \bar{Z} = \delta \alpha \phi$ and:
-
-\begin{align*}
-Z_t &= \delta \frac{\alpha Y_{t+1}}{I_t} \\
-\implies z_t &= y_{t+1} - i_t \\
-&= \alpha k_{t+1} - (\phi \alpha k_t - \frac{\bar{C}}{\bar{K}}c_t) \\
-&= \alpha (\frac{1}{\beta}k_t - \delta \frac{\bar{C}}{\bar{K}}c_t) - \phi \alpha k_t + \frac{\bar{C}}{\bar{K}}c_t \\
-&= \alpha (\frac{1}{\beta} - \phi) k_t + (1 - \delta) \frac{\bar{C}}{\bar{K}}c_t \\
-\end{align*}
-
-Thus, the Euler equation can be approximated by:
-
-$$
-C_t^{-1}  = C_{t+1}^{-1}  \beta \Bigg[(1-\delta) \frac{I_{t+1}}{I_{t}} + \delta \frac{\alpha Y_{t+1}}{I_t}\Bigg] \\
-C_{t+1}  = C_t  \beta [X_t + Z_t] \\
-\bar{C}(1+c_{t+1})  = \bar{C}(1+c_t)  \beta [\bar{X}(1+x_t) + \bar{Z}(1+z_t)] \\
-(1+c_{t+1})  = (1+c_t)  \beta [(1-\delta)(1+i_{t+1} - i_t) + \delta \alpha\phi(1+y_{t+1} - i_{t})] \\
-(1+c_{t+1})  = (1+c_t)  \beta [(1 - \delta +\delta \alpha \phi)(1-i_t) +(1-\delta)(i_{t+1}) + \delta \alpha\phi(y_{t+1} )] \\
-(1+c_{t+1})  = (1+c_t)  \beta [(1/\beta)(1-i_t) +(1-\delta)(i_{t+1}) + \delta \alpha\phi(\alpha k_{t+1} )]
-$$
-
-...
+Turning to the Euler equation, 
 
 \begin{align*}
 C_t^{-1}  
-&= C_{t+1}^{-1}  \beta 
-\Bigg[(1-\delta) \frac{I_{t+1}}{I_{t}} + \delta \frac{\alpha Y_{t+1}}{I_t}\Bigg] \\
-&= C_{t+1}^{-1}  \beta 
-\Bigg[(1-\delta) \frac{Y_{t+1} - C_{t+1}}{Y_{t} - C_{t}} + \delta \frac{\alpha Y_{t+1}}{Y_{t} - C_{t}}\Bigg] \\
-&= C_{t+1}^{-1}  \beta 
-\Bigg[(1-\delta) \frac{AK_{t+1}^\alpha - C_{t+1}}{AK_{t}^\alpha - C_{t}} 
-+ \delta \frac{\alpha AK_{t+1}^\alpha}{AK_{t}^\alpha - C_{t}}\Bigg]
+&= C_{t+1}^{-1}  \beta \Bigg[(1-\delta) \frac{I_{t+1}}{I_{t}} + \delta \frac{\alpha Y_{t+1}}{I_t}\Bigg] \\
+\implies
+\bar{C}(1+c_{t+1})  
+&= \bar{C}(1+c_{t})  \beta \Bigg[(1-\delta) \frac{\bar{I}(1+i_{t+1})}{\bar{I}(1+i_{t})} + \delta \frac{\alpha \bar{Y}(1+y_{t+1})}{\bar{I}(1+i_{t})}\Bigg] \\
+\implies
+(1+c_{t+1})  
+&= (1+c_{t})  \beta \Bigg[(1-\delta) \frac{(1+i_{t+1})}{(1+i_{t})} + \delta \frac{\alpha A\bar{K}^\alpha(1+y_{t+1})}{\bar{K}(1+i_{t})}\Bigg] \\
+\implies
+(1+c_{t+1})  
+&= (1+c_{t})  \beta \Bigg[(1-\delta) \frac{(1+i_{t+1})}{(1+i_{t})} + \delta \frac{\alpha \phi(1+y_{t+1})}{(1+i_{t})}\Bigg] \\
+\implies
+(1+c_{t+1})(1+i_{t})  
+&= (1+c_{t})  \beta \Bigg[(1-\delta) (1+i_{t+1}) + \delta \alpha \phi(1+y_{t+1})\Bigg] \\
+\implies
+1+c_{t+1}+i_{t}+c_{t+1}i_{t}  
+&= (1+c_{t})  \beta \Bigg[1-\delta + (1-\delta)i_{t+1} + \delta \alpha \phi + \delta \alpha \phi y_{t+1}\Bigg] \\
+\implies
+1+c_{t+1}+i_{t}+c_{t+1}i_{t}  
+&= (1+c_{t})  \beta \Bigg[1/\beta + (1-\delta)i_{t+1} + \delta \alpha \phi y_{t+1}\Bigg] \\
+\implies
+c_{t+1}+i_{t}+c_{t+1}i_{t}  
+&= c_{t} + (1+c_{t})  \beta \Bigg[(1-\delta)i_{t+1} + \delta \alpha \phi y_{t+1}\Bigg] \\
+\implies
+c_{t+1}+i_{t}+c_{t+1}i_{t} 
+&= c_{t} + (1+c_{t})  \beta \Bigg[(1-\delta)(\phi \alpha k_{t+1} - (\phi-1)c_{t+1}) + \delta \alpha^2 \phi k_{t+1}\Bigg] \\
+\implies
+c_{t+1}+\phi \alpha k_t -(\phi-1)c_t+ c_{t+1}\phi \alpha k_t - c_{t+1}(\phi-1)c_t  
+&= c_{t} + (1+c_{t})  \beta (\frac{1}{\beta}k_t - \delta (\phi-1)c_t)\alpha\phi(1-\delta  + \delta \alpha  ) \\
+&-(1+c_{t})  \beta  (1-\delta)(\phi-1)c_{t+1} \\
 \end{align*}
 
-$$
-C_t^{-1}  = C_{t+1}^{-1}  \beta \Bigg[(1-\delta) \frac{I_{t+1}}{I_{t}} + \delta \frac{\alpha Y_{t+1}}{I_t}\Bigg] \\
-\implies
-\bar{C}(1-c_{t+1})  = \bar{C}(1-c_{t})  \beta \Bigg[(1-\delta) \frac{\bar{I}(1-i_{t+1})}{\bar{I}(1-i_{t})} + \delta \frac{\alpha \bar{Y}(1-y_{t+1})}{\bar{I}(1-i_{t})}\Bigg] \\
-\implies
-(1-c_{t+1})  = (1-c_{t})  \beta \Bigg[(1-\delta) \frac{(1-i_{t+1})}{(1-i_{t})} + \delta \frac{\alpha A\bar{K}^\alpha(1-y_{t+1})}{\bar{K}(1-i_{t})}\Bigg] \\
-\implies
-(1-c_{t+1})  = (1-c_{t})  \beta \Bigg[(1-\delta) \frac{(1-i_{t+1})}{(1-i_{t})} + \delta \frac{\alpha \phi(1-y_{t+1})}{(1-i_{t})}\Bigg] \\
-\implies
-$$
+\pagebreak
 
 4. Write down a dynamic system with one state variable and one control variable. Use the Blanchard-Kahn method to solve this system for a saddle path.
 
-...
+\begin{align*}
+x_t 
+&= \begin{pmatrix} k_t \\ c_t \end{pmatrix} \\
+x_{t+1} 
+&= Ax_{t} \\
+&= Q \Lambda Q^{-1}x_t \\
+y_t &= Q^{-1}x_t\\
+\implies y_{t+1}
+&= \Lambda y_t \\
+\Lambda &= \begin{pmatrix} \lambda_1 & 0 \\
+0 & \lambda_2 \end{pmatrix} \\
+\lambda_1 &= \frac{1}{\beta (1 - \delta + \delta \alpha)} \\
+\lambda_2 &= 1 - \delta + \delta \alpha
+\end{align*}
+
+(Eigenvalues are from Duong's email on February 7th).
+
+Assume $\alpha < 1$ so production has decreasing returns to scale. Since $\alpha < 1$ and $\delta < 1 \implies \lambda_2 < 1$; this eigenvalue cooresponds to the saddle path. 
+
+Furthermore, $\lambda_2 < 1$ and $\beta < 1 \implies \lambda_1 > 1$. If $y_{1,0} \neq 0 \implies y_{1,t} = \lambda_1^t y_{1,0} \to \infty$ as $t \to \infty$. Thus, by the transversality condition, we know that on the saddle path, $y_{1,t} = 0$. Thus,
+
+\begin{align*}
+y_t &= Q^{-1} x_t \\
+\implies 
+\begin{pmatrix} 0 \\ y_{2,t} \end{pmatrix} &= \begin{pmatrix} Q^{-1}_{11} & Q^{-1}_{12} \\ Q^{-1}_{21} & Q^{-1}_{22}  \end{pmatrix} \begin{pmatrix} k_t \\ c_t \end{pmatrix} \\
+\implies 
+0 &= Q^{-1}_{11} k_t + Q^{-1}_{12} c_t \\
+\implies
+c_t 
+&= \frac{- Q^{-1}_{11}}{Q^{-1}_{12}} k_t \\
+&= z k_t \\
+\end{align*}
+
+where $z = \frac{- Q^{-1}_{11}}{Q^{-1}_{12}}$.
 
 5. Show that the obtained solution is not just locally accurate, but is in fact the exact solution to the planner’s problem.
 
@@ -278,3 +315,5 @@ $$
 8. Bonus task: can you introduce labor into preferences and production function without compromising the analytical tractability of the model?
 
 ...
+
+

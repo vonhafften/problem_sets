@@ -1,0 +1,138 @@
+---
+title: "ECON 714A - Problem Set 3"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "2/15/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(lubridate)
+library(quantmod)
+library(mFilter)
+
+loadSymbols(c("PCECC96","GDPC1", "PAYEMS", "GPDIC1"), 
+      src = "FRED",
+      auto.assign = TRUE)
+```
+
+This problem asks you to update the CKM (2007) wedge accounting using more recent data.You are encouraged to use Matlab for the computations. Consider a standard RBC model with the CRRA preferences $E_0 \sum_{t=0}^{\infty} \beta^t U(C_t, L_t)$, $U(C, L) = \frac{C^{1-\sigma} - 1}{1 - \sigma} - \frac{L^{1+\phi}}{1+\phi}$, a Cobb-Douglas production function $Y_t=A_tK^\alpha_tL^{1-\alpha}_t$, a standard capital law of motion $K_{t+1}= (1-\delta)K_t+I_t$, and four wedges $\tau_t=\{a_t,g_t, \tau_{Lt},\tau_{It}\}$. Each wedge $\tau_{it}$ follows an AR(1) process $\tau_{it}=\rho_i \tau_{it-1}+ \varepsilon_{it}$ with innovations $\varepsilon_{it}$ potentially correlated across $i$. One period corresponds to a quarter.
+
+1. Download quarterly data for real seasonally adjusted consumption, employment, and output in the U.S. from 1980–2020 from FRED database. The series for capital are not readily available, but can be constructed using the “perpetual inventory method”. To this end, download the series for (real seasonally adjusted) investment from 1950-2020.
+
+```{r problem1b, echo = FALSE, warnings = FALSE}
+
+temp1 <- cbind(PCECC96, GDPC1, PAYEMS, GPDIC1) 
+
+temp2 <- temp1 %>%
+ as_tibble() %>%
+ transmute(date = ymd(index(temp1)),
+      consumption = PCECC96,
+      output = GDPC1,
+      employment = PAYEMS,
+      investment = GPDIC1) %>%
+ filter(!is.na(consumption + output + employment + investment))
+
+data <- temp2 %>% 
+mutate(estimation_period = date >= ymd("1980-01-01"),
+    consumption = case_when( estimation_period ~ consumption),
+    output = case_when( estimation_period ~ output),
+    employment = case_when( estimation_period ~ employment)) %>%
+ filter(date >= ymd("1950-01-01"),
+     date <= ymd("2020-10-01"))
+
+data %>%
+ pivot_longer(-c(date, estimation_period)) %>%
+ ggplot(aes(x=date, y=value, col = name)) +
+ geom_line() +
+ facet_wrap(~name, scales = "free_y") +
+ theme(legend.position = "none")
+
+```
+
+\pagebreak
+
+2. Convert all variables into logs and de-trend using the Hodrick-Prescott filter.
+
+```{r problem2, echo = FALSE, warnings = FALSE}
+
+data_hp_raw <- data %>%
+ filter(estimation_period) %>%
+ transmute(date,
+      consumption = hpfilter(log(consumption), freq = 1600)$cycle,
+      output = hpfilter(log(output), freq = 1600)$cycle,
+      employment = hpfilter(log(employment), freq = 1600)$cycle) %>%
+ full_join(data %>%
+        transmute(date,
+             estimation_period,
+             investment = hpfilter(log(investment), 
+                        freq = 1600)$cycle),
+      by = "date") %>%
+ arrange(date)
+
+data_hp_raw %>%
+ pivot_longer(-c(date, estimation_period)) %>%
+ ggplot(aes(x=date, y=value, col = name)) +
+ geom_line() 
+```
+
+3. Assume that capital was at the steady-state level in 1950 and the rate of depreciation is $\delta= 0.025$ and use the linearized capital law of motion and the series for investment to estimate the capital stock (in log deviations) in 1980-2020. Justify this approach.
+
+Log-linearizing the capital law of motion,
+
+\begin{align*}
+K_{t+1} &= (1-\delta)K_t+I_t \\
+\implies (1+k_{t+1})\bar{K} &= (1-\delta)(1+k_t)\bar{K} + \bar{I} (1 + i_t) \\
+\implies \bar{K}+k_{t+1}\bar{K} &= (1-\delta)\bar{K}+(1-\delta)\bar{K}k_t + \bar{I} + \bar{I} i_t \\
+\implies k_{t+1} &= (1-\delta)k_t + \frac{\bar{I}}{\bar{K}} i_t \\
+\implies k_{t+1} &= (1-\delta)k_t + \delta i_t
+\end{align*}
+
+If we assume that we're in the steady state in 1950, then $k_t = 0$. Thus, we can interate forward using $i_t$ from the data over the next thirty years until 1980.
+
+```{r problem3, echo = FALSE}
+
+delta <- 0.025
+
+capital <- 0
+
+for (i in 2:nrow(data_hp_raw)) capital <- c(capital, (1-delta)*capital[i-1] + delta * data_hp_raw$investment[i-1])
+
+data_hp <- data_hp_raw %>%
+ mutate(capital = capital) %>%
+ filter(estimation_period) %>%
+ select(-investment, -estimation_period)
+
+data_hp %>%
+ pivot_longer(-date) %>%
+ ggplot(aes(x=date, y=value, col = name)) +
+ geom_line() 
+ 
+```
+
+4. Linearize the equilibrium conditions. Assuming $\alpha= 1/3$, $\sigma= 1$, $\phi= 1$ and the steady-state share of government spendings in GDP equal 1/3, estimate $a_t$, $g_t$ and $\tau_{Lt}$ for 1980-2020.  Run the OLS regression for each of these wedges to compute their persistence parameters $\rho_i$.
+
+\pagebreak
+
+# Appendix
+
+```{r problem1a}
+# PCECC96 Real Personal Consumption Expenditures  Billions of Chained 2012 Dollars, 
+#                                                 Seasonally Adjusted Annual Rate
+# GDPC1   Real Gross Domestic Product             Billions of Chained 2012 Dollars
+#                                                 Seasonally Adjusted Annual Rate
+# PAYEMS  All Employees, Total Nonfarm            Thousands of Persons
+#                                                 Seasonally Adjusted
+# GPDIC1  Real Gross Private Domestic Investment  Billions of Chained 2012 Dollars
+#                                                 Seasonally Adjusted Annual Rate
+```
