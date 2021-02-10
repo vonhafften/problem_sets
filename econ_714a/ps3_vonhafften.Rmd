@@ -21,8 +21,10 @@ library(lubridate)
 library(quantmod)
 library(mFilter)
 library(stargazer)
+library(nleqslv)
+library(knitr)
 
-loadSymbols(c("PCECC96","GDPC1", "PAYEMS", "GPDIC1"), 
+loadSymbols(c("PCECC96","GDPC1", "CE16OV", "GPDIC1"), 
       src = "FRED",
       auto.assign = TRUE)
 ```
@@ -33,14 +35,14 @@ This problem asks you to update the CKM (2007) wedge accounting using more recen
 
 ```{r problem1b, echo = FALSE, warnings = FALSE}
 
-temp1 <- cbind(PCECC96, GDPC1, PAYEMS, GPDIC1) 
+temp1 <- cbind(PCECC96, GDPC1, CE16OV, GPDIC1) 
 
 temp2 <- temp1 %>%
  as_tibble() %>%
  transmute(date = ymd(index(temp1)),
       consumption = PCECC96,
       output = GDPC1,
-      labor = PAYEMS,
+      labor = CE16OV,
       investment = GPDIC1) %>%
  filter(!is.na(consumption + output + labor + investment))
 
@@ -51,11 +53,6 @@ mutate(estimation_period = date >= ymd("1980-01-01"),
     labor = case_when( estimation_period ~ labor)) %>%
  filter(date >= ymd("1950-01-01"),
      date <= ymd("2020-10-01"))
-
-consumption_ss <- mean(data$consumption, na.rm = TRUE)
-output_ss <- mean(data$output, na.rm = TRUE)
-labor_ss <- mean(data$labor, na.rm = TRUE)
-investment_ss <- mean(data$investment, na.rm = TRUE)
 
 data %>%
  pivot_longer(-c(date, estimation_period)) %>%
@@ -77,13 +74,13 @@ data %>%
 data_hp_raw <- data %>%
  filter(estimation_period) %>%
  transmute(date,
-      consumption = hpfilter(log(consumption/consumption_ss), freq = 1600)$cycle,
-      output = hpfilter(log(output/output_ss), freq = 1600)$cycle,
-      labor = hpfilter(log(labor/labor_ss), freq = 1600)$cycle) %>%
+      consumption = hpfilter(log(consumption), freq = 1600)$cycle,
+      output = hpfilter(log(output), freq = 1600)$cycle,
+      labor = hpfilter(log(labor), freq = 1600)$cycle) %>%
  full_join(data %>%
         transmute(date,
              estimation_period,
-             investment = hpfilter(log(investment/investment_ss), 
+             investment = hpfilter(log(investment), 
                         freq = 1600)$cycle),
       by = "date") %>%
  arrange(date)
@@ -132,71 +129,143 @@ data_hp %>%
  
 ```
 
-4. Linearize the equilibrium conditions. Assuming $\alpha= 1/3$, $\sigma= 1$, $\phi= 1$ and the steady-state share of government spendings in GDP equal 1/3, estimate $a_t$, $g_t$ and $\tau_{Lt}$ for 1980-2020.  Run the OLS regression for each of these wedges to compute their persistence parameters $\rho_i$.
+4. Linearize the equilibrium conditions. Assuming $\beta = 0.99$, $\alpha= 1/3$, $\sigma= 1$, $\phi= 1$ and the steady-state share of government spendings in GDP equal 1/3, estimate $a_t$, $g_t$ and $\tau_{Lt}$ for 1980-2020.  Run the OLS regression for each of these wedges to compute their persistence parameters $\rho_i$.
 
-Based on the equilibrium conditions, we found during lecture, we can approximate the efficiency wedge:
+The equilibrium conditions from the lecture notes are:
 
 \begin{align*}
 Y_t &= A_tK_t^\alpha L_t^{1-\alpha} \\
-\implies
-\bar{Y}(1+y_t) &= \bar{A}(1+a_t) \bar{K}^\alpha(1+\alpha k_t) \bar{L}^{(1-\alpha)}(1+(1-\alpha) l_t) \\
-\implies
-(1+y_t) &= (1+a_t) (1+\alpha k_t) (1+(1-\alpha) l_t) \\
-\implies
-a_t &= 1- \frac{1+y_t}{(1+\alpha k_t) (1+(1-\alpha) l_t)}
+A_t F(K_t, L_t) &= C_t + I_t + G_t \\
+-\frac{U_{L_t}}{U_{C_t}} &= (1-\tau_{L_t})A_t F_{L_t} \\
+U_{C_t} (1 + \tau_{I_t}) &= \beta E_t U_{C_{t+1}} (A_{t+1} F_{K_{t+1}} + (1-\delta)(1+\tau_{I_{t+1}}))
 \end{align*}
 
-We can approximate the government consumption wedge:
+The functional forms from the prompt:
 
 \begin{align*}
-Y_t &= C_t + I_t + G_t \\
-\bar{Y}(1+y_t) &= \bar{C}(1+c_t) + \bar{I}(1+i_t) + \bar{G}(1+g_t) \\
-\bar{Y}y_t &= \bar{C}c_t + \bar{I}i_t + \bar{G}g_t \\
-g_t &= \frac{\bar{Y}y_t - \bar{C}c_t - \bar{I}i_t}{\bar{G}} \\
-\end{align*}
-
-\pagebreak
-
-We can approximate the labor wedge:
-
-\begin{align*}
-U(C_t, L_t) &= \ln(C_t) + \frac{L_t^2}{2} \\
+U(C_t, L_t) &= \ln(C_t) - \frac{L_t^2}{2} \\
 \implies U_{C_t} &= \frac{1}{C_t} \\
-\implies U_{L_t} &= L_t \\
+\implies U_{L_t} &= - L_t \\
 F(K_t, L_t) &= K_t^\alpha L_t^{1-\alpha} \\
 \implies F_{L_t} &= (1 -\alpha)K_t^\alpha L_t^{-\alpha} \\
--\frac{U_{L_t}}{U_{C_t}} &= (1-\tau_{L_t})A_t F_{L_t} \\
-\implies -\frac{(L_t)}{(\frac{1}{C_t})} &= (1-\tau_{L_t})A_t ((1 -\alpha)K_t^\alpha L_t^{-\alpha}) \\
-\implies \tau_{L_t}
-&= 1 + \frac{L_tC_t}{A_t (1 -\alpha)K_t^\alpha L_t^{-\alpha}} \\
-&= 1 + \frac{L_t}{L_t}\frac{C_tL_t}{A_t (1 -\alpha)K_t^\alpha L_t^{-\alpha}} \\
-&= 1 + \frac{L_t^2C_t}{Y_t (1 -\alpha)} \\
-&\approx 1 + \frac{\bar{L}^2(1+2l_t)\bar{C}(1+c_t)}{\bar{Y}(1 + y_t) (1 -\alpha)}
+\implies F_{K_t} &= \alpha K_t^{\alpha-1} L_t^{1-\alpha} 
 \end{align*}
 
-```{r problem4, echo=FALSE, results = "asis"}
+Thus, the equilibrium conditions become:
+
+\begin{align*}
+A_tK_t^\alpha L_t^{1-\alpha} &= C_t + I_t + G_t \\
+C_tL_t &= (1-\tau_{L_t})A_t (1 -\alpha)K_t^\alpha L_t^{-\alpha} \\
+\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} (A_{t+1} \alpha K_t^{\alpha-1} L_t^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}))
+\end{align*}
+
+In the steady state, $K_t = K_{t+1} = \bar{K}$, $C_t = C_{t+1} = \bar{C}$, $L_t = L_{t+1} = \bar{L}$, $I_t = I_{t+1} = \delta \bar{K}$, $G_t = G_{t+1} = \bar{G} = \bar{Y}/3$, and $A_t = A_{t+1} = \bar{A} = 1$.
+
+\begin{align*}
+(2/3)\bar{K}^\alpha \bar{L}^{1-\alpha} &= \bar{C} + \delta \bar{K} \\
+\bar{C}  &= (1-\bar{\tau_L}) (1 -\alpha)\bar{K}^\alpha\bar{L}^{-1-\alpha} \\
+1 + \bar{\tau_I} &= \beta  ( \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} + (1-\delta)(1+\bar{\tau_I}))
+\end{align*}
+
+We can solve for the labor steady state:
+
+\begin{align*}
+(2/3)\bar{K}^\alpha \bar{L}^{1-\alpha} - \delta \bar{K} 
+&= (1-\bar{\tau_L}) (1 -\alpha)\bar{K}^\alpha \bar{L}^{-1-\alpha} \\
+\implies 
+\delta &= (2/3)\bar{K}^{\alpha-1} \bar{L}^{1-\alpha} - (1-\bar{\tau_L}) (1 -\alpha)\bar{K}^{\alpha-1} \bar{L}^{-1-\alpha} \\
+\implies 
+\bar{K} 
+&= (\frac{\delta}{(2/3)\bar{L}^{1-\alpha} - (1-\bar{\tau_L})(1-\alpha)\bar{L}^{-1-\alpha}})^{1/(\alpha-1)} \\
+\implies
+1 + \bar{\tau_I} 
+&= \beta  ( \alpha \frac{\delta}{(2/3)L^{1-\alpha} - (1-\bar{\tau_L})(1-\alpha)\bar{L}^{-1-\alpha}} \bar{L}^{1-\alpha} + (1-\delta)(1+\bar{\tau_I}))\\
+\implies 
+(1/\beta - 1 + \delta)(1+\bar{\tau_I})
+&= \frac{\alpha\delta}{(2/3) - (1-\bar{\tau_L})(1-\alpha)\bar{L}^{-2}} \\
+\implies
+\bar{L}
+&= \sqrt{\frac{(1-\bar{\tau_L})(1-\alpha)}{(2/3) - \frac{\alpha\delta}{ (1/\beta - 1 + \delta)(1+\bar{\tau_I})}}} \\
+\end{align*}
+
+The steady state values of $\bar{Y}, \bar{K}, \bar{C}$, and $\bar{G}$ are implied by the equations above.  For $\bar{\tau}_L = \bar{\tau}_I = 0.5$, the steady state values are:
+
+```{r problem4a, echo = FALSE}
 alpha <- 1/3
 sigma <- 1
 phi <- 1
-government_ss <- output_ss * (1/3)
+tau_l_ss <- .5
+tau_i_ss <- .5
+alpha <- 1/3
+beta <- .99
+sigma <- 1
+phi <- 1
+  
+labor_ss <- sqrt(((1-tau_l_ss)*(1-alpha))/((2/3) - (alpha*delta)/((1/beta - 1 + delta)*(1+tau_i_ss))))
+capital_ss <- (delta / ((2/3)*labor_ss^(1-alpha) - (1- tau_l_ss)*(1 - alpha) * labor_ss^(-1-alpha)))^(1/(alpha - 1))
+investment_ss <- capital_ss *delta
+output_ss <- capital_ss ^ alpha *labor_ss ^(1-alpha)
+government_ss <- (1/3)*output_ss
+consumption_ss <- output_ss - investment_ss - government_ss
 
+tibble(variable = c("L_bar", "K_bar", "I_bar", "Y_bar", "C_bar",  "G_bar"),
+       value = c(labor_ss, capital_ss, investment_ss, output_ss, consumption_ss, government_ss)) %>%
+  mutate(value = round(value, 3)) %>%
+  kable()
+
+```
+
+\pagebreak
+
+Now we can turn to the wedges.  The efficiency wedge is:
+
+\begin{align*}
+Y_t &= A_tK_t^\alpha L_t^{1-\alpha} \\
+\implies 
+y_t &= a_t + \alpha k_t + (1-\alpha)l_t \\
+\implies 
+a_t &= y_t - \alpha k_t - (1-\alpha)l_t
+\end{align*}
+
+The government consumption wedge is:
+
+\begin{align*}
+Y_t &= C_t + I_t + G_t \\
+\implies
+\bar{Y}(1+y_t) &= \bar{C}(1+c_t) + \bar{I}(1+i_t) + \bar{G}(1+g_t) \\
+\implies
+\bar{Y}y_t &= \bar{C}c_t + \bar{I}i_t + \bar{G}g_t \\
+\implies
+g_t 
+&= \frac{\bar{Y}y_t - \bar{C}c_t - \bar{I}i_t}{\bar{G}} \\
+&= \frac{\bar{Y}}{\bar{G}}y_t - \frac{\bar{C}}{\bar{G}}c_t - \frac{\bar{I}}{\bar{G}}i_t
+\end{align*}
+
+The labor wedge is: 
+
+\begin{align*}
+C_tL_t^{1+\alpha} 
+&= (1-\tau_{L_t})A_t (1 -\alpha)K_t^\alpha \\
+\implies 
+c_t+ (1+\alpha) l_t 
+&= \hat{\tau_{L_t}}\frac{- \bar{\tau}_L}{1 - \bar{\tau}_L}+ a_t  + \alpha k_t \\
+\implies 
+\hat{\tau_{L_t}} 
+&= \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} a_t  + \alpha \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} k_t - \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} c_t -  (1+\alpha) \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} l_t
+\end{align*}
+
+```{r problem4, echo=FALSE, results = "asis"}
 data_wedge <- data_hp %>%
   transmute(date, 
-            efficiency = 1-(1+output)/((1+alpha*capital)*(1 + (1-alpha)*labor)),
-            government = (output_ss * output - consumption_ss * consumption - investment_ss * investment)/government_ss,
-            labor = 1 + (labor_ss^2 * consumption_ss * (1+2*labor)*(1+consumption))/(output_ss*(1+output)*(1-alpha)))
+            efficiency = output - alpha * capital - (1 - alpha) * labor,
+            government = (output_ss * output - consumption_ss * consumption - investment_ss * investment) / government_ss,
+            labor = ((1 - tau_l_ss) / tau_l_ss) * (efficiency + alpha * capital - consumption - (1 + alpha) * labor))
 
-data_wedge_n <- data_wedge %>%
-  transmute(date,
-            efficiency = efficiency /head(efficiency, 1) * 100,
-            government = government /head(government, 1) * 100,
-            labor = labor /head(labor, 1) * 100)
-
-data_wedge_n %>%
+data_wedge %>%
  pivot_longer(-date) %>%
  ggplot(aes(x=date, y=value, col = name)) +
  geom_line() +
-  ggtitle("Efficiency, Government, and Labor Wedges (Indexed at 100)")
+  ggtitle("Efficiency, Government, and Labor Wedges")
 
 efficiency_wedge_ols <- lm(efficiency ~ lag(efficiency) - 1, data = data_wedge)
 government_wedge_ols <- lm(government ~ lag(government)- 1, data = data_wedge)
@@ -218,10 +287,10 @@ stargazer(efficiency_wedge_ols,
 
 ```{r problem5, echo = FALSE}
 
-rho_a <- as.numeric(efficiency_wedge_ols$coef[1])
-rho_g <- as.numeric(government_wedge_ols$coef[1])
-rho_tau_l <- as.numeric(labor_wedge_ols$coef[1])
-rho_tau_i <- 0
+# rho_a <- as.numeric(efficiency_wedge_ols$coef[1])
+# rho_g <- as.numeric(government_wedge_ols$coef[1])
+# rho_tau_l <- as.numeric(labor_wedge_ols$coef[1])
+# rho_tau_i <- 0
 
 ```
 
@@ -234,8 +303,34 @@ rho_tau_i <- 0
 #                                                 Seasonally Adjusted Annual Rate
 # GDPC1   Real Gross Domestic Product             Billions of Chained 2012 Dollars
 #                                                 Seasonally Adjusted Annual Rate
-# PAYEMS  All Employees, Total Nonfarm            Thousands of Persons
+# CE16OV  Employment Level                        Thousands of Persons
 #                                                 Seasonally Adjusted
 # GPDIC1  Real Gross Private Domestic Investment  Billions of Chained 2012 Dollars
 #                                                 Seasonally Adjusted Annual Rate
+```
+
+
+```{r problem4_sym, echo = FALSE, eval =FALSE}
+tau_l_bar <- .1
+tau_i_bar <- .1
+alpha <- 1/3
+beta <- .99
+sigma <- 1
+phi <- 1
+
+# x[1] is kbar
+# x[2] is lbar
+# x[3] is cbar
+solve_ss <- function(x) {
+  y <- numeric(3)
+  
+  y[1] <- (2/3)*x[1]^alpha *x[2]^(1-alpha) - x[3] - delta * x[1]
+  y[2] <- x[3] *x[2]^(1+alpha) - (1-tau_l_bar) *(1 -alpha) * x[1]^alpha
+  y[3] <- 1 + tau_i_bar - beta  * ( alpha *x[1]^(alpha-1) * x[2]^(1-alpha) + (1-delta) * (1+tau_i_bar))
+  
+  return(y)
+}
+
+nleqslv(c(29.26, 1.15, 1.53), solve_ss)
+
 ```
