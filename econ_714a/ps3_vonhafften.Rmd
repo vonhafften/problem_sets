@@ -363,12 +363,123 @@ k_{t+1}
 + \frac{-\delta\bar{I}}{\bar{Y}} g_t
 \end{align*}
 
+\pagebreak
+
+Based on the AR(1) process for $a_t$, $g_t$, $\hat{\tau}_{L_t}$, and $\hat{\tau}_{I_t}$:
+
+\begin{align*}
+E_t[a_{t+1}] &= \rho_a a_t \\
+E_t[g_{t+1}] &= \rho_g g_t \\
+E_t[\hat{\tau}_{L_{t+1}}] &= \rho_{\tau_L} \hat{\tau}_{L_t} \\
+E_t[\hat{\tau}_{I_{t+1}}] &= \rho_{\tau_I} \hat{\tau}_{I_t} = 0
+\end{align*}
+
+The log-linearized Euler equation implies:
+
+\begin{align*}
+E_t [c_{t+1}] - c_t + \hat{\tau}_{I_t}  
+&= \beta E_t\Bigg[ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\Bigg(a_{t+1} + (1-\alpha)\Bigg[\frac{\alpha}{1+\alpha} k_{t+1} + \frac{-1}{1+\alpha}c_{t+1} \\
+&+ \frac{1}{1+\alpha}a_{t+1} + \frac{-1}{1+\alpha}\hat{\tau}_{L_{t+1}} \Bigg] - (1-\alpha)k_{t+1}\Bigg)
++ (1-\delta) \hat{\tau}_{I_{t+1}}\Bigg] \\
+\implies
+E_t [c_{t+1}] - c_t + \hat{\tau}_{I_t}  
+&= \beta E_t\Bigg[ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\Bigg(\frac{\alpha - 1}{1+\alpha} k_{t+1} + \frac{\alpha-1}{1+\alpha}c_{t+1} \\
+&+ \frac{2}{1+\alpha}a_{t+1} + \frac{\alpha  -1}{1+\alpha}\hat{\tau}_{L_{t+1}} \Bigg) \Bigg]+ (1-\delta) E_t[\hat{\tau}_{I_{t+1}}] \\
+\implies
+E_t [c_{t+1}] - c_t + \hat{\tau}_{I_t}  
+&= \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\Bigg(\frac{\alpha - 1}{1+\alpha} E_t[k_{t+1}] + \frac{\alpha-1}{1+\alpha}E_t[c_{t+1}] \\
+&+ \frac{2}{1+\alpha}E_t[a_{t+1}] + \frac{\alpha  -1}{1+\alpha}E_t[\hat{\tau}_{L_{t+1}}] \Bigg) \\
+\implies
+E_t [c_{t+1}] - c_t + \hat{\tau}_{I_t}  
+&= \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\Bigg(\frac{\alpha - 1}{1+\alpha} E_t[k_{t+1}] + \frac{\alpha-1}{1+\alpha}E_t[c_{t+1}] \\
+&+ \frac{2}{1+\alpha}\rho_a a_t + \frac{\alpha  -1}{1+\alpha}\rho_{\tau_L} \hat{\tau}_{L_t} \Bigg) \\
+\implies
+\Bigg[1 - \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha-1}{1+\alpha}\Bigg]E_t[c_{t+1}] 
+&-  \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha - 1}{1+\alpha} E_t[k_{t+1}]\\
+&= 
+c_t 
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{2}{1+\alpha}\rho_a a_t 
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha  -1}{1+\alpha}\rho_{\tau_L} \hat{\tau}_{L_t}
+- \hat{\tau}_{I_t}
+\end{align*}
+
+\pagebreak
+
+Thus, we can represent the model with a matrix:
+
+\begin{align*}
+x_t &:= \begin{pmatrix} k_t \\ c_t\end{pmatrix} \\
+z_t &:= \begin{pmatrix} a_t \\ g_t \\ \hat{\tau}_{L_t} \\ \hat{\tau}_{I_t} \end{pmatrix} \\
+\tilde{C}E[x_{t+1}] &= \tilde{A}x_t + \tilde{B}z_t \\
+\tilde{C} &:= \begin{pmatrix} 
+1 & 
+0 \\ 
+-  \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha - 1}{1+\alpha} 
+& 1 - \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha-1}{1+\alpha} 
+\end{pmatrix} \\
+\tilde{A} &:= \begin{pmatrix} 
+1-\delta + \frac{2 \alpha \delta \bar{Y}}{(1+\alpha)\bar{I}} & \frac{-\delta\bar{Y}(1-\alpha)-\bar{C}(1+\alpha)}{\bar{I}(1+\alpha)}\\
+0
+& 
+1
+\end{pmatrix} \\
+\tilde{B} &:= \begin{pmatrix} 
+\frac{2\delta\bar{Y}}{(1+\alpha)\bar{I}}
+& 
+\frac{-\delta\bar{I}}{\bar{Y}}
+& 
+\frac{-\delta\bar{Y}(1-\alpha)}{\bar{I}(1+\alpha)}
+& 
+0
+\\ 
+\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{2}{1+\alpha}\rho_a
+& 
+0
+&
+\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha  -1}{1+\alpha}\rho_{\tau_L}
+&
+-1
+\end{pmatrix} \\
+A &:= \tilde{C}^{-1} \tilde{A} \\
+B &:= \tilde{C}^{-1} \tilde{B} \\
+\end{align*}
+
 ```{r problem5, echo = FALSE}
 
-# rho_a <- as.numeric(efficiency_wedge_ols$coef[1])
-# rho_g <- as.numeric(government_wedge_ols$coef[1])
-# rho_tau_l <- as.numeric(labor_wedge_ols$coef[1])
-# rho_tau_i <- 0
+rho_a <- as.numeric(efficiency_wedge_ols$coef[1])
+rho_g <- as.numeric(government_wedge_ols$coef[1])
+rho_tau_l <- as.numeric(labor_wedge_ols$coef[1])
+rho_tau_i <- 0
+
+c_tilde_11 <- 1
+c_tilde_12 <- 0
+c_tilde_21 <- - beta * alpha * capital_ss^(alpha - 1)*labor_ss ^(1 - alpha) * (alpha -1) / (1+alpha)
+c_tilde_22 <- 1 - c_tilde_21
+
+c_tilde <- matrix(c(c_tilde_11, c_tilde_21,c_tilde_12, c_tilde_22), nrow = 2, ncol = 2)
+
+a_tilde_11 <- 1 - delta + 2 *alpha *delta * output_ss / (1+alpha) / investment_ss
+a_tilde_12 <- (-delta * output_ss * (1 - alpha) - consumption_ss * (1+alpha))/(investment_ss * (1+alpha))
+a_tilde_21 <- 0
+a_tilde_22 <- 1
+
+a_tilde <- matrix(c(a_tilde_11, a_tilde_21,a_tilde_12, a_tilde_22), nrow = 2, ncol = 2)
+
+b_tilde_11 <- 2 *delta *output_ss
+b_tilde_12 <- - delta * investment_ss / output_ss
+b_tilde_13 <- - delta * output_ss *(1-alpha) / investment_ss / (1+alpha)
+b_tilde_14 <- 0
+b_tilde_21 <- beta * alpha * capital_ss^(alpha - 1) * labor_ss^(1 - alpha) * 2 * rho_a / (1+alpha)
+b_tilde_22 <- 0
+b_tilde_23 <- beta * alpha * capital_ss^(alpha - 1) * labor_ss^(1 - alpha) *(alpha - 1) / (1 + alpha) * rho_tau_l
+b_tilde_24 <- -1
+
+b_tilde <- matrix(c(b_tilde_11, b_tilde_21,b_tilde_12, b_tilde_22,b_tilde_13, b_tilde_23,b_tilde_14, b_tilde_24), nrow = 2, ncol = 4)
+
+a <- solve(c_tilde) %*% a_tilde
+b <- solve(c_tilde) %*% b_tilde
+
+eigen(a)
 
 ```
 
@@ -467,3 +578,41 @@ x_{t+1}
 E_t [c_{t+1}] - c_t+ \frac{\bar{\tau}_{I}}{1 + \bar{\tau}_{I}}\hat{\tau}_{I_t}  &= \beta E_t[ \frac{ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} }{1 + \bar{\tau}_I}(a_{t+1} + (1-\alpha)(l_{t+1} - k_{t+1}))
 + \frac{(1-\delta)\bar{\tau}_I }{1 + \bar{\tau}_I} \hat{\tau}_{I_{t+1}}] \\
 \end{align*}
+
+
+$$
+E_t [c_{t+1}]  =  
+c_t - 
+\hat{\tau}_{I_t} + 
+\beta  \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}E_t[a_{t+1}] + 
+\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t[l_{t+1}] - 
+\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t[k_{t+1}] + 
+\beta (1-\delta) E_t[\hat{\tau}_{I_{t+1}}] \\
+\implies
+E_t [c_{t+1}]  + 
+\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t[k_{t+1}] =  
+c_t - 
+\hat{\tau}_{I_t} + 
+\beta  \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\rho_a a_t \\
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t\Bigg[\frac{\alpha}{1+\alpha} k_{t+} + \frac{-1}{1+\alpha}c_{t+1} + \frac{1}{1+\alpha}a_{t+1} + \frac{-1}{1+\alpha}\hat{\tau}_{L_{t+1}}\Bigg] \\
+\implies
+E_t [c_{t+1}]  + 
+\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t[k_{t+1}] =  
+c_t - 
+\hat{\tau}_{I_t} + 
+\beta  \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\rho_a a_t \\
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{\alpha}{1+\alpha} E_t[k_{t+1}]
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{-1}{1+\alpha} E_t[c_{t+1}] \\
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{1}{1+\alpha}E_t[a_{t+1}] 
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{-1}{1+\alpha}E_t[\hat{\tau}_{L_{t+1}}] \\
+\implies
+E_t [c_{t+1}]  + 
+\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t[k_{t+1}] =  
+c_t - 
+\hat{\tau}_{I_t} + 
+\beta  \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\rho_a a_t \\
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{\alpha}{1+\alpha} E_t[k_{t+1}]
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{-1}{1+\alpha} E_t[c_{t+1}] \\
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{1}{1+\alpha}\rho_a a_t 
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{-1}{1+\alpha}\rho_{\tau_L} \hat{\tau}_{L_t} \\
+$$
