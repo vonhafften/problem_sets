@@ -131,13 +131,14 @@ data_hp %>%
 
 4. Linearize the equilibrium conditions. Assuming $\beta = 0.99$, $\alpha= 1/3$, $\sigma= 1$, $\phi= 1$ and the steady-state share of government spendings in GDP equal 1/3, estimate $a_t$, $g_t$ and $\tau_{Lt}$ for 1980-2020.  Run the OLS regression for each of these wedges to compute their persistence parameters $\rho_i$.
 
-The equilibrium conditions from the lecture notes are:
+The equilibrium conditions from the lecture 3 notes are:
 
 \begin{align*}
 Y_t &= A_tK_t^\alpha L_t^{1-\alpha} \\
 A_t F(K_t, L_t) &= C_t + I_t + G_t \\
 -\frac{U_{L_t}}{U_{C_t}} &= (1-\tau_{L_t})A_t F_{L_t} \\
-U_{C_t} (1 + \tau_{I_t}) &= \beta E_t U_{C_{t+1}} (A_{t+1} F_{K_{t+1}} + (1-\delta)(1+\tau_{I_{t+1}}))
+U_{C_t} (1 + \tau_{I_t}) &= \beta E_t U_{C_{t+1}} (A_{t+1} F_{K_{t+1}} + (1-\delta)(1+\tau_{I_{t+1}})) \\
+K_{t+1} &= (1-\delta) K_t + I_t
 \end{align*}
 
 The functional forms from the prompt:
@@ -156,53 +157,51 @@ Thus, the equilibrium conditions become:
 \begin{align*}
 A_tK_t^\alpha L_t^{1-\alpha} &= C_t + I_t + G_t \\
 C_tL_t &= (1-\tau_{L_t})A_t (1 -\alpha)K_t^\alpha L_t^{-\alpha} \\
-\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} (A_{t+1} \alpha K_t^{\alpha-1} L_t^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}))
+\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} (A_{t+1} \alpha K_{t+1}^{\alpha-1} L_{t+1}^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}))
 \end{align*}
 
-In the steady state, $K_t = K_{t+1} = \bar{K}$, $C_t = C_{t+1} = \bar{C}$, $L_t = L_{t+1} = \bar{L}$, $I_t = I_{t+1} = \delta \bar{K}$, $G_t = G_{t+1} = \bar{G} = \bar{Y}/3$, and $A_t = A_{t+1} = \bar{A} = 1$.
+In the steady state, $K_t = K_{t+1} = \bar{K}$, $C_t = C_{t+1} = \bar{C}$, $L_t = L_{t+1} = \bar{L}$, $I_t = I_{t+1} = \delta \bar{K}$, $G_t = G_{t+1} = \bar{G} = \bar{Y}/3$, $A_t = A_{t+1} = \bar{A} = 1$, and $\bar{\tau_L} = \bar{\tau_I} = 0$.
 
 \begin{align*}
 (2/3)\bar{K}^\alpha \bar{L}^{1-\alpha} &= \bar{C} + \delta \bar{K} \\
-\bar{C}  &= (1-\bar{\tau_L}) (1 -\alpha)\bar{K}^\alpha\bar{L}^{-1-\alpha} \\
-1 + \bar{\tau_I} &= \beta  ( \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} + (1-\delta)(1+\bar{\tau_I}))
+\bar{C}  &= (1 -\alpha)\bar{K}^\alpha\bar{L}^{-1-\alpha} \\
+1 &= \beta  ( \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} + (1-\delta))
 \end{align*}
 
 We can solve for the labor steady state:
 
 \begin{align*}
 (2/3)\bar{K}^\alpha \bar{L}^{1-\alpha} - \delta \bar{K} 
-&= (1-\bar{\tau_L}) (1 -\alpha)\bar{K}^\alpha \bar{L}^{-1-\alpha} \\
+&= (1 -\alpha)\bar{K}^\alpha \bar{L}^{-1-\alpha} \\
 \implies 
-\delta &= (2/3)\bar{K}^{\alpha-1} \bar{L}^{1-\alpha} - (1-\bar{\tau_L}) (1 -\alpha)\bar{K}^{\alpha-1} \bar{L}^{-1-\alpha} \\
+\delta &= (2/3)\bar{K}^{\alpha-1} \bar{L}^{1-\alpha} - (1 -\alpha)\bar{K}^{\alpha-1} \bar{L}^{-1-\alpha} \\
 \implies 
 \bar{K} 
-&= (\frac{\delta}{(2/3)\bar{L}^{1-\alpha} - (1-\bar{\tau_L})(1-\alpha)\bar{L}^{-1-\alpha}})^{1/(\alpha-1)} \\
+&= (\frac{\delta}{(2/3)\bar{L}^{1-\alpha} - (1-\alpha)\bar{L}^{-1-\alpha}})^{1/(\alpha-1)} \\
 \implies
-1 + \bar{\tau_I} 
-&= \beta  ( \alpha \frac{\delta}{(2/3)L^{1-\alpha} - (1-\bar{\tau_L})(1-\alpha)\bar{L}^{-1-\alpha}} \bar{L}^{1-\alpha} + (1-\delta)(1+\bar{\tau_I}))\\
+1 
+&= \beta  ( \alpha \frac{\delta}{(2/3)L^{1-\alpha} - (1-\alpha)\bar{L}^{-1-\alpha}} \bar{L}^{1-\alpha} + (1-\delta)\\
 \implies 
-(1/\beta - 1 + \delta)(1+\bar{\tau_I})
-&= \frac{\alpha\delta}{(2/3) - (1-\bar{\tau_L})(1-\alpha)\bar{L}^{-2}} \\
+1/\beta - 1 + \delta
+&= \frac{\alpha\delta}{(2/3) - (1-\alpha)\bar{L}^{-2}} \\
 \implies
 \bar{L}
-&= \sqrt{\frac{(1-\bar{\tau_L})(1-\alpha)}{(2/3) - \frac{\alpha\delta}{ (1/\beta - 1 + \delta)(1+\bar{\tau_I})}}} \\
+&= \sqrt{\frac{(1-\alpha)}{(2/3) - \frac{\alpha\delta}{ (1/\beta - 1 + \delta)}}} \\
 \end{align*}
 
-The steady state values of $\bar{Y}, \bar{K}, \bar{C}$, and $\bar{G}$ are implied by the equations above.  For $\bar{\tau}_L = \bar{\tau}_I = 0.5$, the steady state values are:
+The steady state values of $\bar{Y}, \bar{K}, \bar{C}$, and $\bar{G}$ are implied by the equations above:
 
 ```{r problem4a, echo = FALSE}
 alpha <- 1/3
 sigma <- 1
 phi <- 1
-tau_l_ss <- .5
-tau_i_ss <- .5
 alpha <- 1/3
 beta <- .99
 sigma <- 1
 phi <- 1
   
-labor_ss <- sqrt(((1-tau_l_ss)*(1-alpha))/((2/3) - (alpha*delta)/((1/beta - 1 + delta)*(1+tau_i_ss))))
-capital_ss <- (delta / ((2/3)*labor_ss^(1-alpha) - (1- tau_l_ss)*(1 - alpha) * labor_ss^(-1-alpha)))^(1/(alpha - 1))
+labor_ss <- sqrt(((1-alpha))/((2/3) - (alpha*delta)/((1/beta - 1 + delta))))
+capital_ss <- (delta / ((2/3)*labor_ss^(1-alpha) - (1 - alpha) * labor_ss^(-1-alpha)))^(1/(alpha - 1))
 investment_ss <- capital_ss *delta
 output_ss <- capital_ss ^ alpha *labor_ss ^(1-alpha)
 government_ss <- (1/3)*output_ss
@@ -217,49 +216,91 @@ tibble(variable = c("L_bar", "K_bar", "I_bar", "Y_bar", "C_bar",  "G_bar"),
 
 \pagebreak
 
-Now we can turn to the wedges.  The efficiency wedge is:
+We now log-linearize around the steady state.  The log-linearized Euler equation is:
 
 \begin{align*}
-Y_t &= A_tK_t^\alpha L_t^{1-\alpha} \\
+\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} (A_{t+1} \alpha K_{t+1}^{\alpha-1} L_{t+1}^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}))\\
+X_{t+1} &:= A_{t+1} \alpha K_{t+1}^{\alpha-1} L_{t+1}^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}) \\
+\bar{X} &= \bar{A} \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} + 1 - \delta \\
+&= \frac{1}{\beta}\\
 \implies 
-y_t &= a_t + \alpha k_t + (1-\alpha)l_t \\
-\implies 
-a_t &= y_t - \alpha k_t - (1-\alpha)l_t
+x_{t+1} 
+&= \frac{\bar{A} \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}}{\bar{X}} (a_{t+1} + (\alpha - 1)k_{t+1} + (1-\alpha)l_{t+1}) + \frac{(1-\delta)}{\bar{X}} \hat{\tau}_{I_{t+1}} \\
+&= \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} (a_{t+1} + (1-\alpha)(l_{t+1} - k_{t+1}))
++ \beta(1-\delta)\hat{\tau}_{I_{t+1}} \\
+\implies
+\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} X_{t+1}\\
+\implies
+\hat{\tau}_{I_t} - c_t &= E_t[x_{t+1}] - E_t [c_{t+1}]\\
+\implies
+\hat{\tau}_{I_t} - c_t &= E_t[\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(a_{t+1} + (1-\alpha)(l_{t+1} - k_{t+1}))
++ \beta (1-\delta) \hat{\tau}_{I_{t+1}}] - E_t [c_{t+1}]\\
+\implies
+E_t [c_{t+1}] - c_t + \hat{\tau}_{I_t}  &= \beta E_t[ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(a_{t+1} + (1-\alpha)(l_{t+1} - k_{t+1}))
++ (1-\delta) \hat{\tau}_{I_{t+1}}] \\
 \end{align*}
 
-The government consumption wedge is:
+The log-linearized law of motion of capital is:
 
 \begin{align*}
-Y_t &= C_t + I_t + G_t \\
+K_{t+1} 
+&= (1-\delta)K_t + I_t\\
 \implies
-\bar{Y}(1+y_t) &= \bar{C}(1+c_t) + \bar{I}(1+i_t) + \bar{G}(1+g_t) \\
-\implies
-\bar{Y}y_t &= \bar{C}c_t + \bar{I}i_t + \bar{G}g_t \\
-\implies
-g_t 
-&= \frac{\bar{Y}y_t - \bar{C}c_t - \bar{I}i_t}{\bar{G}} \\
-&= \frac{\bar{Y}}{\bar{G}}y_t - \frac{\bar{C}}{\bar{G}}c_t - \frac{\bar{I}}{\bar{G}}i_t
+k_{t+1} 
+&= \frac{(1-\delta)\bar{K}}{(1-\delta)\bar{K} + \bar{I}}k_t + \frac{\bar{I}}{(1-\delta)\bar{K} + \bar{I}}i_t\\
+&= \frac{(1-\delta)\bar{K}}{\bar{K}}k_t + \frac{\bar{I}}{\bar{K}}i_t\\
+&= (1-\delta)k_t + \delta i_t\\
 \end{align*}
 
-The labor wedge is: 
+The log-linearized consumption-labor equation is:
 
 \begin{align*}
 C_tL_t^{1+\alpha} 
 &= (1-\tau_{L_t})A_t (1 -\alpha)K_t^\alpha \\
 \implies 
 c_t+ (1+\alpha) l_t 
-&= \hat{\tau_{L_t}}\frac{- \bar{\tau}_L}{1 - \bar{\tau}_L}+ a_t  + \alpha k_t \\
-\implies 
-\hat{\tau_{L_t}} 
-&= \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} a_t  + \alpha \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} k_t - \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} c_t -  (1+\alpha) \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} l_t
+&= -\hat{\tau}_{L_t} + a_t  + \alpha k_t
 \end{align*}
+
+The log-linearized output equations are:
+
+\begin{align*}
+Y_t &= A_tK_t^\alpha L_t^{1-\alpha} \\
+\implies 
+y_t &= a_t + \alpha k_t + (1-\alpha)l_t \\
+Y_t &= C_t + I_t + G_t \\
+\implies
+\bar{Y}(1+y_t) &= \bar{C}(1+c_t) + \bar{I}(1+i_t) + \bar{G}(1+g_t) \\
+\implies
+\bar{Y}y_t &= \bar{C}c_t + \bar{I}i_t + \bar{G}g_t
+\end{align*}
+
+\pagebreak
+
+The efficiency wedge can be derived from the first log-linearized output equation:
+
+$$
+a_t = y_t - \alpha k_t - (1-\alpha)l_t
+$$
+
+The government consumption wedge can be derived from the second log-linearized output equation:
+
+$$
+g_t = \frac{\bar{Y}}{\bar{G}}y_t - \frac{\bar{C}}{\bar{G}}c_t - \frac{\bar{I}}{\bar{G}}i_t
+$$
+
+The labor wedge can be derived from the log-linearized consumption-labor equation: 
+
+$$
+\hat{\tau_{L_t}} =  a_t  + \alpha  k_t -  c_t -  (1+\alpha) l_t
+$$
 
 ```{r problem4, echo=FALSE, results = "asis"}
 data_wedge <- data_hp %>%
   transmute(date, 
             efficiency = output - alpha * capital - (1 - alpha) * labor,
             government = (output_ss * output - consumption_ss * consumption - investment_ss * investment) / government_ss,
-            labor = ((1 - tau_l_ss) / tau_l_ss) * (efficiency + alpha * capital - consumption - (1 + alpha) * labor))
+            labor = efficiency + alpha * capital - consumption - (1 + alpha) * labor)
 
 data_wedge %>%
  pivot_longer(-date) %>%
@@ -283,7 +324,44 @@ stargazer(efficiency_wedge_ols,
 
 5. Write down a code that implements the Blanchard-Kahn method to solve the model. Use the values of parameters, including $\rho_a$, $\rho_g$, and $\rho_{\tau_L}$, obtained above, and assume $\rho_{\tau_I} = 0$ for now.
 
-...
+The log-linearized consumption-labor equation implies
+
+$$
+l_t = \frac{\alpha}{1+\alpha} k_t + \frac{-1}{1+\alpha}c_t + \frac{1}{1+\alpha}a_t+ \frac{-1}{1+\alpha}\hat{\tau}_{L_t}    \\
+$$
+
+The log-linearized output equations implies
+
+\begin{align*}
+i_t 
+&= (1-\alpha)\frac{\bar{Y}}{\bar{I}}  l_t + \alpha \frac{\bar{Y}}{\bar{I}}  k_t + \frac{-\bar{C}}{\bar{I}} c_t + \frac{\bar{Y}}{\bar{I}}  a_t  + \frac{-\bar{I}}{\bar{Y}}g_t \\
+&= (1-\alpha)\frac{\bar{Y}}{\bar{I}}  \Bigg[\frac{\alpha}{1+\alpha} k_t + \frac{-1}{1+\alpha}c_t + \frac{1}{1+\alpha}a_t+ \frac{-1}{1+\alpha}\hat{\tau}_{L_t} \Bigg] + \alpha \frac{\bar{Y}}{\bar{I}}  k_t + \frac{-\bar{C}}{\bar{I}} c_t + \frac{\bar{Y}}{\bar{I}}  a_t  + \frac{-\bar{I}}{\bar{Y}}g_t \\
+&= 
+\frac{2\bar{Y}\alpha}{\bar{I}(1+\alpha)} k_t
++ \frac{-\bar{Y}(1-\alpha)-\bar{C}(1+\alpha)}{\bar{I}(1+\alpha)}c_t
++ \frac{2\bar{Y}}{(1+\alpha)\bar{I}}a_t
++ \frac{-\bar{Y}(1-\alpha)}{\bar{I}(1+\alpha)}\hat{\tau}_{L_t} 
++ \frac{-\bar{I}}{\bar{Y}} g_t
+\end{align*}
+
+The law of motion of capital implies
+
+\begin{align*}
+k_{t+1} 
+&= (1-\delta) k_t + \delta i_t \\
+&= (1-\delta) k_t + \delta \Bigg[
+\frac{2\bar{Y}\alpha}{\bar{I}(1+\alpha)} k_t
++ \frac{-\bar{Y}(1-\alpha)-\bar{C}(1+\alpha)}{\bar{I}(1+\alpha)}c_t
++ \frac{2\bar{Y}}{(1+\alpha)\bar{I}}a_t
++ \frac{-\bar{Y}(1-\alpha)}{\bar{I}(1+\alpha)}\hat{\tau}_{L_t} 
++ \frac{-\bar{I}}{\bar{Y}} g_t
+\Bigg]\\
+&= \Bigg[1-\delta + \frac{2 \alpha \delta \bar{Y}}{(1+\alpha)\bar{I}} \Bigg] k_t 
++ \frac{-\delta\bar{Y}(1-\alpha)-\bar{C}(1+\alpha)}{\bar{I}(1+\alpha)}c_t
++ \frac{2\delta\bar{Y}}{(1+\alpha)\bar{I}}a_t
++ \frac{-\delta\bar{Y}(1-\alpha)}{\bar{I}(1+\alpha)}\hat{\tau}_{L_t} 
++ \frac{-\delta\bar{I}}{\bar{Y}} g_t
+\end{align*}
 
 ```{r problem5, echo = FALSE}
 
@@ -334,3 +412,58 @@ solve_ss <- function(x) {
 nleqslv(c(29.26, 1.15, 1.53), solve_ss)
 
 ```
+
+Log-linearizing the investment and labor wage:
+
+Thus, the equilibrium conditions become:
+
+\begin{align*}
+A_tK_t^\alpha L_t^{1-\alpha} &= C_t + I_t + G_t \\
+C_tL_t &= (1-\tau_{L_t})A_t (1 -\alpha)K_t^\alpha L_t^{-\alpha} \\
+\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} (A_{t+1} \alpha K_{t+1}^{\alpha-1} L_{t+1}^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}))
+\end{align*}
+
+In the steady state, $K_t = K_{t+1} = \bar{K}$, $C_t = C_{t+1} = \bar{C}$, $L_t = L_{t+1} = \bar{L}$, $I_t = I_{t+1} = \delta \bar{K}$, $G_t = G_{t+1} = \bar{G} = \bar{Y}/3$, and $A_t = A_{t+1} = \bar{A} = 1$.
+
+\begin{align*}
+(2/3)\bar{K}^\alpha \bar{L}^{1-\alpha} &= \bar{C} + \delta \bar{K} \\
+\bar{C}  &= (1-\bar{\tau_L}) (1 -\alpha)\bar{K}^\alpha\bar{L}^{-1-\alpha} \\
+1 + \bar{\tau_I} &= \beta  ( \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} + (1-\delta)(1+\bar{\tau_I}))
+\end{align*}
+
+The labor wedge is: 
+
+\begin{align*}
+C_tL_t^{1+\alpha} 
+&= (1-\tau_{L_t})A_t (1 -\alpha)K_t^\alpha \\
+\implies 
+c_t+ (1+\alpha) l_t 
+&= \hat{\tau_{L_t}}\frac{- \bar{\tau}_L}{1 - \bar{\tau}_L}+ a_t  + \alpha k_t \\
+\implies 
+\hat{\tau_{L_t}} 
+&= \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} a_t  + \alpha \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} k_t - \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} c_t -  (1+\alpha) \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} l_t
+\end{align*}
+
+The log-linearized Euler is:
+
+\begin{align*}
+\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} (A_{t+1} \alpha K_{t+1}^{\alpha-1} L_{t+1}^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}))\\
+X_{t+1} &:= A_{t+1} \alpha K_{t+1}^{\alpha-1} L_{t+1}^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}) \\
+\bar{X} &= \bar{A} \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} + (1-\delta)(1+\bar{\tau}_{I}) \\
+&= \frac{1 + \bar{\tau}_I}{\beta}\\
+\implies 
+x_{t+1} 
+&= \frac{\bar{A} \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}}{\bar{X}} (a_{t+1} + (\alpha - 1)k_{t+1} + (1-\alpha)l_{t+1}) + \frac{(1-\delta)(1+\bar{\tau}_{I})}{\bar{X}}(\frac{\bar{\tau}_I}{1 + \bar{\tau}_I}) \hat{\tau}_{I_{t+1}} \\
+&= \beta \frac{ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} }{1 + \bar{\tau}_I}(a_{t+1} + (1-\alpha)(l_{t+1} - k_{t+1}))
++ \beta\frac{(1-\delta)\bar{\tau}_I \hat{\tau}_{I_{t+1}}}{1 + \bar{\tau}_I} \\
+\implies
+\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} X_{t+1}\\
+\implies
+\frac{\bar{\tau}_{I}}{1 + \bar{\tau}_{I}}\hat{\tau}_{I_t} - c_t &= E_t[x_{t+1}] - E_t [c_{t+1}]\\
+\implies
+\frac{\bar{\tau}_{I}}{1 + \bar{\tau}_{I}}\hat{\tau}_{I_t} - c_t &= E_t[\beta \frac{ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} }{1 + \bar{\tau}_I}(a_{t+1} + (1-\alpha)(l_{t+1} - k_{t+1}))
++ \beta\frac{(1-\delta)\bar{\tau}_I \hat{\tau}_{I_{t+1}}}{1 + \bar{\tau}_I}] - E_t [c_{t+1}]\\
+\implies
+E_t [c_{t+1}] - c_t+ \frac{\bar{\tau}_{I}}{1 + \bar{\tau}_{I}}\hat{\tau}_{I_t}  &= \beta E_t[ \frac{ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} }{1 + \bar{\tau}_I}(a_{t+1} + (1-\alpha)(l_{t+1} - k_{t+1}))
++ \frac{(1-\delta)\bar{\tau}_I }{1 + \bar{\tau}_I} \hat{\tau}_{I_{t+1}}] \\
+\end{align*}
