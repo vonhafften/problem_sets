@@ -24,7 +24,6 @@ library(stargazer)
 library(knitr)
 library(varhandle)
 library(matlib)
-
 ```
 
 1. Let $(Y, X', Z')'$ be a random vector such that $Y = X'\beta + U$, $E[U|Z]=0$ where $E[ZX']$ is invertible and $E[Y^4 + ||X||^4 + ||Z||^4] < \infty$. Also, let $\{(Y_i, X_i', Z_i')'\}_{i=1}^n$ be a random sample from the distribution of $(Y, X', Z')'$.  We showed in lecture 4 that $\sqrt{n} (\hat{\beta}^{IV} - \beta) \to_d N(0, \Omega)$, $\Omega = E[ZX']^{-1}E[ZZ'U^2]E[XZ']^{-1}$.  Now suppose that $X = (X_1, X_2')'$, $Z = (Z_1, X_2')'$, and $E[U^2 | Z] = \sigma_U^2$ and let $\Omega_{11}$ be the upper left entry in $\Omega$.
@@ -41,40 +40,147 @@ $$
 
 $$
 E[ZZ'] 
-= E[\begin{pmatrix} Z_1 \\ Z_2 \end{pmatrix}\begin{pmatrix} Z_1 & Z_2' \end{pmatrix}] \\
-= \begin{pmatrix} E[Z_1Z_1] & E[Z_1Z_2'] \\ E[Z_2Z_1] & E[Z_2Z_2'] \end{pmatrix}
+= E[\begin{pmatrix} Z_1 \\ X_2 \end{pmatrix}\begin{pmatrix} Z_1 & X_2' \end{pmatrix}] \\
+= \begin{pmatrix} E[Z_1^2] & E[Z_1X_2'] \\ E[X_2Z_1] & E[X_2X_2'] \end{pmatrix}
 $$
 
-$( \Rightarrow )$
-
-$E[Z_1X_1]$ is scalar, so it is trivially invertible if $E[Z_1X_1] \neq 0$. By the block inversion formula, $E[X_2X_2'] - E[X_2X_1]E[Z_1X_1]^{-1}E[Z_1X_2']$ must also be invertible. 
-
-....
-
-$( \Leftarrow )$
-
-...
-
-(ii) Show that $\Omega_{11} = \frac{\sigma_U^2}{E[\tilde{Z}_1^2]\pi_1^2}$ where $\tilde{Z}_1 = Z_1 - X_2'E[X_2X_2']^{-1}E[X_2Z_1]$.
-
-...
+First, if either $E[ZZ']$ or $E[ZX']$ are invertible then, $E[X_2X_2']$ is invertible.  Assume for sake of a contradiction that $E[X_2X_2']$ is not invertible.  Then there exists some nonzero $t$ such that $E[X_2X_2']t=0 \implies  t'E[X_2X_2']t=t'0=0 \implies E[X_2't]=0 \implies E[Z_1X_2']t=0$.  This implies that $E[ZX']$ and $E[ZZ']$ are not invertible, which is a contradiction:
 
 $$
-\Omega 
-= E[ZX']^{-1}E[ZZ'U^2]E[XZ']^{-1} \\
-= E[ZX']^{-1}E[ZZ'U^2]E[XZ']^{-1} \\
-= \begin{pmatrix} E[Z_1X_1] & E[Z_1X_2'] \\ E[X_2X_1] & E[X_2X_2'] \end{pmatrix}^{-1}
+E[ZX'](0, t')'
+= \begin{pmatrix} E[Z_1X_1] & E[Z_1X_2'] \\ E[X_2X_1] & E[X_2X_2'] \end{pmatrix} \begin{pmatrix} 0 \\ t' \end{pmatrix} \\
+=\begin{pmatrix} E[Z_1X_1](0) + E[Z_1X_2']t' \\ E[X_2X_1](0) + E[X_2X_2']t' \end{pmatrix}\\
+= 0
 $$
+
+$$
+E[ZZ'](0, t')'
+= \begin{pmatrix} E[Z_1^2] & E[Z_1X_2'] \\ E[X_2Z_1] & E[X_2X_2'] \end{pmatrix} \begin{pmatrix} 0 \\ t' \end{pmatrix} \\
+=\begin{pmatrix} E[Z_1^2](0) + E[Z_1X_2']t \\ E[X_2Z_1](0) + E[X_2X_2']t \end{pmatrix}\\
+= 0
+$$
+
+By the block inversion formula, if $E[ZX']$ is invertible iff
+
+$$
+E[Z_1X_1] - E[Z_1X_2']E[X_2X_2']^{-1}E[X_2X_1] \neq 0
+\iff E[\tilde{Z}_1X_1] \neq 0
+$$
+
+where $\tilde{Z}_1 := Z_1 - X_2'E[X_2X_2']^{-1}E[X_2Z_1]$. Denote $\pi_1 := \frac{E[\tilde{Z}_1X_1]}{E[\tilde{Z}_1^2]}$, 
+
+$$
+E[\tilde{Z}_1X_1] \neq 0 \iff \pi_1 E[\tilde{Z}_1^2] \neq 0 \\
+\iff \pi_1 \neq 0 \text{ and } E[\tilde{Z}_1^2] = E[Z_1^2] - E[Z_1X_2']E[X_2X_2']^{-1}E[X_2Z_1] \neq 0
+$$
+
+By the block inversion formula, $E[Z_1^2] - E[Z_1X_2']E[X_2X_2']^{-1}E[X_2Z_1] \neq 0 \iff E[ZZ']$ is invertible. $\square$
 
 \pagebreak
 
-2. 
+(ii) Show that $\Omega_{11} = \frac{\sigma_U^2}{E[\tilde{Z}_1^2]\pi_1^2}$ where $\tilde{Z}_1 = Z_1 - X_2'E[X_2X_2']^{-1}E[X_2Z_1]$.
+
+Using the block inversion formula, define $A$ and $B$:
+
+\begin{align*}
+A 
+&= E[ZX']^{-1}\\
+&= \begin{pmatrix} E[Z_1X_1] & E[Z_1X_2'] \\ E[X_2X_1] & E[X_2X_2'] \end{pmatrix}^{-1} \\
+B 
+&= E[XZ']^{-1} \\
+A_{11} 
+&= B_{11} \\
+&= (E[Z_1X_1] - E[X_2X_1]E[X_2X_2']^{-1}E[X_2X_1])^{-1} \\
+&= E[\tilde{Z}_1 X_1]^{-1} \\
+A_{12} 
+&= B_{21} \\
+&= -E[Z_1X_1]^{-1} E[Z_1X_2'] E[\tilde{Z}_1 X_1]^{-1} \\
+A_{21} 
+&= B_{12} \\
+&= -E[\tilde{Z}_1 X_1]^{-1} E[X_2X_1] E[Z_1X_1]^{-1} \\
+A_{22}
+&= B_{22} \\
+&= E[X_2X_2']^{-1} + E[X_2X_2']^{-1}E[X_2X_1] E[\tilde{Z}_1 X_1]^{-1}E[Z_1X_2']E[X_2X_2']^{-1}
+\end{align*}
+
+Homoskedastic variance-covariance matrix:
+
+\begin{align*}
+\Omega 
+&= \sigma_U^2E[ZX']^{-1}E[ZZ']E[XZ']^{-1} \\
+&= \sigma_U^2AE[ZZ']B \\
+&= \sigma_U^2 
+\begin{pmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{pmatrix}
+\begin{pmatrix} E[Z_1^2] & E[Z_1X_2'] \\ E[X_2Z_1] & E[X_2X_2'] \end{pmatrix}
+\begin{pmatrix} B_{11} & B_{12} \\ B_{21} & B_{22} \end{pmatrix}\\
+&= \sigma_U^2 
+\begin{pmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{pmatrix}
+\begin{pmatrix} 
+B_{11}E[Z_1^2]+B_{21}E[Z_1X_2'] & 
+B_{12}E[Z_1^2]+B_{22}E[Z_1X_2'] \\ 
+B_{11}E[X_2Z_1] + B_{21}E[X_2X_2'] & 
+B_{12}E[X_2Z_1] + B_{22}E[X_2X_2'] 
+\end{pmatrix}\\
+&= \sigma_U^2  
+\begin{pmatrix} 
+A_{11}B_{11}E[Z_1^2]+A_{11}B_{21}E[Z_1X_2'] + A_{12}B_{11}E[X_2Z_1] + A_{12}B_{21}E[X_2X_2'] & 
+A_{11}B_{12}E[Z_1^2]+A_{11}B_{22}E[Z_1X_2'] + A_{12} B_{12}E[X_2Z_1] +A_{12}B_{22}E[X_2X_2'] \\ 
+A_{21}B_{11}E[Z_1^2]+A_{21}B_{21}E[Z_1X_2'] + A_{22}B_{11}E[X_2Z_1] + A_{22}B_{21}E[X_2X_2'] & 
+A_{21}B_{12}E[Z_1^2]+A_{21}B_{22}E[Z_1X_2'] + A_{22}B_{12}E[X_2Z_1] + A_{22}B_{22}E[X_2X_2'] 
+\end{pmatrix}
+\end{align*}
+
+\begin{align*}
+\Omega_{11}
+&= \sigma_U^2 [A_{11}B_{11}E[Z_1^2]+A_{11}B_{21}E[Z_1X_2'] + A_{12}B_{11}E[X_2Z_1] + A_{12}B_{21}E[X_2X_2']] \\ 
+&= \sigma_U^2 [E[\tilde{Z}_1 X_1]^{-1}E[\tilde{Z}_1 X_1]^{-1}E[Z_1^2] \\
+&+ E[\tilde{Z}_1 X_1]^{-1}( -E[Z_1X_1]^{-1} E[Z_1X_2'] E[\tilde{Z}_1 X_1]^{-1})E[Z_1X_2'] \\
+&+ ( -E[Z_1X_1]^{-1} E[Z_1X_2'] E[\tilde{Z}_1 X_1]^{-1})E[\tilde{Z}_1 X_1]^{-1}E[X_2Z_1] \\
+&+ ( -E[Z_1X_1]^{-1} E[Z_1X_2'] E[\tilde{Z}_1 X_1]^{-1})( -E[Z_1X_1]^{-1} E[Z_1X_2'] E[\tilde{Z}_1 X_1]^{-1})E[X_2X_2']] \\
+&= \frac{\sigma_U^2}{E[\tilde{Z}_1^2]}\frac{E[\tilde{Z}_1^2]^2}{E[\tilde{Z}_1X_1]^2} \\
+&= \frac{\sigma_U^2E[\tilde{Z}_1^2]}{E[\tilde{Z}_1X_1]^2} \\
+&= \frac{\sigma_U^2}{E[\tilde{Z}_1^2]\pi_1^2}
+\end{align*}
+
+\pagebreak
+
+(iii) Explain, using "regression language", what $(\pi_1, \pi_2')'$ and $\tilde{Z}_1$ is.
+
+$(\pi_1, \pi_2')'$ are the coefficients of the projection of $X_1$ onto $Z$.  $\tilde{Z}_1$ is the regression error from the projection of $Z_1$ on $X$.
+
+(iv) Show that $\Omega_{11} \ge \frac{\sigma_U^2}{E[Z_*^2]}$ where $Z_* = E[X_1 | Z] - X_2' E[X_2X_2']^{-1}E[X_2E[X_1 | Z]]$ and provide restrictions on $E[X_1 | Z]$ such that $\Omega_{11} = \frac{\sigma_U^2}{E[Z_*^2]}$.
+
+...
+
+(v) Suppose that $X_2 = 1$. Write $\Omega_{11}/\sigma_U^2$ as a function of variances and covariances involving $Z_1$ and $X_1$.
+
+...
+
+\pagebreak
+
+2. Let $(Y, X, Z)'$ be a random vector such that $Y = X \beta_1 + U, E[U|Z] = 0$ where $E[Y_4+X_4+Z_4]<\infty$. Also, let $\{(Y_i,X_i,Z_i)'\}^n_{i=1}$ be a random sample from the distribution of $(Y,X',Z')'$. Let $h$ be a function of $Z$ such that $E[h(Z)^4]<\infty$.
+
+(i) Provide conditions such that $E[h(Z)(Y - X \beta_1)] = 0$ iff $\beta = \beta_1$.
+
+...
+
+(ii) Derive a method of moments estimator of $\beta_1$, say $\hat{\beta}_1^h$, using the IV moment in (i).
+
+...
+
+(iii) Under the conditions provided in (i), show that $\sqrt{n}(\hat{\beta}_1^h - \beta_1) \to_d N(0, \Omega^h)$ for some asymptotic variance $\Omega^h \ge 0$.
+
+...
+
+(iv) Show that $\Omega^h \ge E[\frac{E[X|Z]^2}{E[U^2|Z]}]^{-1}$ and find a function $h$, such that $\Omega^h$ achieves this lower bound.
+
+...
 
 \pagebreak
 
 3. Consider the data from Angrist and Krueger (1991) provided on the course website and the following linear model for $log(wage)$ as a function of educationand additional control variables: $log(wage) = \beta_0 + educ \cdot \beta_1 + \sum_{t=31}^{39} 1\{yob = t\} \beta_t + \sum_{s=1}^{50} 1\{sob = s\} \gamma_s + U$, where $yob$ is year of birth and $sob$ is state of birth. As instruments for $educ$ consider three instruments: $1\{qob= 2\},1\{qob= 3\},1\{qob= 4\}$ where $qob$ is quarter of birth. Using matrix algebra and your preferred statistical software, write code that loads the data and computes the 2SLS estimate of $\beta_1$ and the heteroskedasticity robust standard error stemming from the variance estimator formula (12.40) on page 354 of Bruce Hansen’s textbook.  The solution to this exercise should include code and the two numbers produced by it.
 
-```{r problem3, eval=FALSE}
+```{r problem3}
 data <- read_csv("AK91.csv", col_types = "ddddd")
 
 n <- nrow(data)
@@ -83,8 +189,8 @@ n <- nrow(data)
 y <- data$lwage
 x_1 <- data$educ
 controls <- cbind(rep(1, n),
-                  to.dummy(data$yob, prefix = "yob")[,1:9],
-                  to.dummy(data$sob, prefix = "sob")[,1:50])
+                  to.dummy(data$yob, prefix = "yob")[,2:10],
+                  to.dummy(data$sob, prefix = "sob")[,2:51])
 instruments <- to.dummy(data$qob, prefix = "qob")[,2:4]
 
 z <- cbind(instruments, controls)
@@ -93,22 +199,17 @@ x <- cbind(x_1, controls)
 k <- ncol(x)
 l <- ncol(z)
 
-# Estimating beta_2sls using 12.29 in Hansen
-beta_2sls <- inv(t(x) %*% z %*% inv(t(z) %*% z) %*% t(z) %*% x) %*% 
-  t(x) %*% z %*% inv(t(z) %*% z) %*% t(z) %*% y
+# Estimating 2sls beta using 12.29 in Hansen
+pi_hat <- solve(t(z) %*% z) %*% t(z) %*% x_1
+z_2 <- cbind(z %*% pi_hat, controls)
+beta_2sls <- solve(t(z_2) %*% x) %*% t(z_2) %*% y
 
 # Estimating heteroskedastic robust standard errors using 12.40 in Hansen
-q_zz <- t(z) %*% z / n
-q_xz <- t(x) %*% z / n 
-q_zx <- t(q_xz)
+e_hat <- as.numeric(y - x %*% beta_2sls)
 
-e_hat <- y - x %*% beta_2sls
+omega <- crossprod(z_2 * e_hat)
 
-omega <- matrix(rep(0, times = l*l), nrow = l, ncol = l)
-for (i in 1:n) omega <- omega + z[i, ] %*% t(z[i, ]) * e_hat[i]^2 / n
-
-varcov <- inv(q_xz %*% inv(q_zz) %*% q_zx) %*% (q_xz %*% inv(q_zz) %*% omega %*% 
-            inv(q_zz) %*% q_zx) %*% inv(q_xz %*% inv(q_zz) %*% q_zx)
+varcov <- solve(t(z_2) %*% x) %*% omega %*% solve(t(x) %*% z_2)
 
 print(beta_2sls[1])
 print(sqrt(varcov[1,1]))

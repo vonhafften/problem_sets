@@ -15,7 +15,6 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
 library(tidyverse)
 library(lubridate)
 library(quantmod)
@@ -33,64 +32,86 @@ This problem asks you to update the CKM (2007) wedge accounting using more recen
 
 1. Download quarterly data for real seasonally adjusted consumption, employment, and output in the U.S. from 1980–2020 from FRED database. The series for capital are not readily available, but can be constructed using the “perpetual inventory method”. To this end, download the series for (real seasonally adjusted) investment from 1950-2020.
 
-```{r problem1b, echo = FALSE, warnings = FALSE}
-
+```{r problem_1a, echo = FALSE, warnings = FALSE}
 temp1 <- cbind(PCECC96, GDPC1, CE16OV, GPDIC1) 
 
 temp2 <- temp1 %>%
- as_tibble() %>%
- transmute(date = ymd(index(temp1)),
-      consumption = PCECC96,
-      output = GDPC1,
-      labor = CE16OV,
-      investment = GPDIC1) %>%
- filter(!is.na(consumption + output + labor + investment))
+  as_tibble() %>%
+  transmute(date = ymd(index(temp1)),
+            consumption = PCECC96,
+            output = GDPC1,
+            labor = CE16OV,
+            investment = GPDIC1) %>%
+  filter(!is.na(consumption + output + labor + investment))
 
 data <- temp2 %>% 
-mutate(estimation_period = date >= ymd("1980-01-01"),
-    consumption = case_when( estimation_period ~ consumption),
-    output = case_when( estimation_period ~ output),
-    labor = case_when( estimation_period ~ labor)) %>%
- filter(date >= ymd("1950-01-01"),
-     date <= ymd("2020-10-01"))
+  mutate(estimation_period = date >= ymd("1980-01-01"),
+         consumption = case_when( estimation_period ~ consumption),
+         output = case_when( estimation_period ~ output),
+         labor = case_when( estimation_period ~ labor)) %>%
+  filter(date >= ymd("1950-01-01"),
+         date <= ymd("2020-10-01"))
+```
 
+```{r problem_1a_plot, echo = FALSE, warnings = FALSE}
 data %>%
- pivot_longer(-c(date, estimation_period)) %>%
+  pivot_longer(-c(date, estimation_period)) %>%
   remove_missing(na.rm = TRUE) %>%
- ggplot(aes(x=date, y=value, col = name)) +
- geom_line() +
- facet_wrap(~name, scales = "free_y") +
- theme(legend.position = "none") +
+  ggplot(aes(x=date, y=value, col = name)) +
+  geom_line() +
+  facet_wrap(~name, scales = "free_y") +
+  theme(legend.position = "none") +
   ggtitle("Raw Data")
-
 ```
 
 \pagebreak
 
 2. Convert all variables into logs and de-trend using the Hodrick-Prescott filter.
 
-```{r problem2, echo = FALSE, warnings = FALSE}
-
+```{r problem_2, echo = FALSE, warnings = FALSE}
 data_hp_raw <- data %>%
- filter(estimation_period) %>%
- transmute(date,
-      consumption = hpfilter(log(consumption), freq = 1600)$cycle,
-      output = hpfilter(log(output), freq = 1600)$cycle,
-      labor = hpfilter(log(labor), freq = 1600)$cycle) %>%
- full_join(data %>%
-        transmute(date,
-             estimation_period,
-             investment = hpfilter(log(investment), 
-                        freq = 1600)$cycle),
-      by = "date") %>%
- arrange(date)
+  filter(estimation_period) %>%
+  transmute(date,
+            consumption = hpfilter(log(consumption), freq = 1600)$cycle,
+            output = hpfilter(log(output), freq = 1600)$cycle,
+            labor = hpfilter(log(labor), freq = 1600)$cycle) %>%
+  full_join(data %>%
+              transmute(date,
+                        estimation_period,
+                        investment = hpfilter(log(investment), 
+                                              freq = 1600)$cycle),
+            by = "date") %>%
+  arrange(date)
 
-data_hp_raw %>%
- pivot_longer(-c(date, estimation_period)) %>%
-    remove_missing(na.rm = TRUE) %>%
- ggplot(aes(x=date, y=value, col = name)) +
- geom_line() +
-  ggtitle("Data after HP Filter (in log deviations)")
+data_hp_detailed <- data %>%
+  filter(estimation_period) %>%
+  transmute(date,
+            consumption_cycle = hpfilter(log(consumption), freq = 1600)$cycle,
+            consumption_trend = hpfilter(log(consumption), freq = 1600)$trend,
+            output_cycle = hpfilter(log(output), freq = 1600)$cycle,
+            output_trend = hpfilter(log(output), freq = 1600)$trend,
+            labor_cycle = hpfilter(log(labor), freq = 1600)$cycle,
+            labor_trend = hpfilter(log(labor), freq = 1600)$trend) %>%
+  full_join(data %>%
+              transmute(date,
+                        estimation_period,
+                        investment_cycle = hpfilter(log(investment), 
+                                              freq = 1600)$cycle,
+                        investment_trend = hpfilter(log(investment), 
+                                              freq = 1600)$trend),
+            by = "date") %>%
+  arrange(date)
+```
+
+```{r problem_2_plot, echo = FALSE, warnings = FALSE}
+data_hp_detailed %>%
+  pivot_longer(-c(date, estimation_period)) %>%
+  remove_missing(na.rm = TRUE) %>%
+  ggplot(aes(x=date, y=value, col = name)) +
+  geom_line() +
+  ggtitle("HP Filter (in log)") +
+  facet_wrap(~name, scales = "free_y", ncol = 2) +
+  theme(legend.position = "none")
 ```
 
 3. Assume that capital was at the steady-state level in 1950 and the rate of depreciation is $\delta= 0.025$ and use the linearized capital law of motion and the series for investment to estimate the capital stock (in log deviations) in 1980-2020. Justify this approach.
@@ -107,26 +128,27 @@ K_{t+1} &= (1-\delta)K_t+I_t \\
 
 If we assume that we're in the steady state in 1950, then $k_t = 0$. Thus, we can interate forward using $i_t$ from the data over the next thirty years until 1980.
 
-```{r problem3, echo = FALSE}
-
+```{r problem_3, echo = FALSE}
 delta <- 0.025
-
 capital <- 0
-
-for (i in 2:nrow(data_hp_raw)) capital <- c(capital, (1-delta)*capital[i-1] + delta * data_hp_raw$investment[i-1])
+for (i in 2:nrow(data_hp_raw)) {
+  capital <- c(capital, 
+               (1-delta)*capital[i-1] + delta * data_hp_raw$investment[i-1])
+}
 
 data_hp <- data_hp_raw %>%
- mutate(capital = capital) %>%
- filter(estimation_period) %>%
- select(-estimation_period)
+  mutate(capital = capital) %>%
+  filter(estimation_period) %>%
+  select(-estimation_period)
+```
 
+```{r problem_3_plot, echo = FALSE}
 data_hp %>%
   select(date, output, capital) %>%
   pivot_longer(-date) %>%
   ggplot(aes(x=date, y=value, col = name)) +
   geom_line() +
   ggtitle("Estimated Capital Stock (in log deviations)")
- 
 ```
 
 4. Linearize the equilibrium conditions. Assuming $\beta = 0.99$, $\alpha= 1/3$, $\sigma= 1$, $\phi= 1$ and the steady-state share of government spendings in GDP equal 1/3, estimate $a_t$, $g_t$ and $\tau_{Lt}$ for 1980-2020.  Run the OLS regression for each of these wedges to compute their persistence parameters $\rho_i$.
@@ -191,7 +213,7 @@ We can solve for the labor steady state:
 
 The steady state values of $\bar{Y}, \bar{K}, \bar{C}$, and $\bar{G}$ are implied by the equations above:
 
-```{r problem4a, echo = FALSE}
+```{r problem_4a, echo = FALSE}
 alpha <- 1/3
 sigma <- 1
 phi <- 1
@@ -199,19 +221,22 @@ alpha <- 1/3
 beta <- .99
 sigma <- 1
 phi <- 1
-  
+
 labor_ss <- sqrt(((1-alpha))/((2/3) - (alpha*delta)/((1/beta - 1 + delta))))
-capital_ss <- (delta / ((2/3)*labor_ss^(1-alpha) - (1 - alpha) * labor_ss^(-1-alpha)))^(1/(alpha - 1))
+capital_ss <- (delta / ((2/3)*labor_ss^(1-alpha) - 
+                          (1 - alpha) * labor_ss^(-1-alpha)))^(1/(alpha - 1))
 investment_ss <- capital_ss *delta
 output_ss <- capital_ss ^ alpha *labor_ss ^(1-alpha)
 government_ss <- (1/3)*output_ss
 consumption_ss <- output_ss - investment_ss - government_ss
+```
 
+```{r problem_4a_table, echo = FALSE}
 tibble(variable = c("L_bar", "K_bar", "I_bar", "Y_bar", "C_bar",  "G_bar"),
-       value = c(labor_ss, capital_ss, investment_ss, output_ss, consumption_ss, government_ss)) %>%
+       value = c(labor_ss, capital_ss, investment_ss,
+                 output_ss, consumption_ss, government_ss)) %>%
   mutate(value = round(value, 3)) %>%
   kable()
-
 ```
 
 \pagebreak
@@ -295,22 +320,25 @@ $$
 \hat{\tau_{L_t}} =  a_t  + \alpha  k_t -  c_t -  (1+\alpha) l_t
 $$
 
-```{r problem4, echo=FALSE, results = "asis"}
+```{r problem_4b, echo=FALSE, results = "asis"}
 data_wedge <- data_hp %>%
   transmute(date, 
             efficiency = output - alpha * capital - (1 - alpha) * labor,
-            government = (output_ss * output - consumption_ss * consumption - investment_ss * investment) / government_ss,
-            labor = efficiency + alpha * capital - consumption - (1 + alpha) * labor)
-
-data_wedge %>%
- pivot_longer(-date) %>%
- ggplot(aes(x=date, y=value, col = name)) +
- geom_line() +
-  ggtitle("Efficiency, Government, and Labor Wedges")
+            government = (output_ss * output - consumption_ss * consumption - 
+                            investment_ss * investment) / government_ss,
+            labor_w = efficiency + alpha * capital - consumption - (1 + alpha) * labor)
 
 efficiency_wedge_ols <- lm(efficiency ~ lag(efficiency) - 1, data = data_wedge)
 government_wedge_ols <- lm(government ~ lag(government)- 1, data = data_wedge)
-labor_wedge_ols <- lm(labor ~ lag(labor)- 1, data = data_wedge)
+labor_wedge_ols <- lm(labor_w ~ lag(labor_w)- 1, data = data_wedge)
+```
+
+```{r problem_4b_table, echo=FALSE, results = "asis"}
+data_wedge %>%
+  pivot_longer(-date) %>%
+  ggplot(aes(x=date, y=value, col = name)) +
+  geom_line() +
+  ggtitle("Efficiency, Government, and Labor Wedges")
 
 stargazer(efficiency_wedge_ols,
           government_wedge_ols,
@@ -334,14 +362,14 @@ The log-linearized output equations implies
 
 \begin{align*}
 i_t 
-&= (1-\alpha)\frac{\bar{Y}}{\bar{I}}  l_t + \alpha \frac{\bar{Y}}{\bar{I}}  k_t + \frac{-\bar{C}}{\bar{I}} c_t + \frac{\bar{Y}}{\bar{I}}  a_t  + \frac{-\bar{I}}{\bar{Y}}g_t \\
-&= (1-\alpha)\frac{\bar{Y}}{\bar{I}}  \Bigg[\frac{\alpha}{1+\alpha} k_t + \frac{-1}{1+\alpha}c_t + \frac{1}{1+\alpha}a_t+ \frac{-1}{1+\alpha}\hat{\tau}_{L_t} \Bigg] + \alpha \frac{\bar{Y}}{\bar{I}}  k_t + \frac{-\bar{C}}{\bar{I}} c_t + \frac{\bar{Y}}{\bar{I}}  a_t  + \frac{-\bar{I}}{\bar{Y}}g_t \\
+&= (1-\alpha)\frac{\bar{Y}}{\bar{I}}  l_t + \alpha \frac{\bar{Y}}{\bar{I}}  k_t + \frac{-\bar{C}}{\bar{I}} c_t + \frac{\bar{Y}}{\bar{I}}  a_t  + \frac{-\bar{G}}{\bar{I}}g_t \\
+&= (1-\alpha)\frac{\bar{Y}}{\bar{I}}  \Bigg[\frac{\alpha}{1+\alpha} k_t + \frac{-1}{1+\alpha}c_t + \frac{1}{1+\alpha}a_t+ \frac{-1}{1+\alpha}\hat{\tau}_{L_t} \Bigg] + \alpha \frac{\bar{Y}}{\bar{I}}  k_t + \frac{-\bar{C}}{\bar{I}} c_t + \frac{\bar{Y}}{\bar{I}}  a_t  + \frac{-\bar{G}}{\bar{I}}g_t \\
 &= 
 \frac{2\bar{Y}\alpha}{\bar{I}(1+\alpha)} k_t
 + \frac{-\bar{Y}(1-\alpha)-\bar{C}(1+\alpha)}{\bar{I}(1+\alpha)}c_t
 + \frac{2\bar{Y}}{(1+\alpha)\bar{I}}a_t
 + \frac{-\bar{Y}(1-\alpha)}{\bar{I}(1+\alpha)}\hat{\tau}_{L_t} 
-+ \frac{-\bar{I}}{\bar{Y}} g_t
++ \frac{-\bar{G}}{\bar{I}} g_t
 \end{align*}
 
 The law of motion of capital implies
@@ -354,13 +382,13 @@ k_{t+1}
 + \frac{-\bar{Y}(1-\alpha)-\bar{C}(1+\alpha)}{\bar{I}(1+\alpha)}c_t
 + \frac{2\bar{Y}}{(1+\alpha)\bar{I}}a_t
 + \frac{-\bar{Y}(1-\alpha)}{\bar{I}(1+\alpha)}\hat{\tau}_{L_t} 
-+ \frac{-\bar{I}}{\bar{Y}} g_t
++ \frac{-\bar{G}}{\bar{I}} g_t
 \Bigg]\\
 &= \Bigg[1-\delta + \frac{2 \alpha \delta \bar{Y}}{(1+\alpha)\bar{I}} \Bigg] k_t 
 + \frac{-\delta\bar{Y}(1-\alpha)-\bar{C}(1+\alpha)}{\bar{I}(1+\alpha)}c_t
 + \frac{2\delta\bar{Y}}{(1+\alpha)\bar{I}}a_t
 + \frac{-\delta\bar{Y}(1-\alpha)}{\bar{I}(1+\alpha)}\hat{\tau}_{L_t} 
-+ \frac{-\delta\bar{I}}{\bar{Y}} g_t
++ \frac{-\delta\bar{G}}{\bar{I}} g_t
 \end{align*}
 
 \pagebreak
@@ -371,7 +399,7 @@ Based on the AR(1) process for $a_t$, $g_t$, $\hat{\tau}_{L_t}$, and $\hat{\tau}
 E_t[a_{t+1}] &= \rho_a a_t \\
 E_t[g_{t+1}] &= \rho_g g_t \\
 E_t[\hat{\tau}_{L_{t+1}}] &= \rho_{\tau_L} \hat{\tau}_{L_t} \\
-E_t[\hat{\tau}_{I_{t+1}}] &= \rho_{\tau_I} \hat{\tau}_{I_t} = 0
+E_t[\hat{\tau}_{I_{t+1}}] &= \rho_{\tau_I} \hat{\tau}_{I_t}
 \end{align*}
 
 The log-linearized Euler equation implies:
@@ -384,23 +412,26 @@ E_t [c_{t+1}] - c_t + \hat{\tau}_{I_t}
 \implies
 E_t [c_{t+1}] - c_t + \hat{\tau}_{I_t}  
 &= \beta E_t\Bigg[ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\Bigg(\frac{\alpha - 1}{1+\alpha} k_{t+1} + \frac{\alpha-1}{1+\alpha}c_{t+1} \\
-&+ \frac{2}{1+\alpha}a_{t+1} + \frac{\alpha  -1}{1+\alpha}\hat{\tau}_{L_{t+1}} \Bigg) \Bigg]+ (1-\delta) E_t[\hat{\tau}_{I_{t+1}}] \\
+&+ \frac{2}{1+\alpha}a_{t+1} + \frac{\alpha  -1}{1+\alpha}\hat{\tau}_{L_{t+1}} \Bigg) \Bigg]
++ (1-\delta) E_t[\hat{\tau}_{I_{t+1}}] \\
 \implies
 E_t [c_{t+1}] - c_t + \hat{\tau}_{I_t}  
 &= \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\Bigg(\frac{\alpha - 1}{1+\alpha} E_t[k_{t+1}] + \frac{\alpha-1}{1+\alpha}E_t[c_{t+1}] \\
-&+ \frac{2}{1+\alpha}E_t[a_{t+1}] + \frac{\alpha  -1}{1+\alpha}E_t[\hat{\tau}_{L_{t+1}}] \Bigg) \\
+&+ \frac{2}{1+\alpha}E_t[a_{t+1}] + \frac{\alpha  -1}{1+\alpha}E_t[\hat{\tau}_{L_{t+1}}] \Bigg) 
++ (1-\delta)\rho_{\tau_I} \hat{\tau}_{I_t}\\
 \implies
 E_t [c_{t+1}] - c_t + \hat{\tau}_{I_t}  
 &= \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\Bigg(\frac{\alpha - 1}{1+\alpha} E_t[k_{t+1}] + \frac{\alpha-1}{1+\alpha}E_t[c_{t+1}] \\
-&+ \frac{2}{1+\alpha}\rho_a a_t + \frac{\alpha  -1}{1+\alpha}\rho_{\tau_L} \hat{\tau}_{L_t} \Bigg) \\
+&+ \frac{2}{1+\alpha}\rho_a a_t + \frac{\alpha  -1}{1+\alpha}\rho_{\tau_L} \hat{\tau}_{L_t} \Bigg) 
++ (1-\delta)\rho_{\tau_I} \hat{\tau}_{I_t}\\
 \implies
 \Bigg[1 - \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha-1}{1+\alpha}\Bigg]E_t[c_{t+1}] 
 &-  \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha - 1}{1+\alpha} E_t[k_{t+1}]\\
 &= 
 c_t 
 + \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{2}{1+\alpha}\rho_a a_t 
-+ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha  -1}{1+\alpha}\rho_{\tau_L} \hat{\tau}_{L_t}
-- \hat{\tau}_{I_t}
++ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha  -1}{1+\alpha}\rho_{\tau_L} \hat{\tau}_{L_t} \\
+&+ ((1-\delta)\rho_{\tau_I} - 1) \hat{\tau}_{I_t}
 \end{align*}
 
 \pagebreak
@@ -426,7 +457,7 @@ z_t &:= \begin{pmatrix} a_t \\ g_t \\ \hat{\tau}_{L_t} \\ \hat{\tau}_{I_t} \end{
 \tilde{B} &:= \begin{pmatrix} 
 \frac{2\delta\bar{Y}}{(1+\alpha)\bar{I}}
 & 
-\frac{-\delta\bar{I}}{\bar{Y}}
+\frac{-\delta\bar{G}}{\bar{I}}
 & 
 \frac{-\delta\bar{Y}(1-\alpha)}{\bar{I}(1+\alpha)}
 & 
@@ -438,48 +469,309 @@ z_t &:= \begin{pmatrix} a_t \\ g_t \\ \hat{\tau}_{L_t} \\ \hat{\tau}_{I_t} \end{
 &
 \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\frac{\alpha  -1}{1+\alpha}\rho_{\tau_L}
 &
--1
+(1-\delta)\rho_{\tau_I}-1
 \end{pmatrix} \\
 A &:= \tilde{C}^{-1} \tilde{A} \\
 B &:= \tilde{C}^{-1} \tilde{B} \\
+A &:= Q^{-1} \Lambda Q \\
+E_t[x_{t+1}] 
+&= Q \Lambda Q^{-1} x_t + B z_t \\
+\implies 
+Q^{-1} E_t[x_{t+1}] 
+&= \Lambda Q^{-1} x_t + Q^{-1} B z_t \\
+\implies
+E_t[y_{t+1}] 
+&= \Lambda y_t + D z_t \\
+D &:= Q^{-1} B 
 \end{align*}
 
-```{r problem5, echo = FALSE}
+Below are these matrices estimated with our parameters.  Notice that $|\lambda_1| > 1$ and $|\lambda_2| < 1$. 
 
+```{r problem_5a, echo = FALSE, warning=FALSE}
+# Additional estimated parameters
 rho_a <- as.numeric(efficiency_wedge_ols$coef[1])
 rho_g <- as.numeric(government_wedge_ols$coef[1])
 rho_tau_l <- as.numeric(labor_wedge_ols$coef[1])
 rho_tau_i <- 0
 
+# Create C_tilde
 c_tilde_11 <- 1
 c_tilde_12 <- 0
-c_tilde_21 <- - beta * alpha * capital_ss^(alpha - 1)*labor_ss ^(1 - alpha) * (alpha -1) / (1+alpha)
+c_tilde_21 <- - beta * alpha * capital_ss^(alpha - 1)*labor_ss ^(1 - alpha) *
+  (alpha -1) / (1+alpha)
 c_tilde_22 <- 1 - c_tilde_21
 
 c_tilde <- matrix(c(c_tilde_11, c_tilde_21,c_tilde_12, c_tilde_22), nrow = 2, ncol = 2)
 
+# Create A_tilde
 a_tilde_11 <- 1 - delta + 2 *alpha *delta * output_ss / (1+alpha) / investment_ss
-a_tilde_12 <- (-delta * output_ss * (1 - alpha) - consumption_ss * (1+alpha))/(investment_ss * (1+alpha))
+a_tilde_12 <- (-delta * output_ss * (1 - alpha) - consumption_ss * (1+alpha))/
+  (investment_ss * (1+alpha))
 a_tilde_21 <- 0
 a_tilde_22 <- 1
 
 a_tilde <- matrix(c(a_tilde_11, a_tilde_21,a_tilde_12, a_tilde_22), nrow = 2, ncol = 2)
 
+# Create B_tilde
 b_tilde_11 <- 2 *delta *output_ss
-b_tilde_12 <- - delta * investment_ss / output_ss
+b_tilde_12 <- - delta * government_ss / investment_ss
 b_tilde_13 <- - delta * output_ss *(1-alpha) / investment_ss / (1+alpha)
 b_tilde_14 <- 0
-b_tilde_21 <- beta * alpha * capital_ss^(alpha - 1) * labor_ss^(1 - alpha) * 2 * rho_a / (1+alpha)
+b_tilde_21 <- beta * alpha * capital_ss^(alpha - 1) * 
+  labor_ss^(1 - alpha) * 2 * rho_a / (1+alpha)
 b_tilde_22 <- 0
-b_tilde_23 <- beta * alpha * capital_ss^(alpha - 1) * labor_ss^(1 - alpha) *(alpha - 1) / (1 + alpha) * rho_tau_l
-b_tilde_24 <- -1
+b_tilde_23 <- beta * alpha * capital_ss^(alpha - 1) *
+  labor_ss^(1 - alpha) *(alpha - 1) / (1 + alpha) * rho_tau_l
+b_tilde_24 <- (1-delta) * rho_tau_i -1
 
-b_tilde <- matrix(c(b_tilde_11, b_tilde_21,b_tilde_12, b_tilde_22,b_tilde_13, b_tilde_23,b_tilde_14, b_tilde_24), nrow = 2, ncol = 4)
+b_tilde <- matrix(c(b_tilde_11, b_tilde_21,b_tilde_12, b_tilde_22,
+                    b_tilde_13, b_tilde_23,b_tilde_14, b_tilde_24), 
+                  nrow = 2, ncol = 4)
 
+# Create A and B
 a <- solve(c_tilde) %*% a_tilde
 b <- solve(c_tilde) %*% b_tilde
 
-eigen(a)
+# Eigen decomposition of A
+lambda <- diag(eigen(a)$values)
+q <- eigen(a)$vector
+q_inv <- solve(q)
+d <- q_inv %*% b
+```
+
+```{r problem_5a_table, echo = FALSE, warning=FALSE}
+# Make some tables!
+a %>% round(3) %>% kable(caption = "A")
+b %>% round(3) %>% kable(caption = "B")
+lambda %>% round(3) %>% kable(caption = "Lambda")
+q %>% round(3) %>% kable(caption = "Q")
+q_inv %>% round(3) %>% kable(caption = "Q-Inverse")
+```
+
+With $|\lambda_1| > 1$, we can iterate $y_{1t}$ forward:
+
+\begin{align*}
+\implies E_t[y_{1,t+1}]]
+&= \lambda_1y_{1,t} + D_1z_t \\
+\implies y_{1, t}
+&= \lambda_1^{-1}E_t[y_{1,t+1}] +\lambda_1^{-1}D_1z_t \\
+& = \lim_{j \to \infty}\lambda_1^{-j}y_{1,t+j} + \lambda_1^{-1}D_1 \sum_{j=0}^\infty \lambda_1^{-j} E_t[z_{t+j}] \\
+& = \lambda_1^{-1}D_1 \sum_{j=0}^\infty \lambda_1^{-j} \rho^j z_{t} \\
+ &= \lambda_1^{-1}D_1 (I_4- \lambda_1^{-1} \rho)^{-1} z_{t} \\
+ &= \Theta z_{t} \\
+\rho 
+&:= diag(\rho_a, \rho_g, \rho_{\tau_L}, \rho_{\tau_I}) \\
+\Theta 
+&:= \lambda_1^{-1}D_1 (I_4- \lambda_1^{-1} \rho)^{-1}
+\end{align*}
+
+```{r problem_5b, echo = FALSE, warning =FALSE}
+rho <- diag(c(rho_a, rho_g, rho_tau_l, rho_tau_i))
+i_4 <- diag(rep(1, 4))
+lambda_1 <- as.numeric(lambda[1, 1])
+theta <- (1/lambda_1) * d[1,] %*% solve(i_4 - (1/lambda_1) * rho)
+```
+
+```{r problem_5b_table, echo = FALSE, warning =FALSE}
+theta %>% round(3) %>% kable(caption = "Theta")
+```
+
+Thus, we can solve for $\hat{\tau_{I_t}}$:
+
+\begin{align*}
+\implies 
+y_{1, t} &= \Theta z_t \\
+\implies
+q_{11} k_t + q_{12} c_t &= \Theta_1 a_t + \Theta_2 g_t + \Theta_3 \hat{\tau_{L_t}} + \Theta_4 \hat{\tau_{I_t}} \\
+\hat{\tau_{I_t}} &= \frac{q_{11} k_t + q_{12} c_t - \Theta_1 a_t - \Theta_2 g_t - \Theta_3 \hat{\tau_{L_t}}}{\Theta_4}\\
+Q^{-1} &:= \begin{pmatrix} q_{11} & q_{12} \\ q_{21} & q_{22} \end{pmatrix} 
+\end{align*}
+
+
+```{r problem_5c, echo = FALSE, results = "asis"}
+data_wedge_2 <- data_wedge %>%
+  right_join( data_hp %>% select(date, consumption, capital), by="date") %>%
+  mutate(investment_w = (q_inv[1, 1] * capital + q_inv[1, 2] * consumption - 
+                           theta[1] * efficiency - theta[2] * government - 
+                           theta[3] * labor_w)/ theta[4]) %>%
+  select(-capital, -consumption)
+
+investment_wedge_ols <- lm(investment_w ~ lag(investment_w)- 1, data = data_wedge_2)
+```
+
+```{r problem_5c_plot, echo = FALSE, results = "asis"}
+data_wedge_2 %>%
+  pivot_longer(-date) %>%
+  ggplot(aes(x=date, y=value, col = name)) +
+  geom_line() +
+  ggtitle("Efficiency, Government, Labor, and Investment Wedges")
+
+stargazer(investment_wedge_ols,
+          header = FALSE,
+          omit.stat = c("rsq", "f", "ser"),
+          title = "Investment Wedge Persistance (OLS)")
+```
+
+\pagebreak
+
+6. Solve the fixed-point problem to estimate $\tau_{I_t}$: conjecture a value of $\rho_{\tau_I}$, solve numerically the model for consumption as a function of capital and wedges, use the estimated values of consumption and other wedges to infer the series of $\tau_{I_t}$, run AR(1) regression and estimate $\rho_{\tau_I}$, iterate until convergence.
+
+Solving for the fixed-point takes the following number of iterations and the value of $\rho_{\tau_I}$ does not change much:
+
+```{r problem_6, echo=FALSE, results = "asis"}
+rho_tau_i <- 0
+iter <- 1
+max_iter <- 1000
+tolerance <- 0.00001
+
+while(TRUE) {
+  # print(iter)
+  # print(rho_tau_i)
+  
+  b_tilde_24 <- (1-delta) * rho_tau_i -1
+
+  b_tilde <- matrix(c(b_tilde_11, b_tilde_21,b_tilde_12, b_tilde_22,
+                      b_tilde_13,b_tilde_23,b_tilde_14, b_tilde_24),
+                    nrow = 2, ncol = 4)
+
+  b <- solve(c_tilde) %*% b_tilde
+
+  d <- q_inv %*% b
+
+  data_wedge_3 <- data_wedge %>%
+    right_join( data_hp %>% select(date, consumption, capital), by="date") %>%
+    mutate(investment_w = (q_inv[1, 1] * capital + q_inv[1, 2] * consumption - 
+                             theta[1] * efficiency - theta[2] * government - 
+                             theta[3] * labor_w)/ theta[4]) %>%
+    select(-capital, -consumption)
+
+  investment_wedge_ols <- lm(investment_w ~ lag(investment_w)- 1, data = data_wedge_3)
+
+  rho_tau_i_new <- as.numeric(investment_wedge_ols$coefficients[1])
+
+  if (abs(rho_tau_i - rho_tau_i_new) < tolerance) break
+  if (iter > max_iter) {
+    print("Error in problem 6 code")
+    break
+  }
+  
+  rho_tau_i <-(rho_tau_i +rho_tau_i_new)/ 2
+  iter <- iter + 1
+}
+```
+
+```{r problem_6_table, echo=FALSE, results = "asis"}
+print(iter)
+
+stargazer(investment_wedge_ols,
+          header = FALSE,
+          omit.stat = c("rsq", "f", "ser"),
+          title = "Investment Wedge Persistance (OLS)")
+```
+
+7. Draw one large figure that shows dynamics of all wedges during the period.
+
+Two figures are below.  The first has all wedges on the same panel and the second separates them out into different panels.
+
+```{r problem_7_plot, echo=FALSE}
+data_wedge_3 %>%
+  pivot_longer(-date) %>%
+  ggplot(aes(x=date, y=value, col = name)) +
+  geom_line() +
+  ggtitle("Efficiency, Government, Labor, and Investment Wedges")
+
+data_wedge_3 %>%
+  pivot_longer(-date) %>%
+  ggplot(aes(x=date, y=value, col = name)) +
+  geom_line() +
+  ggtitle("Efficiency, Government, Labor, and Investment Wedges") +
+  facet_wrap(~name)
+```
+
+\pagebreak
+
+8. Solve the model separately for each wedge.  Show a figure with the actual GDP and the four counterfactual series of output.  Which wedge explains most of the contraction during the Great Recession of 2009?  During the Great Lockdown of 2020?  Explain.
+
+There are three figures below.  The first is the entire period with output (red) and the four counterfactual series of output (yellow, green, blue, purple).  Most notably, the counterfactual output series based on the investment wedge (blue) is the most volatile.
+
+The second shows 2007-2009 with the first period normalized to zero. Output (red) hovers around zero and then drops in mid-2008 and stays low until mid-2009 where it slowly rebounds.  A combination of the efficiency wedge (yellow) and the labor wedge (purple) seems to most affect output. The series based on the efficiency wedge drops between the third and fourth quarter of 2008, but quickly return to about zero in mid-2009.  The series based on the labor wedge drops thoroughout 2009 and stays low for the rest of 2010.
+
+The third shows 2020 with the first period normalized to zero.  Output (red) drops from the first quarter to the second quarter of 2008.  The labor wedge (purple) seems to be the main driver of this drop with the counterfactual output series increasing or remaining flat between the first and second quarters.
+
+```{r problem_8, echo = FALSE}
+simulate_model <- function(df, zero_efficiency = TRUE, zero_government = TRUE, 
+                           zero_labor_w = TRUE, zero_investment_w = TRUE) {
+  if (zero_efficiency) {df$efficiency = 0}
+  if (zero_government) {df$government = 0}
+  if (zero_labor_w) {df$labor_w = 0}
+  if (zero_investment_w) {df$investment_w = 0}
+  
+  for (i in 2:nrow(df)) {
+    df$consumption[i-1] <- (-q_inv[1, 1] * df$capital[i-1] +
+                              theta[1] * df$efficiency[i-1] +
+                              theta[2] * df$government[i-1] +
+                              theta[3] * df$labor_w[i-1] +
+                              theta[4] * df$investment_w[i-1])/ q_inv[1, 2]
+    
+    df$capital[i] <- 
+      (1-delta+(2*alpha*delta*output_ss)/((1+alpha)*investment_ss))*df$capital[i-1] +
+      (-delta*output_ss*(1-alpha)-consumption_ss*(1+alpha))/
+      (investment_ss*(1+alpha))*df$consumption[i-1] +
+      2*delta*output_ss/ ((1 +alpha)*investment_ss) * df$efficiency[i-1] +
+      (-delta* government_ss) / investment_ss * df$government[i-1] +
+      (-delta*output_ss * (1-alpha))/(investment_ss * (1+alpha)) * df$labor_w[i-1]
+  }
+  
+  df <- df %>%
+    mutate(labor = alpha/(1+alpha)*capital +
+             (-1)/(1+alpha) * consumption +
+             1/(1+alpha) * efficiency +
+             (-1)/(1+alpha) * labor_w,
+           output = efficiency + alpha * capital + (1-alpha) * labor) 
+  return(df$output)
+}
+```
+
+```{r problem_8_plot, echo = FALSE}
+data_simulations <- data_wedge_3 %>%
+  right_join(data_hp, by ="date") %>%
+  mutate(output_efficiency = simulate_model(., zero_efficiency=FALSE),
+         output_government = simulate_model(., zero_government=FALSE),
+         output_labor_w = simulate_model(., zero_labor_w=FALSE),
+         output_investment_w = simulate_model(., zero_investment_w=FALSE)) %>%
+  select(date, starts_with("output")) 
+
+data_simulations %>%
+  pivot_longer(-date) %>%
+  ggplot(aes(x=date, y = value, col = name)) +
+  geom_line() + 
+  ggtitle("Effects of Wedges on Output: 1980-2020")
+
+data_simulations %>%
+  filter(year(date) %in% 2007:2010) %>%
+  transmute(date,
+            output =output - head(output, 1),
+            output_efficiency =output_efficiency - head(output_efficiency, 1),
+            output_government =output_government - head(output_government, 1),
+            output_labor_w =output_labor_w - head(output_labor_w, 1),
+            output_investment_w =output_investment_w - head(output_investment_w, 1)) %>%
+  pivot_longer(-date) %>%
+  ggplot(aes(x=date, y = value, col = name)) +
+  geom_line()+ 
+  ggtitle("Effects of Wedges on Output: Great Recession of 2009")
+
+data_simulations %>%
+  filter(year(date) == 2020) %>%
+  transmute(date,
+            output =output - head(output, 1),
+            output_efficiency =output_efficiency - head(output_efficiency, 1),
+            output_government =output_government - head(output_government, 1),
+            output_labor_w =output_labor_w - head(output_labor_w, 1),
+            output_investment_w =output_investment_w - head(output_investment_w, 1)) %>%
+  pivot_longer(-date) %>%
+  ggplot(aes(x=date, y = value, col = name)) +
+  geom_line()+ 
+  ggtitle("Effects of Wedges on Output: Great Lockdown of 2020")
 
 ```
 
@@ -487,7 +779,7 @@ eigen(a)
 
 # Appendix
 
-```{r problem1a}
+```{r appendix_data}
 # PCECC96 Real Personal Consumption Expenditures  Billions of Chained 2012 Dollars, 
 #                                                 Seasonally Adjusted Annual Rate
 # GDPC1   Real Gross Domestic Product             Billions of Chained 2012 Dollars
@@ -497,122 +789,46 @@ eigen(a)
 # GPDIC1  Real Gross Private Domestic Investment  Billions of Chained 2012 Dollars
 #                                                 Seasonally Adjusted Annual Rate
 ```
-
-
-```{r problem4_sym, echo = FALSE, eval =FALSE}
-tau_l_bar <- .1
-tau_i_bar <- .1
-alpha <- 1/3
-beta <- .99
-sigma <- 1
-phi <- 1
-
-# x[1] is kbar
-# x[2] is lbar
-# x[3] is cbar
-solve_ss <- function(x) {
-  y <- numeric(3)
-  
-  y[1] <- (2/3)*x[1]^alpha *x[2]^(1-alpha) - x[3] - delta * x[1]
-  y[2] <- x[3] *x[2]^(1+alpha) - (1-tau_l_bar) *(1 -alpha) * x[1]^alpha
-  y[3] <- 1 + tau_i_bar - beta  * ( alpha *x[1]^(alpha-1) * x[2]^(1-alpha) + (1-delta) * (1+tau_i_bar))
-  
-  return(y)
-}
-
-nleqslv(c(29.26, 1.15, 1.53), solve_ss)
-
+```{r appendix_setup, ref.label="setup", eval = FALSE}
 ```
 
-Log-linearizing the investment and labor wage:
+## Problem 1
 
-Thus, the equilibrium conditions become:
+```{r appendix_1a, ref.label="problem_1a", eval = FALSE}
+```
 
-\begin{align*}
-A_tK_t^\alpha L_t^{1-\alpha} &= C_t + I_t + G_t \\
-C_tL_t &= (1-\tau_{L_t})A_t (1 -\alpha)K_t^\alpha L_t^{-\alpha} \\
-\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} (A_{t+1} \alpha K_{t+1}^{\alpha-1} L_{t+1}^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}))
-\end{align*}
+## Problem 2
 
-In the steady state, $K_t = K_{t+1} = \bar{K}$, $C_t = C_{t+1} = \bar{C}$, $L_t = L_{t+1} = \bar{L}$, $I_t = I_{t+1} = \delta \bar{K}$, $G_t = G_{t+1} = \bar{G} = \bar{Y}/3$, and $A_t = A_{t+1} = \bar{A} = 1$.
+```{r appendix_2, ref.label="problem_2", eval = FALSE}
+```
 
-\begin{align*}
-(2/3)\bar{K}^\alpha \bar{L}^{1-\alpha} &= \bar{C} + \delta \bar{K} \\
-\bar{C}  &= (1-\bar{\tau_L}) (1 -\alpha)\bar{K}^\alpha\bar{L}^{-1-\alpha} \\
-1 + \bar{\tau_I} &= \beta  ( \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} + (1-\delta)(1+\bar{\tau_I}))
-\end{align*}
+## Problem 3
 
-The labor wedge is: 
+```{r appendix_3, ref.label="problem_3", eval = FALSE}
+```
 
-\begin{align*}
-C_tL_t^{1+\alpha} 
-&= (1-\tau_{L_t})A_t (1 -\alpha)K_t^\alpha \\
-\implies 
-c_t+ (1+\alpha) l_t 
-&= \hat{\tau_{L_t}}\frac{- \bar{\tau}_L}{1 - \bar{\tau}_L}+ a_t  + \alpha k_t \\
-\implies 
-\hat{\tau_{L_t}} 
-&= \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} a_t  + \alpha \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} k_t - \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} c_t -  (1+\alpha) \frac{1 - \bar{\tau}_L}{ \bar{\tau}_L} l_t
-\end{align*}
+## Problem 4
 
-The log-linearized Euler is:
+```{r appendix_4a, ref.label="problem_4a", eval = FALSE}
+```
+```{r appendix_4b, ref.label="problem_4b", eval = FALSE}
+```
 
-\begin{align*}
-\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} (A_{t+1} \alpha K_{t+1}^{\alpha-1} L_{t+1}^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}))\\
-X_{t+1} &:= A_{t+1} \alpha K_{t+1}^{\alpha-1} L_{t+1}^{1-\alpha} + (1-\delta)(1+\tau_{I_{t+1}}) \\
-\bar{X} &= \bar{A} \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} + (1-\delta)(1+\bar{\tau}_{I}) \\
-&= \frac{1 + \bar{\tau}_I}{\beta}\\
-\implies 
-x_{t+1} 
-&= \frac{\bar{A} \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}}{\bar{X}} (a_{t+1} + (\alpha - 1)k_{t+1} + (1-\alpha)l_{t+1}) + \frac{(1-\delta)(1+\bar{\tau}_{I})}{\bar{X}}(\frac{\bar{\tau}_I}{1 + \bar{\tau}_I}) \hat{\tau}_{I_{t+1}} \\
-&= \beta \frac{ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} }{1 + \bar{\tau}_I}(a_{t+1} + (1-\alpha)(l_{t+1} - k_{t+1}))
-+ \beta\frac{(1-\delta)\bar{\tau}_I \hat{\tau}_{I_{t+1}}}{1 + \bar{\tau}_I} \\
-\implies
-\frac{1}{C_t} (1 + \tau_{I_t}) &= \beta E_t \frac{1}{C_{t+1}} X_{t+1}\\
-\implies
-\frac{\bar{\tau}_{I}}{1 + \bar{\tau}_{I}}\hat{\tau}_{I_t} - c_t &= E_t[x_{t+1}] - E_t [c_{t+1}]\\
-\implies
-\frac{\bar{\tau}_{I}}{1 + \bar{\tau}_{I}}\hat{\tau}_{I_t} - c_t &= E_t[\beta \frac{ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} }{1 + \bar{\tau}_I}(a_{t+1} + (1-\alpha)(l_{t+1} - k_{t+1}))
-+ \beta\frac{(1-\delta)\bar{\tau}_I \hat{\tau}_{I_{t+1}}}{1 + \bar{\tau}_I}] - E_t [c_{t+1}]\\
-\implies
-E_t [c_{t+1}] - c_t+ \frac{\bar{\tau}_{I}}{1 + \bar{\tau}_{I}}\hat{\tau}_{I_t}  &= \beta E_t[ \frac{ \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha} }{1 + \bar{\tau}_I}(a_{t+1} + (1-\alpha)(l_{t+1} - k_{t+1}))
-+ \frac{(1-\delta)\bar{\tau}_I }{1 + \bar{\tau}_I} \hat{\tau}_{I_{t+1}}] \\
-\end{align*}
+## Problem 5
 
+```{r appendix_5a, ref.label="problem_5a", eval = FALSE}
+```
+```{r appendix_5b, ref.label="problem_5b", eval = FALSE}
+```
+```{r appendix_5c, ref.label="problem_5c", eval = FALSE}
+```
 
-$$
-E_t [c_{t+1}]  =  
-c_t - 
-\hat{\tau}_{I_t} + 
-\beta  \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}E_t[a_{t+1}] + 
-\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t[l_{t+1}] - 
-\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t[k_{t+1}] + 
-\beta (1-\delta) E_t[\hat{\tau}_{I_{t+1}}] \\
-\implies
-E_t [c_{t+1}]  + 
-\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t[k_{t+1}] =  
-c_t - 
-\hat{\tau}_{I_t} + 
-\beta  \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\rho_a a_t \\
-+ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t\Bigg[\frac{\alpha}{1+\alpha} k_{t+} + \frac{-1}{1+\alpha}c_{t+1} + \frac{1}{1+\alpha}a_{t+1} + \frac{-1}{1+\alpha}\hat{\tau}_{L_{t+1}}\Bigg] \\
-\implies
-E_t [c_{t+1}]  + 
-\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t[k_{t+1}] =  
-c_t - 
-\hat{\tau}_{I_t} + 
-\beta  \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\rho_a a_t \\
-+ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{\alpha}{1+\alpha} E_t[k_{t+1}]
-+ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{-1}{1+\alpha} E_t[c_{t+1}] \\
-+ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{1}{1+\alpha}E_t[a_{t+1}] 
-+ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{-1}{1+\alpha}E_t[\hat{\tau}_{L_{t+1}}] \\
-\implies
-E_t [c_{t+1}]  + 
-\beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)E_t[k_{t+1}] =  
-c_t - 
-\hat{\tau}_{I_t} + 
-\beta  \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}\rho_a a_t \\
-+ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{\alpha}{1+\alpha} E_t[k_{t+1}]
-+ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{-1}{1+\alpha} E_t[c_{t+1}] \\
-+ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{1}{1+\alpha}\rho_a a_t 
-+ \beta \alpha \bar{K}^{\alpha-1} \bar{L}^{1-\alpha}(1-\alpha)\frac{-1}{1+\alpha}\rho_{\tau_L} \hat{\tau}_{L_t} \\
-$$
+## Problem 6
+
+```{r appendix_6, ref.label="problem_6", eval = FALSE}
+```
+
+## Problem 8
+
+```{r appendix_8, ref.label="problem_8", eval = FALSE}
+```
