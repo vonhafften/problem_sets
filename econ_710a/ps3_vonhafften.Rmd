@@ -124,9 +124,9 @@ B_{12}E[X_2Z_1] + B_{22}E[X_2X_2']
 &= \sigma_U^2  
 \begin{pmatrix} 
 A_{11}B_{11}E[Z_1^2]+A_{11}B_{21}E[Z_1X_2'] + A_{12}B_{11}E[X_2Z_1] + A_{12}B_{21}E[X_2X_2'] & 
-A_{11}B_{12}E[Z_1^2]+A_{11}B_{22}E[Z_1X_2'] + A_{12} B_{12}E[X_2Z_1] +A_{12}B_{22}E[X_2X_2'] \\ 
-A_{21}B_{11}E[Z_1^2]+A_{21}B_{21}E[Z_1X_2'] + A_{22}B_{11}E[X_2Z_1] + A_{22}B_{21}E[X_2X_2'] & 
-A_{21}B_{12}E[Z_1^2]+A_{21}B_{22}E[Z_1X_2'] + A_{22}B_{12}E[X_2Z_1] + A_{22}B_{22}E[X_2X_2'] 
+... \\ 
+... & 
+...
 \end{pmatrix}
 \end{align*}
 
@@ -138,7 +138,6 @@ A_{21}B_{12}E[Z_1^2]+A_{21}B_{22}E[Z_1X_2'] + A_{22}B_{12}E[X_2Z_1] + A_{22}B_{2
 &+ ( -E[Z_1X_1]^{-1} E[Z_1X_2'] E[\tilde{Z}_1 X_1]^{-1})E[\tilde{Z}_1 X_1]^{-1}E[X_2Z_1] \\
 &+ ( -E[Z_1X_1]^{-1} E[Z_1X_2'] E[\tilde{Z}_1 X_1]^{-1})( -E[Z_1X_1]^{-1} E[Z_1X_2'] E[\tilde{Z}_1 X_1]^{-1})E[X_2X_2']] \\
 &= \frac{\sigma_U^2}{E[\tilde{Z}_1^2]}\frac{E[\tilde{Z}_1^2]^2}{E[\tilde{Z}_1X_1]^2} \\
-&= \frac{\sigma_U^2E[\tilde{Z}_1^2]}{E[\tilde{Z}_1X_1]^2} \\
 &= \frac{\sigma_U^2}{E[\tilde{Z}_1^2]\pi_1^2}
 \end{align*}
 
@@ -146,35 +145,175 @@ A_{21}B_{12}E[Z_1^2]+A_{21}B_{22}E[Z_1X_2'] + A_{22}B_{12}E[X_2Z_1] + A_{22}B_{2
 
 (iii) Explain, using "regression language", what $(\pi_1, \pi_2')'$ and $\tilde{Z}_1$ is.
 
-$(\pi_1, \pi_2')'$ are the coefficients of the projection of $X_1$ onto $Z$.  $\tilde{Z}_1$ is the regression error from the projection of $Z_1$ on $X$.
+$(\pi_1, \pi_2')'$ are the coefficients of the projection of $X_1$ onto $Z$.  $\tilde{Z}_1$ is the regression error from the projection of $Z_1$ on $X_2$.
 
 (iv) Show that $\Omega_{11} \ge \frac{\sigma_U^2}{E[Z_*^2]}$ where $Z_* = E[X_1 | Z] - X_2' E[X_2X_2']^{-1}E[X_2E[X_1 | Z]]$ and provide restrictions on $E[X_1 | Z]$ such that $\Omega_{11} = \frac{\sigma_U^2}{E[Z_*^2]}$.
 
-...
+First, note that 
+
+\begin{align*}
+E[\tilde{Z}_1 X_2] 
+&= E[X_2 \tilde{Z}_1] \\
+&= E[X_2(Z_1 - X_2'E[X_2X_2']^{-1}E[X_2Z_1])] \\
+&= E[X_2Z_1 - X_2X_2'E[X_2X_2']^{-1}E[X_2Z_1]] \\
+&= E[X_2Z_1] - E[X_2X_2']E[X_2X_2']^{-1}E[X_2Z_1] \\
+&= E[X_2Z_1] - E[X_2Z_1] \\
+&= 0
+\end{align*}
+
+This implies:
+
+\begin{align*}
+E[\tilde{Z}_1 X_2] &= 0 \\
+\implies E[\tilde{Z}_1 X_2] E[X_2X_2']^{-1} E[X_2X_2'] &= 0 \\
+\implies E[\tilde{Z}_1 X_2 E[X_2X_2']^{-1} E[X_2E[X_1|Z]]] &= 0
+\end{align*}
+
+\begin{align*}
+E[\tilde{Z}_1 X_1]  
+&= E[\tilde{Z}_1 E[X_1|Z]] \\
+&= E[\tilde{Z}_1 E[X_1|Z]] + E[\tilde{Z}_1 X_2 E[X_2X_2']^{-1} E[X_2E[X_1|Z]]]\\
+&= E[\tilde{Z}_1 (E[X_1|Z] + X_2 E[X_2X_2']^{-1} E[X_2E[X_1|Z]])]\\
+&= E[\tilde{Z}_1 Z_*]
+\end{align*}
+
+By Cauchy-Schwarz,
+
+\begin{align*}
+\Omega_{11} 
+&= \frac{\sigma_U^2}{E[\tilde{Z}_1^2]\pi_1^2} \\
+&= \frac{\sigma_U^2E[\tilde{Z}_1^2]}{E[\tilde{Z}_1X_1]^2} \\
+&= \frac{\sigma_U^2E[\tilde{Z}_1^2]}{E[\tilde{Z}_1Z_*]^2} \\
+&\ge \frac{\sigma_U^2E[\tilde{Z}_1^2]}{E[\tilde{Z}_1^2]E[Z_*^2]} \\
+&= \frac{\sigma_U^2}{E[Z_*^2]}
+\end{align*}
+
+\pagebreak
+
+The restriction on $E[X_1 | Z]$:
+
+\begin{align*}
+E[X_1 | Z] 
+&= Z_1 \pi_1 + X_2' \pi_2 \\
+\implies Z_* 
+&= Z_1 \pi_1 + X_2' \pi_2 - X_2' E[X_2X_2']^{-1}E[X_2(Z_1 \pi_1 + X_2' \pi_2)]\\
+&= Z_1 \pi_1 + X_2' \pi_2 - X_2' E[X_2X_2']^{-1}E[X_2Z_1] \pi_1 - X_2' E[X_2X_2']^{-1}E[X_2X_2'] \pi_2\\
+&= Z_1 \pi_1 + X_2' \pi_2 - X_2' E[X_2X_2']^{-1}E[X_2Z_1] \pi_1 - X_2' \pi_2 \\
+&= (Z_1 - X_2' E[X_2X_2']^{-1}E[X_2Z_1]) \pi_1 \\
+&= \tilde{Z}_1 \pi_1 \\
+\implies 
+\frac{\sigma_U^2}{E[Z_*^2]}
+&= \frac{\sigma_U^2}{E[(\tilde{Z}_1 \pi_1)^2]} \\
+&= \frac{\sigma_U^2}{E[\tilde{Z}_1^2 \pi_1^2]} \\
+&= \frac{\sigma_U^2}{E[\tilde{Z}_1^2 ]\pi_1^2} \\
+&= \Omega_{11}
+\end{align*}
 
 (v) Suppose that $X_2 = 1$. Write $\Omega_{11}/\sigma_U^2$ as a function of variances and covariances involving $Z_1$ and $X_1$.
 
-...
+\begin{align*}
+X_2 
+&= 1 \\
+\implies
+Z_1 - (1)E[(1)(1)]^{-1}E[(1)Z_1] 
+&= Z_1 - E[Z_1] \\
+\implies
+\Omega_{11}
+&= \frac{\sigma_U^2E[\tilde{Z}_1^2 ]}{E[\tilde{Z}_1 X_1]^2} \\
+&= \frac{\sigma_U^2E[(Z_1 - E[Z_1])^2 ]}{E[(Z_1 - E[Z_1])X_1 ]^2} \\
+&= \frac{\sigma_U^2 Var[Z_1]}{Cov[Z_1, X_1 ]^2} 
+\end{align*}
 
 \pagebreak
 
 2. Let $(Y, X, Z)'$ be a random vector such that $Y = X \beta_1 + U, E[U|Z] = 0$ where $E[Y_4+X_4+Z_4]<\infty$. Also, let $\{(Y_i,X_i,Z_i)'\}^n_{i=1}$ be a random sample from the distribution of $(Y,X',Z')'$. Let $h$ be a function of $Z$ such that $E[h(Z)^4]<\infty$.
 
-(i) Provide conditions such that $E[h(Z)(Y - X \beta_1)] = 0$ iff $\beta = \beta_1$.
+(i) Provide conditions such that $E[h(Z)(Y - X \beta)] = 0$ iff $\beta = \beta_1$.
 
-...
+On the condition that $E[h(Z)X] \neq 0$:
+
+\begin{align*}
+E[h(Z)(Y - X \beta)]
+&= E[h(Z)(X \beta_1 + U - X \beta)] \\
+&= E[h(Z)U] + E[h(Z)X (\beta_1 - \beta) ] \\
+&= E[h(Z)E[U|Z]] + E[h(Z)X] (\beta_1 - \beta) \\
+&= E[h(Z)X] (\beta_1 - \beta)\\
+\iff \beta 
+&= \beta_1
+\end{align*}
 
 (ii) Derive a method of moments estimator of $\beta_1$, say $\hat{\beta}_1^h$, using the IV moment in (i).
 
-...
+The method of moments estimator is:
+
+\begin{align*}
+\frac{1}{n}\sum_{i = 1}^{n}h(Z_i)(Y_i - X_i \hat{\beta}_1^h) 
+&= 0 \\
+\implies
+\frac{1}{n}\sum_{i = 1}^{n}h(Z_i)Y_i - \frac{1}{n}\sum_{i = 1}^{n}h(Z_i) X_i \hat{\beta}_1^h 
+&= 0 \\
+\implies
+\hat{\beta}_1^h 
+&=  \frac{\frac{1}{n} \sum_{i = 1}^{n}h(Z_i)Y_i}{\frac{1}{n}\sum_{i = 1}^{n}h(Z_i) X_i}  \\
+&=  \frac{\frac{1}{n} \sum_{i = 1}^{n}h(Z_i)(X_i \beta_1 + U_i)}{\frac{1}{n}\sum_{i = 1}^{n}h(Z_i) X_i}  \\
+&=  \frac{\frac{1}{n} \sum_{i = 1}^{n}h(Z_i)X_i \beta_1}{\frac{1}{n}\sum_{i = 1}^{n}h(Z_i) X_i} 
++ \frac{\frac{1}{n} \sum_{i = 1}^{n}h(Z_i)U_i}{\frac{1}{n}\sum_{i = 1}^{n}h(Z_i) X_i}\\
+&=  \beta_1
++ \frac{\frac{1}{n} \sum_{i = 1}^{n}h(Z_i)U_i}{\frac{1}{n}\sum_{i = 1}^{n}h(Z_i) X_i}
+\end{align*}
 
 (iii) Under the conditions provided in (i), show that $\sqrt{n}(\hat{\beta}_1^h - \beta_1) \to_d N(0, \Omega^h)$ for some asymptotic variance $\Omega^h \ge 0$.
 
-...
+$$
+\sqrt{n}(\hat{\beta}_1^h - \beta_1)
+= \frac{\frac{1}{\sqrt{n}} \sum_{i = 1}^{n}h(Z_i)U_i}
+{\frac{1}{n}\sum_{i = 1}^{n}h(Z_i) X_i}
+$$
+
+Because $E[h(Z) X]^2 < E[h(Z)^2]E[X^2] < \infty$, the law of large numbers implies that
+
+$$
+\frac{1}{n}\sum_{i = 1}^{n} h(Z_i) X_i \to_p E[h(Z) X]
+$$
+
+By the condition from (i), $E[h(Z) X] \neq 0$.  Because $E[h(Z)^2U^2]^2 \le E[h(Z)^4]E[U^4] < \infty$, the central limit theorem implies that
+
+$$
+\frac{1}{\sqrt{n}} \sum_{i = 1}^{n}h(Z_i)U_i \to_d N(0, E[h(Z)^2U^2])
+$$
+
+Finally, by the continuous mapping theorem,
+
+$$
+\sqrt{n}(\hat{\beta}_1^h - \beta_1) \\
+= \frac{\frac{1}{\sqrt{n}} \sum_{i = 1}^{n}h(Z_i)U_i}
+{\frac{1}{n}\sum_{i = 1}^{n}h(Z_i) X_i} \\
+\to_d N(0, \frac{E[h(Z)^2U^2]}{E[h(Z)X]^2})
+$$
+
 
 (iv) Show that $\Omega^h \ge E[\frac{E[X|Z]^2}{E[U^2|Z]}]^{-1}$ and find a function $h$, such that $\Omega^h$ achieves this lower bound.
 
-...
+From (iii),
+
+\begin{align*}
+\Omega^h 
+&= \frac{E[h(Z)^2U^2]}{E[h(Z)X]^2}  \\
+&= \frac{E[h(Z)^2E[U^2|Z]]}{E[h(Z)E[X|Z]]^2} \\
+&= \frac{E[h(Z)^2E[U^2|Z]]}
+{E[h(Z) \sqrt{E[U^2|Z]}\frac{E[X|Z]}{\sqrt{E[U^2|Z]}}]^2} \\
+&\ge \frac{E[h(Z)^2E[U^2|Z]]}
+{E[h(Z)^2 E[U^2|Z]] E[\frac{E[X|Z]^2}{E[U^2|Z]}]} \\
+&= [ E[\frac{E[X|Z]^2}{E[U^2|Z]}]]^{-1} \\
+\end{align*}
+
+If $h(Z) = \frac{E[X|Z]}{E[U^2|Z]}$:
+
+\begin{align*}
+\Omega_h
+&= \frac{E[[\frac{E[X|Z]}{E[U^2|Z]}]^2U^2]}{E[\frac{E[X|Z]}{E[U^2|Z]}X]^2} \\
+&= [ E[\frac{E[X|Z]^2}{E[U^2|Z]}]]^{-1}
+\end{align*}
 
 \pagebreak
 
