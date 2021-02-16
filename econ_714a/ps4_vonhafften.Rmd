@@ -1,0 +1,56 @@
+---
+title: "ECON 714A - Problem Set 4"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "2/22/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+This problem asks you o  solve  a  model  of oligopolistic competition  from  Atkeson  and Burstein (AER 2008), which extends the Dixit-Stiglitz setup and is widely used to analyze heterogeneous markups and incomplete pass-through.
+
+Consider a static model with a continuum of sectors $k\in[0,1]$ and $i= 1,..N_k$ firms in sector $k$, each producing a unique variety of the good.  Households supply inelastically one unit of labor and have nested-CES preferences:
+
+$$
+C = \Bigg( \int C_k^{\frac{\rho - 1}{\rho}} dk \Bigg)^{\frac{\rho}{\rho - 1}}, 
+C = \Bigg( \sum_{i=1}^{N_k} C_{ik}^{\frac{\theta - 1}{\theta}} dk \Bigg)^{\frac{\theta}{\theta - 1}}, 
+\theta > \rho \ge 1.
+$$
+
+Production function of firm $i$ in sector $k$ is given by $Y_{ik} = A_{ik} L_{ik}$.
+
+1. Solve household cost minimization problem for the optimal demand $C_{ik}$, the sectoral price index $P_k$, and the aggregate price index $P$ as functions of producers’ prices.
+
+...
+
+2.  Assume that firms compete a la Bertrand, i.e. choose $P_{ik}$ taking the prices of other firms in a sector $P_{jk}, j\neq i$ as given.  Derive demand elasticity for a given firm and the optimal price.
+
+...
+
+3.  Prove that other things equal, firms with higher $A_{ik}$ set higher markups.
+
+...
+
+4.  Assume that $\rho=1 , \theta=  5,N_k=  20,  and \log A_{ik} \sim i.i.d. N(0,1)$.  Solve the model numerically by approximating the number of sectors with $K= 100,000$.  You will need an efficient algorithm to compute a sectoral equilibrium (search for a fixed point, do not use “solve”) nested in a general equilibrium loop solving for real wages.
+
+...
+
+5.  Compute the aggregate output $C$ of the economy and compare it to the first-best value.
+
+...
+
+6. Bonus task:  Does the sectoral equilibrium converge to the one under Betrand competition with homogeneous goods in the limit $\infty \to \infty$?
+
+...
+

@@ -22,6 +22,7 @@ library(mFilter)
 library(stargazer)
 library(nleqslv)
 library(knitr)
+library(reticulate)
 
 loadSymbols(c("PCECC96","GDPC1", "CE16OV", "GPDIC1"), 
       src = "FRED",
@@ -610,6 +611,69 @@ stargazer(investment_wedge_ols,
           header = FALSE,
           omit.stat = c("rsq", "f", "ser"),
           title = "Investment Wedge Persistance (OLS)")
+```
+
+
+```{r problem5_nleqslv, echo = FALSE, eval=FALSE}
+library(nleqslv)
+
+solve_ss <- function(x) {
+  y <- numeric(3)
+  
+  y[1] <- (2/3)*x[1]^alpha *x[2]^(1-alpha) - x[3] - delta * x[1]
+  y[2] <- x[3] *x[2]^(1+alpha) - (1-tau_l_bar) *(1 -alpha) * x[1]^alpha
+  y[3] <- 1 + tau_i_bar - beta  * ( alpha *x[1]^(alpha-1) * x[2]^(1-alpha) + (1-delta) * (1+tau_i_bar))
+  
+  return(y)
+}
+nleqslv(c(29.26, 1.15, 1.53), solve_ss)
+
+```
+
+```{python problem5_SymPy, echo = FALSE, eval}
+import sympy as sp
+
+# Initialize variables
+alpha=1/3
+beta = 0.99
+delta = .025
+g_bar_y_bar = 1/3
+rho_a = 0.7113903
+rho_g = 0.8558941
+rho_l = 0
+rho_i = 0.5724683
+
+l_t, l_t1, i_t, k_t, k_t1, c_t, c_t1 = sp.symbols('l_t l_t1 i_t k_t k_t1 c_t c_t1', real =True, positive = True)
+y_bar, i_bar, k_bar, l_bar, c_bar, g_bar = sp.symbols('y_bar i_bar k_bar l_bar c_bar g_bar', real = True, positive = True)
+a_t, g_t, tau_hat_l_t, tau_hat_i_t= sp.symbols('a_t g_t tau_hat_l_t tau_hat_i_t', real=True)
+
+# Solve SS
+ss1 = y_bar - c_bar - delta*k_bar - g_bar_y_bar * y_bar
+ss2 = y_bar - k_bar**alpha - l_bar ** (1-alpha)
+ss3 = c_bar + (1-alpha) * k_bar ** alpha * l_bar ** (-1-alpha)
+ss4 = 1 - beta *(alpha * k_bar **(alpha - 1)* l_bar ** (1-alpha) + (1- delta))
+
+print(sp.solveset((ss1,ss2, ss3, ss4), (c_bar, k_bar, l_bar, y_bar)))
+
+# consumption-labor equation
+cl_eq = l_t - alpha/(1+alpha) * k_t - (-1)/(1+alpha) * c_t - 1/(1+alpha) * a_t - (-1)/(1+alpha)*tau_hat_l_t
+cl_eq1 = l_t1 - alpha/(1+alpha) * k_t1 - (-1)/(1+alpha) * c_t1 - 1/(1+alpha) * a_t * rho_a - (-1)/(1+alpha) * rho_l * tau_hat_l_t
+
+# output equation
+o_eq = i_t - (a_t + alpha * k_t + (1-alpha)*l_t - c_bar*c_t - g_bar*g_t) / i_bar
+
+# lom equation
+lom_eq = k_t1 - (1-delta) *k_t - delta * i_t
+
+# euler equation
+e_eq = c_t1 - c_t + tau_hat_i_t - beta * alpha * k_bar **(alpha - 1) * l_bar **(1 - alpha) * (rho_a * a_t + (1-alpha)*(l_t1 - k_t1)) + (1-delta)* rho_i * tau_hat_i_t
+
+# print(e_eq)
+# print(e_eq.subs(l_t1, cl_eq1))
+
+# print(sp.solve((cl_eq,cl_eq1, o_eq, lom_eq, e_eq), (k_t1, c_t, k_t, a_t, g_t, tau_hat_i_t, tau_hat_l_t)))
+# print("Hello")
+# print(sp.solve((cl_eq,cl_eq1, o_eq, lom_eq, e_eq),  (c_t1, c_t, k_t, a_t, g_t, tau_hat_i_t, tau_hat_l_t)))
 ```
 
 \pagebreak

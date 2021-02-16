@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  12 FEB 2021 15:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  15 FEB 2021 07:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1142,24 +1142,24 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 765.
 [16] [17] [18] [19] [20]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1061.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1062.
 [21]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1061.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1062.
 (./ps3_vonhafften.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1061.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1061.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1062.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1062.
 
 Package rerunfilecheck Info: File `ps3_vonhafften.out' has not changed.
 (rerunfilecheck)             Checksum: 3B93A321172972F746D9E6389862E86D;798.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1061.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1062.
  ) 
 Here is how much of TeX's memory you used:
  13228 strings out of 493014
  193361 string characters out of 6133351
- 308355 words of memory out of 5000000
+ 308509 words of memory out of 5000000
  16451 multiletter control sequences out of 15000+600000
  83080 words of font info for 111 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1186,7 +1186,7 @@ pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/l
 ocal/texlive/2016/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texli
 ve/2016/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2016/te
 xmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on ps3_vonhafften.pdf (21 pages, 421841 bytes).
+Output written on ps3_vonhafften.pdf (21 pages, 421885 bytes).
 PDF statistics:
  326 PDF objects out of 1000 (max. 8388607)
  251 compressed objects within 3 object streams
