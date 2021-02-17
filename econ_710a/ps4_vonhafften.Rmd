@@ -31,6 +31,18 @@ $Pr(Complying) > 0 \iff Pr(X_U(1) = 1$ and $X_U(0) = 0) > 0$. Since $U_1 \ge 0$,
 
 (i) Find the autocovariance function $\gamma(k)$.
 
+For $k = 0$:
+
+\begin{align*}
+\gamma(0) 
+&= Cov(Y_t, Y_t) \\
+&= Var(Y_t) \\
+&= Var(\mu+\varepsilon_t+\theta_1\varepsilon_{t-1}+...+\theta_q \varepsilon_{t-q})\\
+&= Var(\varepsilon_t)+\theta_1^2 Var(\varepsilon_{t-1}+...+\theta_q^2 Var(\varepsilon_{t-q})\\
+&= \sigma^2+\theta_1^2  \sigma^2+...+\theta_q^2 \sigma^2\\
+&= \sigma^2(1 + \theta_1^2 +...+\theta_q^2)
+\end{align*}
+
 For $k = 1$:
 
 \begin{align*}
@@ -46,16 +58,21 @@ For $k = 1$:
 &= \sigma^2(\theta_1+\theta_1\theta_2+...+\theta_{q-1}\theta_q)
 \end{align*}
 
+\pagebreak
+
 For general $k$:
 
 $$
 \gamma(k) = 
 \begin{cases} 
+\sigma^2(1 + \theta_1^2 +...+\theta_q^2) 
+&\text{ if }
+k = 0 \\
 \sigma^2 (\theta_k + \theta_1 \theta_{k+1} + \theta_2\theta_{k+1} + ... + \theta_{q-k}\theta_q)
-\text{, if }
-k \le q\\
-0
-\text{, if }
+&\text{ if }
+0 < k \le q\\
+0,
+&\text{ if }
 k > q
 \end{cases}
 $$
@@ -67,17 +84,72 @@ If $q=1$:
 $$
 Y_{t} = \mu+\varepsilon_t+\theta_1\varepsilon_{t-1}
 $$
+
 $\gamma(k)$ simplies to
 
-...
+$$
+\gamma(k)
+=
+\begin{cases}
+\sigma^2(1 + \theta_1^2 ),
+&\text{ if }
+k = 0 \\
+\sigma^2\theta_1,
+&\text{ if }
+k = 1 \\
+0,
+&\text{ if }
+k > 1
+\end{cases}
+$$
+
+The autocorrelation function:
+
+\begin{align*}
+\rho(k) 
+&= \frac{\gamma(k)}{\gamma(0)} \\
+&=
+\begin{cases}
+\frac{\sigma^2(1 + \theta_1^2 )}{\sigma^2(1 + \theta_1^2 )},
+&\text{ if }
+k = 0 \\
+\frac{\sigma^2\theta_1}{\sigma^2(1 + \theta_1^2 )},
+&\text{ if }
+k = 1 \\
+\frac{0}{\sigma^2(1 + \theta_1 )},
+&\text{ if }
+k > 1
+\end{cases} \\
+&=
+\begin{cases}
+1,
+&\text{ if }
+k = 0 \\
+\frac{\theta_1}{1 + \theta_1^2},
+&\text{ if }
+k = 1 \\
+0,
+&\text{ if }
+k > 1
+\end{cases}
+\end{align*}
 
 (iii) Is $\theta_1$ identified from the autocorrelation function?
 
-...
+No.  First, notice that $\theta_1$ only appears in autocorrelation function when $k = 1$.  If $\theta_1 = x$, $\theta_1 = 1/x$ yields the same value from the autocorrelation function:
+
+\begin{align*}
+\rho(1| \theta_1 = x) 
+&= \frac{x}{1+x^2} \\
+\rho(1| \theta_1 = x^{-1}) 
+&= \frac{x^{-1}}{1+(x^{-1})^2}\\
+&= \frac{x^{-1}}{1+x^{-2}}\frac{x^2}{x^2} \\
+&= \frac{x}{1+x^2} 
+\end{align*}
 
 (iv) Suppose $\theta_1 \in [-1,1]$. Does you answer to (iii) change?
 
-...
+Yes, $\theta_1$ is identified by the autocorrelation function because if $\theta_1 = x \in [-1, 1] \implies 1/x \notin [-1, 1]$.
 
 3. Consider an ARMA(1,1) model: $Y_t = \alpha_0 + Y_{t-1} \rho + U_t$ and $U_t = \varepsilon_t + \theta \varepsilon_{t-1}$ for all $t = 1, ..., T$; $Y_0 = \mu + \varepsilon_0 + \nu$ where $|\rho| < 1$, $|\theta | \le 1$, $\varepsilon_0, ..., \varepsilon_T$ are idd $N(0, \sigma^2)$ and independent of $\nu \sim N(0, \tau)$.
 
