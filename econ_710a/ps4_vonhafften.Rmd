@@ -151,11 +151,66 @@ No.  First, notice that $\theta_1$ only appears in autocorrelation function when
 
 Yes, $\theta_1$ is identified by the autocorrelation function because if $\theta_1 = x \in [-1, 1] \implies 1/x \notin [-1, 1]$.
 
+\pagebreak
+
 3. Consider an ARMA(1,1) model: $Y_t = \alpha_0 + Y_{t-1} \rho + U_t$ and $U_t = \varepsilon_t + \theta \varepsilon_{t-1}$ for all $t = 1, ..., T$; $Y_0 = \mu + \varepsilon_0 + \nu$ where $|\rho| < 1$, $|\theta | \le 1$, $\varepsilon_0, ..., \varepsilon_T$ are idd $N(0, \sigma^2)$ and independent of $\nu \sim N(0, \tau)$.
 
 (i)  Find $\mu$ and $\tau$ (as functions of $\alpha_0, \rho, \theta$, and/or $\sigma^2$) such that $E[Y_t]$ and $Var(Y_t)$ does not depend on $t$.
 
-...
+If $E[Y_t]$ does not depend on $t \implies E[Y_0]=E[Y_1]$:
+
+\begin{align*}
+E[Y_0]
+&= E[\mu + \varepsilon_0 + \nu]\\
+&= \mu
+\end{align*}
+
+\begin{align*}
+E[Y_1]
+&= E[\alpha_0 + Y_0 \rho + U_1]\\
+&= E[\alpha_0 + Y_0 \rho + \varepsilon_1 + \theta \varepsilon_0]\\
+&= \alpha_0 + E[Y_0] \rho + E[\varepsilon_1] + \theta E[\varepsilon_0]\\
+&= \alpha_0 + \mu \rho
+\end{align*}
+
+\begin{align*}
+E[Y_0] &= E[Y_1] \\
+\implies
+\mu &= \alpha_0 + \mu \rho \\
+\implies
+\mu &= \frac{\alpha_0}{1-\rho}
+\end{align*}
+
+If $Var[Y_t]$ does not depend on $t \implies Var[Y_0]=Var[Y_1]$:
+
+\begin{align*}
+Var[Y_0]
+&=Var[\mu + \varepsilon_0 + \nu] \\
+&=Var[\varepsilon_0] + Var[\nu] \\
+&=\sigma^2 + \tau
+\end{align*}
+
+\begin{align*}
+Var[Y_1] 
+&= Var[\alpha_0 + Y_0 \rho + U_1]\\
+&= Var[Y_0 \rho + \varepsilon_1 + \theta \varepsilon_0]\\
+&= \rho^2 Var[Y_0]  + Var[\varepsilon_1] + \theta^2 Var[\varepsilon_0] + 2\rho \theta Cov[Y_0,\varepsilon_0]\\
+&= \rho^2 (\sigma^2 + \tau)  + \sigma^2 + \theta^2 \sigma^2 + 2\rho \theta \sigma^2
+\end{align*}
+
+\begin{align*}
+Var[Y_0] 
+&= Var[Y_1] \\
+\implies
+\sigma^2 + \tau &= 
+\rho^2 \sigma^2 + \rho^2 \tau + \sigma^2 + \theta^2 \sigma^2 + 2\rho \theta \sigma^2 \\
+ \tau -  \rho^2 \tau &= 
+\rho^2 \sigma^2 + \theta^2 \sigma^2 + 2\rho \theta \sigma^2\\
+\tau &= 
+\frac{\sigma^2 ( \theta + \rho)^2}{1 -  \rho^2 }
+\end{align*}
+
+\pagebreak
 
 (ii) For the $\mu$ and $\tau$ found above, you may use without proof that $\{Y_t\}^T_{t=1}$ is covariance stationary.  Under what conditions on $\alpha_0, \rho, \theta,$ and/or $\sigma^2$ is $(1,Y_{t-2})$ a valid instrument for $(1,Y_{t-1})$.
 
