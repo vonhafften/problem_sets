@@ -214,5 +214,37 @@ Var[Y_0]
 
 (ii) For the $\mu$ and $\tau$ found above, you may use without proof that $\{Y_t\}^T_{t=1}$ is covariance stationary.  Under what conditions on $\alpha_0, \rho, \theta,$ and/or $\sigma^2$ is $(1,Y_{t-2})$ a valid instrument for $(1,Y_{t-1})$.
 
-...
+A valid instrument is relevant and exogeneous.
 
+Exogeneity requires 
+
+\begin{align*}
+E[U_t|Y_{t-2}] &=0 \\
+\implies E[\varepsilon_t + \theta \varepsilon_{t-1}|Y_{t-2}] &= 0 \\
+\implies E[\varepsilon_t|Y_{t-2}] + \theta E[\varepsilon_{t-1}|Y_{t-2}] &= 0 \\
+\implies 0 + \theta (0) &= 0 
+\end{align*}
+
+Thus, exogeneity places no restrictions on the parameters.
+
+Relevance requires 
+
+\begin{align*}
+Cov(Y_{t-1}, Y_{t-2}) &\neq 0 \\
+\implies
+Cov(\alpha_0 + Y_{t-2} \rho + U_{t-1}, Y_{t-2}) &\neq 0 \\
+\implies
+Cov( Y_{t-2} \rho + \varepsilon_{t-1} + \theta \varepsilon_{t-2}, Y_{t-2}) &\neq 0 \\
+\implies
+\rho Var( Y_{t-2}) + \theta Cov(\varepsilon_{t-2}, Y_{t-2}) &\neq 0 \\
+\implies
+\rho (\sigma^2 + \tau) + \theta \sigma^2 &\neq 0 \\
+\implies
+\rho \Bigg(\sigma^2 + \frac{\sigma^2 ( \theta + \rho)^2}{1 -  \rho^2 } \Bigg) + \theta \sigma^2 &\neq 0 \\
+\implies
+\Bigg(\rho  + \theta + \frac{ \rho ( \theta + \rho)^2}{1 -  \rho^2 } \Bigg)  &\neq 0 \\
+\implies
+\rho + \theta &\neq 0
+\end{align*}
+
+These restrictions make sense for an ARMA(1, 1). For exogeniety, with only one autoregressive term and one moving average term, we already get that the twice lagged value has no direct effect on the current value.  For relevance, we need that the twice lagged value has an effecton the once lagged value either through the autoregressive term or the moving average term (or both).
