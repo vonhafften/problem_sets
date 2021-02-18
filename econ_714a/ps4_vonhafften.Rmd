@@ -70,7 +70,7 @@ P_{k} &= P C^{\frac{1}{\rho}}  C_{k}^{\frac{- 1}{\rho}} \\
 C_{k} &= \Bigg( \frac{P_{k}}{P} \Bigg)^{-\rho} C
 \end{align*}
 
-Substituting into the constraint, we get the aggregate price index and aggregate consumption in terms of the sectoral price indexes:
+Substituting into the constraint, we get the aggregate price index in terms of the sectoral price indexes:
 
 \begin{align*}
 C &= \Bigg( \int \Bigg(\Bigg( \frac{P_{k}}{P} \Bigg)^{-\rho} C\Bigg)^{\frac{\rho - 1}{\rho}} dk \Bigg)^{\frac{\rho}{\rho - 1}}\\
@@ -79,113 +79,193 @@ C &= \Bigg( \int \Bigg(\Bigg( \frac{P_{k}}{P} \Bigg)^{-\rho} C\Bigg)^{\frac{\rho
 \implies
 1 &= P^{-\rho}\Bigg( \int P_k ^{1-\rho} dk \Bigg)^{\frac{\rho}{\rho - 1}}\\
 \implies
-P &= \Bigg(\int P_k^{1-\rho} dk \Bigg)^{\frac{1}{1-\rho}} \\
-\implies 
-C_{k} &= \Bigg( \frac{P_{k}}{(\int P_k^{1-\rho} dk )^{\frac{1}{1-\rho}}} \Bigg)^{-\rho} C
+P &= \Bigg(\int P_k^{1-\rho} dk \Bigg)^{\frac{1}{1-\rho}}
 \end{align*}
-
-We can rewrite the legrangian as:
-
-$$
-\Lf 
-= \int \sum_{i=1}^{N_k} P_{ik} C_{ik} dk +
-P \Bigg[C - \Bigg( \int \Bigg( \Bigg( \sum_{i=1}^{N_k} C_{ik}^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}} \Bigg)^{\frac{\rho - 1}{\rho}} dk \Bigg)^{\frac{\rho}{\rho - 1}}\Bigg] +
-\int P_k  \Bigg[C_k - \Bigg( \sum_{i=1}^{N_k} C_{ik}^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}} \Bigg] dk
-$$
-
-\pagebreak
 
 FOC [$C_{ik}$]:
 
 \begin{align*}
 P_{ik} &=
-P \frac{\rho}{\rho - 1}\Bigg( \int \Bigg( \Bigg( \sum_{i=1}^{N_k} C_{ik}^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}} \Bigg)^{\frac{\rho - 1}{\rho}} dk \Bigg)^{\frac{\rho}{\rho - 1} - 1}
-\frac{\rho - 1}{\rho}\Bigg( \Bigg( \sum_{i=1}^{N_k} C_{ik}^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}} \Bigg)^{\frac{\rho - 1}{\rho}-1} \\
-&\times  \frac{\theta}{\theta - 1} \Bigg( \sum_{i=1}^{N_k} C_{ik}^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}-1} 
-\frac{\theta - 1}{\theta}C_{ik}^{\frac{\theta - 1}{\theta}-1} +
 P_k  \frac{\theta}{\theta - 1} \Bigg( \sum_{i=1}^{N_k} C_{ik}^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}-1} 
-\frac{\theta - 1}{\theta} C_{ik}^{\frac{\theta - 1}{\theta}-1}\\
+\frac{\theta - 1}{\theta} C_{ik}^{\frac{\theta - 1}{\theta}-1} \\
 \implies
 P_{ik} &=
-P \Bigg( \int C_k^{\frac{\rho - 1}{\rho}} dk \Bigg)^{\frac{\rho}{\rho - 1}\frac{1}{\rho}}
-\Bigg( C_k \Bigg)^{\frac{- 1}{\rho}}
-\Bigg( \sum_{i=1}^{N_k} C_{ik}^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}\frac{1}{\theta}} 
-C_{ik}^{\frac{- 1}{\theta}}
-+
-P_k  \Bigg( \sum_{i=1}^{N_k} C_{ik}^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}\frac{1}{\theta}} 
-C_{ik}^{\frac{- 1}{\theta}}\\
+P_k \Bigg( \sum_{i=1}^{N_k} C_{ik}^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{1}{\theta - 1}} 
+C_{ik}^{\frac{ - 1}{\theta}} \\
 \implies
 P_{ik} &=
-P C^{\frac{1}{\rho}}
-C_k^{\frac{- 1}{\rho}}
-C_k ^{\frac{1}{\theta}} 
-C_{ik}^{\frac{- 1}{\theta}}
-+
-P_k  C_k^{\frac{1}{\theta}} 
-C_{ik}^{\frac{- 1}{\theta}}\\
-\implies
-P_{ik} &=
-C_{ik}^{\frac{- 1}{\theta}}
-C_k^{\frac{1}{\theta}}
-(P C^{\frac{1}{\rho}}
-C_k^{- \frac{1}{\rho}}
-+
-P_k  )\\
+P_k C_k^{\frac{1}{\theta}} 
+C_{ik}^{\frac{ - 1}{\theta}} \\
 \implies
 C_{ik} &=
-\Bigg(
-\frac{P_{ik}}
-{P (\frac{C_k}{C})^{- \frac{1}{\rho}}+P_k}
-\Bigg)^{-\theta} C_k
+\Bigg(\frac{P_{ik}}{P_{k}} \Bigg)^{-\theta}C_k
 \end{align*}
 
-Substituting in the FOC based on $C_k$:
+\pagebreak
 
-$$
-C_{ik} 
-=
-\Bigg(
-\frac{P_{ik}}
-{P (\frac{( \frac{P_{k}}{P} )^{-\rho} C}{C})^{- \frac{1}{\rho}}+P_k}
-\Bigg)^{-\theta} C_k \\
-\implies 
-C_{ik} =
-\Bigg(
-\frac{P_{ik}}
-{2P_k}
-\Bigg)^{-\theta} C_k
-$$
-
-Substituting into the constraint:
-
+Substituting into the constraint, we get the sectoral price index in terms of the producers' prices:
 \begin{align*}
-C_k &= \Bigg( \sum_{i=1}^{N_k} \Bigg( \Bigg(
-\frac{P_{ik}}
-{2P_k}
-\Bigg)^{-\theta} C_k\Bigg)^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}} \\
+C_k &= 
+\Bigg( \sum_{i=1}^{N_k} \Bigg(\Bigg(\frac{P_{ik}}{P_{k}} \Bigg)^{-\theta}C_k\Bigg)^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}} \\
 \implies
-1 &= \Bigg( \sum_{i=1}^{N_k} \Bigg( \Bigg(
-\frac{P_{ik}}
-{2P_k}
-\Bigg)^{-\theta} \Bigg)^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}} \\
+1 &= 
+\sum_{i=1}^{N_k} P_{ik}^{1-\theta}P_{k}^{\theta-1}  \\
 \implies
-(2P_k)^{1-\theta} &=  \sum_{i=1}^{N_k} \Bigg(
-P_{ik}
-\Bigg)^{1-\theta}  \\
-\implies
-P_k &= \frac{1}{2}\Bigg( \sum_{i=1}^{N_k}
-P_{ik}^{1-\theta} \Bigg)^{\frac{1}{1-\theta}}
+P_k &= 
+\Bigg(\sum_{i=1}^{N_k} P_{ik}^{1-\theta}\Bigg)^{\frac{1}{1-\theta}}
 \end{align*}
+
+Thus, the aggregate price index $P$ as a function of producers’ prices is:
+
+$$
+P = \Bigg(\int \Bigg(\sum_{i=1}^{N_k} P_{ik}^{1-\theta}\Bigg)^{\frac{1-\rho}{1-\theta}} dk \Bigg)^{\frac{1}{1-\rho}}
+$$
+
+And optimal demand $C_{ik}$ as a function of producer's prices and aggregate demand is:
+
+$$
+C_{ik} =
+\Bigg(\frac{P_{ik}}{P_{k}} \Bigg)^{-\theta}\Bigg( \frac{P_{k}}{P} \Bigg)^{-\rho} C
+$$
 
 2. Assume that firms compete a la Bertrand, i.e. choose $P_{ik}$ taking the prices of other firms in a sector $P_{jk}, j\neq i$ as given. Derive demand elasticity for a given firm and the optimal price.
 
-...
+We get rewrite demand for firm $i$ in sector $k$ as:
+
+$$
+C_{ik} = \frac{P_{ik}^{-\theta}}{P^{-\rho}}
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
+C
+$$
+
+The demand elasticity for firm $i$ in sector $k$ is:
+
+\begin{align*}
+\frac{dC_{ik}/C_{ik}}{dP_{ik}/P_{ik}} 
+&= \frac{C}{P^{-\rho}}\Bigg[
+\frac{\theta - \rho}{1-\theta}\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}-1} (1-\theta)P_{ik}^{-\theta} P_{ik}^{-\theta}+
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}(-\theta)P_{ik}^{-\theta-1} \Bigg]
+\frac{P_{ik}}{C_{ik}}\\
+&= \frac{C}{P^{-\rho}}\Bigg[
+(\theta - \rho)\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{2\theta - \rho - 1}{1-\theta}} P_{ik}^{-2\theta}
++
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}(-\theta)P_{ik}^{-\theta-1} \Bigg]
+\frac{P_{ik}}{C_{ik}}\\
+&= \frac{C}{P^{-\rho}}\Bigg[
+(\theta - \rho)P_k^{2\theta - \rho - 1} P_{ik}^{-2\theta}
+-\theta P_k^{\theta - \rho}P_{ik}^{-\theta-1} \Bigg]
+\frac{P_{ik}}{C_{ik}}\\
+&= 
+P_{ik}\frac{C}{P^{-\rho}}\Bigg[
+(\theta - \rho)P_k^{2\theta - \rho - 1} P_{ik}^{-2\theta}
+-\theta P_k^{\theta - \rho}P_{ik}^{-\theta-1} \Bigg]
+\Bigg(\frac{P_{ik}}{P_{k}} \Bigg)^{\theta}\Bigg( \frac{P_{k}}{P} \Bigg)^{\rho} C^{-1}\\
+&= 
+\Bigg[
+(\theta - \rho)P_k^{2\theta - \rho - 1} P_{ik}^{-2\theta}
+-\theta P_k^{\theta - \rho}P_{ik}^{-\theta-1} \Bigg]
+P_{ik}^{1+\theta}P_{k} ^{\rho-\theta} \\
+&= 
+(\theta - \rho)\Bigg(\frac{P_{ik}}{P_k}\Bigg)^{1-\theta}
+-\theta
+\end{align*}
+
+The firms' problem is:
+
+$$
+\max_{P_{ik}} P_{ik}C_{ik} - W L_{ik}
+$$
+$$
+\text{ s.t. } 
+C_{ik} = A_{ik}L_{ik}
+$$
+$$
+\text{ and }
+C_{ik} =
+\frac{P_{ik}^{-\theta}}{P^{-\rho}}
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
+C
+$$
+
+$$
+\implies
+\max_{P_{ik}} 
+P_{ik}  \frac{P_{ik}^{-\theta}}{P^{-\rho}}
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
+C
+- \frac{W}{A_{ik}}  \frac{P_{ik}^{-\theta}}{P^{-\rho}}
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
+C
+$$
+$$
+\implies
+\max_{P_{ik}} P_{ik}^{1-\theta}
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
+- \frac{W}{A_{ik}}  P_{ik}^{-\theta}
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
+$$
+
+FOC [$P_{ik}$]:
+
+$$
+(1-\theta)P_{ik}^{-\theta}
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
++
+\frac{\theta - \rho}{1-\theta}
+P_{ik}^{1-\theta}
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}-1}(1-\theta)P_{ik}^{-\theta}
+$$
+
+$$
+= \frac{W}{A_{ik}}  
+\Bigg[
+(-\theta)
+P_{ik}^{-\theta-1}
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
++ P_{ik}^{-\theta} \frac{\theta - \rho}{1-\theta}
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}-1}
+(1-\theta)P_{ik}^{-\theta}
+\Bigg]
+$$
+
+$$
+(1-\theta)P_{ik}^{-\theta}
+P_k^{\theta - \rho}
++
+(\theta - \rho)
+P_{ik}^{1-2\theta}
+P_k^{2\theta - \rho-1}
+= \frac{W}{A_{ik}}  
+(-\theta)
+P_{ik}^{-\theta-1}
+P_k^{\theta - \rho}
++ \frac{W}{A_{ik}}  
+(\theta - \rho)
+P_{ik}^{-2\theta} 
+P_k^{2\theta - \rho - 1}
+$$
+
+$$
+(1-\theta)
++
+(\theta - \rho)
+P_{ik}^{1-\theta}
+P_k^{\theta - 1}
+= \frac{W}{A_{ik}}  
+(-\theta)
+P_{ik}^{-1}
++ \frac{W}{A_{ik}}  
+(\theta - \rho)
+P_{ik}^{-\theta} 
+P_k^{\theta - 1}
+$$
+
 
 3. Prove that other things equal, firms with higher $A_{ik}$ set higher markups.
 
 ...
 
-4. Assume that $\rho=1 , \theta= 5,N_k= 20, and \log A_{ik} \sim i.i.d. N(0,1)$. Solve the model numerically by approximating the number of sectors with $K= 100,000$. You will need an efficient algorithm to compute a sectoral equilibrium (search for a fixed point, do not use “solve”) nested in a general equilibrium loop solving for real wages.
+4. Assume that $\rho=1 , \theta= 5,N_k= 20$, and $\log A_{ik} \sim i.i.d. N(0,1)$. Solve the model numerically by approximating the number of sectors with $K= 100,000$. You will need an efficient algorithm to compute a sectoral equilibrium (search for a fixed point, do not use “solve”) nested in a general equilibrium loop solving for real wages.
 
 ...
 
@@ -193,7 +273,7 @@ P_{ik}^{1-\theta} \Bigg)^{\frac{1}{1-\theta}}
 
 ...
 
-6. Bonus task: Does the sectoral equilibrium converge to the one under Betrand competition with homogeneous goods in the limit $\infty \to \infty$?
+6. Bonus task: Does the sectoral equilibrium converge to the one under Betrand competition with homogeneous goods in the limit $\theta \to \infty$?
 
 ...
 
