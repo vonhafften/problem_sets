@@ -166,104 +166,132 @@ P_{ik}\frac{C}{P^{-\rho}}\Bigg[
 -\theta P_k^{\theta - \rho}P_{ik}^{-\theta-1} \Bigg]
 P_{ik}^{1+\theta}P_{k} ^{\rho-\theta} \\
 &= 
-(\theta - \rho)\Bigg(\frac{P_{ik}}{P_k}\Bigg)^{1-\theta}
+(\theta - \rho)s_{ik}
 -\theta
 \end{align*}
 
-The firms' problem is:
+Where $s_{ik} := (\frac{P_{ik}}{P_k})^{1-\theta}$. The firms' problem is:
 
-$$
-\max_{P_{ik}} P_{ik}C_{ik} - W L_{ik}
-$$
-$$
+\begin{align*}
+\max_{P_{ik}}& P_{ik}C_{ik} - W L_{ik}\\
 \text{ s.t. } 
-C_{ik} = A_{ik}L_{ik}
-$$
-$$
+C_{ik} &= A_{ik}L_{ik}\\
 \text{ and }
-C_{ik} =
+C_{ik} &=
 \frac{P_{ik}^{-\theta}}{P^{-\rho}}
 \Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
-C
-$$
-
-$$
+C\\
 \implies
-\max_{P_{ik}} 
+\max_{P_{ik}}& 
 P_{ik}  \frac{P_{ik}^{-\theta}}{P^{-\rho}}
 \Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
 C
 - \frac{W}{A_{ik}}  \frac{P_{ik}^{-\theta}}{P^{-\rho}}
 \Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
-C
-$$
-$$
+C\\
 \implies
-\max_{P_{ik}} P_{ik}^{1-\theta}
+\max_{P_{ik}} &P_{ik}^{1-\theta}
 \Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
 - \frac{W}{A_{ik}}  P_{ik}^{-\theta}
 \Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
-$$
+\end{align*}
 
 FOC [$P_{ik}$]:
 
-$$
+\begin{align*}
 (1-\theta)P_{ik}^{-\theta}
 \Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
-+
+&+
 \frac{\theta - \rho}{1-\theta}
 P_{ik}^{1-\theta}
-\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}-1}(1-\theta)P_{ik}^{-\theta}
-$$
-
-$$
+\Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}-1}(1-\theta)P_{ik}^{-\theta} \\
 = \frac{W}{A_{ik}}  
 \Bigg[
 (-\theta)
 P_{ik}^{-\theta-1}
 \Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}}
-+ P_{ik}^{-\theta} \frac{\theta - \rho}{1-\theta}
+&+ P_{ik}^{-\theta} \frac{\theta - \rho}{1-\theta}
 \Bigg(\sum_{j=1}^{N_k} P_{jk}^{1-\theta}\Bigg)^{\frac{\theta - \rho}{1-\theta}-1}
 (1-\theta)P_{ik}^{-\theta}
-\Bigg]
-$$
-
-$$
+\Bigg]\\
 (1-\theta)P_{ik}^{-\theta}
 P_k^{\theta - \rho}
 +
 (\theta - \rho)
 P_{ik}^{1-2\theta}
 P_k^{2\theta - \rho-1}
-= \frac{W}{A_{ik}}  
+&= \frac{W}{A_{ik}}  [
 (-\theta)
 P_{ik}^{-\theta-1}
 P_k^{\theta - \rho}
-+ \frac{W}{A_{ik}}  
++ 
 (\theta - \rho)
 P_{ik}^{-2\theta} 
-P_k^{2\theta - \rho - 1}
-$$
-
-$$
+P_k^{2\theta - \rho - 1}]\\
 (1-\theta)
 +
 (\theta - \rho)
 P_{ik}^{1-\theta}
 P_k^{\theta - 1}
-= \frac{W}{A_{ik}}  
+&= \frac{W}{A_{ik}}  [
 (-\theta)
 P_{ik}^{-1}
-+ \frac{W}{A_{ik}}  
++ 
 (\theta - \rho)
 P_{ik}^{-\theta} 
-P_k^{\theta - 1}
-$$
-
+P_k^{\theta - 1}]\\
+P_{ik}[(1-\theta) +
+(\theta - \rho)
+s_{ik}]
+&= \frac{W}{A_{ik}}  [
+(-\theta)
++  
+(\theta - \rho)s_{ik}]\\
+\implies
+P_{ik} &= 
+\frac{W}{A_{ik}}\Bigg[\frac{(\theta - \rho)s_{ik}-\theta }
+{(\theta - \rho)s_{ik} +1 - \theta}\Bigg]
+\end{align*}
 
 3. Prove that other things equal, firms with higher $A_{ik}$ set higher markups.
 
-...
+The total cost for firm $i$ in sector $k$ is:
+
+$$
+TC_{ik} = WL_{ik} = \frac{WC_{ik}}{A_{ik}}
+$$
+
+Which implies that the marginal cost is
+
+$$
+MC_{ik} = \frac{W}{A_{ik}}
+$$
+
+\pagebreak
+
+Firm $i$'s mark-up is the difference between their price and marginal cost:
+
+\begin{align*}
+MU_{ik} 
+&= P_{ik} - \frac{W}{A_{ik}}\\
+&= \frac{W}{A_{ik}}\Bigg(\frac{(\theta - \rho)s_{ik}-\theta }
+{(\theta - \rho)s_{ik} +1 - \theta}\Bigg)
+- \frac{W}{A_{ik}}\\
+&= \frac{W}{A_{ik}}\Bigg( \frac{(\theta - \rho)s_{ik}-\theta }
+{(\theta - \rho)s_{ik} +1 - \theta} -1\Bigg)\\
+&= \frac{W}{A_{ik}}\Bigg( \frac{ -1 }
+{(\theta - \rho)s_{ik} +1 - \theta} \Bigg)\\
+\end{align*}
+
+Holding $s_{ik}$ constant, more productive firms charge higher mark-ups:
+
+$$
+\frac{\partial MU_{ik}}{\partial A_{ik}}
+= \frac{W}{A_{ik}^2}\Bigg( \frac{ -1 }
+{(\theta - \rho)s_{ik} +1 - \theta} \Bigg) (-1)\\
+= \frac{W}{A_{ik}^2}\Bigg( \frac{ 1 }
+{(\theta - \rho)s_{ik} +1 - \theta} \Bigg) > 0
+$$
 
 4. Assume that $\rho=1 , \theta= 5,N_k= 20$, and $\log A_{ik} \sim i.i.d. N(0,1)$. Solve the model numerically by approximating the number of sectors with $K= 100,000$. You will need an efficient algorithm to compute a sectoral equilibrium (search for a fixed point, do not use “solve”) nested in a general equilibrium loop solving for real wages.
 
