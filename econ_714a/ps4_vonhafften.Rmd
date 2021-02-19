@@ -173,7 +173,7 @@ P_{ik}^{1+\theta}P_{k} ^{\rho-\theta} \\
 Where $s_{ik} := (\frac{P_{ik}}{P_k})^{1-\theta}$. The firms' problem is:
 
 \begin{align*}
-\max_{P_{ik}}& P_{ik}C_{ik} - W L_{ik}\\
+\max_{\{P_{ik}, L_{ik}, C_{ik}\}}& P_{ik}C_{ik} - W L_{ik}\\
 \text{ s.t. } 
 C_{ik} &= A_{ik}L_{ik}\\
 \text{ and }
@@ -255,74 +255,88 @@ P_{ik} &=
 
 3. Prove that other things equal, firms with higher $A_{ik}$ set higher markups.
 
-The total cost for firm $i$ in sector $k$ is:
+The total cost for firm $i$ in sector $k$ is $WL_{ik} = \frac{WC_{ik}}{A_{ik}}$, which implies that the marginal cost is $\frac{W}{A_{ik}}$
+
+Firm $i$'s mark-up is the ratio of their price to their marginal cost:
 
 $$
-TC_{ik} = WL_{ik} = \frac{WC_{ik}}{A_{ik}}
+\frac{(\theta - \rho)s_{ik}-\theta }
+{(\theta - \rho)s_{ik} +1 - \theta} 
+= 1- \frac{1}{(\theta - \rho)s_{ik} +1 - \theta} 
+= 1-[(\theta - \rho)(\frac{P_{ik}}{P_k})^{1-\theta} +1 - \theta]^{-1}
 $$
 
-Which implies that the marginal cost is
-
-$$
-MC_{ik} = \frac{W}{A_{ik}}
-$$
+...
 
 \pagebreak
 
-Firm $i$'s mark-up is the difference between their price and marginal cost:
+4. Assume that $\rho=2, \theta= 5,N_k= 20$, and $\log A_{ik} \sim i.i.d. N(0,1)$. Solve the model numerically by approximating the number of sectors with $K= 100,000$. You will need an efficient algorithm to compute a sectoral equilibrium (search for a fixed point, do not use “solve”) nested in a general equilibrium loop solving for real wages.
 
-\begin{align*}
-MU_{ik} 
-&= P_{ik} - \frac{W}{A_{ik}}\\
-&= \frac{W}{A_{ik}}\Bigg(\frac{(\theta - \rho)s_{ik}-\theta }
-{(\theta - \rho)s_{ik} +1 - \theta}\Bigg)
-- \frac{W}{A_{ik}}\\
-&= \frac{W}{A_{ik}}\Bigg( \frac{(\theta - \rho)s_{ik}-\theta }
-{(\theta - \rho)s_{ik} +1 - \theta} -1\Bigg)\\
-&= \frac{W}{A_{ik}}\Bigg( \frac{ -1 }
-{(\theta - \rho)s_{ik} +1 - \theta} \Bigg)\\
-\end{align*}
-
-Holding $s_{ik}$ constant, more productive firms charge higher mark-ups:
-
-$$
-\frac{\partial MU_{ik}}{\partial A_{ik}}
-= \frac{W}{A_{ik}^2}\Bigg( \frac{ -1 }
-{(\theta - \rho)s_{ik} +1 - \theta} \Bigg) (-1)\\
-= \frac{W}{A_{ik}^2}\Bigg( \frac{ 1 }
-{(\theta - \rho)s_{ik} +1 - \theta} \Bigg) > 0
-$$
-
-4. Assume that $\rho=1 , \theta= 5,N_k= 20$, and $\log A_{ik} \sim i.i.d. N(0,1)$. Solve the model numerically by approximating the number of sectors with $K= 100,000$. You will need an efficient algorithm to compute a sectoral equilibrium (search for a fixed point, do not use “solve”) nested in a general equilibrium loop solving for real wages.
-
-```{r problem 4, echo = FALSE}
-rho <- 1
+```{r problem_4}
+# parameters
+rho <- 2
 theta <- 5
 n_k <- 20
 k <- 100000
-a <- as.matrix(exp(rnorm(n = k * n_k)), ncol = n_k, nrow = k)
+a <- matrix(exp(rnorm(n = k * n_k)), ncol = n_k, nrow = k)
+w <- 1
 
-# real wage
-w0 <- mean(a)
-w1 <- 10
+# Initialize price matrices
+# p_ik_0 starts at marginal cost pricing
+p_ik_0 <- w/a
+p_ik_1 <- p_ik_0
 
-p0 <- theta / (theta - 1) * (w0 / a)
-p1 <- p0 + 100
+# Loop objects
+iter <- 1
+max_iter <- 10000
+simulation_errors <- NULL
+tolerence <- 1e-6
 
-# Solves general equilibrium fixed point problem for wage
+# p_ik_0 -> p_k -> s_ik -> p_ik_1
 while (TRUE) {
+  # find sector prices and shares
+  p_k <- apply(p_ik_0^(1-theta), 1, sum)^(1/(1-theta))
+  s_ik <- (p_ik_0 / p_k %*% t(rep(1, times = n_k)))^(1-theta)
   
-  # Solves sectoral equilibrium fixed problem for prices
-  while (TRUE) {
-    
-  }
+  # find prices based on shares and sector prices
+  p_ik_1 <- (w/a) * ((theta-rho)*s_ik - theta)/((theta-rho)*s_ik + 1 - theta)
   
+  # check for convergence
+  simulation_errors[iter] <- sum(abs(p_ik_0 - p_ik_1)/sum(p_ik_0))
+  if (simulation_errors[iter] < tolerence) break
+  
+  # update price guess
+  p_ik_0 <- (1/2)*p_ik_0 + (1/2)*p_ik_1
+  
+  # Increment counter
+  iter <- iter + 1
+  if (iter > max_iter ) break
 }
+
+plot(simulation_errors, type = "l", xlab = "Iterations")
 ```
 
 5. Compute the aggregate output $C$ of the economy and compare it to the first-best value.
 
-...
+The simulation above implies a aggregate price level $P$ and thus a real wage $W/P$.  The household consuming their entire real wage, so $C = W/P$:
+
+```{r problem_5a}
+p <- ((1/k)*sum(p_k^(1-rho)))^(1/(1-rho))
+print(w/p)
+```
+
+The first best outcome is when firms charge their marginal cost $P_{ik} = \frac{W}{A_{ik}}$:
+
+```{r problem_5b}
+p_ik_fb <- w/a
+p_k_fb <- apply(p_ik_fb^(1-theta), 1, sum)^(1/(1-theta))
+p_fb <- ((1/k)*sum(p_k_fb^(1-rho)))^(1/(1-rho))
+print(w/p_fb)
+```
+
+Thus, the aggregate consumption from this model is about 2/3 of the first best aggregate consumption.
+
+\pagebreak
 
 6. Bonus task: Does the sectoral equilibrium converge to the one under Betrand competition with homogeneous goods in the limit $\theta \to \infty$?
 
