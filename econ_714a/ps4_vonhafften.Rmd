@@ -295,7 +295,30 @@ $$
 
 4. Assume that $\rho=1 , \theta= 5,N_k= 20$, and $\log A_{ik} \sim i.i.d. N(0,1)$. Solve the model numerically by approximating the number of sectors with $K= 100,000$. You will need an efficient algorithm to compute a sectoral equilibrium (search for a fixed point, do not use “solve”) nested in a general equilibrium loop solving for real wages.
 
-...
+```{r problem 4, echo = FALSE}
+rho <- 1
+theta <- 5
+n_k <- 20
+k <- 100000
+a <- as.matrix(exp(rnorm(n = k * n_k)), ncol = n_k, nrow = k)
+
+# real wage
+w0 <- mean(a)
+w1 <- 10
+
+p0 <- theta / (theta - 1) * (w0 / a)
+p1 <- p0 + 100
+
+# Solves general equilibrium fixed point problem for wage
+while (TRUE) {
+  
+  # Solves sectoral equilibrium fixed problem for prices
+  while (TRUE) {
+    
+  }
+  
+}
+```
 
 5. Compute the aggregate output $C$ of the economy and compare it to the first-best value.
 
