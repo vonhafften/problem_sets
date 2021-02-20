@@ -255,18 +255,23 @@ P_{ik} &=
 
 3. Prove that other things equal, firms with higher $A_{ik}$ set higher markups.
 
-The total cost for firm $i$ in sector $k$ is $WL_{ik} = \frac{WC_{ik}}{A_{ik}}$, which implies that the marginal cost is $\frac{W}{A_{ik}}$
+The total cost for firm $i$ in sector $k$ is $WL_{ik} = \frac{WC_{ik}}{A_{ik}}$, which implies that the marginal cost is $\frac{W}{A_{ik}}$. Firm $i$'s mark-up, $X_{ik}$ is the ratio of their price to their marginal cost:
 
-Firm $i$'s mark-up is the ratio of their price to their marginal cost:
+\begin{align*}
+X_{ik} 
+&= \frac{(\theta - \rho)s_{ik}-\theta }
+{(\theta - \rho)s_{ik} +1 - \theta} \\
+&= 1- \frac{1}{(\theta - \rho)s_{ik} +1 - \theta} \\
+&= 1-[(\theta - \rho)(\frac{P_{ik}}{P_k})^{1-\theta} +1 - \theta]^{-1}\\
+&= 1-[(\theta - \rho)W^{1-\theta}A_{ik}^{\theta-1}X_{ik}^{1-\theta}P_k^{\theta-1} +1 - \theta]^{-1}
+\end{align*}
+
+Thus, the first order change in the mark-up with a higher productivity is positive:
 
 $$
-\frac{(\theta - \rho)s_{ik}-\theta }
-{(\theta - \rho)s_{ik} +1 - \theta} 
-= 1- \frac{1}{(\theta - \rho)s_{ik} +1 - \theta} 
-= 1-[(\theta - \rho)(\frac{P_{ik}}{P_k})^{1-\theta} +1 - \theta]^{-1}
+\frac{\partial X_{ik}}{\partial A_{ik}}
+\approx [(\theta - \rho)W^{1-\theta}A_{ik}^{\theta-1}X^{1-\theta}P_k^{\theta-1} +1 - \theta]^{-2}(\theta-1)W^{1-\theta}A_{ik}^{\theta}X^{1-\theta}P_k^{\theta-1} > 0
 $$
-
-...
 
 \pagebreak
 
@@ -274,7 +279,7 @@ $$
 
 ```{r problem_4}
 # parameters
-rho <- 2
+rho <- 1+1e-6
 theta <- 5
 n_k <- 20
 k <- 100000
@@ -282,13 +287,13 @@ a <- matrix(exp(rnorm(n = k * n_k)), ncol = n_k, nrow = k)
 w <- 1
 
 # Initialize price matrices
-# p_ik_0 starts at marginal cost pricing
-p_ik_0 <- w/a
+# p_ik_0 starts at Dixit-Stiglitz
+p_ik_0 <- w / a * theta / (theta - 1)
 p_ik_1 <- p_ik_0
 
 # Loop objects
 iter <- 1
-max_iter <- 10000
+max_iter <- 100
 simulation_errors <- NULL
 tolerence <- 1e-6
 
@@ -341,4 +346,3 @@ Thus, the aggregate consumption from this model is about 2/3 of the first best a
 6. Bonus task: Does the sectoral equilibrium converge to the one under Betrand competition with homogeneous goods in the limit $\theta \to \infty$?
 
 ...
-
