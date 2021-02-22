@@ -1,0 +1,174 @@
+---
+title: "ECON 710A - Problem Set 5"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "3/1/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\var}{\text{var}}
+- \newcommand{\rank}{\text{rank}}
+- \newcommand{\twiddle}{\tilde}
+- \newcommand{\Lfn}{\mathcal{L}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(knitr)
+```
+
+1. Suppose that $\{\varepsilon_t\}_{t=0}^T$ are iid random variables with mean zero, variance $\sigma^2$ and $E[\varepsilon_t^8] < \infty$. Let $U_t = \varepsilon_t \varepsilon_{t-1}$, $W_t = \varepsilon_t \varepsilon_0$, and $V_t = \varepsilon_t^2 \varepsilon_{t-1}$ where $t=1, ..., T$.
+
+(i) Show that $\{U_t\}_{t=1}^T$, $\{W_t\}_{t=1}^T$, and $\{V_t\}_{t=1}^T$ are covariance stationary.
+
+...
+
+(ii) Argue that the following three sample means $\bar{U}$, $\bar{W}$, $\bar{V}$ converge in probability to their expectations.
+
+...
+
+(iii) Determine whether the following three sample second moments $\hat{\gamma}_U(0) = \frac{1}{T} \sum_{t=1}^T U_t^2$, $\hat{\gamma}_W(0) = \frac{1}{T} \sum_{t=1}^T W_t^2$, and $\hat{\gamma}_V(0) = \frac{1}{T} \sum_{t=1}^T V_t^2$ converge in probability to their expectations.
+
+...
+
+(iv) Determine whether the scaled sample means $\sqrt{T}\bar{U}$, $\sqrt{T}\bar{W}$, and $\sqrt{T}\bar{V}$ are asymptotically normal.
+
+...
+
+\pagebreak
+
+2. Consider a time series of length $T$ from the model 
+
+$$
+Y_t = \alpha_0 + t \beta_0 + X_t \delta_0 + Y_{t-1} \rho_1 + U_t
+$$
+
+where $Y_0$ and $\{U_t\}_{t=1}^T$ are iid $N(0, 1)$, and
+
+$$
+X_t = X_{t-1} \cdot 0.3 + V_t
+$$
+
+where $X_0$ and $\{V_t\}_{t=1}^T$ are iid $N(0, 1)$ and independent of $Y_0$ and $\{U_t\}_{t=1}^T$.  We will let $\alpha_0 = \delta_0 = 100$, $\beta_0 = 1$ and consider all combinations of $T \in \{50, 150, 250\}$ and $\rho_1 \in \{0.7, 0.9, 0.95\}$.
+
+(i) In a statistical software of your choice, generate data from (1), estimate the coefficients by OLS, and calculate heteroscedasticity robust two-sided 95% confidence intervals for $\alpha_0$, $\delta_0$, and $\rho_1$.
+
+```{r problem_2i}
+tees <- c(50, 150, 250)
+rhos <- c(0.7, 0.9, 0.95)
+alpha <- 100
+delta <- 100
+beta <- 1
+
+results <- NULL
+
+for (t in tees) {
+  for (rho in rhos) {
+    x_t <- rnorm(1)
+    y_t <- rnorm(1)
+    v_t <- rnorm(t)
+    u_t <- rnorm(t)
+    
+    for (i in 1:t) x_t[i+1] <- 0.3 * x_t[i] + v_t[i]
+    for (i in 1:t) y_t[i+1] <- alpha + i * beta + x_t[i+1] * delta + y_t[i] * rho + u_t[i]
+    
+    x <- cbind(rep(1, t),
+               1:t,
+               x_t[2:(t+1)],
+               y_t[1:t])
+    y <- y_t[2:(t+1)]
+    
+    ols <- solve(t(x) %*% x) %*% (t(x) %*% y)
+    
+    e_hat <- as.numeric(y - x %*% ols)
+    omega <- crossprod(x * e_hat)
+    varcov <- solve(t(x) %*% x) %*% omega %*% solve(t(x) %*% x)
+    se_robust <- sqrt(diag(varcov))
+    
+    results <- tibble(t = t,
+           rho = rho,
+           name = c("alpha", "beta", "delta", "rho"),
+           ols = as.numeric(ols),
+           se = se_robust) %>% 
+      bind_rows(results)
+  }
+}
+
+results %>%
+  mutate(upper_bound = ols + se * 1.96,
+         lower_bound = ols - se * 1.96) %>%
+  kable(digits = 3)
+```
+
+\pagebreak
+
+(ii) Across 10000 simulated repetitions of the above, report the simulated mean of the point estimators for $\alpha_0$, $\delta_0$, and $\rho_1$ and the simulated coverage rate of the confidence intervals.
+
+```{r problem_2ii, eval = FALSE}
+ntrials <- 10000
+results2 <- NULL
+
+for (t in tees) {
+  for (rho in rhos) {
+    for (trial in 1:ntrials) {
+      print(trial)
+      
+      x_t <- rnorm(1)
+      y_t <- rnorm(1)
+      v_t <- rnorm(t)
+      u_t <- rnorm(t)
+    
+      for (i in 1:t) x_t[i+1] <- 0.3 * x_t[i] + v_t[i]
+      for (i in 1:t) y_t[i+1] <- alpha + i * beta + x_t[i+1] * delta + 
+        y_t[i] * rho + u_t[i]
+    
+      x <- cbind(rep(1, t),
+                 1:t,
+                 x_t[2:(t+1)],
+                 y_t[1:t])
+      y <- y_t[2:(t+1)]
+    
+      ols <- solve(t(x) %*% x) %*% (t(x) %*% y)
+    
+      e_hat <- as.numeric(y - x %*% ols)
+      omega <- crossprod(x * e_hat)
+      varcov <- solve(t(x) %*% x) %*% omega %*% solve(t(x) %*% x)
+      se_robust <- sqrt(diag(varcov))
+    
+      results2 <- tibble(t = t,
+                         rho = rho,
+                         trial = trial,
+                         name = c("alpha", "beta", "delta", "rho"),
+                         ols = as.numeric(ols),
+                         se = se_robust) %>% 
+        bind_rows(results2)
+    }
+  }
+}
+
+save(results2, file = "ps5_vonhafften.RData")
+```
+
+```{r problem_2ii_table}
+load("ps5_vonhafften.RData")
+
+results2 %>%
+  group_by(t, rho, name) %>%
+  summarise(mean = mean(ols),
+            lower_bound = quantile(ols, probs = .05),
+            upper_bound = quantile(ols, probs = .95),
+            .groups = "keep") %>% 
+  kable(digits = 3)
+
+```
+
+\pagebreak
+
+(iii) How does sample size and the degree of persistence in $Y_t$ affect the results of the simulations.
+
+...
