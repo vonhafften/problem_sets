@@ -26,7 +26,59 @@ library(knitr)
 
 (i) Show that $\{U_t\}_{t=1}^T$, $\{W_t\}_{t=1}^T$, and $\{V_t\}_{t=1}^T$ are covariance stationary.
 
-...
+For each time series, we check that (1) the second moment is finite, (2) the mean does not depend on $t$, and (3) the variance does not depend on $t$.
+
+$\{U_t\}_{t=1}^T$: For (1), because $E[\varepsilon_t^8] < \infty$ and $\varepsilon_t$ are iid,
+
+$$
+E[U_t^2] 
+= E[(\varepsilon_t \varepsilon_{t-1})^2]
+= E[\varepsilon_t^2 \varepsilon_{t-1}^2]
+= E[\varepsilon_t^2] E[\varepsilon_{t-1}^2]
+= E[\varepsilon_t^2]^2
+< \infty
+$$
+
+For (2),
+
+$$
+E[U_t] = E[\varepsilon_t \varepsilon_{t-1}] = E[\varepsilon_t]E[\varepsilon_{t-1}] = 0
+$$
+
+For (3), 
+
+$$
+\gamma(0) 
+= Cov(U_t, U_t)
+= Var(U_t)
+= Var(\varepsilon_t \varepsilon_{t-1})
+= Var(\varepsilon_t)Var( \varepsilon_{t-1})
+= \sigma^4
+$$
+
+$$
+\gamma(1) 
+= Cov(U_t, U_{t+1})
+= E[U_tU_{t+1}]
+= E[(\varepsilon_t\varepsilon_{t-1})(\varepsilon_{t+1}\varepsilon_{t})]
+= E[\varepsilon_t^2]E[\varepsilon_{t-1}]E[\varepsilon_{t+1}]
+= 0
+$$
+
+$$
+\gamma(2) 
+= Cov(U_t, U_{t+2})
+= E[U_tU_{t+2}]
+= E[(\varepsilon_t\varepsilon_{t-1})(\varepsilon_{t+2}\varepsilon_{t+1})]
+= E[\varepsilon_{t-1}]E[\varepsilon_t]E[\varepsilon_{t+1}]E[\varepsilon_{t+2}]
+= 0
+$$
+
+Thus, $\gamma(k) = \sigma^4$ if $k = 0$ and zero otherwise.
+
+$\{W_t\}_{t=1}^T$:
+
+$\{V_t\}_{t=1}^T$:
 
 (ii) Argue that the following three sample means $\bar{U}$, $\bar{W}$, $\bar{V}$ converge in probability to their expectations.
 
@@ -135,24 +187,20 @@ for (t in tees) {
     
       ols <- solve(t(x) %*% x) %*% (t(x) %*% y)
     
-      e_hat <- as.numeric(y - x %*% ols)
-      omega <- crossprod(x * e_hat)
-      varcov <- solve(t(x) %*% x) %*% omega %*% solve(t(x) %*% x)
-      se_robust <- sqrt(diag(varcov))
-    
       results2 <- tibble(t = t,
                          rho = rho,
                          trial = trial,
                          name = c("alpha", "beta", "delta", "rho"),
-                         ols = as.numeric(ols),
-                         se = se_robust) %>% 
+                         ols = as.numeric(ols)) %>% 
         bind_rows(results2)
     }
   }
 }
 
-save(results2, file = "ps5_vonhafften.RData")
+save(results2, file = "ps5_vonhafften_temp.RData")
 ```
+
+\pagebreak
 
 ```{r problem_2ii_table}
 load("ps5_vonhafften.RData")
@@ -164,11 +212,65 @@ results2 %>%
             upper_bound = quantile(ols, probs = .95),
             .groups = "keep") %>% 
   kable(digits = 3)
-
 ```
 
 \pagebreak
 
 (iii) How does sample size and the degree of persistence in $Y_t$ affect the results of the simulations.
 
-...
+```{r problem_2iii, echo=FALSE}
+comparison_df <- results %>%
+  transmute(t,
+            rho,
+            name,
+            ols,
+            upper_bound = ols + se * 1.96,
+            lower_bound = ols - se * 1.96,
+            method = "Part i") %>%
+  bind_rows(results2 %>%
+              group_by(t, rho, name) %>%
+              summarise(lower_bound = quantile(ols, probs = .05),
+                        upper_bound = quantile(ols, probs = .95),
+                        ols = mean(ols),
+                        method = "Part ii",
+                        .groups = "keep"))
+```
+
+The three figures below have the point estimate (dots) and confidence intervals (vertical lines) from part i (red) and part ii (blue) where panels differ by sample size (horizontal) and degree of persistence (vertical).  The point estimate for part i is the OLS estimate based on a single trial of simulated data and the confidence interval is the heteroskedastic robust standard error.  The point estimate for part ii is the mean of OLS estimates over 10,000 trials of simulated data and the confidence interval is the 5th and 95th percentile.  Naturally, the point estimates from part ii are closer to the true value than the point estimates from part i. In addition, large sample sizes result in point estimates that are closer to the true value and tighter confidence intervals.  For $\beta$, we see that higher degrees of persistence dramatically expand confidence intervals particularly for small samples.  For $\delta$ and $\alpha$, we that the confidence intervals are similarly sized across degrees of persistence and shrink with larger samples.
+
+```{r problem_2iii_alpha, echo=FALSE}
+comparison_df %>% 
+  filter(name == "alpha") %>%
+  ggplot() +
+  geom_point(aes(y=ols, x=method, color=method)) +
+  geom_segment(aes(y=lower_bound, yend=upper_bound, x=method, xend=method, color=method)) +
+  facet_grid(rho~t) +
+  ggtitle("Alpha") +
+  theme(legend.position = "none") +
+  labs(x="", y="")
+```
+
+```{r problem_2iii_beta, echo=FALSE}
+comparison_df %>% 
+  filter(name == "beta") %>%
+  ggplot() +
+  geom_point(aes(y=ols, x=method, color=method)) +
+  geom_segment(aes(y=lower_bound, yend=upper_bound, x=method, xend=method, color=method)) +
+  facet_grid(rho~t) +
+  ggtitle("Beta")+
+  theme(legend.position = "none")+
+  labs(x="", y="")
+```
+
+```{r problem_2iii_delta, echo=FALSE}
+comparison_df %>% 
+  filter(name == "delta") %>%
+  ggplot() +
+  geom_point(aes(y=ols, x=method, color=method)) +
+  geom_segment(aes(y=lower_bound, yend=upper_bound, x=method, xend=method, color=method)) +
+  facet_grid(rho~t) +
+  ggtitle("Delta")+
+  theme(legend.position = "none")+
+  labs(x="", y="")
+
+```
