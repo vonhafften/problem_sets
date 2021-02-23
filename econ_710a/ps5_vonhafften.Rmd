@@ -28,63 +28,168 @@ library(knitr)
 
 For each time series, we check that (1) the second moment is finite, (2) the mean does not depend on $t$, and (3) the variance does not depend on $t$.
 
-$\{U_t\}_{t=1}^T$: For (1), because $E[\varepsilon_t^8] < \infty$ and $\varepsilon_t$ are iid,
+$\{U_t\}_{t=1}^T$: For (1), because $E[\varepsilon_t^8] < \infty$ and $\{\varepsilon_t\}_{t=0}^T$ are iid,
 
-$$
+\begin{align*}
 E[U_t^2] 
-= E[(\varepsilon_t \varepsilon_{t-1})^2]
-= E[\varepsilon_t^2 \varepsilon_{t-1}^2]
-= E[\varepsilon_t^2] E[\varepsilon_{t-1}^2]
-= E[\varepsilon_t^2]^2
-< \infty
-$$
+&= E[(\varepsilon_t \varepsilon_{t-1})^2]\\
+&= E[\varepsilon_t^2 \varepsilon_{t-1}^2]\\
+&= E[\varepsilon_t^2] E[\varepsilon_{t-1}^2]\\
+&= E[\varepsilon_t^2]^2\\
+&= \sigma^4\\
+&< \infty
+\end{align*}
 
-For (2),
+For (2), $E[U_t] = E[\varepsilon_t \varepsilon_{t-1}] = E[\varepsilon_t]E[\varepsilon_{t-1}] = 0$.  For (3), 
 
-$$
-E[U_t] = E[\varepsilon_t \varepsilon_{t-1}] = E[\varepsilon_t]E[\varepsilon_{t-1}] = 0
-$$
-
-For (3), 
-
-$$
+\begin{align*}
 \gamma(0) 
-= Cov(U_t, U_t)
-= Var(U_t)
-= Var(\varepsilon_t \varepsilon_{t-1})
-= Var(\varepsilon_t)Var( \varepsilon_{t-1})
-= \sigma^4
-$$
+&= Cov(U_t, U_t)\\
+&= Var(U_t)\\
+&= Var(\varepsilon_t \varepsilon_{t-1})\\
+&= Var(\varepsilon_t)Var( \varepsilon_{t-1})\\
+&= \sigma^4
+\end{align*}
 
-$$
+\begin{align*}
 \gamma(1) 
-= Cov(U_t, U_{t+1})
-= E[U_tU_{t+1}]
-= E[(\varepsilon_t\varepsilon_{t-1})(\varepsilon_{t+1}\varepsilon_{t})]
-= E[\varepsilon_t^2]E[\varepsilon_{t-1}]E[\varepsilon_{t+1}]
-= 0
-$$
+&= Cov(U_t, U_{t+1})\\
+&= E[U_tU_{t+1}]\\
+&= E[(\varepsilon_t\varepsilon_{t-1})(\varepsilon_{t+1}\varepsilon_{t})]\\
+&= E[\varepsilon_t^2]E[\varepsilon_{t-1}]E[\varepsilon_{t+1}]\\
+&= 0
+\end{align*}
 
-$$
+\begin{align*}
 \gamma(2) 
-= Cov(U_t, U_{t+2})
-= E[U_tU_{t+2}]
-= E[(\varepsilon_t\varepsilon_{t-1})(\varepsilon_{t+2}\varepsilon_{t+1})]
-= E[\varepsilon_{t-1}]E[\varepsilon_t]E[\varepsilon_{t+1}]E[\varepsilon_{t+2}]
-= 0
-$$
+&= Cov(U_t, U_{t+2}) \\
+&= E[U_tU_{t+2}]\\
+&= E[(\varepsilon_t\varepsilon_{t-1})(\varepsilon_{t+2}\varepsilon_{t+1})]\\
+&= E[\varepsilon_{t-1}]E[\varepsilon_t]E[\varepsilon_{t+1}]E[\varepsilon_{t+2}]\\
+&= 0
+\end{align*}
 
 Thus, $\gamma(k) = \sigma^4$ if $k = 0$ and zero otherwise.
 
-$\{W_t\}_{t=1}^T$:
+$\{W_t\}_{t=1}^T$: For (1), because $E[\varepsilon_t^8] < \infty$ and $\{\varepsilon_t\}_{t=0}^T$ are iid,
 
-$\{V_t\}_{t=1}^T$:
+\begin{align*}
+E[W_t^2] 
+&= E[(\varepsilon_t \varepsilon_0)^2]\\
+&= E[\varepsilon_t^2 \varepsilon_0^2]\\
+&= E[\varepsilon_t^2] E[\varepsilon_0^2]\\
+&= E[\varepsilon_t^2]^2\\
+&= \sigma^4\\
+&< \infty
+\end{align*}
+
+For (2), $E[W_t] = E[\varepsilon_t \varepsilon_0] = E[\varepsilon_t]E[\varepsilon_0] = 0$.  For (3), 
+
+\begin{align*}
+\gamma(0) 
+&= Cov(W_t, W_t)\\
+&= Var(W_t)\\
+&= Var(\varepsilon_t \varepsilon_0)\\
+&= Var(\varepsilon_t)Var( \varepsilon_0)\\
+&= \sigma^4
+\end{align*}
+
+\begin{align*}
+\gamma(1) 
+&= Cov(W_t, W_{t+1})\\
+&= E[W_tW_{t+1}]\\
+&= E[(\varepsilon_t\varepsilon_0)(\varepsilon_{t+1}\varepsilon_0)]\\
+&= E[\varepsilon_0^2]E[\varepsilon_t]E[\varepsilon_{t+1}]\\
+&= 0
+\end{align*}
+
+\begin{align*}
+\gamma(2) 
+&= Cov(W_t, W_{t+2})\\
+&= E[W_tW_{t+2}]\\
+&= E[(\varepsilon_t\varepsilon_0)(\varepsilon_{t+2}\varepsilon_0)]\\
+&= E[(\varepsilon_t\varepsilon_0)(\varepsilon_{t+2}\varepsilon_0)]\\
+&= E[\varepsilon_0^2]E[\varepsilon_t]E[\varepsilon_{t+2}]\\
+&= 0
+\end{align*}
+
+Thus, $\gamma(k) = \sigma^4$ if $k = 0$ and zero otherwise.
+
+$\{V_t\}_{t=1}^T$: For (1), because $E[\varepsilon_t^8] < \infty$ and $\{\varepsilon_t\}_{t=0}^T$ are iid,
+
+\begin{align*}
+E[V_t^2] 
+&= E[(\varepsilon_t^2 \varepsilon_{t-1})^2]\\
+&= E[\varepsilon_t^4 \varepsilon_{t-1}^2]\\
+&= E[\varepsilon_t^4] E[\varepsilon_{t-1}^2]\\
+&= E[\varepsilon_t^4] \sigma^2\\
+&< \infty
+\end{align*}
+
+For (2), $E[V_t] = E[\varepsilon_t^2 \varepsilon_{t-1}] = E[\varepsilon_t^2]E[\varepsilon_{t-1}] = 0$.  For (3), 
+
+\begin{align*}
+\gamma(0) 
+&= Cov(V_t, V_t)\\
+&= Var(V_t)\\
+&= Var(\varepsilon_t^2 \varepsilon_{t-1})\\
+&= Var(\varepsilon_t^2) Var( \varepsilon_{t-1})\\
+&= E[(\varepsilon_t^2-E[\varepsilon_t^2])^2] \sigma^2\\
+&= E[(\varepsilon_t^2-\sigma^2)^2] \sigma^2\\
+&= E[\varepsilon_t^4-2\sigma^2\varepsilon_t^2 + \sigma^4] \sigma^2\\
+&= (E[\varepsilon_t^4]-2\sigma^2\sigma^2 + \sigma^4) \sigma^2 \\
+&= (E[\varepsilon_t^4] - \sigma^4) \sigma^2 \\
+&= \sigma^2 E[\varepsilon_t^4] - \sigma^6
+\end{align*}
+
+\begin{align*}
+\gamma(1) 
+&= Cov(V_t, V_{t+1})\\
+&= E[V_tV_{t+1}]\\
+&= E[(\varepsilon_t^2\varepsilon_{t-1})(\varepsilon_{t+1}^2\varepsilon_{t})]\\
+&= E[\varepsilon_t^3\varepsilon_{t-1}\varepsilon_{t+1}^2]\\
+&= E[\varepsilon_t^3]E[\varepsilon_{t-1}]E[\varepsilon_{t+1}^2]\\
+&= 0
+\end{align*}
+
+\begin{align*}
+\gamma(2) 
+&= Cov(V_t, V_{t+2})\\
+&= E[V_tV_{t+2}]\\
+&= E[(\varepsilon_t^2\varepsilon_{t-1})(\varepsilon_{t+2}^2\varepsilon_{t+1})]\\
+&= E[\varepsilon_t^2\varepsilon_{t-1}\varepsilon_{t+2}^2\varepsilon_{t+1}]\\
+&= E[\varepsilon_t^2]E[\varepsilon_{t-1}]E[\varepsilon_{t+2}^2]E[\varepsilon_{t+1}]\\
+&= 0
+\end{align*}
+
+Thus, $\gamma(k) = \sigma^2 E[\varepsilon_t^4] - \sigma^6$ if $k = 0$ and zero otherwise.
+
+\pagebreak
 
 (ii) Argue that the following three sample means $\bar{U}$, $\bar{W}$, $\bar{V}$ converge in probability to their expectations.
 
-...
+In (i), we found that $E[U_t]=E[W_t]=E[V_t]=0 \implies E[\bar{U}]=E[\bar{W}]=E[\bar{V}]=0$.  Below I show that $Var(\bar{U}) \to 0$, $Var(\bar{V}) \to 0$, and $Var(\bar{W}) \to 0$, so by Chebyshev's inequality $\bar{U} \to_p E[\bar{U}]$, $\bar{W} \to_p E[\bar{W}]$, and $\bar{V} \to_p E[\bar{V}]$.
 
-(iii) Determine whether the following three sample second moments $\hat{\gamma}_U(0) = \frac{1}{T} \sum_{t=1}^T U_t^2$, $\hat{\gamma}_W(0) = \frac{1}{T} \sum_{t=1}^T W_t^2$, and $\hat{\gamma}_V(0) = \frac{1}{T} \sum_{t=1}^T V_t^2$ converge in probability to their expectations.
+\begin{align*}
+Var(\bar{U}) 
+&= Var\Bigg(\frac{1}{T}\sum_{t=1}^T U_t \Bigg)\\
+&= \frac{1}{T^2} \sum_{t=1}^T \sum_{s=1}^T Cov(U_t, U_s)\\
+&= \frac{1}{T^2} \sum_{t=1}^T \sum_{s=1}^T \gamma(t-s)\\
+&= \frac{1}{T^2} T \gamma(0)\\
+&= \frac{\gamma(0)}{T} \\
+&= \frac{\sigma^2}{T} \\
+&\to 0
+\end{align*}
+
+As $T \to \infty$.  Because $V_t$ and $W_t$ have the same autocovariance function, the variances of $\bar{W}$ and $\bar{V}$ similarly converge to zero.
+
+(iii) Determine whether the following three sample second moments converge in probability to their expectations:
+
+$$
+\hat{\gamma}_U(0) = \frac{1}{T} \sum_{t=1}^T U_t^2, \; \; \;
+\hat{\gamma}_W(0) = \frac{1}{T} \sum_{t=1}^T W_t^2,  \; \; \;
+\hat{\gamma}_V(0) = \frac{1}{T} \sum_{t=1}^T V_t^2
+$$
 
 ...
 
