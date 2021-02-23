@@ -191,7 +191,146 @@ $$
 \hat{\gamma}_V(0) = \frac{1}{T} \sum_{t=1}^T V_t^2
 $$
 
-...
+Similar to (ii), we proceed by applying Chebyshev's inequality to show convergence.  For $\hat{\gamma}_U(0)$,
+
+$$
+E[\hat{\gamma}_U(0)] = E[\frac{1}{T} \sum_{t=1}^T U_t^2]=\frac{1}{T} \sum_{t=1}^T E[U_t^2]=\sigma^4
+$$
+
+Now, let us consider the autocorrelation function for $\{U_t^2\}_{t=0}^T$:
+
+\begin{align*}
+\gamma_{U^2}(0) 
+&= Var(U_t^2)\\
+&= E[U_t^4]-(\sigma^4)^2\\
+&= E[\varepsilon_t^4\varepsilon_{t-1}^4]-\sigma^8\\
+&= E[\varepsilon_t^4]E[\varepsilon_{t-1}^4]-\sigma^8\\
+&= E[\varepsilon_t^4]^2-\sigma^8
+\end{align*}
+
+\begin{align*}
+\gamma_{U^2}(1) 
+&= Cov(U_t^2, U_{t+1}^2)\\
+&=E[U_t^2U_{t+1}^2] - E[U_t^2]E[U_{t+1}^2]\\
+&=E[(\varepsilon_t\varepsilon_{t-1})^2(\varepsilon_{t+1}\varepsilon_{t})^2] - \sigma^4\sigma^4\\
+&= E[\varepsilon_t^4\varepsilon_{t-1}^2\varepsilon_{t+1}^2] - \sigma^8\\
+&= E[\varepsilon_t^4]\sigma^2\sigma^2-\sigma^8\\
+&= E[\varepsilon_t^4]\sigma^4-\sigma^8
+\end{align*}
+
+\begin{align*}
+\gamma_{U^2}(2) 
+&= Cov(U_t^2, U_{t+2}^2)\\
+&=E[U_t^2U_{t+2}^2] - E[U_t^2]E[U_{t+2}^2]\\
+&=E[(\varepsilon_t\varepsilon_{t-1})^2 (\varepsilon_{t+2}\varepsilon_{t+1})^2] - \sigma^8\\
+&=E[\varepsilon_t^2]E[\varepsilon_{t-1}^2]E[ \varepsilon_{t+2}^2]E[\varepsilon_{t+1}^2] - \sigma^8\\
+&=(\sigma^2)^4 - \sigma^8\\
+&=0
+\end{align*}
+
+Therefore,
+
+\begin{align*}
+Var\Bigg(\frac{1}{T}\sum_{t=1}^T U_t^2 \Bigg)
+&= \frac{1}{T^2} \sum_{t=1}^T \sum_{s=1}^T Cov(U_t^2, U_s^2)\\
+&= \frac{1}{T^2} \sum_{t=1}^T \sum_{s=1}^T \gamma_{U^2}(t-s)\\
+&= \frac{1}{T^2} T (E[\varepsilon_t^4]^2-\sigma^8 +E[\varepsilon_t^4]\sigma^4-\sigma^8)\\
+&= \frac{E[\varepsilon_t^4]^2-2\sigma^8 +E[\varepsilon_t^4]\sigma^4}{T}\\
+&\to 0
+\end{align*}
+
+As $T \to \infty$. For $\hat{\gamma}_W(0)$,
+
+$$
+E[\hat{\gamma}_W(0)] = E[\frac{1}{T} \sum_{t=1}^T W_t^2]=\frac{1}{T} \sum_{t=1}^T E[W_t^2]=\sigma^4
+$$
+
+Now, let us consider the autocorrelation function for $\{W_t^2\}_{t=0}^T$:
+
+\begin{align*}
+\gamma_{W^2}(0) 
+&= Var(W_t^2)\\
+&= E[W_t^4]-(\sigma^4)^2\\
+&= E[\varepsilon_t^4\varepsilon_0^4]-\sigma^8\\
+&= E[\varepsilon_t^4]E[\varepsilon_0^4]-\sigma^8\\
+&= E[\varepsilon_t^4]^2-\sigma^8
+\end{align*}
+
+\begin{align*}
+\gamma_{W^2}(1) 
+&= Cov(W_t^2, W_{t+1}^2)\\
+&=E[W_t^2W_{t+1}^2] - E[W_t^2]E[W_{t+1}^2]\\
+&=E[(\varepsilon_t\varepsilon_0)^2(\varepsilon_{t+1}\varepsilon_0)^2] - \sigma^4\sigma^4\\
+&= E[(\varepsilon_t^2\varepsilon_{t+1}^2\varepsilon_{0}^4] - \sigma^8\\
+&= E[\varepsilon_0^4]\sigma^2\sigma^2-\sigma^8\\
+&= E[\varepsilon_t^4]\sigma^4-\sigma^8
+\end{align*}
+
+\begin{align*}
+\gamma_{W^2}(2) 
+&= Cov(W_t^2, W_{t+2}^2)\\
+&=E[W_t^2 W_{t+2}^2] - E[W_t^2]E[W_{t+2}^2]\\
+&=E[(\varepsilon_t\varepsilon_0)^2 (\varepsilon_{t+2}\varepsilon_0)^2] - \sigma^8\\
+&=E[\varepsilon_t^2]E[\varepsilon_{t+2}^2]E[\varepsilon_0^4] - \sigma^8\\
+&=E[\varepsilon_t^4]\sigma^4 - \sigma^8
+\end{align*}
+
+Thus, for $k \ge 2$, $\gamma_{W^2}(k) > 0$, so $\hat{\gamma}_W(0)$ does not converge to its expectation.
+
+For $\hat{\gamma}_V(0)$,
+
+$$
+E[\hat{\gamma}_V(0)] = E[\frac{1}{T} \sum_{t=1}^T V_t^2]=\frac{1}{T} \sum_{t=1}^T E[V_t^2]=\sigma^2E[\varepsilon_t^4]
+$$
+
+Now, let us consider the autocorrelation function for $\{V_t^2\}_{t=0}^T$:
+
+\begin{align*}
+\gamma_{V^2}(0) 
+&= Var(V_t^2)\\
+&= E[V_t^4]-E[V_t^2]^2\\
+&= E[(\varepsilon_t^2\varepsilon_{t-1})^4]-\sigma^4E[\varepsilon_t^4]^2\\
+&= E[\varepsilon_t^8\varepsilon_{t-1}^4]-\sigma^4E[\varepsilon_t^4]^2\\
+&= E[\varepsilon_t^8]E[\varepsilon_{t}^4]-\sigma^4E[\varepsilon_t^4]^2
+\end{align*}
+
+\begin{align*}
+\gamma_{V^2}(1)
+&= Cov(V_t^2, V_{t+1}^2)\\
+&= E[V_t^2V_{t+1}^2] - E[V_t^2]E[V_{t+1}^2]\\
+&= E[(\varepsilon_t^2 \varepsilon_{t-1})^2 (\varepsilon_{t+1}^2 \varepsilon_t)^2] -
+\sigma^2E[\varepsilon_t^4]\sigma^2E[\varepsilon_t^4]\\
+&= E[\varepsilon_t^6 \varepsilon_{t-1}^2 \varepsilon_{t+1}^4] -
+\sigma^4E[\varepsilon_t^4]^2\\
+&= E[\varepsilon_t^6] E[\varepsilon_t^4] \sigma^2  -
+\sigma^4E[\varepsilon_t^4]^2\\
+\end{align*}
+
+\begin{align*}
+\gamma_{V^2}(1)
+&= Cov(V_t^2, V_{t+2}^2)\\
+&= E[V_t^2V_{t+2}^2] - E[V_t^2]E[V_{t+2}^2]\\
+&= E[(\varepsilon_t^2 \varepsilon_{t-1})^2 (\varepsilon_{t+2}^2 \varepsilon_{t+1})^2] -
+\sigma^2E[\varepsilon_t^4]\sigma^2E[\varepsilon_t^4]\\
+&= E[\varepsilon_t^4 \varepsilon_{t-1}^2 \varepsilon_{t+2}^4 \varepsilon_{t+1}^2] -
+\sigma^4E[\varepsilon_t^4]^2\\
+&= E[\varepsilon_t^4]E[ \varepsilon_{t-1}^2 ]E[\varepsilon_{t+2}^4 ]E[\varepsilon_{t+1}^2] -
+\sigma^4E[\varepsilon_t^4]^2\\
+&= 0
+\end{align*} 
+
+Therefore,
+
+\begin{align*}
+Var\Bigg(\frac{1}{T}\sum_{t=1}^T V_t^2 \Bigg)
+&= \frac{1}{T^2} \sum_{t=1}^T \sum_{s=1}^T Cov(V_t^2, V_s^2)\\
+&= \frac{1}{T^2} \sum_{t=1}^T \sum_{s=1}^T \gamma_{V^2}(t-s)\\
+&= \frac{1}{T^2} T (E[\varepsilon_t^8]E[\varepsilon_{t}^4]-\sigma^4E[\varepsilon_t^4]^2 + E[\varepsilon_t^6] E[\varepsilon_t^4] \sigma^2  -
+\sigma^4E[\varepsilon_t^4]^2)\\
+&= \frac{E[\varepsilon_t^8]E[\varepsilon_{t}^4] + E[\varepsilon_t^6] E[\varepsilon_t^4] \sigma^2  - 2
+\sigma^4E[\varepsilon_t^4]^2}{T}\\
+&\to 0
+\end{align*} 
 
 (iv) Determine whether the scaled sample means $\sqrt{T}\bar{U}$, $\sqrt{T}\bar{W}$, and $\sqrt{T}\bar{V}$ are asymptotically normal.
 
