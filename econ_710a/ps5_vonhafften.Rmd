@@ -334,7 +334,30 @@ Var\Bigg(\frac{1}{T}\sum_{t=1}^T V_t^2 \Bigg)
 
 (iv) Determine whether the scaled sample means $\sqrt{T}\bar{U}$, $\sqrt{T}\bar{W}$, and $\sqrt{T}\bar{V}$ are asymptotically normal.
 
-...
+$\sqrt{T}\bar{W}$ is not asymptotically normal because $\frac{1}{T}\sum_{t=1}^T W_t^2$ does not converge in probability to its expectation.
+
+We have shown that all but the martingale condition of the martingale central limit theorem hold for $\sqrt{T}\bar{U}$ and $\sqrt{T}\bar{V}$.  For $\sqrt{T}\bar{U}$:
+
+\begin{align*}
+E[U_t | U_{t-1}, U_{t-2}, ..., U_1] 
+&= E[E[\varepsilon_t \varepsilon_{t-1}|\varepsilon_{t-1}, ..., \varepsilon_0]|U_{t-1}, U_{t-2}, ..., U_1]\\
+&= E[\varepsilon_{t-1}E[\varepsilon_t |\varepsilon_{t-1}, ..., \varepsilon_0]|U_{t-1}, U_{t-2}, ..., U_1]\\
+&= E[\varepsilon_{t-1}*0|U_{t-1}, U_{t-2}, ..., U_1]\\
+&= 0
+\end{align*} 
+
+Thus, by the martingale CLT, $\sqrt{T}\bar{U}$ is asymptotically normal. For $\sqrt{T}\bar{V}$:
+
+\begin{align*}
+E[V_t | V_{t-1}, V_{t-2}, ..., V_1] 
+&= E[E[\varepsilon_t^2 \varepsilon_{t-1}|\varepsilon_{t-1}, ..., \varepsilon_0]|V_{t-1}, V_{t-2}, ..., V_1]\\
+&= E[\varepsilon_{t-1}E[\varepsilon_t^2 |\varepsilon_{t-1}, ..., \varepsilon_0]|V_{t-1}, V_{t-2}, ..., V_1]\\
+&= E[\varepsilon_{t-1}*\sigma^2|V_{t-1}, V_{t-2}, ..., V_1]\\
+&= \sigma^2E[\varepsilon_{t-1}|V_{t-1}, V_{t-2}, ..., V_1]\\
+&\neq 0
+\end{align*} 
+
+Thus, $\sqrt{T}\bar{V}$ is not asymptotically normal.
 
 \pagebreak
 
