@@ -1,0 +1,298 @@
+---
+title: "ECON 714A - Problem Set 5"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "3/1/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+A representative household maximizes lifetime expected utility
+
+$$
+E_0 \sum_{t=0}^\infty \beta^t (\log C_t - L_t)
+$$
+
+subject to the budget constraint
+
+$$
+P_t C_t + B_t = W_t L_t + \Pi_t + (1+i_{t-1})B_{t-1} + T_t
+$$
+
+where consumption bundle $C_t$ is a standard CES aggregator of individual varieties with the elasticity of substitution $\theta$. Firms are monopolistic competitors and use a linear technology $Y_{it}=A_tL_{it}$ to produce a continuum of unique varieties $i\in[0,1]$. Each firm has to hire additional $\frac{\varphi}{2}(\frac{P{it}-P{it}-1}{P{it}-1})^2$ units of labor to adjust the price from $P_{it-1}$ to $P_{it}$ in period $t$.
+
+1. Consider a flexible-price version of the model with $\varphi= 0$. Describe the deterministic steady state of the economy and the linearized dynamics around it.
+
+The household problem is to choose consumption of each product, supply labor, and purchase bonds:
+
+$$
+\max_{\{(C_{it}, L_t, B_t)\}_{t=0}^\infty} E_0 \sum_{t=0}^\infty \beta^t (\log C_t - L_t)
+$$
+
+$$
+\text{s.t. } P_t C_t + B_t = W_t L_t + \Pi_t + (1+i_{t-1})B_{t-1} + T_t
+$$
+$$
+\text{and } C_t = \Bigg(\int C_{it}^{\frac{\theta - 1}{\theta}} \Bigg)^{\frac{\theta}{\theta - 1}}
+$$
+
+The resulting optimality conditions are the same as in the RBC and Dixit-Stiglitz models.
+
+Demand for products:
+
+$$
+C_{it} = \Bigg(\frac{P_{it}}{P_t}\Bigg)^{-\theta} C_t
+$$
+
+Labor supply condition:
+
+$$
+C_t = \frac{W_t}{P_t} \implies L_t = 1
+$$
+
+The Euler equation:
+
+$$
+\beta E_t \Bigg(\frac{C_{t+1}}{C_t}\Bigg)^{-1} \frac{P_t}{P_{t+1}}(1+i_t) = 1
+$$
+
+With $\varphi = 0$, the problem of each firm to maximize profits becomes static:
+
+$$
+\max P_{it} C_{it} - W_tL_{it}
+$$
+$$
+\text{s.t. } C_{it} = \Bigg(\frac{P_{it}}{P_t}\Bigg)^{-\theta} C_t
+$$
+$$
+\text{and } C_{it} = A_t L_{it}
+$$
+
+From the Dixit-Stiglitz model, the optimal price is:
+
+$$
+P_{it} = \frac{\theta}{\theta - 1}\frac{W_t}{A_t}
+$$
+
+$$
+P_t = \Bigg(\int P_{it}^{1-\theta} di \Bigg)^{\frac{1}{1-\theta}}
+$$
+
+In the steady state, the labor supply condition implies:
+
+$$
+\bar{C} = \bar{W}/\bar{P}
+$$
+
+From the price aggregation condition:
+
+$$
+\bar{P} = \Bigg(\int \bar{P}_{i}^{1-\theta} di \Bigg)^{\frac{1}{1-\theta}}
+$$
+
+From the optimal markup condition:
+
+$$
+\bar{P} = \frac{\theta}{\theta - 1}\frac{\bar{W}}{\bar{A}}
+$$
+
+From the Euler equation (and symmetry of $\bar{P_i} = \bar{P}$):
+
+$$
+\beta E_t \Bigg(\frac{\bar{C} }{\bar{C} }\Bigg)^{-1} \frac{\bar{P}}{\bar{P}}(1+\bar{i}) = 1 
+\implies \bar{i} = 1/\beta - 1
+$$
+
+From the output equation:
+
+$$
+\bar{C} = \bar{A}\bar{L}
+$$
+
+Thus, 
+
+$$
+\bar{L} = \frac{\bar{C}}{\bar{A}}= \frac{\bar{W}}{\bar{P}\bar{A}} = \frac{\bar{W}}{\bar{A}}\frac{\theta - 1}{\theta}\frac{\bar{A}}{\bar{W}} = \frac{\theta - 1}{\theta}
+$$
+
+Now let us consider the linearized dynamics around the steady state. Inelastic labor supply means that $l_t = 0$.  The labor supply condition implies:
+
+$$
+c_t = w_t - p_t
+$$
+
+The Euler equation implies:
+
+$$
+E_t[c_t - c_{t+1} + p_t - p_{t+1} + i_t] = 0
+$$
+
+The optimal price implies:
+
+$$
+p_{it} = w_t - a_t
+$$
+
+Finally the price aggregation condition implies:
+
+$$
+p_t = p_{it}
+$$
+
+The linearized labor supply condition, optimal price condition, and price aggregation condition imply:
+
+$$
+c_t = w_t - (w_t - a_t) \implies c_t = a_t
+$$
+
+2. Derive the NKPC following these steps:
+
+(a) write the FOC of an individual firm,
+
+From the Euler equation, we can define the stochastic discount factor: $\Theta_{t,t+j} = \beta^j \frac{C_t}{C_{t+j}}\frac{P_t}{P_{t+j}}$. The firm's problem with sticky prices is to maximize discounted profits:
+
+$$
+\max_{\{P_{it}\}_{t=0}^\infty} E_t \sum_{j=0}^\infty 
+\Theta_{t,t+j}
+\Bigg[P_{i,t+j}C_{i,t+j} - 
+\frac{W_{t+j}}{A_{t+j}} C_{i,t+j} -
+W_{t+j}\frac{\varphi}{2}\Bigg(\frac{P_{i,t+j} - P_{i,t+j-1}}{P_{i,t+j-1}}\Bigg)^2\Bigg]
+$$
+$$
+\text{s.t. } C_{i,t} = \Bigg(\frac{P_{i,t}}{P_{t}}\Bigg)^{-\theta}C_t
+$$
+$$
+\implies 
+\max_{\{P_{it}\}_{t=0}^\infty} E_t \sum_{j=0}^\infty 
+\Theta_{t,t+j}
+\Bigg[
+P_{i,t+j}^{1-\theta}P_{t+j}^{\theta}C_{t+j} - 
+\frac{W_{t+j}}{A_{t+j}} P_{i,t+j}^{-\theta}P_{t+j}^{\theta}C_{t+j} -
+W_{t+j}\frac{\varphi}{2}\Bigg(\frac{P_{i,t+j} - P_{i,t+j-1}}{P_{i,t+j-1}}\Bigg)^2\Bigg]
+$$
+
+\begin{align*}
+\implies
+&\max_{\{P_{it}\}_{t=0}^\infty} E_t 
+\Bigg[
+P_{i,t}^{1-\theta}P_{t}^{\theta}C_{t} - 
+\frac{W_{t}}{A_{t}} P_{i,t}^{-\theta}P_{t}^{\theta}C_{t} -
+W_{t}\frac{\varphi}{2}\Bigg(\frac{P_{i,t} - P_{i,t-1}}{P_{i,t-1}}\Bigg)^2\Bigg]
+\\
+&+\Theta_{t,t+1}
+\Bigg[
+P_{i,t+1}^{1-\theta}P_{t+1}^{\theta}C_{t+1} - 
+\frac{W_{t+1}}{A_{t+1}} P_{i,t+1}^{-\theta}P_{t+1}^{\theta}C_{t+1} -
+W_{t+1}\frac{\varphi}{2}\Bigg(\frac{P_{i,t+1} - P_{i,t}}{P_{i,t}}\Bigg)^2\Bigg]
+\\
+&+\sum_{j=2}^\infty 
+\Theta_{t,t+j}
+\Bigg[
+P_{i,t+j}^{1-\theta}P_{t+j}^{\theta}C_{t+j} - 
+\frac{W_{t+j}}{A_{t+j}} P_{i,t+j}^{-\theta}P_{t+j}^{\theta}C_{t+j} -
+W_{t+j}\frac{\varphi}{2}\Bigg(\frac{P_{i,t+j} - P_{i,t+j-1}}{P_{i,t+j-1}}\Bigg)^2\Bigg]
+\end{align*}
+
+\pagebreak
+
+FOC [$P_{i,t}$]:
+
+$$
+E_t 
+\Bigg[
+(1-\theta)P_{i,t}^{-\theta}P_{t}^{\theta}C_{t} - 
+(-\theta)\frac{W_{t}}{A_{t}} P_{i,t}^{-\theta-1}P_{t}^{\theta}C_{t} -
+\frac{W_{t}\varphi}{P_{i,t-1}}\Bigg(\frac{P_{i,t} - P_{i,t-1}}{P_{i,t-1}}\Bigg)
++\Theta_{t,t+1}
+\frac{W_{t+1}\varphi P_{i,t+1}}{P_{i,t}^2}\Bigg(\frac{P_{i,t+1} - P_{i,t}}{P_{i,t}}\Bigg)\Bigg]
+= 0
+$$
+
+$$
+\implies
+(1-\theta)C_{i,t} +
+\theta\frac{W_{t}}{A_{t}} P_{i,t}^{-1}C_{i,t} -
+\frac{W_{t}\varphi}{P_{i,t-1}}\Bigg(\frac{P_{i,t} - P_{i,t-1}}{P_{i,t-1}}\Bigg)
+= - E_t 
+\Bigg[\beta \frac{C_t}{C_{t+1}}\frac{P_t}{P_{t+1}}
+\frac{W_{t+1}\varphi P_{i,t+1}}{P_{i,t}^2}\Bigg(\frac{P_{i,t+1} - P_{i,t}}{P_{i,t}}\Bigg)\Bigg]
+$$
+
+$$
+\implies
+(1-\theta)C_{i,t}P_{i,t} +
+\theta\frac{W_{t}}{A_{t}} C_{i,t} -
+\frac{W_{t}\varphi P_{i,t}}{P_{i,t-1}}\Bigg(\frac{P_{i,t} - P_{i,t-1}}{P_{i,t-1}}\Bigg)
+= - E_t 
+\Bigg[\beta \frac{C_t}{C_{t+1}}\frac{P_t}{P_{t+1}}
+\frac{W_{t+1}\varphi P_{i,t+1}}{P_{i,t}}\Bigg(\frac{P_{i,t+1} - P_{i,t}}{P_{i,t}}\Bigg)\Bigg]
+$$
+
+(b) impose symmetry across producers and define inflation rate as $\pi_t=\frac{P_t}{P_{t-1}}-1$,
+
+Symmetry across producers implies that $P_{i,t} = P_t$ and $C_{t,t} = C_t$:
+
+$$
+(1-\theta)C_{t} P_t +
+\theta\frac{W_{t}}{A_{t}} C_{t} -
+\frac{W_{t}\varphi P_t}{P_{t-1}}\Bigg(\frac{P_t - P_{t-1}}{P_{t-1}}\Bigg)
+= - E_t 
+\Bigg[\beta \frac{C_t}{C_{t+1}}\frac{P_t}{P_{t+1}}
+\frac{W_{t+1}\varphi P_{t+1}}{P_{t}}\Bigg(\frac{P_{t+1} - P_{t}}{P_{t}}\Bigg)\Bigg]
+$$
+
+$$
+(1-\theta)C_{t} P_t +
+\theta\frac{W_{t}}{A_{t}} C_{t} -
+\frac{W_{t}\varphi P_t}{P_{t-1}}\Bigg(\frac{P_t - P_{t-1}}{P_{t-1}}\Bigg)
+= - E_t 
+\Bigg[\beta \frac{C_t}{C_{t+1}}
+W_{t+1}\varphi\Bigg(\frac{P_{t+1} - P_{t}}{P_{t}}\Bigg)\Bigg]
+$$
+
+Define inflation rate as $\pi_t=\frac{P_t}{P_{t-1}}-1=\frac{P_{t} - P_{t-1}}{P_{t-1}}$:
+
+$$
+(1-\theta) P_t +
+\theta\frac{W_{t}}{A_{t}}
+= 
+\varphi
+\Bigg(
+\frac{W_{t}}{C_t}\pi_t(\pi_t + 1)
+- \beta
+E_t 
+\Bigg[\frac{W_{t+1}}{C_{t+1}} \pi_{t+1}
+\Bigg]
+\Bigg)
+$$
+
+(c) take the first-order approximation,
+
+...
+
+(d) write the NKPC in terms of inflation rate and output gap,
+
+...
+
+(e) compare the NKPC to the one under the Calvo pricing.
+
+...
+
+3. What is the source of inflation costs in this model? Is it different from the one in the Calvo model?
+
+...
+
+4. Let the monetary policy be described by the Taylor rule $i_t=\varphi x_t+u_t$. What restrictionson the coefficient $\phi_x$ ensure uniqueness of the equilibrium?
+
+...

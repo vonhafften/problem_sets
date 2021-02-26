@@ -1,0 +1,179 @@
+---
+title: "ECON 713A - Problem Set 2"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "3/6/2020"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+- \usepackage{bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+1. Assume that firm $k= 1,2,...$ in a competitive industry has cost $k^2+q+q^2$ of output level $q$. (Here, $k^2$ is an escapable cost in the long run.) Then the long run industry saw tooth supply curve has positive output only for prices at least what level?
+
+The average cost of firm $k$ is
+
+$$
+AC_k(q) = \frac{k^2+q+q^2}{q} = \frac{k^2}{q}+1+q 
+$$
+
+Firm 1 has the lowest average cost:
+
+$$
+AC_1(q) = \frac{1}{q} + 1 + q
+$$
+
+Firm 1's average cost is minimized at $q = 1$. FOC:
+
+$$
+0 = \frac{-1}{q^2}+1 \implies q = 1
+$$
+
+SOC:
+
+$$
+\frac{\partial^2 AC_1}{\partial^2 q} = \frac{2}{q^3} > 0
+$$
+
+For firm 1 to be in the market in the long run price needs to be at least average cost of producing $q=1$:
+
+$$
+P > \frac{1}{1} + 1 + 1 = 3
+$$
+
+\pagebreak
+
+2. Assume a continuum of potential iPhone developers indexed by the quality of their idea. Each developer has a fixed cost of 1 can produce software code according to the function $q= 2\theta x$, where $x$ is quantity of variable input used by the developer. A unit of software code sells for a price of 1, the cost of using a quantity $x$ of the input is $x^2$. The "number" (i.e. mass) of firms with ideas above $\theta >0$ is given by $M(\theta) =\theta^{-\beta}$, where $\beta >2$. Apple taxes developers’ revenues at a percentage rate $0< \tau <1$.
+
+(a) Derive the aggregate supply curve of developer code.
+
+Developer profit is:
+
+$$
+\pi(x) = (1-\tau) 2 \theta x - x^2 - 1
+$$
+
+FOC [$x$]:
+
+$$
+\frac{\partial \pi}{\partial x} = 0 \implies 2 \theta (1-\tau) - 2x = 0 \implies x = \theta (1 - \tau)
+$$
+
+SOC:
+
+$$
+\frac{\partial^2 \pi}{\partial^2 x} = - 2 < 0
+$$
+
+$$
+\pi(\theta) = 2 \theta^2 (1 - \tau)^2 - \theta^2 (1 - \tau)^2 - 1 > 0 \implies \theta > \frac{1}{1 - \tau}
+$$
+
+The aggregate supply curve:
+
+$$
+\int_{\frac{1}{1 - \tau}}^{\infty} \theta \theta^{-\beta} d \theta
+= \Bigg[\frac{\theta^{2 - \beta}}{2 - \beta}\Bigg]_{\frac{1}{1 - \tau}}^\infty
+= - \frac{(\frac{1}{1 - \tau})^{2 - \beta}}{2-\beta}
+= \frac{(1 - \tau)^{\beta - 2}}{\beta - 2}
+$$
+
+(b) When Apple raises its tax rate, what happens to the mass of developer firms, and the amount of code each produces?
+
+When Apple raises its tax rate ($\uparrow \tau$), then the mass of developer firms decreases ($\uparrow \frac{1}{1-\tau}$) and the amount each produces decreases ($\downarrow \theta(1-\tau)$).
+
+(c) What is Apple's revenue maximizing tax?
+
+Apple's tax revenue is:
+
+$$
+\frac{(1-\tau)^{\beta - 2}}{\beta - 2}\tau
+$$
+
+FOC [$\tau$]:
+
+$$
+-(1-\tau)^{\beta - 3} \tau + \frac{(1-\tau)^{\beta - 2}}{\beta - 2} = 0
+\implies
+\tau^* = \frac{1}{\beta - 1}
+$$
+
+(d) What happens if $\beta$ rises (while $\tau$ is fixed)? Interpret this in terms of firm heterogeneity.
+
+If $\beta$ rises, the distribution of "idea" distribution shifts down.  There is less heterogeneity in the quality of developer's ideas.  If $\tau$ remains fixed, the number of developers decrease.
+
+3. The only Ben and Jerry’s in town faces different linear inverse demand curves $P=a-bQ$ for triple-chocolate-chunk ice cream and fruit-bowl-punch ice cream. It buys each at the same constant unit cost from its supplier. The inverse demand curves cross at an interior point, above marginal cost, with Fruit-bowl-punch having a higher price intercept than Triple-chunk. Does it follow that its price charged is higher on the Fruit-Bowl Punch?
+
+Yes.  The marginal revenue for each demand curve is:
+
+$$
+PQ = aQ-bQ^2 \implies MR = a - 2 bQ
+$$
+
+Profit-maximization production is at $MR = MC$:
+
+$$
+MC = a - 2bQ \implies Q^* = \frac{a - MC}{2b}
+$$
+
+This quantity coorespondes to the following price:
+
+$$
+P^* = a - b\frac{a - MC}{2b} = \frac{a - MC}{2}
+$$
+
+If fruit-bowl-punch has a higher price intercept than Triple-chunk:
+
+$$
+a_{FBP} > a_{TCC} \implies \frac{a_{FBP} - MC}{2} > \frac{a_{TCC} - MC}{2} \implies P^*_{FBP} > P^*_{TCC}
+$$
+
+4. (a) Draw a negatively sloped demand curve with elasticity of magnitude greater than 1, and a corresponding marginal revenue curve.
+
+```{r problem_4a}
+elasticity <- -2
+k <- 2
+q <- seq(from = .001, to = 10, by = .001)
+
+# constant elasticity demand curve
+p <- (q/k)^(1/elasticity)
+mr <- (1/elasticity + 1) * q^(1/elasticity)* k^(-1/elasticity)
+
+plot(1, type = "n", xlim = c(0, 10), ylim = c(0, 10), xlab = "Q", ylab = "P")
+
+lines(x=q, y=p)
+lines(x=q, y=mr, col = "blue")
+```
+
+(b) Draw a supply curve with positive and rising elasticity.
+
+```{r problem_4b}
+q <- seq(from = .001, to = 10, by = .001)
+elasticity <- q/5
+k <- 4
+
+# constant elasticity supply curve
+p <- (q/k)^(1/elasticity)
+
+plot(1, type = "n", xlim = c(0, 10), ylim = c(0, 10), xlab = "Q", ylab = "P")
+
+lines(x=q, y=p)
+```
+
+(c) Draw the marginal revenue curve for a monopolist facing a downward sloping demand curve that is continuous and linear everywhere except for an interval of quantities where it is perfectly elastic.
+
+...
+
+5. There are two groups of Christmas shoppers. Group 2 is gun-shy and hates standing in lines. Group 1 has a lower linear demand, but are willing to take a bullet or stand in line for an hour shopping. Suppose the demands of the two groups are $P_1 = 3 - Q_1$ and $P_2 = 5 - Q_2$ respectively, and let $MC = 1$ be the firms marginal cost of production. What price should a monopolist charge each group, and how? Suppose, instead that the marginal cost was increasing: $MC = Q$ where $Q = Q_1 + Q_2$, is this problem still separable into two independent optimizations? What price should the monopolist charge to each group?
+
+...
