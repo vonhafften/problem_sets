@@ -279,8 +279,50 @@ $$
 
 (c) take the first-order approximation,
 
-...
+Define 
 
+\begin{align*}
+U_t &:= (1-\theta) P_t + \theta\frac{W_{t}}{A_{t}}\\
+V_t &:= \varphi \Bigg( \frac{W_{t}}{C_t}\pi_t(\pi_t + 1) - \beta E_t \Bigg[\frac{W_{t+1}}{C_{t+1}} \pi_{t+1} \Bigg] \Bigg)
+\end{align*}
+
+Notice that $\bar{\pi} = 0 \implies \bar{V} = 0 \implies \bar{U} = 0$:
+
+\begin{align*}
+u_t 
+&= (1-\theta) \bar{P} (1 + p_t) + \theta\frac{\bar{W}}{\bar{A}}(1 + w_t - a_t) \\
+&= (1-\theta) \bar{P} p_t + \theta\frac{\bar{W}}{\bar{A}}(w_t - a_t) 
++ (1-\theta) \bar{P} + \theta\frac{\bar{W}}{\bar{A}}\\
+&= (1-\theta) \bar{P} p_t + \theta\frac{\bar{W}}{\bar{A}}(w_t - a_t) + \bar{U} \\
+&= (1-\theta) \bar{P} p_t + \theta\frac{\bar{W}}{\bar{A}}(w_t - a_t) 
+\end{align*}
+
+Turning to $V_t$, define
+
+$$
+M_t := \frac{W_{t}}{C_{t}} \pi_{t}
+$$
+$$
+N_t := \frac{W_{t}}{C_t}\pi_t(\pi_t + 1)
+$$
+
+Notice that $\bar{M} = \bar{N} = 0$:
+
+$$
+m_t 
+= \frac{\bar{W}}{\bar{C}}(1 + w_t - c_t)\pi_t\\
+= \frac{\bar{W}}{\bar{C}}[\pi_t + \pi_t(w_t - c_t)]\\
+\approx \frac{\bar{W}}{\bar{C}}\pi_t
+$$
+
+Notice that the first order approximation of $\pi_t(\pi_t + 1)$ is $\pi_t$, so $n_t = m_t$. Thus, $u_t = v_t$ implies:
+
+$$
+(1-\theta) \bar{P} p_t + \theta\frac{\bar{W}}{\bar{A}}(w_t - a_t)  =  \varphi \frac{ \bar{W}}{\bar{C}}\Big(\pi_t - \beta E_t [\pi_{t+1} ] \Big)
+$$
+
+
+ 
 (d) write the NKPC in terms of inflation rate and output gap,
 
 ...
