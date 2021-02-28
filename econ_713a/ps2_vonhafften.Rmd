@@ -48,7 +48,7 @@ $$
 For firm 1 to be in the market in the long run price needs to be at least average cost of producing $q=1$:
 
 $$
-P > \frac{1}{1} + 1 + 1 = 3
+P \ge \frac{1}{1} + 1 + 1 = 3
 $$
 
 \pagebreak
@@ -66,7 +66,15 @@ $$
 FOC [$x$]:
 
 $$
-\frac{\partial \pi}{\partial x} = 0 \implies 2 \theta (1-\tau) - 2x = 0 \implies x = \theta (1 - \tau)
+\frac{\partial \pi}{\partial x} = 0 \implies 2 \theta (1-\tau) - 2x = 0 
+$$
+
+$$
+\implies x = \theta (1 - \tau)
+$$
+
+$$
+\implies q^*(\theta) = 2 \theta^2 (1-\tau)
 $$
 
 SOC:
@@ -81,36 +89,42 @@ $$
 
 The aggregate supply curve:
 
-$$
-\int_{\frac{1}{1 - \tau}}^{\infty} \theta \theta^{-\beta} d \theta
-= \Bigg[\frac{\theta^{2 - \beta}}{2 - \beta}\Bigg]_{\frac{1}{1 - \tau}}^\infty
-= - \frac{(\frac{1}{1 - \tau})^{2 - \beta}}{2-\beta}
-= \frac{(1 - \tau)^{\beta - 2}}{\beta - 2}
-$$
+\begin{align*}
+\int_{\frac{1}{1 - \tau}}^{\infty} q^*(\theta)(-M'(\theta))d\theta
+&=  \int_{\frac{1}{1 - \tau}}^{\infty} 2 \theta^2 (1-\tau)(\beta\theta^{-\beta-1})d\theta\\
+&=  2 (1-\tau) \beta \int_{\frac{1}{1 - \tau}}^{\infty} \theta^{1-\beta}d\theta\\
+&=  2 (1-\tau) \beta \Bigg[ \frac{1}{2-\beta}\theta^{2-\beta}\Bigg]_{\theta = \frac{1}{1 - \tau}}^{\infty}\\
+&=  2 (1-\tau) \beta \frac{1}{2-\beta}\Bigg(\frac{1}{1 - \tau}\Bigg)^{2-\beta}\\
+&= \frac{2\beta}{\beta - 2}(1-\tau)^{\beta - 1}
+\end{align*}
 
 (b) When Apple raises its tax rate, what happens to the mass of developer firms, and the amount of code each produces?
 
 When Apple raises its tax rate ($\uparrow \tau$), then the mass of developer firms decreases ($\uparrow \frac{1}{1-\tau}$) and the amount each produces decreases ($\downarrow \theta(1-\tau)$).
+
+\pagebreak
 
 (c) What is Apple's revenue maximizing tax?
 
 Apple's tax revenue is:
 
 $$
-\frac{(1-\tau)^{\beta - 2}}{\beta - 2}\tau
+\frac{2\beta}{\beta - 2}(1-\tau)^{\beta - 1}\tau
 $$
+
+Maximizing $\tau$ is equivalent to maximizing $(1-\tau)^{\beta - 1}\tau$ because $\frac{2\beta}{\beta - 2} > 0$.
 
 FOC [$\tau$]:
 
 $$
--(1-\tau)^{\beta - 3} \tau + \frac{(1-\tau)^{\beta - 2}}{\beta - 2} = 0
+(\beta-1)(1- \tau)^{\beta -2}(-1)\tau + (1-\tau)^{\beta - 1} = 0 \\
 \implies
-\tau^* = \frac{1}{\beta - 1}
+\tau = 1/\beta
 $$
 
 (d) What happens if $\beta$ rises (while $\tau$ is fixed)? Interpret this in terms of firm heterogeneity.
 
-If $\beta$ rises, the distribution of "idea" distribution shifts down.  There is less heterogeneity in the quality of developer's ideas.  If $\tau$ remains fixed, the number of developers decrease.
+If $\beta$ rises, the distribution of "idea" distribution becomes more concentrated and shifts down.  There is less heterogeneity in the quality of developer's ideas.  If $\tau$ remains fixed, the number of developers decrease.
 
 3. The only Ben and Jerry’s in town faces different linear inverse demand curves $P=a-bQ$ for triple-chocolate-chunk ice cream and fruit-bowl-punch ice cream. It buys each at the same constant unit cost from its supplier. The inverse demand curves cross at an interior point, above marginal cost, with Fruit-bowl-punch having a higher price intercept than Triple-chunk. Does it follow that its price charged is higher on the Fruit-Bowl Punch?
 
@@ -129,13 +143,13 @@ $$
 This quantity coorespondes to the following price:
 
 $$
-P^* = a - b\frac{a - MC}{2b} = \frac{a - MC}{2}
+P^* = a - b\frac{a - MC}{2b} = \frac{a + MC}{2}
 $$
 
 If fruit-bowl-punch has a higher price intercept than Triple-chunk:
 
 $$
-a_{FBP} > a_{TCC} \implies \frac{a_{FBP} - MC}{2} > \frac{a_{TCC} - MC}{2} \implies P^*_{FBP} > P^*_{TCC}
+a_{FBP} > a_{TCC} \implies \frac{a_{FBP} + MC}{2} > \frac{a_{TCC} + MC}{2} \implies P^*_{FBP} > P^*_{TCC}
 $$
 
 \pagebreak
@@ -231,4 +245,48 @@ lines(x=q, y=elasticity, col="red")
 
 5. There are two groups of Christmas shoppers. Group 2 is gun-shy and hates standing in lines. Group 1 has a lower linear demand, but are willing to take a bullet or stand in line for an hour shopping. Suppose the demands of the two groups are $P_1 = 3 - Q_1$ and $P_2 = 5 - Q_2$ respectively, and let $MC = 1$ be the firms marginal cost of production. What price should a monopolist charge each group, and how? Suppose, instead that the marginal cost was increasing: $MC = Q$ where $Q = Q_1 + Q_2$, is this problem still separable into two independent optimizations? What price should the monopolist charge to each group?
 
-...
+The monopolist should charge the price where $MC = MR_i = 1$.  For group 1,
+
+\begin{align*}
+P_1 &= 3 - Q_1\\
+\implies 
+MR_1 &= 3 - 2Q_1\\
+\implies
+1 &= 3 - 2Q_1\\
+\implies
+Q_1 &= 1\\
+\implies
+P_1 &= 2
+\end{align*}
+
+For group 2,
+
+\begin{align*}
+P_2 &= 5 - Q_2\\
+\implies 
+MR_2 &= 5 - 2Q_2\\
+\implies
+1 &= 5 - 2Q_2\\
+\implies
+Q_2 &= 2\\
+\implies
+P_2 &= 3
+\end{align*}
+
+The store can charge two prices for the good: 2 dollars and 3 dollars.  To get the price of 2 dollars, customers have to stand in a line for an hour.  Customers that are charged 3 dollars do not have to stand in line.  Thus, group 1 will be willing to stand in line and group 2 will forgo the line and pay the higher price. Alternately, the store could charge two dollars and shoot each customer, but give customers an opportunity to pay an extra dollar to avoid being shot.
+
+Setting $MR_1 = Q$ and $MR_2 = Q$ gives us two equations in two unknowns, so the problem is not separable:
+
+$$
+Q_1 + Q_2 = 3 - 2Q_1 
+\implies
+Q_2 = 3 - 3Q_1
+$$
+
+$$
+Q_1 + Q_2 = 5 - 2Q_2 
+\implies
+Q_1 = 5 - 3Q_2 
+$$
+
+The solution is $Q_1 = 1/2$ and $Q_2 = 3/2 \implies P_1 = 5/2$ and $P_2 = 7/2$.
