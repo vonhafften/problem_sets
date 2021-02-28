@@ -77,7 +77,38 @@ $$
 
 (i) In a statistical software of your choice, generate data according to (1), estimate $(\beta_0,\delta_2,\delta_3,\delta_4)$ using the FE estimator, and calculate both a heteroskedasticity robust variance estimate and a cluster robust variance estimate where the clustering is at the individual level. Use these variance estimators to construct two different 95% confidence intervals for $\beta_0$. Additionally, calculate the OLS estimator of the regression coefficients in the (misspecified) common intercepts model $Y_{it} = \alpha + X_{it} \beta_0 + \delta_t + \varepsilon_{it}$.
 
-...
+```{r problem_3i}
+beta <- 1
+delta_2 <- 1
+delta_3 <- 1
+delta_4 <- 1
+
+phis <- c(0, 0.8)
+sample_sizes <- c(40, 70, 100)
+
+for (phi in phis) {
+  for (n in sample_sizes) {
+    data <- tibble(i = rep(1:n, each = 4),
+                   t = rep(1:4, times = n),
+                   alpha = rep(rnorm(n), each = 4),
+                   x = case_when(alpha > .6 & t %in% 3:4 ~ 1, TRUE ~ 0),
+                   epsilon_0 = rep(rnorm(n), each = 4),
+                   u = rnorm(n*4),
+                   delta_2 = case_when(t == 2 ~ delta_2, TRUE ~ 0),
+                   delta_3 = case_when(t == 3 ~ delta_3, TRUE ~ 0),
+                   delta_4 = case_when(t == 4 ~ delta_4, TRUE ~ 0)) %>%
+      group_by(i)  %>%
+      mutate(epsilon = case_when(t == 1 ~ phi * epsilon_0 + u),
+             epsilon = case_when(t == 2  ~ phi * lag(epsilon) + u, TRUE ~ epsilon),
+             epsilon = case_when(t == 3  ~ phi * lag(epsilon) + u, TRUE ~ epsilon),
+             epsilon = case_when(t == 4  ~ phi * lag(epsilon) + u, TRUE ~ epsilon)) %>%
+      ungroup() %>%
+      mutate(y = x * beta + delta_2 + delta_3 + delta_4 + alpha + epsilon)
+    
+    
+  }
+}
+```
 
 (ii) Across 10000 simulated repetitions of the above, report the mean of the two point estimators for $\beta_0$ (OLS and FE) and the coverage rate for the two confidence intervals that rely on different variance estimators.
 
