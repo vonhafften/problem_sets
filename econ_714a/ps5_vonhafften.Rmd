@@ -355,6 +355,14 @@ because $(1-\theta) \bar{P} + \theta\frac{\bar{W}}{\bar{A}} = 0$.  Thus, inflati
 + \beta E_t [\pi_{t+1} ]
 \end{align*}
 
+Defining $\kappa := \frac{\theta - 1}{\varphi}$, the NKPC is:
+
+$$
+\pi_t = \kappa x_t + \beta E_t [\pi_{t+1} ]
+$$
+
+\pagebreak
+
 (e) compare the NKPC to the one under the Calvo pricing.
 
 From lecture the NKPC with Calvo pricing ($\sigma = 1$ and $\varphi = 0$) is:
@@ -369,6 +377,85 @@ The coefficient on expected inflation matches, but the coefficient on the output
 
 In the Calvo model, the inflation costs are due to labor misallocation.  When some firms cannot change their prices, their prices do not reflect the costs of production and consumption and production is not optimal.  Thus, labor is misallocated between firms.  In this model, the inflation costs are due to firms needing to hire additional labor to change their prices.
 
-4. Let the monetary policy be described by the Taylor rule $i_t=\varphi x_t+u_t$. What restrictions on the coefficient $\phi_x$ ensure uniqueness of the equilibrium?
+4. Let the monetary policy be described by the Taylor rule $i_t = \phi x_t + u_t$. What restrictions on the coefficient $\phi_x$ ensure uniqueness of the equilibrium?
 
-...
+Linearize the Euler equation:
+
+$$
+E_t [c_{t+1}] - c_t = i_t - E_t [\pi_{t+1}]
+$$
+
+Define the "natural rate" as the real rate that prevails under flexible prices: $r^n_t = E_t [a_{t+1}] - a_t$.  Express the Euler equation in terms of the output gap to derive the NKIS curve:
+
+\begin{align*}
+E_t [c_{t+1}] - c_t - (E_t [a_{t+1}] - a_t) &= i_t - E_t [\pi_{t+1}] - r^n_t \\
+\implies
+E_t [c_{t+1}  - a_{t+1}] - (c_t - a_t) &= i_t - E_t [\pi_{t+1}] - r^n_t \\
+\implies
+E_t [x_{t+1}] - x_t &= i_t - E_t [\pi_{t+1}] - r^n_t \\
+\end{align*}
+
+Substituting the Taylor rule and the NKPC into the NKIS:
+
+$$
+E_t [x_{t+1}] - x_t = (\phi x_t + u_t) - (\frac{1}{\beta}\pi_t - \frac{\kappa}{\beta} x_t) - r^n_t
+$$
+$$
+\implies
+E_t [x_{t+1}]  = (1+\phi +\frac{\kappa}{\beta} )x_t   - \frac{1}{\beta}\pi_t + u_t - r^n_t \\
+$$
+
+We can writing the NKPC and the NKIS in matrix form:
+
+$$
+E_t 
+\begin{pmatrix}
+\pi_{t+1}\\
+x_{t+1}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\frac{1}{\beta} & \frac{-\kappa}{\beta} \\
+\frac{-1}{\beta} & 1 + \phi + \frac{\kappa}{\beta}
+\end{pmatrix}
+\begin{pmatrix}
+\pi_{t}\\
+x_{t}
+\end{pmatrix}
++ 
+\begin{pmatrix}
+0\\
+1
+\end{pmatrix}
+(u_t - r^n_t)
+$$
+
+\pagebreak
+
+With two control variables, both eigenvalues of the law of motion matrix must be larger than 1:
+
+\begin{align*}
+f(\lambda) = (\frac{1}{\beta} - \lambda)(1 + \phi + \frac{\kappa}{\beta} - \lambda) - \frac{-\kappa}{\beta}\frac{-1}{\beta} \\
+= \lambda^2 - (1 + \phi + \frac{\kappa}{\beta} + \frac{1}{\beta})\lambda + (\frac{1}{\beta})(1 + \phi + \frac{\kappa}{\beta}) - \frac{\kappa}{\beta^2}\\
+= \lambda^2 - (1 + \phi + \frac{\kappa}{\beta} + \frac{1}{\beta})\lambda + \frac{1 + \phi }{\beta}
+\end{align*}
+
+For both eigenvalues to be greater than one, it is necessary and sufficient that $f(0) > f(1) > 0$:
+
+$$
+f(0) = \frac{1 + \phi }{\beta}
+$$
+
+$$
+f(1) = 1 - (1 + \phi + \frac{\kappa}{\beta} + \frac{1}{\beta}) + \frac{1 + \phi }{\beta} =  (\frac{1 }{\beta} - 1)\phi - \frac{\kappa}{\beta}
+$$
+
+These inequalized imply restrictions on $\phi$:
+
+$$
+f(0) > f(1) \implies \phi > \frac{1 + \kappa}{-\beta}
+$$
+
+$$
+f(1) > 0 \implies \phi  > \frac{\kappa}{1 - \beta}
+$$
