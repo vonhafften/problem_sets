@@ -321,20 +321,54 @@ $$
 (1-\theta) \bar{P} p_t + \theta\frac{\bar{W}}{\bar{A}}(w_t - a_t)  =  \varphi \frac{ \bar{W}}{\bar{C}}\Big(\pi_t - \beta E_t [\pi_{t+1} ] \Big)
 $$
 
-
- 
 (d) write the NKPC in terms of inflation rate and output gap,
 
-...
+The log-linearized labor supply condition is $c_t = w_t - p_t$ and market clearing for consumption is $c_t = y_t$.
+
+$$
+(1-\theta) \bar{P} p_t + \theta\frac{\bar{W}}{\bar{A}}(y_t + p_t - a_t)  =  \varphi \frac{ \bar{W}}{\bar{C}}\Big(\pi_t - \beta E_t [\pi_{t+1} ] \Big)
+$$
+
+$$
+\implies
+\Bigg[(1-\theta) \bar{P} + \theta\frac{\bar{W}}{\bar{A}}\Bigg] p_t 
++ \theta\frac{\bar{W}}{\bar{A}}(y_t - a_t)  
+=  \varphi \frac{ \bar{W}}{\bar{C}}\Big(\pi_t - \beta E_t [\pi_{t+1} ] \Big)
+$$
+$$
+\implies
+\theta\frac{\bar{W}}{\bar{A}}(y_t - a_t)  
+=  \varphi \frac{ \bar{W}}{\bar{C}}\Big(\pi_t - \beta E_t [\pi_{t+1} ] \Big)
+$$
+
+because $(1-\theta) \bar{P} + \theta\frac{\bar{W}}{\bar{A}} = 0$.  Thus, inflation can be written as a function of the output gap ($x_t = y_t - a_t$) and expected inflation:
+
+\begin{align*}
+\pi_t 
+&= \frac{\theta}{ \varphi}\frac{\bar{C}}{\bar{A}}x_t
++ \beta E_t [\pi_{t+1} ]\\
+&= \frac{\theta}{ \varphi}\frac{\bar{A}\bar{L}}{\bar{A}}x_t
++ \beta E_t [\pi_{t+1} ]\\
+&= \frac{\theta}{ \varphi}\frac{\theta- 1}{\theta}x_t
++ \beta E_t [\pi_{t+1} ]\\
+&= \frac{\theta - 1}{\varphi}x_t
++ \beta E_t [\pi_{t+1} ]
+\end{align*}
 
 (e) compare the NKPC to the one under the Calvo pricing.
 
-...
+From lecture the NKPC with Calvo pricing ($\sigma = 1$ and $\varphi = 0$) is:
+
+$$
+\pi_t = \frac{(1-\lambda)(1-\beta\lambda)}{\lambda}x_t + \beta E_t[\pi_{t+1} ]
+$$
+
+The coefficient on expected inflation matches, but the coefficient on the output gap differs due to the different mechanism that add stickiness to prices.  With Calvo pricing, $\lambda$ is the fraction of firms that cannot change prices.  The lower $\lambda$, the more inflation is determined by the output gap.  When $\lambda$ gets close to 1, the coefficient on output gap goes to zero and inflation is determined by future inflation.  With labor price adjustment, $\varphi$ is the coefficient on the additional units of labor that are needed to change the price.  When $\varphi$ is low, inflation is more influenced by the output gap.  When $\varphi$ increases, the coefficient on the output gap decreases and the more inflation is determined by expected inflation.
 
 3. What is the source of inflation costs in this model? Is it different from the one in the Calvo model?
 
-...
+In the Calvo model, the inflation costs are due to labor misallocation.  When some firms cannot change their prices, their prices do not reflect the costs of production and consumption and production is not optimal.  Thus, labor is misallocated between firms.  In this model, the inflation costs are due to firms needing to hire additional labor to change their prices.
 
-4. Let the monetary policy be described by the Taylor rule $i_t=\varphi x_t+u_t$. What restrictionson the coefficient $\phi_x$ ensure uniqueness of the equilibrium?
+4. Let the monetary policy be described by the Taylor rule $i_t=\varphi x_t+u_t$. What restrictions on the coefficient $\phi_x$ ensure uniqueness of the equilibrium?
 
 ...
