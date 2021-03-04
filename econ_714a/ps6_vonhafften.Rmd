@@ -1,0 +1,426 @@
+---
+title: "ECON 714A - Problem Set 6"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "3/8/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+Consider the baseline new-Keynesian model with the NKIS and the NKPC curves:
+
+$$
+\sigma E_t \Delta x_{t+1} = i_t - E_t \pi_{t+1} - r^n_t
+$$
+
+$$
+\pi_t = \kappa x_t + \beta E_t \pi_{t+1} + u_t
+$$
+
+where $u_t \sim i.i.d.(\bar{u}, \sigma^2)$ is a markup shock. The monetary authorities minimize welfare losses from output gap and inflation
+
+$$
+\frac{1}{2} E \sum_{t=0}^\infty \beta^t (x_t^2 + \alpha \pi_t^2)
+$$
+
+1. What is the optimal policy under commitment with timeless perspective? Find the equilibrium dynamics of prices and output gap under the optimal policy.
+
+The Ramsey problem is:
+
+$$
+\min_{\{i_t, x_t, \pi_t\}_{t=0}^\infty}\frac{1}{2} E \sum_{t=0}^\infty \beta^t (x_t^2 + \alpha \pi_t^2)
+$$
+
+$$
+\text{s.t. }\sigma E_t \Delta x_{t+1} = i_t - E_t \pi_{t+1} - r^n_t
+$$
+
+$$
+\pi_t = \kappa x_t + \beta E_t \pi_{t+1} + u_t
+$$
+
+If the ZLB does not hold, we can solve for optimal $\pi_t$ and $x_t$ and then back out $i_t$ so that the first constraint holds.  Thus, we can consider the primal problem:
+
+$$
+\min_{\{x_t, \pi_t\}_{t=0}^\infty}\frac{1}{2} E \sum_{t=0}^\infty \beta^t (x_t^2 + \alpha \pi_t^2)
+$$
+
+$$
+\text{s.t. } \pi_t = \kappa x_t + \beta E_t \pi_{t+1} + u_t
+$$
+
+The legrangian is:
+
+$$
+\Lf = E \sum_{t=0}^\infty \frac{\beta^t}{2}  (x_t^2 + \alpha \pi_t^2) + \lambda_t (\pi_t - \kappa x_t - \beta E_t \pi_{t+1} - u_t )
+$$
+
+FOC [$x_t$]:
+
+$$
+\beta^t x_t = \lambda_t \kappa \implies \lambda_t = \frac{\beta^t}{\kappa}x_t
+$$
+
+FOC [$\pi_t$]:
+
+$$
+\begin{cases}
+\beta^t \alpha \pi_t + \lambda_t - \beta \lambda_{t-1} = 0, & t > 0 \\
+\beta^t \alpha \pi_t + \lambda_t = 0, &t = 0
+\end{cases}
+$$
+
+Substituting in $\lambda_t = \frac{\beta^t}{\kappa}x_t$:
+
+$$
+\begin{cases}
+\beta^t \kappa \alpha \pi_t + \beta^t x_t - \beta \beta^{t-1} x_{t-1} = 0, & t > 0 \\
+\beta^t \kappa \alpha \pi_t + \beta^t x_t = 0, & t = 0
+\end{cases}
+$$
+
+$$
+\implies
+\begin{cases}
+\alpha \kappa \pi_t + \Delta x_t = 0, & t > 0 \\
+\alpha \kappa\pi_t + x_t = 0, & t = 0
+\end{cases}
+$$
+
+For the timeless perspective, we set $x_{-1} := 0$ and $p_{-1} := 0$.  For all $t$, optimal monetary policy is:\footnote{For $t = 1$, $\alpha \kappa \pi_1 + \Delta x_1 = 0 \implies \alpha \kappa p_1 +x_1 = 0$. Assume $\alpha \kappa p_t +x_t = 0$, 
+
+\begin{align*}
+\alpha \kappa \pi_{t+1} + \Delta x_{t+1} &= 0 \\
+\implies \alpha \kappa (p_{t+1} - p_t) + x_{t+1} - x_t &= 0 \\
+\implies \alpha \kappa p_{t+1}  +x_{t+1} - (\alpha \kappa p_t + x_t) &= 0 \\
+\implies \alpha \kappa p_{t+1}  +x_{t+1} &= 0 \\
+\end{align*} }
+
+$$
+\alpha \kappa \pi_t + \Delta x_t = 0 \implies \alpha \kappa p_t +x_t = 0
+$$
+
+Taking optimal monetary policy and the NKPC, we get:
+
+$$
+\begin{cases}
+\pi_t = \kappa x_t + \beta E_t \pi_{t+1} + u_t \\
+0 = \alpha \kappa p_t + x_t
+\end{cases}
+$$
+
+$$
+\implies 
+p_t - p_{t-1} = - \alpha \kappa^2 p_t + \beta E_t p_{t+1} - \beta p_t + u_t
+$$
+$$
+\implies
+\beta E_t p_{t+1}  = (1 + \alpha \kappa^2 + \beta ) p_t - p_{t-1} - u_t
+$$
+$$
+\implies 
+E_t p_{t+1} = \Bigg(\frac{1}{\beta} + \frac{\alpha \kappa^2}{\beta} + 1\Bigg) p_t + \frac{-1}{\beta}p_{t-1} +  \frac{-1}{\beta}u_t
+$$
+
+$$
+\implies
+\begin{pmatrix}
+E_tp_{t+1} \\ p_t
+\end{pmatrix}
+= 
+\begin{pmatrix}
+\frac{1}{\beta} + \frac{\alpha \kappa^2}{\beta} + 1 & -\frac{1}{\beta} \\ 1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+p_t \\ p_{t-1}
+\end{pmatrix}
++ 
+\begin{pmatrix}
+-\frac{1}{\beta} \\ 0
+\end{pmatrix}
+u_t
+$$
+
+$$
+A := \begin{pmatrix}
+\frac{1}{\beta} + \frac{\alpha \kappa^2}{\beta} + 1 & -\frac{1}{\beta} \\ 1 & 0
+\end{pmatrix}
+$$
+
+We can find eigenvalues for $A$:
+
+$$
+(\lambda - \frac{1}{\beta} - \frac{\alpha \kappa^2}{\beta} - 1)\lambda - (-\frac{1}{\beta}) = 0
+$$
+$$
+\implies
+\beta\lambda^2 - (\alpha \kappa^2 + \beta + 1)\lambda + 1  = 0
+$$
+
+$$
+\implies
+\lambda_{1,2} = \frac{1}{2\beta} \Bigg[-(\alpha \kappa^2 + \beta + 1) \pm \sqrt{(\alpha \kappa^2 + \beta + 1)^2 - 4\beta} \Bigg]
+$$
+
+Since we have one state variable and one control variable, one eigenvalue is larger than 1 and one is less than 1, so let $\lambda_1 > 1$ and $\lambda_2 < 1$. From the lecture notes, we know $\lambda_1\lambda_2 = \frac{1}{\beta}$ and defining $L$ such that $L x_t \equiv x_{t-1}$ (and $L^{-1} x_t \equiv E_t x_{t+1}$):
+
+\begin{align*}
+-\beta (1-\lambda_1 L)(1-\lambda_2 L)L^{-1} p_t &= u_t \\
+\implies (\beta \lambda_1-\beta L^{-1} )(1-\lambda_2 L) p_t &= u_t \\
+\implies (\frac{1}{\lambda_2} - \beta L^{-1} )(1-\lambda_2 L) p_t &= u_t \\
+\implies \frac{1}{\lambda_2}(1 - \beta \lambda_2 L^{-1} )(1-\lambda_2 L) p_t &= u_t \\
+\implies (1 - \beta \lambda_2 L^{-1} )(1-\lambda_2 L) p_t &= \lambda_2 u_t \\
+\implies (1-\lambda_2 L) p_t &= \lambda_2 (1 - \beta \lambda_2 L^{-1} )^{-1} u_t \\
+\implies (1-\lambda_2 L) p_t &= \lambda_2 E_t \sum_{j=0}^\infty (\beta \lambda_2)^j u_{t+j} \\
+\implies p_t &= \lambda_2 p_{t-1} + \lambda_2 E_t \sum_{j=0}^\infty (\beta \lambda_2)^j u_{t+j}
+\end{align*}
+
+Since $u_t \sim i.i.d. (\bar{u}, \sigma^2)$,
+
+\begin{align*}
+\implies
+p_t 
+&= \lambda_2 p_{t-1} + \lambda_2 \Bigg[u_t +  \sum_{j=1}^\infty (\beta \lambda_2)^j \bar{u}\Bigg]\\
+&= \lambda_2 p_{t-1} + \lambda_2 \Bigg[u_t +  \bar{u}\sum_{j=1}^\infty (\beta \lambda_2)^j \Bigg]\\
+&= \lambda_2 p_{t-1} + \lambda_2 \Bigg[u_t + \frac{\beta\lambda_2 \bar{u}}{1-\beta \lambda_2} \Bigg]\\
+\implies 
+x_t 
+&= - \lambda_2 \alpha \kappa p_{t-1} -\alpha \kappa  \lambda_2 \Bigg[u_t + \frac{\beta\lambda_2 \bar{u}}{1-\beta \lambda_2} \Bigg]\\
+&= \lambda_2 x_{t-1} -\alpha \kappa  \lambda_2 \Bigg[u_t + \frac{\beta\lambda_2 \bar{u}}{1-\beta \lambda_2} \Bigg]\\
+\end{align*}
+
+These equations define equilibrium dynamics of inflation and the output gap under the optimal policy with timeless perspective.
+
+\pagebreak
+
+2. What is the optimal policy under discretion? Find the equilibrium dynamics of inflation and output gap under the optimal policy.
+
+As discussed in lecture, the optimal policy under discretion is
+
+$$
+\alpha \kappa \pi_t + x_t = 0
+$$
+
+for all $t$.  The NKPC implies:
+
+\begin{align*}
+\pi_t
+&= \kappa x_t + \beta E_t \pi_{t+1} + u_t\\
+\implies
+\pi_t 
+&= - \alpha \kappa^2 \pi_t + \beta E_t \pi_{t+1} + u_t\\
+\implies
+\pi_t 
+&= \frac{1}{1 + \alpha \kappa^2} [\beta E_t \pi_{t+1} + u_t] \\
+&= \frac{1}{1 + \alpha \kappa^2} \Bigg[ E_t \sum_{j=0}^\infty \Bigg( \frac{\beta}{1+\alpha\kappa^2} \Bigg)^j u_{t+j} \Bigg] \\
+&= \frac{1}{1 + \alpha \kappa^2} \Bigg[u_t + \bar{u}\sum_{j=1}^\infty \Bigg( \frac{\beta}{1+\alpha\kappa^2} \Bigg)^j \Bigg] \\
+&= \frac{1}{1 + \alpha \kappa^2} \Bigg[u_t + \bar{u}\Bigg( \frac{\frac{\beta}{1+\alpha\kappa^2}}{1-\frac{\beta}{1+\alpha\kappa^2}} \Bigg) \Bigg] \\
+&= \frac{1}{1 + \alpha \kappa^2} u_t +  \frac{\beta}{(1 + \alpha \kappa^2-\beta)(1 + \alpha \kappa^2)}\bar{u} \\
+\implies
+x_t 
+&= \frac{-\alpha \kappa}{1 + \alpha \kappa^2} u_t +  \frac{- \alpha \kappa \beta}{(1 + \alpha \kappa^2-\beta)(1 + \alpha \kappa^2)}\bar{u}
+\end{align*}
+
+These equations define equilibrium dynamics of inflation and the output gap under the optimal policy with discretion.
+
+3. Solve for the equilibrium allocation under inflation targeting rule $\pi_t = 0$.
+
+With $\pi_t = 0$, the NKPC implies:
+
+$$
+(0) = \kappa x_t + \beta (0) + u_t \implies x_t = \frac{u_t}{\kappa}
+$$
+
+4. Solve for the equilibrium allocation under output targeting rule $x_t= 0$.
+
+With $x_t = 0$, the NKPC implies:
+
+\begin{align*}
+\pi_t 
+&= \kappa (0) + \beta E_t \pi_{t+1} + u_t \\
+&= \beta E_t \pi_{t+1} + u_t \\
+&= u_t + E_t\sum_{j=1}^{\infty} \beta^j u_{t+j}\\
+&= u_t + \bar{u}\sum_{j=1}^{\infty} \beta^j \\
+&= u_t + \frac{\beta}{1-\beta}\bar{u}
+\end{align*}
+
+5. Under which conditions is it optimal to adopt inflation targeting instead of discretionary policy? How does this depend on $\bar{u}$ and $\sigma^2$? Provide economic intuition.
+
+Welfare losses under inflation targeting are:
+
+\begin{align*}
+W ^ \pi 
+& = \frac{1}{2} E \sum_{t=0}^\infty \beta^t ((\frac{u_t}{\kappa})^2 + \alpha (0)^2)  \\
+&= \frac{1}{2\kappa^2}  \sum_{t=0}^\infty \beta^t  E[u_t^2] \\
+&= \frac{1}{2\kappa^2}  \sum_{t=0}^\infty \beta^t (\bar{u}^2+\sigma^2 ) \\
+&= \frac{1}{2\kappa^2(1-\beta)}  \bar{u}^2+\frac{1}{2\kappa^2(1-\beta)}  \sigma^2
+\end{align*}
+
+Welfare losses under discretionary policy are:
+
+\begin{align*}
+W ^ D 
+&= \frac{1}{2} E \sum_{t=0}^\infty \beta^t ((-\alpha \kappa \pi_t)^2 + \alpha \pi_t^2)\\
+&= \frac{1}{2} \alpha (\alpha \kappa^2 + 1)E \sum_{t=0}^\infty \beta^t  \pi_t^2 \\
+&= \frac{1}{2} \alpha (\alpha \kappa^2 + 1)E \sum_{t=0}^\infty \beta^t  \Bigg( \frac{1}{1 + \alpha \kappa^2} u_t +  \frac{\beta}{(1 + \alpha \kappa^2-\beta)(1 + \alpha \kappa^2)}\bar{u} \Bigg)^2 \\
+&= \frac{1}{2} \alpha (\alpha \kappa^2 + 1)
+E \sum_{t=0}^\infty \beta^t  \Bigg( 
+\frac{1}{(1 + \alpha \kappa^2)^2} u_t^2
++ \frac{2\beta}{(1 + \alpha \kappa^2-\beta)(1 + \alpha \kappa^2)^2} u_t \bar{u}
++ \frac{\beta^2}{(1 + \alpha \kappa^2-\beta)^2(1 + \alpha \kappa^2)^2}
+\bar{u}^2 \Bigg) \\
+&= \frac{1}{2} \alpha 
+\sum_{t=0}^\infty \beta^t  \Bigg( 
+\frac{1}{1 + \alpha \kappa^2} E[u_t^2]
++ \frac{2\beta}{(1 + \alpha \kappa^2-\beta)(1 + \alpha \kappa^2)} E[u_t] \bar{u}
++ \frac{\beta^2}{(1 + \alpha \kappa^2-\beta)^2(1 + \alpha \kappa^2)}
+\bar{u}^2 \Bigg)\\
+&= \frac{1}{2} \alpha 
+\sum_{t=0}^\infty \beta^t  \Bigg( 
+\frac{1}{1 + \alpha \kappa^2} (\bar{u}^2 + \sigma^2)
++ \frac{2\beta}{(1 + \alpha \kappa^2-\beta)(1 + \alpha \kappa^2)} \bar{u}^2
++ \frac{\beta^2}{(1 + \alpha \kappa^2-\beta)^2(1 + \alpha \kappa^2)}
+\bar{u}^2 \Bigg) \\
+&= \frac{1}{2} \alpha 
+\sum_{t=0}^\infty \beta^t  \Bigg( 
+\frac{\beta^2 + 2\beta(1 + \alpha \kappa^2-\beta) + (1 + \alpha \kappa^2-\beta)^2}{(1 + \alpha \kappa^2-\beta)^2(1 + \alpha \kappa^2)} \bar{u}^2 
++ \frac{1}{1 + \alpha \kappa^2} \sigma^2
+\Bigg)\\
+&= \frac{1}{2} \alpha 
+\sum_{t=0}^\infty \beta^t  \Bigg( 
+\frac{\beta^2 + 
+2\beta + 2\beta\alpha \kappa^2-2\beta^2 +
+\alpha^2 \kappa^4 - 2\alpha\beta\kappa^2 + 2\alpha \kappa^2 + \beta^2 - 2\beta +1}
+{(1 + \alpha \kappa^2-\beta)^2(1 + \alpha \kappa^2)} \bar{u}^2 
++ \frac{1}{1 + \alpha \kappa^2} \sigma^2
+\Bigg) \\
+&= \frac{1}{2} \alpha 
+\frac{1}{1 - \beta}  \Bigg( 
+\frac{1 + \alpha \kappa^2}
+{(1 + \alpha \kappa^2-\beta)^2} \bar{u}^2 
++ \frac{1}{1 + \alpha \kappa^2} \sigma^2
+\Bigg)\\
+&= 
+\frac{\alpha (1 + \alpha \kappa^2)}
+{2(1-\beta)(1 + \alpha \kappa^2-\beta)^2} \bar{u}^2 
++ \frac{\alpha }{2(1-\beta)(1 + \alpha \kappa^2)} \sigma^2
+\end{align*}
+
+\pagebreak
+
+Inflation targetting is preferred to discretionary policy when:
+
+\begin{align*}
+W^\pi 
+&< W^D \\
+\implies
+\frac{1}{2\kappa^2(1-\beta)}  \bar{u}^2+\frac{1}{2\kappa^2(1-\beta)}  \sigma^2 
+&< \frac{\alpha (1 + \alpha \kappa^2)}
+{2(1-\beta)(1 + \alpha \kappa^2-\beta)^2} \bar{u}^2 
++ \frac{\alpha }{2(1-\beta)(1 + \alpha \kappa^2)} \sigma^2 \\
+\implies
+\frac{1}{\kappa^2}  \bar{u}^2+\frac{1}{\kappa^2}  \sigma^2 
+&< \frac{\alpha (1 + \alpha \kappa^2)}
+{(1 + \alpha \kappa^2-\beta)^2} \bar{u}^2 
++ \frac{\alpha }{(1 + \alpha \kappa^2)} \sigma^2
+\end{align*}
+
+When $\beta \to 1$,
+
+\begin{align*}
+\frac{1}{\kappa^2}  \bar{u}^2+\frac{1}{\kappa^2}  \sigma^2 
+&< \frac{\alpha (1 + \alpha \kappa^2)}
+{(\alpha \kappa^2)^2} \bar{u}^2 
++ \frac{\alpha }{(1 + \alpha \kappa^2)} \sigma^2\\
+\implies
+ \bar{u}^2 +  \sigma^2 
+&< \frac{ 1 + \alpha \kappa^2}
+{\alpha \kappa^2} \bar{u}^2 
++ \frac{\alpha \kappa^2}{1 + \alpha \kappa^2} \sigma^2 \\
+\implies
+\sigma^2 
+- \frac{\alpha \kappa^2}{1 + \alpha \kappa^2} \sigma^2
+&< \frac{ 1 + \alpha \kappa^2}
+{\alpha \kappa^2} \bar{u}^2 
+- \bar{u}^2 \\
+\implies
+\frac{1}{1 + \alpha \kappa^2} \sigma^2
+&< \frac{ 1 }
+{\alpha \kappa^2} \bar{u}^2 \\
+\implies
+\sigma^2
+&< \frac{1 + \alpha \kappa^2}
+{\alpha \kappa^2} \bar{u}^2 
+\end{align*}
+
+This suggests that inflation targeting is preferred to discretionary policy when the variance of the markup shock is relatively small compared to the squared mean markup shock. The cost of inflation is the misallocation of labor. Consider two extreme examples. When $\bar{u} = 1$ and $\sigma^2 = 0$ (i.e., constant positive markup shocks), inflation targeting is preferred. Constant positive markup shocks result in large potential misallocation costs from inflation. Thus, inflation targeting is preferred. This case is very similar for negative values of $\bar{u}$. When $\bar{u} = 0$ and $\sigma^2 = 1$ (i.e., mean-zero markup shocks), discretionary policy is preferred. Since the markup shocks vary, the misallocation costs of inflation are relatively low, so discretionary policy is preferred.
+
+\pagebreak
+
+6. When is output targeting preferred to inflation targeting?
+
+Welfare losses from output targeting are:
+
+\begin{align*}
+W ^ X 
+&= \frac{1}{2} E \sum_{t=0}^\infty \beta^t [(0)^2 + \alpha (u_t + \frac{\beta}{1-\beta}\bar{u})^2]\\
+&= \frac{\alpha}{2} E \sum_{t=0}^\infty \beta^t \Bigg(
+u_t^2 + 2\frac{\beta}{1-\beta}\bar{u}u_t + \frac{\beta^2}{(1-\beta)^2}\bar{u}^2 \Bigg)\\
+&= \frac{\alpha}{2} \frac{1}{1-\beta} \Bigg(
+(\bar{u}^2 + \sigma^2) + 2\frac{\beta}{1-\beta}\bar{u}^2 + \frac{\beta^2}{(1-\beta)^2}\bar{u}^2 \Bigg)\\
+&= \frac{\alpha}{2} \frac{1}{1-\beta} \Bigg(
+\frac{(1-\beta)^2 +2\beta(1-\beta)+\beta^2}{(1-\beta)^2}\bar{u}^2 + \sigma^2\Bigg)\\
+&= \frac{\alpha}{2} \frac{1}{1-\beta} \Bigg(
+\frac{1-2\beta + \beta^2 + 2\beta-2\beta^2+\beta^2}{(1-\beta)^2}\bar{u}^2 + \sigma^2\Bigg)\\
+&= \frac{\alpha}{2} \frac{1}{1-\beta} \Bigg(
+\frac{1}{(1-\beta)^2}\bar{u}^2 + \sigma^2\Bigg)\\
+&= \frac{\alpha}{2(1-\beta)^3}\bar{u}^2 
++ \frac{\alpha}{2(1-\beta)}\sigma^2
+\end{align*}
+
+Output targeting preferred to inflation targeting when:
+
+\begin{align*}
+W^X 
+&< W^\pi \\
+\frac{\alpha}{2(1-\beta)^3}\bar{u}^2 + \frac{\alpha}{2(1-\beta)}\sigma^2
+&< \frac{1}{2\kappa^2(1-\beta)}  \bar{u}^2+\frac{1}{2\kappa^2(1-\beta)}  \sigma^2\\
+\kappa^2\alpha \bar{u}^2 + \kappa^2(1-\beta)^2\sigma^2
+&< (1-\beta)^2  \bar{u}^2+(1-\beta)^2  \sigma^2
+\end{align*}
+
+When $\beta \to 1$,
+
+$$
+\kappa^2\alpha \bar{u}^2 + 0
+< 0 + 0 \\ 
+\implies 
+\bar{u}^2 < 0
+$$
+
+This is a contradiction.  This suggests that when $\beta$ is relatively close to 1, output targetting is not preferred to inflation targetting.
+
+\pagebreak
+
+7. Assume no markup shocks $\bar{u} = \sigma^2 = 0$. Show that in the limit $\phi \to \infty$, the Taylor rule $i_t = \phi \pi_t$ implements the first-best allocation and find the equilibrium values of the nominal and real interest rates.
+
+With no markup shocks and the Taylor rule, the NKPC and NKIS curves become:
+
+$$
+\sigma E_t \Delta x_{t+1} = \phi\pi_t - E_t \pi_{t+1} - r^n_t
+$$
+
+$$
+\pi_t = \kappa x_t + \beta E_t \pi_{t+1}
+$$
