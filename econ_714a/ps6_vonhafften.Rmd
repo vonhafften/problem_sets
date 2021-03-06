@@ -319,7 +319,7 @@ E \sum_{t=0}^\infty \beta^t  \Bigg(
 
 \pagebreak
 
-Inflation targetting is preferred to discretionary policy when:
+Inflation targeting is preferred to discretionary policy when:
 
 \begin{align*}
 W^\pi 
@@ -409,18 +409,28 @@ $$
 \bar{u}^2 < 0
 $$
 
-This is a contradiction.  This suggests that when $\beta$ is relatively close to 1, output targetting is not preferred to inflation targetting.
+This is a contradiction.  This suggests that when $\beta$ is relatively close to 1, output targeting is not preferred to inflation targeting.
 
 \pagebreak
 
 7. Assume no markup shocks $\bar{u} = \sigma^2 = 0$. Show that in the limit $\phi \to \infty$, the Taylor rule $i_t = \phi \pi_t$ implements the first-best allocation and find the equilibrium values of the nominal and real interest rates.
 
+With no markup shocks, the NKPC curves become:
+
+$$
+\pi_t = \kappa x_t + \beta E_t \pi_{t+1} \implies 
+E_t \pi_{t+1} = \frac{\pi_t - \kappa x_t }{\beta} 
+$$
+
 With no markup shocks and the Taylor rule, the NKPC and NKIS curves become:
 
-$$
-\sigma E_t \Delta x_{t+1} = \phi\pi_t - E_t \pi_{t+1} - r^n_t
-$$
 
 $$
-\pi_t = \kappa x_t + \beta E_t \pi_{t+1}
+\sigma E_t \Delta x_{t+1} = \phi\pi_t - \frac{\pi_t - \kappa x_t }{\beta} - r^n_t
+\implies
+\pi_t = \frac{\beta}{\phi \beta + 1} \Bigg[\sigma E_t \Delta x_{t+1} - \frac{\kappa x_t }{\beta} + r^n_t\Bigg]
 $$
+
+As $\phi \to \infty$, $\pi_t \to 0$.  By the NKPC, $\pi_t = 0 \implies x_t = 0$.  Thus, the first best allocation is achieved.
+
+
