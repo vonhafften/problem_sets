@@ -1,0 +1,279 @@
+---
+title: "ECON 713A - Problem Set 3"
+author: Alex von Hafften^[I worked on this problem set with a study group of Michael
+  Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass,
+  Emily Case, Danny Edgel, and Katherine Kwok.]
+date: "3/6/2020"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+- \usepackage{bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## 1 Paying Your TA as a Public Good
+
+$N$ identical first year students have an upcoming final in their micro class with Lones. Students can contribute money towards a common pool to be used to pay the TA for a review session. The TA requires at least $M > 1$ dollars to run the review session. Each student’s utility is $U = aI + m$, where $I = 1$ if the review session is provided and equals 0 otherwise and $m$ is the amount of money each student consumes. What is the minimum $N$ for which it is efficient for the review session to be provided?
+
+Say each student is endowed with $\bar{m}$ dollars. Since the students are identical, each student contributes the same amount, namely $M/N$ dollars.  Thus, the student utility without the review session is $U_0 = \bar{m}$ and each student's utility with the review session is $U_1 = a + \bar{m} - M/N$.  For the review session to be efficient, a representative student need to be weakly better off:
+
+$$
+U_1 \ge U_0 \implies a + \bar{m} - M/N \ge \bar{m} \implies N \ge M/a
+$$
+
+Thus, the minimum $N$ for a review session to be efficient is $M/a$.
+
+\pagebreak
+
+## 2  Efficient Peak Load Pricing
+
+Assume peak and off-peak periods in the public transport in Madison. Half the day is peak, when the inverse demand for bus tickets is $p_H = H - x_H$, and half is off peak when the inverse demand for bus tickets is $p_L = L - x_L$, with $H > L$. Each demand is expressed in dollars and assume fractions of a ticket can be bought. One ticket requires paying the bus driver and gas among other things, costing $b$ dollars per ticket (operating costs). In addition, there is a capacity cost (parking) per day equal to $\beta$. The cost of a given capacity is the same whether it is used at peak times only or off-peak also. What is the welfare maximizing pricing scheme $(p_H^*,p_L^*)$? Show graphically that there are no gains from charging higher prices than $(p_H^*,p_L^*)$.
+
+Consumer surplus is $CS(x_L, x_H) = x_L^2/2 + x_H^2/2$. Producer surplus for the capacity $\bar{x} \ge x_L, x_H$ is $PS(x_L, x_H) = (H - b - x_H)x_H + (H - b - x_L)x_L - \beta \bar{x}$.  The Lagrangian:
+
+\begin{align*}
+\Lf
+&= CS(x_L, x_H) + PS(x_L, x_H) + \lambda_H (\bar{x} - x_H) + \lambda_L (\bar{x} - x_L)\\
+&= [x_L^2/2 + x_H^2/2] + [(H - b - x_H)x_H + (H - b - x_L)x_L - \beta \bar{x}] + \lambda_H (\bar{x} - x_H) + \lambda_L (\bar{x} - x_L)
+\end{align*}
+
+Kuhn-Tucker conditions:
+
+\begin{align*}
+H - b - x_H &= \lambda_H & [x_H] \\
+L - b - x_L &= \lambda_L & [x_L] \\
+\lambda_H + \lambda_L &= \beta & [\bar{x}] \\
+\lambda_H(\bar{x} - x_H) &= 0, x_H \le \bar{x}, \lambda_H \ge 0 & [\lambda_H] \\
+\lambda_L(\bar{x} - x_L) &= 0, x_L \le \bar{x}, \lambda_L \ge 0 & [\lambda_L] \\
+\end{align*}
+
+Notice that $x_H = \bar{x} \implies \lambda_H > 0$.  Let us consider two cases for $\lambda_L$:
+
+Case 1: $\lambda_L = 0$
+
+$$
+\lambda_L = 0 \implies x_L^* = L -b \implies p_L^* = L - (L - b) = b
+$$
+
+$$
+\lambda_L = 0\implies\lambda_H = \beta \implies x_H^* = H - b - \beta \implies p_H^* = H - (H - b -\beta) = b + \beta
+$$ 
+
+$$
+\lambda_L = 0 \implies x_L^* < \bar{x} = x_H \implies L -b < H - b - \beta \implies \beta < H - L
+$$
+
+Case 2: $\lambda_L > 0$
+
+Adding FOC [$x_H$] and FOC [$x_L$]:
+
+$$
+(L - b - x_L) + (H - b - x_H) = \lambda_H + \lambda_L 
+\implies
+(L - x_L) + (H - x_H) = 2b + \beta 
+\implies
+p_L^* + p_H^* = 2b + \beta 
+$$
+
+Furthermore, $\lambda_L > 0 \implies x_L^* = \bar{x} \implies \beta \ge H - L$. 
+
+```{r problem2, echo = FALSE}
+b <- 1
+h <- 6
+l <- 4
+
+beta_1 <- 1
+beta_2 <- 4
+
+x_grid <- seq(0, 5, 0.1)
+
+mb_h <- pmax(h - x_grid - b, 0)
+mb_l <- pmax(l - x_grid - b, 0)
+mb_s <- mb_h + mb_l
+
+plot(1, type = "n", xlim = c(min(x_grid), max(x_grid)), ylim = c(min(x_grid), max(x_grid)*2), xlab = "X", ylab = "p", xaxs = "i", yaxs = "i", axes = FALSE)
+box()
+
+lines(x= x_grid, y= mb_h)
+lines(x= x_grid, y= mb_l)
+lines(x= x_grid, y= mb_s)
+
+segments(x0 = l-b, x1 = l-b, y0=0, y1 = h - l, lty=3)
+segments(x0 = l-b, x1 = h-b, y0=h - l, y1 = h - l, lty=3)
+
+abline(h=beta_1, col = "red", lty=2)
+segments(x0 = l-b-beta_1, x1 = l-b-beta_1, y0=0, y1 = l-2*b-beta_1, lty=2, col = "red")
+segments(x0 = h-b-beta_1, x1 = h-b-beta_1, y0=0, y1 = l-2*b-beta_1, lty=2, col = "red")
+
+abline(h=beta_2, col = "blue", lty=2)
+segments(x0 = h-b-beta_2, x1 = h-b-beta_2, y0=0, y1 = h+2*b-beta_2, lty=2, col = "blue")
+segments(x0 = 0, x1 = h-b-beta_2, y0=l+2*b-beta_2, y1 = l+2*b-beta_2, lty=2, col = "blue")
+
+mtext("H + L - b", at = h + l - b, side = "2", adj = 1)
+mtext("H - b", at = h - b, side = "2")
+mtext("L - b", at = l - b, side = "2")
+
+mtext("H - b", at = h - b, side = "1")
+mtext("L - b", at = l - b, side = "1")
+
+mtext("H - L", at = h - l, side = "4")
+
+text("Case 1 (low beta)", col ="red", x=4, y=1.5)
+text("Case 2 (high beta)", col ="blue", x=4, y=4.5)
+
+```
+
+\pagebreak
+
+## 3 The Exchange Economy in the Edgeworth Box, Encore
+
+Consider an intertemporal problem in which there are only two commodities people can consume: corn today $(c_1)$ and corn next period $(c_2)$. There are two consumers: Consumer $A$ who has utility function $U^A(c_1,c_2) = c_1c_2$, and Consumer $B$ who has utility function $U^B(c_1,c_2) = \min\{c_1,c_2\}$. Consumer $A$ is endowed with no units of $c_1$ and 100 units $c_2$, while Consumer $B$ is endowed with 200 units of $c_1$ and no units of $c_2$.
+
+1. Draw the Edgeworth box that corresponds to this situation with consumer $A$ in the lower left, and where the horizontal distance from the lower left origin represents $A$'s allocation of $c_1$. Label the endowment in this box.
+
+2. Sketch the contract curve in this box.
+
+3. Solve for the equilibrium interest rate, and the amounts consumed by each consumer in equilibrium. Illustrate the equilibrium budget constraint and consumption point in your diagram.
+
+For the contract curve, with consumer $B$'s Leontif preferences, we know that $c_1^B = c_2^B = c^B \implies c_1^A = c_2^A + 100$.  Consumer $A$ equates their marginal rate of substitution to the price ratio:
+
+$$
+\frac{p_1}{p_2}= \frac{U^A_1}{U^A_2} = \frac{c_2^A}{c_1^A}=\frac{c_1^A - 100}{c_1^A}
+$$
+
+For each consumer, the value of their endowment is equal to the value of their consumption:
+
+$$
+p_1 c_1^A  + p_2 c_2^A = 100 p_2
+\implies 
+\frac{p_1}{p_2}c_1^A + c_2^A =100
+\implies 
+\Bigg(\frac{c_1^A - 100}{c_1^A}\Bigg)c_1^A + (c_1^A - 100) =100
+$$
+
+$$
+\implies
+c_1^A =150,
+c_2^A =50,
+c^B =50
+$$
+
+Thus, the gross interest rate is $i = \frac{p_2}{p_1} = \frac{c_1^A}{c_2^A} = 3$. 
+
+\pagebreak
+ 
+The endowment is the red point, the contract curve is the blue line, the equilibrium budget constraint is the black line, and the consumption point is the purple star.
+
+```{r problem3_1, echo = FALSE}
+c_1_grid <- seq(0, 250, 0.1)
+
+plot(1, type = "n", xlim = c(0, 200), ylim = c(0, 100), xlab = "c_1", ylab = "c_2")
+
+utility_bars <- 100+(0:45)*1000
+for (u in utility_bars) lines(x = c_1_grid, y = u/c_1_grid, col = "lightblue")
+
+par(new = TRUE)
+plot(1, type = "n", xlim = c(200, 0), ylim = c(100, 0), xlab = "", ylab = "", axes = FALSE)
+axis(side = 3)
+axis(side = 4)
+
+utility_bars <- (0:10)*10
+for (u in utility_bars) {
+  segments(x0 = u, y0 = u, x1 = u, y1 = 250, col = "lightgreen")
+  segments(x0 = u, y0 = u, x1 = 250, y1 = u, col = "lightgreen")
+}
+
+abline(a=200/3, b=-1/3)
+abline(a=0, b=1, col= "blue")
+points(x=200, y=0, pch=19, col = "red")
+points(x=50, y=50, pch=8, col = "purple")
+
+box()
+```
+
+\pagebreak
+
+## 4 The Exchange Economy in the Edgeworth Box
+
+There are two consumers: Consumer $A$ who has utility function $U^A(x,y) = xy$, and Consumer $B$ who has utility function $U^B(x, y) = y + 20 \log x$. Consumer $A$ is endowed with 30 units of $x$ and no units of $y$, while Consumer $B$ is endowed with no units of $x$ and 20 units of $y$.
+
+1. Draw the Edgeworth box that corresponds to this situation with consumer $A$ in the lower left, and where the horizontal distance from the lower left origin represents $A$'s allocation of $x$. Label the endowment in this box.
+
+2. Solve for the equation that describes the contract curve, and sketch the curve in your Edgeworth box.
+
+3. Solve for the equilibrium price ratio, and the amounts consumed by each consumer in equilibrium. Illustrate the equilibrium budget constraint and consumption point in your diagram.
+
+The consumers equate their marginal rates of substitution to the price ratio:
+
+$$
+\frac{p_x}{p_y}= \frac{U^A_x}{U^A_y} = \frac{y_A}{x_A}
+$$
+
+$$
+\frac{p_x}{p_y}= \frac{U^B_x}{U^B_y} = \frac{20}{x_B}
+$$
+
+Thus, the contract curve can be described by:
+
+$$
+\frac{y_A}{x_A} = \frac{20}{x_B} \\
+\implies
+y_A = \frac{20x_A}{x_B} = \frac{20x_A}{30-x_A} \\
+$$
+
+For each consumer, the value of their endowment is equal to the value of their consumption:
+
+\begin{align*}
+p_x x_A + p_yy_A &= 30p_x  \\
+\implies \frac{p_x}{p_y}x_A + y_A &= 30\frac{p_x}{p_y} \\
+\implies \frac{y_A}{x_A}x_A + y_A &= 30\frac{y_A}{x_A}\\
+\implies x_A &= 15\\
+\implies y_A &= 20\\
+\implies x_B &= 15\\
+\implies y_B &= 0 \\
+\implies \frac{p_x}{p_y} &= \frac{4}{3}
+\end{align*}
+
+\pagebreak
+ 
+The endowment is the red point, the contract curve is the blue line, the equilibrium budget constraint is the black line, and the consumption point is the purple star.
+
+```{r problem4_1, echo = FALSE}
+x_grid <- seq(0, 35, 0.01)
+x_grid2 <- seq(0, 30, 0.01)
+
+plot(1, type = "n", xlim = c(0, 30), ylim = c(0, 20), xlab = "x", ylab = "y")
+
+utility_bars <- 1+(0:15)*50
+for (u in utility_bars) lines(x = x_grid, y = u/x_grid, col = "lightblue")
+
+lines(x=x_grid2, y=pmin(20*x_grid2/(30-x_grid2), 20), col= "blue")
+
+par(new = TRUE)
+plot(1, type = "n", xlim = c(30, 0), ylim = c(20, 0), xlab = "", ylab = "", axes = FALSE)
+axis(side = 3)
+axis(side = 4)
+
+
+utility_bars <- .01+(0:15)*5
+for (u in utility_bars) lines(x = x_grid, y = u - 20 *log(x_grid), col = "lightgreen")
+
+abline(a=20, b=-4/3)
+points(x=0, y=20, pch=19, col = "red")
+points(x=15, y=0, pch=8, col = "purple")
+
+box()
+```
