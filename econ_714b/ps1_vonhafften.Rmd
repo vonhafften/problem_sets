@@ -1,5 +1,5 @@
 ---
-title: "ECON 714B - Problem Set 7"
+title: "ECON 714B - Problem Set 1"
 author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
 date: "3/26/2021"
 output: pdf_document
@@ -147,7 +147,7 @@ $$
 In addition, $\lambda_0 = .97$ and $d_0 = 1$ are both known at date 0.  The consumer has preferences over consumption ordered by 
 
 $$
-E_0 = \sum_{t=0}^\infty \beta^t \frac{c_t^{1-\gamma}}{1 - \gamma}
+E_0 \sum_{t=0}^\infty \beta^t \frac{c_t^{1-\gamma}}{1 - \gamma}
 $$
 
 where $E_0$ is the mathematical expectation operator, conditioned on information known at time 0, $\gamma = 2, \beta = .95$.
@@ -158,21 +158,82 @@ At time 0, after $d_0$ and $\lambda_0$ are known, there are complete markets in 
 
 a. Define a competitive equilibrium, being careful to specify all the objects composing an equilibrium.
 
-...
+A competitive equilibrium is an allocation $\{c_t(s^t)\}_{t=0}^\infty$ and price system $\{Q_t(s^t)\}_{t=0}^\infty$ for all histories $s^t = (\lambda_0, ..., \lambda_t)$ such that the allocation is feasible and, given the price system, the allocation maximizes agent's utility subject to their budget constraint.
 
-b. Compute the equilibrium price of a claim to one unit of consumption at date 5, denominated in units of time 0 consumption, contingent on the following history of growth rates: $(\lambda_1,\lambda_2,...,\lambda_5) = (.97,.97,1.03,.97,1.03)$. Please give a numerical answer.
+b. Compute the equilibrium price of a claim to one unit of consumption at date 5, denominated in units of time 0 consumption, contingent on the following history of growth rates: $(\lambda_1,\lambda_2,...,\lambda_5) = (0.97,0.97,1.03,0.97,1.03)$. Please give a numerical answer.
 
-...
+The consumers' problem is
+
+$$
+\max_{\{c_t\}_{t=0}^\infty} \sum_{t=0}^\infty \sum_{s^t} \pi(s^t | s_0) \beta^t \frac{c_t(s^t)^{1-\gamma}}{1 - \gamma} 
+\text{ s.t. }
+\sum_{t=0}^\infty \sum_{s^t} Q_t(s^t) c_{t}(s^t) \le  \sum_{t=0}^\infty \sum_{s^t} Q_t (s^t) d_{t}  (s^t)
+$$
+
+Denote $\mu$ as the legrangian multipler on the budget constrant:
+
+$$
+\Lf = \max_{\{c_t\}_{t=0}^\infty} \sum_{t=0}^\infty \sum_{s^t} \pi(s^t | s_0) \beta^t \frac{(c_t(s^t))^{1-\gamma}}{1 - \gamma} + \mu \Bigg[ \sum_{t=0}^\infty \sum_{s^t} Q_t(s^t) d_{t}(s^t)   - \sum_{t=0}^\infty\sum_{s^t} Q_t(s^t) c_{t}(s^t)   \Bigg]
+$$
+
+FOC [$c_t(s^t)$]:
+
+$$
+\beta^t \pi_t(s^t|s_0) (c_t(s^t))^{-\gamma} = \mu Q_t(s^t)
+$$
+
+Feasibility requires $c_t(s^t) = d_t(s^t)$.  For $t = 0$, $Q_0(s^0)=\pi_0(s^0|s_0)=1$ and $c_0(s^0) = d_0 = 1$:
+
+$$
+\beta^0 \pi_0(s^0|s_0) (c_0(s^0))^{-\gamma} = \mu Q_0(s^0) \implies \mu  = 1
+$$
+
+\pagebreak
+
+Thus, for any $t$, the FOC and feasibility implies:
+
+$$
+Q_t(s^t) = \beta^t \pi_t(s^t|s_0) (d_t(s^t))^{-\gamma}
+$$
+
+For $(\lambda_1,\lambda_2,...,\lambda_5) = (0.97,0.97,1.03,0.97,1.03)$,
+
+$$
+\beta^5 = (0.95)^5 = 0.7737809
+$$
+
+$$
+\pi_5(s^5 = (0.97,0.97,1.03,0.97,1.03)|\lambda_0 = 0.97) = 0.8*0.8*0.2*0.1*0.2 = 0.00256
+$$
+
+$$
+d_5(s^5 = (0.97,0.97,1.03,0.97,1.03)) = 1*0.97*0.97*1.03*0.97*1.03 = 0.9682548
+$$
+
+Thus, $Q_5(s^5 = (0.97,0.97,1.03,0.97,1.03)) = (0.7737809)(0.00256)(0.9682548)^{-2} = 0.002112899$
 
 c. Compute the equilibrium price of a claim to one unit of consumption at date 5, denominated in units of time 0 consumption, contingent on the following history of growth rates: $(\lambda_1,\lambda_2,...,\lambda_5)=(1.03,1.03,1.03,1.03,.97)$.
 
-...
+$$
+\pi_5(s^5 = (1.03,1.03,1.03,1.03,.97)|\lambda_0 = 0.97) = 0.2*0.9*0.9*0.9*0.1 = 0.01458
+$$
+
+$$
+d_5(s^5 = (1.03,1.03,1.03,1.03,.97)) = 1*1.03*1.03*1.03*1.03*.97 = 1.091744
+$$
+
+Thus, $Q_5(s^5 = (1.03,1.03,1.03,1.03,.97)) = (0.7737809)(0.01458)(1.091744)^{-2} = 0.00946529$
+
 
 d. Give a formula for the price at time 0 of a claim on the entire endowment sequence.
 
-...
+The price at time 0 of an asset that promises $\{d_t(s^t)\}_{t=0}^\infty$ is:
 
-e. Give a formula for the price at time 0 of a claim on consumption in period 5, contingent on the growth rate $\lambda_5$ being .97 (regardless of the intervening growth rates).
+$$
+P_0^0 (s_0) = \sum_{t=0}^{\infty} \sum_{s^t} Q_t(s^t) d_t(s^t) = \sum_{t=0}^{\infty} \beta^t \pi_t(s^t|s_0) (d_t(s^t))^{-\gamma} d_t(s^t) = \sum_{t=0}^{\infty} \beta^t \pi_t(s^t|s_0) (d_t(s^t))^{1-\gamma}
+$$
+
+e. Give a formula for the price at time 0 of a claim on consumption in period 5, contingent on the growth rate $\lambda_5$ being 0.97 (regardless of the intervening growth rates).
 
 ...
 
