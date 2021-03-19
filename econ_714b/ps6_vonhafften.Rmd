@@ -1,0 +1,197 @@
+---
+title: "ECON 714B - Problem Set 7"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "3/26/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+### Exercise 8.1 - Existence of representative consumer
+
+Suppose households 1 and 2 have one-period utility functions $u(c_1)$ and $w(c_2)$, respectively, where $u$ and $w$ are both increasing, strictly concave, twice differentiable functions of a scalar consumption rate. Consider the Pareto problem: 
+
+$$
+v_\theta(c) = \max_{\{c_1,c_2\}}[\theta u(c_1) + (1-\theta)w(c_2)]
+$$
+
+subject to the constraint $c_1+c_2=c$. Show that the solution of this problem has the form of a concave utility function $v_\theta(c)$, which depends on the Pareto weight $\theta$. Show that $v'_\theta(c) = \theta u'(c_1) = (1-\theta)w'(c_2)$.The function $v_\theta(c)$ is the utility function of the representative consumer. Such a representative consumer always lurks within a complete markets competitive equilibrium even with heterogeneous preferences. At a competitive equilibrium, the marginal utilities of the representative agent and each and every agent are proportional.
+
+First, notice that $v_\theta$ is increasing, strictly concave, and twice differentiable because $\theta, 1-\theta \ge 0$ and $u$ and $w$ are both increasing, strictly concave, twice differentiable functions.
+
+$$
+v_\theta(c) = \max_{\{c_1,c_2\}}[\theta u(c_1) + (1-\theta)w(c_2)] \text{ s.t. }c = c_1 + c_2
+$$
+
+$$
+\implies v_\theta(c) = \max_{c_1}[\theta u(c_1) + (1-\theta)w(c - c_1)]
+$$
+
+Since $u$ and $w$ are continuously differentiable functions, we can find the envelope condition:
+
+$$
+\implies v'_\theta(c) = (1-\theta)w'(c - c_1) = (1-\theta)w'(c_2) 
+$$
+
+FOC [$c_1$]:
+
+$$
+\theta u'(c_1) = (1-\theta)w'(c - c_1) \implies \theta u'(c_1) = (1-\theta)w'(c_2)
+$$
+
+Therefore,
+
+$$
+v'_\theta(c) = \theta u'(c_1) = (1-\theta)w'(c_2)
+$$
+
+\pagebreak
+
+### Exercise 8.3
+
+An economy consists of two infinitely lived consumers named $i= 1,2$. There is one nonstorable consumption good. Consumer $i$ consumes $c_{it}$ at time $t$. Consumer $i$ ranks consumption streams by
+
+$$
+\sum_{t=0}^\infty \beta^t u(c_{it})
+$$
+
+where $\beta \in (0,1)$ and $u(c)$ is increasing, strictly concave, and twice continuously differentiable. Consumer 1 is endowed with a stream of the consumption good $y_{1t}= 1,0,0,1,0,0,1,...$ Consumer 2 is endowed with a stream of the consumption good $y_{2t} = 0,1,1,0,1,1,0,...$. Assume that there are complete markets with time 0 trading.
+
+a. Define a competitive equilibrium.
+
+First, notice that there is no stochastic states (i.e., endowment process is deterministic).  The agent $i$'s problem is:
+
+$$
+\max_{\{c_{it}\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t u(c_{it}) \text{ s.t. } \sum_{t=0}^\infty Q_t c_{it} \le  \sum_{t=0}^\infty Q_t y_{it}  
+$$
+
+A competitive equilibrium is a feasible allocation $\{\{c_{it}\}_{t=0}^\infty\}_{i=1,2}$ and a price system $\{Q_t\}_{t=0}^\infty$ such that given the price system, the allocation maximized the agent's utility subject to their budget constraint.
+
+b. Compute a competitive equilibrium.
+
+Let $\mu_i$ be the multipler on the BC for agent $i$:
+
+$$
+\Lf = \sum_{t=0}^\infty \beta^t u(c_{it}) - \mu_i \Bigg[ \sum_{t=0}^\infty Q_t y_{it}   -  \sum_{t=0}^\infty Q_t c_{it}  \Bigg]
+$$
+
+FOC [$c_{it}$]:
+
+$$
+\beta^t u'(c_{it}) = \mu_i Q_t
+$$
+
+Thus, the ratio of the FOC for 1 and the FOC for 2 is:
+
+$$
+\frac{u'(c_{1t})}{u'(c_{2t})} = \frac{\mu_1}{\mu_2} \implies c_{1t} = u'^{-1}\Bigg(\frac{\mu_1}{\mu_2} u'(c_{2t})\Bigg)
+$$
+
+Plugging into the resource constraint:
+
+$$
+c_{1t} + c_{2t} = 1 \implies u'^{-1}\Bigg(\frac{\mu_1}{\mu_2} u'(c_{2t})\Bigg) + c_{2t} = 1
+$$
+
+This implies that $c_{2t}$ a function of the aggregate endowment for all $t$.  Since the aggregate endowment is constant, $c_{2t} = c_{2,t+1} = c_{2}$. Thus, $c_{1t}$ is also constant: $c_{1t} = c - c_2 \equiv c_1$.  Let the numeraire be date 0 consumption $Q_0 = 1$:
+
+$$
+\frac{\beta^t u'(c_{1,t})}{\beta^0 u'(c_{1,0})} = \frac{\mu_1 Q_t}{\mu_1} \implies\frac{\beta^t u'(c_{1})}{u'(c_{1})} = Q_t  \implies  Q_t = \beta^t
+$$
+
+The budget constraint implies
+
+$$
+\sum_{t=0}^\infty \beta^t c_{1t} =  \sum_{t=0}^\infty \beta^t y_{1t}
+\implies
+c_1 \frac{1}{1-\beta} = \sum_{t=0}^\infty \beta^{3t}
+\implies
+c_1  =  \frac{1-\beta}{1-\beta^3}
+$$
+
+Furthermore,
+
+$$
+c_2 = 1 - \frac{1-\beta}{1-\beta^3} = \frac{\beta - \beta^3}{1-\beta^3}
+$$
+
+c. Suppose that one of the consumers markets a derivative asset that promises to pay .05 units of consumption each period. What would the price of that asset be?
+
+The price of the derivative asset in period $0$ with promises $\{d_t\}_{t=0}^\infty = \{0.05\}_{t=0}^\infty$ is:
+
+$$
+P_0^0 = \sum_{t=0}^\infty Q_td_t = \sum_{t=0}^\infty \beta^t 0.05 = \frac{0.05}{1-\beta}
+$$
+
+\pagebreak
+
+### Exercise 8.4
+
+Consider a pure endowment economy with a single representative consumer; $\{c_t,d_t\}_{t=0}^\infty$ are the consumption and endowment processes, respectively. Feasible allocations satisfy $c_t \le d_t$. The endowment process is described by $d_{t+1} = \lambda_{t+1} d_t$. The growth rate $\lambda_{t+1}$ is described by a two-state Markov process with transition probabilities $P_{ij} = Prob(\lambda_{t+1} = \bar{\lambda}_j|\lambda_t = \bar{\lambda}_i)$.  Assume that 
+
+$$
+P = \begin{bmatrix} .8 & .2 \\ .1 & .9 \end{bmatrix}, \bar{\lambda} = \begin{bmatrix} .97 \\ 1.03 \end{bmatrix}
+$$
+
+In addition, $\lambda_0 = .97$ and $d_0 = 1$ are both known at date 0.  The consumer has preferences over consumption ordered by 
+
+$$
+E_0 = \sum_{t=0}^\infty \beta^t \frac{c_t^{1-\gamma}}{1 - \gamma}
+$$
+
+where $E_0$ is the mathematical expectation operator, conditioned on information known at time 0, $\gamma = 2, \beta = .95$.
+
+#### Part I
+
+At time 0, after $d_0$ and $\lambda_0$ are known, there are complete markets in date- and history-contingent claims. The market prices are denominated in units of time 0 consumption goods.
+
+a. Define a competitive equilibrium, being careful to specify all the objects composing an equilibrium.
+
+...
+
+b. Compute the equilibrium price of a claim to one unit of consumption at date 5, denominated in units of time 0 consumption, contingent on the following history of growth rates: $(\lambda_1,\lambda_2,...,\lambda_5) = (.97,.97,1.03,.97,1.03)$. Please give a numerical answer.
+
+...
+
+c. Compute the equilibrium price of a claim to one unit of consumption at date 5, denominated in units of time 0 consumption, contingent on the following history of growth rates: $(\lambda_1,\lambda_2,...,\lambda_5)=(1.03,1.03,1.03,1.03,.97)$.
+
+...
+
+d. Give a formula for the price at time 0 of a claim on the entire endowment sequence.
+
+...
+
+e. Give a formula for the price at time 0 of a claim on consumption in period 5, contingent on the growth rate $\lambda_5$ being .97 (regardless of the intervening growth rates).
+
+...
+
+#### Part II
+
+Now assume a different market structure. Assume that at each date $t \ge 0$ there is a complete set of one-period forward Arrow securities.
+
+f. Define a (recursive) competitive equilibrium with Arrow securities, being careful to define all of the objects that compose such an equilibrium.
+
+...
+
+g. For the representative consumer in this economy, for each state compute the “natural debt limits” that constrain state-contingent borrowing.
+
+...
+
+h. Compute a competitive equilibrium with Arrow securities. In particular, compute both the pricing kernel and the allocation.
+
+...
+
+i. An entrepreneur enters this economy and proposes to issue a new security each period, namely, a risk-free two-period bond. Such a bond issued in period t promises to pay one unit of consumption at time $t + 1$ for sure. Find the price of this new security in period $t$, contingent on $\lambda_t$.
+
+...

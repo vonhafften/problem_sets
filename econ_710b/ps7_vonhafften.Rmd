@@ -1,0 +1,249 @@
+---
+title: "ECON 710B - Problem Set 7"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "3/23/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\var}{\text{var}}
+- \newcommand{\rank}{\text{rank}}
+- \newcommand{\twiddle}{\tilde}
+- \newcommand{\Lfn}{\mathcal{L}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(knitr)
+```
+
+### 13.1
+
+Take the model:
+
+\begin{align*}
+Y &= X' \beta + e \\
+E[Xe] &= 0 \\
+e^2 &= Z' \gamma + \eta \\
+E[Z \eta] &= 0
+\end{align*}
+
+Find the method of moments estimators $(\hat{\beta}, \hat{\gamma})$ for $(\beta, \gamma)$.
+
+The moment conditions are:
+
+\begin{align*}
+\begin{pmatrix}
+E[Xe] \\
+E[Z \eta]
+\end{pmatrix}
+&= 
+\begin{pmatrix}
+0\\
+0
+\end{pmatrix} \\
+\implies 
+\begin{pmatrix}
+E[X (Y - X' \beta)] \\
+E[Z ((Y - X' \beta)^2 - Z' \gamma)]
+\end{pmatrix}
+&= 
+\begin{pmatrix}
+0\\
+0
+\end{pmatrix}\\
+\implies 
+\begin{pmatrix}
+E[g_1(\beta, \gamma)] \\
+E[g_2(\beta, \gamma)]
+\end{pmatrix}
+&= 
+\begin{pmatrix}
+0\\
+0
+\end{pmatrix}\\
+\text{where }
+g_1(\beta, \gamma) &= XY - XX' \beta,\\
+g_2(\beta, \gamma) &= Z (Y - X' \beta)^2 - ZZ' \gamma
+\end{align*}
+
+Replacing with the sample moment:
+
+$$
+\frac{1}{n} \sum_{i=1}^n (X_iY_i - X_iX_i' \hat{\beta}) = 0 
+\implies 
+\hat{\beta} = \Bigg(\frac{1}{n} \sum_{i=1}^n X_iX_i \Bigg)^{-1} \Bigg(\frac{1}{n} \sum_{i=1}^n X_iY_i \Bigg)
+$$
+
+$$
+\frac{1}{n} \sum_{i=1}^n(Z_i (Y_i - X_i' \hat{\beta})^2 - Z_iZ_i' \hat{\gamma}) = 0
+\implies
+\hat{\gamma} = \Bigg( \frac{1}{n} \sum_{i=1}^n Z_iZ_i' \Bigg)^{-1}  \Bigg( \frac{1}{n} \sum_{i=1}^nZ_i (Y_i - X_i' \hat{\beta})^2 \Bigg)
+$$
+
+\pagebreak
+
+### 13.2
+
+Take the model $Y =X'\beta+e$ with $E[e|Z]=0$. Let $\beta_{gmm}$ be the GMM estimator using the weight matrix $W_n = (Z'Z)^{-1}$. Under the assumption $E[e^2 |Z]=\sigma^2$ show that
+
+$$
+\sqrt{n} (\hat{\beta}_{gmm} - \beta) \to_d N (0, \sigma^2 (Q' M^{-1} Q)^{-1})
+$$
+
+where $Q = E[ZX']$ and $M = E[ZZ']$.
+
+We can rewrite $\hat{\beta}_{gmm}$ as:
+
+\begin{align*}
+\hat{\beta}_{gmm} 
+&= (X'ZW_nZ'X)^{-1}(X'ZW_nZ'Y)  \\
+&= (X'Z(nW_n)Z'X)^{-1}(X'Z(nW_n)Z'Y)\\
+&= (X'ZV_nZ'X)^{-1}(X'ZV_nZ'Y)
+\end{align*}
+
+where $V_n = (n^{-1}Z'Z)^{-1}$. Notice that 
+
+$$
+n^{-1}Z'Z \to_p E[Z'Z]
+$$
+
+by law of large numbers, so by CMT:
+
+$$
+V_n = (n^{-1}Z'Z)^{-1} \to_p E[Z'Z]^{-1} \equiv W
+$$
+
+Notice that $M=W^{-1}$. If $E[e^2 |Z]=\sigma^2$, then
+
+$$
+\Omega = E[ZZ'e^2] = E[ZZ'E[e^2 |Z]] = \sigma^2E[ZZ'] = \sigma^2M= \sigma^2W^{-1}
+$$
+
+By Theorem 13.3, we know that $\sqrt{n} (\hat{\beta}_{gmm} - \beta) \to_d N(0, V_\beta)$ where
+
+\begin{align*}
+V_\beta 
+&= (Q'WQ)^{-1}(Q'W\Omega WQ)(Q'WQ)^{-1}\\
+&= (Q'WQ)^{-1}(Q'W\sigma^2W^{-1} WQ)(Q'WQ)^{-1}\\
+&= \sigma^2(Q'WQ)^{-1}(Q' WQ)(Q'WQ)^{-1}\\
+&= \sigma^2(Q'WQ)^{-1}\\
+&= \sigma^2(Q'M^{-1}Q)^{-1}
+\end{align*}
+
+\pagebreak
+
+### 13.3
+
+Take the model $Y =X'\beta+e$ with $E[Ze]=0$. Let $\tilde{e} = Y - X'\hat{\beta}$ where $\hat{\beta}$ is consistent for $\beta$ (e.g. a GMM estimator with some weight matrix). An estimator of the optimal GMM weight matrix is
+
+$$
+\hat{W} = \Bigg(\frac{1}{n} \sum_{i=1}^n Z_i Z_i' \tilde{e}_i^2\Bigg)^{-1}
+$$
+
+Show that $\hat{W} \to_p \Omega^{-1}$ where $\Omega = E[ZZ' e^2]$.
+
+$$
+\frac{1}{n} \sum_{i=1}^n \tilde{e}_i^2 
+= \frac{1}{n} \sum_{i=1}^n (Y_i - X_i'\hat{\beta})^2\\ 
+= \frac{1}{n} \sum_{i=1}^n Y_i^2 - 2 \frac{1}{n} \sum_{i=1}^n Y_iX_i'\hat{\beta} + \frac{1}{n} \sum_{i=1}^n X_i'X_i\hat{\beta}'\hat{\beta}\\
+\to_p E[Y^2] - 2E[YX' \beta] + E[X'X\beta'\beta]\\
+= E[(Y-X'\beta)^2]\\
+= E[e^2]
+$$
+
+By the continuous mapping theorem and the weak law of large numbers.
+
+...
+
+\pagebreak
+
+### 13.4
+
+In the linear model estimated by GMM with general weight matrix $W$ the asymptotic variance of $\hat{\beta}_{gmm}$ is 
+
+$$
+V = (Q'WQ)^{-1} Q'W \Omega WQ(Q'WQ)^{-1}
+$$
+
+(a) Let $V_0$ be this matrix when $W = \Omega^{-1}$. Show that $V_0 = (Q'\Omega^{-1}Q)^{-1}$.
+
+\begin{align*}
+V_0 
+&= (Q'\Omega^{-1}Q)^{-1} Q'\Omega^{-1} \Omega \Omega^{-1}Q(Q'\Omega^{-1}Q)^{-1}\\
+&= (Q'\Omega^{-1}Q)^{-1} Q'\Omega^{-1} Q(Q'\Omega^{-1}Q)^{-1}\\
+&= (Q'\Omega^{-1}Q)^{-1}
+\end{align*}
+
+(b) We want to show that for any $W$, $V-V_0$ is positive semi-definite (for then $V_0$ is the smaller possible covariance matrix and $W = \Omega^{-1}$ is the efficient weight matrix). To do this start by finding matrices $A$ and $B$ such that $V = A'\Omega A$ and $V_0 = B'\Omega B$.
+
+\begin{align*}
+V 
+&= (Q'WQ)^{-1} Q'W \Omega WQ(Q'WQ)^{-1} \\
+&= A' \Omega A \\
+A 
+&:= WQ(Q'WQ)^{-1} \\
+A' 
+&= (WQ(Q'WQ)^{-1})' \\
+&= ((Q'WQ)')^{-1}Q'W' \\
+&= (Q'WQ)^{-1}Q'W
+\end{align*}
+
+Since $W$ is symmetric $\implies Q'WQ$ is symmetric.
+
+\begin{align*}
+V_0 
+&= (Q'\Omega^{-1}Q)^{-1} Q'\Omega^{-1} \Omega \Omega^{-1}Q(Q'\Omega^{-1}Q)^{-1} \\
+&= B' \Omega B\\
+B 
+&:= \Omega^{-1}Q(Q'\Omega^{-1}Q)^{-1} \\
+B' 
+&= ( \Omega^{-1}Q(Q'\Omega^{-1}Q)^{-1})'\\
+&= (Q'\Omega^{-1}Q)^{-1}Q'\Omega^{-1}
+\end{align*}
+
+\pagebreak
+
+### 13.11
+
+As a continuation of Exercise 12.7 derive the efficient GMM estimator using the instrument $Z = (X X 2)'$. Does this differ from 2SLS and/or OLS?
+
+\pagebreak
+
+### 13.13
+
+(a) (See appendix A10 pg 972; Theorem A.4 (4): By the spectral decomposition, $A = H\Lambda H'$ where $H'H = I_k$ and $\Lambda$ is diagonal with non-negative diagonal elements. All diagonal elements of $\Lambda$ are strictly positive if (and only if ) A > 0.)
+
+\pagebreak
+
+### 13.18
+
+\pagebreak
+
+### 13.19
+
+\pagebreak
+
+### 13.28
+
+\pagebreak
+
+### 17.15
+
+In this exercise you will replicate and extend the empirical work reported in Arellano and Bond (1991) and Blundell and Bond (1998). Arellano-Bond gathered a dataset of 1031 observations from an unbalanced panel of 140 U.K. companies for 1976-1984 and is in the datafile `AB1991` on the textbook webpage. The variables we will be using are log employment ($N$), log real wages ($W$), and log capital ($K$). See the description file for definitions.
+
+(a) Estimate the panel AR(1) $K_{it} = \alpha K_{it-1}+u_i +v_t +\varepsilon_{it}$ using Arellano-Bondone-step GMM with clustered standard errors. Note that the model includes year fixed effects.
+
+...
+
+(b) Re-estimate using Blundell-Bondone-step GMM with clustered standard errors.
+
+...
+
+(c) Explain the difference in the estimates.
+...
