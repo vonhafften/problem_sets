@@ -158,84 +158,113 @@ At time 0, after $d_0$ and $\lambda_0$ are known, there are complete markets in 
 
 a. Define a competitive equilibrium, being careful to specify all the objects composing an equilibrium.
 
-A competitive equilibrium is an allocation $\{c_t(s^t)\}_{t=0}^\infty$ and price system $\{Q_t(s^t)\}_{t=0}^\infty$ for all histories $s^t = (\lambda_0, ..., \lambda_t)$ such that the allocation is feasible and, given the price system, the allocation maximizes agent's utility subject to their budget constraint.
-
-b. Compute the equilibrium price of a claim to one unit of consumption at date 5, denominated in units of time 0 consumption, contingent on the following history of growth rates: $(\lambda_1,\lambda_2,...,\lambda_5) = (0.97,0.97,1.03,0.97,1.03)$. Please give a numerical answer.
-
-The consumers' problem is
+The household problem is
 
 $$
-\max_{\{c_t\}_{t=0}^\infty} \sum_{t=0}^\infty \sum_{s^t} \pi(s^t | s_0) \beta^t \frac{c_t(s^t)^{1-\gamma}}{1 - \gamma} 
+\max_{\{c_t\}_{t=0}^\infty} \sum_{t=0}^\infty \sum_{\lambda^t} \pi(\lambda^t | \lambda_0) \beta^t \frac{c_t(\lambda^t)^{1-\gamma}}{1 - \gamma} 
 \text{ s.t. }
-\sum_{t=0}^\infty \sum_{s^t} Q_t(s^t) c_{t}(s^t) \le  \sum_{t=0}^\infty \sum_{s^t} Q_t (s^t) d_{t}  (s^t)
+\sum_{t=0}^\infty \sum_{\lambda^t} Q_t(\lambda^t) c_{t}(\lambda^t) \le  \sum_{t=0}^\infty \sum_{\lambda^t} Q_t (\lambda^t) d_{t}  (\lambda^t)
 $$
+
+A competitive equilibrium is an allocation $\{c_t(\lambda^t)\}_{t=0}^\infty$ and a price system $\{Q_t(\lambda^t)\}_{t=0}^\infty$ such that the allocation solves the household problem and markets clear (i.e., $c_t(\lambda^t) \le d_t(\lambda^t)$).
 
 Denote $\mu$ as the legrangian multipler on the budget constrant:
 
 $$
-\Lf = \max_{\{c_t\}_{t=0}^\infty} \sum_{t=0}^\infty \sum_{s^t} \pi(s^t | s_0) \beta^t \frac{(c_t(s^t))^{1-\gamma}}{1 - \gamma} + \mu \Bigg[ \sum_{t=0}^\infty \sum_{s^t} Q_t(s^t) d_{t}(s^t)   - \sum_{t=0}^\infty\sum_{s^t} Q_t(s^t) c_{t}(s^t)   \Bigg]
+\Lf = \max_{\{c_t\}_{t=0}^\infty} \sum_{t=0}^\infty \sum_{\lambda^t} \pi(\lambda^t | \lambda_0) \beta^t \frac{(c_t(\lambda^t))^{1-\gamma}}{1 - \gamma} + \mu \Bigg[ \sum_{t=0}^\infty \sum_{\lambda^t} Q_t(\lambda^t) d_{t}(\lambda^t)   - \sum_{t=0}^\infty\sum_{\lambda^t} Q_t(\lambda^t) c_{t}(\lambda^t)   \Bigg]
 $$
 
-FOC [$c_t(s^t)$]:
+FOC [$c_t(\lambda^t)$]:
 
 $$
-\beta^t \pi_t(s^t|s_0) (c_t(s^t))^{-\gamma} = \mu Q_t(s^t)
+\beta^t \pi_t(\lambda^t|\lambda_0) (c_t(\lambda^t))^{-\gamma} = \mu Q_t(\lambda^t)
 $$
 
-Feasibility requires $c_t(s^t) = d_t(s^t)$.  For $t = 0$, $Q_0(s^0)=\pi_0(s^0|s_0)=1$ and $c_0(s^0) = d_0 = 1$:
+Market clearing requires $c_t(\lambda^t) = d_t(\lambda^t) = \lambda_1 ... \lambda_{t-1} \lambda_t$.  For $t = 0$, $Q_0(\lambda^0)=\pi_0(\lambda^0|\lambda_0)=1$ and $c_0(\lambda^0) = d_0 = 1$:
 
 $$
-\beta^0 \pi_0(s^0|s_0) (c_0(s^0))^{-\gamma} = \mu Q_0(s^0) \implies \mu  = 1
+\beta^0 \pi_0(\lambda^0|\lambda_0) (c_0(\lambda^0))^{-\gamma} = \mu Q_0(\lambda^0) \implies \mu  = 1
 $$
 
-\pagebreak
-
-Thus, for any $t$, the FOC and feasibility implies:
+Thus, for any $t$, the FOC and market clearing implies:
 
 $$
-Q_t(s^t) = \beta^t \pi_t(s^t|s_0) (d_t(s^t))^{-\gamma}
+Q_t(\lambda^t) = \beta^t \pi_t(\lambda^t|\lambda_0) (\lambda_1 ... \lambda_t)^{-\gamma}
 $$
+
+b. Compute the equilibrium price of a claim to one unit of consumption at date 5, denominated in units of time 0 consumption, contingent on the following history of growth rates: $(\lambda_1,\lambda_2,...,\lambda_5) = (0.97,0.97,1.03,0.97,1.03)$. Please give a numerical answer.
 
 For $(\lambda_1,\lambda_2,...,\lambda_5) = (0.97,0.97,1.03,0.97,1.03)$,
 
 $$
-\beta^5 = (0.95)^5 = 0.7737809
+\beta^5 = (0.95)^5 = 0.77378
 $$
 
 $$
-\pi_5(s^5 = (0.97,0.97,1.03,0.97,1.03)|\lambda_0 = 0.97) = 0.8*0.8*0.2*0.1*0.2 = 0.00256
+\pi_5(\lambda^5 = (0.97,0.97,1.03,0.97,1.03)|\lambda_0 = 0.97) = 0.8*0.8*0.2*0.1*0.2 = 0.00256
 $$
 
 $$
-d_5(s^5 = (0.97,0.97,1.03,0.97,1.03)) = 1*0.97*0.97*1.03*0.97*1.03 = 0.9682548
+d_5(\lambda^5 = (0.97,0.97,1.03,0.97,1.03)) = 1*0.97*0.97*1.03*0.97*1.03 = 0.96825
 $$
 
-Thus, $Q_5(s^5 = (0.97,0.97,1.03,0.97,1.03)) = (0.7737809)(0.00256)(0.9682548)^{-2} = 0.002112899$
+Thus, $Q_5(\lambda^5 = (0.97,0.97,1.03,0.97,1.03)) = (0.77378)(0.00256)(0.96825)^{-2} = 0.00211$.
 
 c. Compute the equilibrium price of a claim to one unit of consumption at date 5, denominated in units of time 0 consumption, contingent on the following history of growth rates: $(\lambda_1,\lambda_2,...,\lambda_5)=(1.03,1.03,1.03,1.03,.97)$.
 
 $$
-\pi_5(s^5 = (1.03,1.03,1.03,1.03,.97)|\lambda_0 = 0.97) = 0.2*0.9*0.9*0.9*0.1 = 0.01458
+\pi_5(\lambda^5 = (1.03,1.03,1.03,1.03,.97)|\lambda_0 = 0.97) = 0.2*0.9*0.9*0.9*0.1 = 0.01458
 $$
 
 $$
-d_5(s^5 = (1.03,1.03,1.03,1.03,.97)) = 1*1.03*1.03*1.03*1.03*.97 = 1.091744
+d_5(\lambda^5 = (1.03,1.03,1.03,1.03,.97)) = 1*1.03*1.03*1.03*1.03*.97 = 1.09174
 $$
 
-Thus, $Q_5(s^5 = (1.03,1.03,1.03,1.03,.97)) = (0.7737809)(0.01458)(1.091744)^{-2} = 0.00946529$
+Thus, $Q_5(\lambda^5 = (1.03,1.03,1.03,1.03,.97)) = (0.77378)(0.01458)(1.09174)^{-2} = 0.00947$
 
 
 d. Give a formula for the price at time 0 of a claim on the entire endowment sequence.
 
-The price at time 0 of an asset that promises $\{d_t(s^t)\}_{t=0}^\infty$ is:
+The price at time 0 of an asset that promises $\{d_t(\lambda^t)\}_{t=0}^\infty$ is:
 
 $$
-P_0^0 (s_0) = \sum_{t=0}^{\infty} \sum_{s^t} Q_t(s^t) d_t(s^t) = \sum_{t=0}^{\infty} \beta^t \pi_t(s^t|s_0) (d_t(s^t))^{-\gamma} d_t(s^t) = \sum_{t=0}^{\infty} \beta^t \pi_t(s^t|s_0) (d_t(s^t))^{1-\gamma}
+P^0 (\lambda_0) 
+= \sum_{t=0}^{\infty} \sum_{\lambda^t} Q_t(\lambda^t) d_t(\lambda^t) 
+= \sum_{t=0}^{\infty} \sum_{\lambda^t} \beta^t \pi_t(\lambda^t|\lambda_0) (d_t(\lambda^t))^{-\gamma} d_t(\lambda^t) 
+= \sum_{t=0}^{\infty} \sum_{\lambda^t} \beta^t \pi_t(\lambda^t|\lambda_0) (\lambda_0...\lambda_t)^{1-\gamma}
 $$
 
 e. Give a formula for the price at time 0 of a claim on consumption in period 5, contingent on the growth rate $\lambda_5$ being 0.97 (regardless of the intervening growth rates).
 
-...
+Define $A$ as a matrix of one-period growth rates weighted by their conditional probability:
+
+$$
+A = \begin{pmatrix}
+P_{11}\bar{\lambda}_1^{-\gamma} & P_{12}\bar{\lambda}_2^{-\gamma} \\
+P_{21}\bar{\lambda}_1^{-\gamma} & P_{22}\bar{\lambda}_2^{-\gamma} 
+\end{pmatrix}\\
+=
+\begin{pmatrix}
+0.8(0.97)^{-2} & 0.2(1.03)^{-2} \\
+0.1(0.97)^{-2} & 0.9(1.03)^{-2} 
+\end{pmatrix}\\
+=
+\begin{pmatrix}
+0.8502 & 0.1885 \\
+0.1062 & 0.8483
+\end{pmatrix}\\
+$$
+
+Thus, $A^x$ is the price at time 0 (before discounting) of a claim on consumption in period $x$ contingent on the final growth rate.
+
+$$
+A^5 = 
+\begin{pmatrix}
+0.5689 & 0.5177 \\
+0.2919 & 0.5637
+\end{pmatrix} \implies
+P_0^5  = \beta^5 [A^5]_{11} = (0.95)^5 (0.5689) = 0.4402
+$$
 
 #### Part II
 
@@ -243,16 +272,75 @@ Now assume a different market structure. Assume that at each date $t \ge 0$ ther
 
 f. Define a (recursive) competitive equilibrium with Arrow securities, being careful to define all of the objects that compose such an equilibrium.
 
-...
+Define $a_t(\lambda^t)$ as the household's holding of Arrow securities in period $t$ for history $\lambda^t$.  The recursive formulation of the household problem is:
+
+$$
+v(a, \lambda) = \max_{c, a'} \{u(c) + \beta E[v(a', \lambda')] \} 
+\text{ s.t. }
+c + \sum_{\lambda'} q(\lambda, \lambda')a'(\lambda')  \le a + d
+$$
+
+A recursive competitve equilibrium are decision rules $c(\lambda, a)$ and $a'(\lambda')$ and a pricing kernal $q(\lambda, \lambda')$ such that the decision rules solve the household problem and markets clear (i.e., $c=d$ and $a = 0$). In addition, there is a natural debt limit: $-a'(\lambda) \le A(\lambda)$.
 
 g. For the representative consumer in this economy, for each state compute the “natural debt limits” that constrain state-contingent borrowing.
 
-...
+The natural borrowing limit prevents Ponzi schemes and is the maximum the household can eventually payback.  We can define it recursively as the present discounted value of future income:
+
+$$
+A(\lambda)= d + \beta \sum_{\lambda'}q(\lambda, \lambda')A(\lambda')
+$$
 
 h. Compute a competitive equilibrium with Arrow securities. In particular, compute both the pricing kernel and the allocation.
 
-...
+We can rewrite the household problem as:
 
-i. An entrepreneur enters this economy and proposes to issue a new security each period, namely, a risk-free two-period bond. Such a bond issued in period t promises to pay one unit of consumption at time $t + 1$ for sure. Find the price of this new security in period $t$, contingent on $\lambda_t$.
+$$
+v(a, \lambda) = \max_{a'} \Bigg\{u\Bigg(a + d - \sum_{\lambda'} q(\lambda, \lambda')a'(\lambda')\Bigg) + \beta E[v(a', \lambda')] \Bigg\} 
+$$
 
-...
+Envelope condition:
+
+$$
+v'(a, \lambda) = u'\Bigg(a + d - \sum_{\lambda'} q(\lambda, \lambda')a'(\lambda')\Bigg) = u'(c)
+$$
+
+FOC [$a'$]:
+
+$$
+u'\Bigg(a + d - \sum_{\lambda'} q(\lambda, \lambda')a'(\lambda')\Bigg) q(\lambda, \lambda') = \beta \pi(\lambda'|\lambda) v'(a', \lambda')
+$$
+
+$$
+\implies 
+u'(c) q(\lambda, \lambda') = \beta \pi(\lambda'|\lambda) u'(c')
+$$
+
+$$
+\implies 
+q(\lambda, \lambda') 
+= \beta \pi(\lambda'|\lambda) \frac{u'(c')}{u'(c)} 
+= \beta \pi(\lambda'|\lambda) \Bigg(\frac{c(\lambda')}{c(\lambda)} \Bigg)^{-\gamma} 
+= \beta \pi(\lambda'|\lambda) \Bigg(\frac{d\lambda'}{d} \Bigg)^{-\gamma}
+= \beta \pi(\lambda'|\lambda) (\lambda')^{-\gamma}
+$$
+
+Furthermore, market clearing implies that $a'(\lambda') = 0$ for all $\lambda'$.
+
+i. An entrepreneur enters this economy and proposes to issue a new security each period, namely, a risk-free two-period bond. Such a bond issued in period $t$ promises to pay one unit of consumption at time $t + 2$ for sure. Find the price of this new security in period $t$, contingent on $\lambda_t$.
+
+The price for a two-period risk-free is the price of buying two concurrent one-period risk-free bonds:
+
+\begin{align*}
+P_t^{t+2}(\lambda)
+&= \beta^2 \sum_{\lambda'}\sum_{\lambda''} \pi(\lambda''|\lambda') \pi(\lambda'|\lambda)(\lambda')^{-2}(\lambda'')^{-2} \\
+&= 
+\begin{cases} 
+(.95)^2[(.2)(.1)(1.03)^{-2}(.97)^{-2} + (.8)(.8)(.97)^{-2}(.97)^{-2} + \\(.2)(.9)(1.03)^{-2}(1.03)^{-2} + (.8)(.2)(.97)^{-2}(1.03)^{-2}] & \text{ if } \lambda = 0.97 \\ 
+(.95)^2[(.9)(.1)(1.03)^{-2}(.97)^{-2} + (.1)(.8)(.97)^{-2}(.97)^{-2} + \\(.9)(.9)(1.03)^{-2}(1.03)^{-2} + (.1)(.2)(.97)^{-2}(1.03)^{-2}] & \text{ if } \lambda = 1.03 
+\end{cases}\\
+&= 
+\begin{cases} 
+0.9595 & \text{ if } \lambda = 0.97 \\ 
+0.8305 & \text{ if } \lambda = 1.03 
+\end{cases}
+\end{align*}
