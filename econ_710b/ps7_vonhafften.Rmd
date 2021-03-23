@@ -148,18 +148,22 @@ $$
 
 Show that $\hat{W} \to_p \Omega^{-1}$ where $\Omega = E[ZZ' e^2]$.
 
-$$
-\frac{1}{n} \sum_{i=1}^n \tilde{e}_i^2 
-= \frac{1}{n} \sum_{i=1}^n (Y_i - X_i'\hat{\beta})^2\\ 
-= \frac{1}{n} \sum_{i=1}^n Y_i^2 - 2 \frac{1}{n} \sum_{i=1}^n Y_iX_i'\hat{\beta} + \frac{1}{n} \sum_{i=1}^n X_i'X_i\hat{\beta}'\hat{\beta}\\
-\to_p E[Y^2] - 2E[YX' \beta] + E[X'X\beta'\beta]\\
-= E[(Y-X'\beta)^2]\\
-= E[e^2]
-$$
+By the weak law of large numbers and the continuous mapping theorem:
 
-By the continuous mapping theorem and the weak law of large numbers.
+\begin{align*}
+\frac{1}{n} \sum_{i=1}^n Z_iZ_i'\tilde{e}_i^2 
+&= \frac{1}{n} \sum_{i=1}^n Z_iZ_i'(Y_i - X_i'\hat{\beta})^2\\ 
+&= \frac{1}{n} \sum_{i=1}^n Z_iZ_i'Y_i^2 - 2 \frac{1}{n} \sum_{i=1}^n Z_iZ_i'Y_iX_i'\hat{\beta} + \frac{1}{n} \sum_{i=1}^n Z_iZ_i'X_i'\hat{\beta}X_i'\hat{\beta}\\
+&\to_p E[ZZ'Y^2] - 2E[ZZ'YX' \beta] + E[ZZ'X'\beta X'\beta]\\
+&= E[ZZ(Y-X'\beta)^2]\\
+&= E[ZZe^2]
+\end{align*}
 
-...
+Again, by the continuous mapping theorem:
+
+$$
+\hat{W}= \Bigg(\frac{1}{n} \sum_{i=1}^n Z_i Z_i' \tilde{e}_i^2\Bigg)^{-1} \to_p  E[ZZ' e^2]^{-1}
+$$
 
 \pagebreak
 
@@ -207,29 +211,249 @@ B'
 &= (Q'\Omega^{-1}Q)^{-1}Q'\Omega^{-1}
 \end{align*}
 
+(c) Show that $B'\Omega A = B'\Omega B$ and therefore that $B'\Omega (A - B) = 0$.
+
+\begin{align*}
+B'\Omega A 
+&= [(Q'\Omega^{-1}Q)^{-1}Q'\Omega^{-1}] \Omega [WQ(Q'WQ)^{-1}] \\
+&= (Q'\Omega^{-1}Q)^{-1}Q' WQ(Q'WQ)^{-1} \\
+&= (Q'\Omega^{-1}Q)^{-1} \\
+&= V_0 \\
+&= (Q'\Omega^{-1}Q)^{-1} Q'\Omega^{-1} \Omega \Omega^{-1}Q(Q'\Omega^{-1}Q)^{-1} \\
+&= B'\Omega B
+\end{align*}
+
+\pagebreak
+
+(d) Use the expressions $V =A'\Omega A$, $A=B+(A-B)$, and $B'\Omega(A-B)=0$ to show that $V \ge V_0$.
+
+\begin{align*}
+V 
+&= A'\Omega A \\
+&= (B+(A-B))'\Omega (B+(A-B)) \\
+&= B'\Omega B + B'\Omega (A-B) + (A-B)'\Omega B + (A-B)'\Omega (A-B) \\
+&= V_0 + (A-B)' \Omega (A-B)
+\end{align*}
+
+$(A-B)' \Omega (A-B)$ is positive semi-definite, so $V \ge V_0$.
+
 \pagebreak
 
 ### 13.11
 
-As a continuation of Exercise 12.7 derive the efficient GMM estimator using the instrument $Z = (X X 2)'$. Does this differ from 2SLS and/or OLS?
+As a continuation of Exercise 12.7 derive the efficient GMM estimator using the instrument $Z = (X X^2)'$. Does this differ from 2SLS and/or OLS?
+
+The optimal weight matrix is:
+
+$$
+\Omega
+= E[ZZ'e^2] 
+= E\Bigg[
+\begin{pmatrix} 
+X \\ X^2
+\end{pmatrix}
+\begin{pmatrix} 
+X & X^2
+\end{pmatrix}
+e^2
+\Bigg]
+= \begin{pmatrix} 
+E[X^2e^2] & E[X^3e^2] \\
+E[X^3e^2] & E[X^4e^2] 
+\end{pmatrix}
+$$
+
+We can estimate the optimal weight matrix as:
+
+$$
+\hat{\Omega} = 
+\begin{pmatrix} 
+\frac{1}{n} \sum_{i=1}^n X_i^2e_i^2 & \frac{1}{n} \sum_{i=1}^nX_i^3e_i^2 \\
+\frac{1}{n} \sum_{i=1}^n X_i^3e_i^2 & \frac{1}{n} \sum_{i=1}^nX_i^4e_i^2 
+\end{pmatrix}
+$$
+
+$$
+\hat{\Omega}^{-1} = 
+\frac{1}{\frac{1}{n} \sum_{i=1}^n X_i^2e_i^2\frac{1}{n} \sum_{i=1}^nX_i^4e_i^2-(\frac{1}{n} \sum_{i=1}^nX_i^3e_i^2)^2}\begin{pmatrix} 
+\frac{1}{n} \sum_{i=1}^n X_i^4e_i^2 & -\frac{1}{n} \sum_{i=1}^nX_i^3e_i^2 \\
+-\frac{1}{n} \sum_{i=1}^n X_i^3e_i^2 & \frac{1}{n} \sum_{i=1}^nX_i^2e_i^2 
+\end{pmatrix}
+$$
+
+The formula for the efficient GMM is:
+
+$$
+\hat{\beta}_{gmm} 
+= (X'Z \hat{\Omega}^{-1}Z'X)^{-1} (X'Z \hat{\Omega}^{-1}Z'Y)
+= ...
+$$
 
 \pagebreak
 
 ### 13.13
 
-(a) (See appendix A10 pg 972; Theorem A.4 (4): By the spectral decomposition, $A = H\Lambda H'$ where $H'H = I_k$ and $\Lambda$ is diagonal with non-negative diagonal elements. All diagonal elements of $\Lambda$ are strictly positive if (and only if ) A > 0.)
+Take the linear model $Y =X'\beta+e$ with $E[Ze]=0$. Consider the GMM estimator $\hat{\beta}$ of $\beta$. Let $J = n \bar{g}_n (\hat{\beta})' \hat{\Omega}^{-1} \bar{g}_n (\hat{\beta})$ denote the test of overidentifying restrictions. Show that $J \to_d \chi_{\ell - k}^2$ as $n \to \infty$ by demonstrating each of the following.
+
+(a) Since $\Omega > 0$, we can write $\Omega^{-1} = CC'$ and $\Omega = C'^{-1}C^{-1}$ for some matrix $C$.
+
+By the spectral decomposition, $\Omega = H \Lambda H'$ where $H'H = I_k$ and $\Lambda$ is diagonal with strictly positive diagonal elements and thus $\Lambda$ is positive definite:\footnote{By the spectral decomposition, $A = H \Lambda H'$ where $H'H = I_k$ and $\Lambda$ is diagonal with non-negative diagonal elements. All diagonal elements of $\Lambda$ are strictly positive iff A > 0 (Theorem A.4 (4) in appendix A.10 pg 944 of Hansen, Econometrics). Furthermore,
+
+$$
+\Lambda^{1/2} = 
+\begin{bmatrix} 
+\lambda_1^{1/2} & 0 & ... & 0 \\ 
+0 & \lambda_2^{1/2} & ... & 0 \\ 
+\vdots & \vdots &  & \vdots \\ 
+0 & 0 & ... & \lambda_k^{1/2} \\ 
+\end{bmatrix}
+\implies 
+\Lambda = \Lambda^{1/2}\Lambda^{1/2}
+$$
+} 
+
+$$
+\Omega = H \Lambda H' = H \Lambda^{1/2} \Lambda^{1/2} H'
+$$
+
+Notice that $\Omega^{-1} = (H \Lambda H')^{-1} = H \Lambda^{-1} H'$. Define $C:=H\Lambda^{-1/2}$.  Thus, 
+
+$$
+CC' = H\Lambda^{-1/2}(H\Lambda^{-1/2})'= H\Lambda^{-1/2}\Lambda^{-1/2}H' = H \Lambda^{-1}H' = \Omega^{-1}
+$$
+
+and $\Omega = C'^{-1}C^{-1}$.
+
+(b) $J = n (C'\bar{g}_n ( \hat{\beta}))' (C'\hat{\Omega}C')^{-1} C' \bar{g}_n (\hat{\beta})$.
+
+$$
+J 
+= n \bar{g}_n (\hat{\beta})' \hat{\Omega}^{-1} \bar{g}_n (\hat{\beta}) \\
+= n \bar{g}_n (\hat{\beta})' C'C'^{-1}  \hat{\Omega}^{-1}C'^{-1} C' \bar{g}_n (\hat{\beta}) \\
+=n (C'\bar{g}_n ( \hat{\beta}))' (C'\hat{\Omega}C')^{-1} C' \bar{g}_n (\hat{\beta})
+$$
+
+(c) $C' \bar{g}_n(\hat{\beta}) = D_n C' \bar{g}_n(\beta)$ where $\bar{g}_n(\beta) = \frac{1}{n} Z'e$ and 
+
+$$
+D_n = I_\ell - C'(\frac{1}{n}Z'X)((\frac{1}{n} X'Z) \hat{\Omega}^{-1} (\frac{1}{n} Z'X))^{-1}(\frac{1}{n} X'Z)\hat{\Omega}^{-1}C'^{-1}
+$$
+
+\begin{align*}
+C' \bar{g}_n(\hat{\beta}) 
+&= C' \frac{1}{n} Z' (Y - X'\hat{\beta})\\
+&= C' \frac{1}{n} Z' (Y - X'(X'Z \hat{\Omega}^{-1}Z'X)^{-1} (X'Z \hat{\Omega}^{-1}Z'Y))\\
+&= C' \frac{1}{n} Z' (I - X'(X'Z \hat{\Omega}^{-1}Z'X)^{-1} (X'Z \hat{\Omega}^{-1}Z'))(X'\beta + e)\\
+&= D_nC'\bar{g}_n(\beta)
+\end{align*}
+
+\pagebreak
+
+(d) $D_n \to_p I_\ell - R(R'R)^{-1}R'$ where $R = C'E[ZX']$.
+
+By WLLN,
+
+\begin{align*}
+D_n 
+&= I_\ell - C'(\frac{1}{n}Z'X)((\frac{1}{n} X'Z) \hat{\Omega}^{-1} (\frac{1}{n} Z'X))^{-1}(\frac{1}{n} X'Z)\hat{\Omega}^{-1}C'^{-1}\\
+&\to_p I_\ell - C'E[Z'X](E[X'Z] \Omega^{-1} E[Z'X])^{-1}E[X'Z]\Omega^{-1}C'^{-1} \\
+&= I_\ell - C'E[Z'X](E[X'Z] CC' E[Z'X])^{-1}E[X'Z]C \\
+&= I_\ell - R(R'R)^{-1}R' \\
+\end{align*}
+
+(e) $n^{1/2}C'\bar{g}_n(\beta) \to_d u \sim N(0, I_\ell)$.
+
+Based on CLT,
+
+\begin{align*}
+n^{1/2}C'\bar{g}_n(\beta) 
+&= n^{1/2}C'\frac{1}{n}Z'e\\
+&= C'\frac{1}{\sqrt{n}} Z' e \\
+&\to_d C' N(0, \Omega) \\
+&= N(0, C' \Omega C)  \\
+&= N(0, C' C'^{-1}C^{-1} C) \\
+&= N(0, I_{\ell}) 
+\end{align*}
+
+(f) $J \to_d u'(I_\ell - R(R'R)^{-1}R')u$.
+
+Notice that $I_\ell - R(R'R)^{-1}R'$ is idempotent:
+
+$$
+(I_\ell - R(R'R)^{-1}R')(I_\ell - R(R'R)^{-1}R')' \\
+= I_\ell - R(R'R)^{-1}R' - R(R'R)^{-1}R'+ R(R'R)^{-1}R'R(R'R)^{-1}R'\\
+= I_\ell - R(R'R)^{-1}R'
+$$
+
+Thus, by the CMT:
+
+\begin{align*}
+J 
+&= (\sqrt{n} C' \bar{g}_n(\beta))' D_n' (C'\hat{\Omega}C')^{-1} C' D_n C' \sqrt{n}\bar{g}_n(\beta) \\
+&\to_d u' (I_\ell - R(R'R)^{-1}R')'(C'\Omega C')^{-1}(I_\ell - R(R'R)^{-1}R')u\\
+&= u' (I_\ell - R(R'R)^{-1}R')'(C'C'^{-1}C^{-1} C')^{-1}(I_\ell - R(R'R)^{-1}R')u\\
+&= u' (I_\ell - R(R'R)^{-1}R')'(I_\ell - R(R'R)^{-1}R')u\\
+&= u' (I_\ell - R(R'R)^{-1}R')u
+\end{align*}
+
+(g) $u'(I_\ell - R(R'R)^{-1}R')u \sim \xi_{\ell - k}^2$.  [Hint: $I_\ell - R(R'R)^{-1}R'$ is a projection matrix.]
+
+...
 
 \pagebreak
 
 ### 13.18
 
+The observations are i.i.d., $(Y_i,X_i,Q_i :i=1,...,n)$, where $X$ is $k\times 1$ and $Q$ is $m\times 1$.The model is $Y=X'\beta + e$ with $E[Xe]=0$ and $E[Qe]=0$. Find the efficient GMM estimator for $\beta$.
+
+Since $E[Xe]=0$ and $E[Qe]=0$, we can use $Z = \begin{pmatrix} X & Q\end{pmatrix}^{-1}$ as a instrument.  Thus, the optimal weighting matrix is:
+
+$$
+\Omega 
+= E\Bigg[\begin{pmatrix} X \\ Q\end{pmatrix}\begin{pmatrix} X' & Q' \end{pmatrix}e\Bigg]
+= \begin{pmatrix} E[XX'e] & E[XQ'e] \\ E[QX'e] & E[QQ'e]\end{pmatrix}
+$$
+
+A consistent estimator for $\Omega$ is:
+
+$$
+\hat{\Omega}
+= \begin{pmatrix} 
+\frac{1}{n}\sum_{i=1}^n X_iX'_ie_i & \frac{1}{n}\sum_{i=1}^n X_iQ'_ie_i \\ 
+\frac{1}{n}\sum_{i=1}^n Q_iX'_ie_i & \frac{1}{n}\sum_{i=1}^n Q_iQ'_ie_i \end{pmatrix}
+$$
+
+The efficient GMM estimator:
+
+$$
+\hat{\beta} = (X'Z\hat{\Omega}^{-1}Z'X)^{-1} X'Z \hat{\Omega}^{-1}Z'Y
+$$
+
 \pagebreak
 
 ### 13.19
 
+You want to estimate $\mu = E [Y ]$ under the assumption that $E [X ] = 0$, where $Y$ and $X$ are scalar and observed from a random sample. Find an efficient GMM estimator for $\mu$.
+
+...
+
 \pagebreak
 
 ### 13.28
+
+Continuation of Exercise 12.25, which involved estimation of a wage equation by 2SLS. 
+
+(a) Re-estimate the model in part (a) by efficient GMM. Do the results change meaningfully?
+
+...
+
+(b) Re-estimate the model in part (d) by efficient GMM. Do the results change meaningfully?
+
+...
+
+(c) Report the $J$ statistic for overidentification.
+
+...
 
 \pagebreak
 
