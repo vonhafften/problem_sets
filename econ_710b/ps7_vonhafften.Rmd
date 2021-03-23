@@ -435,7 +435,58 @@ $$
 
 You want to estimate $\mu = E [Y ]$ under the assumption that $E [X ] = 0$, where $Y$ and $X$ are scalar and observed from a random sample. Find an efficient GMM estimator for $\mu$.
 
-...
+We have two moment conditions:
+
+$$
+\begin{pmatrix} E [Y - \mu] \\ E[X] \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix} \implies  
+\begin{pmatrix} E[g_1(\mu)] \\ E[g_2(\mu)] \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix} 
+$$
+
+where $g_1(\mu) = Y- \mu$ and $g_2(\mu) = X$. Therefore, 
+
+$$
+g_i(\mu) = \begin{pmatrix}Y_i - \mu \\ X_i \end{pmatrix}
+$$ 
+
+$$
+\bar{g}_n(\mu) = \begin{pmatrix}\bar{Y} - \mu \\ \bar{X} \end{pmatrix}
+$$ 
+
+The optimal weighting matrix is $W = \Omega^{-1}$ where:
+
+$$
+\Omega = E\Bigg[\begin{pmatrix} Y - \mu \\ X \end{pmatrix}\begin{pmatrix} Y - \mu & X \end{pmatrix}\Bigg]
+= \begin{pmatrix} Var(Y) & Cov(Y, X) \\ Cov(Y, X) & Var(X) \end{pmatrix}
+$$
+
+$$
+\Omega^{-1} = \frac{1}{Var(Y)Var(X) - Cov(Y, X)^2} \begin{pmatrix} Var(X) & -Cov(Y, X) \\ -Cov(Y, X) & Var(Y) \end{pmatrix}
+$$
+
+The efficient GMM estimator minimizes the following:
+
+\begin{align*}
+J(\mu) 
+&= \bar{g}_n(\mu)'\Omega^{-1} \bar{g}_n(\mu)\\
+&= \begin{pmatrix}\bar{Y} - \mu & \bar{X} \end{pmatrix} \frac{1}{Var(Y)Var(X) - Cov(Y, X)^2} \begin{pmatrix} Var(X) & -Cov(Y, X) \\ -Cov(Y, X) & Var(Y) \end{pmatrix} \begin{pmatrix}\bar{Y} - \mu \\ \bar{X} \end{pmatrix}\\
+&= \frac{1}{Var(Y)Var(X) - Cov(Y, X)^2} \begin{pmatrix}(\bar{Y} - \mu)Var(X) - \bar{X}Cov(Y, X) & -(\bar{Y} - \mu)Cov(Y, X) + \bar{X}Var(Y) \end{pmatrix}   \begin{pmatrix}\bar{Y} - \mu \\ \bar{X} \end{pmatrix}\\
+&= \frac{Var(X) (\bar{Y} - \mu)^2 - 2Cov(X, Y)\bar{X}(\bar{Y} - \mu)+Var(Y) \bar{X}^2}{Var(Y)Var(X) - Cov(Y, X)^2}
+\end{align*}
+
+FOC of $J(\hat{\mu})$:
+
+\begin{align*}
+\frac{-2Var(X) (\bar{Y} - \hat{\mu}) + 2Cov(X, Y)\bar{X}}{Var(Y)Var(X) - Cov(Y, X)^2} &= 0\\
+\implies 
+Var(X) (\bar{Y} - \hat{\mu}) &= Cov(X, Y)\bar{X}  \\
+\implies \hat{\mu} &= \bar{Y} - \frac{Cov(X, Y)}{Var(X)}\bar{X}
+\end{align*}
+
+Replace $Cov(X, Y)$ and $Var(X)$ with estimators:
+
+$$
+\hat{\mu} = \bar{Y} - \frac{\hat{Cov}(X, Y)}{\hat{Var}(X)}\bar{X}
+$$
 
 \pagebreak
 
