@@ -1,0 +1,93 @@
+---
+title: "ECON 713B - Problem Set 1"
+author: Alex von Hafften^[I worked on this problem set with a study group of Michael
+  Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass,
+  Emily Case, Danny Edgel, and Katherine Kwok.]
+date: "4/1/2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+- \usepackage{bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## 1 All Pay Auction
+
+Consider a symmetric IPV (independent private values) setting with $N$ bidders. Find an equilibrium of the all-pay auction when each bidder's valuation is an iid draw from $F(x) = x^a$ for $a \in (0; \infty)$ and $x \in [0; 1]$.
+
+(a) Define this auction as a Bayesian game.
+
+...
+
+(b) Find equilibrium strategies of all players.
+
+...
+
+(c) Verify that the strategies that you have found do constitute an equilibrium.
+
+...
+
+(d) Does the bidding become more competitive when $a$ increases? Explain.
+
+...
+
+(e) Compute the expected payment from each bidder before and after she learns her value.
+
+...
+
+\pagebreak
+
+## 2 Tricky Seller
+
+Two people are interested in one object. Their valuations are drawn independently from $F(x) = x$ and $F(x) = x^2$, respectively, with $x \in [0; 1]$. The seller's value (a cost, perhaps) for the object is known, $c \in [0; 1]$.
+
+(a) Describe outcome of the First-Price Auction with a reserve price $r$.
+
+...
+
+(b) Describe outcome of the Second-Price Auction with a reserve price $r$.
+
+...
+
+(c) What auction and what $r$ will the seller choose? Which player wins more often?
+
+...
+
+(d) Suppose now that $c = 0$ and there is no reserve price. Suppose that a seller can offer discount of $\alpha$ to one of the bidders in the second-price auction. If a bidder is offered a discount $\alpha \in [0; 1]$, then, if she wins, she pays only a fraction $\alpha$ of what she had to pay otherwise. Who should be offered a discount? Compute the optimal discount and expected revenues.
+
+...
+
+\pagebreak
+
+## 3 Third Price Auction
+
+Consider a third-price auction with three players: an auction in which bidder with the highest value wins, but pays only the third highest bid. Assume that valuation of players are iid from the uniform distribution on [0, 1].
+
+(a) Define the auction as a Bayesian game.
+
+...
+
+(b) Prove that a bid of $b_i(v_i) = \frac{n - 1}{n - 2} v_i$ is a symmetric Bayes-Nash equilibrium of the third-price auction.
+
+...
+
+(c) Show that the expected revenue of a seller in the third-price auction is $R_3 = \frac{n - 1}{n + 1}$.
+
+...
+
+(d) What is the symmetric Bayes-Nash equilibrium strategy in a $k$th price auction? (You need only state how each bidder bids; you need not provide a detailed analysis.)
+
+...

@@ -20,6 +20,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(knitr)
+library(ivreg)
+library(stargazer)
+library(momentfit)
+library(plm)
 ```
 
 ### 13.1
@@ -496,15 +500,69 @@ Continuation of Exercise 12.25, which involved estimation of a wage equation by 
 
 (a) Re-estimate the model in part (a) by efficient GMM. Do the results change meaningfully?
 
-...
+```{r problem1328a_2sls}
+df_1328 <- read_delim("Card1995.txt", delim = "\t", col_types = cols()) %>%
+  mutate(lwage = lwage76,
+         edu = ed76,
+         exp = age76 - edu - 6,
+         exp2per = exp^2 / 100,
+         south = reg76r,
+         urban = smsa76r,
+         public = nearc4a,
+         private = nearc4b,
+         pubage = nearc4a*age76,
+         pubage2 = nearc4a*age76^2 / 100)
+
+reg_2sls_a <- ivreg(lwage ~ edu + exp + exp2per + south + black + urban |
+                    exp + exp2per + south + black + urban + public + private, 
+                  data = df_1328)
+
+summary(reg_2sls_a)
+```
+
+\pagebreak
+
+```{r problem1328a_gmm}
+reg_gmm_a<- gmm4(lwage ~ edu + exp + exp2per + south + black + urban, 
+               ~ exp + exp2per + south + black + urban + public + private, 
+               vcov="MDS",
+               type="iter",
+               data = df_1328)
+
+summary(reg_gmm_a)
+```
+
+No, the coefficients from the 2SLS and GMM are very similar.
+
+\pagebreak
 
 (b) Re-estimate the model in part (d) by efficient GMM. Do the results change meaningfully?
 
-...
+```{r problem1328b_2sls}
+reg_2sls_b <- ivreg(lwage ~ edu + exp + exp2per + south + black + urban |
+                    exp+exp2per+south+black+urban+public+private+pubage+pubage2, 
+                  data = df_1328)
 
-(c) Report the $J$ statistic for overidentification.
+summary(reg_2sls_b)
+```
 
-...
+\pagebreak
+
+```{r problem1328b_gmm}
+reg_gmm_b <- gmm4(lwage ~ edu + exp + exp2per + south + black + urban, 
+               ~ exp+exp2per+south+black+urban+public+private+pubage+pubage2, 
+               vcov="MDS",
+               type="iter",
+               data = df_1328)
+
+summary(reg_gmm_b)
+```
+
+No, the coefficients from the 2SLS and GMM are very similar.
+
+(c) Report the $J$ statistic for over-identification.
+
+In (a), the J statistic was 0.898 with a p-value of 0.351.  In (b), the J statistic was 10.463 with a p-value of 0.015.  Thus, this J-statistic indicates that the model in (b) could be improved.
 
 \pagebreak
 
@@ -512,13 +570,36 @@ Continuation of Exercise 12.25, which involved estimation of a wage equation by 
 
 In this exercise you will replicate and extend the empirical work reported in Arellano and Bond (1991) and Blundell and Bond (1998). Arellano-Bond gathered a dataset of 1031 observations from an unbalanced panel of 140 U.K. companies for 1976-1984 and is in the datafile `AB1991` on the textbook webpage. The variables we will be using are log employment ($N$), log real wages ($W$), and log capital ($K$). See the description file for definitions.
 
-(a) Estimate the panel AR(1) $K_{it} = \alpha K_{it-1}+u_i +v_t +\varepsilon_{it}$ using Arellano-Bondone-step GMM with clustered standard errors. Note that the model includes year fixed effects.
+(a) Estimate the panel AR(1) $K_{it} = \alpha K_{it-1}+u_i +v_t +\varepsilon_{it}$ using Arellano-Bond one-step GMM with clustered standard errors. Note that the model includes year fixed effects.
 
-...
+```{r problem1715a}
+df_1715 <- read_delim(file = "AB1991.txt",
+                      delim = "\t",
+                      col_types = cols()) %>%
+  pdata.frame(index = c("id", "year"))
 
-(b) Re-estimate using Blundell-Bondone-step GMM with clustered standard errors.
+ab <- pgmm(k ~ lag(k, 1) | lag(k, 2:8),
+           data = df_1715, 
+           effect = "individual",
+           model = "onestep")
 
-...
+summary(ab, robust = TRUE)
+```
+
+\pagebreak
+
+(b) Re-estimate using Blundell-Bond one-step GMM with clustered standard errors.
+
+```{r problem1715b}
+bb <- pgmm(k ~ lag(k, 1) | lag(k, 2:8), 
+           data = df_1715, 
+           effect = "individual", 
+           model = "onestep", 
+           transformation = "ld")
+
+summary(bb, robust = TRUE)
+```
 
 (c) Explain the difference in the estimates.
+
 ...
