@@ -26,33 +26,162 @@ library(tidyverse)
 
 ## 1 All Pay Auction
 
-Consider a symmetric IPV (independent private values) setting with $N$ bidders. Find an equilibrium of the all-pay auction when each bidder's valuation is an iid draw from $F(x) = x^a$ for $a \in (0; \infty)$ and $x \in [0; 1]$.
+Consider a symmetric IPV (independent private values) setting with $N$ bidders. Find an equilibrium of the all-pay auction when each bidder's valuation is an iid draw from $F(x) = x^a$ for $a \in (0, \infty)$ and $x \in [0, 1]$.
 
 (a) Define this auction as a Bayesian game.
 
-...
+A Bayesian game is a five-tuple $(I, \{S_i\}, \{u_i(\cdot)\}, \Theta, F(\cdot))$:
+
+- The set of players is $I = \{1, ..., N\}$.
+- The action set of player $i \in I$ is $S_i = [0, \infty)$.
+- The payoff for player $i \in I$ is 
+
+$$
+u_i(b_1, ..., b_N;v_1, ..., v_N) = u_i(b_1, ..., b_N;v_i)
+\begin{cases}
+v_i - b_i & \text{if } b_i > \max_{j \neq i} b_{j} \\
+\frac{1}{2}(v_i - b_i) + \frac{1}{2}(-b_i) & \text{if } b_i = \max_{j \neq i} b_{j} \\
+-b_i & \text{if } b_i < \max_{j \neq i} b_{j} \\
+\end{cases}
+$$
+
+- $\Theta = [0, 1] \times ... \times [0, 1]$.
+- $F(x) = x^a$ for $a \in (0, \infty)$
 
 (b) Find equilibrium strategies of all players.
 
-...
+Focus on BNE with symmetric, strictly increasing, and differentiable bids $b(v_i)$. Since the $F$ is continuous and $b(v_i)$ is strictly increasing, the probability of a tie is zero.  The expected payoff for bidder $i$ is:
+
+\begin{align*}
+E[u_i(b_1, ..., b_N; v_i)]
+&= (v_i - b_i) \Pr(b_i > b_j, \forall j\neq i) + (-b_i)\Pr(b_i < b_j, \forall j\neq i)\\
+&= v_i \Pr(b_i > b_j, \forall j\neq i) - b_i
+\end{align*}
+
+Suppose bidder $j \neq i$ submit $b(v_j)$:
+
+\begin{align*}
+\Pr(b_i > b_j, \forall j\neq i)
+&= \Pr(b(v_i) > b(v_j), \forall j\neq i)\\
+&= \Pr(b^{-1}(b(v_i)) > v_j, \forall j\neq i)\\
+&=^{iid} F(b^{-1}(b(v_i)))^{N-1}\\
+&= ((b^{-1}(b(v_i)))^a)^{N-1}\\
+&= (b^{-1}(b(v_i)))^{aN-a}
+\end{align*}
+
+Thus, the expected payoff of bidder $i$ is:
+
+$$
+E[u_i(b_1, ..., b_N; v_i)] = v_i (b^{-1}(b(v_i)))^{aN-a} - b(v_i)
+$$
+
+FOC [$b(v_i)$]:
+
+\begin{align*}
+0 &= (aN-a)v_i (b^{-1}(b(v_i)))^{aN-a-1}\frac{1}{b'(v_i)} - 1 \\
+\implies b'(v_i) &= (aN-a)v_i^{aN-a}\\
+\implies b(v_i) &= \frac{aN-a}{aN-a+1}v_i^{aN-a+1} + c_i
+\end{align*}
+
+For $v_i = 0$, bidder $i$ would bid zero: $b(v_i) = 0 \implies c_i = 0$.
+
+$$
+\implies b(v_i) = \frac{aN-a}{aN-a+1}v_i^{aN-a+1}
+$$
+
+Since $aN - a + 1 > 0$ and $\frac{aN-a}{aN-a+1}$, $b$ is strictly increasing.
 
 (c) Verify that the strategies that you have found do constitute an equilibrium.
 
-...
+We can verify that $b$ is an equilibrium strategy by verifying that $b(v_i)$ is the best response for player $i$ when bidders $j \neq i$ bid $b(v_j)$. 
+
+\begin{align*}
+E[u_i(b_1, ..., b_N; v_i)]
+&= v_i \Pr\Bigg(b_i > \frac{aN-a}{aN-a+1}v_j^{aN-a+1}, \forall j\neq i\Bigg) - b_i\\
+&= v_i \Pr\Bigg(\Bigg(\frac{aN-a+1}{aN-a}b_i \Bigg)^{\frac{1}{aN-a+1}} > v_j, \forall j\neq i\Bigg) - b_i \\
+&= v_i \Bigg(\frac{aN-a+1}{aN-a}b_i \Bigg)^{\frac{aN-a}{aN-a+1}} - b_i
+\end{align*}
+
+FOC [$b_i$]:
+
+\begin{align*}
+0 &= v_i \frac{aN-a}{aN-a+1}\Bigg(\frac{aN-a+1}{aN-a}b_i \Bigg)^{\frac{aN-a}{aN-a+1}-1}\frac{aN-a+1}{aN-a} - 1\\
+\implies
+\frac{1}{v_i} &= \Bigg(\frac{aN-a+1}{aN-a}b_i \Bigg)^{\frac{-1}{aN-a+1}}\\
+\implies 
+b_i &= b(v_i) = \frac{aN-a}{aN-a+1} v_i^{aN-a+1}
+\end{align*}
+
+Thus, all bidders playing $b(\cdot)$ is an equilibrium.
+
+\pagebreak
 
 (d) Does the bidding become more competitive when $a$ increases? Explain.
 
-...
+Conditional on $v_i$ and $N$, a higher $a$ results in more mass closer to 1.  Thus, the probability that bidder $i$ wins the auction decreases, so bidder $i$ should decrease her bid.  This makes the bidding less competitive.  Unconditional on $v_i$, a higher $a$ results in higher realizations of $v_i$, so the bids are correspondingly larger.
 
-(e) Compute the expected payment from each bidder before and after she learns her value.
+Consider the derivative of the bidder function with respect to $a$
 
-...
+\begin{align*}
+\frac{\partial}{\partial a}b(v_i) 
+&= \frac{\partial}{\partial a}\Bigg(\frac{aN-a}{aN-a+1}v_i^{aN-a+1}\Bigg)\\
+&= \frac{N-1}{aN-a+1}v_i^{aN-a+1} 
+- \frac{(aN-a)(N-1)}{(aN-a+1)^2}v_i^{aN-a+1} 
++ \frac{(N-1)(aN-a)}{aN-a+1}v_i^{aN-a+1}\log(v_i)
+\end{align*}
+
+The derivative is not strictly positive or negative, so increasing $a$ may increase competition and may decrease competition. But for a sufficiently large $a$, the derivative is negative, so an increase in $a$ decreases a bid conditional on $v_i$.
+
+We can see that a higher $a$ reduces bids for a sufficiently large $a$ in the figure below ($N=5, a \in (0, 2), v_i \in \{0.25, 0.5, 0.75\}$):
+
+```{r problem_1d, echo = FALSE}
+
+N <- 5
+
+v <- c(.25, .5, .75)
+
+a <- seq(.001, 2, .001)
+
+plot(1, xlim = c(0, 2), ylim = c(0, .4), type = "n", xlab = "a", ylab = "b(v_i)", main = "N = 5")
+
+lines(x = a, y = (a*N-a) / (a*N-a+1) * v[1]^(a*N-a+1), col = "black")
+lines(x = a, y = (a*N-a) / (a*N-a+1) * v[2]^(a*N-a+1), col = "blue")
+lines(x = a, y = (a*N-a) / (a*N-a+1) * v[3]^(a*N-a+1), col = "red")
+
+text("v_i = 0.25", col = "black", x= .25, y=0)
+text("v_i = 0.5", col = "blue", x= .5, y=.15)
+text("v_i = 0.75", col = "red", x= 1, y=.25)
+
+```
+
+\pagebreak
+
+(e) Compute the expected payoff from each bidder before and after she learns her value.
+
+The expected payoff of bidder $i$ conditional on $v_i$ is:
+
+\begin{align*}
+E[u_i(v_i)] 
+&= v_i^{aN-a+1} - b(v_i) \\
+&= v_i^{aN-a+1} - \frac{aN-a}{aN-a+1}v_i^{aN-a+1}\\
+&= \frac{v_i^{aN-a+1}}{aN-a+1}
+\end{align*}
+
+The unconditional expected payoff of bidder $i$ is:
+
+\begin{align*}
+\int_0^1 E[u_i(v_i)] f(v_i) dv_i 
+&= \int_0^1 \frac{v_i^{aN-a+1}}{aN-a+1} av_t^{a-1} dv_i \\
+&= \int_0^1 \frac{a v_i^{aN}}{aN-a+1} dv_i \\
+&= \Bigg[ \frac{a v_i^{aN+1}}{(aN-a+1)(aN+1)} \Bigg]_0^1 \\
+&= \frac{a}{(aN-a+1)(aN+1)} 
+\end{align*}
 
 \pagebreak
 
 ## 2 Tricky Seller
 
-Two people are interested in one object. Their valuations are drawn independently from $F(x) = x$ and $F(x) = x^2$, respectively, with $x \in [0; 1]$. The seller's value (a cost, perhaps) for the object is known, $c \in [0; 1]$.
+Two people are interested in one object. Their valuations are drawn independently from $F(x) = x$ and $F(x) = x^2$, respectively, with $x \in [0, 1]$. The seller's value (a cost, perhaps) for the object is known, $c \in [0, 1]$.
 
 (a) Describe outcome of the First-Price Auction with a reserve price $r$.
 
