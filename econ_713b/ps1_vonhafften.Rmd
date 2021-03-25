@@ -158,7 +158,23 @@ text("v_i = 0.75", col = "red", x= 1, y=.25)
 
 \pagebreak
 
-(e) Compute the expected payoff from each bidder before and after she learns her value.
+(e) Compute the expected payment from each bidder before and after she learns her value.
+
+The expected payment from bidder $i$ conditional on $v_i$ is their bid:
+
+$$
+b(v_i) = \frac{aN-a}{aN-a+1}v_i^{aN-a+1}
+$$
+
+The expected payment from bidder $i$ unconditionally is:
+
+\begin{align*}
+b(v_i) 
+&= \int_0^1 \frac{aN-a}{aN-a+1}v_i^{aN-a+1} a v_i^{a-1} dv_i\\
+&= a \frac{aN-a}{aN-a+1} \int_0^1 v_i^{aN} dv_i\\
+&= a \frac{aN-a}{aN-a+1} \Bigg[\frac{1}{aN+1} v_i^{aN+1}\Bigg]_0^1  \\
+&= \frac{a^2N-a^2}{(aN-a+1)(aN+1)}
+\end{align*}
 
 The expected payoff of bidder $i$ conditional on $v_i$ is:
 
@@ -187,7 +203,7 @@ Two people are interested in one object. Their valuations are drawn independentl
 
 (a) Describe outcome of the First-Price Auction with a reserve price $r$.
 
-A Bayesian game is a five-tuple $(I, \{S_i\}, \{u_i(\cdot)\}, \Theta, F(\cdot))$:
+Let us disregard the reserve price for the moment and consider the auction as Bayesian game $(I, \{S_i\}, \{u_i(\cdot)\}, \Theta, F(\cdot))$:
 
 - The set of players is $I = \{1, 2\}$.
 - The action set of player $i \in I$ is $B_i = [0, \infty)$.
@@ -207,31 +223,98 @@ $$
 - $\Theta = [0, 1] \times [0, 1]$.
 - $F_1(x) = x$ and $F_2(x) = x^2$.
 
-The expected payoff of bidder 1 playing $b_2(\cdot)$:
+The expected payoff of bidder 1 when bidder 2 plays $b_2(x_2) = a_2x_2$ (linear bid function and bids zero when value is zero):
 
-$$
+\begin{align*}
 E[u_1(b_1, b_2; x_1)]
-= (x_1 - b_1) \Pr(b_1 > b_2(x_2))\\
-= (x_1 - b_1) \Pr(b_2^{-1}(b_1) > x_2)\\
-= (x_1 - b_1) F_2(b_2^{-1}(b_1))\\
-= (x_1 - b_1) (b_2^{-1}(b_1))^2\\
+&= (x_1 - b_1) \Pr(b_1 > b_2(x_2))\\
+&= (x_1 - b_1) \Pr(b_2^{-1}(b_1) > x_2)\\
+&= (x_1 - b_1) F_2(b_2^{-1}(b_1))\\
+&= (x_1 - b_1) (b_2^{-1}(b_1))^2\\
+&= (x_1 - b_1) (\frac{b_1}{a_2})^2 \\
+&= \frac{x_1 b_1^2}{a_2^2}- \frac{b_1^3}{a_2^2}
+\end{align*}
+
+FOC:
+
+$$
+2\frac{x_1 b_1}{a_2^2}- 3\frac{b_1^2}{a_2^2} = 0 \\
+\implies
+b_1(x_1) = \frac{2}{3}x_1
+$$
+
+The expected payoff of bidder 2 when bidder 1 plays $b_1(x_1) = a_1x_1$ (linear bid function and bids zero when value is zero):
+
+\begin{align*}
+E[u_2(b_1, b_2; x_2)]
+&= (x_2 - b_2) \Pr(b_2 > b_1(x_1))\\
+&= (x_2 - b_2) \Pr(b_1^{-1}(b_2) > x_1)\\
+&= (x_2 - b_2) F_1(b_1^{-1}(b_2))\\
+&= (x_2 - b_2) b_1^{-1}(b_2)) \\
+&= (x_2 - b_2) \frac{b_2}{a_2} \\
+&= \frac{b_2x_2}{a_2} - \frac{b_2^2}{a_2}
+\end{align*}
+
+$$
+$$
+
+FOC:
+
+$$
+\frac{x_2}{a_2} - 2\frac{b_2}{a_2} = 0 \\
+\implies
+b_2(x_2) = \frac{x_2}{2}
+$$
+
+Thus, bidder 1 bids $b_1(x_1) = \frac{2}{3}x_1$ and $b_2(x_2) = \frac{x_2}{2}$, so both bidders underbid their values.  
+
+The seller will only sell the good if the revenue weakly exceeds $c$, so the reservation price $r=c$ and it is common knowledge.  The bidders know this, so $r$ is a floor on the amount that they will bid:
+
+$$
+b_1(x) = 
+\begin{cases}
+\frac{2}{3}x,   & \frac{2}{3}x \ge r \\
+r,              & x_1 \ge r > \frac{2}{3}x \\
+0,              & r >x
+\end{cases}
 $$
 
 $$
-E[u_2(b_1, b_2; x_2)]
-= (x_2 - b_2) \Pr(b_2 > b_1(x_1))\\
-= (x_2 - b_2) \Pr(b_1^{-1}(b_2) > x_1)\\
-= (x_2 - b_2) F_1(b_1^{-1}(b_2))\\
-= (x_2 - b_2) b_1^{-1}(b_2))\\
+b_2(x) = 
+\begin{cases}
+\frac{1}{2}x,   &  \frac{1}{2}x \ge r \\
+r,              & x \ge r > \frac{1}{2}x \\
+0,              & r >x
+\end{cases}
 $$
+
+- If both bids are below $r$, then the both bidders submit zero bids and the seller doesn't sell.
+- If one or both bids is above $r$, then a bid at least as large as $r$ is submitted.
+- Bidders still would have positive surplus if $r$ is between their value and bid absent a reserve price, so they would bid the reserve price.
 
 (b) Describe outcome of the Second-Price Auction with a reserve price $r$.
 
-...
+As discussed in lecture, bidding $b(v)=v$ is a weakly dominate strategy. Similar to FPA, the seller will only sell the good if the revenue weakly exceeds $c$, so the reservation price $r=c$ and it is common knowledge.  The bidders know this, so $r$ is a floor on the amount that they will bid:
+
+$$
+b_1(x) = 
+b_2(x) = 
+\begin{cases}
+x,    & x \ge r \\
+0,    & x < r
+\end{cases}
+$$
+
+- If both bids or one bid are below $r$, then the auction revenue is below the reserve price and the seller doesn't sell.
+- If both bids is above $r$, then a bid at least as large as $r$ is submitted.
 
 (c) What auction and what $r$ will the seller choose? Which player wins more often?
 
-...
+As mentioned above, the seller will choose $r = c$.  If $r > c$, the seller may turn down trades that they would be better off if they accepted.  If $r < c$, they may be selling the good for less than they value it.
+
+The seller will choose the auction format that maximizes their revenue...
+
+Bidder 2 is more likely to have higher valuation, so they are more likely to submit a higher bid.
 
 (d) Suppose now that $c = 0$ and there is no reserve price. Suppose that a seller can offer discount of $\alpha$ to one of the bidders in the second-price auction. If a bidder is offered a discount $\alpha \in [0; 1]$, then, if she wins, she pays only a fraction $\alpha$ of what she had to pay otherwise. Who should be offered a discount? Compute the optimal discount and expected revenues.
 
