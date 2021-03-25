@@ -37,7 +37,9 @@ A Bayesian game is a five-tuple $(I, \{S_i\}, \{u_i(\cdot)\}, \Theta, F(\cdot))$
 - The payoff for player $i \in I$ is 
 
 $$
-u_i(b_1, ..., b_N;v_1, ..., v_N) = u_i(b_1, ..., b_N;v_i)
+u_i(b_1, ..., b_N;v_1, ..., v_N) 
+= u_i(b_1, ..., b_N;v_i)
+=
 \begin{cases}
 v_i - b_i & \text{if } b_i > \max_{j \neq i} b_{j} \\
 \frac{1}{2}(v_i - b_i) + \frac{1}{2}(-b_i) & \text{if } b_i = \max_{j \neq i} b_{j} \\
@@ -185,7 +187,43 @@ Two people are interested in one object. Their valuations are drawn independentl
 
 (a) Describe outcome of the First-Price Auction with a reserve price $r$.
 
-...
+A Bayesian game is a five-tuple $(I, \{S_i\}, \{u_i(\cdot)\}, \Theta, F(\cdot))$:
+
+- The set of players is $I = \{1, 2\}$.
+- The action set of player $i \in I$ is $B_i = [0, \infty)$.
+- The payoff for player $i \in I$ is 
+
+$$
+u_i(b_1, b_2; x_1, x_2) 
+= u_i(b_1, b_2; x_i)
+=
+\begin{cases}
+x_i - b_i              & \text{if } b_i > b_{j} \\
+\frac{1}{2}(x_i - b_i) & \text{if } b_i = b_{j} \\
+0                      & \text{if } b_i < b_{j} \\
+\end{cases}
+$$
+
+- $\Theta = [0, 1] \times [0, 1]$.
+- $F_1(x) = x$ and $F_2(x) = x^2$.
+
+The expected payoff of bidder 1 playing $b_2(\cdot)$:
+
+$$
+E[u_1(b_1, b_2; x_1)]
+= (x_1 - b_1) \Pr(b_1 > b_2(x_2))\\
+= (x_1 - b_1) \Pr(b_2^{-1}(b_1) > x_2)\\
+= (x_1 - b_1) F_2(b_2^{-1}(b_1))\\
+= (x_1 - b_1) (b_2^{-1}(b_1))^2\\
+$$
+
+$$
+E[u_2(b_1, b_2; x_2)]
+= (x_2 - b_2) \Pr(b_2 > b_1(x_1))\\
+= (x_2 - b_2) \Pr(b_1^{-1}(b_2) > x_1)\\
+= (x_2 - b_2) F_1(b_1^{-1}(b_2))\\
+= (x_2 - b_2) b_1^{-1}(b_2))\\
+$$
 
 (b) Describe outcome of the Second-Price Auction with a reserve price $r$.
 
@@ -207,16 +245,80 @@ Consider a third-price auction with three players: an auction in which bidder wi
 
 (a) Define the auction as a Bayesian game.
 
-...
+For this part, I consider a third-price auction with only three players. A Bayesian game is a five-tuple $(I, \{S_i\}, \{u_i(\cdot)\}, \Theta, F(\cdot))$:
 
-(b) Prove that a bid of $b_i(v_i) = \frac{n - 1}{n - 2} v_i$ is a symmetric Bayes-Nash equilibrium of the third-price auction.
+- The set of players is $I = \{1, 2, 3\}$.
+- The action set of player $i \in I$ is $B_i = [0, \infty)$.
+- The payoff for player $i \in I$ is 
 
-...
+$$
+u_i(b_1, b_2, b_3; v_1, v_2, v_3) 
+= u_i(b_1, b_2, b_3; v_i)
+=
+\begin{cases}
+v_i - b_k              & \text{if } b_i > b_j \ge b_k, \\
+\frac{1}{3}(v_i - b_k) & \text{if } b_i = b_j = b_k, \\
+\frac{1}{2}(v_i - b_k) & \text{if } b_i = b_j > b_k, \\
+0                      & \text{otherwise.}
+\end{cases}
+$$
+
+- $\Theta = [0, 1] \times [0, 1] \times [0, 1]$.
+- $F(v) = v$.
+
+(b) Prove that a bid of $b_i(v_i) = \frac{n - 1}{n - 2} v_i$ is a symmetric Bayes Nash equilibrium of the third-price auction.
+
+In this part, I consider a third-price auction with $n$ bidders. I show that bidder $i$'s best response to $b(v_{-i})  = \frac{n - 1}{n - 2} v_{-i}$ is to play $b(v_i) = \frac{n - 1}{n - 2} v_i$ below and thus it is a symmetric Bayes Nash equilibrium.  The expected payoff of bidder $i$ is
+
+\begin{align*}
+E[u_i(b_1, ..., b_n; v_i)] 
+&= (v_i - E[b_{(n-2)}| b_i > b_j, j \neq i]) \Pr(b_i > b_j, j \neq i)\\
+&= \Bigg(v_i - \frac{n - 1}{n - 2} E\Bigg[v_{(n-2)}| b_i > \frac{n - 1}{n - 2} v_j, j \neq i\Bigg]\Bigg) \Pr\Bigg(b_i > \frac{n - 1}{n - 2} v_j, j \neq i\Bigg)\\
+&= \Bigg(v_i - \frac{n - 1}{n - 2} E\Bigg[v_{(n-2)} \Bigg| \frac{n - 2}{n - 1} b_i > v_j, j \neq i\Bigg]\Bigg) \Pr\Bigg(\frac{n - 2}{n - 1} b_i > v_j, j \neq i\Bigg)\\
+&= \Bigg(v_i - \frac{n - 1}{n - 2} E[w_{(n-2)} ]\Bigg) F\Bigg(\frac{n - 2}{n - 1} b_i\Bigg)^{n-1}\\
+&= \Bigg(v_i - \frac{n - 1}{n - 2} \frac{n - 2}{n - 1} b_i\frac{n - 2}{n} \Bigg) \Bigg(\frac{n - 2}{n - 1} b_i\Bigg)^{n-1}\\
+&= \Bigg(v_i - \frac{n - 2}{n} b_i\Bigg) \Bigg(\frac{n - 2}{n - 1} b_i\Bigg)^{n-1}\\
+&= \Bigg(\frac{n - 2}{n - 1}\Bigg)^{n-1} v_i b_i^{n-1} - \frac{n - 2}{n}\Bigg(\frac{n - 2}{n - 1}\Bigg)^{n-1}b_i^n
+\end{align*}
+
+where $w_j \sim U(0, \frac{n - 2}{n - 1} b_i)$ for $j \neq i$.  Generally, note that if $X_1, ..., X_n \sim U(0, 1)$, then the $k$th order statistic $X_{(k)} \sim Beta(k, n - k +1) \implies E[X_{(k)}] = \frac{k}{n+1}$. So, $E[w_{(n-2)} ] = \frac{n - 2}{n - 1} b_i\frac{n - 2}{n}$.
+
+\pagebreak
+
+FOC [$b_i$]:
+
+$$
+(n-1)\Bigg(\frac{n - 2}{n - 1}\Bigg)^{n-1} v_i b_i^{n-2} = n\frac{n - 2}{n}\Bigg(\frac{n - 2}{n - 1}\Bigg)^{n-1}b_i^{n-1} \\
+\implies
+b_i(v_i)  = \frac{n-1}{n - 2}v_i
+$$
+
+Thus, $b_i(v_i)  = \frac{n-1}{n - 2}v_i$ is a best response.
 
 (c) Show that the expected revenue of a seller in the third-price auction is $R_3 = \frac{n - 1}{n + 1}$.
 
-...
+The expected seller revenue is the expected value of the third highest bid:
+
+\begin{align*}
+R_3 
+&= E[b(v_{(n-2)})] \\
+&= E\Bigg[\frac{n - 1}{n - 2} v_{(n-2)}\Bigg] \\
+&= \frac{n - 1}{n - 2} E[ v_{(n-2)} ] \\
+&= \frac{n - 1}{n - 2} \frac{n - 2}{n + 1} \\
+&= \frac{n - 1}{n + 1} 
+\end{align*}
 
 (d) What is the symmetric Bayes-Nash equilibrium strategy in a $k$th price auction? (You need only state how each bidder bids; you need not provide a detailed analysis.)
 
-...
+From lecture notes and this problem, we know the bidding function in symmetric BNEs for $k \in \{1, 2, 3\}$:
+
+$$
+b (v_i) = 
+\begin{cases}
+\frac{n-1}{n} v_i   & k = 1\\
+v_i                 & k = 2\\
+\frac{n-1}{n-2} v_i & k = 3
+\end{cases}
+$$
+
+These findings suggest that $b(v_i) =\frac{n-1}{n-k+1}$ for all $k \in \N$ is a candidate.
