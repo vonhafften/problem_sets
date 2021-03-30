@@ -1,0 +1,254 @@
+---
+title: "ECON 714B - Problem Set 2"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "4/2/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+### Problem 1 (25 points) 
+
+Consider the single good alternating endowment example we studied in class.
+
+1. Prove that the constrained efficient allocation can be decentralized as an equilibrium of an environment in which agents trade a risk free bond subject to endogenous debt constraints.
+
+Recapitulation of the single good alternating endowment example:
+
+- Infinite horizon discrete time model
+- Two types of agents $i, j$ with a continuum of measure 1 of each type
+- Single nonstorable consumption good
+- Initial period of randomization and then in period 1, either type $i$ or type $j$ receives high endowment of consumption good $e_h$ while other type receives low endowment $e_l$.  Alternate in each period after. Let $(e_h, e_l) = (15, 4)$
+- Prefs $u (c) = \log c$, $\beta = 0.5$
+- Limited Commitment: In each period any agent can walk away from the contract (default) and consequently like in autarky forever. In autarky, the agent consumes his endowment. So if the agent with high endowment defaults his subsequent consumption
+stream is (15, 4, 15, 4, ...)
+- The constrained efficient allocation is $(c(h), c(l) = (10, 9)$
+
+The problem for agent $i$ is
+
+$$
+\max_{\{c_{i,t}\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t u(c_{i,t}) \\
+\text{s.t. } c_{i,t} + b_{i, t+1} \le e_{i,t} + R_t b_{i,t}\\
+\text{and } b_{i,t+1} \ge \phi_t
+$$
+
+where $b_{i,t}$ is agent $i$'s risk-free bond holdings between period $t$ and $t+1$, $R_t$ is the risk-free return, and $\phi_t$ is the borrowing constraint.  The constrained competitive equilibrium is prices and allocations such that agents solve their problem and markets clear: $b_{i,t} + b_{j,t} = 0$.  
+
+Consider $R = \frac{1}{\beta} \frac{9}{10}$ and $\phi = - \frac{5}{1+R}$.
+
+FOCs hold:
+
+$$
+\frac{1}{c(l)} \ge \beta R \frac{1}{c(h)} 
+\implies \frac{1}{9} \ge \beta (\frac{1}{\beta} \frac{9}{10}) \frac{1}{10}  
+\implies \frac{1}{9} \ge \frac{9}{100}
+$$
+
+$$
+\frac{1}{c(h)} \ge \beta R \frac{1}{c(l)}
+\implies
+\frac{1}{10} \ge \beta (\frac{1}{\beta} \frac{9}{10}) \frac{1}{9}
+\implies 
+\frac{1}{10} \ge \frac{1}{10}
+$$
+
+\pagebreak
+
+We know that the borrowing constraint holds so:
+
+$$
+b = \phi = \frac{-5}{1+\frac{1}{\beta} \frac{9}{10}} = \frac{25}{14}
+$$
+
+Markets clear:
+
+$$
+c_h = 15 - \phi (1 + R) = 15 - \frac{25}{14} \Bigg(1+ \frac{1}{\beta} \frac{9}{10}\Bigg) = 10
+$$
+
+$$
+c_l = 4 + \phi (1 + R) = 4 + \frac{25}{14} \Bigg(1+ \frac{1}{\beta} \frac{9}{10}\Bigg) = 9
+$$
+
+$$
+c_h + c_l = e_h + e_l \implies 10 + 9 = 15 + 4 \implies 19 = 19
+$$
+
+2. Prove that this environment also has another equilibrium and characterize it.
+
+The other equilibrium is autarky:
+
+\begin{align*}
+c(h) &= e_h = 15 \\
+c(l) &= e_l = 4 \\
+\phi &= 0 \\
+R &= \frac{1}{\beta} \frac{4}{15}
+\end{align*}
+
+Markets trivially clear and agents optimize:
+
+$$
+\frac{1}{c(h)} \ge \beta R \frac{1}{c(l)} \\
+\implies
+\frac{1}{15} \ge \beta \frac{1}{\beta} \frac{4}{15} \frac{1}{4}\\
+\implies
+\frac{1}{15} \ge \frac{1}{15}
+$$
+
+$$
+\frac{1}{c(l)} \ge \beta R \frac{1}{c(h)}  \\
+\implies
+\frac{1}{4} \ge \beta \frac{1}{\beta} \frac{4}{15} \frac{1}{15}\\
+\implies
+\frac{1}{4} \ge \frac{4}{225}
+$$
+
+\pagebreak
+
+### Problem 2 (75 points)
+
+Lets consider a slightly different assumption about the consequences of default. Now suppose that after default, agents are allowed to save in arrow securities (but not borrow).  Mechanically, the punishment after default is less severe. Let’s consider the alternating endowment example we saw in class with log utility and endowments $(e_h,e_l)$.
+
+1. If $R$ is the equilibrium interest rate, define the value of default for the high type. How much will the agent choose to save?
+
+Let $a_h \ge 0$ and $a_l \ge 0$ be the amounts that the high and low types (respectively) save for the next period. Clearly, $a_l = 0$ because the agent wants to consumption smooth. The high-type agent's problem becomes:
+
+$$
+\max_{a_h} \log(e_h - a_h) + \beta \log( e_l + Ra_h) + \beta^2 \log(e_h - a_h) + \beta^3 \log( e_l + Ra_h) + ...
+$$
+
+$$
+\implies
+\max_{a_h} \frac{\log(e_h - a_h) + \beta \log( e_l + Ra_h)}{1 - \beta^2}
+$$
+
+(I'm interpreting $R$ as a gross interest rate.) FOC [$a_h$]:
+
+$$
+\frac{1}{e_h - a_h} = \frac{\beta R}{e_l + a_h R}
+\implies 
+\beta R (e_h - a_h) = e_l + a_h R
+\implies
+a_h = \frac{\beta R e_h - e_l}{R + \beta R} 
+$$
+
+2. Define a equilibrium with not-too-tight debt constraints under this assumption (see Alvarez Jermann (2000) which is posted on canvas for a precise definition in the case in which the default punishment is autarky).
+
+The value of default for the high type is:
+
+$$
+V^d(h) 
+= \frac{\log(e_h - (\frac{\beta R e_h - e_l}{R + \beta R} )) + \beta \log( e_l + R ( \frac{\beta R e_h - e_l}{R + \beta R} ))}{1 - \beta^2}
+= \frac{\log(\frac{e_hR + e_l}{R + \beta R}) + \beta \log( \frac{e_l\beta + \beta R e_h}{1 + \beta})}{1 - \beta^2}
+$$
+
+Thus, the not-too-tight debt constraint is:
+
+$$
+V_t(h) \ge V^d(h) 
+\implies 
+\log(c_h) + \beta \log( c_l) \ge
+\log(\frac{e_hR + e_l}{R + \beta R}) + \beta \log( \frac{e_l\beta + \beta R e_h}{1 + \beta})
+$$
+
+Agent $i$'s problem is:
+
+$$
+\max \sum_{t=0}^\infty \beta^t \log(c_{i,t})
+$$
+$$
+\text{s.t. } c_{i,t} + b_{i,t+1} \le e_{i,t} + R_tb_{i,t},
+$$
+$$
+b_{i,t+1} \ge - \phi_t,
+$$
+$$
+\text{and } \log(c_h) + \beta \log( c_l) \ge \log(\frac{e_hR + e_l}{R + \beta R}) + \beta \log( \frac{e_l\beta + \beta R e_h}{1 + \beta}).
+$$
+
+An constrained competitive equilibrium is prices and allocations such that agents solve their problem and markets clear:
+
+$$
+b_{i,t} + b_{j,t} = 0
+$$
+
+$$
+c(h) + c(l) = e_h + e_l
+$$
+
+\pagebreak
+
+3. Derive the two equations that characterize an equilibrium with not-too-tight debt constraints.
+
+The borrowing constraint will bind for low-type agents:
+
+$$
+c_l - \phi = e_l + R\phi \implies c_l = e_l + (1+R)\phi
+$$
+
+Market clearing implies:
+
+$$
+c_h = e_h - (1 + R)\phi
+$$
+
+The NTT debt constraint becomes:
+
+$$
+\log(e_h - (1 + R) \phi) + \beta \log(  e_l + (1 + R)\phi) \ge \log(\frac{e_hR + e_l}{R + \beta R}) + \beta \log( \frac{e_l\beta + \beta R e_h}{1 + \beta})
+$$
+
+The high-type is constrained so their Euler equation holds:
+
+$$
+\frac{1}{c_h} = \frac{\beta R}{c_l} \implies\frac{1}{e_h - (1+R)\phi} = \frac{\beta R}{e_l + (1+R) \phi}
+$$
+
+Thus, we have two equations (NTT debt constraint and the Euler equation) in two unknowns.
+
+4. Solve for the equilibrium level of debt and interest rate given some $(e_h, e_l)$.
+
+The Euler Equation implies $\phi(R)$:
+
+$$
+\frac{1}{e_h - (1+R)\phi} = \frac{R \beta}{e_l + (1+R) \phi}
+\implies
+\phi = \frac{R \beta e_h - e_l}{(1 + R\beta)(1+R)}
+$$
+
+The consumption of the high-types and low-types is:
+
+$$
+c_h = e_h - (1+R)\frac{R \beta e_h - e_l}{(1 + R\beta)(1+R)} = \frac{e_h + e_l}{1 + R\beta}
+$$
+
+$$
+c_l = e_l + (1+R)\frac{R \beta e_h - e_l}{(1 + R\beta)(1+R)} = \frac{R \beta (e_h + e_l)}{1 + R\beta}
+$$
+
+The NTT constraint implies:
+
+$$
+\log(\frac{e_h + e_l}{1 + R\beta}) + \beta \log(\frac{R \beta (e_h + e_l)}{1 + R\beta}) \ge \log(\frac{e_hR + e_l}{R + \beta R}) + \beta \log( \frac{e_l\beta + \beta R e_h}{1 + \beta})
+$$
+
+The above constraint holds with equality if $R = 1 \implies \phi = \frac{\beta e_h - e_l}{2(1 + \beta)}$.
+
+5. Compare the level of consumption smoothing to the case in which the default punishment is autarky.
+
+For $e_h = 15$, $e_l = 4$, $\beta = 0.5$, we found that $R = \frac{1}{\beta}\frac{9}{10} = 1.8$ and $\phi = \frac{5}{1+R} \approx 1.785$ in the default punishment is autarky.  For the same parameters, $R = 1$ and $\phi \approx 1.166$.  Thus, there is less consumption smoothing when agent can still save after defaulting.
+
+6. What does this suggest about the relation between default punishment and the level of consumption smoothing?
+
+This finding suggests that if the punishment for defaulting is more severe there is more consumption smoothing.
