@@ -71,8 +71,8 @@ $$
 b = \phi = \frac{-5}{1+\frac{1}{\beta} \frac{9}{10}} = \frac{25}{14}
 $$
 
-Markets clear: 
-
+Markets clear:
+  
 $$
 c_h = 15 - \phi (1 + R) = 15 - \frac{25}{14} \Bigg(1+ \frac{1}{\beta} \frac{9}{10}\Bigg) = 10
 $$
