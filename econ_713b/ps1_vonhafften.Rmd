@@ -203,7 +203,7 @@ Two people are interested in one object. Their valuations are drawn independentl
 
 (a) Describe outcome of the First-Price Auction with a reserve price $r$.
 
-Let us disregard the reserve price for the moment and consider the auction as Bayesian game $(I, \{S_i\}, \{u_i(\cdot)\}, \Theta, F(\cdot))$:
+Consider the auction as Bayesian game $(I, \{S_i\}, \{u_i(\cdot)\}, \Theta, F(\cdot))$:
 
 - The set of players is $I = \{1, 2\}$.
 - The action set of player $i \in I$ is $B_i = [0, \infty)$.
@@ -214,111 +214,176 @@ u_i(b_1, b_2; x_1, x_2)
 = u_i(b_1, b_2; x_i)
 =
 \begin{cases}
-x_i - b_i              & \text{if } b_i > b_{j} \\
-\frac{1}{2}(x_i - b_i) & \text{if } b_i = b_{j} \\
-0                      & \text{if } b_i < b_{j} \\
+x_i - b_i              & \text{if } b_i > b_{j} \text{ and } b_i > r \\
+\frac{1}{2}(x_i - b_i) & \text{if } b_i = b_{j} \ge r \\
+0                      & \text{otherwise.} \\
 \end{cases}
 $$
 
 - $\Theta = [0, 1] \times [0, 1]$.
 - $F_1(x) = x$ and $F_2(x) = x^2$.
 
-The expected payoff of bidder 1 when bidder 2 plays $b_2(x_2) = a_2x_2$ (linear bid function and bids zero when value is zero):
+Given reserve price $r$, suppose bidder 1 and bidder 2 use bidding functions $b_1(x_1)$ and $b_2(x_2)$, respectively.  The expected payoff of bidder 1 when bidder 2 plays $b_2(x_2)$:
 
 \begin{align*}
 E[u_1(b_1, b_2; x_1)]
 &= (x_1 - b_1) \Pr(b_1 > b_2(x_2))\\
 &= (x_1 - b_1) \Pr(b_2^{-1}(b_1) > x_2)\\
-&= (x_1 - b_1) F_2(b_2^{-1}(b_1))\\
-&= (x_1 - b_1) (b_2^{-1}(b_1))^2\\
-&= (x_1 - b_1) (\frac{b_1}{a_2})^2 \\
-&= \frac{x_1 b_1^2}{a_2^2}- \frac{b_1^3}{a_2^2}
+&= (x_1 - b_1) F_2(b_2^{-1}(b_1) )\\
+&= (x_1 - b_1) (b_2^{-1}(b_1))^2
 \end{align*}
 
-FOC:
+FOC [$b_1$]
 
 $$
-2\frac{x_1 b_1}{a_2^2}- 3\frac{b_1^2}{a_2^2} = 0 \\
+\frac{2(x_1 - b_1) (b_2^{-1}(b_1))}{b_2'(b_2^{-1}(b_1))} = (b_2^{-1}(b_1))^2
 \implies
-b_1(x_1) = \frac{2}{3}x_1
+b_1(x_1) = x_1 - \frac{1}{2}b_2^{-1}(b_1(x_1))b_2'(b_2^{-1}(b_1(x_1)))
 $$
 
-The expected payoff of bidder 2 when bidder 1 plays $b_1(x_1) = a_1x_1$ (linear bid function and bids zero when value is zero):
+The expected payoff of bidder 2 when bidder 1 plays $b_1(x_1)$:
 
 \begin{align*}
 E[u_2(b_1, b_2; x_2)]
 &= (x_2 - b_2) \Pr(b_2 > b_1(x_1))\\
 &= (x_2 - b_2) \Pr(b_1^{-1}(b_2) > x_1)\\
 &= (x_2 - b_2) F_1(b_1^{-1}(b_2))\\
-&= (x_2 - b_2) b_1^{-1}(b_2)) \\
-&= (x_2 - b_2) \frac{b_2}{a_2} \\
-&= \frac{b_2x_2}{a_2} - \frac{b_2^2}{a_2}
+&= (x_2 - b_2) b_1^{-1}(b_2)
 \end{align*}
 
-$$
-$$
-
-FOC:
+FOC [$b_2$]:
 
 $$
-\frac{x_2}{a_2} - 2\frac{b_2}{a_2} = 0 \\
-\implies
-b_2(x_2) = \frac{x_2}{2}
+\frac{x_2 - b_2}{ b_1'(b_1^{-1}(b_2))} - b_1^{-1}(b_2) = 0 
+\implies b_2(x_2) = x_2 - b_1'(b_1^{-1}(b_2(x_2))) b_1^{-1}(b_2(x_2)) 
 $$
 
-Thus, bidder 1 bids $b_1(x_1) = \frac{2}{3}x_1$ and $b_2(x_2) = \frac{x_2}{2}$, so both bidders underbid their values.  
+Thus, we have two differential equations that define the equilibrium bidding strategies for bidder 1 and 2 with the boundary conditions that $b_1(r) = b_2(r) = r$. Notice that both bidders underbid from their value.
 
-The seller will only sell the good if the revenue weakly exceeds $c$, so the reservation price $r=c$ and it is common knowledge.  The bidders know this, so $r$ is a floor on the amount that they will bid:
-
-$$
-b_1(x) = 
-\begin{cases}
-\frac{2}{3}x,   & \frac{2}{3}x \ge r \\
-r,              & x_1 \ge r > \frac{2}{3}x \\
-0,              & r >x
-\end{cases}
-$$
-
-$$
-b_2(x) = 
-\begin{cases}
-\frac{1}{2}x,   &  \frac{1}{2}x \ge r \\
-r,              & x \ge r > \frac{1}{2}x \\
-0,              & r >x
-\end{cases}
-$$
-
-- If both bids are below $r$, then the both bidders submit zero bids and the seller doesn't sell.
-- If one or both bids is above $r$, then a bid at least as large as $r$ is submitted.
-- Bidders still would have positive surplus if $r$ is between their value and bid absent a reserve price, so they would bid the reserve price.
+\pagebreak
 
 (b) Describe outcome of the Second-Price Auction with a reserve price $r$.
 
-As discussed in lecture, bidding $b(v)=v$ is a weakly dominate strategy. Similar to FPA, the seller will only sell the good if the revenue weakly exceeds $c$, so the reservation price $r=c$ and it is common knowledge.  The bidders know this, so $r$ is a floor on the amount that they will bid:
+As discussed in lecture, bidding $b(v)=v$ is a weakly dominate strategy in second price auctions. The logic is similar here:
 
 $$
 b_1(x) = 
 b_2(x) = 
-\begin{cases}
-x,    & x \ge r \\
-0,    & x < r
-\end{cases}
+x
 $$
 
-- If both bids or one bid are below $r$, then the auction revenue is below the reserve price and the seller doesn't sell.
-- If both bids is above $r$, then a bid at least as large as $r$ is submitted.
+I'm assuming here that if one bid is larger than $r$ and one is smaller, the bidder who submitted the larger bid wins the auction and pays $r$.
 
 (c) What auction and what $r$ will the seller choose? Which player wins more often?
+ 
+The seller will choose the auction format that maximizes their revenue.
 
-As mentioned above, the seller will choose $r = c$.  If $r > c$, the seller may turn down trades that they would be better off if they accepted.  If $r < c$, they may be selling the good for less than they value it.
+Given $r$, the profit from a second price auction is:
 
-The seller will choose the auction format that maximizes their revenue...
+\begin{align*}
+E[\pi] 
+&= E[Revenue] - c \\
+&= E[b_2 | b_1 > b_2 > r] P(b_1 > b_2 > r) 
++ E[b_1 | b_2 > b_1 > r] P(b_2 > b_1 > r) \\
+&+ E[r   | b_2 > r > b_1] P(b_2 > r > b_1) 
++ E[r   | b_1 > r > b_2] P(b_1 > r > b_2) - c \\
+&= E[x_2 | x_1 > x_2 > r] P(x_1 > x_2 > r) 
++ E[x_1 | x_2 > x_1 > r] P(x_2 > x_1 > r) \\
+&+ E[r   | x_2 > r > x_1] P(x_2 > r > x_1) 
++ E[r   | x_1 > r > x_2] P(x_1 > r > x_2) - c \\
+&= \int_r^1 \int_r^{x_1} 2x_2^2  dx_2 dx_1 
+\int_r^1 \int_r^{x_1} 2x_2 dx_2 dx_1 
++ \int_r^1 \int_r^{x_2} 2x_1x_2 dx_1 dx_2 
+\int_r^1 \int_r^{x_2} 2x_2 dx_1 dx_2 \\
+&+ r \int_r^1 \int_0^r 2x_2 dx_1 dx_2 
++ r \int_r^1 \int_0^r 2x_2 dx_2 dx_1  
+- c \\
+&= \int_r^1 [ \frac{2}{3}x_2^3 ]_{x_2=r}^{x_1} dx_1 
+\int_r^1  [x_2^2]_{x_2=r}^{x_1} dx_1 
++ \int_r^1 [x_1^2x_2]_{x_1=r}^{x_2} dx_2 
+\int_r^1 [2x_2x_1]_{x_1 = r}^{x_2} dx_2 \\
+&+ r \int_r^1 [2x_2x_1]_{x_1 = 0}^r  dx_2 
++ r \int_r^1 [x_2^2]_{x_2 = 0}^r  dx_1  
+- c \\
+&= \int_r^1 \frac{2}{3}x_1^3 - \frac{2}{3}r^3 dx_1 
+\int_r^1  x_1^2 - r^2 dx_1 
++ \int_r^1 x_2^3 - r^2x_2 dx_2 
+\int_r^1 2x_2^2 - 2x_2r dx_2 \\
+&+ r \int_r^1 2x_2 r dx_2 
++ r \int_r^1 r^2  dx_1  
+- c \\
+&= [\frac{2}{12}x_1^4 - \frac{2}{3}r^3x_1]_{x_1 = r}^1 
+[\frac{1}{3} x_1^3 - r^2x_1]_{x_1 = r}^1 
++ [\frac{1}{4} x_2^4 - \frac{1}{2}r^2x_2^2 ]_{x_2 = r}^1 
+[\frac{2}{3}x_2^3 - x_2^2r ]_{x_2 =r}^1  \\
+&+ r [x_2^2 r]_{x_2 = r}^1 
++ r [r^2x_1 ]_{x_1 = r}^1  
+- c \\
+&= [\frac{1}{6} - \frac{2}{3}r^3 - \frac{1}{6}r^4 + \frac{2}{3}r^4]
+[\frac{1}{3} - x_1 - \frac{1}{3} r^3 + r^3]
++ [\frac{1}{4} - \frac{1}{2}r^2 - \frac{1}{4} r^4 + \frac{1}{2}r^4 ]
+[\frac{2}{3} - r - \frac{2}{3}r^3 + r^3 ] \\
+&+ r [r - r^3]
++ r [r^2 - r^3 ]
+- c
+\end{align*}
 
-Bidder 2 is more likely to have higher valuation, so they are more likely to submit a higher bid.
+Bidder 2 is more likely to have higher valuation ($F_2$ has more mass near 1 than $F_1$), so they are more likely to submit a higher bid.  $F_2$ first order stochastically dominates $F_1$: $E[x_1] = 1/2$ and $E[x_2] = 2/3$.
+
+\pagebreak
 
 (d) Suppose now that $c = 0$ and there is no reserve price. Suppose that a seller can offer discount of $\alpha$ to one of the bidders in the second-price auction. If a bidder is offered a discount $\alpha \in [0; 1]$, then, if she wins, she pays only a fraction $\alpha$ of what she had to pay otherwise. Who should be offered a discount? Compute the optimal discount and expected revenues.
 
-...
+The discount should be offered to bidder 1 because she is less likely to win to auction.  With the discount, bidder 1 will bid more aggressive and increase the auction revenue.  The payoff for bidder 1 with the discount is now:
+
+$$
+u_1(b_1, b_2; x_1) = 
+\begin{cases} 
+x_1 - \alpha b_2              & \text{if } b_1 > b_2 \\
+\frac{1}{2}(x_1 - \alpha b_2) & \text{if } b_1 = b_2 \\
+0                             & \text{if } b_1 < b_2
+\end{cases}
+$$
+
+We found that bidding your value in a second price auction without a discount is weakly dominate strategy by considering the highest bid at which the bidder always has weakly positive surplus, $b_1 = x_1$.  Similarly, for the auction with a discount, that bid is $b_1=\frac{x_1}{\alpha}$.
+
+The expected revenue from the auction is:
+
+\begin{align*}
+E[\pi] 
+&= E[b_2| b_1 > b_2]P(b_1 > b_2) + E[b_1 |  b_2 > b_1]P(b_2 > b_1) \\
+&= E\Bigg[\alpha x_2 \Bigg| \frac{x_1}{\alpha} > x_2 \Bigg]P\Bigg(\frac{x_1}{\alpha} > x_2\Bigg) + E\Bigg[\frac{x_1}{\alpha} \Bigg|  x_2 > \frac{x_1}{\alpha}\Bigg]P\Bigg(x_2 > \frac{x_1}{\alpha}\Bigg)\\
+&= \int_0^1 \int_0^{x_1/\alpha} 2\alpha x_2^2 dx_2 dx_1 \int_0^1 \int_0^{x_1/\alpha} 2x_2 dx_2 dx_1
++ \int_0^1 \int_{x_1/\alpha}^1 2x_2\frac{x_1}{\alpha} dx_2 dx_1 \int_0^1 \int_{x_1/\alpha}^1 2x_2 dx_2 dx_1\\
+&= 4\alpha \int_0^1 \int_0^{x_1/\alpha} x_2^2 dx_2 dx_1 \int_0^1 \int_0^{x_1/\alpha} x_2 dx_2 dx_1
++ \frac{4}{\alpha}\int_0^1 \int_{x_1/\alpha}^1 x_2x_1 dx_2 dx_1 \int_0^1 \int_{x_1/\alpha}^1 x_2 dx_2 dx_1\\
+&= 4\alpha \int_0^1 \frac{1}{3}[x_2^3]_{x_2 = 0}^{x_1/\alpha} dx_1 \int_0^1 \frac{1}{2}[x_2^2]_{x_2 = 0}^{x_1/\alpha} dx_1
++ \frac{4}{\alpha}\int_0^1 \frac{1}{2}[x_2 x_1^2]_{x_2 = x_1/\alpha}^1  dx_1 \int_0^1 \frac{1}{2} [x_2^2]_{x_1/\alpha}^1 dx_1\\
+&= 4\alpha \int_0^1 \frac{1}{3}(x_1/\alpha)^3 dx_1 \int_0^1 \frac{1}{2}[(x_1/\alpha)^2] dx_1
++ \frac{4}{\alpha}\int_0^1 \frac{1}{2}[x_1^2  - (x_1/\alpha) x_1^2]  dx_1 \int_0^1 \frac{1}{2} [1 - (x_1/\alpha)^2] dx_1\\
+&= \frac{2}{3\alpha^4}  \int_0^1 x_1^3 dx_1 \int_0^1 x_1^2 dx_1
++ \frac{1}{\alpha}\int_0^1 [x_1^2  - (x_1^3/\alpha)]  dx_1 \int_0^1 [1 - (x_1^2/\alpha^2)] dx_1\\
+&= \frac{2}{3\alpha^4}  [\frac{1}{4}x_1^4]_{x_1=0}^1  [\frac{1}{3}x_1^3]_{x_1=0}^1
++ \frac{1}{\alpha}[\frac{1}{3}x_1^3  - \frac{1}{4}(x_1^4/\alpha)]_{x_1 =0}^1 [x_1 - \frac{1}{3}(x_1^3/\alpha^2)]_{x_1 =0}^1 \\
+&= \frac{1}{18\alpha^4}
++ \frac{1}{\alpha}[\frac{1}{3}  - \frac{1}{4}(1/\alpha)] [1 - \frac{1}{3}(1/\alpha^2)] \\
+&= \frac{1}{18\alpha^4}
++ \frac{\alpha^2}{6}
+\end{align*}
+
+FOC [$\alpha$]:
+
+$$
+\frac{2}{9\alpha^5} =  \frac{\alpha}{3} \\
+\implies \alpha = (\frac{2}{3})^{1/6}
+$$
+
+Expected revenue with discount:
+
+$$
+E[\pi| \alpha =  (\frac{2}{3})^{1/6}] =\frac{1}{18((\frac{2}{3})^{1/6}])^4}
++ \frac{((\frac{2}{3})^{1/6}])^2}{6} \approx 0.208
+$$
 
 \pagebreak
 
