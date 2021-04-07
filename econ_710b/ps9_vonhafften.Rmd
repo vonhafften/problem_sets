@@ -24,6 +24,8 @@ library(tidyverse)
 library(knitr)
 library(stargazer)
 library(sandwich)
+library(xlsx)
+library(rdd)
 ```
 
 ## Exercise 20.1
@@ -254,31 +256,49 @@ With adding splines, we found a better model from the AIC perspecitive.  This ge
 
 We have described the RDD when treatment occurs for $T = \one \{X \ge c\}$. Suppose instead that treatment occurs for $T = 1\{X \le c\}$. Describe the differences (if any) involved in estimating the conditional ATE $\bar{\theta}$.
 
-...
+We need to change signs:
 
-\pagebreak
+- For $T = \one \{X \ge c\}$, $\bar{\theta} = m(c+) - m(c-)$.
+- For $T = \one \{X \le c\}$, $\bar{\theta} = m(c-) - m(c+)$.
 
 ## Exercise 21.2
 
 Suppose treatment occurs for $T = \one \{c_1 \le X \le c_2\}$ where both $c_1$ and $c_2$ are in the interior of the support of $X$. What treatment affects are identified?
 
-...
+We can identify the treatment effects at each point:
 
-\pagebreak
+- $\bar{\theta}(c_1) = m(c_1 +) - m(c_1 -)$
+- $\bar{\theta}(c_2) = m(c_1 -) - m(c_1 +)$
 
 ## Exercise 21.3
 
 Show that (21.1) is obtained by taking the conditional expectation as described.
 
-...
-
-\pagebreak
+\begin{align*}
+Y &= Y_0 \one \{ X < c\} + Y_1\one \{ X \ge c\}\\
+\implies E[Y|X=x] &= E[Y_0 \one \{ X < c\} + Y_1\one \{ X \ge c\} |x]\\
+\implies E[Y|X=x] &= E[Y_0|X=x] \one \{ X < c\} + E[Y_1|X = x]\one \{ X \ge c\} \\
+\implies m(x) &= m_0(x) \one \{ X < c\} + m_1(x) \one \{ X \ge c\}
+\end{align*}
 
 ## Exercise 21.4
 
 Explain why equation (21.4) estimated on the subsample for which $|X-c|\le h$ is identical to a local linear regression with a Rectangular bandwidth.
 
-...
+Equation (21.4) is
+
+$$
+Y = \beta_0 + \beta_1 X + \beta_3(X-c)T + \theta T + e
+$$
+
+With a bandwidth of $2h$, the rectangular kernel function is $K(\frac{x-c}{2h}) = \one \{|x-c| \le h\}$.  The local linear estimator objective function is:
+
+\begin{align*}
+J 
+&= \sum_{i=1}^n (\beta_0 + \beta_1 x_i + \beta_3(x_i-c)D_i + \theta D_i)^2 K(\frac{x-c}{2h})\\
+&= \sum_{i=1}^n (\beta_0 + \beta_1 x_i + \beta_3(x_i-c)D_i + \theta D_i)^2 \one \{|x-c| \le h\} \\
+&= \sum_{|x-c| \le h} (\beta_0 + \beta_1 x_i + \beta_3(x_i-c)D_i + \theta D_i)^2
+\end{align*}
 
 \pagebreak
 
@@ -286,7 +306,58 @@ Explain why equation (21.4) estimated on the subsample for which $|X-c|\le h$ is
 
 Use the datafile `LM2007` on the textbook webpage. Replicate the baseline RDD estimate as reported in Table 21.1. Repeat with a bandwidth of $h = 4$ and $h = 12$. Report your estimates of the conditional ATE and standard error.
 
-...
+Using `RDestimate` for the R package `rdd`:
+
+```{r problem216a}
+LM2007 <- read.xlsx(file = "LM2007.xlsx",
+                    sheetIndex = 1) %>%
+  mutate(t = povrate60 >= 59.2,
+         tnx = (povrate60 - 59.2)*t)
+
+bandwidths <- c(4, 8, 12, 16)
+
+results <- NULL
+
+for (b in bandwidths) {
+  rdd_model <- RDestimate(mort_age59_related_postHS ~ povrate60, 
+                          data = LM2007, 
+                          cutpoint = 59.2, 
+                          bw = b, 
+                          kernel = "triangular")
+  
+  results <- bind_rows(results,
+                       tibble(bandwidth = b,
+                              ATE = round(rdd_model$est[1], 3),
+                              standard_error = round(rdd_model$se[1], 3)))
+}
+
+kable(results)
+```
+
+\pagebreak
+
+Using `lm` for the R package `stats`:
+
+```{r problem216b}
+results <- NULL
+
+for (b in bandwidths) {
+  rdd_model <- LM2007 %>%
+    filter(povrate60 <= 59.2 + b,
+           povrate60 >= 59.2 - b) %>%
+    lm(mort_age59_related_postHS ~ povrate60 + tnx + t, 
+                          data = .) %>%
+    summary()
+  
+  results <- bind_rows(results,
+                       tibble(bandwidth = b,
+                              ATE = round(rdd_model$coefficients[4, 1], 3),
+                              standard_error = round(rdd_model$coefficients[4, 2], 3)))
+}
+
+kable(results)
+
+```
 
 \pagebreak
 
@@ -294,4 +365,49 @@ Use the datafile `LM2007` on the textbook webpage. Replicate the baseline RDD es
 
 Do a similar estimation as in the previous exercise, but using the dependent variable `mort_age25plus_related_postHS` (mortality due to HS-related causes in the 25+ age group).
 
-...
+Using `RDestimate` for the R package `rdd`:
+
+```{r problem218a}
+results <- NULL
+
+for (b in bandwidths) {
+  rdd_model <- RDestimate(mort_age25plus_related_postHS ~ povrate60, 
+                          data = LM2007, 
+                          cutpoint = 59.2, 
+                          bw = b, 
+                          kernel = "triangular")
+  
+  results <- bind_rows(results,
+                       tibble(bandwidth = b,
+                              ATE = round(rdd_model$est[1], 3),
+                              standard_error = round(rdd_model$se[1], 3)))
+}
+
+kable(results)
+
+```
+
+\pagebreak
+
+Using `lm` for the R package `stats`:
+
+```{r problem218b}
+results <- NULL
+
+for (b in bandwidths) {
+  rdd_model <- LM2007 %>%
+    filter(povrate60 <= 59.2 + b,
+           povrate60 >= 59.2 - b) %>%
+    lm(mort_age25plus_related_postHS ~ povrate60 + tnx + t, 
+                          data = .) %>%
+    summary()
+  
+  results <- bind_rows(results,
+                       tibble(bandwidth = b,
+                              ATE = round(rdd_model$coefficients[4, 1], 3),
+                              standard_error = round(rdd_model$coefficients[4, 2], 3)))
+}
+
+kable(results)
+
+```
