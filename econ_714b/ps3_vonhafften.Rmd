@@ -1,0 +1,103 @@
+---
+title: "ECON 714B - Problem Set 3"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "4/9/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Problem 1 (50 points)
+
+In the context of the environment studied in class, please prove the following proposition:\footnote{Please show all the steps in detail. In class we sketched out one direction of the proof.}
+
+\textit{Proposition 1. The allocations/price in a CE satisfy}
+
+\begin{align}
+c(s^t) + g(s^t) + k(s^t) &= F(k(s^{t-1}),l(s^t),s_t) + (1-\delta)k(s^{t-1})\\
+\sum_{t,s^t} \beta^t \mu(s^t)[U_c(s^t)c(s^t) + U_l(s^t)l(s^t)] &= U_c(s_0) [R_k(s_0)k_{-1}+R_b(s_0)b_{-1}]
+\end{align}
+
+\textit{Furthermore given allocations/prices that satisfy these equations we can construct allocations/prices that constitute a CE.}
+
+Definition: A CE is an allocation $x(s^t) = (c(s^t), \ell(s^t), k(s^t), b(s^t))$, a price system $(w(s^t), r(s^t), R_b(s^t))$, and a policy $\pi(s^t) = (\tau(s^t), \theta(s^t))$ such that
+
+1. Given policy $\pi$ and the price system, the allocation $x$ maximizes HH utility s.t. their budget constraint:
+
+$$
+\max \sum_{t, s^t} \beta^t \mu(s^t) U(c(s^t), l(s^t))
+$$
+
+$$
+\text{s.t. } c(s^t) + k(s^t) + b(s^t) = [1 - \tau(s^t)] w(s^t) \ell(s^t) + R_k(s^t)k(s^{t-1}) + R_b(s^t) b(s^{t-1})
+$$
+
+where $R_k(s^t) = 1 + [1 - \theta(s^t)][r(s^t) - \delta]$.
+
+2. Firm's profits are maximized:
+
+\begin{align*}
+r(s^t) &= F_k(k(s^{t-1}), \ell(s^t)) \\
+w(s^t) &= F_\ell(k(s^{t-1}), \ell(s^t))
+\end{align*}
+
+3. Government budget constraint holds:
+
+$$
+b(s^t) = R_b(s^t) b(s^{t-1}) + g(s^t) - \tau(s^t) w(s^t) \ell (s^t) - \theta(s^t) [r(s^t)-\delta]k(s^{t-1})
+$$
+\pagebreak
+
+Proof: ($\Rightarrow$)
+
+Consider an allocation $x(s^t) = (c(s^t), \ell(s^t), k(s^t), b(s^t))$, a price system $(w(s^t), r(s^t), R_b(s^t))$, and a policy $\pi(s^t) = (\tau(s^t), \theta(s^t))$ that constitute a CE.  Thus, the HH and government budget constraints hold.  Substituting the government budget constraint and the definition of $R_k(s^t)$ into the HH budget constraint:
+
+\begin{align*}
+c(s^t) + k(s^t) &+ [R_b(s^t) b(s^{t-1}) + g(s^t) - \tau(s^t) w(s^t) \ell (s^t) - \theta(s^t) [r(s^t)-\delta]k(s^{t-1})] \\
+&= [1 - \tau(s^t)] w(s^t) \ell(s^t) + [ 1 + [1 - \theta(s^t)][r(s^t) - \delta]]k(s^{t-1}) + R_b(s^t) b(s^{t-1})\\
+\implies
+c(s^t) + k(s^t) + g(s^t) 
+&= w(s^t) \ell(s^t) + r(s^t)k(s^{t-1}) + ( 1 - \delta)k(s^{t-1}) \\
+\implies
+c(s^t) + k(s^t) + g(s^t) 
+&= F(k(s^{t-1}),l(s^t),s_t) + ( 1 - \delta)k(s^{t-1}) 
+\end{align*}
+
+Because $F(k(s^{t-1}),l(s^t),s_t) = w(s^t) \ell(s^t) + r(s^t)k(s^{t-1})$. Thus, (1) is satisfied.
+
+...
+
+($\Leftarrow$)
+
+\pagebreak
+
+## Problem 2 (25 points)
+
+Consider the previous environment and suppose that we also have proportional consumption taxes $\{\tau_{ct}\}$. Derive the implementability constraint.
+
+...
+
+\pagebreak
+
+## Problem 3 (25 points)
+
+Consider the previous environment but suppose that the government only has access to consumption $\{\tau_{ct}\}$ and labor income taxes $\{\tau_{nt}\}$.
+
+1. Define a competitive equilibrium for this setting
+
+...
+
+2. Show that any allocation resulting in an equilibrium of this sort can also be realized as an equilibrium in a world where the government must finance the same sequence of expenditures, but can only use labor and capital income taxes.
+
+...
