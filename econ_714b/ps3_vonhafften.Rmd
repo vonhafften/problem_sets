@@ -26,12 +26,12 @@ In the context of the environment studied in class, please prove the following p
 
 \begin{align}
 c(s^t) + g(s^t) + k(s^t) &= F(k(s^{t-1}),l(s^t),s_t) + (1-\delta)k(s^{t-1})\\
-\sum_{t,s^t} \beta^t \mu(s^t)[U_c(s^t)c(s^t) + U_l(s^t)l(s^t)] &= U_c(s_0) [R_k(s_0)k_{-1}+R_b(s_0)b_{-1}]
+\sum_{t,s^t} \beta^t \mu(s^t)[U_c(s^t)c(s^t) + U_\ell(s^t)l(s^t)] &= U_c(s_0) [R_k(s_0)k_{-1}+R_b(s_0)b_{-1}]
 \end{align}
 
 \textit{Furthermore given allocations/prices that satisfy these equations we can construct allocations/prices that constitute a CE.}
 
-Definition: A CE is an allocation $x(s^t) = (c(s^t), \ell(s^t), k(s^t), b(s^t))$, a price system $(w(s^t), r(s^t), R_b(s^t))$, and a policy $\pi(s^t) = (\tau(s^t), \theta(s^t))$ such that
+Recall from lecture: A CE is an allocation $x(s^t) = (c(s^t), \ell(s^t), k(s^t), b(s^t))$, a price system $(w(s^t), r(s^t), R_b(s^t))$, and a policy $\pi(s^t) = (\tau(s^t), \theta(s^t))$ such that
 
 1. Given policy $\pi$ and the price system, the allocation $x$ maximizes HH utility s.t. their budget constraint:
 
@@ -61,7 +61,9 @@ $$
 
 Proof: ($\Rightarrow$)
 
-Consider an allocation $x(s^t) = (c(s^t), \ell(s^t), k(s^t), b(s^t))$, a price system $(w(s^t), r(s^t), R_b(s^t))$, and a policy $\pi(s^t) = (\tau(s^t), \theta(s^t))$ that constitute a CE.  Thus, the HH and government budget constraints hold.  Substituting the government budget constraint and the definition of $R_k(s^t)$ into the HH budget constraint:
+Consider an allocation $x(s^t) = (c(s^t), \ell(s^t), k(s^t), b(s^t))$, a price system $(w(s^t), r(s^t), R_b(s^t))$, and a policy $\pi(s^t) = (\tau(s^t), \theta(s^t))$ that constitute a CE.  
+
+Let's first consider the feasibility constraint.  Thus, the HH and government budget constraints hold.  Substituting the government budget constraint and the definition of $R_k(s^t)$ into the HH budget constraint:
 
 \begin{align*}
 c(s^t) + k(s^t) &+ [R_b(s^t) b(s^{t-1}) + g(s^t) - \tau(s^t) w(s^t) \ell (s^t) - \theta(s^t) [r(s^t)-\delta]k(s^{t-1})] \\
@@ -74,11 +76,65 @@ c(s^t) + k(s^t) + g(s^t)
 &= F(k(s^{t-1}),l(s^t),s_t) + ( 1 - \delta)k(s^{t-1}) 
 \end{align*}
 
-Because $F(k(s^{t-1}),l(s^t),s_t) = w(s^t) \ell(s^t) + r(s^t)k(s^{t-1})$. Thus, (1) is satisfied.
+Because firm profits are zero $\implies F(k(s^{t-1}),l(s^t),s_t) = w(s^t) \ell(s^t) + r(s^t)k(s^{t-1})$. Thus, (1) is satisfied.
 
-...
+Let's now consider the implementability constraint. Let $p(s^t)$ be the multiplier on the budget constraint in the HH problem.  The FOCs are:
+
+\begin{align}
+\beta^t \mu(s^t) U_c(s^t) &= p(s^t)                            &[c(s^t)]\\
+\beta^t \mu(s^t) U_\ell(s^t) &= -p(s^t)(1-\tau(s^t))w(s^t)     &[\ell(s^t)]\\
+[p(s^t) - \sum_{s^{t+1}} p(s^{t+1})R_b(s^{t+1})]b(s^t) &= 0    &[b(s^t)]\\
+[p(s^t) - \sum_{s^{t+1}} p(s^{t+1})R_k(s^{t+1})]k(s^t) &= 0    &[k(s^t)]
+\end{align}
+
+Multiplying both sides of the HH budget constraint by $p(s^t)$ and sum up the these constraints for all $t$:
+
+$$
+\sum_{t, s^t}p(s^t)[c(s^t) + k(s^t) + b(s^t)] =
+\sum_{t, s^t}p(s^t)[(1 - \tau(s^t)) w(s^t) \ell(s^t) + R_k(s^t)k(s^{t-1}) + R_b(s^t) b(s^{t-1})]
+$$
+
+Substituting in (5), we can cancel all but the initial bond holdings from the constraint:
+
+$$
+\sum_{t, s^t}p(s^t)[c(s^t) + k(s^t)] =
+p(s_0)R_b(s_0)b_{-1} + \sum_{t, s^t}p(s^t)[(1 - \tau(s^t)) w(s^t) \ell(s^t) + R_k(s^t)k(s^{t-1})]
+$$
+
+Substituting in (6), we can cancel all but the initial capital holdings from the constraint:
+
+$$
+\sum_{t, s^t}p(s^t)c(s^t) =
+p(s_0)[R_k(s_0)k_{-1} + R_b(s_0)b_{-1}] + \sum_{t, s^t}p(s^t)(1 - \tau(s^t)) w(s^t) \ell(s^t)
+$$
+
+Substituting in (3), the constraint becomes:
+
+$$
+\sum_{t, s^t}\beta^t \mu(s^t) U_c(s^t)c(s^t) =
+p(s_0)[R_k(s_0)k_{-1} + R_b(s_0)b_{-1}] + \sum_{t, s^t}p(s^t)(1 - \tau(s^t)) w(s^t) \ell(s^t)
+$$
+
+\pagebreak
+
+Substituting in (4), the constraint becomes:
+
+
+$$
+\sum_{t, s^t}\beta^t \mu(s^t) U_c(s^t)c(s^t) =
+p(s_0)[R_k(s_0)k_{-1} + R_b(s_0)b_{-1}] - \sum_{t, s^t}\beta^t \mu(s^t) U_\ell(s^t) \ell(s^t)
+$$
+
+$$
+\implies
+\sum_{t,s^t} \beta^t \mu(s^t)[U_c(s^t)c(s^t) + U_\ell(s^t)l(s^t)] = U_c(s_0) [R_k(s_0)k_{-1} + R_b(s_0)b_{-1}]
+$$
+
+Because $U_c(s_0) = p(s_0)$ by (3).  Thus, (2) is satisfied.
 
 ($\Leftarrow$)
+
+...
 
 \pagebreak
 
