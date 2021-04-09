@@ -1,0 +1,69 @@
+---
+title: "ECON 714B - Problem Set 4"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "4/16/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Problem 1 (50 points)
+
+Suppose that an infinitely lived government has to finance a fixed stream  of  expenditures, $\{g_t\}_{t\ge 0}$ and  can  only  use  consumption  taxes  for  this  purpose. Assume that the representative consumer has the utility function: 
+
+$$
+\sum_{t=0}^\infty \beta^t \Bigg[ \frac{c_t^{1-\sigma}}{1-\sigma} + v(\ell_t) \Bigg]
+$$ 
+
+where $c_t$ is the consumption in period $t$ and $\ell_t$ is leisure in period $t$.  Assume that $\sigma>0$ and $v$ is an increasing function. Also assume that the production function, $F(K,L)$ satisfies all the standard assumptions (i.e.,  CRS, etc.),  that the representative household has an initial endowment of the capital stock,$k_0, \ell_t \le 1$ and that capital is subject to the usual law of motion, $k_{t+1}=(1-\delta)k_t+x_t$. Set up the Ramsey Problem for this economy, and show that the optimal policy is to set the consumption tax at a constant rate from period one onwards (i.e., show that $\tau^{RP}_{ct}=\tau^{RP}_{ct+1}$ for all $t>1$.
+
+...
+
+\pagebreak
+
+## Problem 2 (50 points)
+
+Consider a cash-credit goods economy with preferences given by
+
+$$
+\log c_{1t}+\alpha \log c_{2t} + \gamma \log(1-n_t)
+$$
+
+where $n_t$ is the time spent in market activities. The resource constraint is
+
+$$
+c_{1t}+c_{2t}=n_t
+$$
+
+The cash-in-advance constraint is 
+
+$$
+p_t c_{1t} \le M_t
+$$
+
+The budget constraint for the HH at the beginning of the period is
+
+$$
+M_t+B_t \le (M_{t-1}-p_{t-1}c_{1t-1})-p_{t-1}c_{2t-1}+w_{t-1}n_{t-1}+R_{t-1}B_{t-1}-T_t
+$$
+
+where $T_t$ denotes lump-sum taxes and all the terms are as we discussed in class. The government conducts monetary policy to keep the interest rate fixed at some level $R$ in all periods.
+
+1.  Define a competitive equilibrium.
+
+...
+
+2.  What happens to $n_t$ as $R$ increases. Prove your result.
+
+...

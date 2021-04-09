@@ -1,0 +1,242 @@
+---
+title: "ECON 710B - Problem Set 10"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "4/13/2021"
+output: pdf_document
+header-includes:
+- \usepackage{bm}
+- \usepackage{bbm}
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\var}{\text{var}}
+- \newcommand{\med}{\text{med}}
+- \newcommand{\rank}{\text{rank}}
+- \newcommand{\twiddle}{\tilde}
+- \newcommand{\Lfn}{\mathcal{L}}
+- \newcommand{\one}{\mathbbm{1}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(knitr)
+library(xlsx)
+library(quantreg)
+```
+
+## Exercise 22.1
+
+Take the model $Y = X' \theta + e$ where $e$ is independent of $X$ and has known density function $f(e)$ which is continuously differentiable.
+
+(a) Show that the conditional density of $Y$ given $X=x$ is $f(y - x'\theta)$.
+
+$$
+P(Y \le y | X = x) = P(X' \theta + e \le y | X = x) = P(x' \theta + e \le y) = P(e \le y - x' \theta) = F(y - x' \theta)
+$$
+
+$$
+\implies F'(y - x'\theta) = f(y-x'\theta)
+$$
+
+(b) Find the functions $\rho_i(\theta)$ and $\psi_i(\theta)$.
+
+Because conditional distribution of $Y$ is known, we can use MLE to estimate $\theta$:
+
+$$
+\rho_i(\theta) = - \log f(y_i-x_i'\theta)
+$$
+
+$$
+\implies
+\psi_i(\theta) = \frac{\partial}{\partial \theta} \rho_i(\theta) = - \frac{\partial}{\partial \theta}\log f(y_i-x_i'\theta) = \frac{f'(y_i-x_i'\theta)}{f(y_i-x_i'\theta)}x_i
+$$
+
+(c) Calculate the asymptotic covariance matrix.
+
+Note that at the true value of $\theta$,
+
+$$
+\psi_i(\theta) 
+= \frac{f'(y_i-x_i'\theta)}{f(y_i-x_i'\theta)}x_i
+= \frac{f'(e_i)}{f(e_i)}x_i
+$$
+
+Since we use correctly specified MLE (Hansen p. 762), 
+
+$$
+V 
+= \Omega^{-1} 
+= E[\psi_i(\theta)\psi_i(\theta)']^{-1} 
+= E\Bigg[\frac{f'(e_i)}{f(e_i)}x_ix_i'\frac{f'(e_i)}{f(e_i)}\Bigg]
+= E\Bigg[\Bigg(\frac{f'(e_i)}{f(e_i)}\Bigg)^2\Bigg] E[x_ix_i']
+$$
+
+\pagebreak
+
+## Exercise 23.1
+
+Take the model $Y = \exp(\theta)+e$ with $E[e]=0$.
+
+(a) Is the conditional mean linear or nonlinear in $\theta$? Is this a nonlinear regression model?
+
+The conditional mean nonlinear in $\theta$: $E[Y|\theta] = E[\exp(\theta)+e|\theta] = \exp(\theta)$.
+
+This is a nonlinear regression model.
+
+(b) Is there a way to estimate the model using linear methods? If so explain how to obtain an estimator $\hat{\theta}$ for $\theta$.
+
+Yes, define $\beta := \exp(\theta) \implies Y = \beta + e$. The conditional mean is linear in $\beta$: $E[Y | \beta] = E[\beta + e|\beta] = \beta$, so we can estimate $\hat{\beta}$ with OLS: $\hat{\beta} = \bar{Y}$.  Then, $\hat{\theta} := \log(\hat{\beta}) = \log(\bar{Y})$.
+
+(c) Is your answer in part (b) the same as the NLLS estimator, or different?
+
+They are the same.  In the nonlinear regression model, $m(x, \theta) = E[Y|X=x] = \exp(\theta) \implies \bar{Y} = \exp(\hat{\theta}) \implies \hat{\theta} = \log(\bar{Y})$.
+
+## Exercise 23.2
+
+Take the model $Y^{(\lambda)} = \beta_0 + \beta_1X+e$ with $E[e|X]=0$ where $Y^{(\lambda)}$ is the Box-Cox transformation of $Y$.
+
+(a) Is this a nonlinear regression model in the parameters $(\lambda, \beta_0, \beta_1)$? (Careful, this is tricky.)
+
+No, the model is not a nonlinear regression model in parameters $(\lambda, \beta_0, \beta_1)$.
+
+The model can be rewritten as:
+
+$$
+\frac{Y^{\lambda} - 1}{\lambda} = \beta_0 + \beta_1X + e 
+\implies
+Y = [\lambda(\beta_0 + \beta_1X +  e) + 1]^{1/\lambda}
+$$
+
+Thus, the conditional mean of $Y$ is
+
+$$
+E[Y|X=x] = \int [\lambda(\beta_0 + \beta_1X +  e) + 1]^{1/\lambda} f(e|x)de
+$$
+
+Which is a function of the conditional density of $e$ on $x$, which is not known.
+
+
+## Exercise 23.7
+
+Suppose that $Y = m(X, \theta) + e$ with $E[e|X]=0$, $\hat{\theta}$ is the NLLS estimator, and $\hat{V}$ the estimator of $var(\hat{\theta})$. You are interested in the conditional mean function $E[Y | X = x] = m(x)$ at some $x$. Find an asymptotic 95% confidence interval for $m(x)$.
+
+Under regularity assumptions, the 95% confidence interval for $\theta$ is $[\hat{\theta} - 1.96 \sqrt{\hat{V}}, \hat{\theta} + 1.96 \sqrt{\hat{V}}]$ because $\hat{\theta}$ is asymptotically normal.  Thus, the asymptotic 95% confidence interval for $m(x)$ is $[m(X, \hat{\theta} - 1.96 \sqrt{\hat{V}}), m(X, \hat{\theta} + 1.96 \sqrt{\hat{V}})]$.
+
+\pagebreak
+
+## Exercise 23.8
+
+The file `PSS2017` contains a subset of the data from Papageorgiou, Saam, and Schulte (2017). For a robustness check they re-estimated their CES production function using approximated capital stocks rather than capacities as their input measures. Estimate the model (23.3) using this alternative measure. The variables for $y_i, X_{1i}$, and $X_{2i}$ are `EG_total`, `EC_c_alt`, and `EC_d_alt`, respectively. Compare the estimates with those reported in Table 23.1.
+
+```{r exercise23_8, warning=FALSE}
+PSS2017 <- read.xlsx("PSS2017.xlsx", sheetIndex = 1) %>%
+  as_tibble() %>%
+  mutate(y_ln = log(as.numeric(EG_total)),
+         x_1 = as.numeric(EC_c),
+         x_2 = as.numeric(EC_d),
+         x_1_alt = as.numeric(EC_c_alt),
+         x_2_alt = as.numeric(EC_d_alt)) %>%
+  filter(!is.na(y_ln + x_1 + x_2 + x_1_alt + x_2_alt))
+
+nls_main <- nls(formula = y_ln ~ beta + 
+                (nu/rho) * log(alpha * x_1^rho + (1-alpha) * x_2^rho),
+    start = list(alpha = 0.39, beta = 1.66, nu = 1.05, rho = 0.36),
+    data = PSS2017)
+
+nls_robustness <- nls(formula = y_ln ~ beta + 
+                        (nu/rho) * log(alpha*x_1_alt ^ rho+(1-alpha) * x_2_alt^rho),
+    start = list(alpha = 0.39, beta = 1.66, nu = 1.05, rho = 0.36),
+    data = PSS2017)
+
+summary(nls_main)
+summary(nls_robustness)
+```
+
+The estimates for $\alpha, \nu$, and $\rho$ are about the same between the main results and the robustness check, but the estimates for $\beta$ are very different.  Since $\beta = \log A - e$, this difference is likely due to different scales for the alternate measures.
+
+\pagebreak
+
+## Exercise 24.3
+
+Define $\psi(x)=\tau - \one\{x<0\}$. Let $\theta$ satisfy $E[\psi(Y - \theta)] = 0$. Is $\theta$ a quantile of the distribution of $Y$?
+
+Yes,
+
+$$
+E[\psi(Y - \theta)] = 0 \\
+\implies
+E[\tau - \one\{Y - \theta<0\}] = 0 \\
+\implies
+E[\tau] = E[\one\{Y <\theta\}] \\
+\implies
+\tau = P(Y <\theta) \\
+$$
+
+## Exercise 24.4
+
+Take the model $Y = X'\beta + e$ where the distribution of $e$ given $X$ is symmetric about zero. 
+
+(a) Find $E[Y | X]$ and $\med[Y | X]$.
+
+If the distribution of $e$ given $X$ is symmetric about zero, $E[Y | X] = E[X'\beta + e | X] = X'\beta$ and $\med[Y | X] = \med[X'\beta + e | X] = X'\beta$ because $P(e\le 0|X) = 0.5 \implies \med[e|X] = 0$
+
+(b) Do OLS and LAD estimate the same coefficient $\beta$ or different coefficients?
+
+Different, although with symmetric errors the median and mean are equal, OLS and LAD estimated from a finite sample will defer. For example, the OLS estimate minimizes the square of the residual, so it will be more influenced by particularly large or small realizations of the error term.
+
+(c) Under which circumstances would you prefer LAD over OLS? Under which circumstances would you prefer OLS over LAD? Explain.
+
+LAD estimates the conditional median function and OLS estimates the conditional mean function.  When the error term is symmetrically distributed, the mean and the median are equal, but generally you should use the estimate that is estimating what you want to be estimating.  The median is less sensitive to influential observations and provides a better measure of the "typical" observation when a RV is asymmetrically distributed (i.e., the typical income level is measured by the median not the mean).
+
+## Exercise 24.5
+
+You are interested in estimating the equation $Y = X'\beta + e$. You believe the regressors are exogenous, but you are uncertain about the properties of the error. You estimate the equation both by least absolute deviations (LAD) and OLS. A colleague suggests that you should prefer the OLS estimate, because it produces a higher $R^2$ than the LAD estimate. Is your colleague correct?
+
+First, observe that $R^2_{LAD} \le R^2_{OLS}$.  Since $\hat\beta_OLS$ minimizes the sum of square deviation by definition:
+
+$$
+\sum_i (Y_i - X_i'\hat\beta_{LAD})^2 \ge \sum_i (Y_i - X_i'\hat\beta_{OLS})^2 
+$$
+
+$$
+\implies 
+R^2_{LAD} 
+= 
+1-\frac{\sum_i (Y_i - X_i'\hat\beta_{LAD})^2 }{\sum_i (Y_i - \bar{Y})^2 } 
+\le 
+1-\frac{\sum_i (Y_i - X_i'\hat\beta_{OLS})^2 }{\sum_i (Y_i - \bar{Y})^2 }
+=
+R^2_{OLS}
+$$
+
+Second, a lower $R^2$ does not necessarily mean that an estimation approach is preferred.  OLS estimates the conditional mean function and LAD estimates the conditional median function.  If you want to conditional median function based on its advantages over conditional mean function (i.e., less sensitivity to influential observations), then LAD is more appropriate.
+
+\pagebreak
+
+## Exercise 24.14
+
+Using the `cps09mar` dataset take the sample of Hispanic women with education 11 years or higher. Estimate linear quantile regression functions for log wages on education. Interpret.
+
+```{r exercise24_14}
+cps09mar <- read_delim(file = "cps09mar.txt", 
+                 delim = "\t",
+                 col_names = c("age", "female", "hisp", "education", "earnings", "hours",
+                               "week", "union", "uncov", "region", "race", "marital"),
+                 col_types = cols()) %>%
+  mutate(l_wage = log(earnings/hours/week))
+
+sample <- cps09mar %>%
+  filter(hisp == 1, female == 1, education >= 11)
+
+quant_reg <- rq(formula = l_wage ~ education, tau = 1:4/5, data = sample) 
+
+summary(quant_reg)
+
+plot(l_wage ~ education,  data = sample)
+for (j in 1:ncol(quant_reg$coefficients)) abline(coef(quant_reg)[, j])
+```
+
+I estimate quantile regression function for the inner ventiles (i.e., 0.2, 0.4, 0.6, 0.8). Positive slopes across all ventiles suggest that higher education and higher wages are correlated across the wage distribution. If we assumed that someone would stay in the same quantile as they got more education, it would suggest a similar positive return to education across the wage distribution.  Since the quantile functions are roughly parallel, it suggests homoskedastic errors.
