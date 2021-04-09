@@ -26,7 +26,7 @@ In the context of the environment studied in class, please prove the following p
 
 \begin{align}
 c(s^t) + g(s^t) + k(s^t) &= F(k(s^{t-1}),l(s^t),s_t) + (1-\delta)k(s^{t-1})\\
-\sum_{t,s^t} \beta^t \mu(s^t)[U_c(s^t)c(s^t) + U_\ell(s^t)l(s^t)] &= U_c(s_0) [R_k(s_0)k_{-1}+R_b(s_0)b_{-1}]
+\sum_{t,s^t} \beta^t \mu(s^t)[U_c(s^t)c(s^t) + U_\ell(s^t)\ell(s^t)] &= U_c(s_0) [R_k(s_0)k_{-1}+R_b(s_0)b_{-1}]
 \end{align}
 
 \textit{Furthermore given allocations/prices that satisfy these equations we can construct allocations/prices that constitute a CE.}
@@ -57,13 +57,14 @@ w(s^t) &= F_\ell(k(s^{t-1}), \ell(s^t))
 $$
 b(s^t) = R_b(s^t) b(s^{t-1}) + g(s^t) - \tau(s^t) w(s^t) \ell (s^t) - \theta(s^t) [r(s^t)-\delta]k(s^{t-1})
 $$
+
 \pagebreak
 
 Proof: ($\Rightarrow$)
 
 Consider an allocation $x(s^t) = (c(s^t), \ell(s^t), k(s^t), b(s^t))$, a price system $(w(s^t), r(s^t), R_b(s^t))$, and a policy $\pi(s^t) = (\tau(s^t), \theta(s^t))$ that constitute a CE.  
 
-Let's first consider the feasibility constraint.  Thus, the HH and government budget constraints hold.  Substituting the government budget constraint and the definition of $R_k(s^t)$ into the HH budget constraint:
+Let's first consider the feasibility constraint. The feasibility constraint is implied by the goods market clearing, but we can also show it from the HH and government budget constraints. Substituting the government budget constraint and the definition of $R_k(s^t)$ into the HH budget constraint:
 
 \begin{align*}
 c(s^t) + k(s^t) &+ [R_b(s^t) b(s^{t-1}) + g(s^t) - \tau(s^t) w(s^t) \ell (s^t) - \theta(s^t) [r(s^t)-\delta]k(s^{t-1})] \\
@@ -134,7 +135,65 @@ Because $U_c(s_0) = p(s_0)$ by (3).  Thus, (2) is satisfied.
 
 ($\Leftarrow$)
 
-...
+Let the partial allocation $c(s^t), g(s^t), \ell(s^t), k(s^t)$, the partial initial price system $r(s_0)$ and $R_k(s_0)$, and the partial initial policy $\theta(s_0)$ satisfy (1) and (2).  We need to construct $b(s^t), w(s^t), r(s^t), R_b(s^t), \tau(s^t), \theta(s^t)$ such that all conditions of a CE hold.
+
+First, define $p(s^t)$ based on the FOC of the HH problem with respect to $c(s^t)$:
+
+$$
+p(s^t) := \beta^t \mu(s^t) U_c(s^t)
+$$
+
+
+Second, multiply the HH budget constraint by $p(s^t)$ and sum up over future periods:
+
+$$
+\sum_{T=t+1}^\infty \sum_{s^{T}} p(s^T)[c(s^T) + k(s^T) + b(s^T)] =
+\sum_{T=t+1}^\infty \sum_{s^{T}} p(s^T)[(1 - \tau(s^T)) w(s^T) \ell(s^T) + R_k(s^T)k(s^{T-1}) + R_b(s^T) b(s^{T-1})]
+$$
+
+Applying similar substitutions from the FOCs of the HH problem above, this equation becomes:
+
+
+$$
+\sum_{T=t+1}^\infty \sum_{s^{T}}  \beta^{T-t} \mu(s^T | s^t) [U_c(s^T)c(s^T) - U_\ell(s^T) \ell(s^T)]=
+p(s^t)[k(s^t) + b(s^t)]
+$$
+
+$$
+\implies
+b(s^t) = \frac{\sum_{T=t+1}^\infty \sum_{s^{T}}  \beta^{T-t} \mu(s^T | s^t) [U_c(s^T)c(s^T) - U_\ell(s^T) \ell(s^T)]}{p(s^t)} - k(s^t)
+$$
+
+Third, define $w(s^t), r(s^t)$ based on the firm problem:
+
+\begin{align*}
+r(s^t) &:= F_k(k(s^{t-1}), \ell(s^t)) \\
+w(s^t) &:= F_\ell(k(s^{t-1}), \ell(s^t))
+\end{align*}
+
+Fourth, define $\tau(s^t)$ based on the FOC of the HH problem with respect to $\ell(s^t)$:
+
+$$
+\beta^t \mu(s^t) U_\ell(s^t) = -p(s^t)(1-\tau(s^t))w(s^t)  
+\implies
+\tau(s^t) := 1 +\frac{\beta^t \mu(s^t) U_\ell(s^t)}{p(s^t)w(s^t)}
+$$
+
+Fifth, if $k(s^t) = 0$, then we can set $\theta(s^{t+1}):=0$.  Similarly, if $b(s^t) = 0$, then we can set $R_b(s^{t+1}) = 0$.  If $k(s^t) > 0$, the FOC with respect to $k(s^t)$ of the HH problem implies:
+
+\begin{align}
+p(s^t) = \sum_{s^{t+1}} p(s^{t+1})R_k(s^{t+1}) 
+\implies
+p(s^t) = \sum_{s^{t+1}} p(s^{t+1})[1 + [1 - \theta(s^{t+1})][r(s^{t+1}) - \delta]]
+\end{align}
+
+And if $b(s^t) > 0$, the FOC with respect to $b(s^t)$ of the HH problem implies:
+
+\begin{align}
+p(s^t) = \sum_{s^{t+1}} p(s^{t+1})R_b(s^{t+1})
+\end{align}
+
+Based on (7), (8), and the government BC, we have more unknowns than equations, so the solution is not uniquely pinned down.  Thus, this allocation, price system, and policy constitute a CE.
 
 \pagebreak
 
@@ -142,18 +201,149 @@ Because $U_c(s_0) = p(s_0)$ by (3).  Thus, (2) is satisfied.
 
 Consider the previous environment and suppose that we also have proportional consumption taxes $\{\tau_{ct}\}$. Derive the implementability constraint.
 
-...
+With a proportional consumption tax, the HH budget constraint becomes:
+
+$$
+[1+\tau_c(s^t)]c(s^t) + k(s^t) + b(s^t) = [1 - \tau_\ell(s^t)] w(s^t) \ell(s^t) + R_k(s^t)k(s^{t-1}) + R_b(s^t) b(s^{t-1})
+$$
+
+Let $p(s^t)$ be the multiplier on the budget constraint in the HH problem.  The FOCs are:
+
+\begin{align}
+\beta^t \mu(s^t) U_c(s^t) &= p(s^t)[1+\tau_c(s^t)]              &[c(s^t)]\\
+\beta^t \mu(s^t) U_\ell(s^t) &= -p(s^t)(1-\tau_\ell(s^t))w(s^t) &[\ell(s^t)]\\
+[p(s^t) - \sum_{s^{t+1}} p(s^{t+1})R_b(s^{t+1})]b(s^t) &= 0     &[b(s^t)]\\
+[p(s^t) - \sum_{s^{t+1}} p(s^{t+1})R_k(s^{t+1})]k(s^t) &= 0     &[k(s^t)]
+\end{align}
+
+Multiplying both sides of the HH budget constraint by $p(s^t)$ and sum up the these constraints for all $t$:
+
+$$
+\sum_{t, s^t}p(s^t)[(1+\tau_c(s^t))c(s^t) + k(s^t) + b(s^t)] =
+\sum_{t, s^t}p(s^t)[(1 - \tau_\ell(s^t)) w(s^t) \ell(s^t) + R_k(s^t)k(s^{t-1}) + R_b(s^t) b(s^{t-1})]
+$$
+
+Substituting in (11), we can cancel all but the initial bond holdings from the constraint:
+
+$$
+\sum_{t, s^t}p(s^t)[(1+\tau_c(s^t))c(s^t) + k(s^t)] =
+p(s_0)R_b(s_0)b_{-1} + \sum_{t, s^t}p(s^t)[(1 - \tau_\ell(s^t)) w(s^t) \ell(s^t) + R_k(s^t)k(s^{t-1})]
+$$
+
+Substituting in (12), we can cancel all but the initial capital holdings from the constraint:
+
+$$
+\sum_{t, s^t}p(s^t)(1+\tau_c(s^t))c(s^t) =
+p(s_0)[R_k(s_0)k_{-1} + R_b(s_0)b_{-1}] + \sum_{t, s^t}p(s^t)(1 - \tau_\ell(s^t)) w(s^t) \ell(s^t)
+$$
+
+Substituting in (9), the constraint becomes:
+
+$$
+\sum_{t, s^t}\beta^t \mu(s^t) U_c(s^t)c(s^t) =
+p(s_0)[R_k(s_0)k_{-1} + R_b(s_0)b_{-1}] + \sum_{t, s^t}p(s^t)(1 - \tau_\ell(s^t)) w(s^t) \ell(s^t)
+$$
+
+Substituting in (10), the constraint becomes:
+
+$$
+\sum_{t, s^t}\beta^t \mu(s^t) U_c(s^t)c(s^t) =
+p(s_0)[R_k(s_0)k_{-1} + R_b(s_0)b_{-1}] - \sum_{t, s^t}\beta^t \mu(s^t) U_\ell(s^t) \ell(s^t)
+$$
+
+$$
+\implies
+\sum_{t,s^t} \beta^t \mu(s^t)[U_c(s^t)c(s^t) + U_\ell(s^t)l(s^t)] = U_c(s_0) [R_k(s_0)k_{-1} + R_b(s_0)b_{-1}]
+$$
+
+Because $U_c(s_0) = p(s_0)$ by (9).  We get the same implementability constraint as the implementability constraint in the environment without the consumption tax.
 
 \pagebreak
 
 ## Problem 3 (25 points)
 
-Consider the previous environment but suppose that the government only has access to consumption $\{\tau_{ct}\}$ and labor income taxes $\{\tau_{nt}\}$.
+Consider the previous environment but suppose that the government only has access to consumption $\{\tau_{ct}\}$ and labor income taxes $\{\tau_{\ell t}\}$.
 
 1. Define a competitive equilibrium for this setting
 
-...
+A CE is an allocation $x(s^t) = (c(s^t), \ell(s^t), k(s^t), b(s^t))$, a price system $(w(s^t), r(s^t), R_b(s^t))$, and a policy $\pi(s^t) = (\tau_c(s^t), \tau_\ell(s^t))$ such that
+
+1. Given policy $\pi$ and the price system, the allocation $x$ maximizes HH utility s.t. their budget constraint:
+
+$$
+\max \sum_{t, s^t} \beta^t \mu(s^t) U(c(s^t), l(s^t))
+$$
+
+$$
+\text{s.t. } [1 + \tau_c(s^t)] c(s^t) + k(s^t) + b(s^t) = [1 - \tau_\ell(s^t)] w(s^t) \ell(s^t) + [1+r(s^t)-\delta]k(s^{t-1}) + R_b(s^t) b(s^{t-1})
+$$
+
+2. Firm's profits are maximized:
+
+\begin{align*}
+r(s^t) &= F_k(k(s^{t-1}), \ell(s^t)) \\
+w(s^t) &= F_\ell(k(s^{t-1}), \ell(s^t))
+\end{align*}
+
+3. Government budget constraint holds:
+
+$$
+b(s^t) = R_b(s^t) b(s^{t-1}) + g(s^t) - \tau_\ell(s^t) w(s^t) \ell (s^t) - \tau_c(s^t) c(s^t)
+$$
+
+\pagebreak
 
 2. Show that any allocation resulting in an equilibrium of this sort can also be realized as an equilibrium in a world where the government must finance the same sequence of expenditures, but can only use labor and capital income taxes.
 
-...
+I show that the implementability constraint in an environment with labor and consumption taxes is a identical to the implementability constraint in an environment with labor and capital income taxes.  Thus, the primal approach for each environment has the same objective function, the same resource constraint, and the same implementability constraint, so the solution to the primal approach for each environment is the same.
+
+Let $p(s^t)$ be the multiplier on the budget constraint in the HH problem.  The FOCs are:
+
+\begin{align}
+\beta^t \mu(s^t) U_c(s^t) &= p(s^t)[1+\tau_c(s^t)]                       &[c(s^t)]\\
+\beta^t \mu(s^t) U_\ell(s^t) &= -p(s^t)(1-\tau_\ell(s^t))w(s^t)          &[\ell(s^t)]\\
+[p(s^t) - \sum_{s^{t+1}} p(s^{t+1})R_b(s^{t+1})]b(s^t) &= 0              &[b(s^t)]\\
+[p(s^t) - \sum_{s^{t+1}} p(s^{t+1})[1+r(s^{t+1})-\delta]]k(s^t) &= 0     &[k(s^t)]
+\end{align}
+
+Multiplying both sides of the HH budget constraint by $p(s^t)$ and sum up the these constraints for all $t$:
+
+$$
+\sum_{t, s^t}p(s^t)[(1+\tau_c(s^t))c(s^t) + k(s^t) + b(s^t)] =
+\sum_{t, s^t}p(s^t)[(1 - \tau_\ell(s^t)) w(s^t) \ell(s^t) + [1+r(s^t)-\delta]k(s^{t-1}) + R_b(s^t) b(s^{t-1})]
+$$
+
+Substituting in (15), we can cancel all but the initial bond holdings from the constraint:
+
+$$
+\sum_{t, s^t}p(s^t)[(1+\tau_c(s^t))c(s^t) + k(s^t)] =
+p(s_0)R_b(s_0)b_{-1} + \sum_{t, s^t}p(s^t)[(1 - \tau_\ell(s^t)) w(s^t) \ell(s^t) + [1+r(s^t)-\delta]k(s^{t-1})]
+$$
+
+Substituting in (16), we can cancel all but the initial capital holdings from the constraint:
+
+$$
+\sum_{t, s^t}p(s^t)(1+\tau_c(s^t))c(s^t) =
+p(s_0)[1+r(s_0)-\delta]k_{-1} + R_b(s_0)b_{-1}] + \sum_{t, s^t}p(s^t)(1 - \tau_\ell(s^t)) w(s^t) \ell(s^t)
+$$
+
+Substituting in (13), the constraint becomes:
+
+$$
+\sum_{t, s^t}\beta^t \mu(s^t) U_c(s^t)c(s^t) =
+p(s_0)[[1+r(s_0) - \delta]k_{-1} + R_b(s_0)b_{-1}] + \sum_{t, s^t}p(s^t)(1 - \tau_\ell(s^t)) w(s^t) \ell(s^t)
+$$
+
+Substituting in (14), the constraint becomes:
+
+$$
+\sum_{t, s^t}\beta^t \mu(s^t) U_c(s^t)c(s^t) =
+p(s_0)[[1+r(s_0)-\delta]k_{-1} + R_b(s_0)b_{-1}] - \sum_{t, s^t}\beta^t \mu(s^t) U_\ell(s^t) \ell(s^t)
+$$
+
+$$
+\implies
+\sum_{t,s^t} \beta^t \mu(s^t)[U_c(s^t)c(s^t) + U_\ell(s^t)l(s^t)] = U_c(s_0) [[1+r(s_0)-\delta]k_{-1} + R_b(s_0)b_{-1}]
+$$
+
+Because $U_c(s_0) = p(s_0)$ by (13).  We get the same implementability constraint as the implementability constraint in the environment with labor and capital taxes when $\theta(s_0) = 0 \implies R_k(s_0) = 1 + [1 - 0][r(s_0) - \delta] = 1 +r(s_0) - \delta$.
