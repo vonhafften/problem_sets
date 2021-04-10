@@ -1,0 +1,77 @@
+---
+title: "ECON 713B - Problem Set 2"
+author: Alex von Hafften^[I worked on this problem set with a study group of Michael
+ Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass,
+ Emily Case, Danny Edgel, and Katherine Kwok.]
+date: "4/15/2021"
+output:
+ pdf_document: default
+ html_document:
+  df_print: paged
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+- \usepackage{bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## Problem 1
+
+Is the following statement true or false? “The effectiveness of signaling in the model of education we studied would break down if the costs of acquiring education were equal for individuals with different abilities.” Please explain your answer.
+
+...
+
+\pagebreak
+
+## Problem 2
+
+Consider a used-car market with 100 sellers; every seller has one car. 50 of these cars are high-quality cars, each worth \$10,000 to a buyer; the remaining 50 cars are lemons, each worth only \$2,000.
+
+(a) Compute a buyer’s maximum willingness to pay for a car if s/he cannot observe the car’s quality.
+
+...
+
+(b) Suppose that there are 100 buyers, so that competition among them leads cars to be sold at buyers’ maximum willingness to pay. What would the equilibrium be if sellers value high-quality cars at \$8,000? What would the equilibrium be if sellers value high-quality cars at \$6,000?
+
+...
+
+\pagebreak
+
+## Problem 3
+
+Consider a monopolist producing a good. For reasons exogenous to the problem, the good may be of high quality ($H$) with probability $\alpha$ or low quality ($L$) with probability $1 - \alpha$. Let $q_i$ be the probability that a product of quality $i$ breaks down; assume $q_H < q_L$. The monopolist’s marginal production costs are constant and denoted by $c_i,i=\{H,L\}$. The monopolist proposes a contract $(p,w)$ to a consumer, where $p$ is the good’s price and $w$ indicates whether there is a warranty ($w= 0$ or $w= 1$). The consumer’s utility is $(1-q)S+qSw-p$ if s/he accepts the offer and zero if s/he rejects the offer.  The monopolist’s profit is $p-c-qcw$ if the consumer accepts the offer and zero otherwise. Our goal is to find the conditions under which a high-quality product sells with a warranty ($w_H= 1$) and a low-quality product sells without warranty ($w_L= 0$).
+
+(a) Write two incentive constraints capturing that a monopolist producing a high-quality good does not want to mimic a monopolist producing a low-quality good and a monopolist producing a low-quality good does not want to mimic a monopolist producing a high-quality good.
+
+...
+
+(b) Find the conditions on the parameters under which such a separating equilibrium exists.
+
+...
+
+\pagebreak
+
+## Problem 4
+
+A seller sells a unit of a good of quality $q$ at price $t$. The cost of producing quality $q$ is $q^2$. A buyer receives a utility of $\theta q -t$ when purchasing a good of quality $q$ at price $t$. If s/he decides not to buy, s/he receives zero a utility. $\theta$ can take two values, $\theta_1= 1$ and $\theta_2= 2$. Assume that the seller has all the bargaining power.
+
+(a) Suppose that the seller can observe $\theta$. Derive the profit-maximizing price-quality pairs the seller offers when $\theta = 1$ and when $\theta= 2$. Show that the quality offered when $\theta= 2$ is twice the quality offered when $\theta= 1$.
+
+...
+
+b) Prove that the full-information price-quality pairs are not incentive compatible if the seller cannot observe $\theta$.
+
+...
+
+c) Suppose that the seller cannot observe $\theta$. Assuming $q_1=1/4$, derive a set of price-quality pairs that satisfy incentive compatibility.
+
+...
