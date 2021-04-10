@@ -1,8 +1,6 @@
 ---
 title: "ECON 713B - Problem Set 2"
-author: Alex von Hafften^[I worked on this problem set with a study group of Michael
- Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass,
- Emily Case, Danny Edgel, and Katherine Kwok.]
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
 date: "4/15/2021"
 output:
  pdf_document: default
@@ -26,9 +24,29 @@ library(tidyverse)
 
 ## Problem 1
 
-Is the following statement true or false? “The effectiveness of signaling in the model of education we studied would break down if the costs of acquiring education were equal for individuals with different abilities.” Please explain your answer.
+Is the following statement true or false? "The effectiveness of signaling in the model of education we studied would break down if the costs of acquiring education were equal for individuals with different abilities." Please explain your answer.
 
-...
+True.
+
+As discussed in lecture, the existence of the separating equilibria requires the single-crossing condition (or Spence-Mirlees condition). In other words, utility is supermodular in ability. With differentially costly education, attaining education is less costly for the high ability worker:
+
+$$
+u(w, e, a) = w - \frac{e}{a} 
+\implies 
+\frac{\partial(-u)}{\partial e} = \frac{1}{a} > 0 
+\implies 
+\frac{\partial^2(-u)}{\partial e \partial a} = \frac{-1}{a^2} < 0 
+$$
+
+If acquiring education is equal for individuals with different abilities, the single-cross condition does not hold.  For some functions $v$ and $w$ where $w$ is strictly increasing.
+
+$$
+u(w, e, a) = v(w, a) - w(e) 
+\implies 
+\frac{\partial(-u)}{\partial e} = w'(e) > 0 
+\implies 
+\frac{\partial^2(-u)}{\partial e \partial a} = 0 
+$$
 
 \pagebreak
 
@@ -38,11 +56,21 @@ Consider a used-car market with 100 sellers; every seller has one car. 50 of the
 
 (a) Compute a buyer’s maximum willingness to pay for a car if s/he cannot observe the car’s quality.
 
-...
+If risk-neutral buyer is willing to buy a car if the price is weakly less than expected value of the car.  If all 100 sellers are selling their car, then
+
+$$
+p \le \frac{50}{100}10,000 + \frac{50}{100}2,000 = 6,000
+$$
 
 (b) Suppose that there are 100 buyers, so that competition among them leads cars to be sold at buyers’ maximum willingness to pay. What would the equilibrium be if sellers value high-quality cars at \$8,000? What would the equilibrium be if sellers value high-quality cars at \$6,000?
 
-...
+At $p=6,000$, all high-quality car seller would not sell and only the low-quality car sellers would sell.  The buyers' maximum willing to pay becomes $p' = \frac{0}{50}10,000 + \frac{50}{50}2,000 = 2,000$.  Thus, the market for high-quality cars collapses.
+
+The market for high-quality cars also collapses if the value of the high-quality cars is \$8,000 or \$6,000.  
+
+If the high-quality cars are worth \$8,000.  Then if all sellers are part of the market, the buyers' maximum willing to pay is $p \le \frac{50}{100}8,000 + \frac{50}{100}2,000 = 5,000$.  At $p=5,000$, no sellers with high-quality cars would sell, so the buyers' maximum willing to pay becomes $p' = \frac{0}{50}8,000 + \frac{50}{50}2,000 = 2,000$.  Thus, the market for high-quality cars similarly collapses.
+
+If the high-quality cars are worth \$6,000.  Then if all sellers are part of the market, the buyers' maximum willing to pay is $p \le \frac{50}{100}6,000 + \frac{50}{100}2,000 = 4,000$.  At $p=4,000$, no sellers with high-quality cars would sell, so the buyers' maximum willing to pay becomes $p' = \frac{0}{50}6,000 + \frac{50}{50}2,000 = 2,000$.  Thus, the market for high-quality cars similarly collapses.
 
 \pagebreak
 
@@ -52,11 +80,42 @@ Consider a monopolist producing a good. For reasons exogenous to the problem, th
 
 (a) Write two incentive constraints capturing that a monopolist producing a high-quality good does not want to mimic a monopolist producing a low-quality good and a monopolist producing a low-quality good does not want to mimic a monopolist producing a high-quality good.
 
-...
+Let $(p_H, w_H)$ and $(p_L, w_L)$ be the contracts for high quality good and low quality good respectively. A monopolist producing a high-quality good has costs $c_H$ and the probability the good breaks down is $q_H$.  If this monopolist sells the high-quality good as a high-quality good, then the contract terms are $(p_H, w_H)$.  If the monopolist sells the high-quality good as a low-quality good, then the contract terms are $(p_L, w_L)$. Thus, the incentive constraint for the monopolist is that they make more profit selling the good as high-quality:
+
+$$
+p_H - c_H - q_H c_H w_H \ge p_L - c_H - q_H c_H w_L 
+$$
+
+Similarly, the incentive constraint for the monopolist producing low-quality goods is:
+
+$$
+p_L - c_L - q_L c_L w_L \ge p_H - c_L - q_L c_L w_H 
+$$
 
 (b) Find the conditions on the parameters under which such a separating equilibrium exists.
 
-...
+Notice that separating equilibria are possible because the single-crossing condition holds, i.e. monopolist's profit is supermodular in $w$ and $-q$: 
+
+$$
+\frac{\partial^2 \pi_M}{\partial w \partial (-q)} = c > 0
+$$
+
+Suppose that a separating equilibrium exists where $w_H = 1$ and $w_L = 0$.  The IR constraints for the consumer and monopolist as well as the IC constraints for the monopolist must hold:
+
+\begin{align}
+S - p_H &\ge 0 \implies S \ge p_H\\
+S(1-q_L) - p_L &\ge 0 \implies S(1-q_L) \ge p_L\\
+p_H - (1 + q_H)c_H &\ge 0 \implies p_H \ge (1 + q_H)c_H\\
+p_L - c_L &\ge 0 \implies p_L \ge c_L\\
+p_H - c_H - q_H c_H &\ge p_L - c_H \implies p_H - p_L  \ge q_H c_H\\
+p_H - c_L - q_L c_L &\le p_L - c_L \implies  p_H  -p_L \le q_L c_L
+\end{align}
+
+These constraints imply three conditions on the parameters:
+
+- (1) and (3) imply that $S \ge (1+q_H)c_H$.
+- (2) and (4) imply that $S(1-q_L) \ge c_L$.
+- (5) and (5) imply that $q_Lc_L \ge q_H c_H$.
 
 \pagebreak
 
@@ -66,12 +125,84 @@ A seller sells a unit of a good of quality $q$ at price $t$. The cost of produci
 
 (a) Suppose that the seller can observe $\theta$. Derive the profit-maximizing price-quality pairs the seller offers when $\theta = 1$ and when $\theta= 2$. Show that the quality offered when $\theta= 2$ is twice the quality offered when $\theta= 1$.
 
-...
+For $\theta = 1$, $u(q, t) = q_1 - t_1 \implies$ buyer buys if $q_1 \ge t$. This is the buyer's IR constraint. Assume that sellers' IR constraint is satisfied, so the sellers problem is maximum profit subject to the buyer's IR constraint:
 
-b) Prove that the full-information price-quality pairs are not incentive compatible if the seller cannot observe $\theta$.
+$$
+\max_{(q_1, t_1)} t_1 - q_1^2  \text{ s.t. } q_1 \ge t_1
+$$
 
-...
+Since the seller has all the bargaining power, the IR constraint holds at equality:
 
-c) Suppose that the seller cannot observe $\theta$. Assuming $q_1=1/4$, derive a set of price-quality pairs that satisfy incentive compatibility.
+$$
+\max_{q_1} q_1 - q_1^2 \implies 1 - 2q_1 = 0 \implies q_1 = 1/2 \implies t_1 = 1/2
+$$
 
-...
+We can check that the sellers' IR constraint holds: $1/2 - (1/2)^2 = 1/4 > 0$.
+
+For $\theta = 2$, $u(q_2, t_2) = 2q_2 - t_2 \implies$ buyer buys if $2q_2 \ge t_2$. This is the buyer's IR constraint. Assume that sellers' IR constraint is satisfied, so the sellers problem is maximum profit subject to the buyer's IR constraint:
+
+$$
+\max_{(q_2, t_2)} t_2 - q_2^2 \text{ s.t. } 2q_2 \ge t
+$$
+
+Since the seller has all the bargaining power, the IR constraint holds at equality:
+
+$$
+\max_{q_2} 2q_2 - q_2^2 \implies 2 - 2q_2 = 0 \implies q_2 = 1 \implies t_2 = 2
+$$
+
+We can check that the sellers' IR constraint holds: $2 - 1^2 = 1 > 0$.
+
+(b) Prove that the full-information price-quality pairs are not incentive compatible if the seller cannot observe $\theta$.
+
+If the seller cannot observe $\theta$ then the seller cannot restriction the contract for buyers with $\theta = 1$ to only $(q_1, t_1) = (1/2, 1/2)$ and the contract for buyers with $\theta = 2$ to only $(q_2, t_2) = (1, 2)$.  To be incentive compatible, the IC constraint for both types of buyers needs to hold (i.e., $\theta = 1$ choose $(q_1, t_1) = (1/2, 1/2)$ and $\theta = 2$ choose $(q_2, t_2) = (1, 2)$).
+
+For $\theta = 1$, the buyer's IC constraint holds: 
+
+$$
+u(q_1, t_1) = q_1 - t_1 = 1/2 - 1/2 = 0 > -1 = 1 - 2 = q_2 - t_2 = u(q_2, t_2)
+$$
+
+For $\theta = 2$, the buyer's IC constraint doesn't hold:
+
+$$
+u(q_2, t_2) = 2q_2 - t_2 = 2 - 2 = 0 < 1/2 = 1 - 1/2 = 2q_1 - t_1 = u(q_1, t_1)
+$$
+
+\pagebreak
+
+(c) Suppose that the seller cannot observe $\theta$. Assuming $q_1=1/4$, derive a set of price-quality pairs that satisfy incentive compatibility.
+
+Let $p$ be the probability that the buyer is $\theta = 1$.  Thus, the seller's problem is to maximize profit subject to IR constraints and IC constraints for both types of buyers:
+
+\begin{align*}
+\max_{(q_1, t_1, q_2, t_2)} & p(t_1 - q_1^2) + (1-p)(t_2 - q_2^2)\\
+\text{s.t. } 
+q_1 - t_1  & \ge 0 \\
+2q_2 - t_2 & \ge 0 \\
+q_1 - t_1  & \ge q_2 - t_2 \\
+2q_2 - t_2 & \ge 2q_1 - t_1
+\end{align*}
+
+From (b), we know that the IR constraint for 1 and the IC constraint for 2 will be binding.  In addition, since the seller has bargaining power, we know these constraints will hold with equality.  The other constraints - IC for 1 and IR for 2 - will follow (I double-check below).  Thus, the seller's problem is
+
+\begin{align*}
+\max_{(q_1, t_1, q_2, t_2)} & p(t_1 - q_1^2) + (1-p)(t_2 - q_2^2)\\
+\text{s.t. } 
+q_1 - t_1 &= 0 \\
+2q_2 - t_2 &= 2q_1 - t_1
+\end{align*}
+
+$$
+\implies 
+\max_{(q_1, q_2)} p(q_1 - q_1^2) + (1-p)(2q_2 - q_1 - q_2^2)
+$$
+
+FOC [$q_2$]:
+
+$$
+(1-p)(2 - 2q_2) = 0 \implies q_2 = 1
+$$
+
+
+IR constraint for $\theta = 1$ and the condition that $q_1 = 1/4 \implies t_1 =1/4$. IC constraint for $\theta = 2 \implies 2 - t_2 = 1/2 - 1/4 \implies t_2 = 7/4$. Thus, we have two contracts, $(q_1, t_1) = (1/4, 1/4)$ and $(q_2, t_2) = (1, 7/4)$. The information rent for $\theta = 2$ is 1/4. We can verify that the IR constraint for $\theta = 2$ holds: $2 - 7/4 = 1/4$. And the IC constraint for $\theta = 1$ holds: $1/4 - 1/4 = 0 > -3/4 = 1 - 7/4$.
