@@ -20,15 +20,188 @@ library(tidyverse)
 
 ## Problem 1 (50 points)
 
-Suppose that an infinitely lived government has to finance a fixed stream  of  expenditures, $\{g_t\}_{t\ge 0}$ and  can  only  use  consumption  taxes  for  this  purpose. Assume that the representative consumer has the utility function: 
+Suppose that an infinitely lived government has to finance a fixed stream of expenditures, $\{g_t\}_{t\ge 0}$ and can only use consumption taxes for this purpose. Assume that the representative consumer has the utility function: 
 
 $$
 \sum_{t=0}^\infty \beta^t \Bigg[ \frac{c_t^{1-\sigma}}{1-\sigma} + v(\ell_t) \Bigg]
 $$ 
 
-where $c_t$ is the consumption in period $t$ and $\ell_t$ is leisure in period $t$.  Assume that $\sigma>0$ and $v$ is an increasing function. Also assume that the production function, $F(K,L)$ satisfies all the standard assumptions (i.e.,  CRS, etc.),  that the representative household has an initial endowment of the capital stock,$k_0, \ell_t \le 1$ and that capital is subject to the usual law of motion, $k_{t+1}=(1-\delta)k_t+x_t$. Set up the Ramsey Problem for this economy, and show that the optimal policy is to set the consumption tax at a constant rate from period one onwards (i.e., show that $\tau^{RP}_{ct}=\tau^{RP}_{ct+1}$ for all $t>1$.
+where $c_t$ is the consumption in period $t$ and $\ell_t$ is leisure in period $t$. Assume that $\sigma>0$ and $v$ is an increasing function. Also assume that the production function, $F(K,L)$ satisfies all the standard assumptions (i.e., CRS, etc.), that the representative household has an initial endowment of the capital stock, $k_0, \ell_t \le 1$ and that capital is subject to the usual law of motion, $k_{t+1}=(1-\delta)k_t+x_t$. Set up the Ramsey Problem for this economy, and show that the optimal policy is to set the consumption tax at a constant rate from period one onwards (i.e., show that $\tau^{RP}_{t}=\tau^{RP}_{t+1}$ for all $t \ge 1$.
 
-...
+[I'm assuming that the HH is endowed with one unit of time with which they can consume $\ell_t \le 1$ leisure and supply $1 - \ell_t \le 1$ units of labor.]
+
+The feasibility constraint is:
+
+$$
+c_t + g_t + k_t = F(k_{t-1}, 1 - \ell_t) + (1 - \delta) k_{t-1}
+$$
+
+To find the implementability constraint, we start by defining the HH problem:
+
+$$
+\max_{c_t, \ell_t} \sum_{t=0}^\infty \beta^t \Bigg[ \frac{c_t^{1-\sigma}}{1-\sigma} + v(\ell_t) \Bigg]
+$$
+
+$$
+\text{s.t. } (1 + \tau_t)c_t + k_t + b_t = w_t (1-\ell_t) + (1 - \delta + r_t) k_{t-1} + R^b_t b_{t-1}
+$$
+
+Let $p_t$ be the multiplier on the budget constraint, so the legrangian is 
+
+$$
+\sum_{t=0}^\infty \beta^t \Bigg[ \frac{c_t^{1-\sigma}}{1-\sigma} + v(\ell_t) \Bigg] +
+p_t\Big[ w_t (1-\ell_t) + (1 - \delta + r_t) k_{t-1} + R^b_t b_{t-1} - (1 + \tau_t)c_t - k_t - b_t \Big]
+$$
+
+\pagebreak
+
+The FOCs are:
+
+\begin{align}
+\beta^t c_t^{-\sigma} &= p_t (1+\tau_t) & [c_t] \\
+\beta^t v'(\ell_t) &= p_t w_t & [\ell_t] \\
+[p_t - p_{t+1} R^b_{t+1}] b_t &= 0 & [b_t] \\
+[p_t - p_{t+1} (1 + r_{t+1} - \delta)] k_t &= 0 &[k_t]
+\end{align}
+
+Multiply the HH budget constraint and sum across $t$:
+
+$$
+\sum_{t=0}^\infty p_t[(1 + \tau_t)c_t + k_t + b_t] = \sum_{t=0}^\infty p_t[w_t (1-\ell_t) + (1 - \delta + r_t) k_{t-1} + R^b_t b_{t-1}]
+$$
+
+Substituting in (3), we can cancel out bond holdings in every period except for the initial period:
+
+$$
+\sum_{t=0}^\infty p_t[(1 + \tau_t)c_t + k_t] = p_0R^b_0 b_{-1} + \sum_{t=0}^\infty p_t[w_t (1-\ell_t) + (1 - \delta + r_t) k_{t-1} ]
+$$
+
+Substituting in (4), we can cancel out capital holdings in every period except for the initial period:
+
+$$
+\sum_{t=0}^\infty p_t(1 + \tau_t)c_t = p_0R^b_0 b_{-1} + p_0(1 - \delta + r_0) k_{-1} + \sum_{t=0}^\infty p_t w_t (1-\ell_t)
+$$
+
+Substituting in (5) and (6), we get the implementability constraint:
+
+$$
+\sum_{t=0}^\infty \beta^t c_t^{-\sigma} c_t = p_0 [R^b_0 b_{-1} + (1 - \delta + r_0) k_{-1} ] + \sum_{t=0}^\infty \beta^t v'(\ell_t) (1-\ell_t)
+$$
+
+$$
+\implies \sum_{t=0}^\infty \beta^t [c_t^{1-\sigma} - v'(\ell_t) (1-\ell_t)] = \frac{c_0^{-\sigma}}{1 + \tau_0} [ R^b_0 b_{-1} + (1 - \delta + r_0) k_{-1} ]
+$$
+
+Thus, the feasibility and implementability constraints are necessary and sufficient conditions for an allocation to be a CE.  Thus, the Ramsey problem is
+
+$$
+\max_{c_t, \ell_t} \sum_{t=0}^\infty \beta^t \Bigg[ \frac{c_t^{1-\sigma}}{1-\sigma} + v(\ell_t) \Bigg]
+$$
+
+$$
+\text{s.t. }\sum_{t=0}^\infty \beta^t [c_t^{1-\sigma} - v'(\ell_t) (1-\ell_t)] = \frac{c_0^{-\sigma}}{1 + \tau_0} [ R^b_0 b_{-1} + (1 - \delta + r_0) k_{-1} ]
+$$
+
+$$
+\text{and }  c_t + g_t + k_t = F(k_{t-1}, 1 - \ell_t) + (1 - \delta) k_{t-1}, \forall t
+$$
+
+\pagebreak
+
+We can rewrite the Ramsay problem as:
+
+$$
+\max_{c_t, \ell_t} \sum_{t=0}^\infty \beta^t \Bigg[ \frac{c_t^{1-\sigma}}{1-\sigma} + v(\ell_t) \Bigg] + \lambda \Bigg[\sum_{t=0}^\infty \beta^t [c_t^{1-\sigma} - v'(\ell_t) (1-\ell_t)] - \frac{c_0^{-\sigma}}{1 + \tau_0} [ R^b_0 b_{-1} + (1 - \delta + r_0) k_{-1} ]\Bigg]
+$$
+
+$$
+\implies
+\max_{c_t, \ell_t} \sum_{t=0}^\infty \beta^t \Bigg[ \frac{c_t^{1-\sigma}}{1-\sigma} + v(\ell_t) + \lambda  [c_t^{1-\sigma} - v'(\ell_t) (1-\ell_t)]\Bigg] 
+- \lambda \frac{c_0^{-\sigma}}{1 + \tau_0} [ R^b_0 b_{-1} + (1 - \delta + r_0) k_{-1} ]
+$$
+
+$$
+\implies
+\max_{c_t, \ell_t} \sum_{t=0}^\infty \beta^t w(c_t, \ell_t, \lambda)
+- \lambda \frac{c_0^{-\sigma}}{1 + \tau_0} [ R^b_0 b_{-1} + (1 - \delta + r_0) k_{-1} ]
+$$
+
+$$
+\text{s.t. } c_t + g_t + k_t = F(k_{t-1}, 1 - \ell_t) + (1 - \delta) k_{t-1}, \forall t
+$$
+
+where $w(c_t, \ell_t, \lambda) := \frac{c_t^{1-\sigma}}{1-\sigma} + v(\ell_t) + \lambda  [c_t^{1-\sigma} - v'(\ell_t) (1-\ell_t)]$.  Assume that $\tau_0$ is bounded.  Thus, the Ramsey problem is:
+
+$$
+\max_{c_t, \ell_t} \sum_{t=0}^\infty \beta^t w(c_t, \ell_t, \lambda)
+$$
+
+$$
+\text{s.t. } c_t + g_t + k_t = F(k_{t-1}, 1 - \ell_t) + (1 - \delta) k_{t-1}, \forall t
+$$
+
+Let $\gamma_t$ be the multiplier on the feasibility constraint:
+
+$$
+\sum_{t=0}^\infty \beta^t w(c_t, \ell_t, \lambda) 
++ \gamma_t [ F(k_{t-1}, 1 - \ell_t) + (1 - \delta) k_{t-1} - c_t - g_t - k_t]
+$$
+
+The FOCs are 
+
+\begin{align}
+\beta^t w_1(c_t, \ell_t, \lambda) &= \gamma_t & [c_t] \\
+\beta^t w_2(c_t, \ell_t, \lambda) &= \gamma_t F_2(k_{t-1}, 1 - \ell_t) & [\ell_t] \\
+\gamma_{t+t} [F_1(k_t, 1 - \ell_{t+1}) + (1-\delta)] &= \gamma_t & [k_t]
+\end{align}
+
+(5) and (6) imply an intra-temporal FOC:
+
+$$
+\frac{w_2(c_t, \ell_t, \lambda)}{w_1(c_t, \ell_t, \lambda)} = F_2(k_{t-1}, 1 - \ell_t)
+$$
+
+(5) and (7) imply an inter-temporal FOC:
+
+\begin{align}
+\frac{w_1(c_t, \ell_t, \lambda)}{w_1(c_{t+1}, \ell_{t+1}, \lambda)} = \beta [1-\delta + F_1(k_t, 1 - \ell_{t+1})]
+\end{align}
+
+\pagebreak
+
+Notice that:
+
+$$
+w_1(c_t, \ell_t, \lambda) = c_t^{-\sigma} + \lambda  (1-\sigma)c_t^{-\sigma} = (1 + \lambda - \lambda\sigma)c_t^{-\sigma}
+$$
+
+$$
+\implies \frac{w_1(c_t, \ell_t, \lambda)}{w_1(c_{t+1}, \ell_{t+1}, \lambda)}
+= \frac{(1 + \lambda - \lambda\sigma)c_{t+1}^{-\sigma}}{(1 + \lambda - \lambda\sigma)c_t^{-\sigma}} 
+= \frac{c_{t+1}^{-\sigma}}{c_t^{-\sigma}}
+$$
+
+Thus, (8) becomes:
+
+\begin{align}
+\implies
+\frac{c_{t+1}^{-\sigma}}{c_t^{-\sigma}} 
+= \beta [1-\delta + F_1(k_t, 1 - \ell_{t+1})]
+\end{align}
+
+Let us compare (9) with the HH's intertemporal FOC. In a competitive equilibrium, firms optimize so $r_t = F_1(k_{t-1}, 1- \ell_t)$.  Combining this with (1) and (4), we get
+
+$$
+\frac{c_t^{-\sigma}}{c_{t+1}^{-\sigma}} = \beta \frac{1+\tau_t }{1+\tau_{t+1}} [1 + F_1(k_{t-1}, 1- \ell_t) - \delta]
+$$
+
+For the Ramsey intertemporal FOC and the HH intertemporal FOC to both hold:
+
+$$
+\frac{1+\tau_t }{1+\tau_{t+1}} = 1 \implies \tau_t = \tau_{t+1}
+$$
+
+Thus, consumption taxes should be constant for all periods $t \ge 1$.
 
 \pagebreak
 
@@ -60,10 +233,10 @@ $$
 
 where $T_t$ denotes lump-sum taxes and all the terms are as we discussed in class. The government conducts monetary policy to keep the interest rate fixed at some level $R$ in all periods.
 
-1.  Define a competitive equilibrium.
+1. Define a competitive equilibrium.
 
 ...
 
-2.  What happens to $n_t$ as $R$ increases. Prove your result.
+2. What happens to $n_t$ as $R$ increases. Prove your result.
 
 ...
