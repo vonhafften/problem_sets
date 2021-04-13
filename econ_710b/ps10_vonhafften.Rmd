@@ -123,7 +123,20 @@ Which is a function of the conditional density of $e$ on $x$, which is not known
 
 Suppose that $Y = m(X, \theta) + e$ with $E[e|X]=0$, $\hat{\theta}$ is the NLLS estimator, and $\hat{V}$ the estimator of $var(\hat{\theta})$. You are interested in the conditional mean function $E[Y | X = x] = m(x)$ at some $x$. Find an asymptotic 95% confidence interval for $m(x)$.
 
-Under regularity assumptions, the 95% confidence interval for $\theta$ is $[\hat{\theta} - 1.96 \sqrt{\hat{V}}, \hat{\theta} + 1.96 \sqrt{\hat{V}}]$ because $\hat{\theta}$ is asymptotically normal.  Thus, the asymptotic 95% confidence interval for $m(x)$ is $[m(X, \hat{\theta} - 1.96 \sqrt{\hat{V}}), m(X, \hat{\theta} + 1.96 \sqrt{\hat{V}})]$.
+Based on Hansen (p. 183), the standard error is:
+
+$$
+s(x, \hat\theta)
+= \sqrt{R(x, \hat\theta)'\hat{V}R(x, \hat\theta)}
+\text{, where }
+R(x, \hat{\theta}) = \begin{pmatrix}
+\frac{\partial m}{\partial \theta_1} (x, \hat\theta)\\
+\vdots \\
+\frac{\partial m}{\partial \theta_k } (x, \hat\theta)
+\end{pmatrix}
+$$
+
+So the confidence interval for $m(x)$ is: $[m(x, \hat\theta) \pm 1.96s(x, \hat\theta)]$.
 
 \pagebreak
 

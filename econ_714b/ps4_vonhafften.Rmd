@@ -273,14 +273,11 @@ From the problem setup, we know that $R_t = R$ for all $t$.
 
 2. What happens to $n_t$ as $R$ increases. Prove your result.
 
-Assuming that $\alpha$ and $\alpha + \gamma$ are positive, an increase in $R$ leads to be increase in $n_t$.
-
-Let's solve for a competitive equilibrium.  Let $\lambda_t$ be the multiplier on the HH budget constraint and $\xi_t$ be the multiplier on the cash-in-advance constraint:
+If $\gamma > 0$, then $n_t$ decreases when $R$ increases.  To prove it, let's solve for a competitive equilibrium.  Let $\xi_t$ be the multiplier on the cash-in-advance constraint and $\lambda_t$ be the multiplier on the HH budget constraint:
 
 \begin{align*}
-\sum_{t=0}^\infty & \beta^t [\log c_{1,t}+\alpha \log c_{2,t} + \gamma \log(1 - n_t)] \\
-&+ \lambda_t [(M_{t-1}-p_{t-1}c_{1,t-1})-p_{t-1}c_{2,t-1}+p_{t-1}n_{t-1}+RB_{t-1}-T_t - M_t - B_t] \\
-&+ \xi_t [M_t - p_t c_{1,t}]
+\sum_{t=0}^\infty & \beta^t [\log c_{1,t}+\alpha \log c_{2,t} + \gamma \log(1 - n_t)] + \xi_t [M_t - p_t c_{1,t}] \\
+&+ \lambda_t [(M_{t-1}-p_{t-1}c_{1,t-1})-p_{t-1}c_{2,t-1}+p_{t-1}n_{t-1}+RB_{t-1}-T_t - M_t - B_t] 
 \end{align*}
 
 Thus, the FOCs are:
@@ -288,7 +285,7 @@ Thus, the FOCs are:
 \begin{align}
 \frac{\beta^t}{c_{1,t}} &= \lambda_{t+1}p_t + \xi_t p_t & [c_{1,t}]\\
 \frac{\beta^t\alpha}{c_{2,t}} &= \lambda_{t+1}p_t       & [c_{2,t}]\\
-\frac{\beta^t\gamma}{1- n_t} &= - \lambda_{t+1}p_{t}    & [n_{t}]\\
+\frac{\beta^t\gamma}{1- n_t} &= \lambda_{t+1}p_{t}      & [n_{t}]\\
 \lambda_t &= \lambda_{t+1} R                            & [B_{t}]\\
 \lambda_t &= \lambda_{t+1} + \xi_{t}                    & [M_{t}]
 \end{align}
@@ -316,15 +313,21 @@ $$
 Combining (11) and (12), we get
 
 $$
-\frac{\alpha}{c_{2,t}} = \frac{-\gamma}{1- n_t} \implies c_{2, t} = \frac{-\alpha(1-n_t)}{\gamma}
+\frac{\alpha}{c_{2,t}} = \frac{\gamma}{1- n_t} \implies c_{2, t} = \frac{\alpha(1-n_t)}{\gamma}
 $$
 
 Market clearing implies:
 
 $$
-n_t = \frac{1}{R \alpha}\frac{-\alpha(1-n_t)}{\gamma} + \frac{-\alpha(1-n_t)}{\gamma} \\
+n_t = \frac{1}{R \alpha}\frac{\alpha(1-n_t)}{\gamma} + \frac{\alpha(1-n_t)}{\gamma} \\
 \implies
-n_t=  \frac{1  + \alpha R}{1 - (\alpha + \gamma)R}
+n_t=  \frac{1  + \alpha R}{1 + (\alpha + \gamma)R}
 $$
 
-Assuming $\alpha$ is positive, an increase in $R$ increases the numerator.  Assuming $\alpha + \gamma$ is positive, an increase in $R$ decreases the denominator. Thus, an increase in $R$ increases $n_t$.
+The derivative with respect to $R$ is:
+
+$$
+\frac{\partial n_t}{\partial R} = \frac{- \gamma}{[(\alpha + \gamma)R + 1]^2}
+$$
+
+If $\gamma > 0$, then $n_t$ decreases when $R$ increases.
