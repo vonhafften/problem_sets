@@ -1,0 +1,361 @@
+---
+title: "ECON 710B - Problem Set 11"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "4/20/2021"
+output: pdf_document
+header-includes:
+- \usepackage{bm}
+- \usepackage{bbm}
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\var}{\text{var}}
+- \newcommand{\med}{\text{med}}
+- \newcommand{\rank}{\text{rank}}
+- \newcommand{\twiddle}{\tilde}
+- \newcommand{\Lfn}{\mathcal{L}}
+- \newcommand{\one}{\mathbbm{1}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(knitr)
+library(xlsx)
+library(lmtest)
+library(sandwich)
+library(margins)
+library(stargazer)
+```
+
+## Excerise 25.1
+
+Emily estimates a probit regression setting her dependent variable to equal $Y = 1$ for a purchase and $Y = 0$ for no purchase. Using the same data and regressors, Jacob estimates a probit regression setting the dependent variable to equal $Y = 1$ if there is no purchase and $Y = 0$ for a purchase. What is the difference in their estimated slope coefficients?
+
+If Emily estimates $\hat\beta$, then Jacob's estimates are $-\hat\beta$. 
+
+Let $Y_J = 1 - Y_E$ and $e_E = -e_J$:
+
+\begin{align*}
+Y_E 
+&= \Phi(X'\beta) + e_E \\
+1 - Y_J 
+&= \Phi(X'\beta) + e_E \\
+Y_J 
+&= 1 - \Phi(X'\beta) - e_E \\
+&= 1 - P(Z < X'\beta) - e_E \\
+&= P(Z > X'\beta) - e_E \\
+&= P(Z < - X'\beta) - e_E \\
+&= \Phi(- X'\beta) + e_J
+\end{align*}
+
+Where $Z \sim N(0, 1)$. Notice that $E[e_E|X] = 0 \implies E[e_J|X] = 0$.
+
+\pagebreak
+
+## Excerise 25.3
+
+Show (25.1) and (25.2). From Hansen (p. 806):
+
+The variables satisfy the regression framework: $Y = P(X) + e$ with $E[e|X] = 0$.  The error $e$ is not "classical."  It has the two-point conditional distribution:
+
+\begin{align*}
+e &= 
+\begin{cases} 
+1 - P(X), &\text{with probability } P(X) \\
+-P(X),     &\text{with probability } 1 - P(X)
+\end{cases}
+& (25.1)
+\end{align*}
+
+It is also highly heteroskedastic with conditional variance:
+
+\begin{align*}
+\var(e|X) &= P(X) (1 - P(X))
+& (25.2)
+\end{align*}
+
+For (25.1), notice that
+
+\begin{align*}
+P(Y=1|X) &= E[Y|X] = E[P(X) + e|X] = P(X)\\
+P(Y=0|X) &= 1 - P(Y=1|X) = 1 - P(X)
+\end{align*}
+
+If $Y = 1$, then $1 = P(X) + e \implies e = 1 - P(X)$.  If $Y=0$, then $0=P(X) + e \implies e = -P(X)$.
+
+For (25.2),
+
+\begin{align*}
+\var(e|X) 
+&= E[e^2|X] \\
+&= [1 - P(X)]^2P(X) + [-P(X)]^2[1 - P(X)]\\
+&= P(X) - 2P(X)^2 + P(X)^3+ P(X)^2 - P(X)^3\\
+&= P(X) (1 - P(X))
+\end{align*}
+
+\pagebreak
+
+## Excerise 25.9
+
+Find the first-order condition for the logit MLE $\hat\beta^{logit}$.
+
+From Hansen (p. 810), we know that the log-likelihood function for the logit model is:
+
+$$
+\ell_n (\beta) 
+= \sum_{i=1}^n \log \Lambda (Z_i' \beta) \\
+= \sum_{i=1}^n \log  [(1 + \exp(-Z_i' \beta))^{-1}] \\
+= -\sum_{i=1}^n \log  [1 + \exp(-Z_i' \beta)]
+$$
+
+where $Z_i = \begin{cases} X_i & \text{ if } Y_i = 1 \\-X_i & \text{ if } Y_i = 0 \end{cases}$.  The FOC with respect to $\beta$ is:
+
+$$
+0 = -\sum_{i=1}^n  [1 + \exp(-Z_i' \beta)]^{-1}\exp(-Z_i' \beta)(-Z_i)
+$$
+$$
+\implies 0 = \sum_{i=1}^n  \Lambda(Z_i'\beta)\exp(-Z_i' \beta)Z_i
+$$
+
+## Excerise 25.12
+
+Show how to use NLLS to estimate a probit model.
+
+The probit model is $Y = \Phi(X'\beta) + e = m(X, \beta) + e$ with $E[e|X] = 0$ and $m(X, \beta) = \Phi(X'\beta)$.  Thus, the sample average of squared errors is 
+
+$$
+S_n(\beta) = \frac{1}{n} \sum_{i=1}^n (Y_i - m(X_i, \beta) )^2
+$$
+
+Thus, $\hat{\beta}_{nlls} = \arg\min_{\beta \in \R^k} S_n(\beta)$.
+
+\pagebreak
+
+## Excerise 25.14
+
+Take the heteroskedastic nonparametric binary choice model:
+
+\begin{align*}
+Y^* &= m(X) + e \\
+e | X &\sim N(0, \sigma^2(X)) \\
+Y &= Y^* \one \{Y^* > 0\}
+\end{align*}
+
+The observables are $\{Y_i, X_i : i = 1, ..., n\}$.  The functions $m(x)$ and $\sigma^2(x)$ are nonparametric.
+
+(a) Find a formula for the response probability.
+
+\begin{align*}
+P(Y > 0 | X) 
+&= P(Y^* \one \{ Y^* > 0 \} > 0 | X) \\
+&= P(Y^* > 0 | X) \\
+&= P(m(X) + e > 0 | X) \\
+&= P(e > - m(X) | X)  \\
+&= 1 - P(e < - m(X) | X)  \\
+&= 1 - F( - m(X)) 
+\end{align*}
+
+where $F$ is the CDF of a random variable distributed $N(0, \sigma^2(X))$.
+
+(b) Are $m(x)$ and $\sigma^2(x)$ both identified? Explain.
+
+No, if $(m(x), \sigma^2(x))$ is a solution, then $(a * m(x), a^2 * \sigma^2(x))$ is also a solution.  So, $m(x)$ and $\sigma^2(x)$ are not identified.
+
+(c) Find a normalization which achieves identification.
+
+Normalize $\sigma^2(X) = 1$, then we can identify $\tilde{m}(X)$, which is a transformed version of $m(X)$ for the normalized values of $e$.
+
+(d) Given your answer to part (c), does it make sense to "allow for heteroskedasticity" in the binary choice model? Explain?
+
+No, because $m(X)$ and $\sigma^2(X)$ cannot both be identified, we need to normalize $e$ to be homoskedastic.
+
+\pagebreak
+
+## Excerise 25.15
+
+Use the `cps09mar` dataset and the subset of men. Set $Y = 1$ if the individual is a member of a labor union (`union`=1) and $Y = 0$ otherwise. Estimate a probit model as a linear function of `age`, `education`, and indicators for Black individuals and for Hispanic individuals. Report the coefficient estimates and standard errors. Interpret the results.
+
+```{r exercise25_15}
+cps09mar <- read_delim(file = "cps09mar.txt", 
+                 delim = "\t",
+                 col_names = c("age", "female", "hisp", "education", "earnings", "hours",
+                               "week", "union", "uncov", "region", "race", "marital"),
+                 col_types = cols())
+
+sample_25_15 <- cps09mar %>%
+  filter(female == 0) %>%
+  mutate(black = as.numeric(race == 2))
+
+probit <- glm(union ~ age + education + black + hisp, 
+              family = binomial(link = "probit"), 
+              data = sample_25_15)
+
+sum(sample_25_15$union)/nrow(sample_25_15)
+
+coeftest(probit, vcov. = vcovHC, type = "HC1")
+
+margins_summary(probit) %>% kable(digits = 4)
+```
+
+\pagebreak
+
+First, note that about 2.2 percent of the sample are in a union. 
+
+Second, looking at the regression table, we see that the coefficients for `age`, `education`, and `hisp` are statistically significant.  The coefficient for `black` is not statistically different than zero and the intercept is not very meaning because probit models are only identified up to scale.  While the magnitude of the significant coefficients is difficult to interpret, we can consider at the sign.  The coefficient on `age` is positive suggesting that the older a man in the sample the more likely he is in a union.  The coefficient on `education` is negative suggesting that more education makes someone less likely to be in a union.  The coefficient on `hisp` is also negative suggesting that it is less likely for men in the sample who identified as Hispanic to be in a union.
+
+Third, we can look at the average marginal effects table to get a sense of the economic magnitude of these effects. Note that the unconditional probability of being a union member is 2.2 percent, so these effects are generally large. The average marginal effect of `age` means that if you're 10 years old you're about 0.4 percentage points more likely to be in a union.  The average marginal effect of `education` is larger, but similarly small.  One more year of education reduces the probability of being in a union by 0.1 percentage points.  The marginal effect of `hisp` is even larger.  Identify as Hispanic reduces the likelihood of being in a union by about 1.5 percentage points.  For context, out of Hispanic men in the sample, about 1.3 percent are in a union.
+
+\pagebreak
+
+## Excerise 25.17
+
+Use the `cps09mar` dataset and the subset of women with a college degree. Set $Y = 1$ if marital equals 1, 2, or 3, and set $Y = 0$ otherwise. Estimate a binary choice model for $Y$ as a possibly nonlinear function of age. Describe the motivation for the model you use. Plot the estimated response probability. How do the estimates compare with those for men from Figure 25.1?
+
+```{r exercise25_17, results = "asis"}
+sample_25_17 <- cps09mar %>%
+  filter(female == 1, education >= 14) %>%
+  mutate(y = as.numeric(marital %in% 1:3))
+
+erp  <- sample_25_17 %>% group_by(age) %>% summarise(y = mean(y), count = n()) 
+
+erp %>%
+  ggplot(aes(y = y, x = age)) +
+  geom_point() + 
+  geom_smooth(method = 'loess', formula = y ~ x) +
+  ggtitle("Estimated Response Probabilities")
+
+erp %>%
+  ggplot(aes(y = count, x = age)) +
+  geom_line() + 
+  ggtitle("Number of Observations")
+
+series_1 <- glm(y ~ age, family = binomial(link = "probit"), data = sample_25_17)
+series_2 <- glm(y ~ age + I(age^2), family = binomial(link = "probit"), 
+                data = sample_25_17)
+series_3 <- glm(y ~ age + I(age^2) + I(age^3), family = binomial(link = "probit"), 
+                data = sample_25_17)
+series_4 <- glm(y ~ age + I(age^2) + I(age^3) + I(age^4), 
+                family = binomial(link = "probit"), data = sample_25_17)
+
+se_1 <- sqrt(diag(vcovHC(series_1, type = "HC1")))
+se_2 <- sqrt(diag(vcovHC(series_2, type = "HC1")))
+se_3 <- sqrt(diag(vcovHC(series_3, type = "HC1")))
+se_4 <- sqrt(diag(vcovHC(series_4, type = "HC1")))
+
+stargazer(series_1, series_2, series_3, series_4, 
+          se = list(se_1, se_2, se_3, se_4),
+          omit.stat = c("f", "aic", "ll"),
+          header = FALSE, title = "Series Probit Estimates", float = FALSE)
+
+bind_rows(margins_summary(series_1), 
+          margins_summary(series_2), 
+          margins_summary(series_3), 
+          margins_summary(series_4)) %>%
+  mutate(order = 1:4) %>%
+  kable(digits = 4, 
+        caption = "Average Marginal Effects")
+
+prediction <- tibble(age = seq(min(sample_25_17$age),max(sample_25_17$age), 0.01)) %>%
+  mutate(order_1 = predict(series_1, list(age = age), type = "response"),
+         order_2 = predict(series_2, list(age = age), type = "response"),
+         order_3 = predict(series_3, list(age = age), type = "response"),
+         order_4 = predict(series_4, list(age = age), type = "response")) %>%
+  pivot_longer(-age)
+
+prediction %>%
+  ggplot() +
+  geom_point(data = erp, aes(y = y, x = age)) +
+  geom_line(aes(y = value, x = age, color = name)) +
+  ggtitle("Series Probit Model Comparison")
+```
+
+First, I plotted the estimated response probabilities, which is the proportion of married people for each age.  I added a local polynomial regression line to get a sense for the shape of the distribution.  I think there are two regions to consider.  Between 20 and 40, the estimated response probabilities increase steeply and then at 40 the estimated response probabilities decrease at a gentler slope.  The variance dramatically increases at around 65, which is consistent with a dramatic decrease in the number of observations.  Thus, I think we shouldn't try to find a regression that works well for the right tail of the age distribution.
+
+Second, I estimate series probit models in order to better approximate the nonlinear function of age.  I use orders 1, 2, 3, and 4.  
+
+Third, since the coefficients of the series probit models are difficult to interpret, I estimate the average marginal effects of age for each model.  The size of the average marginal effect is increasing with the polynomial order.
+
+Fourth, I plot the fitted response probabilities from each regression.  Clearly, the series probit with order 1 is just a normal probit and as I guess from looking at the estimates response probabilities, it doesn't fit the data well.  The series regressions with orders 2, 3, and 4 fit pretty well.  As I mentioned above, the number of observations is very low for ages over 65.  The order 2 series approximation is slightly too high at the low and high ends and slightly off in the middle.  For the relevant window, orders 3 and 4 are very close.   My preferred model is the approximation with order 3 because of you do not get much more with a fourth order approximation.  In addition, the change in the marginal effect estimate is significantly different going from order 1 to order 2 and order 2 to order 3, but it is insignificant when you add the fourth term.  The third order approximation begins to increase in the late-70s, which I think is unfortunate because artifact of the approximation and not a feature of the data.
+
+The data for women is very different from the data for men in figure 25.1.  Slightly later peak (40 versus 35) and a much more dramatic decrease after 40. The estimates for men also increased substantial in the late 70s and early 80s which is not apparent for women, but this could similarly be an issue with small sample sizes.
+
+\pagebreak
+
+## Excerise 26.1
+
+For the multinomial logit model (26.2), show that $0 \le P_j(x) \le 1$ and $\sum_{j=1}^J P_j(x)=1$.
+
+\begin{align*}
+P_j(x) &= \frac{\exp(x'\beta_j)}{\sum_{\ell = 1}^{J}\exp(x'\beta_\ell)} & (26.2)
+\end{align*}
+
+Notice that $\exp(x)$ is nonnegative for all $x \in \R$, so $P_j(x) \ge 0$.  Furthermore,
+
+$$
+P_j(x) = \frac{\exp(x'\beta_j)}{\sum_{\ell = 1}^{J}\exp(x'\beta_\ell)} = \frac{\exp(x'\beta_j)}{\exp(x'\beta_j) + \sum_{\ell = 1; \ell \neq j}^{J}\exp(x'\beta_\ell)} \le 1
+$$
+
+Furthermore:
+
+$$
+\sum_{j=1}^J P_j(x) 
+= \sum_{j=1}^J \frac{\exp(x'\beta_j)}{\sum_{\ell = 1}^{J}\exp(x'\beta_\ell)} 
+= \Bigg( \frac{1}{\sum_{\ell = 1}^{J}\exp(x'\beta_\ell)}\Bigg) \sum_{j=1}^J \exp(x'\beta_j)  
+= 1
+$$
+
+
+## Excerise 26.3
+
+For the multinomial logit model (26.2) show that the marginal effects equal (26.4).
+
+\begin{align*}
+\delta_j(x) &= \frac{\partial}{\partial x} P_j(x) = P_j(x) \Bigg(\beta_j - \sum_{\ell = 1}^{J} \beta_\ell P_\ell(x)\Bigg) & (26.4)
+\end{align*}
+
+\begin{align*}
+\delta_j(x) 
+&= \frac{\partial}{\partial x} P_j(x) \\
+&= \frac{\partial}{\partial x}\frac{\exp(x'\beta_j)}{\sum_{\ell = 1}^{J}\exp(x'\beta_\ell)} \\
+&= \frac{\beta_j\exp(x'\beta_j)}{\sum_{\ell = 1}^{J}\exp(x'\beta_\ell)}  + \frac{\exp(x'\beta_j)\sum_{\ell = 1}^{J} \beta_\ell \exp(x'\beta_\ell)}{[\sum_{w = 1}^{J}\exp(x'\beta_w)]^2}  \\
+&= \frac{\exp(x'\beta_j)}{\sum_{\ell = 1}^{J}\exp(x'\beta_\ell)} \Bigg(\beta_j - \sum_{\ell = 1}^{J} \beta_\ell \frac{\exp(x'\beta_\ell)}{\sum_{w = 1}^{J}\exp(x'\beta_w)} \Bigg) \\
+&= P_j(x) \Bigg(\beta_j - \sum_{\ell = 1}^{J} \beta_\ell P_\ell(x)\Bigg)
+\end{align*}
+
+\pagebreak
+
+## Excerise 26.7
+
+In the conditional logit model, find an estimator for $AME_{jj}$.
+
+From Hansen (p. 828):
+
+$$
+AME_{jj} = E[\delta_{jj}(W, X)] = E[\gamma P_j(W, X) (1-P_j(E, X))]
+$$
+
+Replacing with estimated coefficients and sample moments:
+
+$$
+\hat{AME_{jj}} = \hat\gamma \frac{1}{n} \sum_{i=1}^n \hat P_j(W_i, X_i) (1 - \hat P_j(W_i, X_i))
+$$
+
+Where $\hat P_j(W_i, X_i)) = \frac{\exp(W_i'\hat\beta_j + x_j' \gamma)}{\sum_{\ell=1}^J \exp(W_i'\hat\beta_\ell + x_\ell' \gamma)}$.
+
+## Excerise 26.8
+
+Show (26.11).
+
+$$
+\frac{P_j(W, X | \theta)}{P_\ell(W, X | \theta)} = \frac{\exp(W'\beta_j + X_j' \gamma)}{\exp(W'\beta_\ell + X_\ell' \gamma)}
+$$
+
+$$
+\frac{P_j(W, X | \theta)}{P_\ell(W, X | \theta)} 
+= \frac{\frac{\exp(w'\beta_j + x_j' \gamma)}{\sum_{s = 1}^J \exp(w'\beta_s + x_s' \gamma)}}
+       {\frac{\exp(w'\beta_\ell + x_\ell' \gamma)}{\sum_{s = 1}^J \exp(w'\beta_s + x_s' \gamma)}}\\
+= \frac{\exp(W'\beta_j + X_j' \gamma)}{\exp(W'\beta_\ell + X_\ell' \gamma)}
+$$
