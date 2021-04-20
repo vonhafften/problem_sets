@@ -1,0 +1,67 @@
+---
+title: "ECON 713B - Problem Set 3"
+author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "4/25/2021"
+output:
+ pdf_document: default
+ html_document:
+ df_print: paged
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \usepackage{bm}
+- \usepackage{bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## Problem 1
+
+A risk-neutral principal hires an agent to work on a project, offering a wage of $w$. The agent exerts effort $e$. The agent’s utility function is $v(w,e) =\sqrt w-g(e)$, where $g(e)$ is the disutility associated with effort $e$. The agent can choose one of two possible effort levels, $e_1$ or $e_2$, with associated disutility levels $g(e_1) = 1$ and $g(e_2) =\frac{1}{2}$. If the agent chooses effort level $e_1$, the project yields an output of 8 for the principal with probability $\frac{1}{2}$ and 0 with probability $\frac{1}{2}$. If he chooses $e_2$, the project yields an output of 8 with probability $\frac{1}{4}$ and 0 with probability $\frac{3}{4}$. The agent’s reservation utility is 0.
+
+(a) Suppose the effort level chosen by the agent is observable by the principal. A wage contract then specifies an effort level ($e_1$ or $e_2$) and an output-contingent wage schedule $\{w_H,w_L\}$. Here $w_H$ is the wage paid if the project yields 8, and $w_L$ is the wage paid if the project yields 0. If effort is observable, it is optimal for the principal to choose a fixed wage contract (that is, set $w_H=w_L$) for each effort level. Informally, explain the intuition for this result.
+
+...
+
+(b) If effort is observable, which effort level should the principal implement? What is the principal's optimal wage contract?
+
+...
+
+(c) If effort is not observable, which effort level should the principal implement? What is the principal's optimal wage contract?
+
+...
+
+\pagebreak
+
+## Problem 2
+
+Consider a cashless entrepreneur who wants to borrow and carry out the following project.If he exerts an effort level of $e_1$, he will produce an output of $z$ with probability $P_1>0$ and 0 with probability $1-P_1$. If he exerts an effort level of $e_2$ he will produce an output of $z$ with probability $P_2(P_2< P_1)$ and 0 with probability $1-P_2$. Let $c_1>0$ be the cost of effort $e_1$ for the entrepreneur and $c_2= 0$ be the cost of low effort $e_2$. A monopolistic bank with a cost of fund of $r$ offers a loan of 1 unit for a reimbursement of $z-x$ when the project is successful, where $x$ is the share of output retained by the agent. Let the entrepreneur’s utility with no project be 0. Assume $P_z < r$.
+
+Determine the optimal loan contract of a bank which maximizes its expected profit subject to the incentive and participation constraints of the entrepreneur.
+
+...
+
+\pagebreak
+
+## Problem 3
+
+Consider a monopolist producing a good of quality $q$.  The quality can be either high ($q= 1$; then, the marginal cost of production is $c_1>0$) or low ($q= 0$; then, the marginal cost is $c_0= 0$). There is a mass one of identical consumers. Each consumer’s payoff from purchasing one unit of a good with quality $q$ at price $p$ is $U=q-p$. Assume $c_1<1$ so that producing the high quality good is socially efficient.
+
+(a) Suppose that consumers do not observe the good’s quality before purchasing it. Thetiming of the game is as follows:
+
+i. The monopolist chooses the quality of the good;
+ii. The monopolist chooses the price;
+iii. Consumers observe the price (but not the quality) and decide whether to buy (one unit of) the good.
+
+Find a pure-strategy PBE of the game.
+
+...
+
+(b) Suppose now that a proportion $\alpha$ of the consumers can observe the good’s quality before purchasing it. The remaining $1 - \alpha$ consumers observe product quality only after the purchase.  The timing of the game is modified in the third stage: the informed consumers observe $q$ and the price and decide whether to buy the good, while the uninformed consumers only observe the price and decide whether to buy. Find a pure-strategy equilibrium of the game, in which all consumers buy a high-quality good.

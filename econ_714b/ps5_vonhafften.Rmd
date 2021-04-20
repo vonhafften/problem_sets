@@ -1,0 +1,150 @@
+---
+title: "ECON 714B - Problem Set 5"
+author: "Alex von Hafften^[This problem set is for ECON 714B Macroeconomic Theory taught by Rishabh Kirpalani with assistance from Duong Dang at UW-Madison. I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+date: "4/23/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Problem 1 (50 points)
+
+Consider the following economy.  A unit mass continuum of households lives for two periods $t=1$ and $t=2$.  In the first period, there are two kinds of households: high and low productivity, with half the population being of each type. For high productivity households, one unit of labor produces 1 unit of output. For low productivity households, one unit of labor produces 0 units of output. In the second period, all households are identical, cannot produce, and receive a zero endowment. There exists an ability to store resources across dates at the rate $R$. (One unit saved today produces $R$ units tomorrow.) The utility function for high productivity households is $U(c_1,c_2,y)=u(c_1)-v(y)+\beta u(c_2)$, where $c_1$ is their consumption in the first period and $c_2$ is their consumption in the second period. For low productivity households, their utility function is $U(c_1,c_2)=u(c_1)+\beta u(c_2)$. Assume $\beta=\frac{1}{R}$ and $u$ and $v$ have the appropriate properties necessary for solutions to be characterized by first order conditions.
+
+1. Characterize as fully as you can the solution to the utilitarian planner’s problem when household type is private.
+
+If household type is public information, the utilitarian planner's problem is to maximize household utility subject to resource feasibility:
+
+$$
+\max_{\{c^H_1, c^H_2, c^L_1, c^L_2, y\}} \frac{1}{2} [u(c_1^H)-v(y)+\beta u(c_2^H)] + \frac{1}{2} [u(c_1^L)+\beta u(c_2^L)]
+$$
+
+$$
+\text{s.t. } \frac{1}{2}c_1^H + \frac{1}{2}c_1^L + A = \frac{1}{2}y
+$$
+
+$$
+\text{and } \frac{1}{2}c_2^H + \frac{1}{2}c_2^L = AR
+$$
+
+We can rewrite the utilitarian planner's problem as
+
+$$
+\max_{\{c^H_1, c^H_2, c^L_1, c^L_2, y\}} u(c_1^H)-v(y)+\beta u(c_2^H) + u(c_1^L)+\beta u(c_2^L)
+$$
+
+$$
+\text{s.t. } c_1^H + c_1^L + \frac{c_2^H}{R} + \frac{c_2^L}{R} = y
+$$
+
+\pagebreak
+
+The legrangian is:
+
+$$
+\Lf 
+= u(c_1^H)-v(y)+\beta u(c_2^H) + u(c_1^L)+\beta u(c_2^L) 
++ \lambda \Bigg[y - c_1^H - c_1^L - \frac{c_2^H}{R} - \frac{c_2^L}{R}\Bigg]
+$$
+
+The FOCs are:
+
+\begin{align*}
+u'(c_1^H) &= \lambda & [c_1^H] \\
+u'(c_1^L) &= \lambda & [c_1^L] \\
+\beta u'(c_2^H) &= \frac{\lambda}{R} & [c_2^H] \\
+\beta u'(c_2^L) &= \frac{\lambda}{R} & [c_2^L] \\
+v'(y) &= \lambda & [y]
+\end{align*}
+
+Since $\beta = 1/R \implies u'(c_1^H) = u'(c_1^L) = u'(c_2^H)= u'(c_2^L) \implies c_1^H = c_1^L = c_2^H = c_2^L = y/4$.  Furthermore, we know that $y$ is such that the marginal disutility of labor equals the marginal utility of consumption: $v'(y) = u'(c_1^H)$.  
+
+Now, let us consider the utilitarian planner's problem when household type is private information.  The utilitarian planner chooses contracts $(c_1^H, c_2^H, y)$ and $(c_1^L, c_2^L, 0)$ subject to resource feasibility and incentive compatibility for the high type:\footnote{Here, I assume that the utilitarian planner can observe output and cannot observe labor.  If the utilitarian planner can observe labor, then they can require the labor for the low productivity household to the highest possible amount.  Low productivity households do not care about labor, so they are indifferent between working and not.  High productivity household experience disutility from working.  Thus, if the utilitarian planner observes labor, she can implement the public information solution.  Furthermore, the low type cannot pretend to be the high type because they can't produce anything.}
+
+$$
+\max_{\{c^H_1, c^H_2, c^L_1, c^L_2, y\}} u(c_1^H)-v(y)+\beta u(c_2^H) + u(c_1^L)+\beta u(c_2^L)
+$$
+
+$$
+\text{s.t. } c_1^H + c_1^L + \frac{c_2^H}{R} + \frac{c_2^L}{R} = y
+$$
+
+$$
+\text{and } u(c_1^H) - v(y) + \beta u(c_2^H) = u(c_1^L)-v(0)+\beta u(c_2^L)
+$$
+The legrangian is:
+
+\begin{align*}
+\Lf 
+&= u(c_1^H)-v(y)+\beta u(c_2^H) + u(c_1^L)+\beta u(c_2^L) \\
+&+ \lambda \Bigg[ y - c_1^H - c_1^L - \frac{c_2^H}{R} - \frac{c_2^L}{R} \Bigg] \\
+&+ \mu \Big[ u(c_1^H) - v(y) + \beta u(c_2^H) - u(c_1^L) + v(0) - \beta u(c_2^L) \Big]
+\end{align*}
+
+\pagebreak
+
+The FOCs are:
+
+\begin{align*}
+(1 + \mu) u'(c_1^H) &= \lambda                 & [c_1^H] \\
+(1 - \mu) u'(c_1^L) &= \lambda                 & [c_1^L] \\
+(1 + \mu) \beta u'(c_2^H) &= \frac{\lambda}{R} & [c_2^H] \\
+(1 - \mu) \beta u'(c_2^L) &= \frac{\lambda}{R} & [c_2^L] \\
+(1 + \mu) v'(y) &= \lambda                     & [y]
+\end{align*}
+
+Since $\beta = 1/R$ and $\mu > 0$ (by complementary slackness),
+
+$$
+(1 + \mu) u'(c_1^H) = (1 + \mu) u'(c_2^H) = (1 - \mu) u'(c_1^L) = (1 - \mu) u'(c_2^L) = (1 + \mu) v'(y)
+$$
+
+$$
+\implies c_1^H = c_2^H > c_1^L = c_2^L
+$$
+
+$$
+\implies u'(c_1^H) = v'(y)
+$$
+
+2. Suppose a government faces the following constraints: First, it cannot borrow, so expenditures in the first period must equal taxes in the first period. Second, its only tax instrument in the first period is a linear tax on first period production $\tau$. The government can pay a possibly nonlinear retirement payment to households in the second period, $b$, which is allowed to be a function of anything the government can observe. Can the government implement your answer to part 1, and, if so, how?\footnote{Similar to 1., I assume that the government can only observe output and not labor.  If the government can observe labor, they can implement the public information outcome.}
+
+Yes, the government can implement my answer to part 1.  let $c_1^H = c_2^H = c^{H*}$, $c_1^L = c_2^L = c^{L*}$, and $y^*$ be the solution to the planner's problem in part 1.  Consider government policy $(\tau, T, b)$ such that first-period production taxes $\tau = \frac{2c^{L*}}{y^*}$, first-period transfer to all households $T = c^{L*}$, and second-period retirement payments $b$ is a function of observed output of each household in the first period:
+
+$$
+b(y) = 
+\begin{cases} 
+c^{L*}  & \text{if } y = 0\\
+-c^{L*} & \text{if } y = y^*\\
+-\infty & \text{otherwise.}
+\end{cases}
+$$
+
+The decisions of the low productivity households are trivial since they cannot produce anything.  In the first period, they receive transfer of $c^{L*}$ and in the second period, they receive a retirement payment of $c^{L*}$ since their first-period production equals zero.
+
+The high productivity household will clearly either produce 0 or $y^*$ in the first period because the payment associated with retirement payment at any other production level is $-\infty$.  Because $c^{H*}$ and $y^*$ were defined based on incentive compatibility in part 1, the high productivity household will choose $y = y^*$ over $y = 0$.  Thus, tax revenue is $\frac{1}{2}\tau y^* = \frac{1}{2}\frac{2c^{L*}}{y^*} y^* = c^{L*}$.  Thus, the government can tranfer $c^{L*}$ to all households in the first period.  Finally, because $\beta = 1/R$, the high productivity household will consume the same amount (after taxes, transfers, and retirement payments) in each period.
+
+\pagebreak
+
+## Problem 2 (50 points)
+
+Consider the following variant of the static version of Mirrlees' optimal taxation problem. Each of a continuum of individuals is characterized by two numbers, $\theta$ for productivity which is privately observed and $s$ for a signal of $\theta$ which is public information. Productivity and the signals take on one of two values $\theta_H$ and $\theta_L$.The proportion of the population with productivity $\theta_H$ is $p$. Conditional on productivity $\theta$, the signal takes on the same value with productivity $q >1/2$. Preferences are given by $u(c) - v(\frac{y}{\theta})$, where $c$ is consumption and $y$ is observed output. The resource constraint is that aggregate consumption cannot exceed aggregate output. Assume the planner weighs all households equally.
+
+1. Set up the mechanism design problem for the planner.
+
+...
+
+2. Which household’s allocations are ex-post efficient?
+
+...
