@@ -139,12 +139,32 @@ The high productivity household will clearly either produce 0 or $y^*$ in the fi
 
 ## Problem 2 (50 points)
 
-Consider the following variant of the static version of Mirrlees' optimal taxation problem. Each of a continuum of individuals is characterized by two numbers, $\theta$ for productivity which is privately observed and $s$ for a signal of $\theta$ which is public information. Productivity and the signals take on one of two values $\theta_H$ and $\theta_L$.The proportion of the population with productivity $\theta_H$ is $p$. Conditional on productivity $\theta$, the signal takes on the same value with productivity $q >1/2$. Preferences are given by $u(c) - v(\frac{y}{\theta})$, where $c$ is consumption and $y$ is observed output. The resource constraint is that aggregate consumption cannot exceed aggregate output. Assume the planner weighs all households equally.
+Consider the following variant of the static version of Mirrlees' optimal taxation problem. Each of a continuum of individuals is characterized by two numbers, $\theta$ for productivity which is privately observed and $s$ for a signal of $\theta$ which is public information. Productivity and the signals take on one of two values $\theta_H$ and $\theta_L$. The proportion of the population with productivity $\theta_H$ is $p$. Conditional on productivity $\theta$, the signal takes on the same value with productivity $q >1/2$. Preferences are given by $u(c) - v(\frac{y}{\theta})$, where $c$ is consumption and $y$ is observed output. The resource constraint is that aggregate consumption cannot exceed aggregate output. Assume the planner weighs all households equally.
 
 1. Set up the mechanism design problem for the planner.
 
-...
+There are four types of households in this economy: 
+
+- High productivity and high signal households that consume $c_H^H$ and produce $y_H^H$ with mass $pq$.
+- High productivity and low signal households that consume $c_H^L$ and produce $y_H^L$ with mass $p(1-q)$.
+- Low productivity and high signal households that consume $c_L^H$ and produce $y_L^H$ with mass $(1-p)q$.
+- Low productivity and low signal households that consume $c_L^L$ and produce $y_L^L$ with mass $(1-p)(1-q)$.
+
+The planners problem is to maximize utility subject to resource feasibility and incentive compatibility:
+
+\begin{align*}
+\max_{\{ c_H^H, c_H^L, c_L^H, c_L^L, y_H^H, y_H^L, y_H^L, y_L^L \}}
+     pq      \Bigg[ u(c_H^H) - v \Bigg(\frac{y_H^H}{\theta_H} \Bigg) \Bigg] 
+&+ p(1-q)     \Bigg[ u(c_H^L) - v \Bigg(\frac{y_H^L}{\theta_H} \Bigg) \Bigg]\\
++ (1-p)q     \Bigg[ u(c_L^H) - v \Bigg(\frac{y_L^H}{\theta_L} \Bigg) \Bigg]
+&+ (1-p)(1-q) \Bigg[ u(c_L^L) - v \Bigg(\frac{y_L^L}{\theta_L} \Bigg) \Bigg]\\
+\text{s.t. } pq c_H^H + p(1 - q) c_H^L + (1 - p)q c_L^H + (1 - p)(1 - q) c_L^L &= pq y_H^H + p(1 - q) y_H^L + (1 - p)q y_L^H + (1 - p)(1 - q) y_L^L\\
+u(c_H^H) - v \Bigg(\frac{c_H^H}{\theta_H} \Bigg) &\ge u(c_L^H) - v \Bigg(\frac{y_L^H}{\theta_H} \Bigg)\\
+u(c_H^L) - v \Bigg(\frac{c_H^L}{\theta_H} \Bigg) &\ge u(c_L^L) - v \Bigg(\frac{y_L^L}{\theta_H} \Bigg)\\
+u(c_L^H) - v \Bigg(\frac{c_L^H}{\theta_L} \Bigg) &\ge u(c_H^H) - v \Bigg(\frac{y_H^H}{\theta_L} \Bigg)\\
+u(c_L^L) - v \Bigg(\frac{c_L^L}{\theta_L} \Bigg) &\ge u(c_H^L) - v \Bigg(\frac{y_H^L}{\theta_L} \Bigg)
+\end{align*}
 
 2. Which household’s allocations are ex-post efficient?
 
-...
+Clearly, when there is perfect information about productivity, high productivity households work more.  Similarly, in the private information case, the high productivity households work more, so low productivity households will not pretend to be high productivity households regardless of their signal.  This suggests that the last two incentive compatibility constraint can be dropped from a relaxed problem and the first two incentive compatibility constraint will hold with equality.  Thus, there is no distortion at the top.  Thus, only the allocations of the high productivity households $\{c_H^H, c_H^L, y_H^H, y_H^L\}$ will be ex-post efficient.
