@@ -44,6 +44,8 @@ $$
 v(w(e_1),e_1) = 0 \implies \sqrt {w(e_1)} - g(e_1) = 0 \implies \sqrt {w(e_1)} - 1 = 0 \implies w(e_1) = 1
 $$
 
+The expected profit for the principal under this wage scheme is: $\frac{1}{2}(8-1) + \frac{1}{2}(0-1) = 3$.
+
 \pagebreak
 
 (c) If effort is not observable, which effort level should the principal implement? What is the principal's optimal wage contract?
@@ -80,15 +82,51 @@ $$
 2 -\sqrt{w_H} = \sqrt{w_H} - 2 \implies w_H = 4 \implies w_L = 0
 $$
 
+The expected profit for the principal under this wage scheme is: $\frac{1}{2}(8-4) + \frac{1}{2}(0-0) = 2$.
+
 \pagebreak
 
 ## Problem 2
 
-Consider a cashless entrepreneur who wants to borrow and carry out the following project. If he exerts an effort level of $e_1$, he will produce an output of $z$ with probability $P_1>0$ and 0 with probability $1-P_1$. If he exerts an effort level of $e_2$ he will produce an output of $z$ with probability $P_2$ ($P_2< P_1$) and 0 with probability $1-P_2$. Let $c_1>0$ be the cost of effort $e_1$ for the entrepreneur and $c_2= 0$ be the cost of low effort $e_2$. A monopolistic bank with a cost of fund of $r$ offers a loan of 1 unit for a reimbursement of $z-x$ when the project is successful, where $x$ is the share of output retained by the agent. Let the entrepreneur’s utility with no project be 0. Assume $P_2 z < r$.
+Consider a cashless entrepreneur who wants to borrow and carry out the following project. If he exerts an effort level of $e_1$, he will produce an output of $z$ with probability $P_1>0$ and 0 with probability $1-P_1$. If he exerts an effort level of $e_2$ he will produce an output of $z$ with probability $P_2$ ($P_2 < P_1$) and 0 with probability $1-P_2$. Let $c_1>0$ be the cost of effort $e_1$ for the entrepreneur and $c_2= 0$ be the cost of low effort $e_2$. A monopolistic bank with a cost of fund of $r$ offers a loan of 1 unit for a reimbursement of $z-x$ when the project is successful, where $x$ is the share of output retained by the agent. Let the entrepreneur’s utility with no project be 0. Assume $P_2 z < r$.
 
 Determine the optimal loan contract of a bank which maximizes its expected profit subject to the incentive and participation constraints of the entrepreneur.
 
-...
+The bank seeks to implement a high level of effort because the expected level of output with low effort is insufficient to cover its cost of funds.  If the entrepreneur exerts effort level $e_1$, her expected payoff is:
+
+$$
+xP_1 - c_1
+$$
+
+If the entrepreneur exerts effort level $e_2$, her expected payoff is:
+
+$$
+xP_2
+$$
+
+The participation constraint implies:
+
+$$
+xP_1 - c_1 \ge 0 \implies x \ge \frac{c_1}{P_1}
+$$
+
+The incentive compatibility constraint implies:
+
+$$
+xP_1 - c_1 \ge xP_2 \implies x \ge  \frac{c_1}{P_1 - P_2}
+$$
+
+Notice that the incentive compatibility constraint is tighter than the participation constraint.  In addition, the bank wants to maximize its expected profits, so it chooses the smallest $x$ to incentive high effort, so:
+
+$$
+x =  \frac{c_1}{P_1 - P_2}
+$$
+
+Therefore, the bank offers this contract if its expected profit is positive (otherwise it would not offer the contract):
+
+$$
+P_1\Bigg(z - \frac{c_1}{P_1 - P_2}\Bigg) - r > 0
+$$
 
 \pagebreak
 
