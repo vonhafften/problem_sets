@@ -92,7 +92,7 @@ Consider a cashless entrepreneur who wants to borrow and carry out the following
 
 Determine the optimal loan contract of a bank which maximizes its expected profit subject to the incentive and participation constraints of the entrepreneur.
 
-The bank seeks to implement a high level of effort because the expected level of output with low effort is insufficient to cover its cost of funds.  If the entrepreneur exerts effort level $e_1$, her expected payoff is:
+Notice that the expected level of output with low effort is insufficient to cover the bank's cost of funds even if the entrepreneur gets nothing, so the bank will never design a contract that incentives low effort.  The bank seeks to implement a high level of effort if its expected profit is positive; I provide such a condition at the end. If the entrepreneur exerts effort level $e_1$, her expected payoff is:
 
 $$
 xP_1 - c_1
