@@ -1,6 +1,6 @@
 ---
 title: "ECON 713B - Problem Set 3"
-author: "Alex von Hafften^[I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
+author: "Alex von Hafften^[This problem set is for ECON 713B Microeconomic Theory taught by Marzena Rostek with assistance from Arseniy Stolyarov at UW-Madison. I worked on this problem set with a study group of Michael Nattinger, Andrew Smith, and Ryan Mather. I also discussed problems with Sarah Bass, Emily Case, Danny Edgel, and Katherine Kwok.]"
 date: "4/25/2021"
 output:
  pdf_document: default
@@ -28,21 +28,63 @@ A risk-neutral principal hires an agent to work on a project, offering a wage of
 
 (a) Suppose the effort level chosen by the agent is observable by the principal. A wage contract then specifies an effort level ($e_1$ or $e_2$) and an output-contingent wage schedule $\{w_H,w_L\}$. Here $w_H$ is the wage paid if the project yields 8, and $w_L$ is the wage paid if the project yields 0. If effort is observable, it is optimal for the principal to choose a fixed wage contract (that is, set $w_H=w_L$) for each effort level. Informally, explain the intuition for this result.
 
-...
+The principal wants the agent to put in high effort because the probability of the high output outcome is higher.  If effort is observable, then the principal can directly map high effort to a better outcome for the agent, so that the agent always puts in high effort.  Since the agent is risk-averse conditioning on output would change the agent's behavior.
 
 (b) If effort is observable, which effort level should the principal implement? What is the principal's optimal wage contract?
 
-...
+If effort is observable, the principal should offer contracts that implement high effort because it increases the probability of a high output outcome.  Thus, the principal should offer wages for low effort $w_H(e_2) = w_L(e_2) = w(e_2)$ that result in negative utility:
+
+$$
+v(w(e_2),e_2) < 0 \implies \sqrt {w(e_2)}-g(e_2) < 0 \implies w(e_2) < \frac{1}{4}
+$$
+
+If we assume that the agent puts in high effort when they are indifferent between putting in high effort and not participating, then high effort wage is $w_H(e_1) = w_L(e_1) = w(e_1)$:
+
+$$
+v(w(e_1),e_1) = 0 \implies \sqrt {w(e_1)} - g(e_1) = 0 \implies \sqrt {w(e_1)} - 1 = 0 \implies w(e_1) = 1
+$$
+
+\pagebreak
 
 (c) If effort is not observable, which effort level should the principal implement? What is the principal's optimal wage contract?
 
-...
+The principal should still implement high effort. Let $w_H$ and $w_L$ be the wages associated with high and low output. The expected utility of the agent putting in high effort is:
+
+$$
+\frac{\sqrt{w_H}}{2} + \frac{\sqrt{w_L}}{2} - 1
+$$
+
+The expected utility of the agent putting in low effort is:
+
+$$
+\frac{\sqrt{w_H}}{4} + \frac{3\sqrt{w_L}}{4} - \frac{1}{2}
+$$
+
+Since the principal seeks to maximize her expected profit, she pays the lowest wages to incentive the agent to put in high effort.  Thus, the individual rationality and incentive compatibility constraint hold with equality.  The individual rationality constraint implies:
+
+$$
+\frac{\sqrt{w_H}}{2} + \frac{\sqrt{w_L}}{2} - 1 = 0 \implies \sqrt{w_L} = 2 -\sqrt{w_H}
+$$
+
+The incentive compatibility constraint implies:
+
+$$
+\frac{\sqrt{w_H}}{2} + \frac{\sqrt{w_L}}{2} - 1 = \frac{\sqrt{w_H}}{4} + \frac{3\sqrt{w_L}}{4} - \frac{1}{2} 
+\implies 
+\sqrt{w_L} = \sqrt{w_H} - 2
+$$
+
+Therefore,
+
+$$
+2 -\sqrt{w_H} = \sqrt{w_H} - 2 \implies w_H = 4 \implies w_L = 0
+$$
 
 \pagebreak
 
 ## Problem 2
 
-Consider a cashless entrepreneur who wants to borrow and carry out the following project.If he exerts an effort level of $e_1$, he will produce an output of $z$ with probability $P_1>0$ and 0 with probability $1-P_1$. If he exerts an effort level of $e_2$ he will produce an output of $z$ with probability $P_2(P_2< P_1)$ and 0 with probability $1-P_2$. Let $c_1>0$ be the cost of effort $e_1$ for the entrepreneur and $c_2= 0$ be the cost of low effort $e_2$. A monopolistic bank with a cost of fund of $r$ offers a loan of 1 unit for a reimbursement of $z-x$ when the project is successful, where $x$ is the share of output retained by the agent. Let the entrepreneur’s utility with no project be 0. Assume $P_z < r$.
+Consider a cashless entrepreneur who wants to borrow and carry out the following project. If he exerts an effort level of $e_1$, he will produce an output of $z$ with probability $P_1>0$ and 0 with probability $1-P_1$. If he exerts an effort level of $e_2$ he will produce an output of $z$ with probability $P_2$ ($P_2< P_1$) and 0 with probability $1-P_2$. Let $c_1>0$ be the cost of effort $e_1$ for the entrepreneur and $c_2= 0$ be the cost of low effort $e_2$. A monopolistic bank with a cost of fund of $r$ offers a loan of 1 unit for a reimbursement of $z-x$ when the project is successful, where $x$ is the share of output retained by the agent. Let the entrepreneur’s utility with no project be 0. Assume $P_2 z < r$.
 
 Determine the optimal loan contract of a bank which maximizes its expected profit subject to the incentive and participation constraints of the entrepreneur.
 
@@ -54,7 +96,7 @@ Determine the optimal loan contract of a bank which maximizes its expected profi
 
 Consider a monopolist producing a good of quality $q$.  The quality can be either high ($q= 1$; then, the marginal cost of production is $c_1>0$) or low ($q= 0$; then, the marginal cost is $c_0= 0$). There is a mass one of identical consumers. Each consumer’s payoff from purchasing one unit of a good with quality $q$ at price $p$ is $U=q-p$. Assume $c_1<1$ so that producing the high quality good is socially efficient.
 
-(a) Suppose that consumers do not observe the good’s quality before purchasing it. Thetiming of the game is as follows:
+(a) Suppose that consumers do not observe the good’s quality before purchasing it. The timing of the game is as follows:
 
 i. The monopolist chooses the quality of the good;
 ii. The monopolist chooses the price;
