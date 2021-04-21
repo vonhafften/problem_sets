@@ -92,19 +92,7 @@ Consider a cashless entrepreneur who wants to borrow and carry out the following
 
 Determine the optimal loan contract of a bank which maximizes its expected profit subject to the incentive and participation constraints of the entrepreneur.
 
-Notice that the expected level of output with low effort is insufficient to cover the bank's cost of funds even if the entrepreneur gets nothing, so the bank will never design a contract that incentives low effort.  The bank seeks to implement a high level of effort if its expected profit is positive; I provide such a condition at the end. If the entrepreneur exerts effort level $e_1$, her expected payoff is:
-
-$$
-xP_1 - c_1
-$$
-
-If the entrepreneur exerts effort level $e_2$, her expected payoff is:
-
-$$
-xP_2
-$$
-
-The participation constraint implies:
+Notice that the expected level of output with low effort is insufficient to cover the bank's cost of funds even if the entrepreneur gets nothing, so the bank will never design a contract that incentives low effort.  The bank seeks to implement a high level of effort if its expected profit is positive; I provide such a condition at the end. If the entrepreneur exerts effort level $e_1$, her expected payoff is: $xP_1 - c_1$. If the entrepreneur exerts effort level $e_2$, her expected payoff is: $xP_2$. The participation constraint implies:
 
 $$
 xP_1 - c_1 \ge 0 \implies x \ge \frac{c_1}{P_1}
@@ -116,7 +104,7 @@ $$
 xP_1 - c_1 \ge xP_2 \implies x \ge  \frac{c_1}{P_1 - P_2}
 $$
 
-Notice that the incentive compatibility constraint is tighter than the participation constraint.  In addition, the bank wants to maximize its expected profits, so it chooses the smallest $x$ to incentive high effort, so:
+Notice that if the incentive compatibility constraint holds then the participation constraint holds. The bank wants to maximize its expected profits, so it chooses the smallest $x$ to incentive high effort, so:
 
 $$
 x =  \frac{c_1}{P_1 - P_2}
@@ -132,7 +120,7 @@ $$
 
 ## Problem 3
 
-Consider a monopolist producing a good of quality $q$.  The quality can be either high ($q= 1$; then, the marginal cost of production is $c_1>0$) or low ($q= 0$; then, the marginal cost is $c_0= 0$). There is a mass one of identical consumers. Each consumer’s payoff from purchasing one unit of a good with quality $q$ at price $p$ is $U=q-p$. Assume $c_1<1$ so that producing the high quality good is socially efficient.
+Consider a monopolist producing a good of quality $q$.  The quality can be either high ($q = 1$; then, the marginal cost of production is $c_1 > 0$) or low ($q = 0$; then, the marginal cost is $c_0 = 0$). There is a mass one of identical consumers. Each consumer’s payoff from purchasing one unit of a good with quality $q$ at price $p$ is $U = q - p$. Assume $c_1 < 1$ so that producing the high quality good is socially efficient.
 
 (a) Suppose that consumers do not observe the good’s quality before purchasing it. The timing of the game is as follows:
 
@@ -142,6 +130,14 @@ iii. Consumers observe the price (but not the quality) and decide whether to buy
 
 Find a pure-strategy PBE of the game.
 
-...
+Consider a pure-strategy PBE of the game where the monopolist produces $q=0$, charges some price $p > 0$, consumers do not purchase the good, and consumers believe that $q=0$ with certainty regardless of the price charged.  The monopolist have no incentive to deviate to $q=1$ because no matter what price is charged consumer don't buy.  Consumers have no incentive to deviate because purchasing the good will result in negative utility: $U = 0 - p < 0$. Thus, this is a pure-strategy PBE.
 
 (b) Suppose now that a proportion $\alpha$ of the consumers can observe the good’s quality before purchasing it. The remaining $1 - \alpha$ consumers observe product quality only after the purchase.  The timing of the game is modified in the third stage: the informed consumers observe $q$ and the price and decide whether to buy the good, while the uninformed consumers only observe the price and decide whether to buy. Find a pure-strategy equilibrium of the game, in which all consumers buy a high-quality good.
+
+In this equilibrium, we know that the monopolist chooses $q=1$ and all consumers buy the high-quality good.  This implies that the uninformed consumers must believe that $q=1$ with certainty after observing $p$.  Thus, they are willing to pay up to $p = 1$.  Informed consumers only buy (at a positive price) if $q=1$ and similarly are willing to pay up to $p=1$.  Thus, the profit-maximizing price for the monopolist is $p = 1$ and their profit is $\pi_{q=1} = 1 - c_1$.
+
+If the monopolist chooses $q=0$ instead, the informed consumers do not buy, but $p=1$ is still the profit-maximizing price for serving the uninformed market.  Thus, the monopolist's profit is $\pi_{q=0} = 1 - \alpha$.  Thus, for a pure-strategy equilibrium where all consumers buy high-quality goods to exist:
+
+$$
+\pi_{q=1} \ge \pi_{q=0} \implies 1 - c_1 \ge 1 - \alpha \implies \alpha \ge c_1
+$$
