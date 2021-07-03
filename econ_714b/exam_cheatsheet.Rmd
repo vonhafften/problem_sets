@@ -1,0 +1,211 @@
+---
+title: "ECON 714B - Notes"
+author: "Alex von Hafften"
+date: "4/24/2021"
+output: pdf_document
+header-includes:
+- \pagenumbering{gobble}
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Complete Markets
+
+- Arrow-Debreu Market Structure and Sequential Markets are equivalent.
+
+\pagebreak
+
+# Limited Commitment
+
+- Find participation constraint (PC) for planners' problem.
+
+- Decentralize using borrowing constraint.
+
+\pagebreak
+
+# Ramsay Taxation
+
+We use the primal approach:
+
+1. Derive implementability constraint (IC) from HH problem.
+2. Modify utility function using IC to get Ramsay Problem (RP).
+3. Compare FOCs of RP to FOC of HH problems.
+
+Setup:
+
+- Infinite periods with consumptn/capital and labor.
+- Feasibility (RC): $c(s^t) + g(s^t) + k(s^t) \le F(k(s^{t - 1}), \ell(s^t), s_t) + (1-\delta)k(s^{t-1})$.
+- Preferences: $\sum_{t, s^t} \beta^t \mu(s^t) U(c(s^t), \ell(s^t))$.
+- Exogenous gov't spending $g(s^t)$ funded by labor taxes $\tau$, capital taxes $\theta$, and gov't bonds $b(s^t)$ with return $R_b(s^t)$.
+- HHBC: $c(s^t) + k(s^t) + b(s^t) \le (1-\tau(s^t)w(s^t)\ell(s^t) + R_k(s^t) k(s^{t-1})$ where $R_k(s^t) = 1 + (1 - \theta(s^t))(r(s^t) - \delta)$.
+- GBC: $b(s^t) = R_b(s^t)b(s^{t-1}) + g(s^t) - \tau(s^t)w(s^t)\ell(s^t) - \theta(s^t)[r(s^t)-\delta]k(s^{t-1})$
+- Policy is $\{\tau(s^t), \theta(s^t)\}_{t=0}^\infty$.
+- Allocation is $\{c(s^t), k(s^t), \ell(s^t), b(s^t)\}_{t=0}^\infty$.
+- Prices are $\{w(s^t), r(s^t), R_b(s^t)\}\}_{t=0}^\infty$.
+
+CE: A policy, allocation, and prices such that
+
+1. Given policy and prices, the allocation solve HH problem.
+2. Given policy and prices, the allocation solves firm problem.
+3. GBC holds.  4. Markets clear.
+
+Market clearing and firm problem $\implies r(s^t) = F_K(k(s^{t-1}), \ell(s^t))$ and $w(s^t) = F_L(k(s^{t-1}), \ell(s^t))$.
+
+A Ramsay equilibrium is a policy, allocation, and prices that constitute a CE such that the policy maximizes HH utility.
+
+CE $\iff$ RC and IC are satisfied: $U_C(s_0)[R_k(s_0)k_{-1} + R_b(s_0)b_{-1}] = \sum_{t, s^t} \beta^t \mu(s^t) [U_C(s^t)c(s^t) + U_L(s^t)\ell(s^t)]$.
+
+$w(c(s^t), \ell(s^t), \lambda) := u(c(s^t), \ell(s^t)) + \lambda[U_c(s^t)c(s^t) + U_\ell(s^t)\ell(s^t)]$
+
+RP: $\max \sum_{t, s^t} \beta^t \mu(s^t) w(c(s^t), \ell(s^t), \lambda)$ s.t. RC.
+
+Inter. FOC: $\frac{w_\ell(s^t)}{w_c(s^t)} = F_\ell(s^t)$.
+
+Intra. FOC: $w_c(s^t) = \sum_{s^{t+1}} \beta \mu(s^{t+1} | s^t) w_c(s^{t+1})[1- \delta + F_K(s^{t+1})]$
+
+SS capital taxes:
+
+- RP $\implies 1 = \beta(1-\delta + F_K)$.
+- HHP $\implies 1 = \beta(1  + (1-\theta)(F_K - \delta))$.
+- $\implies \theta = 0$.
+
+\pagebreak
+
+# Static Mirrleesian Problem
+
+- Ramsay approach: Ruled out lump-sum taxes by assumptions.
+
+- Proportional tax: $\tau Y$.
+
+- Lump-sum tax: $Y - \tau$.
+
+- Mechanism design problem in which agents "abilities" are private information.
+
+- Trade-off between efficiency and equity.
+
+================================
+
+- A two-type example with a continuum of HHs characterized by a productivity level $\theta$:
+
+$$
+\theta \in \Theta = \{\theta_H, \theta_L\} \text{ where } \theta_H > \theta_L
+$$
+
+- $\pi(\theta)$ is the probability that a given HH is of type $\theta$.  Also the mass of such HH by LLN.
+
+- Assume that a HH of type $\theta$ that works $\ell$ hours can produce: $y = \theta \ell$ units of output.
+
+- HH prefs: $u(c, y, \theta) = u(c) - v(\ell) = u(c) - v(y/\theta)$ where $u$ is increasing and concave and $v$ is increasing and convex.
+
+- Suppose first that $\theta$ is public information.
+
+- An allocation is $(c(\theta), y(\theta))$.
+
+- Let's consider a utilitarian planner's problem:
+
+$$
+\max \pi(\theta_H) [u(c(\theta_H)) - v(y(\theta_H)/\theta_H)] + \pi(\theta_L) [u(c(\theta_L)) - v(y(\theta_L)/\theta_L)]
+$$
+
+$$
+\text{s.t. } \pi(\theta_H) c(\theta_H) + \pi(\theta_L) c(\theta_L) \le \pi(\theta_H) y(\theta_H) + \pi(\theta_L) y(\theta_L) 
+$$
+
+- [Guess that $c(\theta_H) = c(\theta_L)$ and $y(\theta_H) > y(\theta_L)$.]
+
+- FOC: 
+
+1. $c(\theta_H) = c(\theta_L)$
+2. $u'(c(\theta)) = \frac{1}{\theta} v'(\ell(\theta))$
+3. $\frac{v'(\ell(\theta_H))}{v'(\ell(\theta_L))} = \frac{\theta_H}{\theta_L} > 1 \implies v'(\ell(\theta_H)) > v'(\ell(\theta_L)) \implies \ell(\theta_H) > \ell(\theta_L)$
+
+- All HH consume same amount, high type HH work more.
+
+- Assume that $\theta$ is private information
+
+- Incentive compatibility: High type will pretend to be low type in public information outcome.
+
+- Defn: A direct revelation mechanism consists of actions/message set $A_i, i\in [0, 1]$ where $\forall i, A_i = \Theta_i$ and outcome function $(c, y)$: $c, y: \Theta \to \R_+$.
+
+- Defn: A revelation mechanism is incentive compatible iff $u(c(\theta)) - v(y(\theta)/\theta) \ge u(c(\hat\theta)) - v(y(\hat\theta)/\theta)$ $\forall (\hat\theta, \theta)$.
+
+- Defn: A revelation mechanism is resource feasible iff $\pi(\theta_H) c(\theta_H) + \pi(\theta_L) c(\theta_L) \le \pi(\theta_H) y(\theta_H) + \pi(\theta_L) y(\theta_L)$.
+
+- The planners' problem is:
+
+$$
+\max \pi(\theta_H) [u(c(\theta_H)) - v(y(\theta_H)/\theta_H)] + \pi(\theta_L) [u(c(\theta_L)) - v(y(\theta_L)/\theta_L)]
+$$
+
+$$
+\text{s.t. IC and RC}
+$$
+
+- There are two IC constraints: $H$ pretending to be $L$ and $L$ pretending to be $H$. We consider a "relaxed probelm in which we drop the IC constraint of the low type. We will check ex post if this constraint is satisfied.
+
+- Relaxed problem:
+
+$$
+\max \pi(\theta_H) [u(c(\theta_H)) - v(y(\theta_H)/\theta_H)] + \pi(\theta_L) [u(c(\theta_L)) - v(y(\theta_L)/\theta_L)]
+$$
+
+$$
+\text{s.t. } u(c(\theta_H)) - v(y(\theta_H)/\theta_H) \ge u(c(\theta_L)) - v(y(\theta_L)/\theta_H)
+$$
+
+$$
+\text{and } \pi(\theta_H) c(\theta_H) + \pi(\theta_L) c(\theta_L) \le \pi(\theta_H) y(\theta_H) + \pi(\theta_L) y(\theta_L)
+$$
+
+- Use $\lambda$ as multipler on IC for H and use $\mu$ as multipler on RC.
+
+- Then the FOCs are:
+
+1. $\pi(\theta_H) u'(c(\theta_H)) + \lambda u'(c(\theta_H)) - \pi(\theta_H)\mu = 0$
+2. $\pi(\theta_L) u'(c(\theta_L)) - \lambda u'(c(\theta_L)) - \pi(\theta_L)\mu = 0$
+3. $-\frac{\pi(\theta_H)}{\theta_H} v'(y(\theta_H)/\theta_H)- \lambda \frac{1}{\theta_H} v'(y(\theta_H)/\theta_H) + \pi(\theta_H)\mu = 0$
+4. $- \frac{\pi(\theta_L)}{\theta_L} v'(y(\theta_L)/\theta_L) + \lambda \frac{1}{\theta_H} v'(y(\theta_L)/\theta_H) + \pi(\theta_L)\mu = 0$
+
+- Combine (1) and (3):
+
+$$
+u'(c(\theta_H)) = \frac{1}{\theta_H} v' (y(\theta_H)/\theta_H)
+$$
+
+- This is exactly what you would get if there is no private info.
+
+- Allocation for the high type is "ex-post efficient".
+
+- No distortion at the top.
+
+- You don't want to distort the allocation for types that no other type wants to be. L doesn't want to be pretend to be H, so no need to distort H.
+
+- Next, combine (1) and (2):
+
+$$
+\frac{u'(c(\theta_H))}{u'(c(\theta_L))} = \frac{\pi(\theta_H)}{\pi(\theta_L)} \frac{(\pi(\theta_L) - \lambda)}{(\pi(\theta_H) + \lambda)} = \frac{\pi(\theta_H)\pi(\theta_L) - \pi(\theta_H)\lambda}{\pi(\theta_L)\pi(\theta_H) + \pi(\theta_L)\lambda} < 1
+$$
+
+- $\implies c(\theta_H) > c(\theta_L)$ [public info this held with equality].
+
+- But since the IC holds with equality:
+
+$$
+u(c(\theta_H)) - v(y(\theta_H)/\theta_H) = u(c(\theta_H)) - v(y(\theta_L))
+$$
+
+
+
+
+
+
+
+
+
+

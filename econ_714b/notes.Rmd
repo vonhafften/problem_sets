@@ -1,0 +1,92 @@
+---
+title: "ECON 714B - Cheatsheet"
+author: "Alex von Hafften"
+date: "4/23/2021"
+output: pdf_document
+geometry: margin=1cm
+header-includes:
+- \AtBeginDocument{\let\maketitle\relax}
+- \pagenumbering{gobble}
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+classoption:
+- twocolumn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# ECON 714B Midterm Cheatsheet
+
+### Complete Markets
+
+- Arrow-Debreu Market Structure and Sequential Markets are equivalent.
+
+\pagebreak
+
+### Limited Commitment
+
+- Find participation constraint (PC) for planners' problem.
+
+- Decentralize using borrowing constraint.
+
+\pagebreak
+
+### Ramsay Taxation
+
+We use the primal approach:
+
+1. Derive implementability constraint (IC) from HH problem.
+2. Modify utility function using IC to get Ramsay Problem (RP).
+3. Compare FOCs of RP to FOC of HH problems.
+
+Setup:
+
+- Infinite periods with consumptn/capital and labor.
+- Feasibility (RC): $c(s^t) + g(s^t) + k(s^t) \le F(k(s^{t - 1}), \ell(s^t), s_t) + (1-\delta)k(s^{t-1})$.
+- Preferences: $\sum_{t, s^t} \beta^t \mu(s^t) U(c(s^t), \ell(s^t))$.
+- Exogenous gov't spending $g(s^t)$ funded by labor taxes $\tau$, capital taxes $\theta$, and gov't bonds $b(s^t)$ with return $R_b(s^t)$.
+- HHBC: $c(s^t) + k(s^t) + b(s^t) \le (1-\tau(s^t)w(s^t)\ell(s^t) + R_k(s^t) k(s^{t-1})$ where $R_k(s^t) = 1 + (1 - \theta(s^t))(r(s^t) - \delta)$.
+- GBC: $b(s^t) = R_b(s^t)b(s^{t-1}) + g(s^t) - \tau(s^t)w(s^t)\ell(s^t) - \theta(s^t)[r(s^t)-\delta]k(s^{t-1})$
+- Policy is $\{\tau(s^t), \theta(s^t)\}_{t=0}^\infty$.
+- Allocation is $\{c(s^t), k(s^t), \ell(s^t), b(s^t)\}_{t=0}^\infty$.
+- Prices are $\{w(s^t), r(s^t), R_b(s^t)\}\}_{t=0}^\infty$.
+
+CE: A policy, allocation, and prices such that
+
+1. Given policy and prices, the allocation solve HH problem.
+2. Given policy and prices, the allocation solves firm problem.
+3. GBC holds.  4. Markets clear.
+
+Market clearing and firm problem $\implies r(s^t) = F_K(k(s^{t-1}), \ell(s^t))$ and $w(s^t) = F_L(k(s^{t-1}), \ell(s^t))$.
+
+A Ramsay equilibrium is a policy, allocation, and prices that constitute a CE such that the policy maximizes HH utility.
+
+CE $\iff$ RC and IC are satisfied: $U_C(s_0)[R_k(s_0)k_{-1} + R_b(s_0)b_{-1}] = \sum_{t, s^t} \beta^t \mu(s^t) [U_C(s^t)c(s^t) + U_L(s^t)\ell(s^t)]$.
+
+$w(c(s^t), \ell(s^t), \lambda) := u(c(s^t), \ell(s^t)) + \lambda[U_c(s^t)c(s^t) + U_\ell(s^t)\ell(s^t)]$
+
+RP: $\max \sum_{t, s^t} \beta^t \mu(s^t) w(c(s^t), \ell(s^t), \lambda)$ s.t. RC.
+
+Inter. FOC: $\frac{w_\ell(s^t)}{w_c(s^t)} = F_\ell(s^t)$.
+
+Intra. FOC: $w_c(s^t) = \sum_{s^{t+1}} \beta \mu(s^{t+1} | s^t) w_c(s^{t+1})[1- \delta + F_K(s^{t+1})]$
+
+SS capital taxes:
+
+- RP $\implies 1 = \beta(1-\delta + F_K)$.
+- HHP $\implies 1 = \beta(1  + (1-\theta)(F_K - \delta))$.
+- $\implies \theta = 0$.
+
+\pagebreak
+
+### Mirrleesian Taxation
+
+- Static
+
+- Incentive compatability constraints.
+
+- Private information.
