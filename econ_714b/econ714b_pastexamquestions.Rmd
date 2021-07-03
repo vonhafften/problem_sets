@@ -1,0 +1,1490 @@
+---
+title: "ECON 714B - Past Exam Questions"
+author: "Alex von Hafften"
+date: "6/20/2021"
+output: pdf_document
+header-includes:
+- \newcommand{\N}{\mathbb{N}}
+- \newcommand{\Z}{\mathbb{Z}}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\Q}{\mathbb{Q}}
+- \newcommand{\Lf}{\mathcal{L}}
+- \newcommand{\graph}{\text{graph}}
+- \usepackage{bm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+In our final, Rishabh asked a question from his 2019 final. Jason confirmed that in a prior year, his prelim question was the same as his final. During the final, I was a little taken aback that the question was not new.  Even though I had looked at the previous exams, I didn't have a fully fleshed out answer.  During his time at Wisconsin, Rishabh has had twelve opportunities to ask questions and has only asked nine different questions.
+
+This document comprises my answers to Rishabh's all past questions.  During the prelim if he asked a repeated question, I can copy this answer from this document to save valuable time.
+
+## Final 2021 - Question 1 - Ramsey with Two Types of Labor
+
+Consider the nonstochastic growth model with capital and labor we have seen in class. However, assume that there are two labor inputs $n_{1t}$ and $n_{2t}$ entering the production function, $F (k_t, n_{1t}, n_{2t})$. The households utility function is given by $u (c_t,l_t)$ where 
+
+$$
+l_t = 1 - n_{1t} - n_{2t}
+$$
+
+Let $\tau^n_{it}$ denote the proportional tax rate at time $t$ on wage earnings from labor $n_{it}$ for $i = 1, 2$ and $\tau^k_t$ denote the proportional tax rate on earnings from capital. Assume that depreciation $\delta = 0$.
+
+1. (10 points) Set up and define a competitive equilibrium.
+
+The HH problem is:
+
+$$
+\max_{\{c_t, k_t, n_{1t}, n_{2t}, B_t\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t u(c_t, 1-n_{1t} -n_{2t})
+$$
+
+$$
+\text{s.t. }
+n_{1t} + n_{2t} \le 1
+$$
+
+$$
+c_t + k_{t+1} + B_{t+1} \le (1-\tau_{1t}^n)w_{1t} n_{1t} + (1-\tau_{2t}^n)w_{2t} n_{2t} + (1-\tau_t^k) r_t k_t + k_t + R_t^B B_{t}
+$$
+
+Assume that firms are perfectly competitive. $\forall t$, the firms problem is:
+
+$$
+\max_{\{n_{1t}, n_{2t}, k_t\}_{t=0}^\infty} F(k_t, n_{1t}, n_{2t}) - r_t k_t - w_1 n_{1t} - w_2 n_{2t} 
+$$
+
+$\forall t$, the government budget constraint is:
+
+$$
+g_t + R^B_t B_{t}  = \tau_t^k r_t k_t + \tau^n_{1t} w_{1t} n_{1t} + \tau^n_{2t} w_{2t} n_{2t} + B_{t+1}
+$$
+
+\pagebreak
+
+A CE is an allocation $\{(c_t, k_t, n_{1t}, n_{2t})\}_{t=0}^\infty$, a set of prices $\{(r_t, w_{1t}, w_{2t}, R^B_t)\}_{t=0}^\infty$, and a government policy $\{(\tau_{1t}^n, \tau_{2t}^n, \tau_{t}^k, B_t)\}_{t=0}^\infty$ such that
+
+1. Given prices and policies, the allocations solve the HH problem.
+
+2. Firms solve their problem.
+
+3. Government budget constraint is satisfied.
+
+4. Markets clear.
+
+From the firm problem and market clearing, we get that
+
+$$
+r_t = F_1(k_t, n_{1t}, n_{2t})
+$$
+
+$$
+w_{1t} = F_2(k_t, n_{1t}, n_{2t})
+$$
+
+$$
+w_{2t} = F_2(k_t, n_{1t}, n_{2t})
+$$
+
+[Also assume that production is CRS, so $\pi_t = 0$.]
+
+2. (10 points) Derive the implementability constraint and write down the Ramsey problem.
+
+Assume the solution is an interior solution. The legrangian for the HH problem is:
+
+\begin{align*}
+\Lf 
+&= \sum_{t=0}^\infty \beta^t \Big[u(c_t, 1 - n_{1t} - n _{2t}) \\
+&+ \lambda_t\Big[(1-\tau_{1t}^n)w_{1t} n_{1t} + (1-\tau_{2t}^n)w_{2t} n_{2t} + (1-\tau_t^k) r_t k_t + k_t + R_t^B B_{t}- c_t - k_{t+1} - B_{t+1}\Big]\Bigg]
+\end{align*}
+
+FOCs:
+
+\begin{align*}
+u_1(c_t, 1 - n_{1t} - n_{2t}) &= \lambda_t & [c_t] \\
+u_2(c_t, 1 - n_{1t} - n_{2t}) &= \lambda_t(1-\tau_{1t}^n) w_{1t} & [n_{1t}] \\
+u_2(c_t, 1 - n_{1t} - n_{2t}) &= \lambda_t(1-\tau_{2t}^n) w_{2t} & [n_{2t}] \\
+\beta \lambda_{t+1} [(1-\tau_{t+1}^k) r_{t+1} + 1] &= \lambda_t & [k_{t+1}] \\
+\beta \lambda_{t+1} R_{t+1}^B &= \lambda_{t} & [B_{t+1}] \\
+\end{align*}
+
+The HHBC multiplied by $\lambda_t$ and summed across $t$:
+
+$$
+\sum_{t=0}^\infty \lambda_t\Big[ c_t + k_{t+1} + B_{t+1}\Big ] 
+= 
+\sum_{t=0}^\infty \lambda_t\Big[(1-\tau_{1t}^n)w_{1t} n_{1t} + (1-\tau_{2t}^n)w_{2t} n_{2t} + (1-\tau_t^k) r_t k_t + k_t + R_t^B B_{t}\Big]
+$$
+
+Substituting in HH FOCs, we get the IC constraint:
+
+$$
+\sum_{t=0}^\infty \beta^t \Big[ u_1(c_t, 1 - n_{1t} - n_{2t}) c_t + u_2(c_t, 1 - n_{1t} - n_{2t}) (1-n_{1t} - n_{2t})
+\Big]
+= 
+u_1(c_0, 1 - n_{10} - n_{20})\Big[ [(1-\tau_0^k) r_0 + 1] k_{0} + R^B_0 B_{0}\Big]
+$$
+
+\pagebreak
+
+The RC constraint is:
+
+$$
+c_t + k_{t+1} + g_t \le F(k_t, n_{1t}, n_{2t}) + k_t
+$$
+
+The Ramsey problem is:
+
+$$
+\max \sum_{t=0}^\infty \beta^t u(c_t, 1-n_{1t} - n_{2t})
+$$
+$$
+\text{s.t. IC holds and RC holds}
+$$
+
+
+3. (15 points) What are the equations that characterize the optimal Ramsey plan. What do these equations say about the relationship between $\tau^n_{1t}$ and $\tau^n_{2t}$?
+
+Let the multiplier on the IC be $\mu$. Define $w(c_t, l_t, \mu) := u(c_t, l_t) + \mu[u_1(c_t, l_t)c_t + u_2(c_t, l_t)l_t]$. The Ramsey problem can be rewritten as:
+
+$$
+\max \sum_{t=0}^\infty \beta^t w(c_t, 1-n_{1t} - n_{2t}, \mu)
+$$
+$$
+\text{s.t. RC holds}
+$$
+
+Assume that $\tau^k_0$ is bounded.  Let the multiplier on the RCs be $\beta^t \gamma_t$.  The legrangian is:
+
+$$
+\Lf = \sum_{t=0}^\infty \beta^t \Bigg[w(c_t, 1-n_{1t} - n_{2t}, \mu) + \gamma_t \Big[F(k_t, n_{1t}, n_{2t}) + k_t - c_t - k_{t+1} - g_t \Big]\Bigg] 
+$$
+
+FOCs:
+
+\begin{align*}
+w_1(c_t, 1-n_{1t} - n_{2t}) &= \gamma_t & [c_t]\\
+w_2(c_t, 1-n_{1t} - n_{2t}) &= \gamma_t F_2(k_t, n_{1t}, n_{2t}) & [n_{1t}]\\
+w_2(c_t, 1-n_{1t} - n_{2t}) &= \gamma_t F_3(k_t, n_{1t}, n_{2t}) & [n_{2t}]\\
+\gamma_t &= \beta \gamma_{t+1} [1 + F_1(k_{t+1}, n_{1t+1}, n_{2t+1})] & [k_t]
+\end{align*}
+
+FOC [$n_{1t}$] and FOC [$n_{2t}$] imply: 
+
+$$
+F_2(k_1, n_{1t}, n_{2t}) = F_3(k_1, n_{1t}, n_{2t})
+$$
+
+From the HH FOCs:
+
+$$
+(1-\tau^n_{1t}) w_{1t} = 
+(1-\tau^n_{2t}) w_{2t}
+\implies 
+(1-\tau^n_{1t}) F_2(k_t, n_{1t}, n_{2t}) = 
+(1-\tau^n_{2t}) F_3(k_t, n_{1t}, n_{2t})
+\implies 
+\tau^n_{1t} = \tau^n_{2t}
+$$
+
+\pagebreak
+
+4. (15 points) Now suppose that the utility function is given by $u (c_t,l_{1t},l_{2t})$ where $l_{1t} = 1 - n_{1t}$ and $l_{2t} = 1 - n_{2t}$. Further assume that the government is constrained to set the same tax rate on both types of labor, i.e. $\tau^n_{1t} = \tau^n_{2t}$, for all $t > 0$. What is the Ramsey problem in this case. Hint: note that the requirement that $\tau^n_{1t} = \tau^n_{2t}$ imposes an additional restriction on the competitive equilibrium.
+
+The Ramsey problem is 
+
+$$
+\max \sum_{t=0}^\infty \beta^t u(c_t, l_{1t}, l_{2t})
+$$
+
+$$
+\text{s.t. } c_t + k_{t+1} + g_t \le F(k_t, 1-l_{1t}, 1-l_{2t}) + k_t
+$$
+
+$$
+\sum_t \beta^t[u_1(c_t, l_{1t}, l_{2t}) c_t + u_2(c_t, l_{1t}, l_{2t}) l_{1t}  + u_3(c_t, l_{1t}, l_{2t}) l_{2t} ] = u_1(c_t, l_{1t}, l_{2t}) [R_0^B B_0 + (1+r_0)k_0]
+$$
+
+$$
+\text{and } \frac{u_2(c_t, l_{1t}, l_{2t})}{F_2(k_t, l_{1t}, l_{2t})} = \frac{u_3(c_t, l_{1t}, l_{2t})}{F_3(k_t, l_{1t}, l_{2t})}
+$$
+
+The last constraint is based on $\tau^n_{1t} = \tau^n_{2t}  = \tau^n_t$. From the FOCs of the HH problem:
+
+$$
+\frac{u_2(c_t, l_{1t}, l_{2t})}{F_2(k_t, l_{1t}, l_{2t})} = \frac{u_3(c_t, l_{1t}, l_{2t})}{F_3(k_t, l_{1t}, l_{2t})} = \lambda_t (1-\tau^n_t)
+$$
+
+\pagebreak
+
+## Final 2021 - Question 2 - Three Different Assumptions about Timing and the Big Bad Mirrlees Problem
+
+Consider a simplified version of the Mirrlees problem where all agents are ex ante identical, but differ ex post by their labor productivity, $\theta$. There are only two possible values of the type, $\theta_H > \theta_L$. Assume that utility is given by: $u (c,l) = u (c) - v (l)$ where $c$ is consumption, $l$ is hours worked and $u$ and $v$ satisfy all of the usual assumptions. Assume that there are three periods, 0, 1, and 2. In period 1, $\theta$ is realized. In period 2, output is produced and consumption occurs. Output of a type $\theta$ that works $l$ hours is $y = \theta l$. In the remainder of the problem, you are asked to study three sets of assumption about timing and information revelation.
+
+1. (15 points) First, assume that no contracting or exchange is possible at time 0. Rather, assume that $\theta$ is public information and that agents can make transfers among themselves after $\theta$ is realized. What will the consumption and work hours of each type be in this case. In particular how do these compare across the two types?
+
+Assume $u'(c) > 0$, $u''(c) < 0$, $v'(l) > 0$, and $v''(l) > 0$ throughout this problem.
+
+Since types have already been realized, any trades would make one agent strictly worse off, so agents cannot insure themselves ex-ante.  The problem of agent $\theta$ is:
+
+$$
+\max_{c, y} u(c) - v \Big ( \frac{y}{\theta} \Big)
+$$
+
+$$
+\text{s.t. } c = y
+$$
+
+$$
+\implies \max_{y} u(y) - v \Big ( \frac{y}{\theta} \Big)
+$$
+
+FOC [$y$]:
+
+$$
+u'(y) = \frac{1}{\theta} v'\Big ( \frac{y}{\theta} \Big) \implies \theta = \frac{v'(l)}{u'(c)}
+$$
+
+Assume for the sake of a contradiction that $c_L > c_H \implies u'(c_L) < u'(c_H)$. $c_L > c_H$ also implies that $c_L/\theta_L = l_L > l_H = c_H/\theta_H$ because $\theta_L < \theta_H$. Thus, $v'(l_L) > v'(l_H) \implies$
+
+$$
+\frac{v'(l_L)}{u'(c_L)} > \frac{v'(l_H)}{u'(c_H)} \implies \theta_L > \theta_H
+$$
+
+$\Rightarrow \Leftarrow$ Thus, $c_H > c_L$.  The relationship between $l_L$ and $l_H$ is ambiguous.  For example, say 
+
+$$
+u(c) = \frac{c^{1-\gamma}}{1-\gamma} \implies u'(c) = c^{-\gamma} \implies u'(\theta l) = (\theta l)^{-\gamma}
+$$ 
+
+and 
+
+$$
+v(l) = l^2 \implies v'(l) = 2 l
+$$
+
+Thus, 
+
+$$
+\implies
+\theta = \frac{v'(l)}{u'(c)}
+\implies
+\theta = (\theta l)^{\gamma} \cdot 2 l 
+\implies 
+l = \frac{\theta^{\frac{1-\gamma}{1 + \gamma}}}{2^{\frac{1}{1 + \gamma}}}
+$$
+
+If $\gamma < 1$, $l$ is increasing in $\theta$. If $\gamma > 1$, $l$ is decreasing in $\theta$.
+
+2. (15 points) Next, assume that contracting is done at time zero (when all agents are identical) and that at that time, it is known that the type ($\theta$) of each agent will be publicly known at time 1. What will the consumption and work hours of each type be in this case? Compare the welfare, both ex-ante and ex-post, of each type, to the allocation from part 1.
+
+Let $\pi \in (0,1)$ be the probability an agent is high type. The contracting problem for the planner is:
+
+$$
+\max_{\{c_H, c_L, y_H, y_L\}} \pi \Big[u(c_H) - v \Big(\frac{y_H}{\theta_H}\Big)\Big] + (1 - \pi) \Big[u(c_L) - v \Big(\frac{y_L}{\theta_L}\Big)\Big]
+$$
+
+$$
+\text{s.t. } \pi c_H + (1 - \pi) c_L = \pi y_H + (1 - \pi) y_L
+$$
+
+Let $\lambda$ be the multiplier on the resource constraint.
+
+FOCs:
+
+\begin{align*}
+\pi u'(c_H) &= \pi \lambda & [c_H] \\
+(1 - \pi) u'(c_L) &= (1 - \pi) \lambda & [c_L] \\
+\frac{\pi}{\theta_H} v' \Big(\frac{y_H}{\theta_H}\Big) &= \pi \lambda  & [y_H] \\
+\frac{1-\pi}{\theta_L} v' \Big(\frac{y_L}{\theta_L}\Big) &= (1-\pi) \lambda  & [y_L]
+\end{align*}
+
+These conditions imply that consumption is the same across types (i.e. full insurance):
+
+$$
+u'(c_H) = u'(c_L) \implies c_H = c_L \implies A > 0
+$$
+
+They also imply that the high type works more than the low type:
+
+$$
+\frac{v' (l_H)}{\theta_H}= \frac{v' (l_L)}{\theta_L} 
+\implies 
+\frac{v' (l_H)}{v' (l_L)} = \frac{\theta_H}{\theta_L} > 1
+\implies
+v' (l_H)>  v' (l_L)
+\implies
+l_H > l_L
+$$
+
+Thus, the high type produces more $y_H > y_L$
+
+Welfare comparison:
+
+- Autarky as found in (1) is feasible here, so the ex ante welfare of full insurance must be higher than that of autarky.
+- Ex post, high type agents transfer consumption good to low type agents, so they have lower consumption and are worse off.
+- Ex post, low type agents receive a transfer, so they are better off.
+
+\pagebreak
+
+3. Assume that contracting is done at time 0, but that at time 1, $\theta$ will be private information.
+
+(a) (5 points) What is the contracting problem in this case?
+
+The contracting problem for the planner is:
+
+$$
+\max_{\{c_H, c_L, y_H, y_L\}} \pi \Big[u(c_H) - v \Big(\frac{y_H}{\theta_H}\Big)\Big] + (1 - \pi) \Big[u(c_L) - v \Big(\frac{y_L}{\theta_L}\Big)\Big]
+$$
+
+\begin{align*}
+\text{s.t. } \pi c_H + (1-\pi) c_L &\le \pi y_H + (1-\pi) y_L & [RC] \\
+u(c_H) - v \Big(\frac{y_H}{\theta_H}\Big) &\ge u(c_L) - v \Big(\frac{y_L}{\theta_H}\Big) & [IC_H] \\
+u(c_L) - v \Big(\frac{y_L}{\theta_L}\Big) &\ge u(c_H) - v \Big(\frac{y_H}{\theta_L}\Big) & [IC_L]
+\end{align*}
+
+(b) (5 points) Which IC is binding? Show this.
+
+$IC_H$ is binding.
+
+Suppose not and $IC_H$ is slack.  Then an additional amount of consumption good could be transferred from the high type to the low type without violating $IC_H$.  Since $c_H > c_L$ and $u$ is concave, this transfer increases aggregate utility.  Thus, the solution is not an optimum $\Rightarrow \Leftarrow$.  The $IC_H$ must hold with equality.
+
+(c) (10 points) How do the MRS’s (Marginal rates of substitution) between consumption and leisure compare to that from Part 1 for each type. In other words, what are the implicit marginal tax rates?
+
+The relaxed problem is:
+
+$$
+\max_{\{c_H, c_L, y_H, y_L\}} \pi \Big[u(c_H) - v \Big(\frac{y_H}{\theta_H}\Big)\Big] + (1 - \pi) \Big[u(c_L) - v \Big(\frac{y_L}{\theta_L}\Big)\Big]
+$$
+
+\begin{align*}
+\text{s.t. } \pi c_H + (1-\pi) c_L &\le \pi y_H + (1-\pi) y_L & [RC] \\
+u(c_H) - v \Big(\frac{y_H}{\theta_H}\Big) &\ge u(c_L) - v \Big(\frac{y_L}{\theta_H}\Big) & [IC_H]
+\end{align*}
+
+Let $\lambda$ be the multiplier on the resource constraint and $\mu$ be the multiplier on $IC_H$.
+
+\begin{align*}
+\Lf 
+&= \pi \Big[u(c_H) - v \Big(\frac{y_H}{\theta_H}\Big)\Big] + (1 - \pi) \Big[u(c_L) - v \Big(\frac{y_L}{\theta_L}\Big)\Big] \\
+&+ \lambda \Big[ \pi y_H + (1-\pi) y_L -  \pi c_H - (1-\pi) c_L \Big] \\
+&+ \mu \Big[ u(c_H) - v \Big(\frac{y_H}{\theta_H}\Big) - u(c_L) + v \Big(\frac{y_L}{\theta_H}\Big) \Big]
+\end{align*}
+
+FOCs:
+
+\begin{align*}
+\pi u'(c_H) + \mu u'(c_H) &= \lambda\pi & [c_H] \\
+(1-\pi) u'(c_L) &= \lambda (1-\pi) + \mu u'(c_L) & [c_L] \\
+\frac{\pi}{\theta_H} v' \Big(\frac{y_H}{\theta_H}\Big) + \frac{\mu}{\theta_H} v' \Big(\frac{y_H}{\theta_H}\Big) &= \lambda \pi  & [y_H] \\
+\frac{(1-\pi)}{\theta_L} v' \Big(\frac{y_L}{\theta_L}\Big) &= \frac{\mu}{\theta_H} v' \Big(\frac{y_L}{\theta_H}\Big) +\lambda (1 - \pi)   & [y_L]
+\end{align*}
+
+These conditions suggest no distortion at the top, so the marginal tax rate for the high type is zero:
+
+$$
+u'(c_H) = \frac{v' (l_H)}{\theta_H}
+$$
+
+These conditions also suggest that $c_H > c_L$:
+
+$$
+u'(c_H) = \frac{\pi}{\pi + \mu}\frac{1 - \pi - \mu}{1 - \pi} u'(c_L) \implies u'(c_H) < u'(c_L) \implies c_H > c_L
+$$
+
+$IC_H$ binding implies that $y_H > y_L$:
+
+$$
+c_H > c_L \implies u(c_H) - u(c_L) > 0 \implies v(y_H/\theta_H) - v(y_L/\theta_H) > 0 \implies y_H > y_L 
+$$
+
+Thus, low types are distorted, so the marginal tax rate for the low type is positive:
+
+$$
+u'(c_L) - v'(y_L/\theta_H)\frac{1}{\theta_H} >u'(c_H) - v'(y_H/\theta_H)\frac{1}{\theta_H} \implies u'(c_L) > v'(y_L/\theta_L)\frac{1}{\theta_L}
+$$
+
+The IC constraint for the low type is satisfied (based on $v'' > 0$):
+
+\begin{align*}
+u(c_H) - v(y_H/\theta_H) &=  u(c_L) - v(y_L/\theta_H) \\  
+\implies  
+u(c_H) -  u(c_L) &= v(y_H/\theta_H) - v(y_L/\theta_H) > v(y_H/\theta_L) - v(y_L/\theta_L)\\
+\implies
+u(c_L) - v(y_L/\theta_L) &>  u(c_H) - v(y_H/\theta_L)
+\end{align*}
+\pagebreak
+
+## Final 2020 - Question 1 - Chamley-Judd when HHs care about government spending
+
+Consider an infinite horizon setting in which there is a representative consumer and a representative firm as in the standard single sector growth model. The utility function of the representative consumer is given by
+
+$$
+\sum_{t=0}^\infty \beta^t u(c_t, \ell_t, g_t)
+$$
+
+where $g_t$ is the amount of government goods and services produced in each period. Assume that $\{g_t\}$ is exogenously given. The feasibility constraint for the firm is: $c_t +g_t +x_t \le F (k_t, n_t)$ where $x_t$ is investment and capital evolves according to 
+
+$$
+k_{t+1} = (1 - \delta) k_t + x_t
+$$
+
+There is no technological change. Suppose that the government has at its disposal only labor and capital income taxes for financing expenditures, but can freely borrow and lend (i.e., it faces a present value budget constraint). Assume that the consumer takes $g_t,\tau_{nt}$ and $\tau_{kt}$ as given when making its decisions.
+
+1. (10 points) Set up and define a competitive equilibrium given a fixed sequence
+$(g_t, \tau_{nt}, \tau_{kt})$.
+
+A competitive equilibrium is an allocation $\{(c_t, \ell_t, n_t, k_t,k^d_t, \pi_t)\}_{t=0}^\infty$, set of prices $\{(r_t, w_t, R_{Bt})\}_{t=0}^\infty$, and government policy $\{(g_t, \tau_{nt}, \tau_{kt}, B_t)\}_{t=0}^\infty$ such that
+
+- Given prices and policy, the allocation solves the HH problem:
+
+$$
+\max_{c_t, \ell_t, k_{t+1}, B_{t+1}} \sum_{t=0}^\infty \beta^t u(c_t, \ell_t, g_t)
+$$
+
+$$
+\text{s.t. } c_t + k_{t+1} + B_{t+1} \le (1 - \delta) k_{t} + (1-\tau_{kt})r_t k_{t} + (1-\tau_{nt}) w_t (1 - \ell_t) + \pi_t + R_{Bt}B_{t}
+$$
+
+- The allocation and prices solve the firm problem:
+
+$$
+\max_{k^d_t, n_t} F(k^d_t, n_t) - k^d_t r_t - n_t w_t
+$$
+
+- Government budget constraint holds:
+
+$$
+g_t + R_{Bt} B_{t} = \tau_{kt} r_t k_{t} + \tau_{nt} w_t n_t + B_{t+1}
+$$
+
+- Markets clear (labor, capital, goods):
+
+$$
+n_t + \ell_t = 1
+$$
+
+$$
+k_t = k^d_t
+$$
+
+$$
+c_t + g_t + k_{t+1} = F(k_t, n_t) + (1 - \delta)k_{t}
+$$
+
+\pagebreak
+
+2. (15 points) What are the first order conditions that characterize the competitive equilibrium?
+
+Firm FOCs and market clearing:
+
+$$
+r_t = F_1(k_t, n_t)
+$$
+
+$$
+w_t = F_2(k_t, n_t)
+$$
+
+Assume production is CRS $\implies \pi_t = 0$.
+
+HH FOCs:
+
+\begin{align*}
+u_1(c_t, \ell_t, g_t) &= \lambda_t & [c_t] \\
+u_2(c_t, \ell_t, g_t) &= \lambda_t ( 1 - \tau_{nt}) w_t & [\ell_t]\\
+\lambda_{t+1} R_{Bt+1} &= \lambda_t & [B_t] \\
+\lambda_{t+1} [1 - \delta + r_{t+1}(1-\tau_{kt+1})] &= \lambda_t & [k_t]
+\end{align*}
+
+These conditions imply a consumption Euler equation:
+
+$$
+u_1(c_t, \ell_t, g_t)= u_1(c_{t+1}, \ell_{t+1}, g_{t+1}) [1 - \delta + r_{t+1}(1-\tau_{kt+1})]
+$$
+
+A labor supply equation:
+
+$$
+u_2(c_t, \ell_t, g_t) = u_1(c_t, \ell_t, g_t) (1-\tau_{n_t}) w_t
+$$
+
+And a no arbitrage condition:
+
+$$
+R_{Bt+1} = 1 - \delta + r_{t+1}(1 - \tau_{k t+1})
+$$
+
+3. (25 points) If the government acts benevolently in choosing $(g_t, \tau_{nt}, \tau_{kt})$ will it be true that $\tau_{kt} \to 0$? That is, does the Chamley-Judd characterization of the asymptotic behavior of Ramsey tax systems extend to this setting in which $g_t$ enters the utility function? If your answer is yes, prove it, if your answer is no, prove it. Assume that in the Ramsey allocation, all quantities converge to constant levels, $c_t \to c$ etc.
+
+Yes.
+
+To find the implementability constraint, multiply the HH BC by $\lambda_t$ and sum up across $t$:
+
+$$
+\sum_{t=0}^\infty \lambda_t [(1 - \delta) k_{t} + (1-\tau_{kt})r_t k_{t} + (1-\tau_{nt}) w_t (1 - \ell_t) + R_{Bt}B_{t}]
+=
+\sum_{t=0}^\infty \lambda_t [c_t + k_{t+1} + B_{t+1}]
+$$
+
+Substituting in the FOCs wrt $B_{t+1}, k_{t+1},  c_t, \ell_t$, we get the implementability constraint:
+
+$$
+\sum_{t=0}^\infty [u_1(c_t, \ell_t, g_t) c_t - u_2(c_t, \ell_t, g_t) (1-\ell_t)] = u_1(c_0, \ell_0, k_0) [B_{-1}R_{B0} + k_{-1}(1-\delta + r_0(1-\tau_{k0}))]
+$$
+
+\pagebreak
+
+Thus, the Ramsey problem is
+
+$$
+\max \sum_{t=0}^\infty \beta^t u(c_t, \ell_t, g_t)
+$$
+
+$$
+\text{s.t. } c_t + k_{t+1} + g_t 
+=
+F(k_t, 1-\ell_t) + (1-\delta)k_t \;\;\;\;\;\;\;\;\;\;[RC]
+$$
+
+$$
+\text{and } 
+\sum_{t=0}^\infty [u_1(c_t, \ell_t, g_t) c_t - u_2(c_t, \ell_t, g_t) (1-\ell_t)] 
+=
+u_1(c_0, \ell_0, k_0) [B_{-1}R_{B0} + k_{-1}(1-\delta + r_0(1-\tau_{k0}))]
+ \;\;\;\;\;\;\;\;\;\;[IC]
+$$
+
+Assume $\tau_{k0}$ is bounded.  Thus, the Ramsey problem can be rewritten as:
+
+$$
+\max \sum_{t=0}^\infty \beta^t u(c_t, \ell_t, g_t) + \lambda \sum_{t=0}^\infty [u_1(c_t, \ell_t, g_t) c_t - u_2(c_t, \ell_t, g_t) (1-\ell_t)] 
+-
+\lambda [u_1(c_0, \ell_0, k_0) [B_{-1}R_{B0} + k_{-1}(1-\delta + r_0(1-\tau_{k0}))]]
+$$
+
+$$
+\text{s.t. } RC
+$$
+
+We can drop the initial conditions from the maximization:
+
+$$
+\max \sum_{t=0}^\infty \beta^t u(c_t, \ell_t, g_t) + \lambda [u_1(c_t, \ell_t, g_t) c_t - \lambda u_2(c_t, \ell_t, g_t) (1-\ell_t)
+$$
+
+$$
+\text{s.t. } RC
+$$
+
+Define $w(c_t, \ell_t, g_t, \lambda) = u(c_t, \ell_t, g_t) + \lambda u_1(c_t, \ell_t, g_t) - \lambda u_2(c_t, \ell_t, g_t)(1 - \ell_t)$.  The Ramsey problem becomes:
+
+$$
+\max \sum_{t=0}^\infty \beta^t w(c_t, \ell_t, g_t, \lambda)
+$$
+
+$$
+\text{s.t. } RC
+$$
+
+Intratemporal FOC:
+
+$$
+\frac{w_2(c_t, \ell_t, g_t, \lambda)}{w_1(c_t, \ell_t, g_t, \lambda)} = F_2(k_t, 1 - \ell_t)
+$$
+
+Intertemporal FOC:
+
+$$
+w_c(c_t, \ell_t, g_t, \lambda) = \beta w_c(c_{t+1}, \ell_{t+1}, g_{t+1}, \lambda) [1 - \delta + F_1(k_{t+1}, \ell_{t+1})]
+$$
+
+In steady state, $c_t \to c, k_t \to k, \ell_t \to \ell, g_t \to g, \tau_{kt} \to \tau_k$.  The intertemporal FOC of Ramsey Problem becomes $1 = \beta [1 - \delta + F_1(k, \ell)]$. The intertemporal FOC of HH problem becomes $1 = \beta [1 - \delta + r(1 - \tau_k)]$. Thus, $\tau_k = 0$
+
+\pagebreak
+
+## Final 2020 - Question 2 - Limited Commitment with Alternating Total Factor Productivity (INCOMPLETE)
+
+Consider an economy with a measure 1 of agents. Agents can be of two types, $A$ or $B$, half of the population is of each type. The time horizon is infinite and there is a single consumption good per period. Each type of agent can operate a production technology which uses capital and is given by $y_{it} = A_{it}k_{it}^\alpha$ where $y_{it}$ denotes output using $i$'s production technology, $k_{it}$ denotes the amount of capital allocated to agent $i$ for $i = A, B$ and the productivity $A_{it}$ follows a cyclic pattern,
+
+$$
+A_{At} = \begin{cases}
+\bar{A} \text{ t even} \\
+\underline{A} \text{ t odd}
+\end{cases},
+A_{Bt} = \begin{cases}
+\bar{A} \text{ t odd} \\
+\underline{A} \text{ t even}
+\end{cases}
+$$
+
+with $\bar{A} > \underline{A}$. Each type of agent has preferences given by $\sum_{t=0}^\infty \beta^t u (c_t)$. Assume that there is full depreciation of capital each period.
+
+1. (5 points) What is an allocation? What is the appropriate notion of resource-feasibility.
+
+An allocation is $\{(k_{At}, k_{Bt}, c_{At}, c_{Bt},  y_{At}, y_{Bt}) \}_{t=0}^\infty$.
+
+An allocation is resource feasible if $\forall t$:
+
+$$
+\frac{1}{2} c_{At} + \frac{1}{2} c_{Bt} + \frac{1}{2} k_{At+1} + \frac{1}{2} k_{Bt+1} \le \frac{1}{2} y_{At} + \frac{1}{2} y_{Bt}
+$$
+
+$$
+\implies c_{At} + c_{Bt} + k_{At+1} + k_{Bt+1} \le A_{At}k_{At}^\alpha + A_{Bt}k_{Bt}^\alpha
+$$
+
+$$
+\implies 
+\begin{cases} 
+c_{At} + c_{Bt} + k_{At+1} + k_{Bt+1} \le \bar{A}k_{At}^\alpha + \underline{A}k_{Bt}^\alpha, & \forall t \text{ even} \\
+c_{At} + c_{Bt} + k_{At+1} + k_{Bt+1} \le \underline{A}k_{At}^\alpha + \bar{A}k_{Bt}^\alpha, & \forall t \text{ odd}
+\end{cases}
+$$
+
+2. (10 points) Assume that agents can commit. Characterize the solution to a utilitarian planner’s problem.
+
+The utilitarian social planner's problem is:
+
+$$
+\max \sum \beta^t \Bigg[\frac{1}{2} u (c_{At})  + \frac{1}{2} u (c_{Bt}) \Bigg] \text{ s.t. } RC
+$$
+
+The legrangian is
+
+$$
+\Lf = \sum \beta^t [u (c_{At})  + u (c_{Bt}) + \lambda_t [A_{At}k_{At}^\alpha + A_{Bt}k_{Bt}^\alpha - c_{At} - c_{Bt} - k_{At+1} -k_{Bt+1} ]]
+$$
+
+FOCs
+
+\begin{align*}
+u'(c_{At}) &= \lambda_t & [c_{At}] \\
+u'(c_{Bt}) &= \lambda_t & [c_{Bt}] \\
+\lambda_t &= \lambda_{t+1} \beta \alpha A_{At} k_{At}^{\alpha - 1} & [k_{At+1}] \\
+\lambda_t &= \lambda_{t+1} \beta \alpha A_{Bt} k_{Bt}^{\alpha - 1} & [k_{Bt+1}]
+\end{align*}
+
+These conditions imply that consumption is equal across types:
+
+$$
+u'(c_{At})  = u'(c_{Bt}) \implies c_{At} = c_{Bt} = c_t 
+$$
+
+...
+
+3. (10 points) Define a competitive equilibrium and prove that it is efficient.
+
+...
+
+4. (10 points) Now suppose that at any date $t$ agents can take the capital allocated to them and operate the capital in autarky. That is, they can be excluded from markets for intertemporal trade but can use the capital allocated to them in period t and consume and save in capital as they see they see fit using their technology. What participation constraints are appropriate in this environment?
+
+...
+
+5. (10 points) Write down the utilitarian planning problem in this case. Which participation constraints are likely to be binding? Note: you do not have to solve the planning problem
+
+...
+
+6. (5 points) Now suppose you have the solution to part 5. Can it be decentralized as a competitive equilibrium?
+
+...
+
+\pagebreak
+
+## June 2019 Prelim
+
+### Part A - Arrow-Debreu with Type-Specific Utility Functions
+
+Consider a pure endowment economy with two types of consumers. Consumers of type 1 have the following preferences over consumption goods:
+
+$$
+\sum_{t=1}^\infty \beta^t c_{1,t}
+$$
+
+and consumers of type 2 have preferences
+
+$$
+\sum_{t=1}^\infty \beta^t \ln c_{2,t}
+$$
+
+where $c_{i,t} \ge 0$ is the consumption of a type $i$ consumer and $\beta \in (0, 1)$ is the common discount factor. The consumption good is tradable but non-storable. Both types of consumers have equal measure. The consumer of type 1 has endowments $y_{1,t} = \mu > 0, \forall t \ge 0$ while consumer 2 has endowments 
+
+$$
+y_{2,t} = \begin{cases}
+0 &\text{ if } t \ge 0 \text{ is even}\\
+\alpha &\text{ if } t \ge 0 \text{ is odd}
+\end{cases}
+$$
+
+where $\alpha = \mu (1+\beta^{-1})$
+
+1. (5 points) Define a competitive equilibrium with time 0 trading. Be careful to include definitions of all the objects of which a competitive equilibrium is composed.
+
+Define $u_1(c) = c$ and $u_2(c) = \ln(c)$.
+
+A competitive equilibrium is an allocation $\{\{c_{i,t}\}_{t=0}^\infty\}_i$ and prices $\{Q_t\}_{t=0}^\infty$ such that
+
+- Given the price system, the allocation solves each household's problem:
+
+$$
+\max_{c_{i,t}} \sum_{t=0}^{\infty} \beta^t u_i (c_{i,t})
+$$
+
+$$
+\text{s.t. } \sum_{t=0}^{\infty} Q_t c_{i,t} \le \sum_{t=0}^{\infty} Q_t y_{i,t}
+$$
+
+- Markets clear $\forall t$:
+
+$$
+c_{1, t} + c_{2, t} \le y_{1, t} + y_{2, t}
+$$
+
+2. (5 points) Compute (i.e. solve in closed form) a competitive equilibrium allocation with time zero trading.
+
+For agent 1,
+
+$$
+\max_{c_{1,t}} \sum_{t=0}^\infty \beta^t c_{1,t}
+$$
+
+$$
+\text{s.t. }
+\sum_{t=0}^{\infty} Q_t c_{1,t} \le \sum_{t=0}^{\infty} Q_t y_{1,t}
+$$
+
+FOC is $\beta^t = \lambda_1 Q_t$. For agent 2,
+
+$$
+\max_{c_{2,t}} \sum_{t=0}^\infty \beta^t \ln (c_{2,t})
+$$
+
+$$
+\text{s.t. }
+\sum_{t=0}^{\infty} Q_t c_{2,t} \le \sum_{t=0}^{\infty} Q_t y_{2,t}
+$$
+
+FOC is $\frac{\beta^t}{c_{2,t}} = \lambda_2 Q_t$.  Both FOCs imply $c_{2, t} = \frac{\lambda_1}{\lambda_2} = c_2$.  Thus, consumption by type 2 is constant (this result makes sense; type 1 is risk neutral and type 2 is risk averse, so it is efficient for type 1 to bear aggregate risk).
+
+Type 1 budget constraint becomes:
+
+\begin{align*}
+c_2 \sum_{t=0}^{\infty} \frac{\beta^t}{\lambda_1}  &= \sum_{t=0}^{\infty} \frac{\beta^t}{\lambda_1} y_{2,t} \\
+\implies 
+\frac{c_2}{1-\beta}  &= \sum_{t=0}^{\infty} \beta^t y_{2,t}\\
+\implies 
+\frac{c_2}{1-\beta}  &= 0 + \beta \alpha + \beta^2 \alpha + \beta^3 \alpha + ...\\
+\implies
+c_2 
+&= (1 - \beta) \frac{\alpha \beta}{1 - \beta^2} = \frac{\alpha \beta}{1+\beta} = \mu \\ 
+\implies 
+c_{1, t}  
+&= \begin{cases}
+0 &\text{ if } t \ge 0 \text{ is even}\\
+\alpha &\text{ if } t \ge 0 \text{ is odd}
+\end{cases}
+\end{align*}
+
+3. (5 points) Compute the time 0 wealths of the two types of consumers using the competitive equilibrium prices.
+
+Normalize time zero price to 1: $Q_0 = 1 \implies \lambda_1 = 1 \implies Q_t = \beta^t$.
+
+$$
+W_1 = \sum_{t=0}^\infty Q_t y_{1, t} = \sum_{t=0}^\infty \beta^t y_{1, t} = \frac{\mu}{1-\beta}
+$$
+
+$$
+W_2 = \sum_{t=0}^\infty Q_t y_{2, t} = \sum_{t=0}^\infty \beta^t y_{2, t} = \frac{\alpha \beta}{1-\beta^2}
+$$
+
+4. (5 points) Prove that the competitive equilibrium is efficient.
+
+The competitive equilibrium is efficient if it corresponds to the solution to the social planners problem with some pareto weights.  Let $\mu$ be the pareto weight on type 2 agents.  Thus, the social planner problem is:
+
+$$
+\max_{c_{1,t}, c_{2,t}} \sum_{t=0}^\infty \beta^t[c_{1,t} + \mu \ln (c_{2,t})]
+$$
+
+$$
+\text{s.t. } c_{1,t} + c_{2,t} \le y_{1,t} + y_{2,t}
+$$
+
+The legrangian is
+
+$$
+\Lf = \beta^t \Bigg[c_{1,t} + \mu \ln (c_{2,t}) + \lambda_t (y_{1,t} + y_{2,t} - c_{1,t} - c_{2,t}) \Bigg]
+$$
+
+FOCs
+
+\begin{align*}
+1 &= \lambda_t & [c_{1, t}] \\
+\frac{\mu}{c_{2,t}} &= \lambda_t & [c_{2, t}]
+\end{align*}
+
+The FOCs imply $c_{2,t} = \mu$.  The resource constraint implies that
+
+$$
+c_{1,t}  
+= \begin{cases}
+0 &\text{ if } t \ge 0 \text{ is even}\\
+\alpha &\text{ if } t \ge 0 \text{ is odd}
+\end{cases}
+$$
+
+Thus, the competitive equilibrium is efficient.
+
+5. (5 points) Define a competitive equilibrium with sequential trading of Arrow securities.
+
+A competitive equilibrium is an allocation $\{\{c_{i,t}\}_{t=0}^\infty\}_i$ and pricing kernels $\{q_t\}_{t=0}^\infty$ such that
+
+- Given the price system, the allocation solves each household's problem:
+
+$$
+\max_{c_{i,t}, a_{i,t+1}} \sum_{t=0}^{\infty} \beta^t u_i (c_{i,t})
+$$
+
+$$
+\text{s.t. } c_{i,t} + a_{i,t+1}q_{t} \le y_{i,t} + a_{i,t}
+$$
+
+$$
+\text{and } - a_{i,t+1} \le A_{i,t+1}
+$$
+
+- Markets clear $\forall t$:
+
+$$
+c_{1, t} + c_{2, t} = y_{1, t} + y_{2, t}
+$$
+
+$$
+a_{1, t} + a_{2, t} = 0
+$$
+
+6. (5 points) Compute a competitive equilibrium with sequential trading of Arrow securities.
+
+Assume that the natural borrowing limit $A_{i,t+1}$ does not bind.  The FOCs of the HH problem imply
+
+$$
+q_t = \beta \frac{u_i'(c_{i,t+1})}{u_i'(c_{i,t})}
+$$
+
+For type 1, this implies that $q_t = \beta$.  These prices match the prices for the time zero trading, so the competitive equilibria are equivalent.
+
+### Part B
+ 
+See Final 2021 - Question 2
+
+\pagebreak
+
+## August 2019 Prelim
+
+### Part A - Arrow-Debreu with Waltzing Endowments
+
+An economy consists of two types of infinitely lived consumers (each of equal measure) denoted by $i = 1, 2$. There is one nonstorable consumption good. Consumer $i$ consumes $c_{it}$ at time $t$. Consumer $i$ ranks consumption streams by $\sum_{t=0}^\infty \beta^t u(c_{it})$ where $\beta \in  (0, 1)$ and $u (c)$ is increasing, strictly concave, and twice continuously differentiable. Consumer 1 is endowed with a stream of the consumption good $y_{it} = 1, 0, 0, 1, 0, 0, 1, ...$ Consumer 2 is endowed with a stream of the consumption good $0, 1, 1, 0, 1, 1, 0, ...$
+
+1. (5 points) Define a competitive equilibrium with time 0 trading. Be careful to include definitions of all the objects of which a competitive equilibrium is composed.
+
+A CE is an allocation $\{c_{1t}, c_{2t}\}_{t=0}^\infty$ and prices $\{Q_t\}_{t=0}^\infty$ such that
+
+- Given prices, consumer $i$ optimizes $\forall i$:
+
+$$
+\max_{c_{it}} \sum_{t=0}^\infty \beta^t u(c_{it})
+$$
+
+$$
+\text{s.t. } \sum_{t=0}^\infty Q_t c_{it} \le \sum_{t=0}^\infty Q_t y_{it} 
+$$
+
+- Markets clear $\forall t$: $c_{1t} + c_{2t} = y_{1t} + y_{2t}$
+
+2. (5 points) Compute a competitive equilibrium allocation with time zero trading.
+
+The legrangian is:
+
+$$
+\Lf = \sum_{t=0}^\infty \beta^t u(c_{it}) + \lambda_i \Bigg[  \sum_{t=0}^\infty Q_t y_{it} - \sum_{t=0}^\infty Q_t c_{it}  \Bigg]
+$$
+
+FOC wrt $c_{it}$:
+
+$$
+\beta^t u'(c_{it}) = \lambda_i Q_t
+$$
+
+Combining FOCs:
+
+$$
+\frac{u'(c_{1t})}{\lambda_1} = \frac{u'(c_{2t})}{\lambda_2} \implies \frac{u'(c_{1t})}{u'(c_{2t})} = \frac{\lambda_1}{\lambda_2}
+$$
+
+This implies that both consume a fixed fraction of aggregate endowments.  Since aggregate endowments are constant, consumption over time is constant: $c_{1t} = c_1$ and $c_{2t} = c_2$ $\forall t$.  Type 1's budget constraint is:
+
+\begin{align*}
+\sum_{t=0}^\infty \Bigg[\frac{\beta^t u(c_1)}{\lambda_1}\Bigg]c_1 
+&= \sum_{t=0}^\infty \Bigg[\frac{\beta^t u(c_1)}{\lambda_1}\Bigg]  y_{1t} \\
+\implies c_1 \sum_{t=0}^\infty \beta^t
+&= \sum_{t=0}^\infty \beta^t  y_{1t} \\
+\implies \frac{c_1}{1-\beta} 
+&= 1 + 0 + 0 + \beta^3 + 0 + 0 + \beta^6 + ... \\
+\implies \frac{c_1}{1-\beta} 
+&= \frac{1}{1-\beta^3}\\
+\implies c_1 
+&= \frac{1 - \beta}{1 - \beta^3}\\
+\implies c_2
+&= 1 -\frac{1 - \beta}{1 - \beta^3} = \frac{\beta - \beta^3}{1 - \beta^3}
+\end{align*}
+
+3. (5 points) Prove that the competitive equilibrium is efficient.
+
+The CE is efficient if it corresponds to the solution to a planner problem with some Pareto weights. Let $\alpha > 0$ be the Pareto weight on the utility of type 1 agents. Thus, the planners problem is:
+
+$$
+\max_{c_{1t}, c_{2t}} \sum_{t=0}^\infty \beta^t [ \alpha u(c_{1t}) + u(c_{2t})]
+$$
+
+$$
+\text{s.t. } c_{1t} + c_{2t} = 1
+$$
+
+$$
+\implies \max_{c_{1t}} \sum_{t=0}^\infty \beta^t [ \alpha u(c_{1t}) + u(1 -c_{1t})]
+$$
+
+FOC
+
+$$
+\beta^t\alpha u'(c_{1t}) = u'(c_{2t}) \implies \beta^t\alpha  = \frac{u'(c_{2t})}{u'(c_{1t})}
+$$
+
+Thus, it is efficient for the marginal utilities across agents to be any positive fraction that is constant over time.  We can choose $\alpha$ such that we get the CE from part 2.
+
+4. (5 points) Define a competitive equilibrium with sequential trading of Arrow securities.
+
+A CE is an allocation $\{c_{1t}, c_{2t}\}_{t=0}^\infty$ and prices $\{q_t\}_{t=0}^\infty$ such that 
+
+- Given prices, consumer $i$ optimizes $\forall i$:
+
+$$
+\max_{c_{it}, a_{it+1}} \sum_{t=0}^\infty \beta^t u(c_{it})
+$$
+
+$$
+\text{s.t. } c_{it} + q_ta_{it+1} \le y_{it} + a_{it}
+$$
+
+$$
+\text{and } - a_{it} \le A_{it+1}
+$$
+
+- Markets clear $\forall t$: $c_{1t} + c_{2t} = 1$ and $a_{1t} + a_{2t} = 0$.
+
+5. (5 points) Compute a competitive equilibrium with sequential trading of Arrow securities.
+
+Assume that the natural borrowing limit $A_{it+1}$ does not bind.  The legrangian of HH problem is:
+
+$$
+\Lf =  \sum_{t=0}^\infty \beta^t [u(c_{it}) + \lambda_{it}(y_{it} + a_{it} - c_{it} - q_ta_{it+1})] 
+$$
+
+FOCs
+
+$$
+u'(c_{it}) = \lambda_{it}
+$$
+
+$$
+\beta^t \lambda_{it} q_t = \beta^{t+1} \lambda_{it+1} 
+\implies 
+q_t = \beta \frac{\lambda_{it+1}}{\lambda_{it}} 
+\implies  
+q_t =\beta \frac{u'(c_{it+1})}{u'(c_{it})}
+$$
+
+Combining FOCs:
+
+$$
+\beta \frac{u'(c_{1t+1})}{u'(c_{1t})} = \beta \frac{u'(c_{2t+1})}{u'(c_{2t})} 
+\implies 
+\frac{u'(c_{1t})}{u'(c_{2t})}=\frac{u'(c_{1t+1})}{u'(c_{2t+1})} 
+\implies 
+\frac{c_{1t}}{c_{2t}} = \frac{c_{1t+1}}{c_{2t+1}} = \frac{c_{1t+2}}{c_{2t+2}} = ...
+$$
+
+This implies that type 1 and type 2 consume a constant fraction of the aggregate endowment.  Since the aggregate endowment is constant, the consumption of type 1 and type 2 are constant: $c_1 = c_{1t}$ and $c_2 = c_{2t}$. This implies that $q_t = \beta$. 
+
+From part 2, we know that $Q_t = \frac{\beta^t u'(c_i)}{\lambda_i}$, so $Q_{t+1} = \frac{\beta^{t+1} u'(c_i)}{\lambda_i} = q_t Q_t$.  Thus, the allocations from the Arrow-Debreu economy are equivalent to that with sequential trading of Arrow securities.
+
+\pagebreak
+
+### Part B - Ramsay Taxation in Two-Periods (INCOMPLETE)
+
+Consider the following economy. A unit mass continuum of households lives for two periods. In the first ($t = 0$) each household receives an endowment of one unit of the single consumption good. In the second, one-half will be unable to produce, while the other half can linearly produce the consumption good such that each unit of effort produces one unit of the consumption good. Further, there exists an ability to transfer resources across dates one for one. Those who can’t produce have utility over consumption in each date of $u (c_0) + u (c_1)$. Those who can produce have utility over consumption in each date and labor (or output) in the second period of $u (c_0) + u (c_1) - y$. Finally, at the beginning of time (date $t = 0$) every household knows what type it is (whether it can produce at $t = 1$ or not.)
+
+1. Characterize, as a system of equations, the solution to the utilitarian planner’s problem when household type is observable.
+
+The utilitarian social planner's problem is
+
+$$
+\max_{\{c_0^0, c_0^0, c_0^1, c_1^1, y\}} \frac{1}{2}[u(c_0^0) + u(c_1^0)] + \frac{1}{2}[u(c_0^1) + u(c_1^1) - y]
+$$
+
+$$
+\text{s.t. } \frac{1}{2} c_0^0 + \frac{1}{2} c_0^0 + \frac{1}{2} c_0^1+ \frac{1}{2} c_1^1 \le 1 + \frac{1}{2} y
+$$
+
+$$
+\implies \max_{\{c_0^0, c_0^0, c_0^1, c_1^1, y\}} u(c_0^0) + u(c_1^0) + u(c_0^1) + u(c_1^1) - y
+$$
+
+$$
+\text{s.t. } c_0^0 + c_0^0 + c_0^1 + c_1^1 \le 2 + y
+$$
+
+The legrangian is:
+
+$$
+\Lf = u(c_0^0) + u(c_1^0) + u(c_0^1) + u(c_1^1) - y + \lambda [ 2 + y - c_0^0 - c_1^0 - c_0^1 - c_1^1 ]
+$$
+
+FOCs
+
+\begin{align*}
+u'(c_0^0) &= \lambda  & [c_0^0]\\
+u'(c_1^0) &= \lambda  & [c_1^0]\\
+u'(c_0^1) &= \lambda  & [c_0^1]\\
+u'(c_1^1) &= \lambda  & [c_1^1]\\
+1 &= \lambda  & [y]
+\end{align*}
+
+$$
+\implies u'(c_0^0) = u'(c_0^1) = u'(c_1^0)  =u'(c_1^1)  = 1
+$$
+
+Define $c^* = (u')^{-1}(1) \implies c_0^0 = c_0^1 = c_1^0  = c_1^1 = c^* \implies y = 4c^*-2$
+
+\pagebreak
+
+2. Suppose a government has the following instruments: A lump sum tax on each type $T_i$, a linear tax on output $\tau y$, and a linear tax on savings for each type, $t_i$. Can it implement your answer from part 1, and, if so, how?
+
+Yes.
+
+Let type 0 agents save $s_0$ and type 1 agents save $s_1$. Assume that lump sum taxes are paid in the second period.  With these policy instruments, the government budget constraint is
+
+$$
+T_0 + T_1 + \tau y + t_0 s_0 + t_1 s_1 = 0
+$$
+
+The problem facing type 0 agents is:
+
+$$
+\max_{\{c_0^0, c_1^0\}} u(c_0^0) + u(c_1^0)
+$$
+
+$$
+\text{s.t. } c_0^0 + s_0 \le 1
+$$
+
+$$
+c_1^0  + T_0 \le (1-t_0)s_0
+$$
+
+$$
+\implies
+\max_{s_0} u(1 - s_0) + u((1-t_0)s_0 - T_0)
+$$
+
+FOC:
+
+$$
+u'(c_0^0) = u'(c_1^0)(1-t_0)
+$$
+
+To match the solution in part (1), it implies that $t_0 = 0$. The problem facing type 1 agents is:
+
+$$
+\max_{\{c_0^1, c_1^1, y\}} u(c_0^1) + u(c_1^1) - y
+$$
+
+$$
+\text{s.t. } c_0^1 + s_1 \le 1
+$$
+
+$$
+c_1^1  + T_1 \le (1-t_1)s_1 + (1-\tau)y
+$$
+
+$$
+\implies \max_{\{s_1, y\}} u(1 - s_1) + u((1- t_1)s_1 + (1 - \tau)y - T_1) - y
+$$
+
+FOCs:
+
+$$
+u'(c_0^1) = u'(c_1^1)(1-t_1)
+$$
+
+$$
+u'(c_1^1)(1-\tau) = 1
+$$
+
+To match the solution in part (1), $\tau = t_1 = 0$. The FOC wrt $y \implies c_1^1 = (u')^{-1}(1)  = c^*$. In addition, we know that $c_0^0 = 1 - s_0 = 1 - s_1 = c_0^1 \implies s = s_0 = s_1 = 1 - c^*$ at the solution from part (1). Furthermore, the only policy tool remaining is lump sum taxes and the government budget constraint implies that $T := T_0 = -T_1$.  From type 0 problem: $c^* = 1 - c^* - T \implies T = 1 - 2c^*$. From type 1 problem: $c^* = 1 - c^* +y  + (1 - 2c^*)  \implies y = 2 - 4c^*$.
+
+3. Now suppose the type is private to each household. Recharacterize, as a system of equations, the solution to the utilitarian planner’s problem.
+
+Notice that since type 0 cannot produce, they cannot masquerade as type 1 if $y > 0$.  But type 1 agents can pretend to be type 0.  Implying an IC constraint:
+
+$$
+u(c_0^1) + u(c_1^1) - y \ge u(c_0^0) + u(c_1^0)
+$$
+
+In part 1, the allocation had type 0 and type 1 agents consuming the same, so at that allocation type 1 agents would have an incentive to masquerade as type 0 agents in order to consume the same but not work.
+
+The utilitarian social planner's problem with the IC is:
+
+$$
+\implies \max_{\{c_0^0, c_0^0, c_0^1, c_1^1, y\}} u(c_0^0) + u(c_1^0) + u(c_0^1) + u(c_1^1) - y
+$$
+
+$$
+\text{s.t. } c_0^0 + c_0^0 + c_0^1 + c_1^1 \le 2 + y
+$$
+
+$$
+u(c_0^1) + u(c_1^1) - y \ge u(c_0^0) + u(c_1^0)
+$$
+
+Thus, the legrangian is:
+
+$$
+\Lf 
+= u(c_0^0) + u(c_1^0) + u(c_0^1) + u(c_1^1) - y 
++ \lambda [2 + y - c_0^0 - c_0^0 - c_0^1 - c_1^1]
++ \mu [u(c_0^0) + u(c_1^0) - u(c_0^1) - u(c_1^1) + y]
+$$
+
+FOCs:
+
+\begin{align*}
+(1 + \mu) u'(c_0^0) &= \lambda & [c_0^0]\\
+(1 + \mu) u'(c_1^0) &= \lambda & [c_1^0]\\
+(1 - \mu) u'(c_0^1) &= \lambda & [c_0^1]\\
+(1 - \mu) u'(c_1^1) &= \lambda & [c_1^1]\\
+\lambda + \mu &= 1             & [y]
+\end{align*}
+
+$$
+\implies \mu = 1 - \lambda \implies c_0^1 = c_1^1 = c^* = (u')^{-1}(1)
+$$
+
+No distortion at the top.
+
+$$
+\implies c^0_0 =  c^1_0 = c' = (u')^{-1}\Big(\frac{\lambda}{2 - \lambda}\Big)
+$$
+
+Thus, $c'$ and $y$ are jointly determined by the RC and IC:
+
+$$
+2c^* + 2c' = 2 +y
+$$
+
+$$
+2u(c^*) - y =2u(c')
+$$
+
+4. Given the same instruments as above, can the government implement your answer to part 3, and, if so, how?
+
+...
+
+\pagebreak
+
+## Final 2019 - Question 1
+
+See Final 2021 - Question 2.
+
+## Final 2019 - Question 2 - Two-Period Limited Commitment
+
+Consider the following two-period model with $t = 1, 2$. In period 1 there is a fraction $\pi_H$ of agents who have endowment $e_h$ and a fraction $\pi_L = 1 - \pi_H$ of agents who have the endowment $e_L$ with $e_H > e_L$. In period 2, all agents have identical endowments equal to $e$. Assume that all agents discount at rate $\beta$. Also assume that endowments are publicly observable.
+
+1. Set up the problem of a utilitarian planner when agents can commit. Assume that the planner cannot transfer resources across time. What are the optimal allocations in this case?
+
+The utilitarian planners problem is
+
+$$
+\max_{\{c_{H, 1}, c_{H, 2}, c_{L, 1}, c_{L, 2}\}} \pi_H [u(c_{H, 1}) + \beta u(c_{H, 2})] + \pi_L [u(c_{L, 1}) + \beta u(c_{L, 2})]
+$$
+
+$$
+\text{s.t. } \pi_H c_{H, 1} + \pi_L c_{L, 1} = \pi_H e_H + \pi_L e_L 
+$$
+
+$$
+\text{and } \pi_H c_{H, 2} + \pi_L c_{L, 2} = e
+$$
+
+The legrangian is: 
+
+\begin{align*}
+\Lf 
+&= \pi_H [u(c_{H, 1}) + \beta u(c_{H, 2})] + \pi_L [u(c_{L, 1}) + \beta u(c_{L, 2})] \\
+&+ \lambda [\pi_H e_H + \pi_L e_L   - \pi_H c_{H, 1} - \pi_L c_{L, 1}] \\
+&+ \mu [e - \pi_H c_{H, 2} - \pi_L c_{L, 2}]
+\end{align*}
+
+FOCs:
+
+\begin{align*}
+\pi_H u'(c_{H, 1}) &= \lambda \pi_H & [c_{H, 1}] \\ 
+\pi_L u'(c_{L, 1}) &= \lambda \pi_L & [c_{L, 1}] \\
+\pi_H u'(c_{H, 2}) &= \mu \pi_H & [c_{H, 2}] \\
+\pi_L u'(c_{L, 2}) &= \mu \pi_L & [c_{L, 2}]
+\end{align*}
+
+These conditions imply that $c_{H, 1} = c_{L, 1} = \pi_H e_H + \pi_L e_L$ and $c_{H, 2} = c_{L, 2} = e$.
+
+\pagebreak
+
+2. Now suppose that in period 2, agents lack commitment and can default on their obligations. A defaulting agent receives utility: $u (e) - \psi$. Set up the planning problem in this case. Is the solution to the problem in part 1 also a solution here? If not, using the planner’s first order conditions, characterize the solution to this problem.
+
+The planners problem is:
+
+$$
+\max_{\{c_{H, 1}, c_{H, 2}, c_{L, 1}, c_{L, 2}\}} \pi_H [u(c_{H, 1}) + \beta u(c_{H, 2})] + \pi_L [u(c_{L, 1}) + \beta u(c_{L, 2})]
+$$
+
+$$
+\text{s.t. } \pi_H c_{H, 1} + \pi_L c_{L, 1} = \pi_H e_H + \pi_L e_L 
+$$
+
+$$
+\pi_H c_{H, 2} + \pi_L c_{L, 2} = e
+$$
+
+$$
+u(c_{H, 2}) \ge u(e) - \psi
+$$
+
+$$
+\text{and } u(c_{L, 2}) \ge u(e) - \psi
+$$
+
+Yes, the solution from part 1 is a solution here because there are no transfers in the optimal allocation in period 2.  Neither PC binds if $\psi$ is nonnegative:
+
+$$
+u(e) \ge u(e) - \psi \iff \psi \ge 0
+$$
+
+3. Now suppose instead that agents can trade among themselves. In particular, in period 1 agents can trade a risk-free bond with market determined price $q$ (i.e. interest rate $R = \frac{1}{q}$) but are still subject to the participation constraint. Carefully define a competitive equilibrium in this and characterize the CE in this case.
+
+Let $B_H,B_L \in \R$ be bond holdings of type 1 and type 2 agents, respectively.  $B_i > 0$ means type $i$ is saving for period 2 and $B_i < 0$ means type $i$ is borrowing. A competitive equilibrium is an allocation $\{c_{H, 1}, c_{H, 2}, c_{L, 1}, c_{L, 2}, B_H, B_L\}$ and price $q$ such that 
+
+- Given the price, the allocations solve the high type agent problem:
+
+$$
+\max_s u(c_{H, 1}) + \beta u (c_{H, 2})
+$$
+
+$$
+\text{s.t. } c_{H, 1} + qB_H \le e_H
+$$
+
+$$
+c_{H, 2} \le e + B_H
+$$
+
+$$
+\text{and } u(c_{H, 2}) \ge u(e) - \psi
+$$
+
+- Given the price, the allocations solve the low type agent problem:
+
+$$
+\max_b u(c_{L, 1}) + \beta u(c_{L, 2})
+$$
+
+$$
+\text{s.t. } c_{L, 1} + qB_L \le e_L
+$$
+
+$$
+c_{L, 2} \le e + B_L
+$$
+
+$$
+\text{and } u(c_{L, 2}) \ge u(e) - \psi
+$$
+
+- Markets clear: $B_H + B_L = 0$.
+
+Impose market clearing: $B_H = -B_L = B$.  Based on the solution to part 1, the high type wants to save and the low type wants to borrow.  Thus, the PC is not binding for the high type because they are saving. Thus, the high type problem simplifies to:
+
+$$
+\max_s u(e_H - qB) + \beta u (e + B)
+$$
+
+The FOC is
+
+$$
+u'(e_H - qB) q = \beta u'(e + B)
+$$
+
+The low type problem simplifies to:
+
+$$
+\max_b u(e_L + qB) + \beta u(e - B)
+$$
+
+$$
+\text{s.t. } u(e - B) \ge u(e) - \psi
+$$
+
+Let $\bar{B}$ be the borrowing amount such that the PC binds for the low type: $u(e - \bar{B}) = u(e) - \psi$.   The FOC is
+
+$$
+u'(e_L + q\bar{B}) q = \beta u'(e - \bar{B}) + \mu
+$$
+
+4. Suppose that $\pi_L = \pi_H$. Consider an environment in which agents can trade a risk free bond subject to exogenous borrowing constraints: $b \le \phi$ where $b$ is the level of debt. Consider the ex-ante welfare associated with a competitive equilibrium given borrowing constraint $\phi, W (\phi)$. How would you expect $W (\phi)$ to change as we increase $\phi$? Why?
+
+Assume that the exogenous borrowing constraint binds.  Let $q(\phi)$ be the equilibrium interest rate when the borrowing constraint is $b \le \phi$.  Given part 3, the welfare is
+
+$$
+W(\phi) = \frac{1}{2}\Big[u(e_H - q(\phi)\phi) + \beta u (e + \phi) + u(e_L + q(\phi)\phi) + \beta u(e - \phi)\Big]
+$$
+
+$$
+W'(\phi) = \frac{1}{2}
+\Big[u'(e_H - q(\phi)\phi)(-q'(\phi)\phi - q(\phi)) + \beta u' (e + \phi) + 
+u'(e_L + q(\phi)\phi)(q'(\phi)\phi + q(\phi)) + \beta u'(e - \phi)\Big]
+$$
+
+$$
+W'(\phi) = \frac{1}{2}
+\Big[ 
+[u'(e_L + q(\phi)\phi)-u'(e_H - q(\phi)\phi)] q'(\phi) \phi + 
+[u'(e_L + q(\phi)\phi)-u'(e_H - q(\phi)\phi)] q(\phi) + 
+\beta u' (e + \phi) + 
+\beta u'(e - \phi)
+\Big]
+$$
+
+Assume $u' > 0, u'' < 0$ and $q' < 0$ (looser borrowing constraint, more borrowing, lower rate).  If $e_L + q(\phi)\phi < e_H - q(\phi)\phi \implies u'(e_L + q(\phi)\phi)-u'(e_H - q(\phi)\phi) > 0$. Thus $[u'(e_L + q(\phi)\phi)-u'(e_H - q(\phi)\phi)] q'(\phi) \phi < 0$ and $[u'(e_L + q(\phi)\phi)-u'(e_H - q(\phi)\phi)] q(\phi) > 0$. So the change in $W(\phi)$ is undetermined.
+
+\pagebreak
+
+## Practice Final 2019 - Question 1
+
+See Prelim 2019 - Second Attempt Part 2
+
+## Practice Final 2019 - Question 2 - Apples and Bananas
+
+Consider a static world with a unit continuum of agents. There are two goods: Apples and Bananas. Suppose type 1’s have an endowment of 1 apple and 2 bananas and preferences represented by the utility function $u_1 (c_a, c_b) = 2 \log (c_a) + 2 \log (c_b)$. Suppose type 2’s have an endowment of 3 apples and 2 bananas and preferences represented by the utility function $u_2 (c_a, c_b) = c_a + c_b$. There are exactly a fraction 1/2 of each type.
+
+1. If endowments are observable, solve for the ex-ante social optimum.
+
+The utilitarian social planner:
+
+$$
+\max_{\{c_a^1, c_b^1, c_a^2, c_b^2\}} 2\log c_a^1 + 2\log c_b^1 + c_a^2 + c_b^2
+$$
+
+$$
+\text{s.t. } c_a^1 + c_a^2 = 4
+$$
+
+$$
+\text{and } c_b^1 + c_b^2 = 4
+$$
+
+$$
+\implies \max_{\{c_a^1, c_b^1\}} 2\log c_a^1 + 2\log c_b^1 + (4 - c_a^1) + (4 - c_b^1)
+$$
+
+FOCs:
+
+$$
+\frac{2}{c_a^1} = 1 \implies c_a^1 = 2
+$$
+
+$$
+\frac{2}{c_b^1} = 1 \implies c_b^1 = 2
+$$
+
+Resource feasibility implies $c_a^2 = c_b^2 = 2$.
+
+2. Now suppose that type is private. In particular, type 2 agents can claim to be type 1 agents by secretly hiding apples. Is the ex-ante social optimum from the previous question incentive compatible? If not, show why not.
+
+No.  The utility from type 2 agents being honest is $u_2(c_a^2, c_b^2) = u_2(2, 2) = 4$.  The utility from type 2 agents pretending to be type 1 agents is 
+
+$$
+u_2(y_a^2 - y_a^1 + c_a^1, y_b^2 - y_b^1 + c_b^1) = y_a^2 - y_a^1 + c_a^1 + y_b^2 - y_b^1 + c_b^1 = 3 - 1 + 2 + 2 - 2 + 2 = 6
+$$  
+
+Type 2 agents are better off hiding some apples and pretending to type 1 agents.
+
+\pagebreak
+
+3. Solve for the incentive feasible ex-ante optimum when type 2’s can claim to be type 1’s. Devise a tax and transfer scheme to implement this.
+
+The IC constraint for type 2 agents is:
+
+$$
+c_a^2 + c_b^2 = y_a^2 - y_a^1 + c_a^1 + y_b^2 - y_b^1 + c_b^1
+$$
+
+$$
+\implies c_a^2 + c_b^2 = 2 + c_a^1 + c_b^1
+$$
+
+Thus, the planners problem is:
+
+$$
+\max_{\{c_a^1, c_b^1, c_a^2, c_b^2\}} 2\log c_a^1 + 2\log c_b^1 + c_a^2 + c_b^2
+$$
+
+$$
+\text{s.t. } c_a^1 + c_a^2 = 4
+$$
+
+$$
+c_b^1 + c_b^2 = 4
+$$
+
+$$
+\text{and } c_a^2 + c_b^2 = 2 + c_a^1 + c_b^1
+$$
+
+$$
+\implies
+\max_{\{c_a^1, c_b^1\}} 2\log c_a^1 + 2\log c_b^1 + 4 - c_a^1 + 4 - c_b^1
+$$
+
+$$
+\text{s.t. } (4 - c_a^1) + (4 - c_b^1) = 2 + c_a^1 + c_b^1
+$$
+
+The legrangian is:
+
+$$
+\Lf = 2\log c_a^1 + 2\log c_b^1 + 8 - c_a^1 - c_b^1 + \lambda [3 - c_a^1 - c_b^1]
+$$
+
+FOCs:
+
+$$
+\frac{2}{c_a^1} - 1 = \lambda
+$$
+
+$$
+\frac{2}{c_b^1} - 1 = \lambda
+$$
+
+$$
+\implies c_a^1 = c_b^1
+$$
+
+By the IC, $c_a^1 = c_b^1 = 3/2$ and by resource feasibility, $c_a^2 = c_b^2 = 5/2$.
