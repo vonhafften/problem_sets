@@ -1,5 +1,5 @@
 using Parameters, Plots #import the libraries we want
-include("ps1_model.jl") #import the functions that solve our growth model
+include("model.jl") #import the functions that solve our growth model
 
 prim, res = Initialize() #initialize primitive and results structs
 @elapsed Solve_model(prim, res) #solve the model!

@@ -11,6 +11,7 @@ header-includes:
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(knitr)
+library(gridExtra)
 ```
 
 Assume that households have log preferences, the production technology satisfies $Y_t = Z_t K_t^{\theta}$ where $\theta = 0.36$; and capital depreciates at rate $\delta = 0.025$. We will assume technology shocks follow a 2 state Markov Process. The transition matrix is calibrated to NBER business cycle data where we take an expansion to be an instance of a positive technology shock and recession to be an instance of a negative technology shock. The transition matrix is given by
@@ -57,7 +58,7 @@ $$
 2. Plot the value function over $K$ for each state $Z$. Is it increasing (i.e. is $V (K_{i+1}, Z) \ge V (K_i, Z)$ for $K_{i+1} > K_i$)? Is it “concave” (in the sense that $V (K_{i+1}, Z) - V (K_i, Z)$ is decreasing)?
 
 ```{r part2, echo = FALSE}
-include_graphics("ps1_value_function.png")
+include_graphics("value_function.png")
 ```
 
 The value function is increasing and concave.
@@ -67,13 +68,59 @@ The value function is increasing and concave.
 3. Is the decision rule increasing in $K$ and $Z$ (i.e. is $K'(K_{i+1}, Z) \ge K' (K_i, Z)$ for $K_{i+1} > K_i$ and is $K'(K, Z^g) \ge K'(K, Z^b))$? Is saving increasing in $K$ and $Z$ (to see this, plot the change in the decision rule $K'(K, Z) - K$ across $K$ for each possible exogenous state $Z$)?
 
 ```{r part3a, echo = FALSE}
-include_graphics("ps1_policy_function.png")
+include_graphics("policy_function.png")
 ```
 
 The decision rule is increasing in $K$ and $Z$.
 
 ```{r part3b, echo = FALSE}
-include_graphics("ps1_policy_function_delta.png")
+include_graphics("policy_function_delta.png")
 ```
 
 Savings are increasing $Z$. For $Z^g$, savings are increasing in $K$ for small $K$ and then decreasing. And for $Z^b$, savings are decreasing for all levels of $K$.
+
+\pagebreak
+
+## Matlab Figures
+
+```{r matlab_figures, echo = FALSE}
+include_graphics("matlab_figures.png")
+```
+
+\pagebreak
+
+## Fortran Figures
+
+```{r fortran_figures, echo = FALSE}
+
+data <- read_csv("fortran_output.csv", 
+                 col_names = c("k", "value_function_low", "value_function_high", "g_k_low", "g_k_high"),
+                 col_types = "ddddd") %>%
+  pivot_longer(cols = -"k") 
+
+p1 <- data %>%
+  filter(name %in% c("value_function_low", "value_function_high")) %>%
+  ggplot() + 
+  geom_line(aes(x=k, y=value, color = name)) + 
+  ggtitle("Value Function") + 
+  theme(legend.position = "none")
+
+p2 <- data %>%
+  filter(name %in% c("g_k_low", "g_k_high")) %>%
+  ggplot() + 
+  geom_line(aes(x=k, y=value, color = name)) + 
+  ggtitle("Policy Function") + 
+  theme(legend.position = "none")
+
+p3 <- data %>%
+  filter(name %in% c("g_k_low", "g_k_high")) %>%
+  mutate(value = value - k) %>%
+  ggplot() + 
+  geom_line(aes(x=k, y=value, color = name)) + 
+  ggtitle("Policy Function Changes") + 
+  theme(legend.position = "none")
+
+grid.arrange(p1, p2, p3, nrow = 3)
+
+```
+

@@ -1,7 +1,7 @@
-! Recently modified by Alex von Hafften on Sept 14, 2021
+! Modified by Alex von Hafften on Sept 14, 2021
 ! Based on script written by Pablo D'Erasmo   6 Sep 2007    5:56 pm
-! Compile with 'gfortran -o ps1_model_compute ps1_model_compute.f95'
-! Run with './ps1_model_compute'
+! Compile with 'gfortran -o model_compute model_compute.f95'
+! Run with './model_compute'
 
 module parameters
    implicit none
@@ -100,7 +100,7 @@ subroutine solution
 
       diff_low  = maxval(abs(value_new_low-value_low))/ABS(value_new_low(length_grid_k))
       diff_high  = maxval(abs(value_new_high-value_high))/ABS(value_new_high(length_grid_k))
-      
+
       diff = MAX(diff_low, diff_high)
 
       value_low = value_new_low
@@ -114,18 +114,10 @@ subroutine solution
    print *, ' '
    print *, 'Successfully converged with sup_norm ', diff
 
-   open (UNIT=1,FILE='valuefun_low',STATUS='replace')
+   open (UNIT=1,FILE='fortran_output.csv',STATUS='replace')
 
    do i_k = 1, length_grid_k
-      WRITE(UNIT=1,FMT=*) value_low(i_k)
-   end do
-
-   close (UNIT=1)
-
-   open (UNIT=1,FILE='valuefun_high',STATUS='replace')
-
-   do i_k = 1, length_grid_k
-      WRITE(UNIT=1,FMT=*) value_high(i_k)
+      WRITE(UNIT=1,FMT=*) Kgrid(i_k), ",", value_low(i_k), ",", value_high(i_k), ",", g_k_low(i_k), ",", g_k_high(i_k)
    end do
 
    close (UNIT=1)

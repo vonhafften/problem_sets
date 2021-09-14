@@ -1,3 +1,5 @@
+% Modified by Alex von Hafften on Sept 14, 2021
+
 % PROGRAM NAME: 387vfigrowth.M
 % This program generates the value function and decision rules for
 % a nonstochastic growth model.
@@ -69,10 +71,14 @@ while pcntol >.0001;
    visr_high=vsr_high; %update value functions
 end;
 
-save 387vdr vsr I k;
-save 387parm b a d N inc klb kub;
-
+t = tiledlayout(3,1);
+nexttile
 plot(k,[vsr_low', vsr_high']') % plot value function
-plot(k,[k([I_low])', k([I_high])']) % plot value function
+title('Value Function')
+nexttile
+plot(k,[k([I_low])', k([I_high])']) % plot policy function
+title('Policy Function')
+nexttile
 plot(k,[k([I_low])'-k', k([I_high])'-k']')% plot change in the decision rule
-
+title('Policy Function Changes')
+exportgraphics(t,'ps1_matlab_figures.png')
