@@ -32,7 +32,7 @@ end
 mutable struct Results
     value_function::Array{Float64, 2}  # Value function`
     policy_function::Array{Float64, 2} # Policy function
-    μ::Array{Float64, 1}               # Asset distribution
+    μ::Array{Float64, 2}               # Asset distribution
     q::Float64                         # Bond price
 end
 
@@ -41,8 +41,8 @@ function Initialize()
 
     value_function  = [zeros(a_length) zeros(a_length)]
     policy_function = [zeros(a_length) zeros(a_length)]
-    μ               = ones(a_length)/a_length           # Start with uniform wealth distribution
-    q               = (β+1)/2                           # We've assumed 1 > q > β, so start at midpoint
+    μ               = [ones(a_length) ones(a_length)] / (a_length*2)    # Start with uniform wealth distribution
+    q               = (β+1)/2                                           # We've assumed 1 > q > β, so start at midpoint
 
     Results(value_function, policy_function, μ, q)
 end
@@ -51,7 +51,7 @@ end
 ######################### Functions to solve HH problem ########################
 ################################################################################
 
-function HH_Bellman(results::Results)
+function HH_Bellman(results::Results; progress::Bool = false)
     @unpack a_min, a_max, a_length, a_grid, a_grid_srl, S, S_length, Π, α, β = Primitives()
 
     v_next = zeros(a_length, S_length)  # Initialize next value function iteration
@@ -70,7 +70,9 @@ function HH_Bellman(results::Results)
 
             a = a_grid[i_a] # value of assets
 
-            println(s, ", ", a)
+            if progress
+                println(s, ", ", a)
+            end
 
             budget = s + a # budget
 
@@ -86,48 +88,123 @@ function HH_Bellman(results::Results)
     v_next
 end
 
-function Solve_HH_problem(results::Results, tolerence::Float64 = 1e-4)
+function Solve_HH_problem(results::Results, tolerence::Float64 = 1e-5; progress::Bool = false)
 
     err, i = 100.0, 0
 
     while err > tolerence
-        print(i)
         i += 1
+
+        if progress
+            println(i)
+        end
+
         v_next = HH_Bellman(results)
         err = abs.(maximum(v_next.-results.value_function))/abs(maximum(v_next))
         results.value_function = v_next
     end
 
-    print("HH Problem converged in ", i, " iterations")
+    println("HH Problem converged in ", i, " iterations")
 end
 
 ################################################################################
 ######################### Functions to find invariant asset distribution #######
 ################################################################################
 
+function Apply_policy_function_to_μ(results::Results; progress::Bool = false)
+    @unpack a_length, S_length, Π = Primitives()
 
+    μ_next = zeros(a_length, S_length)
+
+    for i_s = 1:S_length
+        for i_a = 1:a_length
+
+            if progress
+                println(i_s, ", ", i_a)
+            end
+
+            a_p = results.policy_function[i_a, i_s]
+
+            i_a_p = argmin(abs.(a_grid .- a_p))
+
+            μ_next[i_a_p, 1] = μ_next[i_a_p, 1] + results.μ[i_a, i_s] * Π[i_s, 1]
+            μ_next[i_a_p, 2] = μ_next[i_a_p, 2] + results.μ[i_a, i_s] * Π[i_s, 2]
+        end
+    end
+
+    μ_next
+end
+
+function Solve_invariant_μ(results::Results, tolerence::Float64 = 1e-5; progress::Bool = false)
+
+    err, i = 100.0, 0
+
+    while err > tolerence
+
+        i += 1
+
+        if progress
+            println(i)
+        end
+
+        μ_next = Apply_policy_function_to_μ(results)
+        err = abs.(maximum(μ_next .- results.μ))/abs(maximum(μ_next))
+        results.μ = μ_next
+    end
+
+    println("Invariant μ converged in ", i, " iterations")
+
+end
 
 ################################################################################
-######################### Functions to apply market clearing ###################
+################ Functions to update price based on market clearing ############
 ################################################################################
 
+function Update_price(results::Results, tolerence::Float64 = 1e-3)
+    @unpack a_grid, β = Primitives()
 
+    excess_demand = -sum(results.μ .* [a_grid a_grid])
+
+    if excess_demand > tolerence
+        q_hat = results.q + (β - results.q)/2*abs(excess_demand)
+
+        println("Excess Demand is positive: ", excess_demand)
+        println("Lower bond price from ", results.q, " to ", q_hat)
+
+        results.q = q_hat
+
+        return(false)
+    elseif excess_demand < -tolerence
+        q_hat = results.q + (1 - results.q)/2*abs(excess_demand)
+
+        println("Excess Demand is negative: ", excess_demand)
+        println("Raise bond price from ", results.q, " to ", q_hat)
+
+        results.q = q_hat
+
+        return(false)
+    else
+        println("Excess Demand is within tolerence: ", excess_demand)
+
+        return(true)
+    end
+end
 
 ################################################################################
 ######################### Functions to run whole model #########################
 ################################################################################
 
-function Solve_model(tolerence::Float64 = 1e-3)
+function Solve_model()
 
-    err, i = 100.0, 1
+    converged = false
 
-    while err > tolerence
-        results = Initialize()
+    results = Initialize()
 
-        Solve_HH_problem()
-        # Solve HH bellman
-        # Solve invariant asset distribution
-        # Apply market clearing
+    while !converged
+        Solve_HH_problem(results)
+        Solve_invariant_μ(results)
+        converged = Update_price(results)
     end
 
+    results
 end
