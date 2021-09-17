@@ -234,3 +234,17 @@ function calculate_lorenz_curve(w::Array{Float64, 2})
 
     unique([x/x[a_length] y/y[a_length]]; dims = 1)
 end
+
+# https://en.wikipedia.org/wiki/Gini_coefficient
+function calculate_gini(l::Array{Float64, 2})
+    widths = diff(l[:,1])
+    heights = ((l[1:end-1,1] .+ l[2:end,1])./2 .- (l[1:end-1,2] .+ l[2:end,2])./2)
+    a = sum(widths .* heights)
+
+    l_pos = l[l[:,2].>0, :]
+    widths = diff(l_pos[:,1])
+    heights = (l_pos[1:end-1,2] .+ l_pos[2:end,2])./2
+    b = sum(widths .* heights)
+
+    a/(a+b)
+end
