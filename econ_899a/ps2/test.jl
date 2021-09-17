@@ -5,7 +5,7 @@
 # ECON 899A Computational Economics
 # Problem set 2
 
-# This file calls model.jl and is used for testing each component.
+# This file calls model.jl and is used for testing each function.
 
 using Plots
 
@@ -107,8 +107,18 @@ include("model.jl")
 
 @unpack a_grid = Primitives()
 
-results = Solve_model()
+results = Initialize()
 
-plot(a_grid, results.value_function)
-plot(a_grid, results.policy_function)
-plot(a_grid, results.μ)
+Solve_model(results)
+
+plot(a_grid, results.value_function, labels = ["Employed" "Unemployed"])
+plot(a_grid, [results.policy_function a_grid], labels = ["Employed" "Unemployed" "45° Line"])
+plot(a_grid, results.μ, labels = ["Employed" "Unemployed"])
+
+################################################################################
+########################## Tests calculate_wealth_distribution() ###############
+################################################################################
+
+
+w = calculate_wealth_distribution(results)
+plot(a_grid, w, labels = ["Employed" "Unemployed"])

@@ -32,7 +32,7 @@ end
 mutable struct Results
     value_function::Array{Float64, 2}  # Value function`
     policy_function::Array{Float64, 2} # Policy function
-    μ::Array{Float64, 2}               # Asset distribution
+    μ::Array{Float64, 2}               # Bond holdings distribution
     q::Float64                         # Bond price
 end
 
@@ -41,7 +41,7 @@ function Initialize()
 
     value_function  = [zeros(a_length) zeros(a_length)]
     policy_function = [zeros(a_length) zeros(a_length)]
-    μ               = [ones(a_length) ones(a_length)] / (a_length*2)    # Start with uniform wealth distribution
+    μ               = [ones(a_length) ones(a_length)] / (a_length*2)    # Start with uniform bond holding distribution
     q               = (β+1)/2                                           # We've assumed 1 > q > β, so start at midpoint
 
     Results(value_function, policy_function, μ, q)
@@ -108,7 +108,7 @@ function Solve_HH_problem(results::Results, tolerence::Float64 = 1e-5; progress:
 end
 
 ################################################################################
-######################### Functions to find invariant asset distribution #######
+################## Functions to find invariant bond holding distribution #######
 ################################################################################
 
 function Apply_policy_function_to_μ(results::Results; progress::Bool = false)
@@ -125,13 +125,14 @@ function Apply_policy_function_to_μ(results::Results; progress::Bool = false)
 
             a_p = results.policy_function[i_a, i_s]
 
-            i_a_p = argmin(abs.(a_grid .- a_p))
+            i_a_p_e = argmin(abs.(a_p .- a_grid))
+            i_a_p_u = argmin(abs.(a_p .- a_grid))
 
-            μ_next[i_a_p, 1] = μ_next[i_a_p, 1] + results.μ[i_a, i_s] * Π[i_s, 1]
-            μ_next[i_a_p, 2] = μ_next[i_a_p, 2] + results.μ[i_a, i_s] * Π[i_s, 2]
+            μ_next[i_a_p_e, 1] = μ_next[i_a_p_e, 1] + results.μ[i_a, i_s] * Π[i_s, 1]
+            μ_next[i_a_p_u, 2] = μ_next[i_a_p_u, 2] + results.μ[i_a, i_s] * Π[i_s, 2]
+
         end
     end
-
     μ_next
 end
 
@@ -157,7 +158,7 @@ function Solve_invariant_μ(results::Results, tolerence::Float64 = 1e-5; progres
 end
 
 ################################################################################
-################ Functions to update price based on market clearing ############
+################ Function to update price based on market clearing  ############
 ################################################################################
 
 function Update_price(results::Results, tolerence::Float64 = 1e-3)
@@ -194,17 +195,42 @@ end
 ######################### Functions to run whole model #########################
 ################################################################################
 
-function Solve_model()
+function Solve_model(results::Results)
 
     converged = false
-
-    results = Initialize()
 
     while !converged
         Solve_HH_problem(results)
         Solve_invariant_μ(results)
         converged = Update_price(results)
     end
+end
 
-    results
+################################################################################
+######################### Function calculate wealth distribution ###############
+################################################################################
+
+function calculate_wealth_distribution(results::Results)
+    @unpack a_grid, S, S_length, a_length = Primitives()
+
+    w = zeros(a_length, S_length)
+
+    for i_s = 1:S_length
+        for i_a = 1:a_length
+
+            i_w = argmin(abs.(a_grid[i_a] .+ S[i_s] .- a_grid))
+
+            w[i_w, i_s] = results.μ[i_a, i_s]
+        end
+    end
+    w
+end
+
+function calculate_lorenz_curve(w::Array{Float64, 2})
+    @unpack a_grid, a_length = Primitives()
+
+    x = cumsum(w[:,1] .+ w[:,2])
+    y = cumsum((w[:,1] .+ w[:,2]) .* a_grid)
+
+    unique([x/x[a_length] y/y[a_length]]; dims = 1)
 end
