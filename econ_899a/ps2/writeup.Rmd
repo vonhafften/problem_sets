@@ -1,6 +1,6 @@
 ---
 title: "ECON 899A - Problem Set 2"
-author: "Alex von Hafften^[This problem set is for ECON 899A Computational Economics taught by Dean Corbae with assistance from Phillip Coyle at UW-Madison. I worked on this problem set with a study group of Michael Nattinger and Xinxin Hu.]"
+author: "Alex von Hafften^[This problem set is for ECON 899A Computational Economics taught by Dean Corbae with assistance from Philip Coyle at UW-Madison. I worked on this problem set with a study group of Michael Nattinger and Xinxin Hu.]"
 date: "9/22/2021"
 output: pdf_document
 header-includes:
@@ -20,7 +20,44 @@ library(gridExtra)
 
 Consider the same environment as Huggett (1993, JEDC) except assume that there are enforceable insurance markets regarding the idiosyncratic shocks to earnings and that there are no initial asset holdings. Solve for a competitive equilibrium. What are prices? What is the allocation?
 
-...
+The enforceable insurance markets regarding the idiosyncratic shocks to earnings implies that markets are complete, so the first and second welfare theorems hold.  Thus, we can solve the planners problem and solve for the implied price.  
+
+The markov transition matrix described in Part II implies a stationary measure $\pi_e$ of employed agents and $\pi_u = 1 - \pi_e$ of unemployed agents in each period $t$.  Thus the resource constraint is:
+
+$$
+\pi_e c_{e, t} +\pi_u c_{u, t} \le \pi_e e + \pi_u u
+$$
+
+for all $t$ where $c_{e, t}$ is the consumption of the employed agents and $c_{u, t}$ is the consumption of the unemployed agents. The resource constraint holds with equality. Thus, the utilitarian planners problem is:
+
+$$
+\max_{\{(c_{e, t}, c_{u, t})\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t [ \pi_e u(c_{e, t}) + \pi_u u (c_{u, t})]
+$$
+
+$$
+\text{s.t. } \pi_e c_{e, t} +\pi_u c_{u, t} = \pi_e e + \pi_u u \; \forall t
+$$
+
+$$
+\implies 
+\max_{c_{e, t}} \sum_{t=0}^\infty \beta^t \Bigg[\pi_e u(c_{e, t}) + \pi_u u\Bigg( \frac{\pi_e}{\pi_u} e + u - \frac{\pi_e}{\pi_u} c_{e, t}\Bigg)\Bigg]
+$$
+
+FOC [$c_{e, t}$]:
+
+$$
+\pi_e u'(c_{e, t}) = \pi_u u'( c_{u, t})\frac{\pi_e}{\pi_u} 
+\implies 
+c_{e, t} = c_{u, t} = c^{FB} = \pi_e e +\pi_u u
+$$
+
+Using the parameters described in Part II:
+
+$$
+c^{FB} = 0.94 \times 1 + 0.06 \times 0.5 = 0.97
+$$
+
+Finally, market clearing implies that bond prices $q_t = q^{FB} = 1$.
 
 \pagebreak
 
@@ -117,6 +154,18 @@ The Gini coefficient of the actual wealth distribution in the U.S. was 0.800 in 
 
 To assess the question about the welfare gains associated with moving from incomplete to complete markets, compute consumption equivalents using the following formulas. In particular, you are to answer the following specific question: what fraction of consumption would a person in a steady state of the incomplete markets environment be willing to pay (if positive) or have to be paid (if negative) in all future periods to achieve the allocation of the complete markets environment?
 
+The welfare associated with complete markets is:
+
+$$
+W^{FB} 
+= 
+\sum_{t=0}^\infty \beta^t \frac{(c^{FB})^{1 - \alpha} - 1}{1 - \alpha}
+= 
+\frac{(c^{FB})^{1 - \alpha} - 1}{(1 - \alpha)(1-\beta)}
+\approx
+-4.2526
+$$
+
 For each $(a, s)$ we compute $\lambda(a, s)$ such that
 
 \begin{align*}
@@ -131,29 +180,26 @@ $$
 \lambda(a, s) = \Bigg[ \frac{W^{FB} + \frac{1}{(1- \alpha)(1-\beta)}}{v(a, s) + \frac{1}{(1-\alpha)(1-\beta)}} \Bigg]^{\frac{1}{1-\alpha}} - 1
 $$
 
-where $v(a, s)$ is the value function from the incomplete markets economy. Then the economywide welfare gain is:
+where $v(a, s)$ is the value function from the incomplete markets economy.  Plot $\lambda(a, s)$ across $a$ for both $s = e$ and $s = u$ in the same graph.
+
+```{r, echo = FALSE, out.width = "70%", out.height= "70%"}
+include_graphics("lambda.png")
+```
+
+The welfare associated with incomplete markets is 
 
 $$
-WG = \sum_{(a, s) \in A \times S} \lambda(a, s) \mu(a, s)
+W^{INC} = \sum_{(a, s) \in A \times S} \mu(a, s) v(a, s) \approx -4.4539
+$$
+The economywide welfare gain is:
+
+$$
+WG = \sum_{(a, s) \in A \times S} \lambda(a, s) \mu(a, s) \approx 0.001357
 $$
 
-Plot $\lambda(a, s)$ across $a$ for both $s = e$ and $s = u$ in the same graph.
+The fraction of the population would favor changing to complete markets? 
 
+$$
+\sum_{(a, s) \in A \times S} \one_{\{\lambda(a, s) \ge 0\}}(a, s) \mu(a, s) \approx 0.541
+$$
 
-<...>
-
-What is $W^{FB}$?
-
-<...>
-
-What is $W^{INC} = \sum_{(a, s) \in A \times S} \mu(a, s) v(a, s)$?
-
-<...>
-
-What is $WG$?
-
-<...>
-
-What fraction of the population would favor changing to complete markets? That is, $\sum_{(a, s) \in A \times S} \one_{\{\lambda(a, s) \ge 0\}}(a, s) \mu(a, s)$.
-
-<...>

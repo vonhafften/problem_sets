@@ -13,7 +13,7 @@
 ################################################################################
 
 # Load libraries
-using Parameters, Interpolations, Optim
+using Parameters, Interpolations, Optim, LinearAlgebra
 
 # Primitive structure
 @with_kw struct Primitives
@@ -247,4 +247,24 @@ function calculate_gini(l::Array{Float64, 2})
     b = sum(widths .* heights)
 
     a/(a+b)
+end
+
+################################################################################
+######################### Function calculate welfare change ####################
+################################################################################
+
+function calculate_w_fb()
+    @unpack α, β, S, Π = Primitives()
+    stationary_distribution = (Π^1000000)[1, :]
+    c_fb = stationary_distribution[1] * S[1] + stationary_distribution[2] * S[2]
+    ((c_fb)^(1 - α) - 1)/((1 - α) * (1 - β))
+end
+
+function calculate_λ(results::Results, w_fb::Float64)
+    @unpack α, β = Primitives()
+
+    numerator = w_fb + 1 /((1 - α)*(1 - β))
+    denominator = results.value_function .+ (1 ./((1 .- α).*(1 .- β)))
+
+    (numerator./denominator).^(1/(1 .- α)) .- 1
 end

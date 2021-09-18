@@ -114,11 +114,3 @@ Solve_model(results)
 plot(a_grid, results.value_function, labels = ["Employed" "Unemployed"])
 plot(a_grid, [results.policy_function a_grid], labels = ["Employed" "Unemployed" "45° Line"])
 plot(a_grid, results.μ, labels = ["Employed" "Unemployed"])
-
-################################################################################
-########################## Tests calculate_wealth_distribution() ###############
-################################################################################
-
-
-w = calculate_wealth_distribution(results)
-plot(a_grid, w, labels = ["Employed" "Unemployed"])

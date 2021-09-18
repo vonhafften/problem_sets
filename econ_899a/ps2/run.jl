@@ -9,7 +9,11 @@ include("model.jl");
 
 using Plots
 
-@unpack a_grid = Primitives();
+@unpack a_grid, α, β = Primitives();
+
+################################################################################
+##################################### Part II ##################################
+################################################################################
 
 results = Initialize();
 
@@ -47,4 +51,26 @@ plot([l[:,1] l[:,1]], [l[:,1] l[:,2]], labels = ["45° Line" "Lorenz Curve"],
      legend=:bottomright)
 savefig("lorenz_curve.png")
 
-gini_efficient = calculate_gini(l) 
+gini_efficient = calculate_gini(l)
+
+################################################################################
+##################################### Part III #################################
+################################################################################
+
+# welfare in complete markets
+# fb for first best
+w_fb = calculate_w_fb()
+
+# consumption equivalent
+λ = calculate_λ(results, w_fb)
+plot(a_grid, λ, labels = ["Employed" "Unemployed"])
+savefig("lambda.png")
+
+# welfare in incomplete markets
+w_inc = sum(results.μ .* results.value_function)
+
+# welfare gain
+wg = sum(results.μ .* λ)
+
+# fraction of population that prefers complete market
+f = sum((λ .>= 0) .*results.μ)
