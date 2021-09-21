@@ -57,7 +57,45 @@ $$
 c^{FB} = 0.94 \times 1 + 0.06 \times 0.5 = 0.97
 $$
 
-Finally, market clearing implies that bond prices $q_t = q^{FB} = 1$.
+\pagebreak
+
+To decentralize, I use a sequential market of one-period employment-contingent securities. The HH problem is:
+
+$$
+\max_{c, a} E_0 \Bigg[ \sum_{t=0} \beta^t u(c(s^t))\Bigg]
+$$
+
+$$
+\text{s.t. } s_t + a(s^{t-1}) = c(s^t) + q_t a(s^{t})
+$$
+
+$$
+\implies \max_{a} E_0 \Bigg[ \sum_{t=0} \beta^t u(s_t + a(s^{t-1}) - q_t a(s^{t}) )\Bigg]
+$$
+
+FOC:
+
+$$
+\beta^t u'(c(s^t)) q_t = \beta^{t+1} u'(c(s^{t+1})) \implies q_t = \beta
+$$
+
+Because $c(s^t) = c^{FB} \; \forall s^t$. For employed agents:
+
+$$
+a(e) = e - c^{FB} = e - \pi_e e - \pi_u u = \pi_u (e - u) > 0
+$$
+
+For unemployed agents:
+
+$$
+a(u) = u - c^{FB} = u - \pi_e e - \pi_u u = \pi_e (u - e) < 0
+$$
+
+Markets clear:
+
+$$
+\pi_e a(e) + \pi_ua(u)  = \pi_e \pi_u (e - u) + \pi_u \pi_e (u - e) = 0
+$$
 
 \pagebreak
 
