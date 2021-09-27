@@ -1,0 +1,134 @@
+---
+title: "ECON 899A - Problem Set 3"
+author: "Alex von Hafften^[This problem set is for ECON 899A Computational Economics taught by Dean Corbae with assistance from Philip Coyle at UW-Madison. I worked on this problem set with a study group of Michael Nattinger, Sarah Bass, and Xinxin Hu.]"
+date: "9/29/2021"
+output: pdf_document
+header-includes:
+- \usepackage{bbm}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\one}{\mathbbm{1}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(gridExtra)
+```
+
+In this problem set we study the macroeconomic consequences of eliminating Social Security in the U.S. To do so, we set up and solve a simple general equilibrium overlapping generations model. This model is a simplified version of the model by Conesa and Krueger (1999), Social Security Reform with Heterogeneous Agents, *Review of Economic Dynamics*, 2, p.757-95.
+
+## Model Setup
+
+Each period a continuum of agents is born and live for $N = 66$ periods. The population growth rate is $n = 0.011$ per year (which is the model period length). All agents die deterministically at age $N$; thus, there is no stochastic mortality. Newly born agents (age 1, which corresponds to real life age 20) hold no initial assets, $a_1 = 0$. Workers supply labor to a labor market. At age $J^R = 46$, workers retire and start receiving pension benefits, $b$. Pension benefits are financed by a proportional labor income tax $\theta = 0.11$.
+
+The instantaneous utility function of a worker is given by:
+
+$$
+u^W(c, l) = \frac{[c^{\gamma} (1 - k)^{1 - \gamma}]^{1- \sigma}}{1 - \sigma}
+$$
+
+with $c$ - consumption and $l$ - labor. The weight on consumption, $\gamma$, is 0.42, and the coefficient of relative risk aversion, $\sigma$, is 2. The instantaneous utility function of a retired agent reads:
+
+\begin{align}
+u^R(c) = \frac{c^{(1-\sigma)\gamma}}{1 - \sigma}
+\end{align}
+
+Worker’s productivity at age $j$ is given by $e(z, j) = z \times \eta_j$, where $\eta_j$ is a deterministic age-efficiency profile and $z$ - idiosyncratic productivity. Idiosyncratic productivity can be either High with $z_H = 3.0$ or Low with $z_L = 0.5$. At birth, each individual receives a realization of the random productivity $z$ from its ergodic distribution $(0.2037, 0.7963)$. The persistence probabilities are $\pi_{HH} = 0.9261$ and $\pi_{LL} = 0.9811$ (this specification of the idiosyncratic risk is referred to as the ”asymmetric case” in the paper).^[The deterministic age-efficiency profile is plotted in figure 1; the corresponding data can be found in the file "ef.txt".]
+
+There is a constant returns to scale production technology $Y = K^{\alpha}L^{1-\alpha}$ with $Y$ - aggregate output, $K$ - aggregate capital stock and $L$ - aggregate effective labor supply. The capital share, $\alpha$, is 0.36 and depreciation rate, $\delta$, is 0.06. The labor and capital markets are perfectly competitive.
+
+```{r figure1, echo = FALSE, out.width = "50%", out.height= "50%"}
+df <- read.csv("ef.txt", header = FALSE) %>%
+  transmute(`Deterministic Productivity` = V1,
+            `Model Age` =  as.integer(row.names(.)))
+
+df %>% 
+  ggplot(aes(y = `Deterministic Productivity`, x = `Model Age`)) + 
+  geom_line() +
+  labs(title = "Figure 1: Age-Efficiency Profile")
+```
+
+## Dynamic Programming Problem
+
+In the first part of the exercise you are asked to solve for the agents optimization problem. Agents face the interest rate, $r$, the wage, $w$, and the social security benefit, $b$, which they take as given. For now, just assume that $w = 1.05$, $r = 0.05$, and $b = 0.2$. We will see below, how these variables are determined in a general equilibrium.
+
+We can solve for the dynamic programming problem of the agents by starting in the last period of their life ($j = N$) and iterating backwards until $j = 1$. The dynamic programming problem of a retired agent reads:
+
+\begin{align}
+V_j(a) = \max_{a' \ge 0} \{ u^R((1 + r)a + b - a') + \beta V_{j+1} (a') \}
+\end{align}
+
+with $V_{N+1}(a) = 0$ for all $a$. In the expression above, $V_j$ stands for the value function of agent at age $j$. A prime denotes tomorrow’s variables. The discount factor $\beta = 0.97$. Observe that we have plugged in agent’s budget constraint into the utility function. To solve this problem on the computer, we tabulate the value function, $V (a)$, in a finite number $n_a$ of points. The maximization over $a'$ then occurs over the values in the set $\{a^1, a^2, ..., a^{n_a} \}$ with $a_1 = 0$ (which means that we rule out borrowing). Note that in the very last period, the value function, $V_N (a)$, is given by (1) with $c = (1 + r)a + b$. For a given table of values for $V_{j+1}(a')$ on the capital grid, retired agent’s saving at age $j$ can be found by choosing $a'$, which gives the largest value for the right-hand side of (2) given $a$, which we store as $a'_j(a)$.
+
+The dynamic programming problem of a worker is given by:
+
+\begin{align}
+V_j(a, z) = \max_{a' \ge 0, 0 \le l \le 1} \{ u^W(w(1-\theta) e(z, \eta_j)l + (1 +r) a - a', l) + \beta E[V_{j+1} (a', z') | (a, z, j)] \}
+\end{align}
+
+subject to $0 \ge l \ge 1$. The social security tax rate $\theta$ is 0.11. The dynamic programming problem of a worker involves maximization over an additional control, which is labor, $l$. We can, however, make use of the household’s first-order condition with respect to $l$ combined with the budget constraint to arrive at the following expression for l (derive it!):
+
+$$
+l = \frac{\gamma ( 1 - \theta) e(z, \eta_j) w - (1-\gamma)[(1+r)a - a']}{(1 - \theta) w e(z, \eta_j)}
+$$
+
+Thus, for a given combination of $(z, a, a')$, the expression above gives the optimal solution for labor. Then, for a given table of values for $V_{j+1}(a', z')$, worker’s saving at age $j$ can be found by choosing $a'$, which gives the largest value for the right-hand side of (3) given $a$ and $z$, which we store as $a'_j(a, z)$. We store the corresponding optimal labor supply as $l_j (a, z)$.
+
+\pagebreak
+
+## Exercise 1
+
+Solve the dynamic programming problem of retirees and workers. Plot the value function over $a$ for a retired agent at the model-age 50. Is it increasing and concave? Plot the savings function for a worker at the model-age 20, $a'_{20}(z, a)$. Is saving increasing in $a$? Is it increasing in $z$?
+
+<...>
+
+\pagebreak
+
+## Exercise 2
+
+After solving for agent’s dynamic programming problem, solve for the steady-state distribution of agents over age, productivity and asset holdings, $F_j (z, a)$. Find first the relative sizes of each cohort of age $j$ (denoted by $\mu_j$) using the expression below:
+
+$$
+\mu_{i+1} = \frac{\mu_i}{1 + n}
+$$
+
+for $i = 1, ..., N - 1$ with any $\mu_1 = \tilde{\mu}_1 > 0$.  Then normalize $\mu$, so that it sums up to 1 across all age groups. Finally, start with the newborn generation with zero wealth: given its distribution, $F_1(z^H, 0) = \mu_1 \times 0.2037$ and $F_1(z^L, 0) = \mu_1 \times 0.7963$, compute the distribution of agents over asset holdings at subsequent ages by applying the optimal decision rules.
+
+<...>
+
+\pagebreak
+
+## Exercise 3
+
+We have computed the decision rules and the stationary distribution for given prices. There is no guarantee that at these prices the supply of assets and labor by the agents equals the demand for capital and labor by the firms. In order to find the equilibrium prices, we use the ”guess and verify” method. First, we make initial guesses on aggregate capital and aggregate labor, demanded by the firm, which we denote $K^0$ and $L^0$, respectively. They imply the interest rate $r^0$ and wage $w^0$, since markets are perfectly competitive. Observe that from the guess on $K$ and $L$ we can compute the pension benefit, $b$, using the government budget constraint:
+
+$$
+b = \frac{\theta w^0 L^0}{\sum_{j=J^R}^N \mu_j}
+$$
+
+Given $r^0$ and $w^0$, we compute the optimal decision rules and the stationary distribution. Finally, we verify, if our guess was correct by computing the aggregate assets and labor supplied by households:
+
+$$
+K^{new} = \sum_{j=1}^N \sum_{m=1}^{n_a} \sum_{z \in \{z^L, z^H\}} F_j(z, a_m)a_m
+$$
+
+$$
+L^{new} = \sum_{j=1}^{J^R - 1} \sum_{m=1}^{n_a} \sum_{z \in \{z^L, z^H\}} F_j(z, a_m) e(z, \eta_j) l_j(z, a_m)
+$$
+
+If the guess was ”far off” the obtained values, we update our initial guess with $K^1 = 0.99K^0 + 0.01K^{new}$ and $L^1 = 0.99L^0 + 0.01L^{new}$ and repeat the procedure. We proceed so until the guess and the updated values for $K$ and $L$ are ”sufficiently close”.
+
+You are now asked to evaluate the macroeconomic consequences of eliminating social security.
+
+1. First, solve for the benchmark model with social security. Is this economy dynamically efficient (compare the interest rate with the implicit return from social security, which is equal to the population growth rate)? Now eliminate social security by setting $\theta = 0$. Observe how aggregate capital accumulation and labor supply change as a result of the tax reform. Provide intuition in terms of insurance and output efficiency. How does aggregate welfare change? Who benefits and who loses due to this reform? How does the reform affect cross-sectional wealth inequality? You can use table 1 to support your answers.
+
+<...>
+
+2. In the second experiment, there is no idiosyncratic risk. Assume that at each age $j, z^L = z^H = 0.5$. First, compute the aggregate variables for the case with social security. How does the aggregate capital stock change relative to the benchmark model? Provide intuition in terms of capital as a buffer stock. Then, eliminate social security. How does the aggregate welfare change? What can you conclude about social security as an insurance device against idiosyncratic risk? Comment on the extent, to which these welfare comparisons across steady states are meaningful or misleading.
+
+<...>
+
+3. Consider the case, when labor supply is exogenous ($\gamma = 1$). Compare the distortionary effect of social security on the aggregate labor supply. How does the support for social security change with exogenous labor supply?
+
+<...>
