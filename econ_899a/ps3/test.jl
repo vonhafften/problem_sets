@@ -35,7 +35,7 @@ plot(a_grid, results.policy_function[50:59, :, 1]')
 plot(a_grid, results.policy_function[47:49, :, 1]')
 
 ################################################################################
-########################## Tests Solve_retiree_problem() ####################
+########################## Tests Solve_retiree_problem() #######################
 ################################################################################
 
 include("model.jl")
@@ -53,3 +53,16 @@ plot(a_grid, results.value_function[20:25, :, 1]')
 plot(a_grid, results.value_function[25:30, :, 2]')
 plot([a_grid a_grid], results.value_function[20, :, 1:2])
 plot([a_grid a_grid], results.policy_function[41, :, 1:2])
+plot(a_grid, results.labor_supply[40:45, :, 1]')
+
+################################################################################
+########################## Tests Solve_HH_problem() ############################
+################################################################################
+
+include("model.jl")
+
+@unpack a_grid = Primitives()
+
+results = Initialize()
+
+@elapsed Solve_HH_problem(results)
