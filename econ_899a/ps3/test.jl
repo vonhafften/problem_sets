@@ -57,6 +57,7 @@ plot(a_grid, results.labor_supply[40:45, :, 1]')
 
 ################################################################################
 ########################## Tests Solve_HH_problem() ############################
+############################### Tests Solve_F() ################################
 ################################################################################
 
 include("model.jl")
@@ -66,3 +67,5 @@ include("model.jl")
 results = Initialize()
 
 @elapsed Solve_HH_problem(results)
+
+@elapsed Solve_F(results; progress = true)

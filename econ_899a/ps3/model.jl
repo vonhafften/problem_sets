@@ -17,26 +17,41 @@ using Parameters
 
 # Primitive structure
 @with_kw struct Primitives
+    # life-cycle
     N::Int64                  = 66                               # lifespan
-    n::Float64                = 0.011                            # population growth rate
     Jᴿ::Int64                 = 46                               # retirement age
-    θ::Float64                = 0.11                             # proportional labor tax
+    n::Float64                = 0.011                            # population growth rate
+
+    # preference parameters
     γ::Float64                = 0.42                             # weight on consumption in utility function
     σ::Float64                = 2.0                              # coefficient of relative risk aversion
+    β::Float64                = 0.97                             # Discount rate
+
+    # productivity
     η::Array{Float64, 1}      = map(x->parse(Float64,x), readlines("ef.txt")) # deterministic age-efficiency profile
     z::Array{Float64, 1}      = [3.0, 0.5]                       # Idiosyncratic productivity levels
     z_length::Int64           = length(z)                        # Number of productivity states
     Π::Array{Float64, 2}      = [0.9261 0.0739; 0.0189 0.9811]   # Productivity persistance probabilities
     Π₀::Array{Float64, 1}     = [0.2037, 0.7963]                 # Erodic distribution of Π
     e::Array{Float64, 2}      = η * z'                           # productivity levels
+
+    # production
     α::Float64                = 0.36                             # capital elasticity in production
     δ::Float64                = 0.06                             # capital depreciation rate
-    β::Float64                = 0.97                             # Discount rate
+
+    # government
+    θ::Float64                = 0.11                             # proportional labor tax
+
+    # asset grid
     a_min::Float64            = 0.0                              # Lower bound of savings grid
     a_max::Float64            = 75.0                             # Upper bound of savings grid
     a_length::Int64           = 5000                             # Number of points on asset grid
     a_grid_srl                = range(a_min, a_max; length = a_length) # Savings grid step range
     a_grid::Array{Float64, 1} = collect(a_grid_srl)               # Savings grid array
+
+    # dim 1 is age, dim 2 is assets, dim 3 is productivity
+    e_3d::Array{Float64, 3}   = reshape(repeat(e, a_length), Jᴿ -1, a_length, z_length)
+    a_grid_3d::Array{Float64, 3} = permutedims(reshape(repeat(a_grid, N * z_length), a_length, N, z_length), (2, 1, 3))
 end
 
 mutable struct Results
@@ -223,33 +238,68 @@ function Solve_HH_problem(results::Results; progress::Bool = false)
 end
 
 ################################################################################
-######## Functions to solve for invariant asset distribution ###################
+################## Functions to solve for asset distribution ###################
 ################################################################################
 
-function Solve_F(results::Results)
-    @unpack N, n, z_length, Π₀, a_length = Primitives()
+function Solve_F(results::Results; progress::Bool = false)
+    @unpack a_grid, N, n, z_length, Π₀, Π, a_length = Primitives()
 
-    μ = ones(N)
+    # sets distribution to zero.
+    results.F = zeros(N, a_length, z_length)
 
-    for i = 1:(N-1)
-        μ[i + 1] = μ[i]/(1+n)
-    end
+    # Fills in model-age 1 with erodgic distribution of producitivities.
+    results.F[1, 1, :] = Π₀
 
-    μ = μ/sum(μ)
-
-    for i = 1:z_length
-        results.F[1, 1, i] = μ[1] * Π₀[i]
-    end
-
-    for j = 2:N
-        for i_a = 1:a_length
+    for j = 1:(N-1) # Iterates through model-ages
+        if progress
+            println(j)
+        end
+        for i_a in 1:a_length # Iterates through asset levels
             for i_z = 1:z_length
-                results.policy_function[j, i_a, i_z]
-
-                ###############################################################
-                ###############################################################
-                results.F[1, 1, i]
+                if results.F[j, i_a, i_z] == 0 # skips if no mass at j, i_a, i_z
+                    continue
+                end
+                # finds index of assets tomorrow
+                i_a_p = argmax(a_grid .== results.policy_function[j, i_a, i_z])
+                for i_z_p = 1:z_length # iterates over productivity levels tomorrow
+                    results.F[j+1, i_a_p, i_z_p] += Π[i_z, i_z_p] * results.F[j, i_a, i_z]
+                end
             end
         end
     end
+
+    # sum(results.F) should equal N at this point (i.e. 1 for each row)
+    # Now adjusts for population growth, so that sum(results.F) = 1
+
+    μ_temp = ones(N)
+
+    for i = 1:(N-1)
+        μ_temp[i + 1] = μ_temp[i]/(1+n)
+    end
+
+    μ = reshape(repeat(μ_temp/sum(μ_temp), a_length*z_length), N, a_length, z_length)
+
+    results.F = μ .* results.F
+end
+
+################################################################################
+######################## Functions for market clearing #########################
+################################################################################
+
+function Solve_model()
+    @unpack a_grid_3d, e_3d, N, z_length, a_length, Jᴿ, α, δ, θ, e = Primitives()
+
+    results = Initialize()
+
+    Solve_HH_problem(results)
+    Solve_F(results)
+
+    aggregate_k = sum(results.F .* a_grid_3d)
+    aggregate_l = sum(results.F[1:(Jᴿ - 1),:,:] .* results.labor_supply .* reshape(repeat(e, a_length), Jᴿ -1, a_length, z_length))
+
+
+    w = (1 - α) * aggregate_k ^ α * aggregate_l ^ (1 - α)
+    r = α * aggregate_k ^ (α - 1) * aggregate_l ^ α - δ
+    b = (θ * w * aggregate_l) / sum(results.F[Jᴿ:N, :, :])
+
 end
