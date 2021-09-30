@@ -89,10 +89,22 @@ include_graphics("value_function_50.png")
 
 Plot the savings function for a worker at the model-age 20, $a'_{20}(z, a)$. Is saving increasing in $a$? Is it increasing in $z$?
 
-Yes, the savings function for a worker at the model-age 20 is increasing in $a$ and increasing in $z$ (figure 3).
+The policy function for a worker at the model-age 20 $a'_{20}(z, a)$ is increasing in $a$ and increasing in $z$ (figure 3).
 
 ```{r, echo = FALSE, out.width = "70%", out.height= "70%"}
 include_graphics("policy_function_20.png")
+```
+
+\pagebreak
+
+The savings function for a worker at the model-age 20 $a'_{20}(z, a) - a$ is weakly increasing in $z$ and decreasing in $a$ when $l > 0$ and increasing in $a$ when $l = 0$ (figure 4).  For both high and low productivity agents, at a certain asset level, they stop supplying labor.  When they are still supplying labor, savings are increasing in $z$ and decreasing in $a$.  When they are not supplying labor, savings are constant in $z$ and increasing in $a$. (Ignore the drop at the far rightside; that is an artifact of the asset grid.)
+
+```{r, echo = FALSE, out.width = "70%", out.height= "70%"}
+include_graphics("savings_function_20.png")
+``` 
+
+```{r, echo = FALSE, out.width = "70%", out.height= "70%"}
+include_graphics("labor_supply_20.png")
 ```
 
 \pagebreak
@@ -153,7 +165,7 @@ kable(df, digits = 3, caption = "Results Comparison")
 
 - Aggregate welfare drops from -35.896 to -37.419 when social security is removed.
 
-- Figure 2 shows the average value function by age.  The young (model-age of 10 or less) prefer the world without social security; everyone else preferred the world with social security.
+- Figure 5 shows the average value function by age.  The young (model-age of 10 or less) prefer the world without social security; everyone else preferred the world with social security.
 
 - The coefficient of wealth variation is increases from 0.603 to 0.669, so the lack of social security increases cross-sectional wealth inequality.
 

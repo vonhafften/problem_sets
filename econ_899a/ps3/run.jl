@@ -38,11 +38,18 @@ plot([a_grid a_grid a_grid],
 savefig("policy_function_20.png")
 
 plot([a_grid a_grid],
-     [results.policy_function[20, :, :].-a_grid],
+     results.policy_function[20, :, :].-a_grid,
      labels = ["High" "Low"],
      title="Figure 4")
 
 savefig("savings_function_20.png")
+
+plot([a_grid a_grid],
+     results.labor_supply[20, :, :],
+     labels = ["High" "Low"],
+     title="Figure 5")
+
+savefig("labor_supply_20.png")
 
 ################################################################################
 ################################## Exercise 3 ##################################
@@ -77,7 +84,7 @@ bm_no_ss_line = reshape(sum(bm_no_ss.value_function .* bm_no_ss.μ; dims = [2, 3
 plot([bm_ss_line bm_no_ss_line],
      legend=:bottomright,
      labels = ["SS" "No SS"],
-     title="Figure 4")
+     title="Figure 6")
 
 savefig("value_bm_ss_no_ss.png")
 
