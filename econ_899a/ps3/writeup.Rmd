@@ -155,14 +155,32 @@ kable(df, digits = 3, caption = "Results Comparison")
 
 - Figure 2 shows the average value function by age.  The young (model-age of 10 or less) prefer the world without social security; everyone else preferred the world with social security.
 
+- The coefficient of wealth variation is increases from 0.603 to 0.669, so the lack of social security increases cross-sectional wealth inequality.
+
 ```{r, echo = FALSE, out.width = "70%", out.height= "70%"}
 include_graphics("value_bm_ss_no_ss.png")
 ```
 
 2. In the second experiment, there is no idiosyncratic risk. Assume that at each age $j, z^L = z^H = 0.5$. First, compute the aggregate variables for the case with social security. How does the aggregate capital stock change relative to the benchmark model? Provide intuition in terms of capital as a buffer stock. Then, eliminate social security. How does the aggregate welfare change? What can you conclude about social security as an insurance device against idiosyncratic risk? Comment on the extent, to which these welfare comparisons across steady states are meaningful or misleading.
 
-<...>
+- Column (3) of Table 1 shows the results without idiosyncratic productivity risk.
+
+- Aggregate capital drops from 3.390 to 1.060.  Since there is no idiosyncratic productivity risk, agents do not want to a capital buffer to insure against a low shock.
+
+- Column (4) of Table 1 shows the results without both idiosyncratic productivity risk or social security.
+
+- Aggregate welfare stays approximately the same at around -45.105 to -45.114.
+
+- This suggests that the major benefit of social security is to insure against idiosyncratic productivity risk.  Without idiosyncratic productivity risk, there is not any gain from social security.
+
+- Comparisons between steady states are a good starting point, but a more complete analysis would include the transition between steady states.  In this context, adding the transition will likely make things worse off because there are retired agents that have to deal with suddenly losing their expected social security benefit, so comparing steady states can provide a likely upper bound on the gains from welfare from the reform.
 
 3. Consider the case, when labor supply is exogenous ($\gamma = 1$). Compare the distortionary effect of social security on the aggregate labor supply. How does the support for social security change with exogenous labor supply?
 
-<...>
+- Columns (5) and (6) of Table 1 shows the results when labor is exogenous with and without social security.
+
+- All working agents provide 1 unit of labor, so the aggregate is 0.754 (i.e., the fraction of working agents). 
+
+- In addition, labor is exogenous so social security has no distortionary effect on labor supply.
+
+- Aggregate welfare is drops from -23.160 to -25.753, so this does not support changing social security even with exogenous labor supply.

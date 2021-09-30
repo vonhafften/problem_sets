@@ -37,6 +37,13 @@ plot([a_grid a_grid a_grid],
 
 savefig("policy_function_20.png")
 
+plot([a_grid a_grid],
+     [results.policy_function[20, :, :].-a_grid],
+     labels = ["High" "Low"],
+     title="Figure 4")
+
+savefig("savings_function_20.png")
+
 ################################################################################
 ################################## Exercise 3 ##################################
 ################################################################################
@@ -61,10 +68,10 @@ table_1 = create_table([bm_ss, bm_no_ss,
 CSV.write("table_1.csv", table_1)
 
 # Figure 4
-bm_ss.value_function[isinf.(bm_ss.value_function)] .= -1/eps()
-bm_ss_line = reshape(sum(bm_ss.value_function .* bm_ss.μ; dims = [2, 3]), 66, 1)
+bm_ss.value_function[isinf.(bm_ss.value_function)] .= -1/eps();
+bm_no_ss.value_function[isinf.(bm_no_ss.value_function)] .= -1/eps();
 
-bm_no_ss.value_function[isinf.(bm_no_ss.value_function)] .= -1/eps()
+bm_ss_line = reshape(sum(bm_ss.value_function .* bm_ss.μ; dims = [2, 3]), 66, 1)
 bm_no_ss_line = reshape(sum(bm_no_ss.value_function .* bm_no_ss.μ; dims = [2, 3]), 66, 1)
 
 plot([bm_ss_line bm_no_ss_line],
@@ -82,7 +89,7 @@ bm_ss_line = reshape(sum(bm_ss.value_function .* bm_ss.μ; dims = [1, 3]), 5000,
 
 bm_no_ss_line = reshape(sum(bm_no_ss.value_function .* bm_no_ss.μ; dims = [1, 3]), 5000, 1)
 
-plot([bm_ss_line bm_no_ss_line],
+plot([bm_ss_line[2:5000] bm_no_ss_line[2:5000]],
      legend=:bottomright,
      labels = ["SS" "No SS"],
      title="Figure 4")

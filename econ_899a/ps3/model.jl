@@ -13,7 +13,7 @@
 ################################################################################
 
 # Load libraries
-using Parameters, CSV, Tables
+using Parameters, CSV, Tables, DataFrames
 
 # Primitive structure
 @with_kw struct Primitives
@@ -373,7 +373,7 @@ process_results = function(results::Results)
     a_grid_3d = permutedims(reshape(repeat(a_grid, N * z_length), a_length, N, z_length), (2, 1, 3))
     wealth_mean = sum(results.μ .* a_grid_3d)
     wealth_second_moment = sum(results.μ .* a_grid_3d .^ 2)
-    wealth_second_central_moment = wealth_2m - wealth_1m^2
+    wealth_second_central_moment = wealth_second_moment - wealth_mean^2
     cv = wealth_mean / sqrt(wealth_second_central_moment)
 
     # create vector of summary statistics
