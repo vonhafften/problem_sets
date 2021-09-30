@@ -81,7 +81,7 @@ Thus, for a given combination of $(z, a, a')$, the expression above gives the op
 
 Solve the dynamic programming problem of retirees and workers. Plot the value function over $a$ for a retired agent at the model-age 50. Is it increasing and concave? 
 
-Yes, the value function for a retired agent at the model-age 50 is increasing and concave.
+Yes, the value function for a retired agent at the model-age 50 is increasing and concave (figure 2).
 
 ```{r, echo = FALSE, out.width = "70%", out.height= "70%"}
 include_graphics("value_function_50.png")
@@ -89,7 +89,7 @@ include_graphics("value_function_50.png")
 
 Plot the savings function for a worker at the model-age 20, $a'_{20}(z, a)$. Is saving increasing in $a$? Is it increasing in $z$?
 
-Yes, the savings function for a worker at the model-age 20 is increasing in $a$ and increasing in $z$.
+Yes, the savings function for a worker at the model-age 20 is increasing in $a$ and increasing in $z$ (figure 3).
 
 ```{r, echo = FALSE, out.width = "70%", out.height= "70%"}
 include_graphics("policy_function_20.png")
@@ -136,12 +136,28 @@ df <- read_csv("table_1.csv", col_types = cols()) %>% t()
 
 colnames(df) <- paste0("(", 1:6, ")")
 
-kable(df, digits = 3)
+kable(df, digits = 3, caption = "Results Comparison")
 ```
 
 1. First, solve for the benchmark model with social security. Is this economy dynamically efficient (compare the interest rate with the implicit return from social security, which is equal to the population growth rate)? Now eliminate social security by setting $\theta = 0$. Observe how aggregate capital accumulation and labor supply change as a result of the tax reform. Provide intuition in terms of insurance and output efficiency. How does aggregate welfare change? Who benefits and who loses due to this reform? How does the reform affect cross-sectional wealth inequality? You can use table 1 to support your answers.
 
-<...>
+- Column (1) of Table 1 shows the benchmark model with social security.
+
+- Yes, the economy is dynamically efficient. The interest rate is $r \approx 0.023$, which exceeds the population growth rate of $n = 0.011$.
+
+- Column (2) of Table 1 shows the benchmark model without social security.
+
+- Aggregate capital increases dramatically from 3.390 to 4.596 when social security is removed.  Without social security benefits during retirement, households save more when they are working.
+
+- Aggregate labor increases slightly from 0.344 to 0.365 when social security is removed.  In removing social security, we have also removed the distortionary labor tax that pays for it, so labor supply increases.
+
+- Aggregate welfare drops from -35.896 to -37.419 when social security is removed.
+
+- Figure 2 shows the average value function by age.  The young (model-age of 10 or less) prefer the world without social security; everyone else preferred the world with social security.
+
+```{r, echo = FALSE, out.width = "70%", out.height= "70%"}
+include_graphics("value_bm_ss_no_ss.png")
+```
 
 2. In the second experiment, there is no idiosyncratic risk. Assume that at each age $j, z^L = z^H = 0.5$. First, compute the aggregate variables for the case with social security. How does the aggregate capital stock change relative to the benchmark model? Provide intuition in terms of capital as a buffer stock. Then, eliminate social security. How does the aggregate welfare change? What can you conclude about social security as an insurance device against idiosyncratic risk? Comment on the extent, to which these welfare comparisons across steady states are meaningful or misleading.
 
