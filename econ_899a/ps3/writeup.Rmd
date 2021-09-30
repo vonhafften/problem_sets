@@ -107,10 +107,6 @@ $$
 
 for $i = 1, ..., N - 1$ with any $\mu_1 = \tilde{\mu}_1 > 0$.  Then normalize $\mu$, so that it sums up to 1 across all age groups. Finally, start with the newborn generation with zero wealth: given its distribution, $F_1(z^H, 0) = \mu_1 \times 0.2037$ and $F_1(z^L, 0) = \mu_1 \times 0.7963$, compute the distribution of agents over asset holdings at subsequent ages by applying the optimal decision rules.
 
-<...>
-
-\pagebreak
-
 ## Exercise 3
 
 We have computed the decision rules and the stationary distribution for given prices. There is no guarantee that at these prices the supply of assets and labor by the agents equals the demand for capital and labor by the firms. In order to find the equilibrium prices, we use the ”guess and verify” method. First, we make initial guesses on aggregate capital and aggregate labor, demanded by the firm, which we denote $K^0$ and $L^0$, respectively. They imply the interest rate $r^0$ and wage $w^0$, since markets are perfectly competitive. Observe that from the guess on $K$ and $L$ we can compute the pension benefit, $b$, using the government budget constraint:
@@ -131,7 +127,17 @@ $$
 
 If the guess was ”far off” the obtained values, we update our initial guess with $K^1 = 0.99K^0 + 0.01K^{new}$ and $L^1 = 0.99L^0 + 0.01L^{new}$ and repeat the procedure. We proceed so until the guess and the updated values for $K$ and $L$ are ”sufficiently close”.
 
+\pagebreak
+
 You are now asked to evaluate the macroeconomic consequences of eliminating social security.
+
+```{r echo = FALSE}
+df <- read_csv("table_1.csv", col_types = cols()) %>% t()
+
+colnames(df) <- paste0("(", 1:6, ")")
+
+kable(df, digits = 3)
+```
 
 1. First, solve for the benchmark model with social security. Is this economy dynamically efficient (compare the interest rate with the implicit return from social security, which is equal to the population growth rate)? Now eliminate social security by setting $\theta = 0$. Observe how aggregate capital accumulation and labor supply change as a result of the tax reform. Provide intuition in terms of insurance and output efficiency. How does aggregate welfare change? Who benefits and who loses due to this reform? How does the reform affect cross-sectional wealth inequality? You can use table 1 to support your answers.
 

@@ -17,7 +17,7 @@ include("model.jl")
 
 @unpack a_grid = Primitives()
 
-results = Initialize()
+results = Initialize(0.11, [3.0, 0.5], 0.42)
 
 @elapsed Solve_retiree_problem(results; progress = true)
 
@@ -42,7 +42,7 @@ include("model.jl")
 
 @unpack a_grid = Primitives()
 
-results = Initialize()
+results = Initialize(0.11, [3.0, 0.5], 0.42)
 
 @elapsed Solve_retiree_problem(results)
 
@@ -64,8 +64,8 @@ include("model.jl")
 
 @unpack a_grid = Primitives()
 
-results = Initialize()
+results = Initialize(0.11, [3.0, 0.5], 0.42)
 
 @elapsed Solve_HH_problem(results)
 
-@elapsed Solve_F(results; progress = true)
+@elapsed Solve_μ(results; progress = true)
