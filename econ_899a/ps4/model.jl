@@ -42,8 +42,8 @@ using Parameters
 
     # asset grid
     a_min::Float64            = 0.0                              # Lower bound of savings grid
-    a_max::Float64            = 75.0                             # Upper bound of savings grid
-    a_length::Int64           = 5000                             # Number of points on asset grid
+    a_max::Float64            = 40.0                             # Upper bound of savings grid
+    a_length::Int64           = 1000                             # Number of points on asset grid
     a_grid_srl                = range(a_min, a_max; length = a_length) # Savings grid step range
     a_grid::Array{Float64, 1} = collect(a_grid_srl)               # Savings grid array
 end

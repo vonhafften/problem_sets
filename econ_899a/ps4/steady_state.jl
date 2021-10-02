@@ -263,13 +263,13 @@ function Solve_steady_state(k_0::Float64, l_0::Float64; θ::Float64 = 0.11, λ::
         diff = abs(k_0 - k_1) + abs(l_0 - l_1)
 
         if (progress)
+            println("************************************")
             println("Iteration #", i)
             println("Capital demand: ", k_0)
             println("Labor demand: ", l_0)
             println("Capital supply: ", k_1)
             println("Labor supply: ", l_1)
             println("Absolute difference: ", diff)
-            println("************************************")
         end
 
         if diff > ε

@@ -28,12 +28,8 @@ mutable struct Transition
     μ::Array{Float64}                    # 4d array of asset distribution
 end
 
-function Initialize_transition(ss_0::Results, ss_1::Results, N_t::Int64)
+function Initialize_transition(ss_0::Results, ss_1::Results, k_demand_path::Array{Float64}, l_demand_path::Array{Float64}, N_t::Int64)
     @unpack α, δ, N, a_length, z_length, Jᴿ = Primitives()
-
-    # start with linear transition path
-    k_demand_path = collect(ss_0.k .+ ((0:(N_t-1)) ./ (N_t-1)) .* (ss_1.k - ss_0.k))
-    l_demand_path = collect(ss_0.l .+ ((0:(N_t-1)) ./ (N_t-1)) .* (ss_1.l - ss_0.l))
 
     # value_function, policy_function, labor_supply, and μ are 4-dimensional arrays
     # 1st dim is age, 2nd dim is asset holding, 3rd dim is productivity state, 4th dim is transition period
@@ -48,7 +44,7 @@ function Initialize_transition(ss_0::Results, ss_1::Results, N_t::Int64)
     labor_supply[:, :, :, N_t] = ss_1.labor_supply
 
     # Fill in μ at the beginning to be that of the initial steady state.
-    μ[:, :, :, 1] = ss_1.μ
+    μ[:, :, :, 1] = ss_0.μ
 
     # calculate prices
     w_path = (1 - α) .* k_demand_path .^ α .* l_demand_path .^ (- α)
@@ -58,6 +54,9 @@ function Initialize_transition(ss_0::Results, ss_1::Results, N_t::Int64)
     Transition(N_t, ss_1.θ, k_demand_path, l_demand_path, w_path, r_path, b_path, value_function, policy_function, labor_supply, μ)
 end
 
+################################################################################
+######################### Functions to solve HH problem ########################
+################################################################################
 
 function Solve_retiree_problem_transition(transition::Transition; progress::Bool = false)
     @unpack β, N, Jᴿ, z_length, σ, γ = Primitives()
@@ -146,7 +145,7 @@ function Solve_worker_problem_transition(transition::Transition; progress::Bool 
                     # Iterate over assets tomorrow.
                     for i_a_p = choice_lower:a_length
 
-                        # Solve labor decision (setup only for removal of ss as policy experiment)
+                        # Solve labor decision
                         l = labor_decision(a_grid[i_a], a_grid[i_a_p], e[j, i_z],
                                            transition.θ_1, γ, transition.r_path[i_t],
                                            transition.w_path[i_t])
@@ -174,7 +173,7 @@ function Solve_worker_problem_transition(transition::Transition; progress::Bool 
                         elseif  i_a_p == a_length
                             transition.value_function[j, i_a, i_z, i_t] = val
                             transition.policy_function[j, i_a, i_z, i_t] = a_grid[i_a_p]
-                            results.labor_supply[j, i_a, i_z, i_t] = labor_decision(a_grid[i_a],
+                            transition.labor_supply[j, i_a, i_z, i_t] = labor_decision(a_grid[i_a],
                                 a_grid[i_a_p], e[j, i_z], transition.θ_1, γ, transition.r_path[i_t], transition.w_path[i_t])
                         end
 
@@ -187,46 +186,210 @@ function Solve_worker_problem_transition(transition::Transition; progress::Bool 
     end
 end
 
+function Solve_HH_problem_transition(transition::Transition; progress = false)
 
-function Solve_HH_problem_transition(transition::Transition)
-    Solve_retiree_problem_transition(transition)
-    Solve_worker_problem_transition(transition)
+    Solve_retiree_problem_transition(transition; progress)
+
+    Solve_worker_problem_transition(transition; progress)
 end
 
+
+################################################################################
+################## Functions to solve for asset distribution ###################
+################################################################################
+
+function Solve_μ_transition(transition::Transition; progress::Bool = false)
+    @unpack a_grid, N, n, z_length, Π₀, Π, a_length = Primitives()
+
+    # Solve for age weights
+    age_weights_temp = ones(N)
+    for i = 1:(N-1)
+        age_weights_temp[i + 1] = age_weights_temp[i]/(1+n)
+    end
+    age_weight = reshape(repeat(age_weights_temp/sum(age_weights_temp), a_length * z_length), N, a_length, z_length)
+
+    # un-normalize first period transition distirbution using age weight.
+    transition.μ[:, :, :, 1] = transition.μ[:, :, :, 1] ./ age_weight
+
+    # each age should have measure 1.
+    # i.e. sum(transition.μ[:, :, :, 1]) == N
+    # or sum(transition.μ[:, :, :, 1], dims = (2, 3)) == [1 1 1 1 ... 1]'
+
+    # sets distribution for transition period 2 and onwards to zero.
+    transition.μ[:, :, :, 2:transition.N_t] .= 0.0
+
+    # Fills in model-age 1 with erodgic distribution of producitivities.
+    transition.μ[1, 1, :, :] .= Π₀
+
+    for i_t = 1:(transition.N_t-1)
+        if progress
+            println(i_t)
+        end
+        for j = 1:(N-1) # Iterates through model-ages
+            for i_a in 1:a_length # Iterates through asset levels
+                for i_z = 1:z_length
+                    if transition.μ[j, i_a, i_z, i_t] == 0 # skips if no mass at j, i_a, i_z
+                        continue
+                    end
+                    # finds index of assets tomorrow
+                    i_a_p = argmax(a_grid .== transition.policy_function[j, i_a, i_z, i_t])
+                    for i_z_p = 1:z_length # iterates over productivity levels tomorrow
+                        transition.μ[j+1, i_a_p, i_z_p, i_t+1] += Π[i_z, i_z_p] * transition.μ[j, i_a, i_z, i_t]
+                    end
+                end
+            end
+        end
+        # renormalizes the distribution using the age_weights
+        transition.μ[:, :, :, i_t] = age_weight .* transition.μ[:, :, :, i_t]
+    end
+    transition.μ[:, :, :, transition.N_t] = age_weight .* transition.μ[:, :, :, transition.N_t]
+end
+
+################################################################################
+######################## Functions for market clearing #########################
+################################################################################
+
+function Calculate_labor_supply_path(transition::Transition)
+    @unpack Jᴿ, a_length, z_length, e = Primitives()
+
+    e_3d = reshape(repeat(e, a_length), Jᴿ -1, a_length, z_length)
+
+    path = zeros(transition.N_t)
+
+    for i_t = 1:transition.N_t
+        path[i_t] = sum(transition.μ[1:(Jᴿ - 1),:,:, i_t] .* transition.labor_supply[:,:,:,i_t] .* e_3d)
+    end
+
+    return(path)
+end
+
+function Calculate_capital_supply_path(transition::Transition)
+    @unpack a_grid, N, z_length, a_length, N = Primitives()
+
+    a_grid_3d = permutedims(reshape(repeat(a_grid, N * z_length), a_length, N, z_length), (2, 1, 3))
+
+    path = zeros(transition.N_t)
+
+    for i_t = 1:transition.N_t
+        path[i_t] = sum(transition.μ[:, :, :, i_t] .* a_grid_3d)
+    end
+
+    return(path)
+end
+
+################################################################################
+########### Solve for transition path ##########################################
+################################################################################
+
 function Solve_transition(θ_0::Float64, θ_1::Float64,
-                          k_0_0::Float64, k_0_1::Float64,
-                          l_0_0::Float64, l_0_1::Float64)
+                          k_guess_0::Float64, k_guess_1::Float64,
+                          l_guess_0::Float64, l_guess_1::Float64;
+                          progress::Bool = false)
 
     # Steady states
+    println("************************************")
     println("Solve for initial steady state: ")
-    ss_0 = Solve_steady_state(k_0_0, l_0_0; θ = θ_0, progress = true)
-
+    ss_0 = Solve_steady_state(k_guess_0, l_guess_0; θ = θ_0, progress = true)
+    println("************************************")
     println("Solve for terminal steady state: ")
-    ss_1 = Solve_steady_state(k_0_1, l_0_1; θ = θ_1, progress = true)
+    ss_1 = Solve_steady_state(k_guess_1, l_guess_1; θ = θ_1, progress = true)
 
     # Initial guess for transition length
     N_t = 30
 
-    while true # loop for determining length of transition
+    ε = 0.01
+    λ = 0.5
+    N_t_increment = 10
 
-        transition = Initialize_transition(ss_0, ss_1, N_t)
+    # start with linear transition path
+    k_demand_path_0 = collect(ss_0.k .+ ((0:(N_t-1)) ./ (N_t-1)) .* (ss_1.k - ss_0.k))
+    l_demand_path_0 = repeat([ss_1.l], N_t)
+
+    transition = Initialize_transition(ss_0, ss_1, k_demand_path_0, l_demand_path_0, N_t)
+
+    println("************************************")
+    println("Solve for transition path: ")
+
+    while true # loop for determining length of transition
+        i = 1
+
+        println("************************************")
+        println("Transition length: ", N_t)
 
         while true # loop for convergence of k and l path
+            println("************************************")
+            println("Iteration #", i)
 
-            # backward induction to solve HH problem along transition path
+            println("Computing HH value and policy functions...")
+            # shooting backward to solve HH problem (value and policy functions) along transition path
             Solve_HH_problem_transition(transition)
 
+            println("Computing asset distribution...")
             # forward induction to solve μ along transition path
+            Solve_μ_transition(transition)
 
             # calculate k_supply_path and l_supply_path
+            l_supply_path = Calculate_labor_supply_path(transition)
+            k_supply_path = Calculate_capital_supply_path(transition)
 
-            # test if k_supply_path and l_supply_path are close to k_demand_path and l_demand_path
-            # if not adjust k_demand_path and l_demand_path
+            if (progress)
+                display(plot([transition.l_demand_path l_supply_path repeat([ss_0.l], N_t) repeat([ss_1.l], N_t)],
+                        label = ["Demand" "Supply" "Initial SS" "Terminal SS"],
+                        title = "Labor",
+                        legend = :bottomright))
+                display(plot([transition.k_demand_path k_supply_path repeat([ss_0.k], N_t) repeat([ss_1.k], N_t)],
+                             label = ["Demand" "Supply" "Initial SS" "Terminal SS"],
+                             title = "Capital",
+                             legend = :bottomright))
+            end
+
+            error = maximum([abs.(transition.k_demand_path .- k_supply_path) abs.(transition.l_demand_path .- l_supply_path)])
+
+            println("Sup norm: ", error)
+
+            if error > ε
+                println("Adjusting labor and capital demand...")
+
+                k_demand_path_1 = (1 - λ) .* transition.k_demand_path .+ λ .* k_supply_path
+                l_demand_path_1 = (1 - λ) .* transition.l_demand_path .+ λ .* l_supply_path
+
+                transition = Initialize_transition(ss_0, ss_1, k_demand_path_1, l_demand_path_1, N_t)
+                i += 1
+            else
+                println("Capital and labor supply converged.")
+                break
+            end
         end
 
-        # test if k and l at N are close enough to terminal steady state, ss_1
-        # if not increase N
+        # tests for convergence at end of transition path
 
+        error = abs(transition.k_demand_path[N_t] - ss_1.k)
+
+        println("************************************")
+        println("Sup norm at end of transition: ", error)
+
+        if error > ε
+
+            println("************************************")
+            println("Transition path too short.")
+            println("Lengthening transition path...")
+
+            k_demand_path_extension = collect(transition.k_demand_path[N_t] .+ ((0:(N_t_increment-1)) ./ (N_t_increment-1)) .* (ss_1.k - transition.k_demand_path[N_t]))
+            l_demand_path_extension = collect(transition.l_demand_path[N_t-5] .+ ((0:(N_t_increment*2-1)) ./ (N_t_increment*2-1)) .* (ss_1.l - transition.l_demand_path[N_t-5]))
+
+            k_demand_path_0 = vcat(transition.k_demand_path, k_demand_path_extension)
+            l_demand_path_0 = vcat(transition.l_demand_path[1:N_t - N_t_increment], l_demand_path_extension)
+
+            N_t += N_t_increment
+
+            transition = Initialize_transition(ss_0, ss_1, k_demand_path_0, l_demand_path_0, N_t)
+
+        else
+
+            println("************************************")
+            println("Transition path long enough.")
+            break
+        end
     end
-
+    return(transition)
 end

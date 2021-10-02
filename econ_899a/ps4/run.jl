@@ -20,11 +20,12 @@ include("transition.jl");
 θ_1 = 0.0
 
 # Initial guesses for initial and terminal steady state capital
-k_0_0 = 3.518053688978396
-k_0_1 = 4.596865227600611
+k_guess_0 = 3.513795391470152
+k_guess_1 = 4.598758704122076
 
 # Initial guesses for initial and terminal steady state labor
-l_0_0 = 0.34699359276158837
-l_0_1 = 0.3651178450225594
+l_guess_0 = 0.3468221868691036
+l_guess_1 = 0.36525017624196743
 
-Solve_transition(θ_0, θ_1, k_0_0, k_0_1, l_0_0, l_0_1)
+Solve_transition(θ_0, θ_1, k_guess_0, k_guess_1, l_guess_0, l_guess_1;
+                 progress = true)
