@@ -25,7 +25,7 @@ Each period a continuum of agents is born and live for $N = 66$ periods. The pop
 The instantaneous utility function of a worker is given by:
 
 $$
-u^W(c, l) = \frac{[c^{\gamma} (1 - k)^{1 - \gamma}]^{1- \sigma}}{1 - \sigma}
+u^W(c, l) = \frac{[c^{\gamma} (1 - l)^{1 - \gamma}]^{1- \sigma}}{1 - \sigma}
 $$
 
 with $c$ - consumption and $l$ - labor. The weight on consumption, $\gamma$, is 0.42, and the coefficient of relative risk aversion, $\sigma$, is 2. The instantaneous utility function of a retired agent reads:
@@ -67,7 +67,7 @@ The dynamic programming problem of a worker is given by:
 V_j(a, z) = \max_{a' \ge 0, 0 \le l \le 1} \{ u^W(w(1-\theta) e(z, \eta_j)l + (1 +r) a - a', l) + \beta E[V_{j+1} (a', z') | (a, z, j)] \}
 \end{align}
 
-subject to $0 \ge l \ge 1$. The social security tax rate $\theta$ is 0.11. The dynamic programming problem of a worker involves maximization over an additional control, which is labor, $l$. We can, however, make use of the household’s first-order condition with respect to $l$ combined with the budget constraint to arrive at the following expression for l (derive it!):
+subject to $0 \ge l \ge 1$. The social security tax rate $\theta$ is 0.11. The dynamic programming problem of a worker involves maximization over an additional control, which is labor, $l$. We can, however, make use of the household’s first-order condition with respect to $l$ combined with the budget constraint to arrive at the following expression for l (derived in the appendix).
 
 $$
 l = \frac{\gamma ( 1 - \theta) e(z, \eta_j) w - (1-\gamma)[(1+r)a - a']}{(1 - \theta) w e(z, \eta_j)}
@@ -196,3 +196,56 @@ include_graphics("value_bm_ss_no_ss.png")
 - In addition, labor is exogenous so social security has no distortionary effect on labor supply.
 
 - Aggregate welfare is drops from -23.160 to -25.753, so this does not support changing social security even with exogenous labor supply.
+
+\pagebreak
+
+# Appendix - Optimal Labor Supply
+
+The dynamic programming problem of a worker is given by:
+
+$$
+V_j(a, z) 
+= \max_{a' \ge 0, 0 \le l \le 1} \{ u^W(w(1-\theta) e(z, \eta_j)l + (1 +r) a - a', l) 
++ \beta E[V_{j+1} (a', z') | (a, z, j)] \}
+$$
+
+$$
+\implies 
+V_j(a, z) 
+= \max_{a' \ge 0, 0 \le l \le 1} \Bigg\{ 
+\frac{[(w(1-\theta) e(z, \eta_j)l + (1 +r) a - a')^{\gamma} (1 - l)^{1 - \gamma}]^{1- \sigma}}{1 - \sigma}
++ \beta E[V_{j+1} (a', z') | (a, z, j)] \Bigg\}
+$$
+
+FOC [$l$]:
+
+\begin{align*}
+0 &= [(w(1-\theta) e(z, \eta_j)l + (1 +r) a - a')^{\gamma} (1 - l)^{1 - \gamma}]^{- \sigma}\\
+&\times [ \gamma(w(1-\theta) e(z, \eta_j)l + (1 +r) a - a')^{\gamma - 1} (1 - l)^{1 - \gamma}w(1-\theta) e(z, \eta_j)\\
+&-(1-\gamma)(w(1-\theta) e(z, \eta_j)l + (1 +r) a - a')^{\gamma} (1 - l)^{- \gamma}] \\
+\implies
+0 
+&= [c^{\gamma} (1 - l)^{1 - \gamma}]^{- \sigma}
+[ \gamma c ^{\gamma - 1} (1 - l)^{1 - \gamma}w(1-\theta) e(z, \eta_j)
+-(1-\gamma)c^{\gamma} (1 - l)^{- \gamma}] \\
+\implies
+ c 
+&=
+\frac{\gamma(1 - l)w(1-\theta) e(z, \eta_j)}{1-\gamma}
+\end{align*}
+
+Substitute into budget constraint:
+
+\begin{align*}
+w(1-\theta) e(z, \eta_j)l + (1 +r) a &= c + a' \\
+\implies
+w(1-\theta) e(z, \eta_j)l + (1 +r) a &= \frac{\gamma(1 - l)w(1-\theta) e(z, \eta_j)}{1-\gamma} + a' \\
+\implies
+l \Bigg[w(1-\theta) e(z, \eta_j) + \frac{\gamma w(1-\theta) e(z, \eta_j)}{1-\gamma} \Bigg] &= \frac{\gamma w(1-\theta) e(z, \eta_j)}{1-\gamma} + a' - (1 +r) a
+\end{align*}
+
+\begin{align*}
+\implies
+l &= \Bigg[ \frac{\gamma w(1-\theta) e(z, \eta_j)}{1-\gamma} + a' - (1 +r) a\Bigg] \Bigg[w(1-\theta) e(z, \eta_j) + \frac{\gamma w(1-\theta) e(z, \eta_j)}{1-\gamma} \Bigg]^{-1} \\
+&= \frac{\gamma ( 1 - \theta) e(z, \eta_j) w - (1-\gamma)[(1+r)a - a']}{(1 - \theta) w e(z, \eta_j)}
+\end{align*}

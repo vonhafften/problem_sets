@@ -1,0 +1,44 @@
+---
+title: "ECON 899A - Problem Set 4"
+author: "Alex von Hafften^[This problem set is for ECON 899A Computational Economics taught by Dean Corbae with assistance from Philip Coyle at UW-Madison. I worked on this problem set with a study group of Michael Nattinger, Sarah Bass, and Xinxin Hu.]"
+date: "10/6/2021"
+output: pdf_document
+header-includes:
+- \usepackage{bbm}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\one}{\mathbbm{1}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+```
+
+# Exercise 1
+
+1. Use the parameterization from the previous problem set. We continue to assume that labor supply is endogenous. Solve for the stationary equilibrium with social security ($\theta^{SS}_0 = 0.11$) and without it ($\theta^SS_N = 0$) following the algorithm described in the lecture notes (*Step 1: Calculating the stationary competitive equilibrium*). Denote the initial distribution of agents over age, $j$, asset holdings, $a$, and productivity levels, $z$, by $\Gamma_0^{SS} ( z, a, j; \theta_0^{SS})$. Denote the welfare of agents alive in the initial steady state by $V_0^{SS}(z, a, j; \theta_0^{SS})$.
+
+<...>
+
+2.  Compute the transition path of the economy using the algorithm in *Step 2: Solving for the transition path* in the lecture notes. Try $N = 30$ for the number of periods it approximately takes to get to the new steady state. Obtain and store the value function for the generations in the initial steady state, $V_0(z, a, j; \theta_0^{SS}, \theta_N^{SS})$. Plot the transition paths of interest rate, wage, capital, and effective labor. Comment on the results you obtain.
+
+<...>
+
+3. What fraction of the overall population would support the reform? Compute and plot the measure of consumption equivalent variation for each age, $EV_j$ , using
+
+$$
+EV_j = \sum_z \int_a EV(z, a, j) \Gamma_0^{SS}(z, a, j; \theta_0^{SS})da
+$$
+
+> with
+
+$$
+EV(z, a, j) = \Bigg(\frac{V_0(z, a, j; \theta_0^{SS}, \theta_N^{SS})}{V_0(z, a, j; \theta_0^{SS})}\Bigg)^{\frac{1}{\gamma(1-\sigma)}}
+$$
+
+> Discuss the results.
+
+## Exercise 2
+
+1. Instead of considering an unexpected elimination of the social security system, assume that in $t = 0$ the government credibly announces that it is going to abolish the public pension system starting from $t = 21$ onwards. Thus, all individuals retired keep their social security benefits, but future retirees anticipate that they will receive only part or no social security beneits. Repeat steps (1)-(3) of exercise 1 to study how agents readjust their plans and how political support changes for the anticipated reform in 21 years. You will have to increase the number of transition periods (try $N = 50$). Discuss your results.
