@@ -77,6 +77,18 @@ savefig("figures/exercise_1_ev.png")
 
 ############################ Plots #############################################
 
+plot(exercise_2.θ,
+     label = "Transition",
+     title = "Theta")
+
+savefig("figures/exercise_2_theta.png")
+
+plot([exercise_2.b_path repeat([exercise_2.ss_0.b], exercise_2.N_t) repeat([exercise_2.ss_1.b], exercise_2.N_t)],
+     label = ["Transition" "Initial SS" "Terminal SS"],
+     title = "Social Security Benefit")
+
+savefig("figures/exercise_2_b.png")
+
 plot([exercise_2.r_path repeat([exercise_2.ss_0.r], exercise_2.N_t) repeat([exercise_2.ss_1.r], exercise_2.N_t)],
      label = ["Transition" "Initial SS" "Terminal SS"],
      title = "Interest Rates")
