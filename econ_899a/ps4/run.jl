@@ -19,7 +19,7 @@ include("transition.jl");
 k_guess_0 = 3.513795391470152
 l_guess_0 = 0.3468221868691036
 
-# Guesses for terminal steady state labor
+# Guesses for terminal steady state
 l_guess_1 = 0.36525017624196743
 k_guess_1 = 4.598758704122076
 
@@ -59,14 +59,13 @@ plot([exercise_1.l_demand_path repeat([exercise_1.ss_0.l], exercise_1.N_t) repea
 
 savefig("figures/exercise_1_l.png")
 
-############################ Consumption Equivalent Variation ##################
-@unpack σ, γ, N = Primitives()
-
-ev_1 = reshape(sum((exercise_1.value_function[:, :, :, 1] ./ exercise_1.ss_0.value_function).^(1/(γ * (1 - σ))) .* exercise_1.ss_0.μ, dims = (2, 3)), N)
-
-plot(ev_1, title = "Consumption Equivalent Variation", legend = false)
+plot(reshape(sum(exercise_1.ev .* exercise_1.ss_0.μ, dims = (2, 3)), 66),
+     title = "Average Consumption EV by Age",
+     legend = false)
 
 savefig("figures/exercise_1_ev.png")
+
+exercise_1.vote_share
 
 ################################################################################
 ######################## Exercise 2 ############################################
@@ -116,9 +115,11 @@ plot([exercise_2.l_demand_path repeat([exercise_2.ss_0.l], exercise_2.N_t) repea
 
 savefig("figures/exercise_2_l.png")
 
-############################ Consumption Equivalent Variation ##################
-ev_2 = reshape(sum((exercise_2.value_function[:, :, :, 1] ./ exercise_2.ss_0.value_function).^(1/(γ * (1 - σ))) .* exercise_2.ss_0.μ, dims = (2, 3)), N)
-
-plot(ev_2, title = "Consumption Equivalent Variation", legend = false)
+plot([reshape(sum(exercise_2.ev .* exercise_2.ss_0.μ, dims = (2, 3)), 66)
+      reshape(sum(exercise_1.ev .* exercise_1.ss_0.μ, dims = (2, 3)), 66)],
+     title = "Average Consumption EV by Age",
+     legend = false)
 
 savefig("figures/exercise_2_ev.png")
+
+exercise_2.vote_share

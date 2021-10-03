@@ -10,6 +10,9 @@
 
 include("steady_state.jl")
 
+# Load libraries
+using CSV
+
 ################################################################################
 ################## Functions for calculating transition path ###################
 ################################################################################
@@ -28,6 +31,8 @@ mutable struct Transition
     μ::Array{Float64}                    # 4d array of asset distribution
     ss_0::Results                        # Initial steady state
     ss_1::Results                        # Terminal steady state
+    ev::Array{Float64}                   # Consumption equivalent variation
+    vote_share::Float64                  # Proportion of people in favor of change
 end
 
 function Initialize_transition(ss_0::Results, ss_1::Results, k_demand_path::Array{Float64}, l_demand_path::Array{Float64}, implementation_date::Int64, N_t::Int64)
@@ -39,6 +44,7 @@ function Initialize_transition(ss_0::Results, ss_1::Results, k_demand_path::Arra
     # value_function, policy_function, labor_supply, and μ are 4-dimensional arrays
     # 1st dim is age, 2nd dim is asset holding, 3rd dim is productivity state, 4th dim is transition period
     value_function       = zeros(N, a_length, z_length, N_t)
+    ev                   = zeros(N, a_length, z_length, N_t)
     policy_function      = zeros(N, a_length, z_length, N_t)
     labor_supply         = zeros(Jᴿ-1, a_length, z_length, N_t)
     μ                    = ones(N, a_length, z_length, N_t) / sum(ones(N, a_length, z_length))
@@ -56,7 +62,7 @@ function Initialize_transition(ss_0::Results, ss_1::Results, k_demand_path::Arra
     r_path = α .* k_demand_path .^ (α - 1) .* l_demand_path .^ (1-α) .- δ
     b_path = (θ .* w_path .* l_demand_path) ./ reshape(sum(μ[Jᴿ:N, :, :, :], dims = [1, 2, 3]), N_t)
 
-    Transition(ss_0, ss_1, N_t, θ, k_demand_path, l_demand_path, w_path, r_path, b_path, value_function, policy_function, labor_supply, μ, ss_0, ss_1)
+    Transition(N_t, θ, k_demand_path, l_demand_path, w_path, r_path, b_path, value_function, policy_function, labor_supply, μ, ss_0, ss_1, ev, 0.0)
 end
 
 ################################################################################
@@ -301,6 +307,10 @@ function Solve_transition(θ_0::Float64, θ_1::Float64,
     println("Solve for terminal steady state: ")
     ss_1 = Solve_steady_state(k_guess_1, l_guess_1; θ = θ_1, progress = true)
 
+    # save steady state table
+    table_ss = create_table([ss_0, ss_1])
+    CSV.write("tables/table_ss.csv", table_ss)
+
     ε = 0.001
     λ = 0.5
     N_t_increment = 20
@@ -398,5 +408,12 @@ function Solve_transition(θ_0::Float64, θ_1::Float64,
             break
         end
     end
+
+    ############################ Consumption Equivalent Variation ##################
+    @unpack σ, γ, N = Primitives()
+
+    transition.ev = (transition.value_function[:, :, :, 1] ./ ss_0.value_function).^(1/(γ * (1 - σ)))
+    transition.vote_share = sum((transition.ev .> 1) .* ss_0.μ)
+
     return(transition)
 end

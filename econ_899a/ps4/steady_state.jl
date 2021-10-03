@@ -10,6 +10,9 @@
 
 include("model.jl")
 
+# Load libraries
+using Tables, DataFrames
+
 mutable struct Results
     θ::Float64                            # proportional labor tax
     value_function::Array{Float64}        # value function
@@ -275,4 +278,32 @@ function Solve_steady_state(k_0::Float64, l_0::Float64; θ::Float64 = 0.11, λ::
     results.l = l_0
 
     return(results)
+end
+
+
+################################################################################
+############################ Housekeeping function #############################
+################################################################################
+
+function process_results(results::Results)
+    # calculate total welfare
+    welfare = results.value_function .* results.μ
+    welfare = sum(welfare[isfinite.(welfare)])
+
+    # calculate coefficient of variation of wealth
+    @unpack a_grid, N, z_length, a_length, N = Primitives()
+    a_grid_3d = permutedims(reshape(repeat(a_grid, N * z_length), a_length, N, z_length), (2, 1, 3))
+    wealth_mean = sum(results.μ .* a_grid_3d)
+    wealth_second_moment = sum(results.μ .* a_grid_3d .^ 2)
+    wealth_second_central_moment = wealth_second_moment - wealth_mean^2
+    cv = wealth_mean / sqrt(wealth_second_central_moment)
+
+    # create vector of summary statistics
+    [results.θ, results.k, results.l,
+     results.w, results.r, results.b, welfare, cv]
+end
+
+function create_table(results_vector::Array{Results})
+    table = DataFrames.DataFrame(Tables.table(reduce(hcat,process_results.(results_vector))'))
+    rename!(table, [:theta, :k, :l, :w, :r, :b, :welfare, :cv])
 end
