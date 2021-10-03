@@ -238,11 +238,6 @@ end
 function Solve_steady_state(k_0::Float64, l_0::Float64; θ::Float64 = 0.11, λ::Float64 = 0.5, progress::Bool = false)
     results = Initialize(θ, k_0, l_0)
 
-    #     k_demand = []
-    #     l_demand = []
-    #     k_supply = []
-    #     l_supply = []
-
     ε = 0.001  # tolerence
     i = 0        # counter
 
@@ -255,12 +250,7 @@ function Solve_steady_state(k_0::Float64, l_0::Float64; θ::Float64 = 0.11, λ::
         k_1 = Calculate_capital_supply(results)
         l_1 = Calculate_labor_supply(results)
 
-        # push!(k_demand, k_0)
-        # push!(l_demand, l_0)
-        # push!(k_supply, k_1)
-        # push!(l_supply, l_1)
-
-        diff = abs(k_0 - k_1) + abs(l_0 - l_1)
+        diff = abs(k_0 - k_1)/k_0 + abs(l_0 - l_1)/l_0
 
         if (progress)
             println("************************************")

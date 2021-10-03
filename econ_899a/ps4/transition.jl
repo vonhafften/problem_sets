@@ -16,7 +16,7 @@ include("steady_state.jl")
 
 mutable struct Transition
     N_t::Int64                           # length of transition
-    θ_1::Float64                         # Terminal social security tax level
+    θ::Array{Float64, 1}                 # Tax level throughout time
     k_demand_path::Array{Float64, 1}     # path of capital demand
     l_demand_path::Array{Float64, 1}     # path of labor demand
     w_path::Array{Float64, 1}            # path of wages
@@ -26,10 +26,15 @@ mutable struct Transition
     policy_function::Array{Float64}      # 4d array of asset policy functions
     labor_supply::Array{Float64}         # 4d array of optimal labor supply
     μ::Array{Float64}                    # 4d array of asset distribution
+    ss_0::Results                        # Initial steady state
+    ss_1::Results                        # Terminal steady state
 end
 
-function Initialize_transition(ss_0::Results, ss_1::Results, k_demand_path::Array{Float64}, l_demand_path::Array{Float64}, N_t::Int64)
+function Initialize_transition(ss_0::Results, ss_1::Results, k_demand_path::Array{Float64}, l_demand_path::Array{Float64}, implementation_date::Int64, N_t::Int64)
     @unpack α, δ, N, a_length, z_length, Jᴿ = Primitives()
+
+    # θ changes at the implementation_date
+    θ = vcat(repeat([ss_0.θ], implementation_date-1), repeat([ss_1.θ], N_t - implementation_date + 1))
 
     # value_function, policy_function, labor_supply, and μ are 4-dimensional arrays
     # 1st dim is age, 2nd dim is asset holding, 3rd dim is productivity state, 4th dim is transition period
@@ -49,9 +54,9 @@ function Initialize_transition(ss_0::Results, ss_1::Results, k_demand_path::Arra
     # calculate prices
     w_path = (1 - α) .* k_demand_path .^ α .* l_demand_path .^ (- α)
     r_path = α .* k_demand_path .^ (α - 1) .* l_demand_path .^ (1-α) .- δ
-    b_path = (ss_1.θ .* w_path .* l_demand_path) ./ reshape(sum(μ[Jᴿ:N, :, :, :], dims = [1, 2, 3]), N_t)
+    b_path = (θ .* w_path .* l_demand_path) ./ reshape(sum(μ[Jᴿ:N, :, :, :], dims = [1, 2, 3]), N_t)
 
-    Transition(N_t, ss_1.θ, k_demand_path, l_demand_path, w_path, r_path, b_path, value_function, policy_function, labor_supply, μ)
+    Transition(ss_0, ss_1, N_t, θ, k_demand_path, l_demand_path, w_path, r_path, b_path, value_function, policy_function, labor_supply, μ, ss_0, ss_1)
 end
 
 ################################################################################
@@ -147,11 +152,11 @@ function Solve_worker_problem_transition(transition::Transition; progress::Bool 
 
                         # Solve labor decision
                         l = labor_decision(a_grid[i_a], a_grid[i_a_p], e[j, i_z],
-                                           transition.θ_1, γ, transition.r_path[i_t],
+                                           transition.θ[i_t], γ, transition.r_path[i_t],
                                            transition.w_path[i_t])
 
                         # Get budget for savings and consumption
-                        budget = transition.w_path[i_t] * (1.0-transition.θ_1) * e[j,i_z]*l + (1+transition.r_path[i_t])*a_grid[i_a]
+                        budget = transition.w_path[i_t] * (1.0-transition.θ[i_t]) * e[j,i_z]*l + (1+transition.r_path[i_t])*a_grid[i_a]
 
                         val = uᵂ(budget-a_grid[i_a_p], l, γ, σ) # Instanteous utility
 
@@ -165,7 +170,7 @@ function Solve_worker_problem_transition(transition::Transition; progress::Bool 
                             transition.value_function[j, i_a, i_z, i_t] = val_previous
                             transition.policy_function[j, i_a, i_z, i_t] = a_grid[i_a_p-1]
                             transition.labor_supply[j,i_a,i_z, i_t]=labor_decision(a_grid[i_a],
-                                       a_grid[i_a_p-1], e[j, i_z], transition.θ_1, γ, transition.r_path[i_t], transition.w_path[i_t])
+                                       a_grid[i_a_p-1], e[j, i_z], transition.θ[i_t], γ, transition.r_path[i_t], transition.w_path[i_t])
                             choice_lower = i_a_p - 1
                             break
 
@@ -174,7 +179,7 @@ function Solve_worker_problem_transition(transition::Transition; progress::Bool 
                             transition.value_function[j, i_a, i_z, i_t] = val
                             transition.policy_function[j, i_a, i_z, i_t] = a_grid[i_a_p]
                             transition.labor_supply[j, i_a, i_z, i_t] = labor_decision(a_grid[i_a],
-                                a_grid[i_a_p], e[j, i_z], transition.θ_1, γ, transition.r_path[i_t], transition.w_path[i_t])
+                                a_grid[i_a_p], e[j, i_z], transition.θ[i_t], γ, transition.r_path[i_t], transition.w_path[i_t])
                         end
 
                         # update val_previous to check if utility is starting to decrease.
@@ -284,7 +289,9 @@ end
 function Solve_transition(θ_0::Float64, θ_1::Float64,
                           k_guess_0::Float64, k_guess_1::Float64,
                           l_guess_0::Float64, l_guess_1::Float64;
-                          progress::Bool = false)
+                          progress::Bool = false,
+                          implementation_date::Int64 = 1,
+                          N_t::Int64 = 30)
 
     # Steady states
     println("************************************")
@@ -294,18 +301,15 @@ function Solve_transition(θ_0::Float64, θ_1::Float64,
     println("Solve for terminal steady state: ")
     ss_1 = Solve_steady_state(k_guess_1, l_guess_1; θ = θ_1, progress = true)
 
-    # Initial guess for transition length
-    N_t = 30
-
-    ε = 0.01
+    ε = 0.001
     λ = 0.5
-    N_t_increment = 10
+    N_t_increment = 20
 
     # start with linear transition path
     k_demand_path_0 = collect(ss_0.k .+ ((0:(N_t-1)) ./ (N_t-1)) .* (ss_1.k - ss_0.k))
     l_demand_path_0 = repeat([ss_1.l], N_t)
 
-    transition = Initialize_transition(ss_0, ss_1, k_demand_path_0, l_demand_path_0, N_t)
+    transition = Initialize_transition(ss_0, ss_1, k_demand_path_0, l_demand_path_0, implementation_date, N_t)
 
     println("************************************")
     println("Solve for transition path: ")
@@ -343,7 +347,9 @@ function Solve_transition(θ_0::Float64, θ_1::Float64,
                              legend = :bottomright))
             end
 
-            error = maximum([abs.(transition.k_demand_path .- k_supply_path) abs.(transition.l_demand_path .- l_supply_path)])
+            # Tests for convergence of capital and labor demand and supply.
+
+            error = maximum([abs.(transition.k_demand_path .- k_supply_path)./k_supply_path abs.(transition.l_demand_path .- l_supply_path)./l_supply_path])
 
             println("Sup norm: ", error)
 
@@ -353,17 +359,17 @@ function Solve_transition(θ_0::Float64, θ_1::Float64,
                 k_demand_path_1 = (1 - λ) .* transition.k_demand_path .+ λ .* k_supply_path
                 l_demand_path_1 = (1 - λ) .* transition.l_demand_path .+ λ .* l_supply_path
 
-                transition = Initialize_transition(ss_0, ss_1, k_demand_path_1, l_demand_path_1, N_t)
+                transition = Initialize_transition(ss_0, ss_1, k_demand_path_1, l_demand_path_1, implementation_date, N_t)
                 i += 1
             else
-                println("Capital and labor supply converged.")
+                println("Capital and labor supply and demand converged.")
                 break
             end
         end
 
         # tests for convergence at end of transition path
 
-        error = abs(transition.k_demand_path[N_t] - ss_1.k)
+        error = abs(transition.k_demand_path[N_t] - ss_1.k)/ss_1.k
 
         println("************************************")
         println("Sup norm at end of transition: ", error)
@@ -371,18 +377,19 @@ function Solve_transition(θ_0::Float64, θ_1::Float64,
         if error > ε
 
             println("************************************")
-            println("Transition path too short.")
-            println("Lengthening transition path...")
+            println("Transition path too short. Lengthening transition path...")
 
+            # For capital, adds straight line from the end of the previous guess to the steady state value.
             k_demand_path_extension = collect(transition.k_demand_path[N_t] .+ ((0:(N_t_increment-1)) ./ (N_t_increment-1)) .* (ss_1.k - transition.k_demand_path[N_t]))
-            l_demand_path_extension = collect(transition.l_demand_path[N_t-5] .+ ((0:(N_t_increment*2-1)) ./ (N_t_increment*2-1)) .* (ss_1.l - transition.l_demand_path[N_t-5]))
 
+            # For labor, adds terminal steady state values.
+            l_demand_path_extension = repeat([ss_1.l], N_t_increment + 1)
             k_demand_path_0 = vcat(transition.k_demand_path, k_demand_path_extension)
-            l_demand_path_0 = vcat(transition.l_demand_path[1:N_t - N_t_increment], l_demand_path_extension)
+            l_demand_path_0 = vcat(transition.l_demand_path[1:N_t - 1], l_demand_path_extension)
 
             N_t += N_t_increment
 
-            transition = Initialize_transition(ss_0, ss_1, k_demand_path_0, l_demand_path_0, N_t)
+            transition = Initialize_transition(ss_0, ss_1, k_demand_path_0, l_demand_path_0, implementation_date, N_t)
 
         else
 
