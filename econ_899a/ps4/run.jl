@@ -115,10 +115,9 @@ plot([exercise_2.l_demand_path repeat([exercise_2.ss_0.l], exercise_2.N_t) repea
 
 savefig("figures/exercise_2_l.png")
 
-plot([reshape(sum(exercise_2.ev .* exercise_2.ss_0.μ, dims = (2, 3)), 66)
-      reshape(sum(exercise_1.ev .* exercise_1.ss_0.μ, dims = (2, 3)), 66)],
+plot([reshape(sum(exercise_2.ev .* exercise_2.ss_0.μ, dims = (2, 3)), 66) reshape(sum(exercise_1.ev .* exercise_1.ss_0.μ, dims = (2, 3)), 66)],
      title = "Average Consumption EV by Age",
-     legend = false)
+     label = ["Expected" "Unexpected"])
 
 savefig("figures/exercise_2_ev.png")
 
