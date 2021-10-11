@@ -27,8 +27,7 @@ k_guess_1 = 4.598758704122076
 ######################## Exercise 1 ############################################
 ################################################################################
 
-@elapsed exercise_1 = Solve_transition(θ_0, θ_1, k_guess_0, k_guess_1, l_guess_0, l_guess_1;
-                                       progress = true)
+@elapsed exercise_1 = Solve_transition(θ_0, θ_1, k_guess_0, k_guess_1, l_guess_0, l_guess_1; progress = true)
 
 ############################ Plots #############################################
 
