@@ -36,38 +36,68 @@ mutable struct Results
     b_1::Float64
 end
 
-# simulate business cycle
-function simulate_Z(z, Π_z, T)
-
+# simulate business cycles
+function simulate_Z()
+    @unpack T, z, Π_z = Primitives()
     @assert size(Π_z)[1] == size(Π_z)[2] # square required
-    N = size(Π_z)[1] # should be square
 
     # setup the simulation
-    X = fill(0, T) # allocate memory, or zeros(Int64, sample_size)
-    X[1] = 1 # set the initial state
-
+    X = fill(0, T) # allocate memory
+    X[1] = 0 # set the initial state
+   
     # iterate through each period
-    for i in 2:T
-        
-        # rand() is uniform [0, 1), so if less than Π_z[X[i-1], 1], then this period is first state.
-        if Π_z[X[i-1], 1] > rand()
-            X[i] = 1
-        else
-            X[i] = 2
-        end
+    # X is recession flags
+    # X[t] == 0 in boom
+    # X[t] == 1 in recession
+    # rand() is uniform [0, 1), so if it is greater than Π_z[X[i-1], 1]
+    # then this period is second state.
+    for t in 2:T  
+        X[t] = Π_z[X[t-1]+1, 1] < rand()
     end
     
-    return z[X]
+    return z[X .+ 1]
 end
 
+# simulate employment based on business cycles
+function simulate_E(Z)
+    @unpack T, N, ε, Π_ε, Π_ε_star = Primitives()
+    @assert size(Π_ε)[1] == size(Π_ε)[2]
 
+    # X_Z is recession flags
+    # X_Z[t] == 0 in boom
+    # X_Z[t] == 1 in recession
+    X_Z = Int64.(Z .== z[2])
+
+    # setup the simulation
+    X = fill(0, T, N) # allocate memory
+
+    # iterate through each agent
+    # X is employed flag
+    # X[t,i] == 0 in unemployed
+    # X[t,i] == 1 in employed
+    for i in 1:N
+        
+        # Choose initial employment status based on stationary distribution in initial period.
+        X[1, i] = Int64(Π_ε_star[X_Z[1]+ 1]/(Π_ε_star[X_Z[1]+ 1] + Π_ε_star[X_Z[1]+3]) > rand())
+
+        # iterate through future periods
+        for t in 2:T
+            
+            X_Z[t]
+            X[t, i]
+
+        end
+    end
+    return X
+end
 
 function Initialize()
-    @unpack T, N, z, ε, Π_z, Π_ε = Primitives()
-
-    Z   = simulate_Z(z, Π_z, T)
-    E   = simulate_E(ε, Π_z_ε, T, N)
-    a_0 = 
+    Z   = simulate_Z()
+    E   = simulate_E(Z)
+    a_0 = 0.095
+    a_1 = 0.999
+    b_0 = 0.085
+    b_1 = 0.999
 
 end
 

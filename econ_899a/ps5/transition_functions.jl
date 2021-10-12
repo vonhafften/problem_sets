@@ -77,7 +77,7 @@ end
 # Compute stationary distribution of any Markov process
 function compute_Π_star(Π::Array{Float64})    
     x = length(Π[1,:])
-    \
+    
     Π_star = zeros(x)
     Π_tmp  = Π^10000
 
