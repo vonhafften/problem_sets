@@ -26,6 +26,20 @@ function get_Π_z()
 end
 
 # The employment transition function 
+# Transposed from Dean's code, so that the sum of each row equals 1
+# If you're employed in good state, read the first row.
+# The following is the probabilities for next period:
+# get_Π_ε()[1, 1] is employed in good state.
+# get_Π_ε()[1, 2] is employed in bad state.
+# get_Π_ε()[1, 3] is unemployed in good state.
+# get_Π_ε()[1, 4] is unemployed in bad state.
+
+# In the notation from the problem set:
+# π_{gg11}   π_{gb11}   π_{gg10}   π_{gb10}
+# π_{bg11}   π_{bb11}   π_{bg10}   π_{bb10}
+# π_{gg01}   π_{gb01}   π_{gg00}   π_{gb00}
+# π_{bg01}   π_{bb01}   π_{bg00}   π_{bb00}
+
 function get_Π_ε()
     Π_z = get_Π_z()
 
@@ -55,21 +69,21 @@ function get_Π_ε()
     # matrix
     Π_ε      = zeros(4, 4)
     Π_ε[1,1] = Π_z[1, 1]*pgg11
-    Π_ε[2,1] = Π_z[2, 1]*pbg11
-    Π_ε[3,1] = Π_z[1, 1]*pgg01
-    Π_ε[4,1] = Π_z[2, 1]*pbg01
-    Π_ε[1,2] = Π_z[1, 2]*pgb11
+    Π_ε[1,2] = Π_z[2, 1]*pbg11
+    Π_ε[1,3] = Π_z[1, 1]*pgg01
+    Π_ε[1,4] = Π_z[2, 1]*pbg01
+    Π_ε[2,1] = Π_z[1, 2]*pgb11
     Π_ε[2,2] = Π_z[2, 2]*pbb11
-    Π_ε[3,2] = Π_z[1, 2]*pgb01
-    Π_ε[4,2] = Π_z[2, 2]*pbb01
-    Π_ε[1,3] = Π_z[1, 1]*pgg10
-    Π_ε[2,3] = Π_z[2, 1]*pbg10
+    Π_ε[2,3] = Π_z[1, 2]*pgb01
+    Π_ε[2,4] = Π_z[2, 2]*pbb01
+    Π_ε[3,1] = Π_z[1, 1]*pgg10
+    Π_ε[3,2] = Π_z[2, 1]*pbg10
     Π_ε[3,3] = Π_z[1, 1]*pgg00
-    Π_ε[4,3] = Π_z[2, 1]*pbg00
-    Π_ε[1,4] = Π_z[1, 2]*pgb10
-    Π_ε[2,4] = Π_z[2, 2]*pbb10
-    Π_ε[3,4] = Π_z[1, 2]*pgb00
+    Π_ε[3,4] = Π_z[2, 1]*pbg00
+    Π_ε[4,1] = Π_z[1, 2]*pgb10
     Π_ε[4,4] = Π_z[2, 2]*pbb00
+    Π_ε[4,2] = Π_z[2, 2]*pbb10
+    Π_ε[4,3] = Π_z[1, 2]*pgb00
 
     Π_ε
 end
