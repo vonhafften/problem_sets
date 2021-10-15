@@ -1,4 +1,4 @@
-#############################################################################
+####################################################################################################################
 # ECON 899A Computational Economics
 # Problem set 5
 
@@ -9,7 +9,7 @@
 # Based on code written by Phil Coyle
 
 # This file initializes the results structure with business cycles and employment.
-#############################################################################
+####################################################################################################################
 
 include("01_parameters.jl");
 
@@ -27,10 +27,10 @@ mutable struct Results
     policy_function::Array{Float64,4}
 
     # Coefficients on forecasting regression
-    a_0::Float64         # Intercept in boom capital regression
-    a_1::Float64         # Slope in boom capital regression
-    b_0::Float64         # Intercept in recession capital regression
-    b_1::Float64         # Slope in recession capital regression
+    a0::Float64         # Intercept in boom capital regression
+    a1::Float64         # Slope in boom capital regression
+    b0::Float64         # Intercept in recession capital regression
+    b1::Float64         # Slope in recession capital regression
 
     # Other
     K::Array{Float64, 1}  # Aggregate capital
@@ -150,13 +150,13 @@ function Initialize()
     value_function  = zeros(n_k, n_ε, n_K, n_z)
     policy_function = zeros(n_k, n_ε, n_K, n_z)
     
-    a_0 = 0.095
-    a_1 = 0.999
-    b_0 = 0.085
-    b_1 = 0.999
+    a0 = 0.095
+    a1 = 0.999
+    b0 = 0.085
+    b1 = 0.999
     
     K   = initialize_K()
     R2  = zeros(max_iterations)
 
-    Results(Z, E, value_function, policy_function, a_0, a_1, b_0, b_1, K, R2)
+    Results(Z, E, value_function, policy_function, a0, a1, b0, b1, K, R2)
 end

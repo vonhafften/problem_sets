@@ -1,4 +1,4 @@
-#############################################################################
+####################################################################################################################
 # ECON 899A Computational Economics
 # Problem set 5
 
@@ -9,8 +9,7 @@
 # Based on code written by Phil Coyle
 
 # This file defines the parameters of the model including model primitives, grids, and shock structures.
-
-#############################################################################
+####################################################################################################################
 
 using Parameters
 
@@ -56,25 +55,25 @@ end
 @with_kw struct Grids
 
     # Aggregate productivity
-    z::Array{Float64, 1}      = [1.01, 0.99]            # TFP states
-    n_z::Int64                = length(z)               # number of states
+    z_grid::Array{Float64, 1}      = [1.01, 0.99]       # TFP states
+    n_z::Int64                     = length(z_grid)     # number of states
 
     # Employment
-    ε::Array{Float64, 1}      = [0, 1]                  # Idiosyncratic employment opportunities
-    n_ε::Int64                = length(ε)               # number of states
+    ε_grid::Array{Float64, 1}      = [0, 1]             # Idiosyncratic employment opportunities
+    n_ε::Int64                     = length(ε_grid)     # number of states
 
     # Individual capital grid
     k_min::Float64                = 0.0                               # Minimum of individual capital grid
     k_max::Float64                = 15.0                              # Maximum of individual capital grid
     n_k::Int64                    = 61                                # Number of individual capital grid points
-    k_grid_srl::Array{Float64, 1} = range(k_min, k_max; length = n_k) # individual capital grid step range length
+    k_grid_srl                    = range(k_min, k_max; length = n_k) # individual capital grid step range length
     k_grid::Array{Float64, 1}     = collect(k_grid_srl)               # individual capital grid
 
     # Aggregate capital grid
     K_min::Float64                = 11.0                              # Minimum of aggregate capital grid
     K_max::Float64                = 15.0                              # Maximum of aggregate capital grid
     n_K::Int64                    = 17                                # Number of aggregate capital grid points
-    K_grid_srl::Array{Float64, 1} = range(K_min, K_max; length = n_K) # Aggregate capital grid step range length
+    K_grid_srl                    = range(K_min, K_max; length = n_K) # Aggregate capital grid step range length
     K_grid::Array{Float64, 1}     = collect(K_grid_srl)               # Aggregate capital grid
 end
 
