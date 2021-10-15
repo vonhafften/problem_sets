@@ -13,6 +13,8 @@
 
 include("01_parameters.jl");
 
+using Random, Distributions
+
 # Results structure
 mutable struct Results
 
@@ -31,8 +33,8 @@ mutable struct Results
     b_1::Float64         # Slope in recession capital regression
 
     # Other
-    K::Array{Float64, 1} # Aggregate capital
-    R2::Float64          # Explanatory power of forecasting regression
+    K::Array{Float64, 1}  # Aggregate capital
+    R2::Array{Float64, 1} # Explanatory power of forecasting regression
 end
 
 ####################################################################################################################
@@ -40,65 +42,94 @@ end
 ####################################################################################################################
 
 # simulate business cycles
-function simulate_Z()
+function simulate_Z(;seed = missing)
     @unpack T = Simulation()
     @unpack Π_z = Shocks()
-    @assert size(Π_z)[1] == size(Π_z)[2] # square required
 
     # setup the simulation
     Z = fill(0, T) # allocate memory
+    Z[1] = 1
+
+    # Optional seed
+    if (!ismissing(seed))
+        Random.seed!(seed)
+    end
+    dist = Uniform(0, 1)
    
     # iterate through each period
     # X is recession indicator (X[t] == 0 in boom and X[t] == 1 in recession)
     for t in 2:T  
-        Z[t] = Π_z[Z[t-1]+1, 1] < rand()
+        shock = rand(dist)
+
+        if Z[t-1] == 1 && shock < Π_z[1, 1]
+            Z[t] = 1
+        elseif Z[t-1] == 1 && shock > Π_z[1, 1]
+            Z[t] = 2
+        elseif Z[t-1] == 2 && shock > Π_z[2, 2]
+            Z[t] = 1
+        else # elseif Z[t-1] == 2 && shock < Π_z[2, 2]
+            Z[t] = 2
+        end
     end
     
     return Z
 end
 
 # simulate employment based on business cycles
-function simulate_E(Z::Array{Float64, 1})
+function simulate_E(Z::Array{Int64, 1}; seed = missing)
     @unpack T, N = Simulation()
-    @unpack Π_ε = Shocks()
-    @assert size(Π_ε)[1] == size(Π_ε)[2]
-
-    # X_Z is recession indicator (X_Z[t] == 0 in boom and X_Z[t] == 1 in recession)
-    X_Z = Int64.(Z .== z[2])
+    @unpack Π_gg, Π_gb, Π_bg, Π_bb = Shocks()
 
     # setup the simulation
-    X = fill(0, T, N) # allocate memory
+    E = fill(0, N, T) # allocate memory
+    E[:,1] .= 1
 
-    # iterate through each agent
-    # X is employment indicator (X[t,i] == 0 if unemployed and X[t,i] == 1 if employed)
+    # Optional seed
+    if (!ismissing(seed))
+        Random.seed!(seed)
+    end
+    dist = Uniform(0, 1)
+
+    # iterate through each agent and each period
     for i in 1:N
-        
-        # Choose initial employment status based on stationary distribution in initial period.
-        X[1, i] = Int64(Π_ε_star[X_Z[1]+ 1]/(Π_ε_star[X_Z[1]+ 1] + Π_ε_star[X_Z[1]+3]) > rand())
-
-        # iterate through future periods
         for t in 2:T
-            was_recession = X_Z[t-1]
-            was_employed = X[t-1, i]
-            is_recession = X_Z[t]
+            
+            # Choose employment transition probabilities based on aggregate states
+            if Z[t-1] == 1 && Z[t] == 1
+                p11 = Π_gg[1,1]
+                p00 = Π_gg[2,2]
+            elseif Z[t-1] == 1 && Z[t] == 2
+                p11 = Π_gb[1,1]
+                p00 = Π_gb[2,2]
+            elseif Z[t-1] == 2 && Z[t] == 1
+                p11 = Π_bg[1,1]
+                p00 = Π_bg[2,2]
+            else # elseif Z[t-1] == 2 && Z[t] == 2
+                p11 = Π_bb[1,1]
+                p00 = Π_bb[2,2]
+            end
 
-            # Π_ε is constructed as follows:
-            # π_{gg11}   π_{gb11}   π_{gg10}   π_{gb10}
-            # π_{bg11}   π_{bb11}   π_{bg10}   π_{bb10}
-            # π_{gg01}   π_{gb01}   π_{gg00}   π_{gb00}
-            # π_{bg01}   π_{bb01}   π_{bg00}   π_{bb00}
-            π_e = Π_ε[1 + was_recession + 2*(1-was_employed), 1 + is_recession]
-            π_u = Π_ε[1 + was_recession + 2*(1-was_employed), 3 + is_recession]
+            # Draw shock
+            shock = rand(dist)
 
-            X[t, i] = π_e / (π_e + π_u) > rand()
-
+            # Assign current employment based on previous employment
+            if E[i,t-1] == 1 && shock < p11
+                E[i,t] = 1
+            elseif E[i,t-1] == 1 && shock > p11
+                E[i,t] = 2
+            elseif E[i,t-1] == 2 && shock < p00
+                E[i,t] = 2
+            else # elseif E[i,t-1] == 2 && shock > p00
+                E[i,t] = 1
+            end
         end
     end
-    return X
+    return E
 end
 
-function initialize_k()
-    @unpack T = Primitives()
+# Initialize the aggregrate capital vector
+function initialize_K()
+    @unpack T = Simulation()
 
     K = zeros(T)
     K[1] = 11.55
@@ -110,18 +141,22 @@ end
 ####################################################################################################################
 
 function Initialize()
-    Z   = simulate_Z()
-    E   = simulate_E(Z)
+    @unpack max_iterations = Simulation()
+    @unpack n_k, n_K, n_ε, n_z, k_grid = Grids()
+
+    Z   = simulate_Z(seed = 12003030)
+    E   = simulate_E(Z; seed = 12003030)
+
+    value_function  = zeros(n_k, n_ε, n_K, n_z)
+    policy_function = zeros(n_k, n_ε, n_K, n_z)
+    
     a_0 = 0.095
     a_1 = 0.999
     b_0 = 0.085
     b_1 = 0.999
-    K = zeros()
+    
+    K   = initialize_K()
+    R2  = zeros(max_iterations)
 
-    Results(Z, E, a_0, a_1, b_0, b_1, K)
+    Results(Z, E, value_function, policy_function, a_0, a_1, b_0, b_1, K, R2)
 end
-
-
-
-
-

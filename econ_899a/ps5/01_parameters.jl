@@ -30,7 +30,6 @@ end
 
 # Model primitives
 @with_kw struct Primitives
-    
     # Preference parameters
     β::Float64                = 0.99                    # discount rate
 
@@ -45,7 +44,7 @@ end
     # Simulation parameters
     T::Int64                  = 11000                   # Number of periods in simulation
     N::Int64                  = 5000                    # Number of individuals in simulation
-    burn_in::Int64            = 1000                    # Number of periods at beginning to throw away before running regression.
+    burn_in::Int64            = 1001                    # First period after burn-in period
     λ::Float64                = 0.5                     # Adjustment parameter
     tol_vfi::Float64          = 1e-4                    # Tolerence for the value function iteration
     tol_coef::Float64         = 1e-4                    # Tolerence for coefficient (a_0, etc.) iteration
@@ -72,11 +71,11 @@ end
     k_grid::Array{Float64, 1}     = collect(k_grid_srl)               # individual capital grid
 
     # Aggregate capital grid
-    big_k_min::Float64                = 11.0                                          # Minimum of aggregate capital grid
-    big_k_max::Float64                = 15.0                                          # Maximum of aggregate capital grid
-    n_big_k::Int64                    = 17                                            # Number of aggregate capital grid points
-    big_k_grid_srl::Array{Float64, 1} = range(big_k_min, big_k_max; length = n_big_k) # Aggregate capital grid step range length
-    big_k_grid::Array{Float64, 1}     = collect(big_k_grid_srl)                       # Aggregate capital grid
+    K_min::Float64                = 11.0                              # Minimum of aggregate capital grid
+    K_max::Float64                = 15.0                              # Maximum of aggregate capital grid
+    n_K::Int64                    = 17                                # Number of aggregate capital grid points
+    K_grid_srl::Array{Float64, 1} = range(K_min, K_max; length = n_K) # Aggregate capital grid step range length
+    K_grid::Array{Float64, 1}     = collect(K_grid_srl)               # Aggregate capital grid
 end
 
 

@@ -9,7 +9,8 @@
 
 using Plots
 
-include("model.jl")
+include("01_parameters.jl");
+include("02_initialize.jl");
 
 ####################################################################################################################
 ####################################################################################################################
@@ -17,66 +18,70 @@ include("model.jl")
 ####################################################################################################################
 ####################################################################################################################
 
+@unpack Π_z_star = Shocks();
+@unpack T = Simulation();
+
 n_trials = 10000
 recession_share = zeros(n_trials)
 
 for i = 1:n_trials
-    test = simulate_Z()
-    recession_share[i] = count(test .== 0.99)/length(test)
+    Z = simulate_Z()
+    recession_share[i] = count(Z .== 2)/T
 end
 
-compute_Π_star(get_Π_z())
+println(Π_z_star)
 
 histogram(recession_share) # should be centered at the stationary distribution
 
-sum(recession_share)/length(recession_share)
+sum(recession_share)/n_trials
 
-
-####################################################################################################################
 ####################################################################################################################
 ############################# test simulate_E(Z) ###################################################################
 ####################################################################################################################
-####################################################################################################################
+
+@unpack N, T, burn_in = Simulation();
+@unpack Π_ε_star = Shocks();
 
 n_trials = 100;
 
-recession_employment = zeros(n_trials);
-recession_unemployment = zeros(n_trials);
 boom_employment = zeros(n_trials);
 boom_unemployment = zeros(n_trials);
+recession_employment = zeros(n_trials);
+recession_unemployment = zeros(n_trials);
 
 # takes a bit...
 for i = 1:n_trials
     println(i)
+
     Z = simulate_Z()
-    test = simulate_E(Z)
+    E = simulate_E(Z)
 
-    test_recession = test[Z .== 0.99, :]
-    test_boom= test[Z .== 1.01, :]
+    E = E[:, burn_in:T]
+    Z = Z[burn_in:T]
 
-    recession_employment[i] = count(test_recession .== 1)/length(test)
-    boom_employment[i] = count(test_boom .== 1)/length(test)
-    recession_unemployment[i] = count(test_recession .== 0)/length(test)
-    boom_unemployment[i] = count(test_boom .== 0)/length(test)
+    E_boom      = E[:, Z .== 1]
+    E_recession = E[:, Z .== 2]
+
+    boom_employment[i] = count(E_boom .== 1)/(N*(T-burn_in+1))
+    boom_unemployment[i] = count(E_boom .== 2)/(N*(T-burn_in+1))
+    recession_employment[i] = count(E_recession .== 1)/(N*(T-burn_in+1))
+    recession_unemployment[i] = count(E_recession .== 2)/(N*(T-burn_in+1))
 end
 
-compute_Π_star(get_Π_ε())
+println(Π_ε_star)
 
-histogram(recession_employment);
-histogram(boom_employment);
-histogram(recession_unemployment);
-histogram(boom_unemployment);
+histogram(boom_employment)
+histogram(boom_unemployment)
+histogram(recession_employment)
+histogram(recession_unemployment)
 
-sum(boom_employment)/length(boom_employment)
-sum(recession_employment)/length(recession_employment)
-sum(boom_unemployment)/length(boom_unemployment)
-sum(recession_unemployment)/length(recession_unemployment)
-
+sum(boom_employment)/n_trials
+sum(boom_unemployment)/n_trials
+sum(recession_employment)/n_trials
+sum(recession_unemployment)/n_trials
 
 ####################################################################################################################
-####################################################################################################################
-############################# test Initialize() ######## ###########################################################
-####################################################################################################################
+############################# test Initialize() ####################################################################
 ####################################################################################################################
 
 results = Initialize()
