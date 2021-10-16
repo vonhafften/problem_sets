@@ -13,27 +13,28 @@
 
 include("02_initialize.jl");
 
-using Interpolations, Optim
+using Interpolations, Optim, Distributed
 
 # Utility function
 function u(c::Float64)
     if c > 0
        utility = log(c)
     else
-        utility = 1/eps()
+        utility = -1/eps()
     end
     
     return utility
 end
 
-function Bellman(R::Results)
-    @unpack β, α, δ, e_bar = Primitives()
-    @unpack n_k, n_ε, n_K, n_z = Grids()
-    @unpack k_min, k_max, K_min, K_max = Grids()
-    @unpack k_grid, k_grid_srl, ε_grid, K_grid, K_grid_srl, z_grid = Grids()
-    @unpack u_g, u_b, Π_ε = Shocks()
+# Apply Bellman operator
+function Bellman(results::Results, primitives::Primitives, grids::Grids, shocks::Shocks)
+    @unpack β, α, δ, e_bar = primitives
+    @unpack n_k, n_ε, n_K, n_z = grids
+    @unpack k_min, k_max, K_min, K_max = grids
+    @unpack k_grid, k_grid_srl, ε_grid, K_grid, K_grid_srl, z_grid = grids
+    @unpack u_g, u_b, Π_ε = shocks
 
-    @unpack value_function, policy_function, a0, a1, b0, b1 = R
+    @unpack value_function, policy_function, a0, a1, b0, b1 = results
 
     # Interpolate value function
     value_interp = interpolate(value_function, BSpline(Linear()))
@@ -66,7 +67,7 @@ function Bellman(R::Results)
             else # elseif i_z == 2
                 K_tomorrow = exp(b0 + b1 * log(K_today))
             end
-            K_tomorrow = max(min( K_max, K_tomorrow), K_min)
+            K_tomorrow = max(min(K_max, K_tomorrow), K_min)
 
             # Iterate over employment status today
             for (i_ε, ε_today) in enumerate(ε_grid)
@@ -97,4 +98,34 @@ function Bellman(R::Results)
         end
     end
     return v_next, pf_next
+end
+
+function Solve_Bellman(results::Results)
+    @unpack max_iterations, tol_vfi = Simulation()
+
+    primitives = Primitives()
+    grids = Grids()
+    shocks = Shocks()
+
+    error, i = 100, 1 # convergence variables
+
+    while error > tol_vfi # loops until convergence
+        
+        # Applies Bellman operator
+        v_next, pf_next = Bellman(results, primitives, grids, shocks)
+        error = maximum(abs.(v_next .- results.value_function)) # sup norm
+
+        results.value_function = v_next # update
+        results.policy_function = pf_next # update
+
+        if i >= max_iterations
+            error("Value function did not converge.")
+            break
+        end
+        i += 1
+    end
+
+    println("Value function converged in ", i, " iterations.")
+    
+    return results
 end

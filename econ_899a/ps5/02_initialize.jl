@@ -34,7 +34,7 @@ mutable struct Results
 
     # Other
     K::Array{Float64, 1}  # Aggregate capital
-    R2::Array{Float64, 1} # Explanatory power of forecasting regression
+    R2::Float64           # Explanatory power of forecasting regression
 end
 
 ####################################################################################################################
@@ -127,21 +127,12 @@ function simulate_E(Z::Array{Int64, 1}; seed = missing)
     return E
 end
 
-# Initialize the aggregrate capital vector
-function initialize_K()
-    @unpack T = Simulation()
-
-    K = zeros(T)
-    K[1] = 11.55
-    K
-end
-
 ####################################################################################################################
 ################################ Initialize Results structure  #####################################################
 ####################################################################################################################
 
 function Initialize()
-    @unpack max_iterations = Simulation()
+    @unpack max_iterations, T = Simulation()
     @unpack n_k, n_K, n_ε, n_z, k_grid = Grids()
 
     Z   = simulate_Z(seed = 12003030)
@@ -150,13 +141,14 @@ function Initialize()
     value_function  = zeros(n_k, n_ε, n_K, n_z)
     policy_function = zeros(n_k, n_ε, n_K, n_z)
     
-    a0 = 0.095
-    a1 = 0.999
-    b0 = 0.085
-    b1 = 0.999
+    # guess based on previous model runs
+    a0 = 0.11914580022527435
+    a1 = 0.9471228553642084
+    b0 = 0.2029256394484849
+    b1 = 0.9133652265162197
     
-    K   = initialize_K()
-    R2  = zeros(max_iterations)
+    K   = zeros(T)
+    R2  = 0
 
     Results(Z, E, value_function, policy_function, a0, a1, b0, b1, K, R2)
 end

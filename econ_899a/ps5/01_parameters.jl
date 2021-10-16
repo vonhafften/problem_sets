@@ -47,8 +47,9 @@ end
     λ::Float64                = 0.5                     # Adjustment parameter
     tol_vfi::Float64          = 1e-4                    # Tolerence for the value function iteration
     tol_coef::Float64         = 1e-4                    # Tolerence for coefficient (a_0, etc.) iteration
-    tol_r2::Float64           = 1.0 - 1e-2              # Tolerence for R^2 iteration
+    tol_R2::Float64           = 1.0 - 1e-2              # Tolerence for R^2 iteration
     max_iterations::Int64     = 10000                   # Maximum iterations
+    k_ss::Float64             = 11.55                   # Steady state capital from complete markets; starting point for simulations
 end
 
 # Grids for aggregate productivity, employment, aggregate capital, and individual capital
@@ -63,16 +64,16 @@ end
     n_ε::Int64                     = length(ε_grid)     # number of states
 
     # Individual capital grid
-    k_min::Float64                = 0.0                               # Minimum of individual capital grid
+    k_min::Float64                = 0.001                             # Minimum of individual capital grid
     k_max::Float64                = 15.0                              # Maximum of individual capital grid
-    n_k::Int64                    = 61                                # Number of individual capital grid points
+    n_k::Int64                    = 31                                # Number of individual capital grid points
     k_grid_srl                    = range(k_min, k_max; length = n_k) # individual capital grid step range length
     k_grid::Array{Float64, 1}     = collect(k_grid_srl)               # individual capital grid
 
     # Aggregate capital grid
-    K_min::Float64                = 11.0                              # Minimum of aggregate capital grid
+    K_min::Float64                = 9.0                               # Minimum of aggregate capital grid
     K_max::Float64                = 15.0                              # Maximum of aggregate capital grid
-    n_K::Int64                    = 17                                # Number of aggregate capital grid points
+    n_K::Int64                    = 13                                 # Number of aggregate capital grid points
     K_grid_srl                    = range(K_min, K_max; length = n_K) # Aggregate capital grid step range length
     K_grid::Array{Float64, 1}     = collect(K_grid_srl)               # Aggregate capital grid
 end
