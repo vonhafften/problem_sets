@@ -13,8 +13,6 @@
 
 include("01_parameters.jl");
 
-using Random, Distributions
-
 # Results structure
 mutable struct Results
 

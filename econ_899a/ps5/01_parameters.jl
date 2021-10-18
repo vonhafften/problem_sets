@@ -11,7 +11,7 @@
 # This file defines the parameters of the model including model primitives, grids, and shock structures.
 ####################################################################################################################
 
-using Parameters
+using Parameters, Random, Distributions, Interpolations, Optim
 
 # Compute stationary distribution of any Markov process
 function compute_Π_star(Π::Array{Float64})    

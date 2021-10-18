@@ -13,8 +13,6 @@
 
 include("02_initialize.jl");
 
-using Interpolations, Optim, Distributed
-
 # Utility function
 function u(c::Float64)
     if c > 0
@@ -38,7 +36,7 @@ function Bellman(results::Results, primitives::Primitives, grids::Grids, shocks:
 
     # Interpolate value function
     value_interp = interpolate(value_function, BSpline(Linear()))
-    value_interp = Interpolations.scale(value_interp, k_grid_srl, 1:2, K_grid_srl, 1:2)
+    value_interp = Interpolations.scale(value_interp, k_grid_srl, 1:n_ε, K_grid_srl, 1:n_z)
 
     # create updated value and policy functions
     v_next  = zeros(n_k, n_ε, n_K, n_z)

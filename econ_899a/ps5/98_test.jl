@@ -85,14 +85,18 @@ sum(recession_unemployment)/n_trials
 ############################# test Bellman(R) ######################################################################
 ####################################################################################################################
 
-include("03_solve_value_function.jl");
+include("03_value_function.jl");
 
 @unpack k_grid = Grids()
 
 results = Initialize();
 
+primitives = Primitives()
+grids = Grids()
+shocks = Shocks()
+
 # First iteration
-v_next, pf_next = Bellman(results);
+v_next, pf_next = Bellman(results, primitives, grids, shocks);
 
 # value function plot
 plot(x = k_grid, results.value_function[:,1,5,1])
@@ -106,7 +110,7 @@ plot!(x = k_grid,  k_grid)
 results.value_function = v_next;
 
 # second iteration
-v_next, pf_next = Bellman(results);
+v_next, pf_next = Bellman(results, primitives, grids, shocks);
 
 # value functino plot
 plot(x = k_grid, results.value_function[:,1,5,1])
@@ -120,7 +124,7 @@ plot!(x = k_grid, k_grid)
 results.value_function = v_next;
 
 # third iteration
-v_next, pf_next = Bellman(results);
+v_next, pf_next = Bellman(results, primitives, grids, shocks);
 
 # value function plot
 plot(x = k_grid, results.value_function[:,1,5,1])
@@ -134,7 +138,7 @@ plot!(x = k_grid, k_grid)
 results.value_function = v_next;
 
 # fourth iteration
-v_next, pf_next = Bellman(results);
+v_next, pf_next = Bellman(results, primitives, grids, shocks);
 
 # value function plot
 plot(x = k_grid, results.value_function[:,1,5,1])
@@ -148,13 +152,13 @@ plot!(x = k_grid, k_grid)
 ############################# test Solve_Bellman() #################################################################
 ####################################################################################################################
 
-include("03_solve_value_function.jl");
+include("03_value_function.jl");
 
 @unpack k_grid = Grids();
 
 results = Initialize();
 
-@elapsed results = Solve_Bellman(results; progress = true)
+@elapsed results = Solve_Bellman(results)
 
 # value function plot
 plot(x = k_grid, results.value_function[:,1,10,:])
@@ -176,9 +180,9 @@ results = Initialize();
 
 @elapsed results = Solve_Bellman(results)
 
-results = simulate_capital_path(results);
+@elapsed K = simulate_capital_path(results)
 
-plot(results.K)
+plot(K)
 
 ####################################################################################################################
 ############################# test simulate_capital_path() #########################################################

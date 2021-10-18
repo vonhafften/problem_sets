@@ -15,58 +15,17 @@ library(tidyverse)
 library(knitr)
 ```
 
-In this problem, we compute an approximate equilibrium of an Aiyagari (1994) paper with aggregate uncertainty using the techniques in Krusell and Smith (1998). There is a unit measure of agents, the time period is one quarter, preferences are given by
+This problem set was based on Krusell and Smith (1998).
 
-$$
-\sum_{t = 0}^{\infty} \beta^t \ln(c_t)
-$$
+My code is organized into six scripts:
 
-where $\beta = 0.99$. The production technology is given by
+- `01_parameters.jl` contains the parameter structures including model primitives, grids for aggregate productivity, employment, individual capital, and aggregate capital.
+- `02_initialize.jl` contains the results structures and the code to simulate aggregate productivity shocks and employment shocks for a panel of agents.
+- `03_value_function.jl` contains the code for value function iteration.
+- `04_solve_model.jl` contains the code for simulating the aggregate capital path, estimating the AR(1) capital regressions, and converging on coefficient and R-squared estimates.
+- `98_test.jl` contains tests for the functions in the other scripts.
+- `99_run.jl` runs the last function from the previous script and prints out results for this write-up.
 
-$$
-y_t = z_t k_t^{\alpha} l_t^{1 - \alpha}
-$$
+I find that $a_0 = 0.119$, $a_1 = 0.947$, $b_0 = 0.203$, $b_1 = 0.997$, and $R^2 = 0.997$.
 
-where $\alpha = 0.36$, and aggregate technology shocks $z_t \in \{z_g = 1.01, z_b =0.99\}$ are drawn from a Markov process to be described more fully below. Capital depreciates at rate $\delta = 0.025$. Agents have 1 unit of time and face idiosyncratic employment opportunities $\varepsilon_t \in \{0, 1\}$ where $\varepsilon_t = 1$ means the agent is employed an receives wage $w_t \bar{e}$ (where $\bar{e} = 0.3271$ denotes labor efficiency per unit of time worked) and $\varepsilon_t = 0$ means he is unemployed. The probability of transition from state $(z, \varepsilon)$ to $(z', \varepsilon')$; denoted $\pi_{zz'\varepsilon \varepsilon'}$ must satisfy certain conditions:
-
-$$
-\pi_{zz'00} + \pi_{zz'01} = \pi_{zz'10} + \pi_{zz'11} = \pi_{zz'}
-$$
-
-and
-
-$$
-u_z \frac{\pi_{zz'00}}{\pi_{zz'}} + (1 - u_z) \frac{\pi_{zz'10}}{\pi_{zz'}} = u_{z'}
-$$
-
-where $u_z$ denotes the fraction of those unemployed in state $z$ with $u_g = 4 \%$ and $u_b = 10 \%$. The other restriction on $\pi_{zz'\varepsilon \varepsilon'}$ 0 necessary to pin down the transition matrix are that: the average duration of good and bad times is 8 quarters; the average duration of unemployment spells is 1.5 quarters in good times and 2.5 quarters in bad times; and
-
-$$
-\frac{\pi_{gb00}}{\pi_{gb}} = 1.25 \cdot \frac{\pi_{bb00}}{\pi_{bb}}
-$$
-
-and 
-
-$$
-\frac{\pi_{bg00}}{\pi_{bg}} = 0.75 \cdot \frac{\pi_{gg00}}{\pi_{gg}}
-$$
-
-Capital is the only asset to self insure fluctuations; households rent their capital $k_t \in [0, 1)$ to firms and receive rate of return $r_t$. Without loss of generality, we can consider one firm which hires $L_t$ units of labor efficiency units (so that $L_t = e(1  u_t)$) and rents capital $K$ so that wages and rental rates are given by their marginal products:
-
-\begin{align}
-w_t & \equiv w(K_t, L_t, z_t) = (1 - \alpha) z_t \Bigg( \frac{K_t}{L_t} \Bigg)^{\alpha}\\
-r_t & \equiv r(K_t, L_t, z_t) = \alpha z_t \Bigg( \frac{K_t}{L_t} \Bigg)^{\alpha - 1}
-\end{align}
-
-As in Krusell and Smith, approximate the true distribution $\Gamma_t$ over $(k_t, \varepsilon_t)$ in state $z_t$ by $I$ moments and let the law of motion for the moment be $m^t = h_I (m, z, z^t)$.
-
-To start the Krusell-Smith algorithm, we need initial conditions. There's only 2 possibilities $(z_t, \varepsilon_t)$ so choose the ones that are most likely (i.e. $z_g$ and use $L_g = 1 - u_g = 0.96$ to generate $\varepsilon_{t = 0}$).  But to speed things along, we would like to have a good starting point for $(k_t, K_t)$.  To that end, we can solve for a steady state of the complete markets (representative agent) version of the model. Specifically we let $z = 1$, $L^{ss} = \pi L_g + (1 - \pi) L_b$ where $\pi$ is the long run probability of state $g$ induced by $\pi_{zz'}$ and $L_g = 1 - u_g = 0.96$ and $L_b = 1 - u_b = 0.9$. The steady state solves the Euler equation
-
-\begin{align*}
-u'(c) &= \beta u'(c) (r(K^{SS}, L^{SS}) + 1 - \delta) \\
-\iff 
-\frac{1}{\beta} &= \Bigg( \alpha \Bigg( \frac{K^{SS}}{K^{SS}}\Bigg)^{\alpha - 1} + 1 - \delta \Bigg) \\
-\iff
-K^{SS} &= \Bigg(\frac{\alpha}{1/\beta + \delta - 1}\Bigg)^{\frac{1}{1 - \alpha}} L^{SS}
-\end{align*}
 

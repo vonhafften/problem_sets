@@ -12,3 +12,11 @@
 include("04_solve_model.jl");
 
 @elapsed results = Solve_model()
+
+# print results for write-update
+
+println(results.a0)
+println(results.a1)
+println(results.b0)
+println(results.b1)
+println(results.R2)

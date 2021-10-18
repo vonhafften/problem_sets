@@ -6,7 +6,7 @@
 # ECON 899A Computational Economics
 # Problem set 5
 
-# This file contains runs the model.
+# This file contains code to simulate capital path, run regression, and coefficient convergence wrapper.
 ####################################################################################################################
 
 include("03_value_function.jl");
