@@ -13,7 +13,7 @@
 ################################## Define primitives and results structures ########################################
 ####################################################################################################################
 
-using Parameters, Plots
+using Parameters, LinearAlgebra
 
 # Model primitives
 @with_kw struct Primitives
@@ -47,8 +47,6 @@ mutable struct Results
     π::Array{Float64, 1}   # Firm profits
     x::Array{Int64, 1}     # Exit decision
     W::Array{Float64, 1}   # Firm franchise value
-    μ::Array{Float64, 1}   # Firm distribution
-    M::Float64             # New entrant mass
 end
 
 # Initialize results structure
@@ -58,10 +56,8 @@ function Initialize(price::Float64)
     π   = zeros(n_s)
     x   = fill(1, n_s)
     W   = zeros(n_s)
-    μ   = ones(n_s)/n_s
-    M   = 1
 
-    return Results(price, N_d, π, x, W, μ, M)
+    return Results(price, N_d, π, x, W)
 end
 
 ####################################################################################################################
@@ -188,4 +184,93 @@ function Solve_price()
     end
 
     p_mid
+end
+
+####################################################################################################################
+############################################### Solve for new entrant mass #########################################
+####################################################################################################################
+
+# Computes μ using T_star operator to verify other function
+function T_star(μ::Array{Float64, 1}, R::Results, M::Float64, P::Primitives)
+    μ_p = zeros(P.n_s)
+
+    for i_s = 1:P.n_s
+        for i_s_p = 1:P.n_s
+            μ_p[i_s_p] += (1 - R.x[i_s]) * P.F[i_s, i_s_p] * μ[i_s]
+            μ_p[i_s_p] += (1 - R.x[i_s]) * P.F[i_s, i_s_p] * M * P.ν[i_s]
+        end
+    end
+
+    return μ_p
+end
+
+function compute_μ(R::Results, M::Float64)
+    P = Primitives()
+
+    err, i = 100, 1
+
+    μ = ones(P.n_s)
+
+    while err > P.tolerence_LMC # borrow LMC tolerence_LMC
+        μ_p = T_star(μ, R, M, P) 
+        err = maximum(abs.(μ .- μ_p))
+        # println("Iteration #", i) # for debugging
+        # println("Error is ", err) # for debugging
+        μ = μ_p
+        i += 1
+    end
+    μ
+end
+
+# compute labor demand based on firm decision
+function compute_labor_demand(R::Results, M::Float64, μ::Array{Float64, 1})
+    @unpack ν = Primitives()
+    sum(R.N_d .* μ) + M * sum(R.N_d .* ν)
+end
+
+# compute labor supply based on FOC of HH problem
+function compute_labor_supply(R::Results, M::Float64, μ::Array{Float64, 1})
+    @unpack A, ν = Primitives()
+    Π = sum(R.π .* μ) + M * sum(R.π .* ν)
+    return 1/A - Π
+end
+
+# compute LMC
+function compute_LMC(R::Results, M::Float64)
+    μ = compute_μ(R, M)
+    return compute_labor_demand(R, M, μ) - compute_labor_supply(R, M, μ)
+end 
+
+# Solves for mass of new entrants using bisection method.
+function Solve_M(R::Results)
+    @unpack tolerence_LMC = Primitives()
+
+    # Initial bounds and midpoint for m
+    m_low = tolerence_LMC
+    m_high = 10.0
+    m_mid = (m_high + m_low)/2
+
+    # Loop variables
+    LMC = 100
+    i = 1
+
+    # iterate until convergence
+    while abs(LMC) > tolerence_LMC
+        
+        # println(i) # for debugging
+        # println(LMC) # for debugging
+
+        LMC  = compute_LMC(R, m_mid) # evaluate entry condition at midpoint m
+
+        if LMC < 0 # LMC is less than zero, move up lower bound.
+            m_low = m_mid
+        else # LMC is larger than zero, move down upper bound.
+            m_high = m_mid
+        end
+
+        m_mid = (m_high + m_low)/2 # compute new midpoint
+        i += 1
+    end
+
+    m_mid
 end
