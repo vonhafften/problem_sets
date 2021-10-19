@@ -13,7 +13,7 @@
 ################################## Define primitives and results structures ########################################
 ####################################################################################################################
 
-using Parameters
+using Parameters, Plots
 
 # Model primitives
 @with_kw struct Primitives
@@ -97,10 +97,12 @@ function Exit_Bellman(P::Primitives, R::Results)
             W_stay += P.β * P.F[i_s, i_s_p] * R.W[i_s_p]
         end
 
+        # stays if better than exiting
         if (W_stay >= W_exit)
             next_x[i_s] = 0
             next_W[i_s] = W_stay
-        else
+
+        else # exits if better than staying
             next_x[i_s] = 1
             next_W[i_s] = W_exit
         end
@@ -122,8 +124,17 @@ function Solve_firm_problem(R::Results)
     err = 100
 
     while err > 0
+
+        # println(i) # for debugging
+        # println(err) # for debugging
+        
+        # compute updated policy and value function guesses
         next_x, next_W = Exit_Bellman(P, R)
+        
+        # sup norm
         err = sum(abs.(R.x .- next_x)) + sum(abs.(R.W .- next_W))
+        
+        # update
         R.x   = next_x
         R.W   = next_W
         i += 1
@@ -135,34 +146,36 @@ end
 ############################################### Solve for price ####################################################
 ####################################################################################################################
 
+# Given a price, this function computes the entry condition
 function compute_entry_condition(price::Float64)
     @unpack ν, c_e = Primitives()
 
-    R = Initialize(price)
-    R = Solve_firm_problem(R)
+    # Solve firm problem at price
+    R = Solve_firm_problem(Initialize(price))
 
+    # Compute entry condition
     sum(R.W .* ν) / R.p - c_e
 end
 
+# Solves for price using bisection method.
 function Solve_price()
     @unpack tolerence_EC = Primitives()
 
-    # Initial outer bounds for price search using bisection method.
+    # Initial bounds and midpoint for price search using bisection method.
     p_low = tolerence_EC
     p_high = 10.0
     p_mid = (p_high + p_low)/2
 
     # Loop variables
     EC = 100
+    i = 1
 
     # iterate until convergence
     while abs(EC) > tolerence_EC
+        # println(i) # for debugging
+        # println(EC) # for debugging
 
-        # println(i)
-        # println(EC_mid)ß
-
-        # evaluate entry condition at midpoint price
-        EC  = compute_entry_condition(p_mid)
+        EC  = compute_entry_condition(p_mid) # evaluate entry condition at midpoint price
 
         if EC < 0 # EC is less than zero, move up lower bound.
             p_low = p_mid
@@ -171,6 +184,7 @@ function Solve_price()
         end
 
         p_mid = (p_high + p_low)/2 # compute new midpoint
+        i += 1
     end
 
     p_mid
