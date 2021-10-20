@@ -190,7 +190,13 @@ end
 ############################################### Solve for new entrant mass #########################################
 ####################################################################################################################
 
-# Computes μ using T_star operator to verify other function
+function compute_μ(R::Results, M::Float64)
+    @unpack F, ν, n_s = Primitives()
+    Z = reshape(repeat(1 .- R.x, n_s), n_s, n_s)' .* F'
+    M * inv(I - Z) * Z * ν
+end
+
+# Computes μ using T_star operator to verify matrix algebra
 function T_star(μ::Array{Float64, 1}, R::Results, M::Float64, P::Primitives)
     μ_p = zeros(P.n_s)
 
@@ -204,7 +210,7 @@ function T_star(μ::Array{Float64, 1}, R::Results, M::Float64, P::Primitives)
     return μ_p
 end
 
-function compute_μ(R::Results, M::Float64)
+function compute_μ_T_star(R::Results, M::Float64)
     P = Primitives()
 
     err, i = 100, 1

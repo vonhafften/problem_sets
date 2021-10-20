@@ -61,6 +61,16 @@ ec_grid = compute_entry_condition.(price_grid) .+ c_e
 plot(price_grid, ec_grid)
 plot!(price_grid, fill(c_e, length(price_grid)))
 
+
+####################################################################################################################
+############################################### Test compute μ based on computing μ using t_star operator ##########
+####################################################################################################################
+
+results = Solve_firm_problem(Initialize(Solve_price()))
+
+compute_μ(results, 2.3)
+compute_μ_T_star(results, 2.3)
+
 ####################################################################################################################
 ############################################### Test solving μ based on M ##########################################
 ####################################################################################################################
@@ -88,7 +98,7 @@ N_d_grid = zeros(length(M_grid))
 results = Solve_firm_problem(Initialize(Solve_price()))
 
 for (i, M) = enumerate(M_grid)
-    μ = compute_μ_by_T_star(results, M)
+    μ = compute_μ(results, M)
     N_s_grid[i] = compute_labor_supply(results, M, μ)
     N_d_grid[i] = compute_labor_demand(results, M, μ)
 end
