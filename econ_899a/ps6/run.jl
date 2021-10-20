@@ -17,17 +17,17 @@ include("model.jl");
 ########################################## Standard ################################################################
 ####################################################################################################################
 
-price = Solve_price()
-results = Solve_firm_problem(Initialize(price))
-M = Solve_M(results)
-μ = compute_μ(results, M)
-aggregate_labor = compute_labor_demand(results, M, μ)
+@unpack ν = Primitives()
 
-println("Print level: ", price)
-println("Mass of incumbants: ", sum((1 .- results.x) .* μ))
-println("Mass of entrants: ", M)
-println("Mass of entrants: ", sum(results.x .* μ))
-println("Aggregate labor: ", aggregate_labor)
-println("Labor of Incumbants: ", sum(results.N_d .* μ))
-println("Labor of Entrants: ", M * sum(results.N_d .* ν))
-println("Fraction of Labor in Entrants: ", M * sum(results.N_d .* ν)/ aggregate_labor)
+results = Initialize(1.0);
+Solve_price(results);
+Solve_M(results);
+
+println("Print level: ", results.p)
+println("Mass of incumbants: ", sum((1 .- results.x) .* results.μ))
+println("Mass of entrants: ", results.M)
+println("Mass of exits: ", sum(results.x .* results.μ))
+println("Aggregate labor: ", results.L_d)
+println("Labor of Incumbants: ", sum(results.N_d .* results.μ))
+println("Labor of Entrants: ", results.M * sum(results.N_d .* ν))
+println("Fraction of Labor in Entrants: ", results.M * sum(results.N_d .* ν)/ results.L_d)

@@ -32,7 +32,6 @@ using Parameters, LinearAlgebra
                                  0.2000 0.2000 0.2502 0.3397 0.0101; 
                                  0.2000 0.2000 0.2500 0.3400 0.0100] 
     ν::Array{Float64, 1}      = [0.37, 0.4631, 0.1102, 0.0504, 0.0063] # Invariant distribution
-    c_f::Float64              = 10.0                                   # Fixed cost
     c_e::Float64              = 5.0                                    # Entry cost
 
     # Other
@@ -42,22 +41,39 @@ end
 
 # Results structure
 mutable struct Results
+    # Parameters that change between simulations
+    c_f::Float64           # Fixed cost
+
+    # First stage results
     p::Float64             # Final good price
     N_d::Array{Float64, 1} # labor demand
     π::Array{Float64, 1}   # Firm profits
     x::Array{Int64, 1}     # Exit decision
     W::Array{Float64, 1}   # Firm franchise value
+
+    # Second stage results
+    M::Float64             # Mass of entrants
+    μ::Array{Float64, 1}   # stationary firm distribution
+    Π::Float64             # Aggregate profits
+    L_d::Float64           # Aggregate labor demand
+    L_s::Float64           # Aggregate labor supply
 end
 
 # Initialize results structure
-function Initialize(price::Float64)
+function Initialize(price::Float64; c_f::Float64 = 10.0)
     @unpack n_s = Primitives()
-    N_d = [1.3e-9, 10, 60, 300, 1000]
+
+    N_d = zeros(n_s)
     π   = zeros(n_s)
     x   = fill(1, n_s)
     W   = zeros(n_s)
+    M   = 1.0
+    μ   = ones(n_s)
+    Π   = 0.0
+    L_d = 0.0
+    L_s = 0.0
 
-    return Results(price, N_d, π, x, W)
+    return Results(c_f, price, N_d, π, x, W, M, μ, Π, L_d, L_s)
 end
 
 ####################################################################################################################
@@ -113,7 +129,7 @@ function Solve_firm_problem(R::Results)
 
     # Solve static labor demand decision
     R.N_d = compute_labor_demand.(R.p, P.s_grid, P.θ)
-    R.π   = compute_static_profit.(R.p, P.s_grid, R.N_d, P.θ, P.c_f)
+    R.π   = compute_static_profit.(R.p, P.s_grid, R.N_d, P.θ, R.c_f)
 
     # Solve dynamic firm exit decision
     i = 1
@@ -143,18 +159,15 @@ end
 ####################################################################################################################
 
 # Given a price, this function computes the entry condition
-function compute_entry_condition(price::Float64)
+function compute_entry_condition(W::Array{Float64, 1}, price::Float64)
     @unpack ν, c_e = Primitives()
 
-    # Solve firm problem at price
-    R = Solve_firm_problem(Initialize(price))
-
     # Compute entry condition
-    sum(R.W .* ν) / R.p - c_e
+    sum(W .* ν) / price - c_e
 end
 
 # Solves for price using bisection method.
-function Solve_price()
+function Solve_price(R::Results)
     @unpack tolerence_EC = Primitives()
 
     # Initial bounds and midpoint for price search using bisection method.
@@ -170,8 +183,13 @@ function Solve_price()
     while abs(EC) > tolerence_EC
         # println(i) # for debugging
         # println(EC) # for debugging
+        # println(p_mid) # for debugging
 
-        EC  = compute_entry_condition(p_mid) # evaluate entry condition at midpoint price
+        R.p = p_mid
+
+        Solve_firm_problem(R)
+
+        EC  = compute_entry_condition(R.W, p_mid) # evaluate entry condition at midpoint price
 
         if EC < 0 # EC is less than zero, move up lower bound.
             p_low = p_mid
@@ -183,34 +201,36 @@ function Solve_price()
         i += 1
     end
 
-    p_mid
+    R.p = p_mid
+
+    R
 end
 
 ####################################################################################################################
 ############################################### Solve for new entrant mass #########################################
 ####################################################################################################################
 
-function compute_μ(R::Results, M::Float64)
+function compute_μ(R::Results)
     @unpack F, ν, n_s = Primitives()
     Z = reshape(repeat(1 .- R.x, n_s), n_s, n_s)' .* F'
-    M * inv(I - Z) * Z * ν
+    R.μ = R.M * inv(I - Z) * Z * ν
 end
 
 # Computes μ using T_star operator to verify matrix algebra
-function T_star(μ::Array{Float64, 1}, R::Results, M::Float64, P::Primitives)
+function T_star(R::Results, P::Primitives)
     μ_p = zeros(P.n_s)
 
     for i_s = 1:P.n_s
         for i_s_p = 1:P.n_s
-            μ_p[i_s_p] += (1 - R.x[i_s]) * P.F[i_s, i_s_p] * μ[i_s]
-            μ_p[i_s_p] += (1 - R.x[i_s]) * P.F[i_s, i_s_p] * M * P.ν[i_s]
+            μ_p[i_s_p] += (1 - R.x[i_s]) * P.F[i_s, i_s_p] * R.μ[i_s]
+            μ_p[i_s_p] += (1 - R.x[i_s]) * P.F[i_s, i_s_p] * R.M * P.ν[i_s]
         end
     end
 
     return μ_p
 end
 
-function compute_μ_T_star(R::Results, M::Float64)
+function compute_μ_T_star(R::Results)
     P = Primitives()
 
     err, i = 100, 1
@@ -218,33 +238,38 @@ function compute_μ_T_star(R::Results, M::Float64)
     μ = ones(P.n_s)
 
     while err > P.tolerence_LMC # borrow LMC tolerence_LMC
-        μ_p = T_star(μ, R, M, P) 
+        μ_p = T_star(R, P) 
         err = maximum(abs.(μ .- μ_p))
         # println("Iteration #", i) # for debugging
         # println("Error is ", err) # for debugging
-        μ = μ_p
+        R.μ = μ_p
         i += 1
     end
-    μ
+    R
 end
 
 # compute labor demand based on firm decision
-function compute_labor_demand(R::Results, M::Float64, μ::Array{Float64, 1})
+function compute_labor_demand(R::Results)
     @unpack ν = Primitives()
-    sum(R.N_d .* μ) + M * sum(R.N_d .* ν)
+    R.L_d = sum(R.N_d .* R.μ) + R.M * sum(R.N_d .* ν)
+end
+
+# compute aggregate firm profits
+function compute_aggregate_profit(R::Results)
+    @unpack ν = Primitives()
+    R.Π = sum(R.π .* R.μ) + R.M * sum(R.π .* ν)
 end
 
 # compute labor supply based on FOC of HH problem
-function compute_labor_supply(R::Results, M::Float64, μ::Array{Float64, 1})
-    @unpack A, ν = Primitives()
-    Π = sum(R.π .* μ) + M * sum(R.π .* ν)
-    return 1/A - Π
+function compute_labor_supply(R::Results)
+    @unpack A = Primitives()
+    R.L_s = 1/A - compute_aggregate_profit(R)
 end
 
 # compute LMC
-function compute_LMC(R::Results, M::Float64)
-    μ = compute_μ(R, M)
-    return compute_labor_demand(R, M, μ) - compute_labor_supply(R, M, μ)
+function compute_LMC(R::Results)
+    compute_μ(R)
+    return compute_labor_demand(R) - compute_labor_supply(R)
 end 
 
 # Solves for mass of new entrants using bisection method.
@@ -252,9 +277,9 @@ function Solve_M(R::Results)
     @unpack tolerence_LMC = Primitives()
 
     # Initial bounds and midpoint for m
-    m_low = tolerence_LMC
-    m_high = 10.0
-    m_mid = (m_high + m_low)/2
+    M_low = tolerence_LMC
+    M_high = 10.0
+    R.M = (M_high + M_low)/2
 
     # Loop variables
     LMC = 100
@@ -266,17 +291,16 @@ function Solve_M(R::Results)
         # println(i) # for debugging
         # println(LMC) # for debugging
 
-        LMC  = compute_LMC(R, m_mid) # evaluate entry condition at midpoint m
+        LMC  = compute_LMC(R) # evaluate entry condition at midpoint m
 
         if LMC < 0 # LMC is less than zero, move up lower bound.
-            m_low = m_mid
+            M_low = R.M
         else # LMC is larger than zero, move down upper bound.
-            m_high = m_mid
+            M_high = R.M
         end
 
-        m_mid = (m_high + m_low)/2 # compute new midpoint
+        R.M = (M_high + M_low)/2 # compute new midpoint
         i += 1
     end
-
-    m_mid
+    R.M
 end
