@@ -31,7 +31,7 @@ CSV.write("tables/summary.csv", table)
 plot(standard_10.x, label = "Standard")
 plot!(tv1_1_10.x, label = "TV1 Shocks α = 1")
 plot!(tv1_2_10.x, label = "TV1 Shocks α = 2")
-plot!(title = "Exit Decisions", xlab = "Productivity State #", ylab = "Pr(Exit)")
+plot!(title = "Exit Decisions for c_f = 10", xlab = "Productivity State #", ylab = "Pr(Exit)")
 
 savefig("figures/c_f_10.png")
 
@@ -39,6 +39,6 @@ savefig("figures/c_f_10.png")
 plot(standard_15.x, label = "Standard", title = "Exit Decisions")
 plot!(tv1_1_15.x, label = "TV1 Shocks α = 1")
 plot!(tv1_2_15.x, label = "TV1 Shocks α = 2")
-plot!(title = "Exit Decisions", xlab = "Productivity State #", ylab = "Pr(Exit)")
+plot!(title = "Exit Decisions for c_f = 10", xlab = "Productivity State #", ylab = "Pr(Exit)")
 
 savefig("figures/c_f_15.png")

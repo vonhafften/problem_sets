@@ -358,21 +358,21 @@ process_results = function(results::Results)
     c_f = results.c_f
     alpha = results.α
     price_level = results.p
-    mass_incumbants = sum((1 .- results.x) .* results.μ)
+    mass_incumbents = sum((1 .- results.x) .* results.μ)
     mass_entrants = results.M
     mass_exits = sum(results.x .* results.μ)
     aggregate_labor = results.L_d
-    labor_incumbants = sum(results.N_d .* results.μ)
+    labor_incumbents = sum(results.N_d .* results.μ)
     labor_entrants = results.M * sum(results.N_d .* ν)
     frac_labor_entrants = results.M * sum(results.N_d .* ν)/ results.L_d
 
     # create vector of summary statistics
-    [c_f, alpha, price_level, mass_incumbants, mass_entrants, mass_exits, 
-    aggregate_labor, labor_incumbants, labor_entrants, frac_labor_entrants]
+    [c_f, alpha, price_level, mass_incumbents, mass_entrants, mass_exits, 
+    aggregate_labor, labor_incumbents, labor_entrants, frac_labor_entrants]
 end
 
 function create_table(results_vector::Array{Results})
     table = DataFrames.DataFrame(Tables.table(reduce(hcat,process_results.(results_vector))'))
-    rename!(table, [:c_f, :alpha, :price_level, :mass_incumbants, :mass_entrants, :mass_exits, 
-                    :aggregate_labor, :labor_incumbants, :labor_entrants, :frac_labor_entrants])
+    rename!(table, [:c_f, :alpha, :price_level, :mass_incumbents, :mass_entrants, :mass_exits, 
+                    :aggregate_labor, :labor_incumbents, :labor_entrants, :frac_labor_entrants])
 end
