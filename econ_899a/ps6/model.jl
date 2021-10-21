@@ -13,7 +13,7 @@
 ################################## Define primitives and results structures ########################################
 ####################################################################################################################
 
-using Parameters, LinearAlgebra
+using Parameters, LinearAlgebra, CSV, Tables, DataFrames
 
 # Model primitives
 @with_kw struct Primitives
@@ -43,26 +43,28 @@ end
 mutable struct Results
     # Parameters that change between simulations
     c_f::Float64           # Fixed cost
+    α::Float64             # Type 1 Extreme Value distribution parameter 
 
     # First stage results
     p::Float64             # Final good price
     N_d::Array{Float64, 1} # labor demand
     π::Array{Float64, 1}   # Firm profits
-    x::Array{Int64, 1}     # Exit decision
+    x::Array{Float64, 1}   # Exit decision
     W::Array{Float64, 1}   # Firm franchise value
 
     # Second stage results
     M::Float64             # Mass of entrants
-    μ::Array{Float64, 1}   # stationary firm distribution
+    μ::Array{Float64, 1}   # Stationary firm distribution
     Π::Float64             # Aggregate profits
     L_d::Float64           # Aggregate labor demand
     L_s::Float64           # Aggregate labor supply
 end
 
 # Initialize results structure
-function Initialize(price::Float64; c_f::Float64 = 10.0)
+function Initialize(; c_f::Float64 = 10.0, α::Float64 = -1.0)
     @unpack n_s = Primitives()
 
+    price = 1.0
     N_d = zeros(n_s)
     π   = zeros(n_s)
     x   = fill(1, n_s)
@@ -73,7 +75,7 @@ function Initialize(price::Float64; c_f::Float64 = 10.0)
     L_d = 0.0
     L_s = 0.0
 
-    return Results(c_f, price, N_d, π, x, W, M, μ, Π, L_d, L_s)
+    return Results(c_f, α, price, N_d, π, x, W, M, μ, Π, L_d, L_s)
 end
 
 ####################################################################################################################
@@ -94,7 +96,7 @@ end
 function Exit_Bellman(P::Primitives, R::Results)
 
     # Initialize next policy and value function
-    next_x = fill(0, P.n_s)
+    next_x = zeros(P.n_s)
     next_W = zeros(P.n_s)
 
     # iterate over states today
@@ -111,13 +113,42 @@ function Exit_Bellman(P::Primitives, R::Results)
 
         # stays if better than exiting
         if (W_stay >= W_exit)
-            next_x[i_s] = 0
+            next_x[i_s] = 0.0
             next_W[i_s] = W_stay
 
         else # exits if better than staying
-            next_x[i_s] = 1
+            next_x[i_s] = 1.0
             next_W[i_s] = W_exit
         end
+    end
+
+    return next_x, next_W
+end
+
+# Bellman for exit decisions with type 1 EV shocks
+function Exit_Bellman_random(P::Primitives, R::Results)
+
+    # Initialize next policy and value function
+    next_x = zeros(P.n_s)
+    next_W = zeros(P.n_s)
+
+    # iterate over states today
+    for i_s = 1:P.n_s
+
+        # exiting today gives you current profit and zeros for all future periods
+        V_exit = R.π[i_s]
+
+        # not exiting gives you current profit plus discounted future franchise value
+        V_stay = R.π[i_s]
+        for i_s_p = 1:P.n_s
+            V_stay += P.β * P.F[i_s, i_s_p] * R.W[i_s_p]
+        end
+
+        # Using log-sum-exp trick
+        c = max(R.α * V_stay, R.α * V_exit)
+        next_W[i_s] = MathConstants.eulergamma / R.α + 1/R.α * (c + log(exp(R.α * V_stay - c) + exp(R.α * V_exit - c)))
+
+        next_x[i_s] = exp(R.α * V_exit - c) / (exp.(R.α * V_stay - c) + exp(R.α * V_exit - c))
     end
 
     return next_x, next_W
@@ -141,8 +172,11 @@ function Solve_firm_problem(R::Results)
         # println(err) # for debugging
         
         # compute updated policy and value function guesses
-        next_x, next_W = Exit_Bellman(P, R)
-        
+        if (R.α == -1) # standard
+            next_x, next_W = Exit_Bellman(P, R)
+        else # with type 1 ev shocks
+            next_x, next_W = Exit_Bellman_random(P, R)
+        end 
         # sup norm
         err = sum(abs.(R.x .- next_x)) + sum(abs.(R.W .- next_W))
         
@@ -214,6 +248,7 @@ function compute_μ(R::Results)
     @unpack F, ν, n_s = Primitives()
     Z = reshape(repeat(1 .- R.x, n_s), n_s, n_s)' .* F'
     R.μ = R.M * inv(I - Z) * Z * ν
+    R
 end
 
 # Computes μ using T_star operator to verify matrix algebra
@@ -235,11 +270,9 @@ function compute_μ_T_star(R::Results)
 
     err, i = 100, 1
 
-    μ = ones(P.n_s)
-
     while err > P.tolerence_LMC # borrow LMC tolerence_LMC
         μ_p = T_star(R, P) 
-        err = maximum(abs.(μ .- μ_p))
+        err = maximum(abs.(R.μ .- μ_p))
         # println("Iteration #", i) # for debugging
         # println("Error is ", err) # for debugging
         R.μ = μ_p
@@ -303,4 +336,43 @@ function Solve_M(R::Results)
         i += 1
     end
     R.M
+end
+
+# wrapper
+function Solve_model(; c_f::Float64 = 10.0, α::Float64 = -1.0)
+    R = Initialize(;c_f = c_f, α = α)
+    Solve_price(R)
+    Solve_M(R)
+    R
+end
+
+################################################################################
+############################ Functions to create summary table #################
+################################################################################
+
+process_results = function(results::Results)
+
+    @unpack ν = Primitives()
+
+    # rows
+    c_f = results.c_f
+    α = results.α
+    price_level = results.p
+    mass_incumbants = sum((1 .- results.x) .* results.μ)
+    mass_entrants = results.M
+    mass_exits = sum(results.x .* results.μ)
+    aggregate_labor = results.L_d
+    labor_incumbants = sum(results.N_d .* results.μ)
+    labor_entrants = results.M * sum(results.N_d .* ν)
+    frac_labor_entrants = results.M * sum(results.N_d .* ν)/ results.L_d
+
+    # create vector of summary statistics
+    [c_f, α, price_level, mass_incumbants, mass_entrants, mass_exits, 
+    aggregate_labor, labor_incumbants, labor_entrants, frac_labor_entrants]
+end
+
+function create_table(results_vector::Array{Results})
+    table = DataFrames.DataFrame(Tables.table(reduce(hcat,process_results.(results_vector))'))
+    rename!(table, [:c_f, :α, :price_level, :mass_incumbants, :mass_entrants, :mass_exits, 
+                    :aggregate_labor, :labor_incumbants, :labor_entrants, :frac_labor_entrants])
 end

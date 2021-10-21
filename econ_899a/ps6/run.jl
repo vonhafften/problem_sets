@@ -13,21 +13,22 @@ using Plots, DataFrames
 
 include("model.jl");
 
-####################################################################################################################
-########################################## Standard ################################################################
-####################################################################################################################
 
-@unpack ν = Primitives()
 
-results = Initialize(1.0);
-Solve_price(results);
-Solve_M(results);
+standard = Solve_model()
+tv1_1 = Solve_model(;α = 1.0)
+tv1_2 = Solve_model(;α = 2.0)
 
-println("Print level: ", results.p)
-println("Mass of incumbants: ", sum((1 .- results.x) .* results.μ))
-println("Mass of entrants: ", results.M)
-println("Mass of exits: ", sum(results.x .* results.μ))
-println("Aggregate labor: ", results.L_d)
-println("Labor of Incumbants: ", sum(results.N_d .* results.μ))
-println("Labor of Entrants: ", results.M * sum(results.N_d .* ν))
-println("Fraction of Labor in Entrants: ", results.M * sum(results.N_d .* ν)/ results.L_d)
+plot(standard.x, label = "Standard")
+plot!(tv1_1.x, label = "TV1 Shocks α = 1")
+plot!(tv1_2.x, label = "TV1 Shocks α = 2")
+
+standard = Solve_model(;c_f = 15.0)
+tv1_1 = Solve_model(;c_f = 15.0, α = 1.0)
+tv1_2 = Solve_model(;c_f = 15.0, α = 2.0)
+
+plot(standard.x, label = "Standard")
+plot!(tv1_1.x, label = "TV1 Shocks α = 1")
+plot!(tv1_2.x, label = "TV1 Shocks α = 2")
+
+create_table([standard_c_f_10, tv1_α_1_c_f_10, standard_c_f_15])

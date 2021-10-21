@@ -17,7 +17,7 @@ include("model.jl");
 ############################################### Test firm problem function #########################################
 ####################################################################################################################
 
-results = Initialize(1.0);
+results = Initialize()
 P = Primitives();
 
 @unpack s_grid, θ, β = P;
@@ -33,7 +33,7 @@ results.π = compute_static_profit.(1.0, s_grid, results.N_d, θ, results.c_f) #
 (results.x, results.W) = Exit_Bellman(P, results)
 
 # test Solve_firm_problem
-results = Initialize(1.0);
+results = Initialize();
 
 Solve_firm_problem(results);
 
@@ -45,7 +45,7 @@ results.W # all franchise values are positive
 ############################################### Test solving for price #############################################
 ####################################################################################################################
 
-results = Initialize(1.0)
+results = Initialize();
 
 compute_entry_condition(results.W, 1.0)
 
@@ -57,7 +57,7 @@ Solve_price(results)
 
 @unpack c_e = Primitives()
 
-results = Initialize(1.0)
+results = Initialize();
 Solve_firm_problem(results)
 
 price_grid = .25:.001:1.25
@@ -77,26 +77,28 @@ plot!(price_grid, fill(c_e, length(price_grid)))
 ############################################### Test compute μ based on computing μ using t_star operator ##########
 ####################################################################################################################
 
-results = Initialize(1.0);
-
+results = Initialize()
 Solve_price(results);
 
-compute_μ(results, 2.3)
-compute_μ_T_star(results, 2.3)
+results.M = 2.3
+
+compute_μ(results)
+compute_μ_T_star(results)
 
 ####################################################################################################################
 ############################################### Test solving μ based on M ##########################################
 ####################################################################################################################
 
 # Verify nonnegative over wide range of M
-results = Initialize(1.0);
+results = Initialize();
 Solve_price(results);
 
 M_grid = 1.0:0.1:5.0
 
 for M in M_grid
-    μ = compute_μ(results, M)
-    if sum(μ .< 0) != 0  # Throws a flag if negative μ value
+    results.M = M
+    compute_μ(results)
+    if sum(results.μ .< 0) != 0  # Throws a flag if negative μ value
         error("Invalid μ")
     end
 end
@@ -109,7 +111,7 @@ M_grid = 1.0:0.1:5.0
 N_s_grid = zeros(length(M_grid))
 N_d_grid = zeros(length(M_grid))
 
-results = Initialize(1.0);
+results = Initialize();
 Solve_price(results);
 
 for (i, M) = enumerate(M_grid)
@@ -123,10 +125,10 @@ plot(M_grid, N_s_grid)
 plot!(M_grid, N_d_grid)
 
 ####################################################################################################################
-############################################### Text solve M #######################################################
+############################################### Test solve M #######################################################
 ####################################################################################################################
 
-results = Initialize(1.0);
+results = Initialize();
 
 Solve_price(results);
 
@@ -143,3 +145,16 @@ results.μ
 results.Π
 results.L_d
 results.L_s
+
+####################################################################################################################
+############################################### Test Exit_Bellman_random ###########################################
+####################################################################################################################
+
+P = Primitives()
+results = Initialize(;c_f = 10.0, α = 1.0)
+
+Exit_Bellman_random(P, R)
+
+Solve_firm_problem(results)
+
+results.x
