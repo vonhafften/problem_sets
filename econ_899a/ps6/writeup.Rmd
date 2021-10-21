@@ -16,6 +16,45 @@ library(tidyverse)
 library(knitr)
 ```
 
+I compute standard Hopenhayn and Rogerson (1993) model as well as this model with TV1 shocks following the description laid out in the problem set.  
+
+For $c_f = 10$, the table shows my results:
+
+```{r echo = FALSE}
+summary <- read_csv("tables/summary.csv", col_types = cols()) 
+
+summary %>%
+  filter(c_f == 10) %>%
+  select(-c_f, -alpha) %>%
+  t() %>%
+  kable(col.names = c("Standard", "TV1 alpha = 1", "TV1 alpha = 2"),
+        digits = 2) 
+```
+
+Explanation ...
+
+\pagebreak
+
+![](figures/c_f_10.png){width=600px}
+
+Explanation ...
+
+Increasing $c_f = 15$, ...
+
+```{r echo = FALSE}
+summary %>%
+  filter(c_f == 15) %>%
+  select(-c_f) %>%
+  t() %>%
+  kable(col.names = c("Standard", "TV1 alpha = 1", "TV1 alpha = 2"),
+        digits = 2) 
+```
+
+Explanation ...
+
+![](figures/c_f_15.png){width=600px}
+
+Explanation ...
 
 \pagebreak
 
@@ -111,3 +150,4 @@ Z =
 .\times
 F'
 $$
+
