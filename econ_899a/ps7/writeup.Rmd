@@ -148,8 +148,8 @@ fminsearch. Report $\hat{b}_{TH}^1$.}
 $$
 \hat{b}_{TH}^1 = 
 \begin{bmatrix}
-0.5357 \\
-1.0026
+0.5320 \\
+1.0115
 \end{bmatrix}
 $$
 
