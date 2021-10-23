@@ -1,0 +1,156 @@
+---
+title: "ECON 899A - Problem Set 7"
+author: "Alex von Hafften^[This problem set is for ECON 899A Computational Economics taught by Dean Corbae with assistance from Philip Coyle at UW-Madison. I worked on this problem set with a study group of Michael Nattinger, Sarah Bass, and Xinxin Hu.]"
+date: "10/27/2021"
+output: pdf_document
+header-includes:
+- \usepackage{bbm}
+- \usepackage{amsmath}
+- \newcommand{\R}{\mathbb{R}}
+- \newcommand{\one}{\mathbbm{1}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+```
+
+
+1. \textit{Derive the following asymptotic moments associated with $m_3(x)$: mean, variance, first
+order autocorrelation. Furthermore, compute $\nabla_bg(b_0)$. Which moments are informative
+for estimating $b$?}
+
+With $|\rho_0| < 1$, the stochastic process $\{x_t\}$ is stationary, so $E[x_t] = E[x_{t-1}]$ and $Var[x_t] = Var[x_{t-1}]$:\footnote{Alternatively, we can write $x_t$ in terms of $x_0$, $\{\varepsilon_i\}_{i=1}^t$, and $\rho_0$:
+
+\begin{align*}
+x_t 
+&= \rho_0 x_{t-1} + \varepsilon_t \\
+&= \rho_0 (\rho_0 x_{t-2} + \varepsilon_{t-1}) + \varepsilon_t \\
+&= \rho_0^2 x_{t-2} + \varepsilon_t + \rho_0 \varepsilon_{t-1}  \\
+&= \rho_0^2 (\rho_0 x_{t-3} + \varepsilon_{t-2}) + \varepsilon_t + \rho_0 \varepsilon_{t-1}  \\
+&= \rho_0^3 x_{t-3} + \varepsilon_t + \rho_0 \varepsilon_{t-1} + \rho_0^2 \varepsilon_{t-2} \\
+&= \rho_0^t x_0 + \sum_{i=1}^t \rho_0^{t-i} \varepsilon_i \\
+&= \sum_{i=1}^t \rho_0^{t-i} \varepsilon_i
+\end{align*}
+
+$$
+E[x_t] = E\Bigg[\sum_{i=1}^t \rho_0^{t-i} \varepsilon_i \Bigg] = \sum_{i=1}^t \rho_0^{t-i} E[ \varepsilon_i ] = 0
+$$
+
+}
+
+$$
+E[x_t] 
+= E[\rho_0 x_{t-1} + \varepsilon_t] 
+= \rho_0 E[x_{t-1}] 
+=\rho_0 E[x_t]
+$$
+
+$$
+\implies E[x_t] = 0
+$$
+
+$$
+Var[x_t] = Var[\rho_0 x_{t-1} + \varepsilon_t] = \rho_0^2 Var[x_{t-1}] + \sigma_0^2 = \rho_0^2 Var[x_{t}] + \sigma_0^2 
+$$
+
+$$
+\implies Var[x_t] = \frac{\sigma_0^2}{1 - \rho_0^2}
+$$
+
+$$
+Cov[x_t, x_{t-1}] = Cov[\rho_0 x_{t-1} + \varepsilon_t, x_{t-1}] = \rho_0 Cov[x_{t-1}, x_{t-1}] + Cov[\varepsilon_t, x_{t-1}] = \rho_0 Var[x_t] = \frac{\sigma_0^2 \rho_0}{1 - \rho_0^2}
+$$
+
+\pagebreak
+
+Thus, the asymptotic moments associated with $m_3(x)$ are:
+
+$$
+\mu(x)
+=
+E[m_3(x)] 
+= 
+\begin{bmatrix}
+0\\
+\frac{\sigma_0^2}{1 - \rho_0^2}\\
+\frac{\sigma_0^2 \rho_0}{1 - \rho_0^2}
+\end{bmatrix}
+$$
+
+To calculate the Jacobian, we compute the derivative of the moment conditions with respect to each parameter:
+
+\begin{align*}
+\frac{\partial}{\partial \rho}  \Bigg(\frac{\sigma^2}{1 - \rho^2} \Bigg)
+&= \frac{\sigma^2(-2\rho) - (1 - \rho^2)(0)}{(1 - \rho^2)^2} \\
+&= \frac{-2\rho\sigma^2}{(1 - \rho^2)^2}\\
+\frac{\partial}{\partial \sigma} \Bigg( \frac{\sigma^2}{1 - \rho^2} \Bigg)
+&= \frac{2\sigma}{1 - \rho^2}\\
+\frac{\partial}{\partial \rho}\Bigg( \frac{\sigma^2\rho}{1 - \rho^2}\Bigg)
+&= \frac{\sigma^2\rho(-2\rho) - (1- \rho^2)\sigma^2}{(1-\rho^2)^2}\\
+&= \frac{-\sigma^2(1 + \rho^2 ) }{(1-\rho^2)^2} \\
+\frac{\partial}{\partial \sigma} \Bigg(\frac{\sigma^2\rho}{1 - \rho^2}\Bigg)
+&= \frac{2\sigma\rho}{1 - \rho^2}
+\end{align*}
+
+Each cell of the Jacobian is the negative of the derivative of the moment condition:
+
+$$
+\implies
+\nabla_bg(b_0)
+=
+\begin{bmatrix}
+0 & 0\\
+\frac{2 \rho_0 \sigma_0^2}{(1 - \rho_0^2)^2} & \frac{- 2 \sigma_0}{1 - \rho_0^2}  \\
+\frac{\sigma_0^2 (1 + \rho_0^2)}{(1 - \rho_0^2)^2} & \frac{- 2 \sigma_0 \rho_0}{1 - \rho_0^2} 
+\end{bmatrix}
+$$
+
+Variance and first order autocorrelation are informative for estimating $b$.
+
+\pagebreak
+
+2. \textit{Simulate a series of “true” data of length $T = 200$ using (1). We will use this to compute $M_T (x)$.}
+
+![](figures/q2.png){width=500px}
+$$
+M_T(x) =
+\begin{bmatrix}
+ -0.0764 \\
+  1.3953 \\
+  0.6916
+  \end{bmatrix}
+$$
+
+3. \textit{Set $H = 10$ and simulate $H$ vectors of length $T = 200$ random variables $e_t$
+from $N(0, 1)$. We will use this to compute $M_{T H}(y(b))$. Store these vectors. You will use the same
+vector of random variables throughout the entire exercise. Since this exercise requires
+you to estimate $\sigma^2$, you want to change the variance of $e_t$ during the estimation. You
+can simply use $\sigma e_t$ when the variance is $\sigma^2$.}
+
+4. \textit{We will start by estimating the $\ell = 2$ vector $b$ for the just identified case where $m_2$
+uses mean and variance. Given what you found in part (1), do you think there will
+be a problem? In general we would not know whether this case would be a
+problem, so hopefully the standard error of the estimate of $b$ as well as the J test will
+tell us something.}
+
+From part (1), I found that in expectation the mean is zero, so the problem is that the mean is not informative for estimating $b$.
+
+\pagebreak
+
+(a) \textit{Set $W = I$ and graph in three dimensions, the objective function (3) over $\rho \in [0.35, 0.65]$ and $\sigma \in [0.8, 1.2]$. 
+Obtain an estimate of $b$ by using $W = I$ in (4) using
+fminsearch. Report $\hat{b}_{TH}^1$.}
+
+![](figures/q4a.png){width=500px}
+
+$$
+\hat{b}_{TH}^1 = 
+\begin{bmatrix}
+0.5357 \\
+1.0026
+\end{bmatrix}
+$$
+
+(b) \textit{Set $i(T) = 4$. Obtain an estimate of $W^*$. Using $\hat{W^*}_{TH} = \hat{S}^{-1}_{TH}$ in (4), obtain an estimate of $\hat{b}_{TH}^2$. Report $\hat{b}_{TH}^2$.}
