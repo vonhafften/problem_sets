@@ -129,39 +129,20 @@ vector of random variables throughout the entire exercise. Since this exercise r
 you to estimate $\sigma^2$, you want to change the variance of $e_t$ during the estimation. You
 can simply use $\sigma e_t$ when the variance is $\sigma^2$.}
 
-4. \textit{We will start by estimating the $\ell = 2$ vector $b$ for the just identified case where $m_2$
-uses mean and variance. Given what you found in part (1), do you think there will
+4-6. \textit{Different moments. Given what you found in part (1), do you think there will
 be a problem? In general we would not know whether this case would be a
 problem, so hopefully the standard error of the estimate of $b$ as well as the J test will
 tell us something.}
-
-From part (1), I found that in expectation the mean is zero, so the problem is that the mean is not informative for estimating $b$.
-
-\pagebreak
 
 (a) \textit{Set $W = I$ and graph in three dimensions, the objective function (3) over $\rho \in [0.35, 0.65]$ and $\sigma \in [0.8, 1.2]$. 
 Obtain an estimate of $b$ by using $W = I$ in (4) using
 fminsearch. Report $\hat{b}_{TH}^1$.}
 
-![](figures/q4a.png){width=500px}
-
-$$
-\hat{b}_{TH}^1 = 
-\begin{bmatrix}
-0.5320 \\
-1.0115
-\end{bmatrix}
-$$
-
 (b) \textit{Set $i(T) = 4$. Obtain an estimate of $W^*$. Using $\hat{W^*}_{TH} = \hat{S}^{-1}_{TH}$ in (4), obtain an estimate of $\hat{b}_{TH}^2$. Report $\hat{b}_{TH}^2$.}
-
-...
 
 (c) \textit{To obtain standard errors, compute numerically $\nabla_b g_T (\hat{b}^2_{TH})$ defined in (6). Report
 the values of $\nabla_b g_T (\hat{b}^2_{TH})$. Next, obtain the $\ell \times \ell$ variance-covariance matrix of $\hat{b}^2_{TH}$ as in (7). Finally, what are the standard errors defined in (8)? How can we use the
 information on $\nabla_b g_T (\hat{b}^2_{TH})$ to think about local identification?}
-
-...
 
 (d) \textit{Since we are in the just identified case, the $J$ test should be zero (on a computer
 this may be not be exact). However, given the identification issues in this particular
@@ -175,52 +156,73 @@ $$
 > \textit{noting that in this just identified case $n - \ell = 0$ degrees of freedom recognizing that
 there really is not distribution.}
 
-...
+\pagebreak
+
+- From part (1), I found that in expectation the mean is zero, so the problem is that the mean is not informative for estimating $b$.  Both the variance and the first order covariance were non-zero, so they are likely informative for estimating $b$.  Thus, I think there will be a problem with (4), but not (5) and (6)
+
+- I plot the objective function for both the identity weighting matrix and the estimated optimal weighting matrices for each case on the following pages.
+
+- Table 1 shows the first stage estimates, second stage estimates, and standard errors for $\rho$ and $\sigma$.
+
+```{r echo= FALSE}
+summary <- read_csv("tables/summary.csv", col_types = cols())
+
+moments = c("Mean and Variance", "Variance and Covariance", "Mean, Variance and Covariance")
+
+kable(cbind(moments, select(summary, starts_with("rho"), starts_with("sigma"))), digits = 3, caption = "Estimates and Standard Errors")
+```
+
+- To obtain the standard errors, I computed the following Jacobians:
+
+```{r echo= FALSE}
+jacobian_4 <- read_csv("tables/jacobian_4.csv", col_types = cols())
+jacobian_5 <- read_csv("tables/jacobian_5.csv", col_types = cols())
+jacobian_6 <- read_csv("tables/jacobian_6.csv", col_types = cols())
+
+kable(jacobian_4, col.names = c("d/(d rho)", "d/(d sigma)"), caption = "Jacobian (Mean and Variance)")
+kable(jacobian_5, col.names = c("d/(d rho)", "d/(d sigma)"), caption = "Jacobian (Variance and Covariance)")
+kable(jacobian_6, col.names = c("d/(d rho)", "d/(d sigma)"), caption = "Jacobian (Mean, Variance, and Covariance)")
+```
+
+- I found very low j-test statistics and p-values. 
+
+```{r echo= FALSE}
+moments = c("Mean and Variance", "Variance and Covariance", "Mean, Variance and Covariance")
+
+kable(cbind(moments, select(summary, j_test_stat, j_test_p_value)), digits = 5, caption = "J-Test Statistics and P-Values")
+```
 
 \pagebreak
 
-5. Next we estimating the $\ell = 2$ vector $b$ for the just identified case where $m_2$ uses the
-variance and autocorrelation. Given what you found in part (1), do you now think there
-will be a problem? If not, hopefully the standard error of the estimate of $b$ as well as
-the $J$ test will tell us something. For this case, perform steps (a)-(d) above.
+4. The just identified case where $m_2$ uses mean and variance. 
 
-(a)
+![](figures/q4a.png){width=500px}
 
-...
-
-(b)
-
-...
-
-(c)
-
-...
-
-(d)
-
-...
+![](figures/q4b.png){width=500px}
 
 \pagebreak
 
-6. Next, we will consider the overidentified case where $m_3$ uses the mean, variance and
-autocorrelation. For this case, perform steps (a)-(d) above.
+5. The just identified case where $m_2$ uses the variance and autocorrelation.
 
-(a)
+![](figures/q5a.png){width=500px}
 
-...
+![](figures/q5b.png){width=500px}
 
-(b)
+\pagebreak
 
-...
+6. The overidentified case where $m_3$ uses the mean, variance and autocorrelation. 
 
-(c)
+![](figures/q6a.png){width=500px}
 
-...
+![](figures/q6b.png){width=500px}
 
-(d)
+\pagebreak
 
-...
+6. (e) Bootstrap the the finite sample distribution of the estimators by repeatedly drawing $\varepsilon_t$ and $e_t^h$ from $N(0, 1)$ for $t =1, ..., T$ and $h = 1, ..., H$.
 
-(e) Bootstrap the the finite sample distribution of the estimators by repeatedly drawing $\varepsilon_t$ and $e_t^h$ from $N(0, 1)$ for $t =1, ..., T$ and $h = 1, ..., H$. Compute $(\hat{b}_{TH}^1, \hat{b}_{TH}^2)$.
+![](figures/q6e_rho.png){width=500px}
+
+![](figures/q6e_sigma.png){width=500px}
+
 
 ...

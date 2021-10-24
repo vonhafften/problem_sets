@@ -6,66 +6,58 @@
 # October 27, 2021
 ##########################################################################################
 
+using Plots, Tables, DataFrames, CSV
+
 include("model.jl")
 
-##########################################################################################
-# Question 2
-##########################################################################################
+D = Initialize_True_Data(; seed = 1234);
 
-P = Primitives()
-plot(P.x_0, legend = false)
+# Plot true data
+plot(D.x_0, legend = false)
 savefig("figures/q2.png");
 
-##########################################################################################
-# Question 4
-##########################################################################################
+# smm using different moments
+results_4 = estimate(1:2; seed_0 = 1234, seed_1 = 2345)
+results_5 = estimate(2:3; seed_0 = 1234, seed_1 = 2345)
+results_6 = estimate(1:3; seed_0 = 1234, seed_1 = 2345)
 
-results_4 = estimate(1:2; seed = 2345)
-
-plot_J_TH_surface(results_4, 1)
+# objective function surface for first stage
+plot_J_TH_surface(results_4, D, 1)
 savefig("figures/q4a.png");
-
-results_4.ρ_hat_1
-results_4.σ_hat_1
-results_4.W_hat
-results_4.ρ_hat_2
-results_4.σ_hat_2
-
-plot_J_TH_surface(results_4, 2)
-savefig("figures/q4a.png");
-
-##########################################################################################
-# Question 5
-##########################################################################################
-
-results_5 = estimate(2:3; seed = 2345)
-
-plot_J_TH_surface(results_5, 1)
+plot_J_TH_surface(results_5, D, 1)
 savefig("figures/q5a.png");
+plot_J_TH_surface(results_6, D, 1)
+savefig("figures/q6a.png");
 
-results_5.ρ_hat_1
-results_5.σ_hat_1
-results_5.W_hat
-results_5.ρ_hat_2
-results_5.σ_hat_2
-
-plot_J_TH_surface(results_5, 2)
+# objective function surface for second stage
+plot_J_TH_surface(results_4, D, 2)
+savefig("figures/q4b.png");
+plot_J_TH_surface(results_5, D, 2)
 savefig("figures/q5b.png");
+plot_J_TH_surface(results_6, D, 2)
+savefig("figures/q6b.png");
+
+# Save jacobians
+CSV.write("tables/jacobian_4.csv", Tables.table(results_4.jacobian))
+CSV.write("tables/jacobian_5.csv", Tables.table(results_5.jacobian))
+CSV.write("tables/jacobian_6.csv", Tables.table(results_6.jacobian))
+
+# Summary table
+summary_table = create_table([results_4, results_5, results_6], D)
+CSV.write("tables/summary.csv", summary_table)
 
 ##########################################################################################
-# Question 5
+# Question 6e
 ##########################################################################################
 
-results_6 = estimate(1:3; seed = 2345)
+results_6_bootstrap = bootstrap_se(1:3)
 
-plot_J_TH_surface(results_6, 1)
-savefig("figures/q5a.png");
+histogram(results_6_bootstrap[:, 1], fillalpha=0.5, label = "ρ_hat_1");
+histogram!(results_6_bootstrap[:, 2], fillalpha=0.5, label = "ρ_hat_2")
 
-results_6.ρ_hat_1
-results_6.σ_hat_1
-results_6.W_hat
-results_6.ρ_hat_2
-results_6.σ_hat_2
+savefig("figures/q6e_rho")
 
-plot_J_TH_surface(results_6, 2)
-savefig("figures/q5b.png");
+histogram(results_6_bootstrap[:, 3], fillalpha=0.5, label = "σ_hat_1");
+histogram!(results_6_bootstrap[:, 4], fillalpha=0.5, label = "σ_hat_2")
+
+savefig("figures/q6e_sigma")
