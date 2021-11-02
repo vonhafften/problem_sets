@@ -1,5 +1,6 @@
 % Midterm Cheatsheet
-% FIN 920 by David Brown
+% FIN 920 
+% Instructor: David Brown
 % Written by Alex von Hafften
 % October 15th, 2021
 
@@ -10,21 +11,164 @@
 \usepackage{color}
 \usepackage{etoolbox}
 \usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{bbm}
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\ones}{\mathbbm{1}}
 \pagenumbering{gobble}
 \geometry{margin=1cm}
 
 \begin{document}
 
-\textbf{FIN 920: Midterm Cheatsheet}
+\twocolumn
 
-Normal distribution facts:
+\section*{FIN 920: Midterm Cheatsheet}
 
-- If $x \sim N(\mu, \sigma^2)$, then $E[e^x] = x^{\mu + \sigma^2/2}$
+\subsection*{Arbitrage}
 
+\begin{itemize}
 
-If an investor is risk-neutral, their SDF is one.
+\item Type 1 arbitrage exists if $\exists \; x$ s.t. $P(x \ge 0) = 1$ and $P(x > 0) > 0$ with $p(x) \le 0$.
+
+\item Type 2 arbitrage exists if $\exists \; x$ s.t. $P(x \ge 0) = 1$ and $p(x) < 0$.
+
+\item Type 1 arbitrage is ``free money later" and type 2 arbitrage is ``free money now."
+
+\item Steimke's Lemma: For any matrix $A$ either: (1) $\exists \; \beta >> 0$ s.t. $A\beta = 0$ or (2) $\exists \; N$ s.t. $N'A > 0$.
+
+\item (1) corresponds to no arbitrage and (2) corresponds to arbitrage.
+
+\end{itemize}
+
+\subsection*{Minimum Variance Frontier}
+
+\begin{itemize}
+
+\item Portfolios on MVF satisfy
+
+$$
+\min_\alpha \frac{1}{2} \alpha' V \alpha + \lambda(\alpha' \mu - E[r_p]) + \theta (\alpha'\ones - 1)
+$$
+
+\begin{align*}
+A &= \mu' V^{-1} \ones = \ones' V^{-1} \mu \\
+B &= \mu' V^{-1} \mu \\
+C &= \ones  V^{-1} \ones \\
+D &= BC - A^2\\
+\lambda_p &= \frac{CE[r_p] - A}{D}\\
+\theta_p &= \frac{B - AE[r_p]}{D}\\
+\alpha_p 
+&= \lambda_p V^{-1} \mu + \theta_p V^{-1} \ones \\
+&= A \lambda_p \alpha_{mvp} + C \theta_p \alpha_t\\
+\alpha_{mvp} &= \frac{V^{-1}\ones}{\ones'V^{-1}\ones}\\
+\alpha_{t} &= \frac{V^{-1}\mu}{\ones'V^{-1}\mu}\\
+\sigma_{mvp}^2 &= \frac{1}{C} \\
+E[r_{mvp}] &= \frac{A}{C}\\
+\sigma_{t}^2 &= \frac{B}{A^2} \\
+E[r_{t}] &= \frac{B}{A} \\
+\sigma_{p,q} &= \frac{C}{D}\Big(E[r_p] - \frac{A}{C}\Big)\Big(E[r_q] - \frac{A}{C}\Big)+\frac{1}{C}
+\end{align*}
+
+\item For any portfolio $q$ and the tangency portfolio $t$: $r_q = r_{p(q)} + \varepsilon_q = r_f + \beta_{qt}(r_t - r_f) + \varepsilon_q$, where $\beta_{qt} = \frac{Cov(r_q, r_t)}{Var(r_t)}$, $Cov(r_f, \varepsilon_q) = E[\varepsilon_q] =0$ [$E[\varepsilon_q | r_t] = 0$ is sufficient.]
+
+\end{itemize}
+
+\subsection*{Stochastic Discount Factors}
+
+\begin{itemize}
+
+\item If an investor is risk-neutral, their SDF is one.
+
+\item If a SDF $m$ exists and $P(m > 0) = 1$, no type 1 or type 2 arbitrage exists.
+
+\item pf: Consider $x$ s.t. $P(x \ge 0 ) =1$ and $P(x > 0) > 0$, then $P(m > 0) =1 \implies p(x) = E[mx] = E[mx|x>0]P(x>0) >0$ (no type 1 arbitrage).  Consider $x$ s.t. $p(x \ge 0) = 1$. $P(m>0) = 1 \implies p(x) \ge 0$ (no type 2 arbitrage).  
+
+\end{itemize}
+
+\subsection*{Utility Functions}
+
+\begin{itemize}
+
+\item 
+
+\end{itemize}
+
+\subsection*{Risk Aversion}
+
+\begin{itemize}
+
+\item Coef. of absolute risk aversion: $R_A(w, u(\cdot)) = \frac{-u''(w)}{u'(w)}$.
+
+\item Coef. of relative risk aversion: $R_R(w, u(\cdot)) = wR_A(w, u(\cdot)) = \frac{-u''(w)}{u'(w)}w$.
+
+\end{itemize}
+
+\subsection*{Stochastic Dominance}
+
+\begin{itemize}
+
+\item Two gambles $X$ and $Y$ with CDFs $F$ and $G$, respectively.
+
+\item First-degree stochastic dominance:
+
+\begin{itemize}
+
+\item $X \succsim Y$ (i.e. everyone with increasing utility prefers $X$ to $Y$).
+
+\item $F(z) \le G(z) \; \forall z$
+
+\item $Y =^{dist} X + \varepsilon$ where $\varepsilon \ge 0$
+
+\end{itemize}
+
+\item Second-degree stochastic dominance:
+
+\begin{itemize}
+
+\item $X \succsim_2 Y$ (i.e. everyone with increasing and concave utility prefers $X$ to $Y$)
+
+\item $\int_\alpha^y F(z) - G(z)dz \le 0 \; \forall y$ or $E[X] \ge E[Y]$
+
+\item $Y =^{dist} X + \varepsilon$ where $E[\varepsilon|X] \ge 0$
+
+\end{itemize}
+
+\end{itemize}
+
+\subsection*{CAPM}
+
+\begin{itemize}
+
+\item 
+
+\end{itemize}
+
+\subsection*{Equilibrium Asset Pricing}
+
+\begin{itemize}
+
+\item 
+
+\end{itemize}
+
+\subsection*{Normal Distribution}
+
+\begin{itemize}
+
+\item If $x \sim N(\mu, \sigma^2)$, then $E[e^x] = e^{\mu + \sigma^2/2}$
+
+\item MGF: $m(t) = E[e^{tx}] = \exp(t \mu + t^2 \sigma^2/2)$
+
+\end{itemize}
+
+\subsection*{Options Stuff}
+
+\begin{itemize}
+
+\item Put-call parity: $C - P = S - PV(k)$
+
+\end{itemize}
 
 \end{document}

@@ -1,0 +1,194 @@
+---
+title: "Minimum Variance Frontier"
+author: "Alex von Hafften"
+date: "10/29/2021"
+output: pdf_document
+header-includes:
+- \usepackage{bbm}
+- \newcommand{\one}{\mathbbm{1}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+- Objective: Describe the minimum variance frontier (MVF) i.e. the set of minimum variance portfolios. A minimum variance portfolio has the smallest variance for a given expected return.
+
+- Assumption: single period; finite set of basis assets; finite expected returns, variances, and covariances; and nonsingular matrix of second moments.
+
+# Setup
+
+- Let $r_b = x_b ./S - 1$ be the vector of basis asset returns where $x_b$ is vector of payoffs, $S$ is vector of prices.
+
+- By the law of one price, the return on portfolio $\alpha$ is $r_p = \alpha' r_b$
+
+- Let $\mu \equiv E[r_b]$ be finite. 
+
+- Let $V \equiv E[r_br_b'] - \mu \mu'$ be finite and nonsingular.
+
+- For convenience, define three scalar constants:
+
+\begin{align*}
+A &= \one' V^{-1} \mu = \mu' V^{-1} \one \\
+B &= \mu' V^{-1} \mu \\
+C &= \one' V^{-1} \one
+\end{align*}
+
+- We first consider two special portfolios on the MVF then derive the MVF.
+
+# Global minimum variance portfolio
+
+- The global minimum variance portfolio $\alpha_{mvp}$ satisfies:
+
+$$
+\min_\alpha \frac{1}{2} \alpha'V\alpha + \theta (1 - \alpha'\one)
+$$
+
+- FOC [$\alpha$]:
+
+$$
+V \alpha = \theta \one \implies \alpha = \theta V^{-1}\one
+$$
+
+- Plugging back in constraint:
+
+$$
+\theta \one'V^{-1}\one = 1 
+\implies 
+\theta = \frac{1}{\one'V^{-1}\one}
+\implies 
+\alpha_{mvp} = \frac{V^{-1}\one}{\one'V^{-1}\one}
+= \frac{1}{C}V^{-1}\one
+$$
+\pagebreak
+
+- The expected value and variance of $r_{mvp}$:
+
+$$
+E[r_{mvp}] = E[x_b'\alpha_{mvp}] = \frac{\mu'V^{-1}\one}{\one'V^{-1}\one} = \frac{A}{C}
+$$
+
+$$
+Var[r_{mvp}] = \alpha_{mvp}'Var[x_b']\alpha_{mvp} = \frac{\one' V^{-1}VV^{-1}\one}{\one'V^{-1}\one\one'V^{-1}\one} = \frac{1}{\one'V^{-1}\one} = \frac{1}{C}
+$$
+
+# Tangency Portfolio
+
+- The tangency portfolio $\alpha_\mu$ has the maximum expected return per unit of standard deviation.
+
+- Instead of directly finding the tangency portfolio, we can consider the dual problem of the portfolio $\tilde{\alpha}_\mu$ with the minimum variance given an expected return, find the portfolio for unit expected return, and then scale the portfolio so adds up to one:
+
+$$
+\min_\alpha \frac{1}{2}\alpha'V\alpha + \lambda(E[r_p] - \alpha'\mu)
+$$
+
+- FOC [$\alpha$]
+
+$$
+V\alpha = \lambda \mu \implies \alpha = \lambda V^{-1} \mu
+$$
+
+- Plugging into the constraint:
+
+$$
+E[r_p] = \lambda \mu' V^{-1} \mu 
+\implies 
+\lambda = \frac{E[r_p]}{\mu' V^{-1} \mu} 
+\implies 
+\tilde{\alpha}_\mu(E[r_p]) = \frac{E[r_p]}{\mu' V^{-1} \mu} V^{-1} \mu
+$$
+
+- At $E[r_p] = 1$,
+
+$$
+\tilde{\alpha}_\mu(1) = \frac{1}{\mu' V^{-1} \mu} V^{-1} \mu
+$$
+
+- The sum of the portfolio weight is (necessarily sum to one): 
+
+$$
+\one' \tilde{\alpha}_\mu(1) = \frac{\one'V^{-1} \mu}{\mu' V^{-1} \mu} = A/B
+$$
+
+- Now, we scale $\tilde{\alpha}_\mu(1)$:
+
+$$
+\alpha_\mu = \frac{B}{A} \tilde{\alpha}_\mu(1) = \frac{\mu' V^{-1} \mu}{\one'V^{-1} \mu}\frac{1}{\mu' V^{-1} \mu} V^{-1} \mu = \frac{1}{\one'V^{-1}\mu} V^{-1}\mu = \frac{1}{A}V^{-1} \mu
+$$
+
+- The expected value and variance of $r_\mu$:
+
+$$
+E[r_{\mu}] = E[x_b'\alpha_{\mu}] =  \frac{\mu'V^{-1}\mu}{\one'V^{-1}\mu} = \frac{B}{A}
+$$
+
+$$
+Var[r_{\mu}] 
+= \alpha_{\mu}'Var[x_b']\alpha_{\mu} 
+= \frac{\mu' V^{-1} V V^{-1} \mu}{\mu'V^{-1}\one \one'V^{-1}\mu} 
+= \frac{\mu' V^{-1} \mu}{\mu'V^{-1}\one \one'V^{-1}\mu} 
+= \frac{B}{A^2}
+$$
+
+# Minimum Variance Frontier
+
+- Portfolios on the minimum variance frontier satisfy
+
+$$
+\frac{1}{2}\alpha' V\alpha + \theta (1 - \alpha'\one) + \lambda (E[r_p] - \alpha'\mu)
+$$
+
+- FOC [$\alpha$]:
+
+$$
+V \alpha = \theta\one + \lambda \mu \implies \alpha = \theta V^{-1}\one + \lambda V^{-1}\mu
+$$
+
+- Plugging into constraints:
+
+\begin{align*}
+&
+\begin{cases}
+\one'(\theta V^{-1}\one + \lambda V^{-1}\mu) &= 1\\
+\mu'(\theta V^{-1}\one + \lambda V^{-1}\mu) &= E[r_p]
+\end{cases} \\
+\implies &
+\begin{cases}
+C \theta + A \lambda &= 1\\
+A \theta + B \lambda &= E[r_p]
+\end{cases} \\
+\implies &
+\begin{cases}
+\lambda &= A^{-1} - A^{-1}C \theta\\
+\theta &= A^{-1} E[r_p] - A^{-1} B \lambda
+\end{cases}\\
+\implies \theta &= A^{-1} E[r_p] - A^{-1} B [A^{-1} - A^{-1}C \theta] \\
+\implies \theta (1 - A^{-2} B C) &= A^{-1} E[r_p] - A^{-2} B  \\
+\implies \theta &= \frac{A^{-1} E[r_p] - A^{-2} B}{1 - A^{-2} B C } \\
+&= \frac{A E[r_p] - B}{A^2 - B C }\\
+\implies \lambda &= A^{-1} - A^{-1}C \Bigg[\frac{A E[r_p] - B}{A^2 - B C }\Bigg] \\
+&= \frac{A - A^{-1}B C  - C E[r_p] + A^{-1}BC}{A^2 - B C } \\
+&= \frac{A - C E[r_p] }{A^2 - B C }
+\end{align*}
+
+- Notice that $\lambda, \theta$ depend on $E[r_p]$, so we denote with them $\lambda_p, \theta_p$.
+
+# Two fund separation on MVF
+
+- Two fund separation holds on the MVF with $\alpha_{mvp}$ and $\alpha_\mu$:
+
+$$
+\alpha_p = (\theta_p C) \frac{1}{C} V^{-1} \one + (\lambda_p A) \frac{1}{A} V^{-1} \mu = b_p \alpha_{mvp} + (1-b_a) \alpha_{\mu}
+$$
+
+> where
+
+$$
+b_p = \theta_p C 
+$$
+
+- Notice that
+
+$$
+1 - b_p = 1 - \theta_p C  = \frac{A^2 - B C -AC E[r_p] + BC}{A^2 - B C } = \frac{A^2 -AC E[r_p]}{A^2 - B C } = A \lambda_p
+$$

@@ -162,34 +162,44 @@ there really is not distribution.}
 
 - I plot the objective function for both the identity weighting matrix and the estimated optimal weighting matrices for each case on the following pages.
 
-- Table 1 shows the first stage estimates, second stage estimates, and standard errors for $\rho$ and $\sigma$.
+- Table 1 shows the first stage estimates, first stage standard errors, second stage estimates, and second stage standard errors for $\rho$ and $\sigma$ as well as j-test statistics and p-values.
 
 ```{r echo= FALSE}
-summary <- read_csv("tables/summary.csv", col_types = cols())
+summary <- data.frame(t(read_csv("tables/summary.csv", col_types = cols())))
 
-moments = c("Mean and Variance", "Variance and Covariance", "Mean, Variance and Covariance")
+moments <- c("Mean and Variance", "Variance and Covariance", "Mean, Variance and Covariance")
 
-kable(cbind(moments, select(summary, starts_with("rho"), starts_with("sigma"))), digits = 3, caption = "Estimates and Standard Errors")
+names(summary) <- moments
+
+kable(summary, digits = 3, caption = "Estimates and Standard Errors")
 ```
+
+- Using the mean and variance, the first-stage coefficients estimates are way off.  This makes sense, in part 1, I argued that the mean doesn't contain relevant information for estimating the parameters.  The first stage standard errors are similarly quite large (about ten times larger than the variance and auto covariance case).
+
+- The second-stage coefficients don't really get much better and the standard errors actually get much larger.
+
+- The j-test statistic is around 0.04, which corresponds to a p-value of around 0.15, so we cannot reject the hypothesis that the model is true.
+
+- Using the mean and variance, the first-stage coefficients estimates are way off.  This makes sense, in part 1, I argued that the mean doesn't contain relevant information for estimating the parameters.  The first stage standard errors are similarly quite large (about ten times larger than the variance and auto covariance case).
 
 - To obtain the standard errors, I computed the following Jacobians:
 
 ```{r echo= FALSE}
-jacobian_4 <- read_csv("tables/jacobian_4.csv", col_types = cols())
-jacobian_5 <- read_csv("tables/jacobian_5.csv", col_types = cols())
-jacobian_6 <- read_csv("tables/jacobian_6.csv", col_types = cols())
+jacobian_1_4 <- read_csv("tables/jacobian_1_4.csv", col_types = cols())
+jacobian_1_5 <- read_csv("tables/jacobian_1_5.csv", col_types = cols())
+jacobian_1_6 <- read_csv("tables/jacobian_1_6.csv", col_types = cols())
 
-kable(jacobian_4, col.names = c("d/(d rho)", "d/(d sigma)"), caption = "Jacobian (Mean and Variance)")
-kable(jacobian_5, col.names = c("d/(d rho)", "d/(d sigma)"), caption = "Jacobian (Variance and Covariance)")
-kable(jacobian_6, col.names = c("d/(d rho)", "d/(d sigma)"), caption = "Jacobian (Mean, Variance, and Covariance)")
-```
+jacobian_2_4 <- read_csv("tables/jacobian_2_4.csv", col_types = cols())
+jacobian_2_5 <- read_csv("tables/jacobian_2_5.csv", col_types = cols())
+jacobian_2_6 <- read_csv("tables/jacobian_2_6.csv", col_types = cols())
 
-- I found very low j-test statistics and p-values. 
+kable(jacobian_1_4, caption = "Jacobian (Mean and Variance): First-Stage", digits = 3, col.names = NULL)
+kable(jacobian_1_5, caption = "Jacobian (Variance and Covariance): First-Stage", digits = 3, col.names = NULL)
+kable(jacobian_1_6, caption = "Jacobian (Mean, Variance, and Covariance): First-Stage", digits = 3, col.names = NULL)
 
-```{r echo= FALSE}
-moments = c("Mean and Variance", "Variance and Covariance", "Mean, Variance and Covariance")
-
-kable(cbind(moments, select(summary, j_test_stat, j_test_p_value)), digits = 5, caption = "J-Test Statistics and P-Values")
+kable(jacobian_2_4, caption = "Jacobian (Mean and Variance): Second-Stage", digits = 3, col.names = NULL)
+kable(jacobian_2_5, caption = "Jacobian (Variance and Covariance): Second-Stage", digits = 3, col.names = NULL)
+kable(jacobian_2_6, caption = "Jacobian (Mean, Variance, and Covariance): Second-Stage", digits = 3, col.names = NULL)
 ```
 
 \pagebreak

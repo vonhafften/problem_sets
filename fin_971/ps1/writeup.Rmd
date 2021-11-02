@@ -1,0 +1,56 @@
+---
+title: "PS1"
+author: "Alex von Hafften^[This problem set is for ECON 971 Corporate Finance taught by Dean Corbae with assistance from Mark Rempel at UW-Madison. I worked on this problem set with a study group of Michael Nattinger and Xinxin Hu.]"
+date: "11/3/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(xlsx)
+library(stargazer)
+knitr::opts_chunk$set(echo = TRUE)
+
+data <- read.xlsx("FHP_Illistration.xls", sheetIndex = 1)
+```
+
+
+```{r, results = "asis", echo = FALSE}
+lm_ELMG <- data %>%
+  filter(tic == "ELMG") %>%
+  lm(inv_rate ~ tobin_q_lag, data = .)
+
+lm_ATW <- data %>%
+  filter(tic == "ATW") %>%
+  lm(inv_rate ~ tobin_q_lag, data = .)
+
+lm_THC <- data %>%
+  filter(tic == "THC") %>%
+  lm(inv_rate ~ tobin_q_lag, data = .)
+
+stargazer(lm_ELMG, lm_ATW, lm_THC, 
+          column.labels = c("ELMG", "ATW", "THC"), 
+          header = FALSE,
+          title = "Regression Results without Cash Flows",
+          omit.stat = c("f", "ser"))
+```
+
+```{r, results = "asis", echo = FALSE}
+lm_ELMG <- data %>%
+  filter(tic == "ELMG") %>%
+  lm(inv_rate ~ tobin_q_lag + cash_flow, data = .)
+
+lm_ATW <- data %>%
+  filter(tic == "ATW") %>%
+  lm(inv_rate ~ tobin_q_lag + cash_flow, data = .)
+
+lm_THC <- data %>%
+  filter(tic == "THC") %>%
+  lm(inv_rate ~ tobin_q_lag + cash_flow, data = .)
+
+stargazer(lm_ELMG, lm_ATW, lm_THC, 
+          column.labels = c("ELMG", "ATW", "THC"), 
+          header = FALSE,
+          title = "Regression Results with Cash Flows",
+          omit.stat = c("f", "ser"))
+```

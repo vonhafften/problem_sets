@@ -5,6 +5,8 @@
 # Alex von Hafften
 # October 27, 2021
 #
+# Estimates coefficent of AR(1) using GMM
+#
 # This code is called by run.jl
 ##########################################################################################
 
@@ -81,7 +83,7 @@ end
     T::Int64               = 200   # Length of data/simulations
     H::Int64               = 10    # Number of simulations
     i_T::Int64             = 4     # Number of lags
-    s::Float64             = eps() # change for numerical derivative calculation
+    s::Float64             = 1e-10 # change for numerical derivative calculation
 
     # Grids for plotting
     ρ_grid::Array{Float64, 1} = 0.35:0.01:0.65
@@ -105,12 +107,15 @@ mutable struct Estimation_Results
     e::Array{Float64, 2}            # Simulated shocks
     ρ_hat_1::Float64                # First stage ρ estimator
     σ_hat_1::Float64                # First stage σ estimator 
+    jacobian_1::Array{Float64, 2}   # First stage jacobian
+    ρ_se_1::Float64                 # First stage ρ standard error
+    σ_se_1::Float64                 # First stage σ standard error
     W_hat::Array{Float64, 2}        # Estimator of optimal weight matrix
     ρ_hat_2::Float64                # Second stage ρ estimator
     σ_hat_2::Float64                # Second stage σ estimator 
-    jacobian::Array{Float64, 2}     # jacobian
-    ρ_se::Float64                   # ρ standard error
-    σ_se::Float64                   # σ standard error
+    jacobian_2::Array{Float64, 2}   # Second stage jacobian
+    ρ_se_2::Float64                 # Second stage ρ standard error
+    σ_se_2::Float64                 # Second stage σ standard error
     j_test_stat::Float64            # j-test statistic
     j_test_p_value::Float64         # j-test p-value
 end
@@ -137,17 +142,20 @@ function Initialize_Estimation(which_moments; seed = missing)
     e = shocks(T, H; seed = seed)
     ρ_hat_1 = 0
     σ_hat_1 = 0
+    jacobian_1 = zeros(2, 2)
+    ρ_se_1  = 0
+    σ_se_1  = 0
     W_hat   = zeros(length(which_moments), length(which_moments))
     ρ_hat_2 = 0
     σ_hat_2 = 0
-    jacobian= zeros(2, 2)
-    ρ_se    = 0
-    σ_se    = 0
+    jacobian_2 = zeros(2, 2)
+    ρ_se_2  = 0
+    σ_se_2  = 0
     j_test_stat    = 0
     j_test_p_value = 0
 
-    Estimation_Results(which_moments, e, ρ_hat_1, σ_hat_1, W_hat, ρ_hat_2, σ_hat_2, 
-                       jacobian, ρ_se, σ_se, j_test_stat, j_test_p_value)
+    Estimation_Results(which_moments, e, ρ_hat_1, σ_hat_1, jacobian_1, ρ_se_1, σ_se_1, W_hat, 
+                       ρ_hat_2, σ_hat_2, jacobian_2, ρ_se_2, σ_se_2, j_test_stat, j_test_p_value)
 end
 
 # Calculate objective function for parameters b, 
@@ -237,12 +245,24 @@ function W_hat(R::Estimation_Results)
 end
 
 # numerically calculat jacobian
-function jacobian(R::Estimation_Results)
+function jacobian(R::Estimation_Results, stage::Int64)
     @unpack s = Primitives()
 
-    M_TH = M(m(dgp(R.e, R.ρ_hat_2, R.σ_hat_2)))
-    M_TH_ρ = M(m(dgp(R.e, R.ρ_hat_2 - s, R.σ_hat_2)))
-    M_TH_σ =  M(m(dgp(R.e, R.ρ_hat_2, R.σ_hat_2 - s)))
+    # choose weighting matrix based on stage argument
+    if stage == 1
+        ρ = R.ρ_hat_1
+        σ = R.σ_hat_1
+
+    elseif stage == 2
+        ρ = R.ρ_hat_2
+        σ = R.σ_hat_2
+    else 
+        error("Specify valid stage argument: 1 or 2.")
+    end
+
+    M_TH   = M(m(dgp(R.e, ρ, σ)))
+    M_TH_ρ = M(m(dgp(R.e, ρ - s, σ)))
+    M_TH_σ = M(m(dgp(R.e, ρ, σ - s)))
 
     jacobian_ρ = - (M_TH - M_TH_ρ) / s
     jacobian_σ = - (M_TH - M_TH_σ) / s
@@ -251,27 +271,45 @@ function jacobian(R::Estimation_Results)
 end
 
 # calculate standard error
-function se(R::Estimation_Results)
+function se(R::Estimation_Results, stage::Int64)
     @unpack T = Primitives()
-    sqrt.(diag((1/T) * inv(R.jacobian' * R.W_hat * R.jacobian)))
+    # choose weighting matrix based on stage argument
+    if stage == 1
+        W = I
+        jacobian = R.jacobian_1
+    elseif stage == 2
+        W = R.W_hat
+        jacobian = R.jacobian_2
+    else 
+        error("Specify valid stage argument: 1 or 2.")
+    end
+    sqrt.(diag((1/T) * inv(jacobian' * W * jacobian)))
 end
 
 # compute j test statistic
-function j_test_stat(R::Estimation_Results, D::True_Data)
+function j_test(R::Estimation_Results, D::True_Data)
     @unpack T, H = Primitives()
 
-    T * H / (1 + H) * J_TH([R.ρ_hat_2, R.σ_hat_2], R.e, R.which_moments, R.W_hat, D.M_T)
+    stat = T * ( H / (1 + H)) * J_TH([R.ρ_hat_2, R.σ_hat_2], R.e, R.which_moments, R.W_hat, D.M_T)
+    p_value = cdf(Chisq(1), stat)
+
+    return [stat, p_value]
 end
 
-function estimate(which_moments; seed_0 = missing, seed_1 = missing)
+function estimate(which_moments; D_seed = missing, R_seed = missing)
     # Initialize results objects
-    D = Initialize_True_Data(;seed = seed_0)
-    R = Initialize_Estimation(which_moments; seed = seed_1)
+    D = Initialize_True_Data(;seed = D_seed)
+    R = Initialize_Estimation(which_moments; seed = R_seed)
 
     # First stage
     b_hat_1   = b_hat(R, D, 1)
     R.ρ_hat_1 = b_hat_1[1]
     R.σ_hat_1 = b_hat_1[2]
+
+    # compute se
+    R.jacobian_1 = jacobian(R, 1)
+    R.ρ_se_1   = se(R, 1)[1]
+    R.σ_se_1   = se(R, 1)[2]
 
     # Estimate optimal weighting matrix
     R.W_hat = W_hat(R)
@@ -282,13 +320,13 @@ function estimate(which_moments; seed_0 = missing, seed_1 = missing)
     R.σ_hat_2 = b_hat_2[2]
 
     # compute se
-    R.jacobian = jacobian(R)
-    R.ρ_se     = se(R)[1]
-    R.σ_se     = se(R)[2]
+    R.jacobian_2 = jacobian(R, 2)
+    R.ρ_se_2   = se(R, 2)[1]
+    R.σ_se_2   = se(R, 2)[2]
 
     # j-test
-    R.j_test_stat    = j_test_stat(R, D)
-    R.j_test_p_value = cdf(Chisq(1), R.j_test_stat)
+    R.j_test_stat    = j_test(R, D)[1]
+    R.j_test_p_value = j_test(R, D)[2]
 
     R
 end
@@ -332,18 +370,15 @@ end
 ##########################################################################################
 
 function process_results(R::Estimation_Results)
-    [R.ρ_hat_1, R.σ_hat_1, R.ρ_hat_2, R.σ_hat_2, R.ρ_se, R.σ_se, R.j_test_stat, R.j_test_p_value]
+    [R.ρ_hat_1, R.ρ_se_1, R.σ_hat_1, R.σ_se_1, R.ρ_hat_2, R.ρ_se_2, R.σ_hat_2, R.σ_se_2, R.j_test_stat, R.j_test_p_value]
 end
 
-function create_table(results_vector::Array{Estimation_Results}, D::True_Data)
+function create_table(results_vector::Array{Estimation_Results})
     
     # create matrix of results
     temp = reduce(hcat,process_results.(results_vector))'
 
-    # add true data coefficients
-    temp = hcat(repeat([D.ρ_0, D.σ_0]', size(temp)[1]), temp)
-
     # convert into data frame
     table = DataFrame(Tables.table(temp))
-    rename!(table, [:rho_0, :sigma_0, :rho_hat_1, :sigma_hat_1, :rho_hat_2, :sigma_hat_2, :rho_se, :sigma_se, :j_test_stat, :j_test_p_value])
+    rename!(table, [:rho_hat_1, :rho_se_1, :sigma_hat_1, :sigma_se_1, :rho_hat_2, :rho_se_2, :sigma_hat_2, :sigma_se_2, :j_test_stat, :j_test_p_value])
 end
