@@ -1,0 +1,118 @@
+---
+title: "ECON 899B - PS1"
+author: "Alex von Hafften"
+date: "11/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse) 
+library(knitr)
+library(janitor)
+library(haven)
+library(stargazer)
+library(kableExtra)
+
+data <- read_dta("Mortgage_performance_data.dta")
+```
+
+# Problem 1: Likelihood, score, and hessian
+
+The log-likelihood is -6942.8049. The score is below. And the hessian is on the following page.
+
+```{r, echo=FALSE}
+p1_score <- read_csv("tables/p1_score.csv", col_types = cols())
+
+kable(p1_score,col.names = "", digits = 2)
+```
+
+
+```{r, echo=FALSE}
+p1_hessian <- read_csv("tables/p1_hessian.csv", col_types = cols())
+
+landscape(kable(p1_hessian, col.names = rep("", dim(p1_hessian)[1]), digits = 0))
+```
+
+\pagebreak
+
+# Problem 2: Numerical Gradient and Hessian
+
+I use a central approximation to numerically derive the score and hessian.  My hessian approximation seems very wrong.
+
+```{r, echo=FALSE}
+p2_score <- read_csv("tables/p2_score.csv", col_types = cols())
+
+kable(p2_score,col.names = "", digits = 2)
+```
+
+
+```{r, echo=FALSE}
+p2_hessian <- read_csv("tables/p2_hessian.csv", col_types = cols())
+
+landscape(kable(p2_hessian, col.names = rep("", dim(p2_hessian)[1]), digits = 0))
+```
+
+\pagebreak
+
+# Problem 3: Newton's Method
+
+Starting from the value of $\beta$ from problem as the initial guess, my Newton's method code resulted in the following estimates:
+
+```{r, echo=FALSE}
+p3_beta <- read_csv("tables/p3_beta.csv", col_types = cols())
+
+p3_beta$variable = c("constant", "i_large_loan", "i_medium_loan", "rate_spread",
+                                             "i_refinance", "age_r", "cltv", "dti", "cu", "first_mort_r",
+                                             "score_0" , "score_1" , "i_FHA" , "i_open_year2" , "i_open_year3" ,
+                                             "i_open_year4" , "i_open_year5")
+p3_beta %>%
+  transmute(variable, estimate = Column1) %>% 
+  kable(col.names = c("", ""),  digits = 2)
+```
+
+\pagebreak
+
+# Problem 4: Built-In method comparison
+
+Starting from the initial guess in problem 1, I ran Julia's built-in Nelder-Mead, LBFGS, and Newton to optimize.  The Nelder-Mead from that initial guess was unable to converge (first column).  The other method resulted in very similar estimates.
+
+```{r, echo=FALSE}
+p4_beta <- read_csv("tables/p4_beta_comparison.csv", col_types = cols())
+
+p4_beta$variable = c("constant", "i_large_loan", "i_medium_loan", "rate_spread",
+                                             "i_refinance", "age_r", "cltv", "dti", "cu", "first_mort_r",
+                                             "score_0" , "score_1" , "i_FHA" , "i_open_year2" , "i_open_year3" ,
+                                             "i_open_year4" , "i_open_year5")
+p4_beta %>%
+  transmute(variable, 
+            `Nelder-Mead 1` = Column1,
+            `Nelder-Mead 2` = Column2,
+            `LBFGS` = Column3,
+            `Newton` = Column4) %>% 
+  kable(  digits = 2)
+```
+
+\pagebreak
+
+# Appendix
+
+To verify my functions are correct, I ran the logit regression using R's built-in function (based on the do file):
+
+```{r estimate_logit}
+r_logit <- glm(i_close_first_year ~ i_large_loan + i_medium_loan + rate_spread +
+                 i_refinance + age_r + cltv + dti + cu + first_mort_r +
+                 score_0 + score_1 + i_FHA + i_open_year2 + i_open_year3 +
+                 i_open_year4 + i_open_year5, 
+    data = data, family = binomial(link = "logit")) 
+```
+
+```{r estimate_logit_table, results="asis", echo = FALSE}
+r_logit %>%
+  stargazer(omit.stat = "aic", 
+            header = FALSE, 
+            single.row = TRUE, 
+            title = "R Output",
+            intercept.top =TRUE,
+            intercept.bottom= FALSE)
+```
