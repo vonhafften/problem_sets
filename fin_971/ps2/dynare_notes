@@ -1,0 +1,6 @@
+Dynare notes
+
+Need to point matlab to dynare, so include addpath /Applications/Dynare/4.6.2/Matlab.
+
+Dean's codes are missing capital adjustment costs.
+
