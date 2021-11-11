@@ -1,0 +1,18 @@
+---
+title: "ECON 899B - PS2"
+author: "Alex von Hafften"
+date: "11/22/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse) 
+library(knitr)
+library(janitor)
+library(haven)
+library(stargazer)
+library(kableExtra)
+
+data <- read_dta("PS2/Mortgage_performance_data.dta")
+```
