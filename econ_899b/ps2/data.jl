@@ -23,17 +23,12 @@ df_z = select(df, :score_0, :score_1, :score_2)
 
 # Define matrices.
 x = Float64.(Array(df_x))
-t = Float64.(Array(df_y))
+t = Float64.(Array(df_t))
 z = Float64.(Array(df_z))
 
 # Get dimensions.
 N = size(x)[1]
-K = size(x)[2]
+K_x = size(x)[2]
+K_z = size(z)[2]
 
 
-############################################################
-# quadrature nodes and weights
-############################################################
-
-KPU_1d = DataFrame(CSV.File("PS2/KPU_d1_l20.csv"))
-KPU_2d = DataFrame(CSV.File("PS2/KPU_d2_l20.csv"))
