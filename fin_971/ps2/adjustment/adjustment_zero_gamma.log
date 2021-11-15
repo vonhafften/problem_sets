@@ -1,0 +1,83 @@
+Starting Dynare (version 4.8-unstable-2021-11-09-1819-43ac7633).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ...
+Found 6 equation(s).
+Evaluating expressions...done
+Computing static model derivatives (order 1).
+Computing dynamic model derivatives (order 2).
+Processing outputs ...
+done
+Preprocessing completed.
+
+
+
+
+
+Residuals of the static equations:
+
+Equation number 1 : 0 : q
+Equation number 2 : 0 : 2
+Equation number 3 : 0 : k
+Equation number 4 : 0 : z
+Equation number 5 : 0 : sdf
+Equation number 6 : 0 : c
+
+
+
+MODEL SUMMARY
+
+  Number of variables:         6
+  Number of stochastic shocks: 1
+  Number of state variables:   3
+  Number of jumpers:           4
+  Number of static variables:  0
+
+
+MATRIX OF COVARIANCE OF EXOGENOUS SHOCKS
+Variables       eps_z
+eps_z        0.000100
+
+POLICY AND TRANSITION FUNCTIONS
+                                   k               q               i               z             sdf               c
+Constant                   77.238434        1.000000       11.588587        1.000000        0.961538        9.375230
+(correction)                0.003319               0        0.003319               0               0       -0.003319
+k(-1)                       0.136784       -0.000112       -0.713216               0               0        0.903216
+z(-1)                     104.162892        0.013486      104.162892        0.700000               0      -89.488220
+eps_z                     148.804132        0.019266      148.804132        1.000000               0     -127.840315
+k(-1),k(-1)                -0.001375        0.000001       -0.001375               0               0        0.000957
+z(-1),k(-1)                 0.341483       -0.000130        0.341483               0               0       -0.196841
+z(-1),z(-1)                37.160447        0.004811       37.160447               0               0      -37.862842
+eps_z,eps_z                75.837647        0.009819       75.837647               0               0      -77.271106
+k(-1),eps_z                 0.487832       -0.000186        0.487832               0               0       -0.281201
+z(-1),eps_z               106.172706        0.013747      106.172706               0               0     -108.179548
+
+
+MOMENTS OF SIMULATED VARIABLES
+VARIABLE              MEAN       STD. DEV.        VARIANCE        SKEWNESS        KURTOSIS
+k                76.658926        2.149559        4.620602       -0.027869       -0.039195
+q                 1.000011        0.000211        0.000000        0.196968        0.247945
+i                11.557522        1.522468        2.317909        0.142012        0.074503
+z                 0.996584        0.013173        0.000174       -0.064043       -0.026357
+sdf               0.961538        0.000000        0.000000             NaN             NaN
+c                 9.213936        1.556068        2.421347       -0.072347        0.332595
+
+
+CORRELATION OF SIMULATED VARIABLES
+VARIABLE         k       q       i       z     sdf       c
+k           1.0000  0.3683  0.5438  0.9944     NaN -0.1672
+q           0.3683  1.0000  0.9801  0.4641     NaN -0.9777
+i           0.5438  0.9801  1.0000  0.6289     NaN -0.9183
+z           0.9944  0.4641  0.6289  1.0000     NaN -0.2698
+sdf            NaN     NaN     NaN     NaN     NaN     NaN
+c          -0.1672 -0.9777 -0.9183 -0.2698     NaN  1.0000
+
+
+AUTOCORRELATION OF SIMULATED VARIABLES
+VARIABLE         1       2       3       4       5
+k           0.7063  0.3996  0.1539  0.1040  0.0624
+q           0.0292 -0.1198 -0.3350  0.0039 -0.0811
+i           0.0648 -0.0940 -0.3120  0.0130 -0.0751
+z           0.6437  0.3551  0.1133  0.0972  0.0479
+sdf            NaN     NaN     NaN     NaN     NaN
+c           0.0605 -0.1061 -0.3267  0.0079 -0.0737
+Total computing time : 0h00m02s

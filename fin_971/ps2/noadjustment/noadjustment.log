@@ -1,0 +1,88 @@
+Starting Dynare (version 4.8-unstable-2021-11-09-1819-43ac7633).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ...
+Found 6 equation(s).
+Evaluating expressions...done
+Computing static model derivatives (order 1).
+Computing dynamic model derivatives (order 2).
+Processing outputs ...
+done
+Preprocessing completed.
+
+
+
+
+
+Residuals of the static equations:
+
+Equation number 1 : 0 : q
+Equation number 2 : 0 : 2
+Equation number 3 : 0 : k
+Equation number 4 : 0 : z
+Equation number 5 : 0 : sdf
+Equation number 6 : 0 : c
+
+
+
+MODEL SUMMARY
+
+  Number of variables:         6
+  Number of stochastic shocks: 1
+  Number of state variables:   3
+  Number of jumpers:           2
+  Number of static variables:  2
+
+
+MATRIX OF COVARIANCE OF EXOGENOUS SHOCKS
+Variables       eps_z
+eps_z        0.000100
+
+POLICY AND TRANSITION FUNCTIONS
+                                   k               q               i               z             sdf               c
+Constant                   77.236099        1.000000       11.586251        1.000000        0.961740        9.377566
+(correction)                0.000984               0        0.000984               0        0.000202       -0.000984
+k(-1)                       0.960045               0        0.110045               0       -0.016395        0.079955
+c(-1)                              0               0               0               0        0.205051               0
+z(-1)                      12.581255               0       12.581255        0.700000       -0.429256        2.093416
+eps_z                      17.973222               0       17.973222        1.000000       -0.613223        2.990595
+k(-1),k(-1)                -0.000191               0       -0.000191               0        0.000246       -0.000178
+c(-1),k(-1)                        0               0               0               0       -0.003496               0
+c(-1),c(-1)                        0               0               0               0        0.010932               0
+z(-1),k(-1)                 0.120774               0        0.120774               0        0.008472        0.012226
+z(-1),c(-1)                        0               0               0               0       -0.091540               0
+z(-1),z(-1)                -0.031760               0       -0.031760               0        0.137211        0.031760
+eps_z,eps_z                -0.064815               0       -0.064815               0        0.280023        0.064815
+k(-1),eps_z                 0.172534               0        0.172534               0        0.012102        0.017466
+c(-1),eps_z                        0               0               0               0       -0.130771               0
+z(-1),eps_z                -0.090742               0       -0.090742               0        0.392032        0.090742
+
+
+MOMENTS OF SIMULATED VARIABLES
+VARIABLE              MEAN       STD. DEV.        VARIANCE        SKEWNESS        KURTOSIS
+k                75.802241        1.245063        1.550181        0.004351       -1.163750
+q                 1.000000        0.000000        0.000000             NaN             NaN
+i                11.367927        0.283090        0.080140        0.032255       -0.090492
+z                 0.996584        0.013173        0.000174       -0.064043       -0.026357
+sdf               0.961472        0.006341        0.000040       -0.022388       -0.135850
+c                 9.252497        0.111470        0.012426        0.003272       -1.049793
+
+
+CORRELATION OF SIMULATED VARIABLES
+VARIABLE         k       q       i       z     sdf       c
+k           1.0000     NaN  0.7141  0.2879 -0.0044  0.9859
+q              NaN     NaN     NaN     NaN     NaN     NaN
+i           0.7141     NaN  1.0000  0.8759 -0.6193  0.8214
+z           0.2879     NaN  0.8759  1.0000 -0.8443  0.4443
+sdf        -0.0044     NaN -0.6193 -0.8443  1.0000 -0.1518
+c           0.9859     NaN  0.8214  0.4443 -0.1518  1.0000
+
+
+AUTOCORRELATION OF SIMULATED VARIABLES
+VARIABLE         1       2       3       4       5
+k           0.9745  0.9350  0.8841  0.8321  0.7806
+q              NaN     NaN     NaN     NaN     NaN
+i           0.7771  0.5886  0.4211  0.3873  0.3348
+z           0.6437  0.3551  0.1133  0.0972  0.0479
+sdf         0.2225  0.0998 -0.1420  0.0665 -0.0568
+c           0.9534  0.8986  0.8355  0.7848  0.7328
+Total computing time : 0h00m16s

@@ -16,3 +16,35 @@ library(kableExtra)
 
 data <- read_dta("PS2/Mortgage_performance_data.dta")
 ```
+
+I verify the formula listed in the problem set. Notice that $\varepsilon_{i0}/\sigma_0 \sim N(0, 1)$. The likelihood associated with each duration $T_i$:
+
+\begin{align*}
+P(T_i = 1|X_i, Z_i, \theta) 
+&= P(Y_{i0} = 1|X_i, Z_i, \theta) \\
+&= P(\alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} > 0|X_i, Z_i, \theta) \\
+&= P(\varepsilon_{i0} > -\alpha_0 - X_i \beta - Z_{i0} \gamma |X_i, Z_i, \theta) \\
+&= P(\varepsilon_{i0} < \alpha_0 + X_i \beta + Z_{i0} \gamma |X_i, Z_i, \theta) \\
+&= P(\varepsilon_{i0} /\sigma_0 < (\alpha_0 + X_i \beta + Z_{i0} \gamma) / \sigma_0 |X_i, Z_i, \theta) \\
+&= \Phi((\alpha_0 + X_i \beta + Z_{i0}\gamma)/\sigma_0)
+\end{align*}
+
+\begin{align*}
+P(T_i = 2|X_i, Z_i, \theta) 
+&= P(Y_{i0} = 0, Y_{i1} = 1|X_i, Z_i, \theta) \\
+&= P(Y_{i0} = 0|X_i, Z_i, \theta) \times P(Y_{i1} = 1| Y_{i0} = 0,  X_i, Z_i, \theta) \\
+&= P(\alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0|X_i, Z_i, \theta) \\
+&\times P(\alpha_0 + X_i \beta + Z_{i1} \gamma + \varepsilon_{i1} > 0| \alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0,  X_i, Z_i, \theta) \\
+&= P(\alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0|X_i, Z_i, \theta) \\
+&\times P(\alpha_0 + X_i \beta + Z_{i1} \gamma + \rho  \varepsilon_{i0} + \eta_{i1} > 0| \alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0,  X_i, Z_i, \theta) \\
+&= P(\varepsilon_{i0} < - \alpha_0 - X_i \beta - Z_{i0} \gamma |X_i, Z_i, \theta) \\
+&\times P(\eta_{i1} > -\alpha_0 - X_i \beta - Z_{i1} \gamma - \rho  \varepsilon_{i0} |\varepsilon_{i0} < - \alpha_0 - X_i \beta - Z_{i0} \gamma , X_i, Z_i, \theta)\\
+&= P(\varepsilon_{i0} < - \alpha_0 - X_i \beta - Z_{i0} \gamma |X_i, Z_i, \theta) \\
+&\times P(\eta_{i1} < \alpha_0 + X_i \beta + Z_{i1} \gamma + \rho  \varepsilon_{i0} |\varepsilon_{i0} < - \alpha_0 - X_i \beta - Z_{i0} \gamma , X_i, Z_i, \theta)\\
+&= ....\\
+&= \Phi((-\alpha_0 - X_i \beta - Z_{i0}\gamma)/\sigma_0) \\
+&\times \int_{-\infty}^{- \alpha_0 - X_i \beta - Z_{i0} \gamma}P(\eta_{i1} < \alpha_0 + X_i \beta + Z_{i1} \gamma + \rho  w | X_i, Z_i, \theta)dw\\
+&= \Phi((-\alpha_0 - X_i \beta - Z_{i0}\gamma)/\sigma_0) \\
+&\times \int_{-\infty}^{- \alpha_0 - X_i \beta - Z_{i0} \gamma}\Phi(\alpha_0 + X_i \beta + Z_{i1} \gamma + \rho  w)dw\\
+\end{align*}
+
