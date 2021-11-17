@@ -8,6 +8,10 @@
 # Mortgage data
 ############################################################
 
+using Tables, DataFrames, CSV, StatFiles
+
+cd("/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_899b/ps2/")
+
 df = DataFrame(load("PS2/Mortgage_performance_data.dta"))
 
 # Create new columns.
