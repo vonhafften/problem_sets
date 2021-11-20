@@ -16,7 +16,7 @@ include("01_data.jl");
 include("03_likelihood.jl");
 
 # Initial parameter vector guess
-α_0 = 0.0;
+α_0 =  0.0;
 α_1 = -1.0;
 α_2 = -1.0;
 β = Array(fill(0.0, K_x));

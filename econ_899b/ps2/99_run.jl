@@ -4,33 +4,62 @@
 # Alex von Hafften 
 # November 22, 2021
 
-using Plots, Optim, Distributed, SharedArrays
+using Plots, Optim, DataFrames, CSV, Tables, Distributed, SharedArrays, ProgressMeter, Statistics, StatFiles
+
+cd("/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_899b/ps2/")
 
 # sets up distributed computing processes
-procs() # should be 1
+workers()
 addprocs(3)
-procs() # should be 1:4
 
-# set working directory and reads in data 
-@everywhere cd("/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_899b/ps2/")
-include("data.jl");
-include("model.jl");
+# loads scripts
+@everywhere include("02_toolbox.jl");
+include("03_likelihood.jl");
+
+# load data
+df = DataFrame(load("PS2/Mortgage_performance_data.dta"))
+
+# Create new columns.
+df[!, :c] .= 1.0
+
+# Define x, y, and z.
+df_x = select(df, 
+              :c, :score_0, :rate_spread, :i_large_loan, :i_medium_loan, 
+              :i_refinance, :age_r, :cltv, :dti, :cu,  :first_mort_r, :i_FHA,
+              :i_open_year2, :i_open_year3, :i_open_year4, :i_open_year5)
+df_t = select(df, :duration)
+df_z = select(df, :score_0, :score_1, :score_2)    
+
+# Define matrices.
+x = Float64.(Array(df_x))
+z = Float64.(Array(df_z))
+t = Float64.(Array(df_t))
 
 # Initial parameter vector guess
-α_0 = 0.0;
+α_0 =  0.0;
 α_1 = -1.0;
 α_2 = -1.0;
-β = Array(fill(0.0, K_x));
-γ = Array(fill(0.3, K_z));
-ρ = 0.5;
+β   = Array(fill(0.0, size(x)[2]));
+γ   = Array(fill(0.3, size(z)[2]));
+ρ   = 0.5;
 
 # Part 1 - Quadrature Method Integration
-@everywhere include("quadrature_integration.jl");
-@elapsed quadrature_ll = log_likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z)
+@time likelihoods_quadrature = likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z; method = "quadrature")
 
-# Part 2 - GHK Method Integration
+# Part 2 - GHK Method
+@time likelihoods_ghk = likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z; method = "ghk")
 
-# Part 3 - Accept-Reject Method Integration
+# Part 3 - Accept-Reject Method
+@time likelihoods_accept_reject = likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z; method = "accept_reject")
+
+# save results
+p4_result = copy(df)
+
+p4_result[!, :likelihood_quadrature] = likelihoods_quadrature
+p4_result[!, :likelihoods_ghk] = likelihoods_ghk
+p4_result[!, :likelihoods_accept_reject] = likelihoods_accept_reject
+
+CSV.write("p4_result.csv", p4_result)
 
 # Part 5 - Gradiant-free optimization
-# optimize(θ -> -log_likelihood(θ, t, x, z), vcat(γ, β, ρ, α_0, α_1, α_2))
+# optimization_results = optimize(θ -> -log_likelihood(θ, t, x, z), vcat(γ, β, ρ, α_0, α_1, α_2))

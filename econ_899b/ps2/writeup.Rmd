@@ -15,6 +15,9 @@ library(stargazer)
 library(kableExtra)
 
 data <- read_dta("PS2/Mortgage_performance_data.dta")
+
+
+
 ```
 
 I verify the formula listed in the problem set. Notice that $\varepsilon_{i0}/\sigma_0 \sim N(0, 1)$. The likelihood associated with each duration $T_i$:
@@ -48,3 +51,51 @@ P(T_i = 2|X_i, Z_i, \theta)
 &\times \int_{-\infty}^{- \alpha_0 - X_i \beta - Z_{i0} \gamma}\Phi(\alpha_0 + X_i \beta + Z_{i1} \gamma + \rho  w)dw\\
 \end{align*}
 
+
+```{r load_results, echo = FALSE}
+p4_result <- read_csv("p4_result.csv", col_types = cols()) %>%
+  mutate(duration = as.factor(duration))
+```
+
+```{r histograms, echo = FALSE}
+p4_result %>%
+  ggplot(aes(x = likelihood_quadrature, fill = duration, groups = duration)) + 
+  geom_histogram(bins = 20) +
+  xlim(0, 1)
+
+p4_result %>%
+  ggplot(aes(x = likelihoods_ghk, fill = duration, groups = duration)) + 
+  geom_histogram(bins = 20) +
+  xlim(0, 1)
+
+p4_result %>%
+  ggplot(aes(x = likelihoods_accept_reject, fill = duration, groups = duration)) + 
+  geom_histogram(bins = 20) +
+  xlim(0, 1)
+```
+
+```{r scatterplots, echo = FALSE}
+p4_result %>%
+  ggplot() + 
+  geom_point(aes(x = likelihood_quadrature, y = likelihoods_ghk, col = duration)) +
+  geom_abline() +
+  geom_smooth(aes(x = likelihood_quadrature, y = likelihoods_ghk), method = "lm", formula = y ~ x) +
+  xlim(0, 1)+ 
+  ylim(0, 1)
+
+p4_result %>%
+  ggplot() + 
+  geom_point(aes(x = likelihood_quadrature, y = likelihoods_accept_reject, col = duration)) +
+  geom_abline() +
+  geom_smooth(aes(x = likelihood_quadrature, y = likelihoods_accept_reject), method = "lm", formula = y ~ x) +
+  xlim(0, 1)+ 
+  ylim(0, 1)
+
+p4_result %>%
+  ggplot() + 
+  geom_point(aes(x = likelihoods_accept_reject, y = likelihoods_ghk, col = duration)) +
+  geom_abline() +
+  geom_smooth(aes(x = likelihoods_accept_reject, y = likelihoods_ghk), method = "lm", formula = y ~ x) +
+  xlim(0, 1)+ 
+  ylim(0, 1)
+```
