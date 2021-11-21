@@ -32,7 +32,7 @@ function halton(base::Int64, n::Int64)
 end
 
 # returns three iid uniform(0, 1) RVs using halton for GHk
-function initialize_ghk(;method = "pseudo_random")
+function initialize_ghk(;method = "halton")
     n_trials = 100
 
     # pulls independent uniform shocks
@@ -46,8 +46,13 @@ function initialize_ghk(;method = "pseudo_random")
 
         uniform_distibution = Uniform(0, 1)
         
+        Random.seed!(1)
         u_0 = rand(uniform_distibution, n_trials)
+        
+        Random.seed!(2)
         u_1 = rand(uniform_distibution, n_trials)
+
+        Random.seed!(3)
         u_2 = rand(uniform_distibution, n_trials)
     
     else 
@@ -58,7 +63,7 @@ function initialize_ghk(;method = "pseudo_random")
 end
 
 # returns correlated ε for accept-reject
-function initialize_accept_reject(ρ::Float64, KPU_1d)
+function initialize_accept_reject(ρ::Float64)
 
     u_0, u_1, u_2 = initialize_ghk()
 
@@ -71,9 +76,9 @@ function initialize_accept_reject(ρ::Float64, KPU_1d)
 
     # uses Φ_inverse function to transform from uniform to normal
     for i in 1:n_trials
-        η_0[i] = Φ_inverse(u_0[i], KPU_1d)
-        η_1[i] = Φ_inverse(u_1[i], KPU_1d)
-        η_2[i] = Φ_inverse(u_2[i], KPU_1d)
+        η_0[i] = Φ_inverse(u_0[i])
+        η_1[i] = Φ_inverse(u_1[i])
+        η_2[i] = Φ_inverse(u_2[i])
     end
 
     # Define correlated errors
@@ -99,16 +104,16 @@ function likelihood(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, �
     t::Array{Float64, 2}, x::Array{Float64, 2}, z::Array{Float64, 2}; method = "quadrature")
     
     N = size(x)[1]
-
-    q_grids = initialize_quadrature_integration()
-    KPU_1d = q_grids[1]
-    KPU_2d = q_grids[2]
     
     # uses distributed for loop; on a test with quadrature, this took about 2 minutes for the dataset
     result = SharedArray{Float64}(N)
 
     if method == "quadrature"
         println("Evaluating likelihoods using quadrature integration method...")
+
+        q_grids = initialize_quadrature_integration()
+        KPU_1d = q_grids[1]
+        KPU_2d = q_grids[2]
 
         @showprogress @distributed for i = 1:N
             result[i] = likelihood_quadrature(γ, β, ρ, α_0, α_1, α_2, t[i], x[i,:], z[i,:], KPU_1d, KPU_2d)
@@ -120,13 +125,13 @@ function likelihood(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, �
         u_0, u_1, u_2 = initialize_ghk() # three iid uniform RVs
 
         @showprogress @distributed for i = 1:N
-            result[i] = likelihood_ghk(γ, β, ρ, α_0, α_1, α_2, t[i], x[i,:], z[i,:], KPU_1d, KPU_2d, u_0, u_1, u_2)
+            result[i] = likelihood_ghk(γ, β, ρ, α_0, α_1, α_2, t[i], x[i,:], z[i,:], u_0, u_1, u_2)
         end
 
     elseif method == "accept_reject"
         println("Evaluating likelihoods using accept-reject method...")
 
-        ε_0, ε_1, ε_2 = initialize_accept_reject(ρ, KPU_1d)
+        ε_0, ε_1, ε_2 = initialize_accept_reject(ρ)
 
         @showprogress @distributed for i = 1:N
             result[i] = likelihood_accept_reject(γ, β, ρ, α_0, α_1, α_2, t[i], x[i,:], z[i,:], ε_0, ε_1, ε_2)

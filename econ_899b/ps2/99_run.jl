@@ -12,19 +12,12 @@ cd("/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_899b/ps2/"
 workers()
 addprocs(3)
 
-# loads scripts
-@everywhere include("02_toolbox.jl");
-include("03_likelihood.jl");
-
 # load data
 df = DataFrame(load("PS2/Mortgage_performance_data.dta"))
 
-# Create new columns.
-df[!, :c] .= 1.0
-
 # Define x, y, and z.
 df_x = select(df, 
-              :c, :score_0, :rate_spread, :i_large_loan, :i_medium_loan, 
+              :score_0, :rate_spread, :i_large_loan, :i_medium_loan, 
               :i_refinance, :age_r, :cltv, :dti, :cu,  :first_mort_r, :i_FHA,
               :i_open_year2, :i_open_year3, :i_open_year4, :i_open_year5)
 df_t = select(df, :duration)
@@ -42,6 +35,10 @@ t = Float64.(Array(df_t))
 β   = Array(fill(0.0, size(x)[2]));
 γ   = Array(fill(0.3, size(z)[2]));
 ρ   = 0.5;
+
+# loads scripts
+@everywhere include("02_toolbox.jl");
+include("03_likelihood.jl");
 
 # Part 1 - Quadrature Method Integration
 @time likelihoods_quadrature = likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z; method = "quadrature")

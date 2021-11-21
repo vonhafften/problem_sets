@@ -57,21 +57,21 @@ p4_result <- read_csv("p4_result.csv", col_types = cols()) %>%
   mutate(duration = as.factor(duration))
 ```
 
-```{r histograms, echo = FALSE}
+```{r histograms, echo = FALSE, warning=FALSE}
 p4_result %>%
   ggplot(aes(x = likelihood_quadrature, fill = duration, groups = duration)) + 
   geom_histogram(bins = 20) +
-  xlim(0, 1)
+  xlim(-0.1, 1.1)
 
 p4_result %>%
   ggplot(aes(x = likelihoods_ghk, fill = duration, groups = duration)) + 
   geom_histogram(bins = 20) +
-  xlim(0, 1)
+  xlim(-0.1, 1.1)
 
 p4_result %>%
   ggplot(aes(x = likelihoods_accept_reject, fill = duration, groups = duration)) + 
   geom_histogram(bins = 20) +
-  xlim(0, 1)
+  xlim(-0.1, 1.1)
 ```
 
 ```{r scatterplots, echo = FALSE}
@@ -80,22 +80,22 @@ p4_result %>%
   geom_point(aes(x = likelihood_quadrature, y = likelihoods_ghk, col = duration)) +
   geom_abline() +
   geom_smooth(aes(x = likelihood_quadrature, y = likelihoods_ghk), method = "lm", formula = y ~ x) +
-  xlim(0, 1)+ 
-  ylim(0, 1)
+  xlim(-0.1, 1.1)+
+  ylim(-0.1, 1.1)
 
 p4_result %>%
   ggplot() + 
   geom_point(aes(x = likelihood_quadrature, y = likelihoods_accept_reject, col = duration)) +
   geom_abline() +
-  geom_smooth(aes(x = likelihood_quadrature, y = likelihoods_accept_reject), method = "lm", formula = y ~ x) +
-  xlim(0, 1)+ 
-  ylim(0, 1)
+  geom_smooth(aes(x = likelihood_quadrature, y = likelihoods_accept_reject), method = "lm", formula = y ~ x)  +
+  xlim(-0.1, 1.1)+
+  ylim(-0.1, 1.1)
 
 p4_result %>%
   ggplot() + 
   geom_point(aes(x = likelihoods_accept_reject, y = likelihoods_ghk, col = duration)) +
   geom_abline() +
-  geom_smooth(aes(x = likelihoods_accept_reject, y = likelihoods_ghk), method = "lm", formula = y ~ x) +
-  xlim(0, 1)+ 
-  ylim(0, 1)
+  geom_smooth(aes(x = likelihoods_accept_reject, y = likelihoods_ghk), method = "lm", formula = y ~ x)  +
+  xlim(-0.1, 1.1)+
+  ylim(-0.1, 1.1)
 ```
