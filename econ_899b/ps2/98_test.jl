@@ -37,8 +37,8 @@ t = Float64.(Array(df_t))
 ρ   = 0.5;
 
 # loads scripts
-@everywhere include("02_toolbox.jl");
-include("03_likelihood.jl");
+@everywhere include("01_toolbox.jl");
+include("02_likelihood.jl");
 
 # Part 1 - Quadrature Method Integration
 
@@ -50,6 +50,7 @@ include("03_likelihood.jl");
 likelihoods_quadrature_1 .+ likelihoods_quadrature_2 .+ likelihoods_quadrature_3 .+ likelihoods_quadrature_4
 
 # Part 2 - GHK Method
+
 @time likelihoods_ghk_1 = likelihood(γ, β, ρ, α_0, α_1, α_2, t./t*1.0, x, z; method = "ghk")
 @time likelihoods_ghk_2 = likelihood(γ, β, ρ, α_0, α_1, α_2, t./t*2.0, x, z; method = "ghk")
 @time likelihoods_ghk_3 = likelihood(γ, β, ρ, α_0, α_1, α_2, t./t*3.0, x, z; method = "ghk")
@@ -58,6 +59,7 @@ likelihoods_quadrature_1 .+ likelihoods_quadrature_2 .+ likelihoods_quadrature_3
 likelihoods_ghk_1 .+ likelihoods_ghk_2 .+ likelihoods_ghk_3 .+ likelihoods_ghk_4
 
 # Part 3 - Accept-Reject Method
+
 @time likelihoods_accept_reject_1 = likelihood(γ, β, ρ, α_0, α_1, α_2, t./t*1.0, x, z; method = "accept_reject")
 @time likelihoods_accept_reject_2 = likelihood(γ, β, ρ, α_0, α_1, α_2, t./t*2.0, x, z; method = "accept_reject")
 @time likelihoods_accept_reject_3 = likelihood(γ, β, ρ, α_0, α_1, α_2, t./t*3.0, x, z; method = "accept_reject")

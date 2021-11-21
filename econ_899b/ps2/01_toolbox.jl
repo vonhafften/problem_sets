@@ -6,7 +6,7 @@
 
 # Contains all function to go to worker processes
 
-using Optim, ProgressMeter, DataFrames, Distributions
+using Optim, ProgressMeter, DataFrames, Distributions, Random
 
 ############################################################
 # one-dimensional quadrature integration
@@ -72,14 +72,14 @@ function likelihood_quadrature(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ:
     if t == 1.0
         result = Φ((α_0 + x'*β + z'*γ)/σ_0)
     elseif t == 2.0
-        f_2(ε_0) = Φ(α_1 + x'*β + z'*γ + ρ*ε_0) * ϕ(ε_0/σ_0) / σ_0
-        result = integrate_1d(f_2, α_0 + x'*β + z'*γ, KPU_1d)
+        f_2(ε_0) = ϕ(ε_0/σ_0) / σ_0 * (1 - Φ(-α_1 - x'*β - z'*γ - ρ * ε_0))
+        result = integrate_1d(f_2, -α_0 - x'*β - z'*γ, KPU_1d)
     elseif t == 3.0
-        f_3(ε_0, ε_1) = Φ(-α_2 - x'*β - z'*γ - ρ*ε_1) * ϕ(ε_1 - ρ*ε_0) * ϕ(ε_0/σ_0) / σ_0
-        result = integrate_2d(f_3, α_0 + x'*β + z'*γ, α_1 + x'*β + z'*γ, KPU_2d)
+        f_3(ε_0, ε_1) = ϕ(ε_0/σ_0) / σ_0 * ϕ(ε_1 - ρ*ε_0) * (1 - Φ(-α_2 - x'*β - z'*γ - ρ*ε_1))
+        result = integrate_2d(f_3, -α_0 - x'*β - z'*γ, -α_1 - x'*β - z'*γ, KPU_2d)
     elseif t == 4.0
-        f_4(ε_0, ε_1) = Φ( α_2 + x'*β + z'*γ - ρ*ε_1) * ϕ(ε_1 - ρ*ε_0) * ϕ(ε_0/σ_0) / σ_0
-        result = integrate_2d(f_4, α_0 + x'*β + z'*γ, α_1 + x'*β + z'*γ, KPU_2d)
+        f_4(ε_0, ε_1) = ϕ(ε_0/σ_0) / σ_0 * ϕ(ε_1 - ρ*ε_0) * Φ(-α_2 - x'*β - z'*γ - ρ*ε_1)
+        result = integrate_2d(f_4, -α_0 - x'*β - z'*γ, -α_1 - x'*β - z'*γ, KPU_2d)
     else
         error("Invalid value of t.")
     end

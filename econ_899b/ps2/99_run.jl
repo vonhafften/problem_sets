@@ -4,7 +4,7 @@
 # Alex von Hafften 
 # November 22, 2021
 
-using Plots, Optim, DataFrames, CSV, Tables, Distributed, SharedArrays, ProgressMeter, Statistics, StatFiles
+using Plots, Optim, DataFrames, CSV, Tables, Distributed, SharedArrays, ProgressMeter, Statistics, StatFiles, Random
 
 cd("/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_899b/ps2/")
 
@@ -37,24 +37,28 @@ t = Float64.(Array(df_t))
 ρ   = 0.5;
 
 # loads scripts
-@everywhere include("02_toolbox.jl");
-include("03_likelihood.jl");
+@everywhere include("01_toolbox.jl");
+include("02_likelihood.jl");
 
 # Part 1 - Quadrature Method Integration
 @time likelihoods_quadrature = likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z; method = "quadrature")
 
 # Part 2 - GHK Method
 @time likelihoods_ghk = likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z; method = "ghk")
+@time likelihoods_ghk_pseudo = likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z; method = "ghk", use_halton = false)
 
 # Part 3 - Accept-Reject Method
 @time likelihoods_accept_reject = likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z; method = "accept_reject")
+@time likelihoods_accept_reject_pseudo = likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z; method = "accept_reject", use_halton = false)
 
 # save results
 p4_result = copy(df)
 
 p4_result[!, :likelihood_quadrature] = likelihoods_quadrature
 p4_result[!, :likelihoods_ghk] = likelihoods_ghk
+p4_result[!, :likelihoods_ghk_pseudo] = likelihoods_ghk_pseudo
 p4_result[!, :likelihoods_accept_reject] = likelihoods_accept_reject
+p4_result[!, :likelihoods_accept_reject_pseudo] = likelihoods_accept_reject_pseudo
 
 CSV.write("p4_result.csv", p4_result)
 

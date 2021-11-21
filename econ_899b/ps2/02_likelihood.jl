@@ -32,17 +32,17 @@ function halton(base::Int64, n::Int64)
 end
 
 # returns three iid uniform(0, 1) RVs using halton for GHk
-function initialize_ghk(;method = "halton")
+function initialize_ghk(;use_halton = true)
     n_trials = 100
 
     # pulls independent uniform shocks
-    if method == "halton"
+    if use_halton
         
         u_0 = halton(5,  n_trials)
         u_1 = halton(7,  n_trials)
         u_2 = halton(11, n_trials)
 
-    elseif method == "pseudo_random"
+    else
 
         uniform_distibution = Uniform(0, 1)
         
@@ -55,17 +55,15 @@ function initialize_ghk(;method = "halton")
         Random.seed!(3)
         u_2 = rand(uniform_distibution, n_trials)
     
-    else 
-        error("Issue in initialize_ghk function.")
     end
 
     return [u_0, u_1, u_2]
 end
 
 # returns correlated ε for accept-reject
-function initialize_accept_reject(ρ::Float64)
+function initialize_accept_reject(ρ::Float64; use_halton = true)
 
-    u_0, u_1, u_2 = initialize_ghk()
+    u_0, u_1, u_2 = initialize_ghk(;use_halton)
 
     n_trials = length(u_0)
 
@@ -101,7 +99,7 @@ end
 
 # compute likelihood for the matrix
 function likelihood(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, α_0::Float64, α_1::Float64, α_2::Float64,
-    t::Array{Float64, 2}, x::Array{Float64, 2}, z::Array{Float64, 2}; method = "quadrature")
+    t::Array{Float64, 2}, x::Array{Float64, 2}, z::Array{Float64, 2}; method = "quadrature", use_halton = true)
     
     N = size(x)[1]
     
@@ -122,7 +120,7 @@ function likelihood(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, �
     elseif method == "ghk"
         println("Evaluating likelihoods using GHK method...")
 
-        u_0, u_1, u_2 = initialize_ghk() # three iid uniform RVs
+        u_0, u_1, u_2 = initialize_ghk(;use_halton) # three iid uniform RVs
 
         @showprogress @distributed for i = 1:N
             result[i] = likelihood_ghk(γ, β, ρ, α_0, α_1, α_2, t[i], x[i,:], z[i,:], u_0, u_1, u_2)
@@ -131,7 +129,7 @@ function likelihood(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, �
     elseif method == "accept_reject"
         println("Evaluating likelihoods using accept-reject method...")
 
-        ε_0, ε_1, ε_2 = initialize_accept_reject(ρ)
+        ε_0, ε_1, ε_2 = initialize_accept_reject(ρ; use_halton)
 
         @showprogress @distributed for i = 1:N
             result[i] = likelihood_accept_reject(γ, β, ρ, α_0, α_1, α_2, t[i], x[i,:], z[i,:], ε_0, ε_1, ε_2)

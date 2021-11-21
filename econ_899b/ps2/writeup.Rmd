@@ -13,89 +13,147 @@ library(janitor)
 library(haven)
 library(stargazer)
 library(kableExtra)
-
-data <- read_dta("PS2/Mortgage_performance_data.dta")
-
-
-
 ```
-
-I verify the formula listed in the problem set. Notice that $\varepsilon_{i0}/\sigma_0 \sim N(0, 1)$. The likelihood associated with each duration $T_i$:
-
-\begin{align*}
-P(T_i = 1|X_i, Z_i, \theta) 
-&= P(Y_{i0} = 1|X_i, Z_i, \theta) \\
-&= P(\alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} > 0|X_i, Z_i, \theta) \\
-&= P(\varepsilon_{i0} > -\alpha_0 - X_i \beta - Z_{i0} \gamma |X_i, Z_i, \theta) \\
-&= P(\varepsilon_{i0} < \alpha_0 + X_i \beta + Z_{i0} \gamma |X_i, Z_i, \theta) \\
-&= P(\varepsilon_{i0} /\sigma_0 < (\alpha_0 + X_i \beta + Z_{i0} \gamma) / \sigma_0 |X_i, Z_i, \theta) \\
-&= \Phi((\alpha_0 + X_i \beta + Z_{i0}\gamma)/\sigma_0)
-\end{align*}
-
-\begin{align*}
-P(T_i = 2|X_i, Z_i, \theta) 
-&= P(Y_{i0} = 0, Y_{i1} = 1|X_i, Z_i, \theta) \\
-&= P(Y_{i0} = 0|X_i, Z_i, \theta) \times P(Y_{i1} = 1| Y_{i0} = 0,  X_i, Z_i, \theta) \\
-&= P(\alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0|X_i, Z_i, \theta) \\
-&\times P(\alpha_0 + X_i \beta + Z_{i1} \gamma + \varepsilon_{i1} > 0| \alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0,  X_i, Z_i, \theta) \\
-&= P(\alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0|X_i, Z_i, \theta) \\
-&\times P(\alpha_0 + X_i \beta + Z_{i1} \gamma + \rho  \varepsilon_{i0} + \eta_{i1} > 0| \alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0,  X_i, Z_i, \theta) \\
-&= P(\varepsilon_{i0} < - \alpha_0 - X_i \beta - Z_{i0} \gamma |X_i, Z_i, \theta) \\
-&\times P(\eta_{i1} > -\alpha_0 - X_i \beta - Z_{i1} \gamma - \rho  \varepsilon_{i0} |\varepsilon_{i0} < - \alpha_0 - X_i \beta - Z_{i0} \gamma , X_i, Z_i, \theta)\\
-&= P(\varepsilon_{i0} < - \alpha_0 - X_i \beta - Z_{i0} \gamma |X_i, Z_i, \theta) \\
-&\times P(\eta_{i1} < \alpha_0 + X_i \beta + Z_{i1} \gamma + \rho  \varepsilon_{i0} |\varepsilon_{i0} < - \alpha_0 - X_i \beta - Z_{i0} \gamma , X_i, Z_i, \theta)\\
-&= ....\\
-&= \Phi((-\alpha_0 - X_i \beta - Z_{i0}\gamma)/\sigma_0) \\
-&\times \int_{-\infty}^{- \alpha_0 - X_i \beta - Z_{i0} \gamma}P(\eta_{i1} < \alpha_0 + X_i \beta + Z_{i1} \gamma + \rho  w | X_i, Z_i, \theta)dw\\
-&= \Phi((-\alpha_0 - X_i \beta - Z_{i0}\gamma)/\sigma_0) \\
-&\times \int_{-\infty}^{- \alpha_0 - X_i \beta - Z_{i0} \gamma}\Phi(\alpha_0 + X_i \beta + Z_{i1} \gamma + \rho  w)dw\\
-\end{align*}
-
 
 ```{r load_results, echo = FALSE}
 p4_result <- read_csv("p4_result.csv", col_types = cols()) %>%
   mutate(duration = as.factor(duration))
 ```
 
-```{r histograms, echo = FALSE, warning=FALSE}
+## Part 1 - Quadrature Integration
+
+To implement the quadrature integration, I did not understand the provided equations from the problem set, so I derived the equations myself:
+
+\begin{align*}
+& P(T_i| X_{i}, Z_{it}, \theta) \\
+= & 
+\begin{cases}
+P(\alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} > 0 ) & \text{if } T_i = 1\\
+P(\alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0 , \alpha_0 + X_i \beta + Z_{i1} \gamma + \varepsilon_{i1} > 0 ) & \text{if } T_i = 2\\
+P(\alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0 , \alpha_0 + X_i \beta + Z_{i1} \gamma + \varepsilon_{i1} < 0 , \alpha_0 + X_i \beta + Z_{i2} \gamma + \varepsilon_{i2} > 0 ) & \text{if } T_i = 3\\
+P(\alpha_0 + X_i \beta + Z_{i0} \gamma + \varepsilon_{i0} < 0 , \alpha_0 + X_i \beta + Z_{i1} \gamma + \varepsilon_{i1} < 0 , \alpha_0 + X_i \beta + Z_{i2} \gamma + \varepsilon_{i2} < 0 ) & \text{if } T_i = 4
+\end{cases}\\
+= & 
+\begin{cases}
+\Phi((-\alpha_0 - X_i \beta - Z_{i0} \gamma)/\sigma_0) & \text{if } T_i = 1\\
+\int_{-\infty}^{-\alpha_0 - X_i \beta - Z_{i0} \gamma } \phi(\frac{\varepsilon_{i0}}{\sigma_0}) \frac{1}{\sigma_0} [1 - \Phi(-\alpha_1-X_i\beta - Z_{i1}\gamma - \rho \varepsilon_{i0})] d \varepsilon_{i0} 
+& \text{if } T_i = 2\\
+\int_{-\infty}^{-\alpha_0 - X_i \beta - Z_{i0} \gamma } \int_{-\infty}^{-\alpha_1 - X_i \beta - Z_{1i} \gamma} \phi(\frac{\varepsilon_{i0}}{\sigma_0}) \frac{1}{\sigma_0} \phi(\varepsilon_{i1} - \rho \varepsilon_{i1}) [1 - \Phi(-\alpha_1-X_i\beta - Z_{i1}\gamma - \rho \varepsilon_{i0})] d \varepsilon_{i1} d \varepsilon_{i0} 
+ & \text{if } T_i = 3\\
+\int_{-\infty}^{-\alpha_0 - X_i \beta - Z_{i0} \gamma } \int_{-\infty}^{-\alpha_1 - X_i \beta - Z_{1i} \gamma} \phi(\frac{\varepsilon_{i0}}{\sigma_0}) \frac{1}{\sigma_0} \phi(\varepsilon_{i1} - \rho \varepsilon_{i1}) \Phi(-\alpha_1-X_i\beta - Z_{i1}\gamma - \rho \varepsilon_{i0}) d \varepsilon_{i1} d \varepsilon_{i0} 
+& \text{if } T_i = 4
+\end{cases}
+\end{align*}
+
+The resulting estimated log-likelihood is:
+
+```{r ll_q, echo = FALSE, warning=FALSE}
+sum(log(p4_result$likelihood_quadrature))
+```
+
+A histogram of the estimated likelihoods by duration are below:
+
+```{r histogram_q, echo = FALSE, warning=FALSE, fig.height=3}
 p4_result %>%
   ggplot(aes(x = likelihood_quadrature, fill = duration, groups = duration)) + 
   geom_histogram(bins = 20) +
   xlim(-0.1, 1.1)
+```
 
-p4_result %>%
-  ggplot(aes(x = likelihoods_ghk, fill = duration, groups = duration)) + 
-  geom_histogram(bins = 20) +
-  xlim(-0.1, 1.1)
+\pagebreak
 
+## Part 2 - GHK Method
+
+Using the GHK method, the estimated log-likelihood is:
+
+```{r ll_ghk, echo = FALSE, warning=FALSE, fig.height=3}
+sum(log(p4_result$likelihood_ghk))
+```
+
+The histogram of the estimated likelihoods by duration are below:
+
+```{r histogram_ghk, echo = FALSE, warning=FALSE, fig.height=3}
 p4_result %>%
-  ggplot(aes(x = likelihoods_accept_reject, fill = duration, groups = duration)) + 
+  ggplot(aes(x = likelihood_ghk, fill = duration, groups = duration)) + 
   geom_histogram(bins = 20) +
   xlim(-0.1, 1.1)
 ```
 
-```{r scatterplots, echo = FALSE}
-p4_result %>%
-  ggplot() + 
-  geom_point(aes(x = likelihood_quadrature, y = likelihoods_ghk, col = duration)) +
-  geom_abline() +
-  geom_smooth(aes(x = likelihood_quadrature, y = likelihoods_ghk), method = "lm", formula = y ~ x) +
-  xlim(-0.1, 1.1)+
-  ylim(-0.1, 1.1)
+In the above histogram, I use Halton sequences to generate the simulations.  In comparison, I also used Julia's built-in pseudo random number generation in the GHK method.  The estimates are different, but there's effectively no difference. The black line is a 45 degree line and the blue line is a least squares regression line.
 
+```{r scatter_ghk, echo = FALSE, warning=FALSE, fig.height=3}
 p4_result %>%
   ggplot() + 
-  geom_point(aes(x = likelihood_quadrature, y = likelihoods_accept_reject, col = duration)) +
+  geom_point(aes(x = likelihood_ghk, y = likelihood_ghk_pseudo, col = duration)) +
   geom_abline() +
-  geom_smooth(aes(x = likelihood_quadrature, y = likelihoods_accept_reject), method = "lm", formula = y ~ x)  +
-  xlim(-0.1, 1.1)+
-  ylim(-0.1, 1.1)
-
-p4_result %>%
-  ggplot() + 
-  geom_point(aes(x = likelihoods_accept_reject, y = likelihoods_ghk, col = duration)) +
-  geom_abline() +
-  geom_smooth(aes(x = likelihoods_accept_reject, y = likelihoods_ghk), method = "lm", formula = y ~ x)  +
+  geom_smooth(aes(x = likelihood_ghk, y = likelihood_ghk_pseudo), method = "lm", formula = y ~ x) +
   xlim(-0.1, 1.1)+
   ylim(-0.1, 1.1)
 ```
+
+\pagebreak
+
+## Part 3 - Accept-Reject Method
+
+Using the accept-reject method, some of the estimated likelihoods are zero, so the estimated log-likelihood is negative infinity.  The histogram of the likelihoods are below:
+
+```{r histogram_ar, echo = FALSE, warning=FALSE, fig.height=3}
+p4_result %>%
+  ggplot(aes(x = likelihood_accept_reject, fill = duration, groups = duration)) + 
+  geom_histogram(bins = 20) +
+  xlim(-0.1, 1.1)
+```
+
+In the above histogram, I use Halton sequences to generate the simulations.  In comparison, I also used Julia's built-in pseudo random number generation in the accept-reject method.  Unlike using Halton sequences for the GHK method, there is a noticeable difference between using Halton sequences and pseudo-random numbers.  More likely observations have higher likelihoods when using pseudo random numbers; less likely observations have lower likelihoods when using pseudo random numbers.  This is consistent with Halton sequences having better coverage than pseudo random numbers.
+
+```{r scatter_ar, echo = FALSE, warning=FALSE, fig.height=3}
+p4_result %>%
+  ggplot() + 
+  geom_point(aes(x = likelihood_accept_reject, y = likelihood_accept_reject_pseudo, col = duration)) +
+  geom_abline() +
+  geom_smooth(aes(x = likelihood_accept_reject, y = likelihood_accept_reject_pseudo), method = "lm", formula = y ~ x) +
+  xlim(-0.1, 1.1)+
+  ylim(-0.1, 1.1)
+```
+
+\pagebreak
+
+## Part 4 - Comparison
+
+Below are three scatterplots that pairwise compare these methods.  Generally, the quadrature and GHK methods produce very similar estimated likelihoods while the accept-reject method produces slightly noisier estimates.
+
+```{r scatterplots, echo = FALSE, fig.height=3}
+p4_result %>%
+  ggplot() + 
+  geom_point(aes(x = likelihood_quadrature, y = likelihood_ghk, col = duration)) +
+  geom_abline() +
+  geom_smooth(aes(x = likelihood_quadrature, y = likelihood_ghk), method = "lm", formula = y ~ x) +
+  xlim(-0.1, 1.1)+
+  ylim(-0.1, 1.1)
+
+p4_result %>%
+  ggplot() + 
+  geom_point(aes(x = likelihood_quadrature, y = likelihood_accept_reject, col = duration)) +
+  geom_abline() +
+  geom_smooth(aes(x = likelihood_quadrature, y = likelihood_accept_reject), method = "lm", formula = y ~ x)  +
+  xlim(-0.1, 1.1)+
+  ylim(-0.1, 1.1)
+
+p4_result %>%
+  ggplot() + 
+  geom_point(aes(x = likelihood_accept_reject, y = likelihood_ghk, col = duration)) +
+  geom_abline() +
+  geom_smooth(aes(x = likelihood_accept_reject, y = likelihood_ghk), method = "lm", formula = y ~ x)  +
+  xlim(-0.1, 1.1)+
+  ylim(-0.1, 1.1)
+```
+
+
+\pagebreak
+
+## Part 5 - Optimization
+
+
+
+
+
