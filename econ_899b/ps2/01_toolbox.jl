@@ -6,7 +6,7 @@
 
 # Contains all function to go to worker processes
 
-using Optim, ProgressMeter, DataFrames, Distributions, Random
+using Optim, ProgressMeter, DataFrames, Distributions
 
 ############################################################
 # one-dimensional quadrature integration
@@ -63,23 +63,23 @@ end
 ##############################################################################
 
 # using quadrature integration
-function likelihood_quadrature(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, α_0::Float64, α_1::Float64, α_2::Float64, 
+function likelihood_quadrature(α_0::Float64, α_1::Float64, α_2::Float64,  β::Array{Float64, 1}, γ::Float64, ρ::Float64, 
     t::Float64, x::Array{Float64, 1}, z::Array{Float64, 1}, KPU_1d, KPU_2d)
     
     result = 0.0
     σ_0 = 1/(1 - ρ)^2
 
     if t == 1.0
-        result = Φ((α_0 + x'*β + z'*γ)/σ_0)
+        result = Φ((α_0 + x'*β + z[1]*γ)/σ_0)
     elseif t == 2.0
-        f_2(ε_0) = ϕ(ε_0/σ_0) / σ_0 * (1 - Φ(-α_1 - x'*β - z'*γ - ρ * ε_0))
-        result = integrate_1d(f_2, -α_0 - x'*β - z'*γ, KPU_1d)
+        f_2(ε_0) = ϕ(ε_0/σ_0) / σ_0 * (1 - Φ(-α_1 - x'*β - z[2]*γ - ρ * ε_0))
+        result = integrate_1d(f_2, -α_0 - x'*β - z[2]*γ, KPU_1d)
     elseif t == 3.0
-        f_3(ε_0, ε_1) = ϕ(ε_0/σ_0) / σ_0 * ϕ(ε_1 - ρ*ε_0) * (1 - Φ(-α_2 - x'*β - z'*γ - ρ*ε_1))
-        result = integrate_2d(f_3, -α_0 - x'*β - z'*γ, -α_1 - x'*β - z'*γ, KPU_2d)
+        f_3(ε_0, ε_1) = ϕ(ε_0/σ_0) / σ_0 * ϕ(ε_1 - ρ*ε_0) * (1 - Φ(-α_2 - x'*β - z[3]*γ - ρ*ε_1))
+        result = integrate_2d(f_3, -α_0 - x'*β - z[3]*γ, -α_1 - x'*β - z[3]*γ, KPU_2d)
     elseif t == 4.0
-        f_4(ε_0, ε_1) = ϕ(ε_0/σ_0) / σ_0 * ϕ(ε_1 - ρ*ε_0) * Φ(-α_2 - x'*β - z'*γ - ρ*ε_1)
-        result = integrate_2d(f_4, -α_0 - x'*β - z'*γ, -α_1 - x'*β - z'*γ, KPU_2d)
+        f_4(ε_0, ε_1) = ϕ(ε_0/σ_0) / σ_0 * ϕ(ε_1 - ρ*ε_0) * Φ(-α_2 - x'*β - z[3]*γ - ρ*ε_1)
+        result = integrate_2d(f_4, -α_0 - x'*β - z[3]*γ, -α_1 - x'*β - z[3]*γ, KPU_2d)
     else
         error("Invalid value of t.")
     end
@@ -87,47 +87,18 @@ function likelihood_quadrature(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ:
     return result
 end
 
-function jacobian_quadrature(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, α_0::Float64, α_1::Float64, α_2::Float64, 
-    t::Float64, x::Array{Float64, 1}, z::Array{Float64, 1}, KPU_1d, KPU_2d)
-
-    result = zeros(length(γ) + length(β) + 4)
-    σ_0 = 1/(1 - ρ)^2
-
-    if t == 1.0
-        result = ϕ((-α_0 - x'*β - z'*γ)/σ_0) .* vcat(-z./σ_0, -x./ σ_0, -2*(1-ρ), -1, 0, 0)
-    elseif t == 2.0
-        ##################################
-        
-    elseif t == 3.0
-        ##################################
-        
-
-    elseif t == 4.0
-        ##################################
-        
-
-    else
-        ##################################
-        
-    end
-
-    return result
-
-end
-
-
 ##############################################################################
 # functions to calculate likelihood using GHK simulations
 ##############################################################################
 
 # using ghk simulation
-function likelihood_ghk(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, α_0::Float64, α_1::Float64, α_2::Float64, 
+function likelihood_ghk(α_0::Float64, α_1::Float64, α_2::Float64,  β::Array{Float64, 1}, γ::Float64, ρ::Float64, 
     t::Float64, x::Array{Float64, 1}, z::Array{Float64, 1}, u_0::Array{Float64, 1}, u_1::Array{Float64, 1}, u_2::Array{Float64, 1})
 
     n_trials = length(u_0)
     σ_0 = 1/(1 - ρ)^2
 
-    truncation_0 = Φ((-α_0 - x'*β - z'*γ)/σ_0) # evaluates truncation point for first shock probability
+    truncation_0 = Φ((-α_0 - x'*β - z[1]*γ)/σ_0) # evaluates truncation point for first shock probability
 
     if t == 1.0
 
@@ -139,7 +110,7 @@ function likelihood_ghk(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float6
         η_0 = Φ_inverse.(pr_0)
         ε_0 = η_0 .* σ_0
 
-        truncation_1 = Φ.(-α_1 .- x'*β .- z'*γ .- ρ.*ε_0) # initializes simulation-specific truncation points
+        truncation_1 = Φ.(-α_1 .- x'*β .- z[2]*γ .- ρ.*ε_0) # initializes simulation-specific truncation points
 
         if t == 2.0
 
@@ -151,7 +122,7 @@ function likelihood_ghk(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float6
             η_1 = Φ_inverse.(pr_1) # initializes first shocks
             ε_1 = ρ .* ε_0 .+ η_1 
 
-            truncation_2 = Φ.(-α_2 .- x'*β .- z'*γ .- ρ.*ε_1)
+            truncation_2 = Φ.(-α_2 .- x'*β .- z[3]*γ .- ρ.*ε_1)
     
             if t == 3.0
                 
@@ -170,7 +141,7 @@ end
 # functions to calculate likelihood using accept-reject simulation
 ##############################################################################
 
-function likelihood_accept_reject(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, α_0::Float64, α_1::Float64, α_2::Float64, 
+function likelihood_accept_reject(α_0::Float64, α_1::Float64, α_2::Float64,  β::Array{Float64, 1}, γ::Float64, ρ::Float64, 
     t::Float64, x::Array{Float64, 1}, z::Array{Float64, 1}, ε_0::Array{Float64, 1}, ε_1::Array{Float64, 1}, ε_2::Array{Float64, 1})
     
     # initialize count variable
@@ -178,13 +149,13 @@ function likelihood_accept_reject(γ::Array{Float64, 1}, β::Array{Float64, 1}, 
 
     # based on the value of t counts the number of accepted simulations
     if t == 1.0
-        count = sum( α_0 + x'*β + z'*γ .+ ε_0 .> 0)
+        count = sum( α_0 + x'*β + z[1]*γ .+ ε_0 .> 0)
     elseif t == 2.0
-        count = sum((α_0 + x'*β + z'*γ .+ ε_0 .< 0) .* (α_1 + x'*β + z'*γ .+ ε_1 .> 0))
+        count = sum((α_0 + x'*β + z[1]*γ .+ ε_0 .< 0) .* (α_1 + x'*β + z[2]*γ .+ ε_1 .> 0))
     elseif t == 3.0
-        count = sum((α_0 + x'*β + z'*γ .+ ε_0 .< 0) .* (α_1 + x'*β + z'*γ .+ ε_1 .< 0) .* (α_2 + x'*β + z'*γ .+ ε_2 .> 0))
+        count = sum((α_0 + x'*β + z[1]*γ .+ ε_0 .< 0) .* (α_1 + x'*β + z[2]*γ .+ ε_1 .< 0) .* (α_2 + x'*β + z[3]*γ .+ ε_2 .> 0))
     elseif t == 4.0
-        count = sum((α_0 + x'*β + z'*γ .+ ε_0 .< 0) .* (α_1 + x'*β + z'*γ .+ ε_1 .< 0) .* (α_2 + x'*β + z'*γ .+ ε_2 .< 0))
+        count = sum((α_0 + x'*β + z[1]*γ .+ ε_0 .< 0) .* (α_1 + x'*β + z[2]*γ .+ ε_1 .< 0) .* (α_2 + x'*β + z[3]*γ .+ ε_2 .< 0))
     else
         error("Invalid value of t.")
     end

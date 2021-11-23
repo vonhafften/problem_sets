@@ -18,6 +18,11 @@ library(kableExtra)
 ```{r load_results, echo = FALSE}
 p4_result <- read_csv("p4_result.csv", col_types = cols()) %>%
   mutate(duration = as.factor(duration))
+
+p4_result_long <- p4_result %>%
+  select(nsmoid, duration, likelihood_quadrature, likelihood_ghk, likelihood_accept_reject) %>%
+  pivot_longer(-c(nsmoid, duration))
+
 ```
 
 ## Part 1 - Quadrature Integration
@@ -79,7 +84,7 @@ p4_result %>%
   xlim(-0.1, 1.1)
 ```
 
-In the above histogram, I use Halton sequences to generate the simulations.  In comparison, I also used Julia's built-in pseudo random number generation in the GHK method.  The estimates are different, but there's effectively no difference. The black line is a 45 degree line and the blue line is a least squares regression line.
+In the above histogram, I use Halton sequences to generate the simulations.  In comparison, I also used Julia's built-in pseudo random number generation in the GHK method.  The estimates are numerically different, but there's effectively no meaningful differences. The black line is a 45 degree line and the blue line is a ordinary least squares regression line.
 
 ```{r scatter_ghk, echo = FALSE, warning=FALSE, fig.height=3}
 p4_result %>%
@@ -95,7 +100,7 @@ p4_result %>%
 
 ## Part 3 - Accept-Reject Method
 
-Using the accept-reject method, some of the estimated likelihoods are zero, so the estimated log-likelihood is negative infinity.  The histogram of the likelihoods are below:
+Using the accept-reject method, some of the estimated likelihoods are zero, so the estimated log-likelihood is negative infinity. This is a very undesirable feature of these method because low likelihood observation will have large impact on the overall estimated log-likelihood. The histogram of the likelihoods are below:
 
 ```{r histogram_ar, echo = FALSE, warning=FALSE, fig.height=3}
 p4_result %>%
@@ -104,7 +109,7 @@ p4_result %>%
   xlim(-0.1, 1.1)
 ```
 
-In the above histogram, I use Halton sequences to generate the simulations.  In comparison, I also used Julia's built-in pseudo random number generation in the accept-reject method.  Unlike using Halton sequences for the GHK method, there is a noticeable difference between using Halton sequences and pseudo-random numbers.  More likely observations have higher likelihoods when using pseudo random numbers; less likely observations have lower likelihoods when using pseudo random numbers.  This is consistent with Halton sequences having better coverage than pseudo random numbers.
+In the above histogram, I use Halton sequences to generate the simulations.  In comparison, I also used Julia's built-in pseudo random number generation in the accept-reject method.  Unlike using Halton sequences for the GHK method, there is a noticeable difference between using Halton sequences and pseudo-random numbers.  Using Halton sequences results in higher probability estiamtes than using pseudo random numbers.  This is consistent with Halton sequences having better coverage than pseudo random numbers.
 
 ```{r scatter_ar, echo = FALSE, warning=FALSE, fig.height=3}
 p4_result %>%
@@ -119,6 +124,30 @@ p4_result %>%
 \pagebreak
 
 ## Part 4 - Comparison
+
+First, let's compare summary statistics by method and duration.
+
+```{r summary_statistics, echo = FALSE}
+p4_result_long %>%
+  group_by(name) %>%
+  summarize(min = min(value),
+            first_quartile = quantile(value, probs = .25),
+            mean = mean(value),
+            median = quantile(value, probs = .5),
+            third_quartile = quantile(value, probs = .75),
+            max = max(value),
+            .groups = "drop") %>%
+  kable(digits = 3)
+```
+
+Second, let's consider how the likelihood estimates differ across computational methods. The correlation of the estimated likelihoods across all methods is very high.  In particular, the quadrature method and GHK method are very highly correlated while the accept-reject method is slightly less.
+
+```{r correlation, echo = FALSE}
+p4_result %>%
+  select(likelihood_quadrature, likelihood_ghk, likelihood_accept_reject) %>%
+  cor() %>%
+  kable(digits = 3)
+```
 
 Below are three scatterplots that pairwise compare these methods.  Generally, the quadrature and GHK methods produce very similar estimated likelihoods while the accept-reject method produces slightly noisier estimates.
 
@@ -141,19 +170,72 @@ p4_result %>%
 
 p4_result %>%
   ggplot() + 
-  geom_point(aes(x = likelihood_accept_reject, y = likelihood_ghk, col = duration)) +
+  geom_point(aes(x = likelihood_ghk, y = likelihood_accept_reject, col = duration)) +
   geom_abline() +
-  geom_smooth(aes(x = likelihood_accept_reject, y = likelihood_ghk), method = "lm", formula = y ~ x)  +
+  geom_smooth(aes(x = likelihood_ghk, y = likelihood_accept_reject), method = "lm", formula = y ~ x)  +
   xlim(-0.1, 1.1)+
   ylim(-0.1, 1.1)
 ```
 
+When we're applying these methods, we're maximizing log-likelihood. So I create scatterplots comparing the observation-level log-likelihood estimates; this requires that we drop the observations with zero likelihood under accept-reject.  First, we can see some noise between quadrature and GHK, but the regression line is right on the 45 degree line.  Second, from these scatterplots, we see that accept-reject underweights low likelihood observations compared to the quadrature and GHK estimates (i.e. the regression line is below the 45 degree line on the left hand side).
+
+```{r scatterplots_log, echo = FALSE, fig.height=3}
+p4_result %>%
+  ggplot() + 
+  geom_point(aes(x = log(likelihood_quadrature), y = log(likelihood_ghk), col = duration)) +
+  geom_abline() +
+  geom_smooth(aes(x = log(likelihood_quadrature), y = log(likelihood_ghk)), method = "lm", formula = y ~ x) 
+
+p4_result %>%
+  filter(likelihood_accept_reject > 0) %>%
+  ggplot() + 
+  geom_point(aes(x = log(likelihood_quadrature), y = log(likelihood_accept_reject), col = duration)) +
+  geom_abline() +
+  geom_smooth(aes(x = log(likelihood_quadrature), y = log(likelihood_accept_reject)), method = "lm", formula = y ~ x) 
+
+p4_result %>%
+  filter(likelihood_accept_reject > 0) %>%
+  ggplot() + 
+  geom_point(aes(x = log(likelihood_ghk), y = log(likelihood_accept_reject), col = duration)) +
+  geom_abline() +
+  geom_smooth(aes(x = log(likelihood_ghk), y = log(likelihood_accept_reject)), method = "lm", formula = y ~ x) 
+```
+
+Third, let's consider the runtime across these techniques.  For all of the techniques, my code distributed the computation of the observation-level likelihood over four processes.  The quadrature integration takes about 27 seconds per run, the GHK method takes about 10 seconds per run, and the accept-reject method takes about 8 seconds per run. This comparison suggests that, at least in this application, the GHK method is preferred because the precision matches the quadrature method, but takes less than half the amount of time per run.
 
 \pagebreak
 
 ## Part 5 - Optimization
 
+I ran into some issues getting my LBFGS optimization algorithm working correctly and the code is still running.  The current parameter estimates are in the table below:
 
+```{r optimization_summary, echo = FALSE}
+log_likelihood <- -11537.287805812226
+alpha_0 <- -0.6922835203010276
+alpha_1 <- -0.44422865974747944
+alpha_2 <- -0.263139541407923
+beta <- c(-0.169734821858881, 0.1626305050518289, 0.26471349297941893, 0.18431140412839825,
+          0.02409772623282886, 0.16164287617201306, -0.3578036950290599, -0.014153648009898883,
+          0.12851207615318733, 0.10075904971124128, 0.18212232464155362, 0.38549578438577514,
+          0.14203017995754935, 0.02805743317599043, -0.0063028268702049845)
+gamma <- -0.037649442803290474
+rho <- -0.15068383141019026
 
+estimate <- c(log_likelihood, alpha_0, alpha_1, alpha_2, beta, gamma, rho)
 
+beta_var_names <- c("score_0", "rate_spread", "i_large_loan", "i_medium_loan", 
+                    "i_refinance", "age_r", "cltv", "dti", "cu", "first_mort_r", "i_FHA",
+                    "i_open_year2", "i_open_year3", "i_open_year4", "i_open_year5")
 
+variable <- c("log_likelihood", "alpha_0", "alpha_1", "alpha_2", beta_var_names, "gamma", "rho")
+
+tibble(variable, estimate) %>%
+  kable(digits = 3)
+
+```
+
+\pagebreak
+
+## Appendix - Code Description
+
+I've attached a zip folder with my code.  There are four scripts `01_toolbox.jl`, `02_likelihood.jl`, `98_test.jl`, and `99_run.jl`. I wrote the code in such a way that the observation-level likelihood computations are handled are distributed.  In my case, I use four processes. The `01_toolbox.jl` script contains the functions that are sent to all worker processes.  The `02_likelihood.jl` script contains the functions that setup the computation up by the main process. `98_test.jl` is a test file.  The major test that I did was to compute the likelihood for each observation for $T_i = 1, 2, 3, 4$ to test that the likelihoods added up to one.  Finally, `99_run.jl` runs reads in the data, sets up additional processes, and calls functions in `02_likelihood.jl`.

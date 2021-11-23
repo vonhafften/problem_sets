@@ -98,8 +98,10 @@ function initialize_quadrature_integration()
 end
 
 # compute likelihood for the matrix
-function likelihood(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, α_0::Float64, α_1::Float64, α_2::Float64,
-    t::Array{Float64, 2}, x::Array{Float64, 2}, z::Array{Float64, 2}; method = "quadrature", use_halton = true)
+function likelihood(α_0::Float64, α_1::Float64, α_2::Float64,  β::Array{Float64, 1}, γ::Float64, ρ::Float64, 
+    t::Array{Float64, 2}, x::Array{Float64, 2}, z::Array{Float64, 2},  KPU_1d, KPU_2d,
+    u_0::Array{Float64, 1}, u_1::Array{Float64, 1}, u_2::Array{Float64, 1},
+    ε_0::Array{Float64, 1}, ε_1::Array{Float64, 1}, ε_2::Array{Float64, 1}; method = "quadrature")
     
     N = size(x)[1]
     
@@ -109,30 +111,22 @@ function likelihood(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, �
     if method == "quadrature"
         println("Evaluating likelihoods using quadrature integration method...")
 
-        q_grids = initialize_quadrature_integration()
-        KPU_1d = q_grids[1]
-        KPU_2d = q_grids[2]
-
         @showprogress @distributed for i = 1:N
-            result[i] = likelihood_quadrature(γ, β, ρ, α_0, α_1, α_2, t[i], x[i,:], z[i,:], KPU_1d, KPU_2d)
+            result[i] = likelihood_quadrature(α_0, α_1, α_2, β, γ, ρ, t[i], x[i,:], z[i,:], KPU_1d, KPU_2d)
         end
 
     elseif method == "ghk"
         println("Evaluating likelihoods using GHK method...")
 
-        u_0, u_1, u_2 = initialize_ghk(;use_halton) # three iid uniform RVs
-
         @showprogress @distributed for i = 1:N
-            result[i] = likelihood_ghk(γ, β, ρ, α_0, α_1, α_2, t[i], x[i,:], z[i,:], u_0, u_1, u_2)
+            result[i] = likelihood_ghk(α_0, α_1, α_2, β, γ, ρ, t[i], x[i,:], z[i,:], u_0, u_1, u_2)
         end
 
     elseif method == "accept_reject"
         println("Evaluating likelihoods using accept-reject method...")
 
-        ε_0, ε_1, ε_2 = initialize_accept_reject(ρ; use_halton)
-
         @showprogress @distributed for i = 1:N
-            result[i] = likelihood_accept_reject(γ, β, ρ, α_0, α_1, α_2, t[i], x[i,:], z[i,:], ε_0, ε_1, ε_2)
+            result[i] = likelihood_accept_reject(α_0, α_1, α_2, β, γ, ρ, t[i], x[i,:], z[i,:], ε_0, ε_1, ε_2)
         end
     else
         error("Specify valid method.")
@@ -141,24 +135,31 @@ function likelihood(γ::Array{Float64, 1}, β::Array{Float64, 1}, ρ::Float64, �
     return result
 end
 
-function log_likelihood(θ::Array{Float64, 1}, t::Array{Float64, 2}, x::Array{Float64, 2}, z::Array{Float64, 2}; method = "quadrature")
+function log_likelihood(θ::Array{Float64, 1}, t::Array{Float64, 2}, x::Array{Float64, 2}, z::Array{Float64, 2},  KPU_1d, KPU_2d,
+    u_0::Array{Float64, 1}, u_1::Array{Float64, 1}, u_2::Array{Float64, 1},
+    ε_0::Array{Float64, 1}, ε_1::Array{Float64, 1}, ε_2::Array{Float64, 1}; method = "quadrature")
 
     K_x = size(x)[2]
-    K_z = size(z)[2]
 
-    γ   = θ[1:K_z]
-    β   = θ[(K_z+1):(K_x + K_z)]
-    ρ   = θ[K_x + K_z + 1]
-    α_0 = θ[K_x + K_z + 2]
-    α_1 = θ[K_x + K_z + 3]
-    α_2 = θ[K_x + K_z + 4]
+    α_0 = θ[1]
+    α_1 = θ[2]
+    α_2 = θ[3]
+    β   = θ[4:(K_x+3)]
+    γ   = θ[K_x+4]
+    ρ   = θ[K_x+5]
 
-    println("γ: ", γ)
-    println("β: ", β)
-    println("ρ: ", ρ)
-    println("α_0: ", α_0)
-    println("α_1: ", α_1)
-    println("α_2: ", α_2)
+    ll = sum(log.(likelihood(α_0, α_1, α_2, β, γ, ρ, t, x, z, KPU_1d, KPU_2d, u_0, u_1, u_2, ε_0, ε_1, ε_2; method = method)))
 
-    sum(log.(likelihood(γ, β, ρ, α_0, α_1, α_2, t, x, z; method = method)))
+    println("Log-likelihood = ", ll)
+
+    println("α_0 = ", α_0)
+    println("α_1 = ", α_1)
+    println("α_2 = ", α_2)
+    println("β = ", β)
+    println("γ = ", γ)
+    println("ρ = ", ρ)
+
+    println("******************************************************")
+
+    return ll
 end 
