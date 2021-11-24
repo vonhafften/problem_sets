@@ -1,0 +1,185 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{geometry}
+\usepackage{graphicx}
+\geometry{margin = 1in}
+\graphicspath{ {./adjustment/figures/} }
+
+\setlength{\parindent}{0cm}
+
+\newcommand{\R}{\mathbb{R}}
+
+
+\begin{document}
+
+\section*{FIN 971: Problem Set 3\footnote{Instructor: Dean Corbae}}
+
+Alex von Hafften
+
+\today
+
+\bigskip
+
+\textbf{Exercise 3.15 of Tirole (project riskiness and credit rationing).} 
+
+\bigskip
+
+Consider the basic, fixed-investment model covered in Section 3.2 of Tirole (2006). In particular, investment is a fixed size $I$, the entrepreneur borrows $I-A$, the probability of success is either $p_H$ (which yields no private benefit) or $p_L$ (which yields private benefit $B$), success yields verifiable revenue $R$ while failure yields 0. There are two types, ``A" and ``B", of the projects, which differ only with respect to ``riskiness" defined by $p^A_HR^A = p^B_HR^B$, but $p^A_H > p^B_H$ so that project $B$ is ``riskier".  The investment cost $I$ is the same for both variants and furthermore, $\Delta p = p^A_H - p^A_L= p^A_H - p^A_L$. Which type of project is less prone to credit rationing?
+
+\bigskip
+
+\textbf{Solution:} Following the logic outlined in Section 3.2 of Tirole (2006), we can derive the $\bar{A}^i$ for each project $i$.  First, assume that both projects have positive NPV if the entrepreneur the behaves (i.e. $p_H^i R^i > I$) and negative NPV if the entrepreneur does not behave (i.e., $p_L^i R^i + B < I$), which means that the lending contract will require the entrepreneur to behave.  The borrower incentive compatibility constraint to behave is 
+
+$$
+p_H^i R_b^i \ge p_L^i R_b^i + B \iff (\Delta p) R_b^i \ge B
+$$
+
+Thus, the most that can be pledged to the lender without violating the borrower IC constraint is
+
+$$
+R_l^i = R -\frac{B}{\Delta p}
+$$
+
+The participation constraint of the lender is
+
+$$
+p_H^i R_l^i \ge I - A \iff p_H^i \Bigg( R -\frac{B}{\Delta p} \Bigg) \ge I - A
+$$
+
+Where the borrower IC holds with equality. Thus, the net worth level at which financing is possible is:
+
+$$
+\bar{A}^i = p^i_H \frac{B}{\Delta p } - (p^i_H R^i - I)
+$$
+
+Entrepreneurs with net worth $A \ge \bar{A}^i$ get funded; otherwise, not.  Thus, the project that is less prone to credit rationing is the project with the lower $\bar{A}^i$:
+
+$$
+\bar{A}^A > \bar{A}^B 
+\iff 
+p^A_H \frac{B}{\Delta p } - (p^A_H R^A - I) > p^B_H \frac{B}{\Delta p } - (p^B_H R^B - I)
+\iff
+p^A_H  > p^B_H 
+$$
+
+Thus, project B is less prone to credit rationing.
+
+\pagebreak
+
+\textbf{Exercise 3.13 of Tirole (lender market power with fixed investment).} 
+
+\bigskip
+
+The environment is similar to Section 3.2 of Tirole with one exception. An enterpreneur has internal wealth $A$ (which could be negative because of previous debt) and wants to undertake non-negative investment $I > A$ into a fixed size project. The project yields $R > 0$ with probability $p$ and 0 with probability $1 - p$. The probability of success is $p_H$ if the entrepreneur works and $p_L < p_H$ if he shirks. The entrepreneur obtains private benefit $B$ if she shirks and 0 otherwise. The borrower is protected by limited liability and everyone is risk neutral. The project is worthwhile only if the entrepreneur behaves.
+
+\bigskip
+
+The exception is that there is a single lender. This lender has access to funds that command an expected rate of return equal to 0 (so the lender would content himself with a 0 rate of return, but will use his market power to obtain a superior rate of return). Assume $V \equiv p_HR - I > 0$ and let $\bar{A}$ and $\hat{A}$ be defined by
+
+\begin{align*}
+\bar{A} &\equiv I - p_H \Bigg[R - \frac{B}{\Delta p}\Bigg] \\
+\hat{A} &\equiv p_H \frac{B}{\Delta p}
+\end{align*}
+
+where $\Delta p = p_H - p_L$. Assume that $\bar{A} > 0$ and that the lender makes a take-it-or-leave-it offer to the borrower (i.e. the lender chooses $R_b$, the borrower's compensation in the case of success).
+
+\bigskip
+
+(i) What contract is optimal for the lender? Be sure to state the programming problem explicitly.
+
+\bigskip
+
+The lender maximizes their profit subject to some constraints. First, we require that the borrower behaves, so their IC constraint is that expected payoff from behaving $p_HR_b$ exceeds the expected payoff from not behaving $p_L R_l + B$.  Subject to this IC, the lender's expected profit is the expected return on the loan (given the behaving borrower) $p_H R_l$ minus the initial loan size $I - A$. We also should consider the participation constraints of the lender and the borrower.  The borrower could eat their net worth $A$ (if $A > 0$) instead of their expected payoff $p_H R_b$ (given the borrower behaves).  The lender could eat the loan amount $I - A$ instead of their expected payoff $p_H R_l$  (given the borrower behaves).  Finally, by definition $R_l + R_b = R$.  Thus, the programming problem is:
+
+\begin{align*}
+\max_{R_l, R_b} & p_H R_l - I + A & \\
+\text{s.t. }  
+p_H R_b &\ge p_L R_b + B & [IC_b] \\
+p_H R_b &\ge A & [PC_b] \\
+p_H R_l &\ge I - A & [PC_l] \\
+R_l + R_b &= R & \\
+\implies 
+\max_{R_b} & p_H (R - R_b) - I + A & \\
+\text{s.t. }  
+R_b &\ge \frac{B}{\Delta p} & [IC_b] \\
+R_b &\ge \frac{A}{p_H} & [PC_b] \\
+R_b &\le R - \frac{I - A}{p_H} & [PC_l]
+\end{align*}
+
+Thus, the lender will choose the lowest $R_b$ such that all constraints hold.  First let $\hat{A}$ be the net worth where $IC_b$ and $PC_b$ both bind:
+
+$$
+\frac{B}{\Delta p} = \frac{\hat{A}}{p_H} 
+\implies
+\hat{A} = p_H \frac{B}{\Delta p}
+$$
+
+Second, observe that the $PC_b$ and $PC_l$ cannot both bind.  Suppose not then
+
+$$
+\frac{A}{p_H} = R - \frac{I - A}{p_H} \implies 0 = p_H R - I = V > 0 \Rightarrow \Leftarrow
+$$
+
+Third, let $\bar{A}$ be the net worth where the $IC_b$ and $PC_l$ both bind:
+
+$$
+\frac{B}{\Delta p} = R - \frac{I - \bar{A}}{p_H} 
+\implies 
+\bar{A} = I - p_H \Bigg(R + \frac{B}{\Delta p} \Bigg)  
+$$
+
+Thus, the optimal lending contract for the lender depends on $A$.  If $A < \bar{A}$, then the lenders participation constraint does not hold, so there's no contract (i.e. credit rationing).  If $\bar{A} \le A < \hat{A}$, the borrowers incentive compatibility constraint binds and the borrowers participation constraint is slack, so $R_b = \frac{B}{\Delta p}$.  At $A = \hat{A}$, both the borrowers incentive compatibility and participation constraints bind. If $I > A > \hat{A}$, the borrowers incentive compatibility constraint is slack and the borrowers participation constraint binds, so $R_b = \frac{A}{p_H}$.
+
+\bigskip
+
+(ii) Is the financing decision affected by lender market power (i.e. compared to the case of competitive lenders in Section 3.2)?
+
+\bigskip
+
+The lender market power does not affect the credit rationing threshold. With or without market power, financing does not happen if $A < \bar{A}$.  Lender market power affects the returns; it allows the lender to extract more surplus from the project instead of the borrower extracting the surplus, as was the case with competitive lenders.
+
+\bigskip
+
+(iii) Draw the borrower's net utility (i.e. net of $A$) as a function of $A$. Note that unlike the monotonic case in Section 3.2, it is nonmonotonic among the regions $(-\infty, \bar{A}), [\bar{A}, \hat{A}), [\hat{A}, I)$. Explain.
+
+\bigskip
+
+If $A < \bar{A}$, the lender participation constraint is not satisfied, so there's no lending and the borrower eats $A$. Net of $A$, the borrowers utility is zero.\footnote{Here, I assume that consumption can be negative.  If not, then if $A < 0 < \bar{A}$, lending does not happen and the borrower consumes nothing, so net of $A$, their utility is $-A$.  I suppose an equivalent alternative assumption is that consumption must be nonnegative and the borrower has some other baseline level of consumption $C > -A$, which we're also netting out.}  If $\bar{A} \le A < \hat{A}$, lending happens at $R_b = B/\Delta p$. Thus, the borrowers utility net of $A$ is $p_HB/\Delta p - A$.  If $I >A \ge \hat{A}$, then lending happens at $R_b = A/p_H$, so the borrower utility net of $A$ is $p_HA/p_H - A = 0$.
+
+\pagebreak
+
+\textbf{Exercise 3.5 of Tirole (continuous investment and decreasing returns to scale).} 
+
+\bigskip
+
+Consider the continuous investment model of Section 3.4 of Tirole (2006) with one modification; investment $I$ yields return $R(I)$ in the case of success and 0 in the case of failure, where $R' > 0$ and $R'' < 0, R'(0) > 1/p_H, R'(\infty) < 1/p_H$. The rest of the model is unchanged. That is, the entrepreneur starts with cash $A$, the probability of success is either $p_H$ if he behaves or $p_L$ if he misbehaves. The entrepreneur obtains private benefit $BI$ if he misbehaves and 0 otherwise. Only the final outcome is observable. Let $I^*$ denote the level of investment that maximizes total surplus (i.e. $p_H R'(I^*) = 1$).
+
+\bigskip
+
+(i) How does investment $I(A)$ vary with the level of cash?
+
+\bigskip
+
+...
+
+\bigskip
+
+(ii) How does the shadow value $v$ of cash (the derivative of the borrower's gross utility with respect to cash) vary with the level of cash?
+
+
+\bigskip
+
+...
+
+\bigskip
+
+
+\end{document}
+
+
+
