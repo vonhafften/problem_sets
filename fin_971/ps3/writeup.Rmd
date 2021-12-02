@@ -78,7 +78,7 @@ where $\Delta p = p_H - p_L$. Assume that $\bar{A} > 0$ and that the lender make
 
 \bigskip
 
-The lender maximizes their profit subject to some constraints. First, we require that the borrower behaves, so their IC constraint is that expected payoff from behaving $p_HR_b$ exceeds the expected payoff from not behaving $p_L R_l + B$.  Subject to this IC, the lender's expected profit is the expected return on the loan (given the behaving borrower) $p_H R_l$ minus the initial loan size $I - A$. We also should consider the participation constraints of the lender and the borrower.  The borrower could eat their net worth $A$ (if $A > 0$) instead of their expected payoff $p_H R_b$ (given the borrower behaves).  The lender could eat the loan amount $I - A$ instead of their expected payoff $p_H R_l$  (given the borrower behaves).  Finally, by definition $R_l + R_b = R$.  Thus, the programming problem is:
+\textbf{Solution:} The lender maximizes their profit subject to some constraints. First, we require that the borrower behaves, so their IC constraint is that expected payoff from behaving $p_HR_b$ exceeds the expected payoff from not behaving $p_L R_l + B$.  Subject to this IC, the lender's expected profit is the expected return on the loan (given the behaving borrower) $p_H R_l$ minus the initial loan size $I - A$. We also should consider the participation constraints of the lender and the borrower.  The borrower could eat their net worth $A$ (if $A > 0$) instead of their expected payoff $p_H R_b$ (given the borrower behaves).  The lender could eat the loan amount $I - A$ instead of their expected payoff $p_H R_l$  (given the borrower behaves).  Finally, by definition $R_l + R_b = R$.  Thus, the programming problem is:
 
 \begin{align*}
 \max_{R_l, R_b} & p_H R_l - I + A & \\
@@ -168,7 +168,7 @@ text("A_hat", x = A_hat, y = mean(R_b, na.rm =TRUE), col = "blue",  pos = 2)
 
 \bigskip
 
-The lender market power does not affect the credit rationing threshold. With or without market power, financing does not happen if $A < \bar{A}$.  Lender market power affects the distribution of the the project return; it allows the lender to extract the entire surplus when the IC constraint is slack. In the competitive lending case, the borrower extracts the entire surplus.
+\textbf{Solution:} The lender market power does not affect the credit rationing threshold. With or without market power, financing does not happen if $A < \bar{A}$.  Lender market power affects the distribution of the the project return; it allows the lender to extract the entire surplus when the IC constraint is slack. In the competitive lending case, the borrower extracts the entire surplus.
 
 \pagebreak
 
@@ -176,7 +176,7 @@ The lender market power does not affect the credit rationing threshold. With or 
 
 \bigskip
 
-If $A < \bar{A}$, the lender participation constraint is not satisfied, so there's no lending and the borrower eats $A$. Net of $A$, the borrowers utility is zero.\footnote{Here, I assume that consumption can be negative.  If not, then if $A < 0 < \bar{A}$, lending does not happen and the borrower consumes nothing, so net of $A$, their utility is $-A$.  I suppose an equivalent alternative assumption is that consumption must be nonnegative and the borrower has some other baseline level of consumption $C > -A$, which we're also netting out.}  If $\bar{A} \le A < \hat{A}$, lending happens at $R_b = B/\Delta p$. Thus, the borrowers utility net of $A$ is $p_H B / \Delta p - A$. In this range, the borrowers IC constraint is binding, so the borrower collects agency rent.  If $I >A \ge \hat{A}$, then lending happens at $R_b = A/p_H$, so the borrower utility net of $A$ is $p_HA/p_H - A = 0$. Here, the borrower IC is slack so there is no agency rents and the participation constraint is binding.
+\textbf{Solution:} If $A < \bar{A}$, the lender participation constraint is not satisfied, so there's no lending and the borrower eats $A$. Net of $A$, the borrowers utility is zero.\footnote{Here, I assume that consumption can be negative.  If not, then if $A < 0 < \bar{A}$, lending does not happen and the borrower consumes nothing, so net of $A$, their utility is $-A$.  I suppose an equivalent alternative assumption is that consumption must be nonnegative and the borrower has some other baseline level of consumption $C > -A$, which we're also netting out.}  If $\bar{A} \le A < \hat{A}$, lending happens at $R_b = B/\Delta p$. Thus, the borrowers utility net of $A$ is $p_H B / \Delta p - A$. In this range, the borrowers IC constraint is binding, so the borrower collects agency rent.  If $I >A \ge \hat{A}$, then lending happens at $R_b = A/p_H$, so the borrower utility net of $A$ is $p_HA/p_H - A = 0$. Here, the borrower IC is slack so there is no agency rents and the participation constraint is binding.
 
 An example where $R = 12, I = 6, p_H = .8, p_L = .2, B = 4$ is below:
 
@@ -205,8 +205,50 @@ Consider the continuous investment model of Section 3.4 of Tirole (2006) with on
 
 \bigskip
 
-...
+\textbf{Solution:} The programming problem is
 
+\begin{align*}
+\max_{I, R_b, R_l} & p_H R_b \\
+\text{s.t. } 
+p_H R_b & \ge p_L R_b + BI & [IC_b] \\
+p_H R_l & \ge I - A & [PC_l] \\ 
+R(I) &= R_b + R_l & \\
+\implies
+\max_{I, R_b} & p_H R_b \\
+\text{s.t. } 
+R_b & \ge \frac{BI}{\Delta p } & [IC_b] \\
+R_b & \le R(I) - \frac{I - A}{p_H} & [PC_l] 
+\end{align*}
+
+First, notice that $PC_l$ binds. Suppose that $PC_l$ does not bind at the optimum.  Then $R_b$ can be increased with violating any constraint, increasing the objective function $\Rightarrow \Leftarrow$. Thus, $PC_l$ binds:
+
+$$
+R_b = R(I) - \frac{I - A}{p_H}
+$$
+
+Differentiating with respect to $I$, we get:
+
+$$
+\frac{d R_b}{d I} = R'(I) - \frac{1}{p_H}
+$$
+
+Notice that based on the assumptions about $R'(I)$, $R_b$ is increasing in $I$ for all $I < I^*$. So the borrower would choose the highest $I$ as possible.  Thus, $IC_b$ binds for all $I \le I^*$.  Suppose not, then the borrower would go to a different lender.  Taking $IC_b$ and $PC_l$ together:
+
+$$
+R(I) - \frac{I - A}{p_H} = \frac{BI}{\Delta p }
+$$
+
+This holds at all $I \le I^*$, in particular at $I^*$.  Applying total differentiation and using $R'(I^*) - \frac{1}{p_H} = 0$,
+
+$$
+R'(I^*)dI - \frac{dI - dA}{p_H} = \frac{B dI}{\Delta p }
+\implies
+\Bigg[R'(I^*) - \frac{1}{p_H}\Bigg]dI  + \frac{dA}{p_H} = \frac{B dI}{\Delta p }
+\implies 
+\frac{dI}{dA} = \frac{\Delta p }{B p_H} >0
+$$
+
+because all terms are positive. So $I$ is increasing in $A$.
 \bigskip
 
 (ii) How does the shadow value $v$ of cash (the derivative of the borrower's gross utility with respect to cash) vary with the level of cash?
@@ -214,9 +256,13 @@ Consider the continuous investment model of Section 3.4 of Tirole (2006) with on
 
 \bigskip
 
-...
+The borrowers gross utility is
 
-\bigskip
+$$
+U_b = p_H R_b = p_H \Bigg(R(I^*) - \frac{I - A}{p_H}\Bigg) = p_HR(I^*) - I + A
+$$
+
+So, $v = \frac{dU_b}{dA} = 1$.  Thus, the shadow value of cash is constant in the level of cash.
 
 
 
