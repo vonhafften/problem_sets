@@ -1,0 +1,476 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{accents}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\setlength{\parindent}{0cm}
+\geometry{margin = 1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\xvec}{\mathbf{x}}
+\newcommand{\onevec}{\mathbf{1}}
+\newcommand{\Xvec}{\mathbf{X}}
+\newcommand{\zvec}{\mathbf{z}}
+\newcommand{\muvec}{\boldsymbol{\mu}}
+\newcommand{\alphavec}{\boldsymbol{\alpha}}
+\newcommand{\sigmamat}{\boldsymbol{\sigma}}
+
+\newtoggle{extended}
+\settoggle{extended}{false}
+
+\title{FIN 920: Continuous-Time Diffusion Models Notes}
+
+\begin{document}
+
+\maketitle
+
+\section{Part I}
+
+\begin{itemize}
+
+\subsection*{(Discrete) Random Walks}
+
+\item Random walk: $z_t = z_{t-1} + e_t = z_0 + \sum_{s=1}^t e_s$ (often $z_0 = 0$) with $E[e_t] = 0$, $\forall t$ and $e_t \perp e_s, t \neq s$.
+
+\item Random walk with drift: $z_t = \mu + z_{t-1} + e_t$.
+
+\item Geometric random walk with drift: $\ln(z_t) = \mu + \ln(z_{t-1}) + e_t$ or $z_t = z_{t-1} \exp(\mu + e_t)$.
+
+\item Normally distributed increments $e_t \sim N(0, \sigma^2)$.
+
+\subsection*{Standard Brownian Motion}
+
+\item A Brownian motion is a process $\{z_t\}_{t \ge 0}$ such that
+
+\begin{itemize}
+
+\item $P(z_0 = 0) = 1$
+\item $z_t - z_2 \sim N(0, t-s), t>s \ge 0$
+\item $\lim_{e \to 0} z_{t-e} = z_t, t \ge 0$
+\item $z_t - z_s \perp z_u - z_v, t >s>u>v\ge 0$
+
+\end{itemize}
+
+\item Brownian motion is Markov: $E[f(z_t) | \{z_v\}_{v=0}^s] =E[f(z_t) | z_s]=:E_s[f(z_t)]$ for $t \ge s$.
+
+\item Paths are nowhere differentiable: $\lim_{t \to s} \frac{z_t - z_s}{t - s}$ is not defined.
+
+\item Paths have unbounded total variation: $\sum_{v=1}^N |z_{tv/N} - z_{t(v-1)/N}| \to \infty$ as $N\to \infty$.
+
+\item Paths have bounded quadratic variation: $\sum_{v=1}^N (z_{tv/N} - z_{t(v-1)/N})^2 \to t$ as $N\to \infty$. 
+
+\item Conventional expressions:
+
+\begin{itemize}
+
+\item  $z_t - z_0 = \sum_{v=1}^N z_{tv/N} - z_{t(v-1)/N} \to \int_{v=0}^t dz_v$ as $N\to \infty$ where $dz_t \sim N(0, dt)$.
+
+\item Rules for the product of $dz$ and $dt$:
+
+$$
+\begin{bmatrix}
+   & dz & dt\\
+dz & dt & 0\\
+dt & 0  & 0
+\end{bmatrix}
+$$
+
+\item For example, $\sum_{v=1}^N (z_{Tv/N} - z_{T(v-1)/N})(T/N) \to \int_{t=0}^T dz_t dt = 0$ when $N \to \infty$.
+
+\end{itemize}
+
+
+\subsection*{Formal Construction of Brownian Motion}
+
+
+\item Probability Space $(\Omega, \F, P)$ with set of states $\Omega = \{ \omega\}$, tribe $\F$, probability measure $P:\F \to \R$.
+
+\item A Brownian motion is a measurable function $z(\omega, t):\Omega \times [0, \infty) \to \R$, such that $\forall \omega \in \Omega$,
+
+\begin{itemize}
+
+\item $z(\omega, 0) = 0$ almost surely,
+\item $z(\omega, t) - z(\omega, s) \sim N(0, t - s)$ for $t > s$,
+\item $z(\omega, t) - z(\omega, s) \perp z(\omega, u) - z(\omega, v), t >s>u>v\ge 0$
+\item $\lim_{t \to s} z(\omega, t) = z(\omega, s)$
+
+\end{itemize}
+
+\item The standard filtration $\{\F_t\}_{t\in[0, \infty)}$ is defined by the paths of the process together with the null sets of $\mathcal{F}$.
+
+\subsection*{Scalar Diffusion Processes}
+
+\item A diffusion (or Ito process) is an adapted process $x_t$ with continuous paths,
+
+\begin{align*}
+x_t &= x_0 + \int_{v=0}^t \mu(x_v, v)dv + \int_{v=0}^t \sigma(x_v, v) dz_v \\
+\iff dx_t &= \mu(x_t, t)dt + \sigma(x_t, t) dz_t
+\end{align*}
+
+where $\mu(x_v, v)$ is a drift coefficient, $\sigma(x_v, v)$ is a diffusion coefficient, and $z_t$ is a Brownian motion.
+
+\item The Ito integral is defined as
+
+$$
+\int_{v=0}^t \sigma(x_v, v) dz_v := \lim_{N\to\infty} \sum_{v=1}^N \sigma(x_{(v-1)t/N}, (v-1)t/N) (z_{tv/N} - z_{t(v-1)/N})
+$$
+
+\item $E_t(dx_t) = E_t(\mu(x_t, t)dt + \sigma(x_t, t) dz_t) = \mu(x_t, t)dt + \sigma(x_t, t) E_t(dz_t) =\mu(x_t, t)dt = \mu_t dt$
+
+\item $E_t((dx_t)^2) = E_t(\mu(x_t, t)^2(dt)^2 + 2\mu(x_t, t) \sigma(x_t, t) dt dz_t + \sigma(x_t, t)^2 (dz_t)^2) = E_t(\sigma(x_t, t)^2 (dz_t)^2) = \sigma_t^2 dt$
+
+\subsection*{Examples of Scalar Diffusion Processes}
+
+\item Brownian motion with drift:
+
+\begin{itemize}
+\item $Y_t = Y_0 + \mu t +\sigma z_t$
+\item $dY_t = \mu dt + \sigma dz_t$
+\item $Y_t - Y_s \sim N(\mu(t-s), \sigma^2 (t-s))$ for $t >s$.
+\end{itemize}
+
+\item Geometric Brownian Motion:
+
+\begin{itemize}
+\item $dS_t = \mu S_t dt + \sigma S_t dz_t$, with constants $\mu, \sigma$.
+\item For example, stock price in Black and Scholes (JPE 1973).
+\end{itemize}
+
+\item Ornstein-Uhlenbeck process (mean-reverting): 
+
+\begin{itemize}
+\item $dr_t = \kappa (\theta - r_t)dt + \sigma dz_t$ with constants $\kappa, \theta, \sigma > 0$.
+\item Risk-free rate in Vasicek (JFE, 1977)
+\end{itemize}
+
+\item Square root process (mean-reverting): 
+
+\begin{itemize}
+\item $dr_t = \kappa(\theta - r_t) dt + \sigma \sqrt{r_t} dz_t$.
+\item Risk-free rate in Cox, Ingersoll and Ross (ECTA, 1985)
+\end{itemize}
+
+\pagebreak
+
+\subsection*{Vector Diffusion Processes}
+
+\item A vector of Brownian motions $\zvec_t$ is independent iff $z_{it} - z_{is} \perp z_{ju} - z_{jv}$ for all $i \neq j$ and all intervals $[t, s]$ and $[u, v]$.
+
+\item A diffusion (or Ito process) is an adapted random vector process $\mathbf{x}_t$ with continuous paths,
+
+\begin{align*}
+\xvec_t &= \xvec_0 + \int_{v=0}^t \muvec(\xvec_v, v)dv + \int_{v=0}^t \sigmamat(\xvec_v, v) d\zvec_v \\
+\iff d\xvec_t &= \muvec(\xvec_t, t)dt + \sigmamat(\xvec_t, t) d\zvec_t
+\end{align*}
+
+where $\muvec(\xvec_t, t)$ is a vector of drift coefficients, $\sigmamat(\xvec_t, t)$ is a diffusion coefficient, and $\zvec_t$ is a vector of independent Brownian motions.
+
+\item The Ito integral is defined as
+
+$$
+\int_{v=0}^t \sigmamat(\xvec_v, v) d\zvec_v := \lim_{N\to\infty} \sum_{v=1}^N \sigmamat(\xvec_{(v-1)t/N}, (v-1)t/N) (\zvec_{tv/N} - \zvec_{t(v-1)/N})
+$$
+
+\begin{align*}
+E_t(d\xvec_t) 
+&= E_t(\muvec(\xvec_t, t)dt + \sigmamat(\xvec_t, t) d\zvec_t) 
+= \muvec(\xvec_t, t)dt + \sigmamat(\xvec_t, t) E_t(d\zvec_t)
+= \muvec(\xvec_t, t)dt\\
+E_t(d\xvec_t d\xvec^T) 
+&= E_t((\muvec(\xvec_t, t)dt + \sigmamat(\xvec_t, t) d\zvec_t) (\muvec(\xvec_t, t)dt + \sigmamat(\xvec_t, t) d\zvec_t)^T) \\ 
+&= E_t((dt)^2 \muvec(\xvec_t, t)(\muvec(\xvec_t, t))^T + 2 \muvec(\xvec_t, t) (dt d\zvec_t^T) \sigmamat(\xvec_t, t)^T  + \sigmamat(\xvec_t, t) (d\zvec_td\zvec_t^T) \sigmamat(\xvec_t, t)^T) \\
+&= \sigmamat(\xvec_t, t) E_t( d\zvec_td\zvec_t^T) \sigmamat(\xvec_t, t)^T \\
+&= \sigmamat(\xvec_t, t) (dt \times I) \sigmamat(\xvec_t, t)^T \\
+&= \sigmamat(\xvec_t, t) \sigmamat(\xvec_t, t)^T dt
+\end{align*}
+
+\subsection*{Examples of Vector Diffusion Processes}
+
+\item Two Brownian motions with drift and correlation $\rho \in [-1, 1]$.
+
+$$
+d \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} \mu_x \\ \mu_y \end{bmatrix} dt + \begin{bmatrix} \sigma_x & 0 \\ 0 & \sigma_y \end{bmatrix} \begin{bmatrix} 1 & 0 \\ \rho & \sqrt{1 - \rho^2} \end{bmatrix} \begin{bmatrix} dz_1 \\ dz_2 \end{bmatrix}
+$$
+
+\item Multiperiod consumption-savings-portfolio choice in Merton (various 1970s)
+
+\begin{align*}
+dW_t &= W_t (\alphavec_t \cdot (\muvec(\Xvec_t, t) - r(\Xvec_t, t)\onevec) + r(\Xvec_t, t)) dt +W_t \alphavec_t^T \sigmamat(\Xvec_t, t)d\zvec_t - c_t dt + y_tdt \\
+d \Xvec_t &= \muvec_x (\Xvec_t, t) dt + \sigma_x (\Xvec_t, t) d\zvec_t
+\end{align*}
+
+where $W_t \ge 0$ and $W_0$ and $\Xvec_0$ is given.
+
+\item Constant returns-to-scale production and productivity in Ai (JF 2010).
+
+\begin{align*}
+dK_t &= x_t K_t dt - C_t dt + \sigma_c K_t dz_t^c \\
+dx_t &= \kappa (\mu - x_t) dt + \sigma_x dz_t^x\\
+dz_t^c dz_t^x &= \rho dt
+\end{align*}
+
+\subsection*{Convenient Facts}
+
+\item For an adapted process $\gamma_t$ (vector), we can express some functions of the expectation of the adapted process in terms of a change in time instead of a change in the Brownian motion value.
+
+\item For example, expectation of quadratic:
+
+\begin{align}
+E_t \Bigg( \Bigg( \int_t^T \gamma_s d\zvec_s \Bigg)^2 \Bigg) \nonumber
+&= E_t \lim_{N \to \infty} \sum_{i=1}^N \sum_{j=1}^N K_i K_j \nonumber\\
+&= E_t \lim_{N \to \infty} 2\sum_{i=1}^N \sum_{i<j}^N K_j E_{(T-t)(i-1)/N} K_i + \sum_{j=1}^N E_{(T-t)(j-1)/N} K_j^2 \nonumber\\
+&= E_t \lim_{N \to \infty} \frac{T - t}{N} \sum_{j=1}^N \gamma_{(T-t)(j-1)/N} \cdot \gamma_{(T-t)(j-1)/N} \nonumber\\
+&= \int_t^T E_t (\gamma_s \cdot \gamma_s) ds \label{cfq}
+\end{align}
+
+where $K_j = \gamma_{T(j-1)/N} \cdot (\zvec_{(T-t)j/N} - \zvec_{(T-t)(j-1)/N})$.
+
+\item For example, expectation of exponential:
+
+\begin{align}
+E_t \Bigg( \exp \Bigg( \int_t^T \gamma_s d\zvec_s \Bigg) \Bigg) 
+&= E_t \Bigg( \exp \Bigg( \frac{1}{2} \int_t^T (\gamma_s \cdot \gamma_s)ds \Bigg) \Bigg) \label{cfe}
+\end{align}
+
+\item Consider the square-root process,
+
+\begin{align*}
+dr_t &= \kappa(\theta - r_t)dt + \sigma \sqrt{r_t} dz_t\\
+\implies e^{\kappa t} dr_t &= e^{\kappa t}\kappa \theta dt  - e^{\kappa t} \kappa r_t dt + e^{\kappa t}\sigma \sqrt{r_t} dz_t \\
+\implies e^{\kappa t} dr_t + e^{\kappa t} \kappa r_t dt&= e^{\kappa t}\kappa \theta dt  + e^{\kappa t}\sigma \sqrt{r_t} dz_t \\
+\implies d(e^{\kappa t} r_t) &= e^{\kappa t}\kappa \theta dt  + e^{\kappa t}\sigma \sqrt{r_t} dz_t \\
+\implies \int_{-\infty}^{t} d(e^{\kappa s} r_s) &= \int_{-\infty}^{t} e^{\kappa s}\kappa \theta ds  + \int_{-\infty}^{t} e^{\kappa s}\sigma \sqrt{r_s} dz_s \\
+\implies e^{\kappa t} r_t &= e^{\kappa t}\theta  + \sigma\int_{-\infty}^{t} e^{\kappa s} \sqrt{r_s} dz_s \\
+\implies r_t &= \theta  + \sigma\int_{-\infty}^{t} e^{\kappa (s-t)} \sqrt{r_s} dz_s
+\end{align*}
+
+\pagebreak
+
+\item Using ($\ref{cfq}$), we can find the unconditional variance (based on the unconditional expectation):
+
+\begin{align*}
+\implies E[r_t] 
+&= \theta  + E\Bigg[\sigma\int_{-\infty}^{t} e^{\kappa (s-t)} \sqrt{r_s}dz_s \Bigg] \\
+&= \theta \\
+\implies Var(r_t) 
+&= E[r_t^2] - E[r_t]^2 \\
+&= E\Bigg[\Bigg(\theta  + \sigma\int_{-\infty}^{t} e^{\kappa (s-t)} \sqrt{r_s}dz_s \Bigg)^2 \Bigg] - \theta^2 \\
+&= E\Bigg[2\theta  \sigma\int_{-\infty}^{t} e^{\kappa (s-t)} \sqrt{r_s}dz_s \Bigg] 
++ E\Bigg[\Bigg( \sigma\int_{-\infty}^{t} e^{\kappa (s-t)} \sqrt{r_s}dz_s \Bigg)^2 \Bigg] \\
+&= \sigma^2 \int_{-\infty}^{t} e^{2 \kappa (s-t)}  E[  r_s ] dz_s\\
+&= \sigma^2 \theta e^{-2\kappa t} \int_{-\infty}^{t} e^{2 \kappa s} dz_s\\
+&= \sigma^2 \theta e^{-2\kappa t} \Bigg[ \frac{1}{2\kappa}e^{2 \kappa s} \Bigg]_{-\infty}^{t}\\
+&= \frac{\sigma^2 \theta}{2\kappa}
+\end{align*}
+
+\subsection*{Black and Scholes Structure}
+
+\item Stock with price $S_t$: $dS_t = \mu S_t dt + \sigma S_t dz_t, \mu > 0, \sigma > 0$.
+
+\item Risk-free bond: $dB_t = B_trdt, \mu > r > 0$.
+
+\item Option with strike price $k$: At the exercise date $T$, the payoff is $C(S_T, T) = \max\{0, S_t - K\}$
+
+\item Assumptions:
+
+\begin{itemize}
+
+\item No dividend payments on stock.
+\item Infinite depth in the stock and bond markets.
+\item Constant drift and volatility in the stock return.
+\item Constant rate of interest.
+\item Frictionless markets (i.e. no transaction costs).
+\item European call option (i.e. can only exercise at maturity date $T$).
+
+\end{itemize}
+
+\item Goal is to find equation for $C(S_t, t), t < T$.
+
+\pagebreak
+
+\subsection*{Future Values}
+
+\item To get $d \ln B_t$ use Ito's lemma [where $\mu(B_t, t) = B_t r$, $\sigma = 0$ and $f(x) = \ln x \implies f_x(x) = \frac{1}{x}, f_{xx}(x) = \frac{-1}{x^2}, f_t(x) = 0$]:
+
+\begin{align*}
+d\ln B_t &= \frac{1}{B_t} (0) dz_t + \frac{1}{B_t} B_t r dt + \frac{1}{2} \frac{-1}{x^2}(0)^2 dt + 0 dt \\
+&= r dt\\
+\implies
+\int_0^t d \ln B_s &= \int_0^t r ds \\
+\implies
+ \ln B_t - \ln B_0 &= r (t - 0) \\
+\implies
+  B_t &= B_0 \exp (rt)
+\end{align*}
+
+\item To get $d \ln S_t$ use Ito's lemma [where $\mu(S_t, t) = \mu S_t$, $\sigma(S_t, t) = \sigma S_t$, and $f(x) = \ln x \implies f_x(x) = \frac{1}{x}, f_{xx}(x) = \frac{-1}{x^2}, f_t(x) = 0$]:
+
+\begin{align*}
+d \ln S_t 
+&= \frac{1}{S_t} \mu S_t dt  + \frac{1}{S_t} \sigma S_t dz_t + \frac{1}{2} \frac{-1}{S_t^2} (\sigma S_t)^2 dt + (0) dt \\
+&= \mu dt + \sigma dz_t - \frac{1}{2} \sigma^2 dt \\
+\implies 
+\int_0^t d \ln S_s
+&= \mu \int_0^t  ds + \sigma \int_0^t dz_s - \frac{1}{2} \sigma^2  \int_0^t dt \\
+\implies 
+\ln S_t - \ln S_0
+&= \mu t + \sigma z_t - \frac{1}{2} \sigma^2 t \\
+\implies
+S_t &= S_0 \exp (\mu t + \sigma z_t - \frac{1}{2} \sigma^2 t)
+\end{align*}
+
+where $z_0 \equiv 0$.
+
+\begin{align*}
+E[\ln S_t | \ln S_0 ] 
+&= E[\ln S_0 + \mu t + \sigma z_t - \frac{1}{2} \sigma^2 t | \ln S_0 ] \\
+&= \ln S_0 + \mu t + \sigma E[z_t|\ln S_0] - \frac{1}{2} \sigma^2 t \\
+&=  \ln S_0 + \mu t - \frac{1}{2} \sigma^2 t
+\end{align*}
+
+Using ($\ref{cfe}$),
+
+\begin{align*}
+E[S_t | S_0] 
+&= E[S_0 \exp (\mu t + \sigma z_t - \frac{1}{2} \sigma^2 t)]\\
+&= S_0 \exp (\mu t- \frac{1}{2} \sigma^2 t) E\Bigg[\exp\Bigg( \int_{v=0}^t \sigma dz_v\Bigg)\Bigg]\\
+&= S_0 \exp (\mu t- \frac{1}{2} \sigma^2 t) E\Bigg[\exp\Bigg(\frac{1}{2} \int_{v=0}^t \sigma^2 dv\Bigg)\Bigg]\\
+&= S_0 \exp (\mu t- \frac{1}{2} \sigma^2 t) \exp\Bigg(\frac{1}{2} \sigma^2t \Bigg)\\
+&= S_0 \exp (\mu t)
+\end{align*}
+
+
+
+\subsection*{Ito's Lemma (Scalar)}
+
+\item Let $f(x, t)$ be twice differentiable in $x$ and once in $t$. Let $x$ be a (scalar) diffusion with $dx_t = \mu (x_t, t) dt + \sigma(x_t, t) dz_t$, then
+
+\begin{align*}
+f(x_t, t) - f(x_0, 0) &= \int_{s=0}^t f_x(x_s, s) dx_s + \frac{1}{2} \int_{s=0}^t f_{xx} (x_s, s) \sigma(x_s, s)^2 ds + \int_{s=0}^t f_t(x_s, s) ds\\
+df &= f_x \mu dt  + f_x \sigma dz_t + \frac{1}{2} f_{xx} \sigma^2 dt + f_t dt
+\end{align*}
+
+where $f_x = \frac{\partial f(x, s)}{\partial x}$ ($f_{xx}$ and $f_t$ similar).
+
+\item Examples
+
+\begin{itemize}
+
+\item Consider $d(z_t^2)$.  Mapping to Ito's lemma notation above: 
+
+\begin{align*}
+\mu(x_t, t) &= 0, \sigma(x_t, t) = 1 \; \forall x_t, t \\
+\implies dx_t &= 0*dt + 1*dz_t = dz_t\\
+f(x, t) &= x^2 \\
+\implies f_x(x, t) &= 2x, f_{xx} = 2, f_t = 0
+\end{align*}
+
+$$
+\implies d(z_t^2) = df = (2z_t) (1) dz_t + (2z_t) (0) dt + \frac{1}{2} (2) (1)^2 dt + (0)dt = 2z_tdz_t + dt
+$$
+
+\item Consider $d \exp (z_t)$. Mapping to Ito's lemma notation above:
+
+\begin{align*}
+\mu(x_t, t) &= 0, \sigma(x_t, t) = 1 \; \forall x_t, t \\
+\implies dx_t &= 0*dt + 1*dz_t = dz_t\\
+f(x, t) &= \exp(x) \\
+\implies f_x(x, t) &= \exp(x), f_{xx} = \exp(x), f_t = 0
+\end{align*}
+
+\begin{align*}
+\implies d \exp (z_t) = df 
+&= \exp(z_t) (0) dt + \exp(z_t) (1) dz_t + \frac{1}{2} \exp(z_t) (1)^2 dt + (0) dt\\
+& = \exp(z_t) dz_t + \frac{1}{2} \exp(z_t) dt
+\end{align*}
+
+\item Consider $dx_t = \mu dt + \sigma dz_t$ and $d \exp(x_t)$. Mapping to Ito's lemma notation above:
+
+\begin{align*}
+\mu(x_t, t) &= \mu, \sigma(x_t, t) = \sigma \; \forall x_t, t \\
+\implies dx_t &= \mu dt + \sigma dz_t\\
+f(x, t) &= \exp(x) \\
+\implies f_x(x, t) &= \exp(x), f_{xx} = \exp(x), f_t = 0
+\end{align*}
+
+\begin{align*}
+\implies d \exp (z_t) = df 
+&= \exp(x_t) \mu dt + \exp(z_t) \sigma dz_t + \frac{1}{2} \exp(z_t) \sigma^2 dt + (0) dt\\
+&= \exp(x_t) \mu dt + \exp(z_t) \sigma dz_t + \frac{1}{2} \exp(z_t) \sigma^2 dt
+\end{align*}
+
+
+\end{itemize}
+
+
+
+\subsection*{Second term in Ito's Lemma}
+\subsection*{No Instantaneous Arbitrage}
+\subsection*{Back-Scholes Call Option Price}
+\subsection*{Ito's Lemma (Vector)}
+\subsection*{Ito's Lemma Examples}
+\subsection*{Application of the Martingale Property}
+\subsection*{Feynman-Kac I}
+\subsection*{Black-Scholes and Feynman-Kac}
+\subsection*{Feynman-Kac II}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{itemize}
+
+
+\section{Part II}
+
+\begin{itemize}
+\item To do
+\end{itemize}
+
+\section{Part III}
+
+\begin{itemize}
+\item To do
+\end{itemize}
+
+\section{Part IV}
+
+\begin{itemize}
+\item To do
+\end{itemize}
+
+\end{document}
+

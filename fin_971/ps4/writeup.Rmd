@@ -1,0 +1,124 @@
+---
+title: 'FIN 971: Problem Set 4^[Instructor: Dean Corbae]'
+author: "Alex von Hafften"
+date: "12/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise 5.5 of Tirole - Liquidity Needs and Pricing of Liquid Assets
+
+Consider the liquidity-needs model with a fixed investment $I$ and only two possible liquidity shocks $\ell \in \{\ell_L, \ell_H\}$ with $\ell_L < \ell_H$. The borrower has cash $A$ and wants to finance $I > A$ at date 0. At date 1, a cash infusion of size $\ell$ is needed in order for the project to continue. If $\ell$ is not invested at date 1, the project stops and yields nothing. If $\ell$ is invested, the borrower chooses between working (no private benefit with success probability $p_H$) and shirking (private benefit $B$ with success probability $p_L = p_H  - \Delta p$). The project then yields, at date 2, $R$ in the case of success and 0 in the case of failure.
+
+The liquidity shock is equal to $\ell_L$ with probability $(1 - \lambda)$ and to $\ell_H$ with probability $\lambda$, where
+
+$$
+\ell_L < p_H (R - B/\Delta p) < \ell_H < p_H R.
+$$
+
+Assume further that 
+
+\begin{align}
+p_H(R - B/\Delta p) - \ell_L > I - A
+\end{align}
+
+There is a single liquid asset, Treasury bonds. A Treasury bond yields 1 unit of income for certain at date 1 (and none at dates 0 and 2). It is sold at date 0 at price $q \ge 1$. The investors' rate of time preference is equal to 0 (i.e. there is no discounting between periods).
+
+(i) Suppose that the firm has the choice between buying enough Treasury bonds to withstand the high liquidity shock and buying none. Show that it chooses to hoard liquidity if 
+
+\begin{align}
+(q-1) (\ell_H - p_H(R - B/ \Delta p)) \le (1 - \lambda)(p_H(R - B/\Delta p ) - \ell_L) - \lambda (\ell_H - p_H(R - R/\Delta p) ) - I + A
+\end{align}
+
+and 
+
+\begin{align}
+(q - 1) (\ell_H - p_H(R - B/\Delta p )) \le \lambda (p_H R - \ell_H)
+\end{align}
+
+\textbf{Solutions:} The problem is pretty vague on some of the details.  I am assuming that the lenders are competitive and the timing of the actions is as follows:
+
+$t = 0$
+
+1. The firm buys $T$ Treasuries, so the firm has $A - qT$ cash (assume that $A \ge qT$).
+
+2. Competitive lenders post contract $(R_l, R_b)$ for loan size $I - (A - qT)$.
+
+3. Investment $I$ is made (i.e., $A - qT$ from from the borrower and $I - (A - qT)$ from the lender).
+
+$t = 1$
+
+4. $\ell$ is realized.  The liquidity shortfall is $\max\{ \ell - T, 0\}$ and the liquidity surplus is $\max\{T - \ell, 0\}$.
+
+5. If the liquidity shortfall is positive, then the lender makes a continuation decision. If the lender chooses to continue, it costs them $\ell - T$.
+
+6. If the liquidity surplus is positive, then the borrower "eats" surplus $T - \ell$.
+
+7. Unobservable effort choice is made.
+
+$t = 2$
+
+8. Income $R$ is realized.
+
+Let us proceed by backward induction.  As in the model without liquidity shocks, $p_H(R - B/ \Delta p)$ is the pledgeable income (i.e., the highest return that the borrower can promise the lender without violating the borrower's IC constraint to put in high effort). At $t=1$ with the high liquidity shock, covering the liquidity shock costs the lender $\ell_H - T$ if the firm holds $T$ Treasuries.  Thus, the lender will cover the liquidity shock if $\ell_H - T \le R_l \le p_H(R - B/ \Delta p)$.  At indifference, the firm buys $T = \ell_H -  p_H(R - B/ \Delta p)$ Treasuries.
+
+...
+
+(ii) Suppose that the economy is composed of a continuum, with mass 1, of identical firms with characteristics as described above. The liquidity shocks of the firms are perfectly correlated. There are $T$ Treasury bonds in the economy with $T < \ell - p_H(R - B/\Delta p)$. Show that when $\lambda$ is small, the liquidity premium $(q - 1)$ commanded by Treasury bonds is proportional to the probability of a high liquidity shock. Hint: show that either (2) or (3) must be binding and use (1) to show (3) is binding.
+
+...
+
+(iii) Suppose that, in the economy considered in the previous subquestion, the government issues at date 0 not only the $T$ Treasury bonds, but also a security that yields at date 1 a payoff equal to 1 in the good state (where the firms experience the low liquidity shock $\ell_L$) and 0 in the bad state (where the firms experience the high liquidity shock $\ell_H$). What is the equilibrium date 0 price $q'$ of this new asset? Note that prices of the Treasury bonds and of this new asset must clear markets.
+ 
+...
+
+\pagebreak
+
+## Costly State Verification
+
+Consider a simple version of the Townsend costly state verification model in which the cash flow $R$ obtained by the borrower can take only two values: a high value $R_H$ with probability $p_H$ and a low value $R_L$ with probability $p_L = 1 - p_H$. The loan size is $I$. The lender and borrower are risk neutral. Unlike the case presented in class, assume lender has market power so that the optimal contract will be found by maximizing expected repayment to the lender $U_L$ (net of auditing costs) subject to incentive compatibility and individual rationality of the borrower. The outside option for the borrower is $U_B$ and the audit cost is $K$. The borrower has limited liability. The maximum penalty that can be inflicted on the borrower if he lies (reports $R_L$ when $R_H$ has occurred) is confiscation of $R_H$.
+
+(i) Compute the optimal deterministic contract $(y(\hat{R}), r(\hat{R}))$ as a function of $U_B$. Represent the pareto frontier in the $(U_B, U_L)$ plane.\footnote{Hint: you only need consider two cases $r \le R_L$ and $R_L < r \le R_H$ since $r > R_H$ is inefficient because an audit would take place in state $H$; which is clearly dominated by the debt with $r = R_H$.}
+
+...
+
+(ii) Suppose the lender can credibly commit to a stochastic auditing policy; audit with probability $q \in [0, 1]$ when the borrower reports $R_L$. Show that the incentive compatibility constraint is equivalent to
+
+$$
+q \ge q^* = 1 - \frac{U_B}{p_H(R_H - R_L)}
+$$
+
+Represent the new Pareto Frontier. Comment.
+
+...
+
+
+\pagebreak
+
+## Exercise 6.1 of Tirole - Privately Known Private Benefit and Market Breakdown
+
+In Chapter 3 of Tirole on moral hazard, the type or "benefit $B$" of the entrepreneur (borrower) was known by the investor (lender). In this question, we will assume that there is a unit measure of two types $\{b, g\}$ of entrepreneurs and their type is unknown by the investor. The fraction of type $g$ entrepreneurs is $\alpha$ and type $b$ entrepreneurs is $(1 - \alpha)$. The entrepreneur want to finance a fixed-size project costing $I$ and for simplicity has no equity $(A = 0)$ so must borrow $I$. As in Section 3.2.1 of Tirole, the probability of success is $p_H$ if the entrepreneur exerts high effort and $p_L$ if the entrepreneur shirks where $\Delta p = p_H - p_L > 0$. There is no private benefit $B = 0$ when exerting high effort. The private benefit when shirking is either $B_b$ or $B_g$ depending on the entrepreneur's type where $B_b > B_g > 0$. Thus a "bad type" has higher private benefit when shirking. Entreprenuers and investors are risk neutral. Expect for knowing the type of entreprenuer, all other parameters are common knowledge. Assume that under assymetric information lenders are uncertain about whether the project should be funded:
+
+$$
+p_H \Bigg( R - \frac{B_b}{\Delta p}\Bigg) < I < p_H \Bigg( R - \frac{B_g}{\Delta p}\Bigg)
+$$
+
+and that lenders cannot break even if the entrepreneur shirks:
+
+$$
+p_LR<I.
+$$
+
+Since the entrepreneurs type is unknown, the lender cannot finance only good borrowers. Due to notational changes, denote $R_e$ and $R_l$ the entreprenuer and lender "returns" in the event of success and assume the entrepreneur receives no return in event of failure (this can be shown to be optimal).
+
+(i) Show that there exists $\alpha^* \in (0, 1)$ such that no financing occurs if $\alpha < \alpha^*$ and financing a pooling equilibrium exists if $\alpha \ge \alpha^*$.
+
+...
+
+(ii) Describe the cross subsidies between types when borrowing arises in equilibrium.
+
+...
+
