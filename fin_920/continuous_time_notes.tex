@@ -11,6 +11,7 @@
 \usepackage{pdfpages}
 \usepackage{multicol}
 \usepackage{geometry}
+\usepackage{bbm}
 \usepackage{accents}
 \hypersetup{
 	colorlinks,
@@ -36,6 +37,7 @@
 \newcommand{\muvec}{\boldsymbol{\mu}}
 \newcommand{\alphavec}{\boldsymbol{\alpha}}
 \newcommand{\sigmamat}{\boldsymbol{\sigma}}
+\newcommand{\one}{\mathbbm{1}}
 
 \newtoggle{extended}
 \settoggle{extended}{false}
@@ -361,8 +363,6 @@ E[S_t | S_0]
 &= S_0 \exp (\mu t)
 \end{align*}
 
-
-
 \subsection*{Ito's Lemma (Scalar)}
 
 \item Let $f(x, t)$ be twice differentiable in $x$ and once in $t$. Let $x$ be a (scalar) diffusion with $dx_t = \mu (x_t, t) dt + \sigma(x_t, t) dz_t$, then
@@ -424,14 +424,156 @@ f(x, t) &= \exp(x) \\
 
 \end{itemize}
 
-
-
-\subsection*{Second term in Ito's Lemma}
 \subsection*{No Instantaneous Arbitrage}
-\subsection*{Back-Scholes Call Option Price}
+
+\item Bond increment is $dB_t = B_t r dt$
+
+\item Stock price increment is $dS_t = \mu S_t dt + \sigma S_t dz_t$
+
+\item Option price increment is [by Ito's Lemma where $\mu(S_t, t) = S_t \mu$, $\sigma(S_t, t) = \sigma S_t$, $f = C$, $f_x =C_s$, etc.]
+
+\begin{align*}
+d C(S_t, t) 
+&= C_s S_t \mu dt + C_s \sigma S_t dz_t + \frac{1}{2} C_{ss} (\sigma S_t)^2 dt + C_t dt\\
+&= C_s (S_t \mu dt +  \sigma S_t dz_t) + \frac{1}{2} C_{ss} (\sigma S_t)^2 dt + C_t dt\\
+&= C_s dS_t + \frac{1}{2} C_{ss} (\sigma S_t)^2 dt + C_t dt
+\end{align*}
+
+where $C_t = \frac{\partial C(S_t, t)}{\partial t}$ and similar for $C_s$ and $C_{ss}$.
+
+\item Portfolio (value) increment: $dP_t = -dC(S_t, t) + C_s dS_t + (C - C_s S_t)rdt$
+
+This portfolio is where you sell one option (inflow of $C(S_t, t)$), buy $C_s$ shares of stock at price $S_t$ (outflow of $C_s S_t$), and invest $C(S_t, t) - C_s S_t$ dollars in the bond (outflow of $C(S_t, t) - C_s S_t$).
+
+Portfolio cost is zero [i.e. $C(S_t, t) - C_s S_t - (C(S_t, t) - C_s S_t) = 0$] and it is risk-free: 
+
+No arbitrage $\implies dP_t = 0 \implies 0 = -dC(S_t, t) + C_s dS_t + (C(S_t, t) - C_s S_t)rdt$
+
+Substituting in option increment:
+
+\begin{align*}
+\implies 0 
+&= -[ C_s dS_t + \frac{1}{2} C_{ss} \sigma^2 S_t^2 dt + C_t dt] + C_s dS_t + (C(S_t, t) - C_s S_t)rdt\\
+&= - \frac{1}{2} C_{ss} \sigma^2 S_t^2 dt - C_t dt + (C(S_t, t) - C_s S_t)rdt\\
+&= - \frac{1}{2} C_{ss} \sigma^2 S_t^2 - C_t + (C(S_t, t) - C_s S_t)r
+\end{align*}
+
+\subsection*{Black-Scholes Call Option Price}
+
+\item The price of a European call option for $0 \le t \le T, 0 \le S_t$ satisfies:
+
+\begin{align*}
+0 &= \frac{1}{2} C_{ss} \sigma^2 S_t^2 + C_t - (C(S_t, t) - C_s S_t)r & [\text{differential equation}]\\
+C(S_T, T) &= \max[S_T - K, 0] & [\text{boundary condition}]\\
+C(0, t) &= 0, & \forall 0 \le t < T
+\end{align*}
+
+\item A solution is:
+
+\begin{align*}
+C(S_t, t) &= S_t \Phi(d_1(S_t)) - K \exp(-r(T-t)) \Phi(d_2(S_t)) \\
+d_1(S) :&= \frac{\ln(S/K) + (r+\sigma^2/2)(T-t)}{\sigma\sqrt{T - t}} \\
+d_2(S) :&= d_1(S) - \sigma \sqrt{T - t}\\
+\Phi(x) :&= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^x \exp (- \frac{v^2}{2}) dv & [\text{standard normal cdf}]
+\end{align*}
+
 \subsection*{Ito's Lemma (Vector)}
+
+\item Let scalar function $f(\xvec, t)$ be twice differentiable in vector $\xvec$ and once in $t$.
+
+\item Let $\xvec_t$ be a vector diffusion with increment:
+
+$$
+d \xvec_t = \muvec(\xvec_t, t) dt + \sigmamat(\xvec_t, t) d \zvec_t
+$$
+
+where $\zvec_t$ is a Brownian Motion vector. Then\footnote{$tr[\mathbf{B}]$ denotes the trace of matrix $\mathbf{B}$ i.e. the elements of the diagonal.}
+
+\begin{align*}
+f(\xvec_t, t) - f(\xvec_0, 0) &= \int_{s=0}^t f_\xvec(\xvec_s, s) d\xvec_s + \frac{1}{2} \int_{s=0}^t tr[f_{\xvec\xvec} (\xvec_s, s) \sigma(\xvec_s, s)\sigma(\xvec_s, s)^T] ds + \int_{s=0}^t f_t(\xvec_s, s) ds\\
+\iff
+df &= f_\xvec^T \muvec_x dt + f_\xvec^T \sigmamat_x d\zvec_t + \frac{1}{2} tr[f_{\xvec\xvec} \sigmamat\sigmamat^T] dt + f_t dt
+\end{align*}
+
 \subsection*{Ito's Lemma Examples}
+
+$$
+d \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} \mu_x \\ \mu_y \end{bmatrix} dt + \begin{bmatrix} \sigma_x & 0 \\ 0 & \sigma_y \end{bmatrix} \begin{bmatrix} 1 & 0 \\ \rho & \sqrt{1 - \rho^2} \end{bmatrix} \begin{bmatrix} dz_1 \\ dz_2 \end{bmatrix}
+$$
+
+\item Consider $d(x^2)$.  We know that $dx = \mu_x dt + \sigma_x dz_1$. Mapping to Ito's Lemma notation, $f(x) = x^2, f_x = 2x, f_{xx} = 2, f_t = 0$:
+
+$$
+d(x^2) = 2x \mu_x dt + 2x \sigma_x dz_1 + (0) dt + \frac{1}{2} (2)\sigma_x^2 dt = 2x \mu_x dt + 2x \sigma_x dz_1 + \sigma_x^2dt 
+$$
+
+\item Consider $d(xy)$. We know that $dy = \mu_y dt + \sigma_y \rho dz_1 + \sigma_y \sqrt{1 - \rho^2} dz_2$
+
+\begin{align*}
+d(xy) 
+&= xdy + ydx + dxdy\\
+&= x[\mu_y dt + \sigma_y \rho dz_1 + \sigma_y \sqrt{1 - \rho^2} dz_2] + y[\mu_x dt + \sigma_x dz_1] \\
+&+ [\mu_x dt + \sigma_x dz_1][\mu_y dt + \sigma_y \rho dz_1 + \sigma_y \sqrt{1 - \rho^2} dz_2]\\
+&= x\mu_y dt + x\sigma_y \rho dz_1 + x\sigma_y \sqrt{1 - \rho^2} dz_2 + y\mu_x dt + y\sigma_x dz_1 \\
+&+ \mu_x dt\mu_y dt + \mu_x dt\sigma_y \rho dz_1 + \mu_x dt\sigma_y \sqrt{1 - \rho^2} dz_2\\
+&+\sigma_x dz_1\mu_y dt + \sigma_x dz_1\sigma_y \rho dz_1 + \sigma_x dz_1\sigma_y \sqrt{1 - \rho^2} dz_2\\
+&= x\mu_y dt + x\sigma_y \rho dz_1 + x\sigma_y \sqrt{1 - \rho^2} dz_2 \\
+&+ y\mu_x dt + y\sigma_x dz_1 + \sigma_x \sigma_y \rho dt + \sigma_x \sigma_y \sqrt{1 - \rho^2} dt\\
+&= (x \mu_y + y \mu_x + \sigma_x \sigma_y \rho+ \sigma_x \sigma_y \sqrt{1-\rho^2}) dt + (x \sigma_y \rho + y \sigma_x)dz_1 + x \sigma_y \sqrt{1 - \rho^2} dz_2
+\end{align*}
+
 \subsection*{Application of the Martingale Property}
+
+\item Suppose $X$ is Brownian motion, $dX = dz$.
+
+\item We know $X_T | X_t \sim N(X_t, T - t)$:
+
+$$
+h(X_t, t) 
+:= Pr(X_T \le A | X_t) 
+= \Phi\Bigg(\frac{A - X_t}{\sqrt{T-t}}\Bigg) 
+= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\frac{A - X_t}{\sqrt{T - t}}} \exp \Bigg(- \frac{u^2}{2}\Bigg) du
+$$
+
+\item By Ito's lemma, $dh = h_x dX + \frac{1}{2} h_{xx} dt + h_t dt$ 
+
+Notice that $E[dh] = h_x E[dX] + \frac{1}{2} h_{xx} dt + h_t dt = \frac{1}{2} h_{xx} dt + h_t dt$
+
+\item Also, probabilities are martingales:
+
+$$
+\frac{1}{v} E_t(h(X_{t+v}, t+v) - h(X_t, t)) = \frac{1}{v} E_t(E_{t+v}(\one_{X_T \le A}) - E_{t}(\one_{X_T \le A})) = 0
+$$
+
+Taking $v$ small, so $dt = v$:
+
+$$
+\implies 0 = E_t(dh)/dt = \frac{1}{2} h_{xx} + h_t \text{, subject to } h(X_T, T) = \begin{cases} 1 &\text{ if } X_t \le A \\ 0 & \text{ otherwise }\end{cases}
+$$
+
+\item Show that $0 = \frac{1}{2} h_{xx} + h_t$:
+
+\begin{align*}
+\Phi'(x) &= \phi(x) \\
+&= \frac{1}{\sqrt{2\pi}} \exp \Bigg(- \frac{x^2}{2}\Bigg)\\
+\phi'(x) 
+&= \frac{1}{\sqrt{2\pi}} \exp \Bigg(- \frac{x^2}{2}\Bigg) (-x)\\
+&= -x*\phi(x)\\
+h_t 
+&= \frac{\partial h(X_t, t)}{\partial t} \\
+&= \phi\Bigg(\frac{A - X_t}{\sqrt{T-t}}\Bigg) \frac{(A - X_t)\frac{1}{2}(T-t)^{-1/2} - (0)\sqrt{T -t}}{T - t} \\
+&= \frac{1}{2}\phi\Bigg(\frac{A - X_t}{\sqrt{T-t}}\Bigg) \frac{A-X_t}{(T - t)^{3/2}} \\
+h_x 
+&= \frac{\partial h(X_t, t)}{\partial X_t} \\
+&= \phi\Bigg(\frac{A - X_t}{\sqrt{T-t}}\Bigg) \frac{-1}{\sqrt{T - t}} \\
+h_{xx} 
+&= \frac{\partial^2 h(X_t, t)}{\partial^2 X_t} \\
+&= \phi'\Bigg(\frac{A - X_t}{\sqrt{T-t}}\Bigg) \frac{1}{T - t} \\
+&= \phi\Bigg(\frac{A - X_t}{\sqrt{T-t}}\Bigg) \frac{X_t-A}{(T-t)^{3/2}} \\
+\end{align*}
+
+Thus, $\frac{1}{2} h_{xx} + h_t = 0$.
+
 \subsection*{Feynman-Kac I}
 \subsection*{Black-Scholes and Feynman-Kac}
 \subsection*{Feynman-Kac II}
