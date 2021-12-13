@@ -30,19 +30,25 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
 \newcommand{\F}{\mathcal{F}}
-\newcommand{\xvec}{\mathbf{x}}
-\newcommand{\onevec}{\mathbf{1}}
-\newcommand{\Xvec}{\mathbf{X}}
-\newcommand{\zvec}{\mathbf{z}}
-\newcommand{\muvec}{\boldsymbol{\mu}}
-\newcommand{\alphavec}{\boldsymbol{\alpha}}
-\newcommand{\sigmamat}{\boldsymbol{\sigma}}
-\newcommand{\one}{\mathbbm{1}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Xbf}{\mathbf{X}}
+\newcommand{\Vbf}{\mathbf{V}}
+\newcommand{\zbf}{\mathbf{z}}
+\newcommand{\Tbf}{\mathbf{T}}
+\newcommand{\mubf}{\boldsymbol{\mu}}
+\newcommand{\alphabf}{\boldsymbol{\alpha}}
+\newcommand{\betabf}{\boldsymbol{\beta}}
+\newcommand{\sigmabf}{\boldsymbol{\sigma}}
+\newcommand{\onebf}{\mathbbm{1}}
+\newcommand{\Covbf}{\text{\textbf{Cov}}}
+\newcommand{\Varbf}{\text{\textbf{Var}}}
 
 \newtoggle{extended}
 \settoggle{extended}{false}
 
-\title{FIN 920: Continuous-Time Diffusion Models Notes}
+\title{FIN 920: Continuous-Time Diffusion Models Notes\footnote{These notes are based on four sets of notes on Continuous-Time Diffusion Models by David Brown. I've done my best to flesh arguments out and add detail.}}
+
+\author{Alex von Hafften}
 
 \begin{document}
 
@@ -178,34 +184,34 @@ $$
 
 \subsection*{Vector Diffusion Processes}
 
-\item A vector of Brownian motions $\zvec_t$ is independent iff $z_{it} - z_{is} \perp z_{ju} - z_{jv}$ for all $i \neq j$ and all intervals $[t, s]$ and $[u, v]$.
+\item A vector of Brownian motions $\zbf_t$ is independent iff $z_{it} - z_{is} \perp z_{ju} - z_{jv}$ for all $i \neq j$ and all intervals $[t, s]$ and $[u, v]$.
 
 \item A diffusion (or Ito process) is an adapted random vector process $\mathbf{x}_t$ with continuous paths,
 
 \begin{align*}
-\xvec_t &= \xvec_0 + \int_{v=0}^t \muvec(\xvec_v, v)dv + \int_{v=0}^t \sigmamat(\xvec_v, v) d\zvec_v \\
-\iff d\xvec_t &= \muvec(\xvec_t, t)dt + \sigmamat(\xvec_t, t) d\zvec_t
+\xbf_t &= \xbf_0 + \int_{v=0}^t \mubf(\xbf_v, v)dv + \int_{v=0}^t \sigmabf(\xbf_v, v) d\zbf_v \\
+\iff d\xbf_t &= \mubf(\xbf_t, t)dt + \sigmabf(\xbf_t, t) d\zbf_t
 \end{align*}
 
-where $\muvec(\xvec_t, t)$ is a vector of drift coefficients, $\sigmamat(\xvec_t, t)$ is a diffusion coefficient, and $\zvec_t$ is a vector of independent Brownian motions.
+where $\mubf(\xbf_t, t)$ is a vector of drift coefficients, $\sigmabf(\xbf_t, t)$ is a diffusion coefficient, and $\zbf_t$ is a vector of independent Brownian motions.
 
 \item The Ito integral is defined as
 
 $$
-\int_{v=0}^t \sigmamat(\xvec_v, v) d\zvec_v := \lim_{N\to\infty} \sum_{v=1}^N \sigmamat(\xvec_{(v-1)t/N}, (v-1)t/N) (\zvec_{tv/N} - \zvec_{t(v-1)/N})
+\int_{v=0}^t \sigmabf(\xbf_v, v) d\zbf_v := \lim_{N\to\infty} \sum_{v=1}^N \sigmabf(\xbf_{(v-1)t/N}, (v-1)t/N) (\zbf_{tv/N} - \zbf_{t(v-1)/N})
 $$
 
 \begin{align*}
-E_t(d\xvec_t) 
-&= E_t(\muvec(\xvec_t, t)dt + \sigmamat(\xvec_t, t) d\zvec_t) 
-= \muvec(\xvec_t, t)dt + \sigmamat(\xvec_t, t) E_t(d\zvec_t)
-= \muvec(\xvec_t, t)dt\\
-E_t(d\xvec_t d\xvec^T) 
-&= E_t((\muvec(\xvec_t, t)dt + \sigmamat(\xvec_t, t) d\zvec_t) (\muvec(\xvec_t, t)dt + \sigmamat(\xvec_t, t) d\zvec_t)^T) \\ 
-&= E_t((dt)^2 \muvec(\xvec_t, t)(\muvec(\xvec_t, t))^T + 2 \muvec(\xvec_t, t) (dt d\zvec_t^T) \sigmamat(\xvec_t, t)^T  + \sigmamat(\xvec_t, t) (d\zvec_td\zvec_t^T) \sigmamat(\xvec_t, t)^T) \\
-&= \sigmamat(\xvec_t, t) E_t( d\zvec_td\zvec_t^T) \sigmamat(\xvec_t, t)^T \\
-&= \sigmamat(\xvec_t, t) (dt \times I) \sigmamat(\xvec_t, t)^T \\
-&= \sigmamat(\xvec_t, t) \sigmamat(\xvec_t, t)^T dt
+E_t(d\xbf_t) 
+&= E_t(\mubf(\xbf_t, t)dt + \sigmabf(\xbf_t, t) d\zbf_t) 
+= \mubf(\xbf_t, t)dt + \sigmabf(\xbf_t, t) E_t(d\zbf_t)
+= \mubf(\xbf_t, t)dt\\
+E_t(d\xbf_t d\xbf^T) 
+&= E_t((\mubf(\xbf_t, t)dt + \sigmabf(\xbf_t, t) d\zbf_t) (\mubf(\xbf_t, t)dt + \sigmabf(\xbf_t, t) d\zbf_t)^T) \\ 
+&= E_t((dt)^2 \mubf(\xbf_t, t)(\mubf(\xbf_t, t))^T + 2 \mubf(\xbf_t, t) (dt d\zbf_t^T) \sigmabf(\xbf_t, t)^T  + \sigmabf(\xbf_t, t) (d\zbf_td\zbf_t^T) \sigmabf(\xbf_t, t)^T) \\
+&= \sigmabf(\xbf_t, t) E_t( d\zbf_td\zbf_t^T) \sigmabf(\xbf_t, t)^T \\
+&= \sigmabf(\xbf_t, t) (dt \times I) \sigmabf(\xbf_t, t)^T \\
+&= \sigmabf(\xbf_t, t) \sigmabf(\xbf_t, t)^T dt
 \end{align*}
 
 \subsection*{Examples of Vector Diffusion Processes}
@@ -219,11 +225,11 @@ $$
 \item Multiperiod consumption-savings-portfolio choice in Merton (various 1970s)
 
 \begin{align*}
-dW_t &= W_t (\alphavec_t \cdot (\muvec(\Xvec_t, t) - r(\Xvec_t, t)\onevec) + r(\Xvec_t, t)) dt +W_t \alphavec_t^T \sigmamat(\Xvec_t, t)d\zvec_t - c_t dt + y_tdt \\
-d \Xvec_t &= \muvec_x (\Xvec_t, t) dt + \sigma_x (\Xvec_t, t) d\zvec_t
+dW_t &= W_t (\alphabf_t \cdot (\mubf(\xbf_t, t) - r(\xbf_t, t)\onebf) + r(\xbf_t, t)) dt +W_t \alphabf_t^T \sigmabf(\xbf_t, t)d\zbf_t - c_t dt + y_tdt \\
+d \xbf_t &= \mubf_x (\xbf_t, t) dt + \sigma_x (\xbf_t, t) d\zbf_t
 \end{align*}
 
-where $W_t \ge 0$ and $W_0$ and $\Xvec_0$ is given.
+where $W_t \ge 0$ and $W_0$ and $\xbf_0$ is given.
 
 \item Constant returns-to-scale production and productivity in Ai (JF 2010).
 
@@ -240,19 +246,19 @@ dz_t^c dz_t^x &= \rho dt
 \item For example, expectation of quadratic:
 
 \begin{align}
-E_t \Bigg( \Bigg( \int_t^T \gamma_s d\zvec_s \Bigg)^2 \Bigg) \nonumber
+E_t \Bigg( \Bigg( \int_t^T \gamma_s d\zbf_s \Bigg)^2 \Bigg) \nonumber
 &= E_t \lim_{N \to \infty} \sum_{i=1}^N \sum_{j=1}^N K_i K_j \nonumber\\
 &= E_t \lim_{N \to \infty} 2\sum_{i=1}^N \sum_{i<j}^N K_j E_{(T-t)(i-1)/N} K_i + \sum_{j=1}^N E_{(T-t)(j-1)/N} K_j^2 \nonumber\\
 &= E_t \lim_{N \to \infty} \frac{T - t}{N} \sum_{j=1}^N \gamma_{(T-t)(j-1)/N} \cdot \gamma_{(T-t)(j-1)/N} \nonumber\\
 &= \int_t^T E_t (\gamma_s \cdot \gamma_s) ds \label{cfq}
 \end{align}
 
-where $K_j = \gamma_{T(j-1)/N} \cdot (\zvec_{(T-t)j/N} - \zvec_{(T-t)(j-1)/N})$.
+where $K_j = \gamma_{T(j-1)/N} \cdot (\zbf_{(T-t)j/N} - \zbf_{(T-t)(j-1)/N})$.
 
 \item For example, expectation of exponential:
 
 \begin{align}
-E_t \Bigg( \exp \Bigg( \int_t^T \gamma_s d\zvec_s \Bigg) \Bigg) 
+E_t \Bigg( \exp \Bigg( \int_t^T \gamma_s d\zbf_s \Bigg) \Bigg) 
 &= E_t \Bigg( \exp \Bigg( \frac{1}{2} \int_t^T (\gamma_s \cdot \gamma_s)ds \Bigg) \Bigg) \label{cfe}
 \end{align}
 
@@ -479,20 +485,20 @@ d_2(S) :&= d_1(S) - \sigma \sqrt{T - t}\\
 
 \subsection*{Ito's Lemma (Vector)}
 
-\item Let scalar function $f(\xvec, t)$ be twice differentiable in vector $\xvec$ and once in $t$.
+\item Let scalar function $f(\xbf, t)$ be twice differentiable in vector $\xbf$ and once in $t$.
 
-\item Let $\xvec_t$ be a vector diffusion with increment:
+\item Let $\xbf_t$ be a vector diffusion with increment:
 
 $$
-d \xvec_t = \muvec(\xvec_t, t) dt + \sigmamat(\xvec_t, t) d \zvec_t
+d \xbf_t = \mubf(\xbf_t, t) dt + \sigmabf(\xbf_t, t) d \zbf_t
 $$
 
-where $\zvec_t$ is a Brownian Motion vector. Then\footnote{$tr[\mathbf{B}]$ denotes the trace of matrix $\mathbf{B}$ i.e. the elements of the diagonal.}
+where $\zbf_t$ is a Brownian Motion vector. Then\footnote{$tr[\mathbf{B}]$ denotes the trace of matrix $\mathbf{B}$ i.e. the elements of the diagonal.}
 
 \begin{align*}
-f(\xvec_t, t) - f(\xvec_0, 0) &= \int_{s=0}^t f_\xvec(\xvec_s, s) d\xvec_s + \frac{1}{2} \int_{s=0}^t tr[f_{\xvec\xvec} (\xvec_s, s) \sigma(\xvec_s, s)\sigma(\xvec_s, s)^T] ds + \int_{s=0}^t f_t(\xvec_s, s) ds\\
+f(\xbf_t, t) - f(\xbf_0, 0) &= \int_{s=0}^t f_\xbf(\xbf_s, s) d\xbf_s + \frac{1}{2} \int_{s=0}^t tr[f_{\xbf\xbf} (\xbf_s, s) \sigma(\xbf_s, s)\sigma(\xbf_s, s)^T] ds + \int_{s=0}^t f_t(\xbf_s, s) ds\\
 \iff
-df &= f_\xvec^T \muvec_x dt + f_\xvec^T \sigmamat_x d\zvec_t + \frac{1}{2} tr[f_{\xvec\xvec} \sigmamat\sigmamat^T] dt + f_t dt
+df &= f_\xbf^T \mubf_x dt + f_\xbf^T \sigmabf_x d\zbf_t + \frac{1}{2} tr[f_{\xbf\xbf} \sigmabf\sigmabf^T] dt + f_t dt
 \end{align*}
 
 \subsection*{Ito's Lemma Examples}
@@ -542,7 +548,7 @@ Notice that $E[dh] = h_x E[dX] + \frac{1}{2} h_{xx} dt + h_t dt = \frac{1}{2} h_
 \item Also, probabilities are martingales:
 
 $$
-\frac{1}{v} E_t(h(X_{t+v}, t+v) - h(X_t, t)) = \frac{1}{v} E_t(E_{t+v}(\one_{X_T \le A}) - E_{t}(\one_{X_T \le A})) = 0
+\frac{1}{v} E_t(h(X_{t+v}, t+v) - h(X_t, t)) = \frac{1}{v} E_t(E_{t+v}(\onebf_{X_T \le A}) - E_{t}(\onebf_{X_T \le A})) = 0
 $$
 
 Taking $v$ small, so $dt = v$:
@@ -574,44 +580,796 @@ h_{xx}
 
 Thus, $\frac{1}{2} h_{xx} + h_t = 0$.
 
+\pagebreak
+
 \subsection*{Feynman-Kac I}
+
+\item Suppose the risk-free rate $r$ is constant (and technical conditions hold on functions $\mu$ and $\sigma^2$).
+
+\item The function $f(x, t)$ is a solution to the boundary-value problem:
+
+\begin{align*}
+0 &= \frac{1}{2} f_{xx} (x, t) \sigma^2(x, t) + f_x(x, t) \mu(x, t) + f_t(x, t) - r f(x, t), 0 \le t < T\\
+f(x, T) &= F(x)
+\end{align*}
+
+iff $f$ is given by
+
+\begin{align*}
+f(x, t) &= \exp(-r(T-t)) E[F(X_T)| X_t = x] \\
+\text{where } dX_s &= \mu (X_s, s) ds + \sigma(X_s, s) dz_s; X_t = x
+\end{align*}
+
+\item Intuition: Use the factor of integration $\exp(-rt)$.
+
+\begin{align*}
+f(X_T, T) \exp(-rT) - f(X_t, t) \exp(-rt) 
+&= \int_{s=t}^T d(f(X_s, s) \exp(-rs))\\
+&= \int_{s=t}^T \exp(-rs) f_x(X_s, s) \sigma(X_s, s) dz_s
+\end{align*}
+
 \subsection*{Black-Scholes and Feynman-Kac}
+
+\item The price of a European call option for $0 \le t \le T, 0 \le S_t$ satisfies:
+
+\begin{align*}
+0 &= \frac{1}{2} C_{ss} \sigma^2 S_t^2 + C_t - (C(S_t, t) - C_s S_t)r \\
+C(S_T, T) &= \max[S_T - K, 0] \\
+C(0, t) &= 0 
+\end{align*}
+
+\item A solution is:
+
+\begin{align*}
+C(s, t) &= \exp(-r(T-t)) E[\max\{S_T^* - K, 0\}| S_t^* = s]\\
+\text{where } \frac{dS_t^*}{S_t^*} &= rdt + \sigma dz_t
+\end{align*}
+
+
 \subsection*{Feynman-Kac II}
 
+\item Under technical conditions on functions $g$, $r$, $\mu$, and $\sigma^2$, the function $f(x, t)$ is a solution to the boundary-value problem:
 
+\begin{align*}
+0 &= \frac{1}{2} f_{xx} (x, t) \sigma^2(x, t) + f_x(x, t) \mu(x, t) + f_t(x, t) + g(x, t) - r(x, t) f(x, t), 0 \le t < T\\
+f(x, T) &= F(x)
+\end{align*}
 
+iff $f$ is given by
 
-
-
-
-
-
-
-
-
-
-
-
+\begin{align*}
+f(x, t) &= E\Bigg[ \int_{v=t}^T \exp \Bigg(\int_{v=t}^T -r(X_v, v) dv \Bigg) g(X_s, s) ds + \exp\Bigg(\int_{s=t}^T -r(X_s, s) ds \Bigg) F(X_T) \Bigg| X_t = x \Bigg] \\
+\text{where } dX_s &= \mu (X_s, s) ds + \sigma(X_s, s) dz_s; X_t = x
+\end{align*}
 
 \end{itemize}
-
 
 \section{Part II}
 
 \begin{itemize}
-\item To do
+
+\subsection*{Diffusion Processes}
+
+\item In this section, any vector stochastic process $S$ is an Ito process $dS_t = \mu(\omega, t) dt + \sigma(\omega, t) d \zbf_t$ or (shorthand) $dS_t = \mu_t dt + \sigma_t d \zbf_t$ (the subscripts remind us that the coefficient are functions of state and time.
+
+\item We casually speak of $\mu_t$ as the conditional expected growth rate (or drift) of $S_t$ per unit of time, while the conditional covariance matrix of the increment $dS_t$ is $\sigma_t \sigma^T$.
+
+\subsection*{Continuous-Time Budget Constraint}
+
+\item In continuous time, wealth is equal before and after a trade:
+
+$$
+W_t = \underbrace{\theta_t \cdot S_t}_{\text{At time t, after trade}} = \underbrace{\theta_{t - \Delta} \cdot S_t + \theta_{t-\Delta} \cdot D_t \Delta - c_t \Delta + y_t \Delta}_{\text{At time t, before trade}}
+$$
+
+where $\theta_t$ is the vector of positions, $S_t$ is the price vector, $D_t$ is the dividend vector, $c_t$ is the consumption rate, and $y_t$ is the labor income rate.
+
+\begin{align}
+\implies \underbrace{\theta_{t-\Delta} \cdot D_t \Delta}_{\text{dividend income}} - \underbrace{c_t \Delta}_{\text{consumption}} + \underbrace{y_t \Delta}_{\text{labor income}}
+&= \underbrace{(\theta_t - \theta_{t-\Delta}) \cdot S_t}_{\text{asset purchases}} \nonumber \\
+&= (\theta_t - \theta_{t-\Delta}) \cdot S_{t - \Delta} + (\theta_t - \theta_{t-\Delta}) \cdot (S_t - S_{t - \Delta}) \label{w1}
+\end{align}
+
+\item Change in wealth is:
+
+\begin{align}
+W_t - W_{t-\Delta} 
+&= \theta_t \cdot S_t - \theta_{t-\Delta} \cdot S_{t -\Delta} \nonumber\\
+&= \theta_{t-\Delta} \cdot (S_t - S_{t-\Delta}) + (\theta_t - \theta_{t-\Delta}) \cdot S_{t-\Delta} + (\theta_t - \theta_{t-\Delta}) \cdot (S_t - S_{t -\Delta}) \label{w2}
+\end{align}
+
+\item Combining ($\ref{w1}$) and ($\ref{w2}$):
+
+$$
+\underbrace{W_t - W_{t-\Delta}}_{\text{Change in wealth}} = \underbrace{\theta_{t-\Delta} \cdot (S_t - S_{t-\Delta}) + \theta_{t-\Delta} \cdot D_t \Delta}_{\text{Portfolio gains or losses}} - \underbrace{c_t \Delta}_{\text{consumption}} + \underbrace{y_t \Delta}_{\text{labor income}}
+$$
+
+\item Let $\Delta \to 0$:
+
+\begin{align*}
+dW_t 
+&= \theta_t \cdot dS_t + \theta_t \cdot D_t dt - c_t dt + y_t dt\\
+&= W_t(\alpha_t \cdot ((dS_t + D_t dt)./S_t - r_t \onebf dt) + r_t dt) - c_t dt + y_t dt\\
+\end{align*}
+
+where $\alpha_t$ is the portfolio weight in each risky security, $r_t$ is the instantaneous risk-free rate, and ``./" denotes element-by-element division.
+
+\subsection*{Normally Distributed Returns}
+
+\item We write $(dS_t + D_t dt)./S_t = \mubf_t dt + \sigmabf_t d\zbf_t$ when prices are diffusion process, where expected rate of return is $\mubf_t$ is the sum of the expected capital gain and dividend yield.  
+
+\item The instantaneous rate of return on a portfolio is distributed normal, with expected return and variance of return:
+
+\begin{align*}
+\mu_p &= \alpha_t \cdot (\mubf_t - r_t \onebf) + r_t\\
+\sigma_p^2 &= \alpha_t^T \Vbf_t \alpha_t = \alpha_t^T \sigmabf_t \sigmabf_t^T \alpha_t
+\end{align*}
+
+\item Furthermore, if an investor has state-independent utility, an optimal portfolio is on the instantaneous minimum variance frontier. 
+
+\item Given an instantaneous risk-free rate, the MVF is defined by the risk-free asset and the tangency portfolio of risky assets with the highest Sharpe ratio. 
+
+\item The portfolio of (only) risky assets with the maximum Sharpe ratio is
+
+$$
+\alphabf_t = \frac{\Vbf_t^{-1}(\mubf - r_t \onebf)}{\onebf^T \Vbf_t^{-1}(\mubf_t - r_t \onebf)}
+$$
+
+\subsection*{Self-Financing Portfolio}
+
+\item The process for wealth is $dW_t = \theta_t \cdot (dS_t + D_t dt) - c_t dt + y_t dt$.
+
+\item A \textbf{self-financing portfolio} has no inflows or outflows. Here this means that $c_t = y_t$ and all dividends are reinvested, so $dW_t = d(\theta_t \cdot S_t) = \theta_t \cdot (dS_t + D_t dt)$.
+
+\item Given processes $S$ and $D$, the \textbf{gains process} is defined as $G_t := S_t + \int_{s=0}^t D_s ds$.
+
+\item Then, a self-financing strategy $\theta$ satisfies $dT_t = \theta_t \cdot dG_t$ and $W_t = W_0 + \int_{s=0}^t \theta_s \cdot dS_s + \int_{s=0}^t \theta_s \cdot D_s ds$.
+
+\subsection*{Stochastic Discount Factor}
+
+\item A \textbf{continuous-time stochastic discount factor} is a positive process $\pi > 0$, such that:
+
+$$
+S_t = \frac{1}{\pi_t} E_t \int_{s=t}^\infty D_s \pi_s ds
+$$
+
+\item Define a \textbf{discounted gains process} $G_t^\pi = \pi_t S_t + \int_{s=0}^t \pi_s D_s ds$. Then, for $T > t$,
+
+$$
+G_t^\pi = \pi_t S_t +  \int_{s=0}^t \pi_s D_s ds = E_t \Bigg( \int_{s=0}^T D_s \pi_s ds + \pi_T \frac{1}{\pi_T}\int_{s=T}^\infty D_s \pi_s ds \Bigg) = E_t (G_t^\pi)
+$$
+
+Thus, the discounted gains process is a martingale.
+
+\item For a stock that first pays dividends at date $T > t$, $\pi_t S_t = E_t (\pi_T S_T)$.
+
+\item For a discount bond that pays \$1 at date $T > t$, $P(t, T) = \exp(-YTM(t, T)(T-t)) = E_t (\frac{\pi_T}{\pi_t})$.
+
+\item For a strategy of rolling over an instantaneously risk-free asset, $1 = E_t(\exp(\int_t^T r_s ds) \frac{\pi_T}{\pi_t})$
+
+\subsection*{Martingale Representation Theorem}
+
+\item Theorem: If $M$ is a (local) martingale, then there exists an adapted process $\theta$ such that 
+
+$$
+M_t = M_0 + \int_0^t \theta_s dz_s, \text{ with } Pr\Bigg(\int_0^t \theta_s \cdot \theta_s ds < \infty\Bigg) = 1.
+$$
+
+\item The discounted process is an adapted process and a martingale.  Thus, $dG_t^\pi = \sigma_G(\omega, t) d \zbf_t$, for some adapted $\sigma_G(\omega, t)$.
+
+\subsection*{Risk Premiums}
+
+\item Assume the stochastic discount factor $\pi_t$ is a diffusion. Then,
+
+$$
+S_t \pi_t = E_t \Bigg(\int_{s=t}^\infty D_s \pi_s ds\Bigg) = E_t \Bigg(\int_{s=t}^{t + \Delta} D_s \pi_s ds + E_t S_{t+\Delta} \pi_{t + \Delta}\Bigg)
+$$
+
+Using element-by-element division
+
+$$
+0 = \frac{1}{\Delta} E_t\Bigg( \int_{s=t}^{t + \Delta} (D_s \pi_s ./ S_t \pi_t) ds + \frac{1}{\Delta}(E_t(S_{t+ \Delta} \pi_{t+\Delta}) - S_t \pi_t) ./ S_t \pi_t\Bigg)
+$$
+
+\item Taking $\Delta \to 0$:
+
+\begin{align*}
+0 &= D_t dt ./S_t + E_t[d(S_t\pi_t)./S_t\pi_t] \\
+&= D_t dt ./S_t + E[dS_t./S_t] + E_t\Bigg[\frac{d\pi_t}{\pi_t} \onebf\Bigg] + E_t\Bigg[\frac{d\pi_t}{\pi_t} dS_t ./S_t\Bigg]\\
+\implies
+\underbrace{E_t[dS_t./S_t + D_t dt ./S_t]}_{\text{Expected Rate of Return}} &= - E_t\Bigg[\frac{d\pi_t}{\pi_t} \onebf\Bigg] - E_t\Bigg[\frac{d\pi_t}{\pi_t} dS_t ./S_t\Bigg]
+\end{align*}
+
+\item For the risk-free security:
+
+\begin{align}
+\frac{d \pi_t}{\pi_t} r_t dt = 0 \implies r_t dt = - E_t\Bigg[\frac{d\pi_t}{\pi_t} \Bigg] \label{rfr}
+\end{align}
+
+\item For the risky securities,
+
+\begin{align}
+\underbrace{E_t[dS_t./S_t + D_t dt ./S_t] - r_t \onebf dt}_{\text{Risk Premium}} 
+&= - E_t\Bigg[\frac{d\pi_t}{\pi_t} \onebf\Bigg] - E_t\Bigg[\frac{d\pi_t}{\pi_t} dS_t ./S_t\Bigg]- E_t\Bigg[\frac{d\pi_t}{\pi_t} \onebf\Bigg] \nonumber \\
+&= \underbrace{- E_t\Bigg[\frac{d\pi_t}{\pi_t} dS_t ./S_t\Bigg]}_{\text{Covariance of price and SDF changes}} \label{rp}
+\end{align}
+
+\subsection*{Marginal Utility is a SDF}
+
+\item Consider the lifetime expected utility $E_t [\int_{s=t}^\infty u(c_s, s)ds]$, where wealth follows the process $dW_t = \theta_t \cdot dS_t + \theta \cdot D_t dt - c_t dt + y_t dt$, $\forall t$; $W_t \ge 0$; and initial wealth $W_0$ is given.
+
+\item Pick an asset with price $S_t$ and consider 2 perturbations:
+
+\begin{enumerate}
+
+\item Increase the consumption rate by $\varepsilon S_t / \Delta$ for a brief interval of time $[t, t+\Delta]$, raising expected utility:
+
+$$
+E_t \Bigg( \int_{s=t}^{t + \Delta} [u(c_s + \varepsilon S_t / \Delta, s) - u(c_s, s)] ds \Bigg)
+\approx
+E_t \Bigg( \int_{s=t}^{t + \Delta} u'(c_s, s) (\varepsilon S_t / \Delta) ds \Bigg)
+\to
+\varepsilon S_t u'(c_t, t)
+$$
+
+\item Increase and hold forever $\varepsilon$ more shares of an asset, raising expected utility
+
+$$
+E_t \Bigg( \int_{s=t}^{\infty} [u(c_s + \varepsilon D_s, s) - u(c_s, s)] ds \Bigg)
+\approx
+\varepsilon E_t \Bigg( \int_{s=t}^{\infty} u'(c_s, s) D_s ds \Bigg)
+$$
+
+\end{enumerate}
+
+\item Each perturbation costs $\varepsilon S_t$, so optimality requires that
+
+$$
+S_t u'(c_t, t) = E_t \Bigg( \int_{s=t}^{\infty} u'(c_s, s) D_s ds \Bigg)
+$$
+
+\item Consequently, we can use marginal utility as an SDF in ($\ref{rfr}$) and ($\ref{rp}$):
+
+\begin{align*}
+E_t \Bigg( \frac{du'(c_s, s)}{u'(c_s, s)} \Bigg) &= - r_t dt \\
+\underbrace{\frac{D_t}{S_t} dt + E_t \frac{dS_t}{S-t} - r_t dt}_{\text{Risk Premium}} &= \underbrace{- E_t\Bigg(\frac{dS_t du'(c_s, s)}{S_t u'(c_s, s)}\Bigg)}_{\text{Covariance}}
+\end{align*}
+
+\subsection*{Consumption-Based Asset Pricing}
+
+\item Let the process for per capita consumption be $\frac{dc_t}{c_t} = \mu_c dt + \sigmabf_c d\zbf_t$.
+
+[Notice that consumption is a scalar, so $\sigmabf_c$ is a row vector, which is different from almost all notion used here.  Generally, $\sigmabf$ is $N$ by $Q$ where $N$ is length of the diffusion process vector and $Q$ is the number of Brownian motions. Here $N=1$ and $Q$ is arbitrary.]
+
+\item Let the process for the vector of risky asset prices be $dS_t ./ S_t + D_t dt ./S_t = \mubf_t dt + \sigmabf_t d \zbf_t$.  
+
+Thus, the risk premium of these risky assets is $E_t[dS_t ./ S_t + D_t dt ./S_t] - r_t \onebf = \mubf_tdt - r_t\onebf dt$
+
+\item Let time $t$ utility be $\exp(-\beta t) u(c_t)$. 
+
+\item Use Ito's Lemma to find $d(\exp(-\beta t) u'(c_t))$:
+
+\begin{itemize}
+
+\item $\mu(c_t, t) = \mu_c c_t$ and $\sigmabf(c_t, t) = \sigmabf_c c_t$
+
+\item $f(c_t, t) = \exp(-\beta t) u'(c_t) \implies f_c = \exp(-\beta t) u''(c_t), f_{cc} = \exp(-\beta t) u'''(c_t), f_t = -\beta\exp(-\beta t) u'(c_t)$
+
+\begin{align}
+d(\exp(-\beta t) u'(c_t))
+&= f_c \sigmabf(c_t, t) d\zbf_t + \Bigg[f_c \mu(c_t, t)   + \frac{1}{2} f_{cc} \sigmabf(c_t, t)\sigmabf(c_t, t)^{T} + f_t \Bigg] dt \nonumber \\
+&=  \exp(-\beta t) u''(c_t) c_t \sigmabf_c d\zbf_t + \Bigg[\exp(-\beta t) u''(c_t) \mu_c c_t \nonumber \\ 
+&+ \frac{1}{2} \exp(-\beta t) u'''(c_t) \sigmabf_c\sigmabf_c^T c_t^2 -\beta\exp(-\beta t) u'(c_t) \Bigg] dt \nonumber \\
+&= \exp(-\beta t) \Bigg[u''(c_t) c_t \sigmabf_c d\zbf_t + \Bigg[ u''(c_t) \mu_c c_t  + \frac{1}{2}  u'''(c_t) \sigmabf_c\sigmabf_c^T c_t^2 -\beta u'(c_t) \Bigg] dt\Bigg] \label{dpi}
+\end{align}
+
+\end{itemize}
+
+\item Using marginal utility of a representative investor as the SDF in ($\ref{rp}$):
+
+\begin{align*}
+\mubf_t dt - r_t \onebf  dt
+&= - E_t \Bigg[(dS_t ./ S_t) \frac{d (\exp(-\beta t) u'(c_t))}{\exp(-\beta t) u'(c_t)} \Bigg]\\
+\implies \mubf_t - r_t \onebf 
+&= \frac{-1}{dt} E_t \Bigg[(dS_t ./ S_t) \frac{d (\exp(-\beta t) u'(c_t))}{\exp(-\beta t) u'(c_t)} \Bigg]\\
+&= - E_t \Bigg[(dS_t ./ S_t) \Bigg(R_c \sigmabf_c \frac{d\zbf_t}{dt} + R_c  \mu_c  + \frac{1}{2}  \frac{u'''(c_t)}{u'(c_t)} \sigmabf_c\sigmabf_c^T c_t^2 -\beta \Bigg) \Bigg]\\
+&= ...\\
+&= R_c \sigmabf_t \sigmabf_c^T \\
+&= R_c \Vbf \Vbf^{-1}\sigmabf_t \sigmabf_c^T \\
+&= R_c \Vbf \hat{\alphabf}_t
+\end{align*}
+
+where $R_c = \frac{-c_t u''(c_t)}{u'(c_t)}$ is relative risk aversion, $\Vbf = \sigmabf_t \sigmabf_t^T$, and $\hat{\alphabf}_t = \Vbf^{-1}\sigmabf_t \sigmabf_c^T$ is a portfolio with maximum correlation with consumption.
+
+\item Thus, 
+
+\begin{align*}
+\mubf_t - r_t \onebf &= R_c \Vbf \hat{\alphabf}_t \\
+\implies
+\underbrace{\hat{\alphabf}_t^T\mubf_t}_{:= \hat{\mu}} - r_t \underbrace{\hat{\alphabf}_t^T\onebf}_{=1}  &= R_c \hat{\alphabf}_t^T \Vbf \hat{\alphabf}_t \\
+\implies 
+R_c &= \frac{\hat{\mu} - r_t}{\hat{\alphabf}_t^T \Vbf \hat{\alphabf}_t} \\
+\implies
+\mubf_t - r_t \onebf &= \underbrace{\frac{\Vbf \hat{\alphabf}_t}{\hat{\alphabf}_t^T \Vbf \hat{\alphabf}_t}}_{:= \hat{\betabf}} (\hat{\mu}_t - r_t)
+\end{align*}
+
+\pagebreak
+
+\subsection*{The Instantaneous Risk-Free Rate}
+
+\item Let per capita consumption follow process: $\frac{dc_t}{c_t} = \mu_c dt + \sigmabf_c d \zbf_t$.
+
+\item Use the marginal utility of consumption as the discount factor and using ($\ref{dpi}$),
+
+\begin{align*}
+r_t 
+&= \frac{-1}{dt} E_t \Bigg[ \frac{d(\exp(-\beta t) u'(c_t)}{\exp(-\beta t) u'(c_t)} \Bigg] \\
+&= \beta -  \frac{u''(c_t)}{u'(c_t)}  \mu_c c_t  - \frac{1}{2}  \frac{u'''(c_t)}{u'(c_t)} \sigmabf_c\sigmabf_c^T c_t^2 
+\end{align*}
+
+\item Example using CRRA utility
+
+\begin{align*}
+u(c_t) &= \frac{c_t^{1-B}}{1-B} \\
+u'(c_t) &= c_t^{-B} \\
+u''(c_t) &= -B c_t^{-B-1} \\
+u'''(c_t) &= B(B-1) c_t^{-B-2} \\
+r_t 
+&= \beta -  \frac{-B c_t^{-B-1}}{c_t^{-B}}  \mu_c c_t  - \frac{1}{2}  \frac{B(B-1) c_t^{-B-2}}{c_t^{-B}} \sigmabf_c\sigmabf_c^T c_t^2 \\
+&= \beta +  B  \mu_c  - \frac{1}{2}  B(B-1)  \sigmabf_c\sigmabf_c^T  \\
+&=\beta + B \Bigg(\mu_c + \frac{1}{2} \sigmabf_c \sigmabf_c^T\Bigg) - \frac{1}{2} B^2 \sigmabf_c \sigmabf_c^T
+\end{align*}
+
+\subsection*{The Risk-Free Rate is a State Variable}
+
+\item Suppose a representative investor with time-additive logarithmic utility lives in an economy with one productive asset.
+
+\item Assume marginal utility is $u'(c_t, t) = \exp(-\beta t)c_t^{-1} = \exp(-\beta t - \ln c_t)$.
+
+\item Assume wealth in units of consumption follows $dW_t = W_t x_t dt + W_t \sigma\sqrt{x_t} dz_{1t} - c_t dt$.
+
+\item Assume the productivity rate $x$ follows $dx_t = \kappa(\theta - x_t)dt + \sigma_x \sqrt{x_t} dz_{2t}$.
+
+\item In the equilibrium of CIR, consumption is $c_t = \beta W_t$ and it follows the subordinated process:
+
+$$
+d \ln c_t = -\beta dt + (1 - \frac{1}{2} \sigma^2) x_t dt + \sigma \sqrt{x_t} dz_{1t}
+$$
+
+As a consequence,
+
+$$
+r_t = \frac{-1}{dt} E_t \Bigg[ \frac{d(\exp(-\beta t) u'(c_t)}{\exp(-\beta t) u'(c_t)} \Bigg] = (1 - \sigma^2) x_t
+$$
+
+and 
+
+$$
+dr_t = \kappa(\theta_r - r_t)dt + \sigma_r \sqrt{r_t} dz_{2t}
+$$
+
+where $\theta_r = (1-\sigma^2) \theta$ and $\sigma_r \sqrt{1-\sigma^2} = \sigma_x$
+
 \end{itemize}
 
 \section{Part III}
 
 \begin{itemize}
-\item To do
+
+\subsection*{Hamilton-Jacobi-Bellman Equation}
+
+\item Consider the problem: 
+
+\begin{align*}
+J(W_t, \Xbf_t, t) &= \max_{\{\alphabf_s, c_t\}} E_t \Bigg[\int_{s=t}^\infty u(c_s, s) ds \Bigg] \\
+dW_t &= W_t (\alphabf_t^T (\mubf(\Xbf_t, t) - r(\Xbf_t, t)\onebf) + r(\Xbf_t, t))dt + W_t \alphabf_t^T \sigmabf(\Xbf_t, t) d\zbf_t - c_t dt + y_t dt, \forall t;\\
+d\Xbf_t &= \mubf(\Xbf_t, t) dt + \sigmabf_x(\Xbf_t, t) d\zbf_t
+\end{align*}
+
+where $W_t \ge 0$ and $W_0$ and $\Xbf_0$ is given.
+
+\item Suppose the optimal policy for consumption and investment is followed for all times $s \ge t + \Delta$.
+
+\begin{align*}
+J(W_t, \Xbf_t, t) &= \max_{\{\alphabf_s, c_t\}_{t \le s < t + \Delta}} E_t \Bigg[ \int_{s=t}^{t + \Delta} u(c_s, s) ds + J(W_{t+\Delta}, \Xbf_{t + \Delta}, t + \Delta) \Bigg] \\
+\implies 0 &= \max_{{\{\alphabf_s, c_s\}}_{t \le s < t + \Delta}} \frac{1}{\Delta} \Bigg[ E_t[ J(W_{t+\Delta}, \Xbf_{t + \Delta}, t + \Delta) ] - J(W_t, \Xbf_t, t) + E_t\Bigg[ \int_{s=t}^{t + \Delta} u(c_s, s) ds \Bigg]\Bigg]
+\end{align*}
+
+\item Taking the limit as $\Delta \to 0$, optimal policies satisfy:
+
+$$
+0 = \max_{\{\alphabf_t, c_t\}}E_t [dJ (W_t, \Xbf_t, t)]/dt + u(c_t, t)
+$$
+
+\subsection*{$K+2$ Fund Separation}
+
+\item For simplicity, drop the explicit dependence of $\mubf, \mubf_x, r, \sigmabf, \sigmabf_x$ on $(\Xbf_t, t)$.
+
+\item Applying Ito's lemma, the HJB is:
+
+$$
+0 
+= \max_{\{\alphabf, c\}}J_\xbf^T \mubf_x + J_W (W_t(\alphabf^T(\mubf - r \onebf) + r) - c + y_t 
++ \frac{1}{2} tr \Bigg( 
+\begin{bmatrix} J_{\xbf \xbf} & J_{\xbf W}^T  \\ J_{\xbf W} & J_{W W} \end{bmatrix}
+\begin{bmatrix} \sigmabf_x \sigma_x^T & W_t \alphabf^T \sigmabf \sigmabf_x^T  \\ \sigmabf_x \sigmabf^T \alphabf  W_t & \alphabf^T \sigmabf \sigmabf^T \alphabf W_t^2 \end{bmatrix}
+ \Bigg) + J_t + u(c_t, t)
+$$
+
+The FOCs are:
+
+\begin{align*}
+0 &= u_c - J_w  & [c] \\
+\implies 
+c_t^* &= u_c^{-1} (J_W(W_t, \Xbf_t, t), t) \\
+0 &= (\mubf - r \onebf) J_W + \sigmabf \sigmabf_x^T J_{\xbf W} + \sigmabf \sigmabf^T \alphabf_t^* J_{WW} W_t & [\alpha] \\
+\implies \alphabf_t^* &= T\underbrace{(\sigmabf \sigmabf^T)^{-1} (\mubf - r \onebf)}_{\text{Maximum Sharpe Ratio portfolio}} + \underbrace{(\sigmabf \sigmabf^T)^{-1} \sigmabf \sigmabf_x^T}_{\text{Portfolios with maximum correlations with $\Xbf_t$}} \Tbf_\xbf \\
+\text{where } T & \equiv \frac{-J_W}{J_{WW} W_t} \\
+\Tbf_\xbf & \equiv \frac{-J_{\xbf W}}{J_{WW} W_t}
+\end{align*}
+
+\subsection*{Maximum Correlation Portfolios}
+
+\item Consider the portfolio with instantaneous return 
+
+$$
+\frac{dP_t}{P_t} = (\alphabf_t^T (\mubf(\Xbf_t, t) - r(\Xbf_t, t)\onebf) + r(\Xbf_t, t)) dt + \alpha_t^T \sigmabf( \Xbf_t, t) d \zbf_t
+$$
+
+the state variables follow
+
+$$
+d\Xbf_t = \mubf_x(\Xbf_t, t) dt + \sigmabf_x(\Xbf_t, t) d\zbf_t
+$$
+
+where $P_0$ and $X_0$ are given.
+
+\item The correlation of the portfolio return with state variable $j$:
+
+$$
+Cor\Bigg( \frac{dP_t}{P_t}, dX_{jt}\Bigg) 
+= E\Bigg( \frac{\frac{dP_t}{P_t} dX_{jt}}{\sqrt{\frac{(dP_t)^2}{P_t^2}}\sqrt{(dX_{jt})^2}} \Bigg) 
+= \frac{\alphabf_t^T \sigmabf \sigmabf_{jx}^T}{\sqrt{\alphabf_t^T \sigmabf_t \sigmabf^T \alphabf}\sqrt{\sigmabf_{jx} \sigmabf_{jx}^T}}
+$$ 
+
+\item The portfolio with maximum correlation is
+
+$$
+\arg \max_{\alphabf} Cor \Bigg( \frac{dP_t}{P_t}, dX_{jt}\Bigg) \propto ( \sigma \sigma^T)^{-1} \sigmabf \sigmabf_{jx}^T
+$$
+
+\subsection*{The Value Function}
+
+\item For function $J(w, \xbf, t)$, policies $c$ and $\alphabf$, and the processes for $W_t$ and $\Xbf_t$, the operator $D^{(c, \alphabf)}$ is convenient shorthand, where:
+
+$$
+D^{(c, \alphabf)} J(w, \xbf, t) \equiv  J_\xbf^T \mubf_x + J_w (w(\alphabf^T(\mubf - r \onebf) + r) - c + y_t 
++ \frac{1}{2} tr \Bigg( 
+\begin{bmatrix} J_{\xbf \xbf} & J_{\xbf w}^T  \\ J_{\xbf w} & J_{w w} \end{bmatrix}
+\begin{bmatrix} \sigmabf_x \sigma_x^T & w \alphabf^T \sigmabf \sigmabf_x^T  \\ \sigmabf_x \sigmabf^T \alphabf  w & \alphabf^T \sigmabf \sigmabf^T \alphabf w^2 \end{bmatrix}
+ \Bigg) + J_t
+$$
+
+Thus, the HJB is:
+
+$$
+0 = \max_{\{\alphabf, c\}} D^{(c, \alphabf)} J(w, \xbf, t) + u(c, t)
+$$
+
+Given the optimal policies $c_t^*$ and $\alphabf_t^*$, the value function solves:
+
+$$
+0 = D^{(c_t^*, \alphabf_t^*)} J(W_t, \Xbf, t) + u(c_t^*, t)
+$$
+
+\subsection*{Example - CRRA with no labor income, constant risk-free rate, and no risky assets}
+
+\item Consider the problem:
+
+\begin{align*}
+J(W_t, t) &\equiv \max_{\{c_s\}_{t \le s}} E_t \Bigg[ \int_{s=t}^\infty e^{-\rho s} \frac{c_s^{1-B}}{1-B} ds \Bigg] \\
+dW_t &= W_t r dt - c_t dt, \forall t
+\end{align*}
+
+where $W_t \ge 0$ and $W_0$ is given.
+
+\item HJB: $0 = \max_{c_t} J_W(W_tr - c_t) + J_t + e^{-\rho t} \frac{c_t^{1-B}}{1-B}$
+
+\item FOC: $e^{-\rho t} c_t^{-B} = J_W$
+
+\item Guess: $J(W_t, t) = e^{-\rho t} H^B \frac{W_t^{1-B}}{1-B}, \text{ where } H = W/C \text{ is the wealth-consumption ratio.}$
+
+\item Check: 
+
+\begin{align*}
+J_W &= e^{-\rho t} H^B W_t^{-B} \\
+\implies c_t &= H^{-1} W_t \text{ and } J_t = -\rho e^{-\rho t} H^B \frac{W_t^{1-B}}{1 - B} \\
+\implies 0 &= e^{-\rho t} H^B W_t^{-B}(W_t r - H^{-1} W_t) - \rho e^{-\rho t} H^B \frac{W_t^{1-B}}{1-B} + e^{-\rho t} \frac{H^{-1+B} W_t^{1-B}}{1-B} \\
+\implies
+H^{-1} &= \frac{1}{B} \rho - \frac{1 - B}{B} r
+\end{align*}
+
+\subsection*{Example II - CRRA with geometric labor income, constant risk-free rate, and no risky assets}
+
+\item Consider the problem:
+
+\begin{align*}
+J(W_t, y_t t) &\equiv \max_{\{c_s\}_{t \le s}} E_t \Bigg[ \int_{s=t}^\infty e^{-\rho s} \frac{c_s^{1-B}}{1-B} ds \Bigg] \\
+dW_t &= W_t r dt - c_t dt + y_t dt, \forall t \\
+dy_t &= g y_t dt 
+\end{align*}
+
+where $W_t \ge 0$ and $W_0$ and $y_0$ are given.
+
+\item Notice that $y_t = y_0 e^{gt}$.
+
+\item HJB: $0 = \max_{c_t} J_W(W_tr - c_t + y_t) + J_t + e^{-\rho t} \frac{c_t^{1-B}}{1-B}$
+
+\item FOC: $e^{-\rho t} c_t^{-B} = J_W$
+
+\item Guess: $J(W_t, t) = e^{-\rho t} H^B \frac{(W_t + Y_t)^{1-B}}{1-B}, \text{ where } H = W/C \text{ and } Y_t = \frac{y_t}{r -g}$
+
+\item Check: 
+
+\begin{align*}
+J_W &= e^{-\rho t} H^B (W_t + Y_t)^{-B} \\
+\implies c_t &= H^{-1} (W_t + Y_t) \\
+\text{ and } J_t &= -\rho e^{-\rho t} H^B \frac{(W_t + Y_t)^{1-B}}{1 - B}  + \rho e^{-\rho t} H^B (W_t + Y_t)^{-B}gY_t \\
+\implies 0 &= e^{-\rho t} H^B (W_t+Y_t)^{-B}(W_t r - H^{-1} (W_t+Y_t) + Y_t(r-g)) - \rho e^{-\rho t} H^B \frac{(W_t + Y_t)^{1-B}}{1-B} \\
+&+ e^{-\rho t} H^{B} (W_t + Y_t)^{-B}gY_t + e^{-\rho t} \frac{H^{-1+B} (W_t + Y_t)^{1-B}}{1 - B} \\
+\implies
+H^{-1} &= \frac{1}{B} \rho - \frac{1 - B}{B} r
+\end{align*}
+
+\subsection*{Example III - Log utility with one risky asset and mean-reverting state variable}
+
+\item Consider the problem:
+
+\begin{align*}
+J(W_t, x_t, t) &\equiv \max_{\{c_s, \alpha_s\}_{t \le s}} E_t \Bigg[ \int_{s=t}^\infty e^{-\rho s} \log(c_s) ds \Bigg] \\
+dW_t &= W_t(\alpha_t(x_t - r(x_t)) + r(x_t)) dt + W_t \alpha_t \sigma \sqrt{x_t} dz_{1t} - c_t dt, \forall t \\
+dx_t &= \kappa (\theta - x_t) + \sigma_x \sqrt{x_t} dz_{2t}
+\end{align*}
+
+where $W_t \ge 0$, $W_0$ and $x_0$ is given, and $z_1$ independent of $z_2$.
+
+\item HJB: 
+
+$$
+0 = \max_{c_t, \alpha_t} J_W(W_t (\alpha_t(x_t - r_t) + r_t) - c_t) + J_t + e^{-\rho t} \log(c_t) + \frac{1}{2} J_{WW} W_t^2 \alpha_t^2 \sigma^2 x_t + J_x \kappa(\theta - x_t) + \frac{1}{2} J_{xx} \sigma_x^2 x_t
+$$
+
+\item Guess: $J(W_t, x_t, t) = e^{-\rho t} \frac{\log(W_t)}{\rho} + f(x_t)$
+
+\item FOC
+
+\begin{align*}
+0 &= - e^{-\rho t} \frac{1}{\rho W_t} + e^{-\rho t} \frac{1}{c_t} & [c]\\
+\implies
+c_t &= \rho W_t \\
+0 &= - e^{-\rho t} \frac{1}{\rho W_t} W_t(x_t - r_t) + \frac{1}{2} e^{-\rho t} \frac{1}{\rho W_t^2} 2 \alpha_t \sigma^2 x_t & [\alpha_t]\\
+\implies
+\alpha_t &= \frac{x_t - r_t}{\sigma^2 x_t}
+\end{align*}
+
+\item Thus, consumption is a constant wealth-consumption ratio because of log utility.
+
+\item HBJ:
+
+$$
+0 = \frac{1}{\rho} \Bigg[  \frac{(x_t - r_t)^2}{x_t^2 \sigma^2} + r_t  - \rho \Bigg] + \log(\rho) - \frac{1}{2} \frac{1}{\rho} \frac{(x_t - r_t)^2}{x_t^2 \sigma^2} + f_x \kappa (\theta - x_t) + \frac{1}{2} f_{xx} \sigma_x^2 x_t
+$$
+
+\item One possible solution is $\alpha_t = 1 \implies r_t = x_t (1 - \sigma^2)$
+
+\subsection*{Example IV - CRRA on terminal wealth with single risky asset and constant risk-free rate}
+
+\item Consider the problem:
+
+\begin{align*}
+J(W_t, t) &\equiv \max_{\{\alpha_s\}_{t \le s \le T}} E_t \Bigg[ \frac{W_T^{1-B}}{1-B} \Bigg] \\
+dW_t &= W_t (\alpha_t (\mu - r) + r) dt + W_t \alpha_t \sigma dz_t, \forall t
+\end{align*}
+
+where $0 < B \neq 1$, $W_t \ge 0$, and $W_0$ is given.
+
+\item HJB: $0 = \max_{\alpha_t} J_W W_t (\alpha_t (\mu -r) + r) + J_t + \frac{1}{2} J_{WW} W_t^2 \alpha_t^2 \sigma^2$
+
+\item Guess: $J(W_t, t) = e^{-k(T-t)} \frac{W_t^{1-B}}{1-B}$
+
+\item FOC: 
+
+\begin{align*}
+0 &= e^{-k(T-t)} W_t^{1-B} (\mu -r) - \frac{1}{2} B e^{-k(T-t)} W_t^{1-B} 2 \alpha_t \sigma^2 \\
+\implies
+\alpha_t &= \frac{\mu - r}{B \sigma^2}
+\end{align*}
+
+\item HJB: 
+
+\begin{align*}
+0 &= e^{-k(T-t)} W_t^{1-B} \Bigg(\frac{(\mu -r)^2}{B \sigma^2} + r \Bigg) + ke^{-k(T-t)} \frac{W_t^{1-B}}{1-B} - \frac{1}{2} B e^{-k(T-t)} W_t^{1-B} \Bigg(\frac{\mu - r}{B\sigma^2}\Bigg)^2 \sigma^2\\
+k &= -(1-B) \Bigg(\frac{1}{2} \frac{(\mu - r)^2}{B \sigma^2} + r \Bigg)
+\end{align*}
+
+\subsection*{Intertemporal CAPM (ICAPM)}
+
+\item By $K + 2$ fund separation, the optimal portfolio for individual $i$ is:
+
+$$
+\alphabf_t^i W_t^i = \underbrace{(\sigmabf \sigmabf^T)^{-1} (\mubf_t - r_t \onebf)}_{\text{Maximum Sharpe ratio portfolio}} T^i W_t^i  + \underbrace{(\sigmabf \sigmabf^T)^{-1} \sigmabf \sigmabf_x^T}_{\text{Maximum correlation portfolios}} \Tbf_\xbf^i W_t^i
+$$
+
+where $T \equiv \frac{-J_W}{J_{WW} W_t}$ and $\Tbf_\xbf \equiv \frac{-J_{\xbf W}}{J_{WW} W_t}$.
+
+\item The market portfolio $\alphabf_t^m$ is:
+
+\begin{align*}
+\alphabf_t^m &\equiv \sum_i \alphabf_t^i W_t^i / W_t^m = (\sigmabf \sigmabf^T)^{-1} (\mubf_t - r_t \onebf) T^m + \alphabf_{MCP, t} \Tbf_\xbf^m \\
+\text{where }
+T^m & \equiv \sum_i T^i W^i/W^m \\
+\Tbf^m_\xbf & \equiv \sum_i \Tbf_\xbf^i W^i / W^m \\
+\alphabf_{MCP, t} &\equiv (\sigmabf \sigmabf^T)^{-1} \sigmabf \sigmabf_x^T
+\end{align*}
+
+\item Expected returns are:
+
+\begin{align*}
+\mubf_t - r_t \onebf 
+&= \sigmabf \sigmabf^T \begin{bmatrix} \alphabf_t^m & \alphabf_{MCP, t} \end{bmatrix} \begin{bmatrix} 1/ T^m \\ -\Tbf_\xbf^m / T^m \end{bmatrix} \\
+&= \Covbf(\Varbf)^{-1} \begin{bmatrix} \mu_{mt} - r_t \\ \mubf_{MCP, t} - r_t \onebf \end{bmatrix} \\
+\Covbf &\equiv \sigmabf \sigmabf^T \begin{bmatrix} \alphabf_t^m & \alphabf_{MCP, t} \end{bmatrix} \\
+\Varbf &\equiv \begin{bmatrix} \alphabf_t^m & \alphabf_{MCP, t} \end{bmatrix}^T \sigmabf \sigmabf^T \begin{bmatrix} \alphabf_t^m & \alphabf_{MCP, t} \end{bmatrix}
+\end{align*}
+
+\subsection*{Stochastic Differential Utility}
+
+\item Consider the problem: 
+
+\begin{align*}
+J(W_t, \Xbf_t) &\equiv \max_{\{\alphabf_s, c_t\}_{t \le s}} E_t \Bigg[ \int_{s=t}^\infty f(c_s, J(W_s, \Xbf_s) ds\Bigg]\\
+dW_t &= W_t (\alphabf_t^T (\mubf(\Xbf_t, t) - r(\Xbf_t, t)\onebf) + r(\Xbf_t, t))dt + W_t \alphabf_t^T \sigmabf(\Xbf_t, t) d\zbf_t - c_t dt + y_t dt, \forall t;\\
+d\Xbf_t &= \mubf(\Xbf_t, t) dt + \sigmabf_x(\Xbf_t, t) d\zbf_t
+\end{align*}
+
+where $W_t \ge 0$, $W_0$ and $\Xbf_0$ is given, and where the felicity function is defined
+
+$$
+f(c, J) = \phi \theta \Bigg( \frac{c^{1-1/\psi}}{((1-\gamma)J)^{1/\theta}} - 1 \Bigg) J
+$$
+
+with $\theta = \frac{1 - \gamma}{1 - 1/\psi}$, rate of time preference if $\phi$, risk aversion is $\gamma$, and elasticity of intertemporal substitution is $\psi$.
+
+\item The HJB equation now is:
+
+$$
+0 = \max_{\alphabf_t, c_t} E_t dJ(W_t, \Xbf_t)\frac{1}{dt} + f(c_t, J(W_t, \Xbf_t)).
+$$
+
+\item Standard result:
+
+\begin{align*}
+J(W_t, \Xbf_t) &= \frac{W_t^{1 - \gamma}}{1 - \gamma}(\phi H_t^{1/\psi})^\theta \\
+\text{where } H_t &= H(\Xbf_t) = \frac{W_t}{c_t}
+\end{align*}
+
+\subsection*{Special Case: Time Additive}
+
+\item Set $\gamma = 1/ \psi$ and $\theta = 1$, implying $f(c, J) = \phi (\frac{c^{1-\gamma}}{1 - \gamma}-J)$.
+
+\item Under an optimal policy,
+
+\begin{align*}
+0 
+&= E_t \Bigg[ dJ_t + \phi \Bigg(\frac{c_t^{1-\gamma}}{1 - \gamma}-J_t \Bigg) dt\Bigg] \\
+&= E_t \Bigg[ d(e^{-\phi t}J_t) \Bigg] + \phi e^{-\phi t} \frac{c_t^{1-\gamma}}{1 - \gamma}dt\\
+&= E_t \Bigg[ \int_{s=t}^\infty d (e^{-\phi s} J_s) \Bigg] + \phi E_t \int_{s=t}^\infty e^{-\phi s} \frac{c_s^{1-\gamma}}{1 - \gamma}ds
+\end{align*}
+
+[second step is introduce factor of integration, third step is integrate and use iterated expectations.]
+
+\item Assume transversality conditions holds.
+
+$$
+\implies J(W_t, \Xbf_t) = \phi E_t \Bigg[ \int_{s=t}^\infty e^{\phi(s-t)} \frac{c_s^{1-\gamma}}{1 - \gamma} ds\Bigg]
+$$
+
+\subsection*{Example V}
+
+Setting $\psi \to 1$ with SDU:
+
+\begin{align*}
+J(W_t, y_t) &= \max_{\{ \alpha_s, c_s\}_{t \le s}} E_t \Bigg[ \int_{s=t}^\infty f(c_s, J(W_s, y_s)) ds\Bigg] \\
+\text{Felicity: } f(c, J) &= \phi(1-\gamma) \Bigg( \log(c) - \frac{1}{1-\gamma} \log ((1 - \gamma)J)\Bigg)J\\
+\text{Wealth: } dW_t &= W_t (\alpha_t(\mu - r) + r) dt + W_t \alpha_t \sqrt{\frac{1}{y_t}} dz_{1t} - c_t dt, \forall t\\
+\text{Precision: } dy_t &= \kappa(\bar{y} - y_t) dt + \sigma\sqrt{y_t} dz_{2t}
+\end{align*}
+
+where $W_t \ge 0$, $W_0$ given, and $dz_{1t}dz_{2t} = \rho dt$.
+
+\item HJB:
+
+$$
+0 = \max_{\alpha_t, c_t} J_W (W (\alpha_t(\mu - r) + r) -c_t) + h(c_t, J) + \frac{1}{2} J_{WW} W_t^2 \alpha_t^2 \frac{1}{y_t} + J_y \kappa(\theta - y_t) + \frac{1}{2} J_{yy} \sigma^2 y_t + J_{Wy} W_t \alpha_t \rho \sigma.
+$$
+
+\item Guess: $J(W, y) = \frac{W^{1-\gamma}}{1-\gamma} h(y)$
+
+\item Solution: 
+
+\begin{align*}
+c_t &= \phi W_t \\
+\alpha_t &= \frac{1}{\gamma}(\mu - r)y_t + (1- 1/\gamma)(-\rho)\sigma \frac{A}{1- \gamma} y_t \\
+h(y) &= \exp(Ay + B)
+\end{align*}
+
+where $A$ and $B$ solve a system of quadratic equations.
+
+\subsection*{Challenge}
+
+\item In Ai (JF, 2010), an investor chooses consumption and savings when capital (wealth) follows CRS process. 
+
+\item The productivity rate of capital $x_t$ is unobservable and the investor continuously updates a posterior distribution that has mean $m_t$.
+
+\item The investor solves
+
+\begin{align*}
+J(K, m_t) &= \max_{\{c_s\}_{t \le s}} E_t \Bigg[ \int_{s=t}^\infty f(c_t, J(K_t, m_t)) ds \Bigg] \\
+dK_t &= K_t m_t dt - c_t dt + K_t \sigma dz_t \\
+dm_t &= \kappa(\mu - m_t) dt + \sigma_m dz^m_t
+\end{align*}
+
+where $K_t \ge 0$, $K_0$ and $m_0$ given, $dz_t dz^m_t = \rho dt$, $\sigma > 0, \kappa > 0, \mu > 0, \sigma_m > 0, \rho > 0$ constants.
+
+
+\item To do:
+
+\begin{enumerate}
+
+\item Write out the HJB equation.
+
+\item Show that the standard result for $J_t$ holds, where $H$ is the wealth consumption ratio.
+
+\item Show that the HJB (given the optimal consumption policy) is a partial differential equation in $H$ as a function of $m$. (The HJB has no known general solution.)
+
+\item Assume a special case holds: $m_t = \mu$, a constant. Solve for $H$ as a constant, and show that it satisfies the Constant Dividend Growth Model of Gordon.
+
+\end{enumerate}
+
 \end{itemize}
+
+\pagebreak
 
 \section{Part IV}
 
 \begin{itemize}
+
 \item To do
+
+\subsection*{Setup}
+
+\subsection*{Deflated Gains and SDF}
+
+\subsection*{Arbitrage}
+
+\subsection*{No Arbitrage}
+
+\subsection*{Doubling Strategy}
+
+\subsection*{Equivalent Martingale Measure}
+
+\subsection*{SDF and Measure Q}
+
+\subsection*{Girsanov's Theorem}
+
+\subsection*{Market Prices of Risk}
+
+\subsection*{The Risk-Free Rate is a State Variable}
+
+\subsection*{Cox, Ingersoll, and Ross}
+
+\subsection*{Solution}
+
 \end{itemize}
 
 \end{document}
