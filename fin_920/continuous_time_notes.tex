@@ -30,6 +30,7 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
 \newcommand{\F}{\mathcal{F}}
+% \newcommand{\H}{\mathcal{H}}
 \newcommand{\xbf}{\mathbf{x}}
 \newcommand{\Xbf}{\mathbf{X}}
 \newcommand{\Vbf}{\mathbf{V}}
@@ -1338,37 +1339,259 @@ where $K_t \ge 0$, $K_0$ and $m_0$ given, $dz_t dz^m_t = \rho dt$, $\sigma > 0, 
 
 \end{itemize}
 
-\pagebreak
 
 \section{Part IV}
 
 \begin{itemize}
 
-\item To do
-
 \subsection*{Setup}
+
+\item We assume:
+
+\begin{enumerate}
+
+\item A probability space $(\Omega, \F, \F_t, P)$.
+
+\item A $d$-dimensional Brownian motion $\zbf: \Omega \times [0, \infty) \to \R^d$.
+
+\item An investor's information (filtration $\F_t$) is defined by the history of $\zbf$.
+
+\end{enumerate}
+
+\item All adapted processes are Ito process with increments written:
+
+$$
+dS_t = \mu(\omega, t) dt + \sigma(\omega, t) d\zbf_t
+$$
+
+\item If $S_t > 0$ assumed for all $t$, an alternative expression is $dS_t ./S_t = \mu(\omega, t) dt + \sigma(\omega, t) d\zbf_t$ with $\mu(\omega, t)$ and $\sigma(\omega, t)$ appropriately redefined.
+
+\item Any scalar martingale satisfies $dM_t = \gamma(\omega, t) d \cdot \zbf_t$ and any positive martingale satisfies $dM_t = M_t \gamma(\omega, t) \cdot d\zbf_t$ for some adapted $\gamma(\omega, t)$.
 
 \subsection*{Deflated Gains and SDF}
 
+\item A deflator is a process $Y$ such that $P(Y_t > 0) = 1$ for all $t$.  A deflator changes the numeraire.
+
+\item For example if $Y_t = \exp(-\int_0^t r_s ds)$, which is the inverse of gains rolling over at the risk-free rate $r_s$, $S^Y := YS$ is the (vector) of units of an account with value $\exp(\int_0^t r_s ds$ required to buy one unit of each asset at the prices in $S_t$.
+
+\item A deflated gains process if $G_t^Y := S_t Y_t + \int_{s=0}^t D_s Y_s ds$.
+
+\item Another example: A stochastic discount factor is a deflator $\pi$ such that $G_t^\pi$ is a martingale: $E_t(G_s^\pi) = G_t^\pi, t < s$.
+
+\item If $dS_t ./ S_t = \mubf_t dt + \sigmabf d \zbf_t$ and if $G_t^Y$ is a martingale with $Y_t = \exp(-\int_0^t r_s ds)$, then
+
+$$
+0 = E_t dG_t^Y = S_t Y_t (-r_t \onebf dt + E_t [dS_t ./ S_t + D_t ./ S_t dt]) \implies r_t \onebf = \mubf_t + D_t./ S_t
+$$
+
+\item Let a pure discount bond have payoff of 1 at time $T > 0$ and price $P_t$. If the deflated gains are a martingale, and if the risk-free rate is Markov, say $dr_t = \mu(r_t) dt + \sigma(r_t) \cdot d\zbf_t$,
+
+\begin{align*}
+P_t \exp \Bigg( - \int_0^t r_s ds \Bigg) 
+&= E_t \Bigg( \exp \Bigg( - \int_0^t r_s ds \Bigg) \Bigg) \\
+P_t
+&= E_t \Bigg( \exp \Bigg( -\int_t^T r_s ds  \Bigg) \Bigg) \\
+&:= p(r_t, t) \\
+p(r_t, t) r_t 
+&= p_r \mu (r_t) + \frac{1}{2} p_{rr} \sigma(r_t) \cdot \sigma(r_t) + p_t
+\end{align*}
+
 \subsection*{Arbitrage}
+
+\item A self-financing portfolio $\theta_t, 0 \ge t \ge T$ (trading strategy) is an arbitrage if for any $T>0$ either:
+
+\begin{enumerate}
+
+\item $W_0 \le 0, W_t \ge 0$ with probability one, and $W_t > 0$ with positive probability, or
+
+\item $W_0 < 0$ and $W_t \ge 0$ with probability one.
+
+\end{enumerate}
+
+\item A trading strategy is self-financing if $\theta_t \cdot S_t = \theta_0 \cdot S_0 + \int_{v=0}^t \theta_v \cdot dS_v + \int_{v=0}^t \theta_v \cdot D_v dv$, which is alternatively written $d(\theta_t \cdot S_t) = \theta_t \cdot dS_t + \theta_t \cdot D_t dt$.
+
+\item Numeraire Invariance Theorem: A trading strategy $\theta$ is self-financing with respect to the gains process $G$ iff it is self-financing with respect to the deflated process $G^Y$ for any positive deflator.
+
+\item Corollary. A trading strategy is an arbitrage with respect to $G$ iff it is an arbitrage with respect to $G^Y$.
 
 \subsection*{No Arbitrage}
 
+\item Consider two spaces of trading strategies, $\mathcal{H}^2(S^\pi)$ and $\ubar{\Theta}(S^{\pi})$, where
+
+\begin{align*}
+\mathcal{H}^2(S^\pi) 
+&:= 
+\begin{cases} 
+\theta \text{ adapted};\\
+P(\int_0^\tau | \theta_t \cdot \mu_t \pi_t | dt < \infty ) = 1;\\
+E[(\int_0^\tau \theta_t \cdot \mu_t \pi_t dt)^2] < \infty; \\
+P(\int_0^\tau ( \theta_t \cdot \mu_t \pi_t )^2 dt < \infty ) = 1;\\
+E[(\int_0^\tau (\theta_t \cdot \mu_t \pi_t )^2 dt] < \infty,\\
+\text{for }\tau >0  
+\end{cases}\\
+\ubar{\Theta}(S^{\pi}) 
+&:= 
+\begin{cases}
+\theta \text{ adapted};\\
+P(\theta_t \cdot S_t \pi_t \ge k) = 1, t >0, \text{ for constant } k\\
+\end{cases}
+\end{align*}
+
+\item Proposition: Assume dividends are zero. If a sdf $\pi$ exists such that $E_t (S_s \pi_s) = S_t \pi_t, s>t$, there is no arbitrage in either $\mathcal{H}^2(S^\pi)$ or $\ubar{\Theta}(S^{\pi})$.
+
 \subsection*{Doubling Strategy}
+
+\item For a stock with driftless price $S$ with $dS_t = S_t dz_t$, and bond with price $\beta_t = 1$ (and zero risk-free rate), consider the trading strategy $\theta_t ( a_t, b_t)$ where
+
+\begin{align*}
+a_t &= 
+\begin{cases}
+\frac{1}{S_t \sqrt{T - t}}, & t \le \tau \\
+0, & \tau < t
+\end{cases}\\
+b_t &= -a_t S_t + \int_{v=0}^t a_v S_v\\
+\tau &= \inf \{t: \int_{v = 0}^\tau \frac{1}{\sqrt{T - v}} dz_v = \alpha > 0 \}
+\end{align*}
+
+\item For this strategy, $W_0 = b_0 + a_0 S_0 = 0$, while $W_\tau = b_\tau + a_\tau S_\tau = \int_{v=0}^\tau a_v dS_v = \alpha$.
+
+\item Also, $P(0 < \tau < T) = 1$.
 
 \subsection*{Equivalent Martingale Measure}
 
+\item We say the deflated price and dividend processes admit an equivalent martingale measure if there is a measure $Q$ equivalent to $P$ such that $E_t^Q (G^Y_T) = G^Y_t$ for all dates $T > t$.
+
+\item Theorem: Assume dividends are zero. If the deflated gains process admits an equivalent martingale measures, there is no arbitrage in either $\mathcal{H}^2(S^\pi)$ or $\ubar{\Theta}(S^{\pi})$.
+
+
 \subsection*{SDF and Measure Q}
+
+\item Assume zero dividends. The value $\xi_t = \exp (\int_0^t r_s ds) \frac{\pi_t}{\pi_0}$ is the density of an equivalent martingale measure.
+
+\item We have $E_t(\xi_T) =\xi_t$ and 
+
+$$
+S_t  = E_t [\frac{\xi_T}{\xi_t} \exp (-\int_t^T r_s ds) S_T] = E_t^Q (\exp(-\int_t^T r_s ds) S_T)
+$$
+
+
+\item Alternatively, if $\xi_t$ is the density for an equivalent martingale measure, meaning $E_t (\xi_T) = \xi_t$ and $S_t = E_t^Q(\exp(-\int_t^T r_s ds) S_T), \pi_r = \exp (-\int_0^t r_s ds) \xi_t$ is a stochastic discount factor and $\pi_t S_t = E_t (\pi_T S_T)$.
 
 \subsection*{Girsanov's Theorem}
 
+\item Because $\xi_t$ is adapted, positive almost surely, and is a martingale, $d \xi_t = \gamma_t \cdot d \zbf_t = -\xi_t \eta_t \cdot d \zbf_t$, where $\eta_t := - \frac{\gamma_t}{\xi_t}$ for some (vector) adapted process $\gamma_t$, and $\xi_t = \exp(-\int_0^t \eta_s \cdot d\zbf_s - \frac{1}{2} \int_0^t \eta_s \cdot \eta_s ds)$.
+
+\item Also, $\frac{d \pi_t}{\pi_t} = -r_t dt - \eta_t \cdot d \zbf_t$ where $\pi_t = \exp(-\int_0^t r_s ds) \xi_t$.
+
+\item Girsanov's Theorem: Under measure $Q$, $\zbf_t^Q = \zbf_t + \int_0^t \eta_s ds$ is standard Brownian motion.
+
 \subsection*{Market Prices of Risk}
+
+\item Under $P: dS_t./ S_t = \mubf_t dt +\sigmabf_t d\zbf_t$, and 
+
+$$
+\frac{1}{\exp(-\int_0^t r_s ds) S_t} d(\exp(-\int_0^t r_s ds) S_t) = (\mubf_t - r_t \onebf) dt + \sigmabf (d\zbf_t + \eta_s^T dt - \eta_s^T dt) = (\mubf_t - r_t -\sigmabf_t \eta_s^T) dt + \sigmabf_t d\zbf_t^Q
+$$
+
+\item Under $Q$: $dS_t./S_t = \mubf_t^Q dt + \sigmabf_t d\zbf_t^Q$, where $\mubf_t^Q = \mubf_t - \sigmabf_t \eta_s^T = r_t \onebf$ and 
+
+$$
+\frac{1}{\exp(-\int_0^t r_s ds) S_t} d(\exp(-\int_0^t r_s ds) S_t) = \sigmabf d \zbf_t^Q
+$$
 
 \subsection*{The Risk-Free Rate is a State Variable}
 
+\item Suppose a representative investor with time-additive logarithmic utility lives in an economy with one productive asset.
+
+\begin{enumerate}
+
+\item Marginal utility is $u'(c_t, t) = \exp(-\beta t) c_t^{-1} = \exp(-\beta t - \ln c_t)$.
+
+\item Wealth in units of consumptions follows $dW_t = W_t x_t dt + W_t \sigma_w \sqrt{x_t} dz_{1t} - c_t dt$.
+
+\item The productivity rate $x$ follows $dx_t = \kappa (\theta_x - x_t) dt + \sigma_x \sqrt{x_t} (\rho dz_{1t} + \sqrt{1 - \rho^2} dz_{2t})$.
+
+\end{enumerate}
+
+\item In the equilibrium of CIR, consumption is $c_t = \beta W_t$ and it follows the subordinated process:
+
+$$
+d\ln c_t = -\beta dt + (1-\frac{1}{2} \sigma_w^2) x_t dt + \sigma_w \sqrt{x_t} dz_{1t}
+$$
+
+\item As a consequence,
+
+\begin{align*}
+\frac{d \pi_t}{\pi_t} 
+&= \beta dt - d \ln c_t + \frac{1}{2} (d \ln c_t)^2 \\
+&= - (1-\sigma_w^2) x_t dt - \sigma_w \sqrt{x_t} dz_{1t} \\
+&:= - \delta x_t dt - \eta_t dz_{1t} \\
+r_t 
+&= - E_t \frac{d \exp(-\beta t - \ln c_t)}{\exp(-\beta t - \ln c_t) dt} \\
+&= \delta x_t, \\
+dr_t 
+&= \kappa ( \theta - r_t) dt + \sigma \sqrt{r_t}(\rho dz_{1t} + \sqrt{1 - \rho^2} dz_{2t}) \\
+&= \kappa ( \theta - r_t) dt - \sigma \sqrt{r_t} \rho \eta_t dt + \sigma \sqrt{r_t} (\rho(dz_{1t} + \eta_t dt) + \sqrt{1 - \rho^2} dz_{2t}) \\
+&= \kappa(\theta - r_t) dt - \lambda r_t dt + \sigma \sqrt{r_t} dz^Q
+\end{align*}
+
+where $\theta = \delta \theta_x$ and $\sigma = \sqrt{\delta} \sigma_x$.
+
 \subsection*{Cox, Ingersoll, and Ross}
 
+\item Consider a short rate that follows the process:
+
+$$
+dr_t = \kappa (\theta - r_t) dt + \sigma \sqrt{r_t} dz,
+$$
+
+where $z$ is scalar Brownian motion under the statistical measure $P$.
+
+\item Suppose also that under the risk-neutral measure $Q$, the short rate follows 
+
+$$
+dr_t = \kappa (\theta - r_t) dt + \sigma \sqrt{r_t} dz^Q - \lambda r_t dt,
+$$
+
+where $\lambda$ is a constant and $z^Q$ is scalar Brownian motion.  Then the price of a discount bond maturing at date $T$ is:
+
+\begin{align*}
+P(t, T) &= \exp(-YTM(t, T) (T-t) = E_t^Q(\exp(-\int_t^T r_s ds)) = A(t, T) \exp(-B(t, T) r_t)\\
+\text{where }
+A(t, T) &\equiv \Bigg[ \frac{2 \gamma \exp([(\kappa + \lambda + \gamma)(T-t)]/2)}{(\gamma + \kappa + \lambda)(\exp(\gamma(T-t)) - 1) + 2 \gamma} \Bigg]^{2 \kappa \theta / \sigma^2}\\
+B(t, T) &\equiv  \frac{2  (\exp(\gamma(T-t) - 1)}{(\gamma + \kappa + \lambda)(\exp(\gamma(T-t)) - 1) + 2 \gamma}\\
+\gamma &\equiv ((\kappa + \lambda)^2 + 2 \sigma^2)^{1/2}
+\end{align*}
+
 \subsection*{Solution}
+
+\item Three alternative methods of solution:
+
+\begin{enumerate}
+
+\item Calculate the expectation
+
+\item Discretize the Ito process for $r_t$, and use Monte Carlo to approximate the expectation
+
+\item Solve a p.d.e.
+
+\end{enumerate}
+
+\item Suppose the bond price is a function $P(t, T) = p(r_t, t)$ that satisfies the conditions required for Ito's lemma. 
+
+Then $p(r_t, t) = E_t^Q(\exp(-\int_t^T r_s ds))$, with $dr_t = \kappa (\theta - r_t)dt + \sigma \sqrt{r_t} dz^Q - \lambda r_t dt$.
+
+By Feynman-Kac, 
+
+$$
+0 = p_r (\kappa \theta - (\kappa + \lambda)r) + p_{rr} \frac{1}{2} \sigma^2 r + p_t - p r
+$$
+
+with $p(r_T, T) = 1$ for all $r_T$.
+
+\item Discretize: $r_{i,j\Delta} = \kappa (\theta - r_{i,(j-1)\Delta})\Delta - \lambda r_{i,(j-1)\Delta} \Delta + \sigma \sqrt{r_{i,(j-1)\Delta}} \sqrt{\Delta} z_{i,j}$, $r_{i,0} = r_t$, where $j=1, ..., n$ with $\Delta = (T-t)/n; i = 1, ..., m$, and $z_{i,j} \sim N(0,1)$ for all $i,j$.
+
+\item Approximate: $E_t^Q (\exp(-\int_t^T r_s ds)) \approx \frac{1}{m} \sum_{i=1}^m \exp(-\frac{1}{2} \sum_{j=1}^n (r_{i,j\Delta} + r_{i,(j-1)\Delta}) \Delta)$
 
 \end{itemize}
 
