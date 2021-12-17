@@ -15,7 +15,7 @@
 ################################## Define primitives and results structures ########################################
 ####################################################################################################################
 
-using Parameters, QuantEcon
+using Parameters, QuantEcon, Random, FixedEffectModels
 
 # Model parameters
 @with_kw struct Primitives
@@ -93,6 +93,17 @@ mutable struct Results
     cash_flow_mean::Float64 # Mean cash flow
     cash_flow_std::Float64  # Std cash flow
     neg_i_frac::Float64     # Fraction of firms with negative investment
+end
+
+mutable struct Simulation_Results
+    T::Int64             # duration
+    N::Int64             # number of individuals
+    z::Array{Float64, 2} # Productivities
+    k::Array{Float64, 2} # Capital levels
+    x::Array{Float64, 2} # Continuation decisions
+    i::Array{Float64, 2} # Investment
+    π::Array{Float64, 2} # Cash flows
+    v::Array{Float64, 2} # Franchise value
 end
 
 # Initialize results structure
@@ -232,7 +243,7 @@ function Solve_wage(R::Results)
     G = Grids()
     
     # Initial bounds and midpoint for price search using bisection method.
-    wage_low = 0.75 
+    wage_low = 0.5 
     wage_high = 1.5
     R.wage = (wage_high + wage_low)/2
 
@@ -390,6 +401,107 @@ function Solve_model(λ_0::Float64, λ_1::Float64)
     return R
 end
 
+function simulate_shocks()
+    
+    T = 11
+    N = 1200
+
+    G = Grids()
+
+    states = fill(1, N, T)
+
+    for j in 1:N
+        states[j, :] = simulate_indices(G.z_mc, T )
+    end
+
+    return states
+end
+
+function simulate_model(R::Results, states::Array{Int64, 2})
+    
+    N = size(states)[1]
+    T = size(states)[2]
+
+    G = Grids()
+
+    # Initialize simulation objects
+    z = zeros(N, T)
+    k = zeros(N, T)
+    x = zeros(N, T)
+    v = zeros(N, T)
+    i = zeros(N, T)
+    π = zeros(N, T)
+
+    for j in 1:N
+        # draws initial productivity
+        i_z = states[j, 1]
+        z[j, 1] = G.z_grid[i_z]
+
+        # firm starts at a random level of capital based on the stationary distribution conditional on their initial productivity draw
+        i_k = sum(R.cdf[:, i_z] .< rand())
+        k[j, 1] = G.k_grid[i_k]
+
+        # determines franchise value and capital for next period
+        v[j, 1] = R.vf[i_k, i_z]
+        i[j, 1] = R.i_pf[i_k, i_z]
+        π[j, 1] = R.π[i_k, i_z]
+        x[j, 1] = R.x_pf[i_k, i_z]
+        k[j, 2] = R.k_pf[i_k, i_z]
+        
+        for t = 2:T
+            # entrant know capital level and previous productivity level
+            i_k = argmax(k[j, t] .== G.k_grid)
+
+            # makes exit decision
+            x[j, t] = R.x_pf[i_k, i_z]
+            if x[j, t] == 0.0
+                break
+            end
+            
+            # draws next productivity
+            i_z = states[j, t]
+            z[j, t] = G.z_grid[i_z]
+
+            # determines franchise value
+            v[j, t] = R.vf[i_k, i_z]
+
+            # Determines cash flow and investment 
+            π[j, t] = R.π[i_k, i_z]
+            i[j, t] = R.i_pf[i_k, i_z]
+            
+            # Chooses capital for next period
+            if (t < T)
+                k[j, t+1] = R.k_pf[i_k, i_z]
+            end
+        end
+    end
+
+    Simulation_Results(T, N, z, k, x, i, π, v)
+
+end
+
+function estimate_fhp_regression(S::Simulation_Results)
+
+    x = reshape(S.x, S.N *S.T, 1)
+    i = reshape(S.i, S.N *S.T, 1)
+    k_lag = reshape(hcat(zeros(S.N), S.k[:, 1:end-1]), S.N *S.T, 1)
+    π_lag = reshape(hcat(zeros(S.N), S.π[:, 1:end-1]), S.N *S.T, 1)
+    v_lag = reshape(hcat(zeros(S.N), S.v[:, 1:end-1]), S.N *S.T, 1)
+
+    df = DataFrame(hcat(x, i./k_lag, v_lag./k_lag, π_lag./k_lag), [:continuation, :investment, :tobinq, :cf])
+    df.firm = reshape((1:S.N) * fill(1, S.T)', S.N *S.T, 1)[:,1]
+    df.year = reshape(fill(1, S.N) * (1:S.T)', S.N *S.T, 1)[:,1]
+
+    filter!(:continuation => x -> x == 1.0, df)
+    filter!(:investment => x -> isfinite(x) & !isnan(x), df)
+    filter!(:tobinq => x -> isfinite(x) & !isnan(x), df)
+    filter!(:cf => x -> isfinite(x) & !isnan(x), df)
+
+    println("# of unique firms: ", length(unique(df.firm)))
+
+    reg(df, @formula(investment ~ tobinq + cf + fe(year) + fe(firm)), Vcov.cluster(:firm))
+
+end
 
 
 

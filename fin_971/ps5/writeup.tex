@@ -58,6 +58,14 @@
 
 This problem set is to replicate Gomes (AER, 2001) ``Financing Investment".
 
+\bigskip
+
+The equilibrium wage, entrant mass, aggregate output, aggregate labor, and aggregate profits for our baseline specification (i.e. with financial frictions) and without financial frictions.  All equilibrium quantities are higher without financial frictions especially the mass of entrants.  This difference makes a lot of sense because all firms start with zero capital.
+
+\bigskip
+
+\csvautotabular{table_1.csv}
+
 \section*{Question 1}
 
 Below is a table that corresponds to Table 2 of Gomes (2001).  It features the aggregate results from the model. My numbers are generally inline with Gomes (2001) except for the external financing costs, which are about 10 times smaller (can see on rows 2 and 3).  I'm not exactly sure why; it could be to do  with how I'm aggregating.  But the share of floatation cost to external financing costs is close to Gomes (2001).
@@ -108,11 +116,24 @@ Below is a figure of the cumulative distribution functions based on productivity
 
 \section*{Question 4}
 
-\section*{Question 5}
+I simulated a panel of 1200 firms for 10 years. First, I simulate the state transitions.  They all start from a random draw from $\phi(z_t)$.  Then to start the simulations of the capital, investment, continuation, and cash flows, I start the firms from a random draw from the stationary distribution for capital conditional on their initial productivity draw.  I initially tried starting all firms with zero capital, but since exit rates are higher for small firms, many of the firms immediately exited.  Then using the value and policy functions from the model computation, I simulate the paths of capital, investment, continuation, and cash flow.  In the table, I report the FHP regression based on these simulations in column (1). Standard errors are clustered at the firm-level. It makes sense that the coefficient on Tobin's Q is significant and positive.  The coefficient is significant and negative for cash-flow over lagged capital. It being significant is consistent with FHP, but it being negative is surprising.  This means that a higher cash-flow means lower investment.
 
-
+\begin{table}[h]
+\input{fhp_table}
+\end{table}
 
 \pagebreak
+
+\section*{Question 5}
+
+I estimated the model without financial frictions (i.e. $\lambda_0 = \lambda_1 = 0$) in column (2) of the table above.  We see that the coefficient is still negative and significant suggesting that investment is still sensitive to cash flow even without financial frictions.  I was struck by how many more firms exit the market, so I plotted the value and policy functions and distributions without financial frictions (see below).  Firstly, it is striking that all concaving of the value and policy functions disappear, which makes sense because firms are risk-neutral.  Furthermore, all firms that are below the median productivity level exit the market.  This is consistent with the higher price and the higher mass of entrants from the first table.  The distributions confirm that are very few low productivity firms staying in the market.  In fact, the only firms are recent entrants that drew a low productivity and are planning on exiting.
+
+\includegraphics[scale = .5]{value_function_frictionless.png}
+
+\includegraphics[scale = .5]{policy_functions_frictionless.png}
+
+\includegraphics[scale = .5]{cdf_frictionless.png}
+
 
 \end{document}
 
