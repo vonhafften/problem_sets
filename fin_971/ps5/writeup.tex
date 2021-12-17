@@ -12,6 +12,7 @@
 \usepackage{multicol}
 \usepackage{geometry}
 \usepackage{bbm}
+\usepackage{csvsimple}
 \usepackage{accents}
 \hypersetup{
 	colorlinks,
@@ -55,15 +56,63 @@
 
 \maketitle
 
-Optimal static labor demand:
+This problem set is to replicate Gomes (AER, 2001) ``Financing Investment".
 
-\begin{align*}
-l(k_t, z_t; w_t) &= \arg \max_{l \ge 0} \{ A \exp(z_t) k_t ^{\alpha_k} l_t ^{\alpha_l} - w_t l_t - f_p\}\\
-\implies
-A \exp(z_t) \alpha_l k_t ^{\alpha_k} l_t ^{\alpha_l - 1}  &= w_t\\
- l_t   &= \Bigg(\frac{w_t}{A \exp(z_t) \alpha_l k_t ^{\alpha_k}}\Bigg)^{\frac{1}{\alpha_l - 1}} \\
-\end{align*}
+\section*{Question 1}
 
+Below is a table that corresponds to Table 2 of Gomes (2001).  It features the aggregate results from the model. My numbers are generally inline with Gomes (2001) except for the external financing costs, which are about 10 times smaller (can see on rows 2 and 3).  I'm not exactly sure why; it could be to do  with how I'm aggregating.  But the share of floatation cost to external financing costs is close to Gomes (2001).
+
+\bigskip
+
+\csvautotabular{table_2.csv}
+
+\bigskip
+
+Below is a table that corresponds to Table 3 of Gomes (2001). It features the cross-sectional results from the model.  The average size is very different (possibly units).  The mean investment rate is close, but I find a lower standard deviation.  My mean Tobin's Q is close to Gomes (a little higher; closer to the data reported in Gomes).  The average cash flow is close, but the standard deviation is again lower.  The fraction of firms with negative investment is about half of Gomes.
+
+\bigskip
+
+\csvautotabular{table_3.csv}
+
+\section*{Question 2}
+
+Below is a table that breaks down the firm distribution based on the sign of their dividends.  Most firms are constrained that is they are not financed through seasoned equity injections but they are not paying out dividends either.  Due to using a capital grid, I defined constrained as $d \in (-\varepsilon, \varepsilon)$ instead of $d = 0$.  Thus, constrained includes firms with very small dividends as well.
+
+\bigskip
+
+\csvautotabular{table_4.csv}
+
+\section*{Question 3}
+
+For this question, I plot the franchise value, policy functions, and distributions.  I highlight the lowest productivity level in green, the median productivity level in red, and the highest productivity level in blue.
+
+Below is a figure of the franchise value for different productivity and capital levels.  Franchise value is increasing both in productivity and capital.  The franchise values are tighter for low levels of capital across productivity levels and spread out as capital increases.
+
+\includegraphics[scale = .5]{value_function.png}
+
+\pagebreak
+
+Below is a figure of the policy functions for capital, investment, continuation, and dividends.  Capital shows that highly productive firms are growing up to a certain size (i.e. the blue line is above the 45 degree line until $k \approx 4.25$) and as productivity drops the flattening out point drops.  This pattern is also mirrored in the investment policy function.  For certain productivity levels, investment is positive but it drops to negative at a certain point. From the dividend policy functions, we can see that these firms are growing through retained earnings instead of seasoned equity injections.  Only small and highly productive firms are funded through seasoned equity injection.  We can also see that only small low productivity firms exit the market.
+
+\bigskip
+
+\includegraphics[scale = .75]{policy_functions.png}
+
+\pagebreak
+
+Below is a figure of the cumulative distribution functions based on productivity (i.e. all lines converge to one going to the right). This shows that all low productivity firms are small. And as productivity increases so does firm size.  The unconditional firm distribution across capital level is close to median productivity level because the distribution of firms across productivity levels is bell-shaped.
+
+\bigskip
+
+\includegraphics[scale = .5]{cdf.png}
+
+\section*{Question 4}
+
+\section*{Question 5}
+
+
+
+\pagebreak
 
 \end{document}
 

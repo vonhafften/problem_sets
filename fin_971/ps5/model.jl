@@ -67,11 +67,32 @@ mutable struct Results
     L_d::Float64           # Aggregate labor demand
     L_s::Float64           # Aggregate labor supply
 
+    ###########################################################################
     # Other results
+    ###########################################################################
+
+    # matrix results
+
     cdf::Array{Float64, 2}  # CDF of Stationary firm distribution
     d_pf::Array{Float64, 2} # Dividend policy function
     i_pf::Array{Float64, 2} # Investment policy function
+    λ::Array{Float64, 2}    # External financing cost
+
     breakdown_constrained::Array{Float64, 1} # Investment policy function
+    
+    Y::Float64              # aggregate output
+    I::Float64              # aggregate investment
+    Λ::Float64              # aggregate financing costs
+    production_cost::Float64# aggregate production costs
+    floatation_cost::Float64  # aggregate floatation costs
+
+    size_mean::Float64      # average size
+    i_k_mean::Float64       # mean of i/k
+    i_k_std::Float64        # std of i/k
+    tobin_q::Float64        # Mean q
+    cash_flow_mean::Float64 # Mean cash flow
+    cash_flow_std::Float64  # Std cash flow
+    neg_i_frac::Float64     # Fraction of firms with negative investment
 end
 
 # Initialize results structure
@@ -99,9 +120,10 @@ function Initialize(λ_0::Float64, λ_1::Float64)
     cdf  = zeros(k_n, z_n)
     d_pf = zeros(k_n, z_n)
     i_pf = zeros(k_n, z_n)
+    λ    = zeros(k_n, z_n)
     breakdown_constrained = [0.0, 0.0, 0.0]
 
-    return Results(λ_0, λ_1, wage, N_d, π, x_pf, k_pf, vf, B, μ, Π, L_d, L_s, cdf, d_pf, i_pf, breakdown_constrained)
+    return Results(λ_0, λ_1, wage, N_d, π, x_pf, k_pf, vf, B, μ, Π, L_d, L_s, cdf, d_pf, i_pf, λ, breakdown_constrained, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 end
 
 ####################################################################################################################
@@ -323,6 +345,7 @@ end
 function Solve_model(λ_0::Float64, λ_1::Float64)
     P = Primitives()
     G = Grids()
+
     R = Initialize(λ_0, λ_1)
 
     print("Solving for wage... ")
@@ -332,15 +355,41 @@ function Solve_model(λ_0::Float64, λ_1::Float64)
     print("Solving for entrant mass... ")
     Solve_B(R)
     println("Done.")
-    
+
+    # Other results
+    k_matrix = G.k_grid * ones(G.z_n)'
+    z_matrix = ones(G.k_n) * G.z_grid' 
+
+    # matrix results
     R.cdf = cumsum(R.μ; dims = 1)./sum(R.μ; dims = 1)
-    R.i_pf = R.k_pf .- (1 - P.δ) .* G.k_grid * ones(G.z_n)'
-    R.d_pf = R.π .- R.i_pf .- (λ_0 .+ λ_1 .* (R.i_pf .- R.π))
-    R.breakdown_constrained[1] = sum((R.d_pf .< -0.01) .* R.μ)/sum(R.μ)
-    R.breakdown_constrained[2] = sum((R.d_pf .> -0.01) .* (R.d_pf .< 0.01) .* R.μ)/sum(R.μ)
-    R.breakdown_constrained[3] = sum((R.d_pf .> 0.01) .* R.μ)/sum(R.μ)
+    R.i_pf = R.k_pf .- (1 - P.δ) .* k_matrix
+    R.λ = (R.i_pf .- R.π .> 0) .* (λ_0 .+ λ_1 .* (R.i_pf .- R.π))
+    R.d_pf = R.π .- R.i_pf .- R.λ
+
+    # aggregate moments
+    R.breakdown_constrained[1] = sum((R.d_pf .< -0.1) .* R.μ)/sum(R.μ)
+    R.breakdown_constrained[2] = sum((R.d_pf .> -0.1) .* (R.d_pf .< 0.1) .* R.μ)/sum(R.μ)
+    R.breakdown_constrained[3] = sum((R.d_pf .>  0.1) .* R.μ)/sum(R.μ)
+    R.Y = sum((P.A .* exp.(z_matrix) .* k_matrix .^ P.α_k .* R.N_d .^ P.α_l .- P.f_p) .* R.μ .* R.x_pf) - R.B * P.f_p
+    R.I = sum(R.i_pf .* R.x_pf .* R.μ) + R.B * sum(R.k_pf[1,:] .* G.ϕ)
+    R.Λ = sum(R.λ .* R.x_pf .* R.μ) + R.B * sum(R.λ[1,:] .* G.ϕ)
+    R.production_cost = sum(R.μ .* P.f_p)
+    R.floatation_cost = sum((R.λ .> 0) .* λ_0 .* R.μ)
+
+    # cross-sectional moments
+    M = sum(R.μ)
+
+    R.size_mean = 1/(M - R.B) * sum(k_matrix .* R.μ .* R.x_pf)
+    R.i_k_mean = 1/(M - R.B) * sum((k_matrix .> 0) .* (R.i_pf ./ k_matrix) .* R.μ .* R.x_pf)
+    R.i_k_std = sqrt(1/(M - R.B) * sum((k_matrix .> 0) .* ((R.i_pf ./ k_matrix) .- R.i_k_mean).^2 .* R.μ .* R.x_pf))
+    R.tobin_q = 1/(M - R.B) * sum((k_matrix .> 0.0) .* (R.vf ./ k_matrix) .* R.μ .* R.x_pf)
+    R.cash_flow_mean = 1/(M - R.B) * sum((k_matrix .> 0.0) .* (R.π ./ k_matrix) .* R.μ .* R.x_pf)
+    R.cash_flow_std = sqrt(1/(M - R.B) * sum((k_matrix .> 0) .* ((R.π ./ k_matrix) .- R.cash_flow_mean).^2 .* R.μ .* R.x_pf))
+    R.neg_i_frac = sum((R.i_pf .< 0) .* R.μ .* R.x_pf)
 
     return R
 end
+
+
 
 

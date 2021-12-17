@@ -1,0 +1,4 @@
+Type,Fraction
+Receiving seasoned equity $(d < 0)$,0.0009
+Constrained $(d = 0)$,0.9684
+Unconstrained $(d > 0)$,0.0307
