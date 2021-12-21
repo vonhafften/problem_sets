@@ -1,7 +1,7 @@
 # Computational Economics
 # Professor JF Houde
 # Problem set 1
-# Alex von Hafften 
+# Alex von Hafften, Michael Nattinger, Sarah Bass, Xinxin Hu
 # November 7, 2021
 
 using Plots, Tables, DataFrames, CSV, StatFiles, Optim

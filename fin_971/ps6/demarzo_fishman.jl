@@ -175,5 +175,5 @@ p6 = plot(primitives.a_grid, results.d_L, ylim = (0, 20), title = "d_L");
 
 plot(p1, p2, p3, p4, p5, p6, layout =  (3, 2), legend = false);
 plot!(size=(400,600));
-savefig("policy_function.png")
+savefig("policy_functions.png")
 
