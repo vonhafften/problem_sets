@@ -64,6 +64,29 @@ function invert_demand(market, λ_p::Float64; tolerence = [1e-12, 1])
     return δ_0, err_list
 end
 
-function gmm_obj()
+function invert_demand(λ_p::Float64)
+    δ = []
+    
+    for m in markets
+        δ = vcat(δ, invert_demand(m, λ_p)[1])
+    end
+
+    return δ
+end
+
+function compute_ρ(λ_p::Float64, W::Array{Float64})
+    δ = invert_demand(λ_p)
+
+    β = inv((X'*Z) *W*(Z'X)) *(X'*Z) *W*Z'*δ
+
+    return δ - X*β
+end
+
+# compute gmm objective function
+function gmm_obj(λ_p::Float64, W::Array{Float64})
+    ρ = compute_ρ(λ_p, W)
+
+    return (ρ'*Z*W*Z'*ρ)[1,1]
+
 end
 

@@ -4,7 +4,7 @@
 
 # Alex von Hafften
 
-using DataFrames, StatFiles, LinearAlgebra, Statistics, Plots
+using DataFrames, StatFiles, LinearAlgebra, Statistics, Plots, Optim
 
 cd("/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_899b/ps3")
 
@@ -29,14 +29,51 @@ ylabel!("Iteration #")
 savefig("question_1.png")
 
 
+####################################################################################
+# Question 2 - GMM first stage
+####################################################################################
+
+λ_grid = 0.0:0.1:1.0
+
+W_1 = inv(Z' * Z) # first stage weighting matrix
+
+# objective function over λ_grid
+gmm_obj_1_grid = zeros(length(λ_grid))
+for i = 1:length(λ_grid)
+    println(i)
+    gmm_obj_1_grid[i] = gmm_obj(λ_grid[i], W_1)
+end
+
+@time gmm_1 = optimize(λ -> gmm_obj(λ, W_1), 0.0, 1.0, Brent())
+
+plot(λ_grid, gmm_obj_1_grid, label = "First stage objective");
+scatter!([gmm_1.minimizer], [gmm_1.minimum], label = "First stage estimate");
+xlabel!("λ_p")
+savefig("question_2.png")
 
 
+####################################################################################
+# Question 3 - GMM second stage
+####################################################################################
 
+ξ_hat = compute_ρ(gmm_1.minimizer, W_1)
 
+# second stage weighting matrix
+W_2 = inv((Z .* ξ_hat)' *(Z .* ξ_hat))
 
+# objective function over λ_grid
+gmm_obj_2_grid = zeros(length(λ_grid))
+for i = 1:length(λ_grid)
+    println(i)
+    gmm_obj_2_grid[i] = gmm_obj(λ_grid[i], W_2)
+end
 
+@time gmm_2 = optimize(λ -> gmm_obj(λ, W_2), 0.0, 1.0, Brent())
 
+plot(λ_grid, gmm_obj_1_grid, label = "1st stage objective");
+scatter!([gmm_1.minimizer], [gmm_1.minimum], label = "1st stage estimate");
+plot!(λ_grid, gmm_obj_2_grid, label = "2nd stage objective");
+scatter!([gmm_2.minimizer], [gmm_2.minimum], label = "2nd stage estimate");
+xlabel!("λ_p")
 
-
-characteristics = Float64.(Array(select(filter(row -> row.Year == 1985, df_characteristics), :price, :dpm, :hp2wt, :size, :turbo, :trans, :model_class_2, :model_class_3, :model_class_4, :model_class_5, :cyl_2, :cyl_4, :cyl_6, :cyl_8, :drive_2, :drive_3, :Intercept)))
-instruments     = Float64.(Array(select(filter(row -> row.Year == 1985, df_instruments), :i_import, :diffiv_ed_0, :diffiv_local_0, :diffiv_local_1, :diffiv_local_2, :diffiv_local_3)))
+savefig("question_3.png")
