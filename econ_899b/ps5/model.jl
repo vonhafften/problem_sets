@@ -1,9 +1,11 @@
 # Alex von Hafften 
 # Besanko and Doraszelski
 # Supplement to Computational Economics
-# December 22, 2021
+# December 23, 2021
 
-using Parameters, LinearAlgebra, Plots
+# This file contains the model functions
+
+using Parameters, LinearAlgebra
 
 @with_kw struct Primitives
     # Demand parameters
@@ -11,11 +13,11 @@ using Parameters, LinearAlgebra, Plots
     b::Float64             = 10.0
 
     # Capacity constraint grid
-    q_bar_min              = 0.0
-    q_bar_max              = 45.0
-    q_bar_increment        = 5.0
+    q_bar_min                  = 0.0
+    q_bar_max                  = 45.0
+    q_bar_increment            = 5.0
     q_bar_grid::Array{Float64} = q_bar_min:q_bar_increment:q_bar_max
-    n_q::Int64             = length(q_bar_grid)
+    n_q::Int64                 = length(q_bar_grid)
 
     # Depreciation (should move to results)
     β::Float64             = 1/1.05
@@ -25,48 +27,61 @@ using Parameters, LinearAlgebra, Plots
 end
 
 mutable struct Results
-    competition::String
-    δ::Float64
-    α::Float64
+
+    # Parameters that vary between runs of the model
+    competition::String # either quantity or price
+    δ::Float64          # depreciation
+    α::Float64          # 
+
+    # Static objects
+    # Region for bertand
+    region::Array{String}
+
+    # optimal quantities at each capacity constraint levels
     q_star_1::Array{Float64}
     q_star_2::Array{Float64}
+
+    # optimal prices at each capacity constraint levels
     p_star_1::Array{Float64}
     p_star_2::Array{Float64}
+
+    # static profit levels at each capacity constraint levels
     π_1::Array{Float64}
     π_2::Array{Float64}
+
+    # Dynamic objects
+    # investment policy at each capacity constraint levels
     x_pf_1::Array{Float64}
     x_pf_2::Array{Float64}
+
+    # franchise value at each capacity constraint levels
     vf_1::Array{Float64}
     vf_2::Array{Float64}
+
+    # Stationary distribution
+    μ::Array{Float64}
+    
 end
 
 function Initialize(competition::String, δ::Float64)
     P = Primitives()
 
-    # Parameters that vary between runs of the model
     α = P.θ_bar / ((1-δ-P.θ_bar)*P.x_bar)
 
-    # optimal quantities at each capacity constraint levels
+    region = fill("NA", P.n_q, P.n_q)
     q_star_1 = zeros(P.n_q, P.n_q)
     q_star_2 = zeros(P.n_q, P.n_q)
-
-    # optimal prices at each capacity constraint levels
     p_star_1 = zeros(P.n_q, P.n_q)
     p_star_2 = zeros(P.n_q, P.n_q)
-
-    # static profit levels at each capacity constraint levels
     π_1 = zeros(P.n_q, P.n_q)
     π_2 = zeros(P.n_q, P.n_q)
-    
-    # investment policy at each capacity constraint levels
     x_pf_1 = zeros(P.n_q, P.n_q)
     x_pf_2 = zeros(P.n_q, P.n_q)
-
-    # franchise value at each capacity constraint levels
     vf_1 = zeros(P.n_q, P.n_q)
     vf_2 = zeros(P.n_q, P.n_q)
+    μ = ones(P.n_q, P.n_q) / (P.n_q*P.n_q)
 
-    Results(competition, δ, α, q_star_1, q_star_2, p_star_1, p_star_2, π_1, π_2, x_pf_1, x_pf_2, vf_1, vf_2)
+    Results(competition, δ, α, region, q_star_1, q_star_2, p_star_1, p_star_2, π_1, π_2, x_pf_1, x_pf_2, vf_1, vf_2, μ)
 end
 
 function demand(price::Float64, P::Primitives)
@@ -112,30 +127,70 @@ function compute_static_cournot(q_bar_1::Float64, q_bar_2::Float64, P::Primitive
 end
 
 function compute_static_bertand(q_bar_1::Float64, q_bar_2::Float64, P::Primitives)
-    # cournot game with zero mc and unlimited capacity
+    # optimal quantities in cournot game with zero mc and unlimited capacity
     q_tilde_1 = (P.a - q_bar_2) / 2
     q_tilde_2 = (P.a - q_bar_1) / 2
 
     # demand at a price of zero
     Q_0 = demand(0.0, P)
 
-    # region A from the paper
+    # region A - both firms produce at capacity and sell at the market-clearing price
     if (q_bar_1 <= q_tilde_1) & (q_bar_2 <= q_tilde_2)
-        price = inv_demand(q_bar_1 + q_bar_2)
-        return q_bar_1, q_bar_2, price, price, price*q_bar_1, price*q_bar_2
-    elseif (q_bar_1 >= Q_0) & (q_bar_2 >= Q_0) # region B
+        
+        price = inv_demand(q_bar_1 + q_bar_2, P)
+        return "A", q_bar_1, q_bar_2, price, price, price*q_bar_1, price*q_bar_2
+
+    # region C - both firms each sufficient capacity to serve market.
+    # pricing at marginal cost and zero profits.
+    elseif (q_bar_1 >= Q_0) & (q_bar_2 >= Q_0) 
+        
         # assume that consumer buy equally from firms (it doesn't really matter)
-        return Q_0/2, Q_0/2, 0.0, 0.0, 0.0, 0.0
-    elseif q_bar_1 <= q_bar_2 # region B_1
-        return ##############################
-    else # q_bar_1 >= q_bar_2 # region B_2
-        return ##################################
+        return "C", Q_0/2, Q_0/2, 0.0, 0.0, 0.0, 0.0
+    
+    # region B_1 - firm 1 is small than firm 2
+    elseif q_bar_1 <= q_bar_2
+
+        # firm 2's problem
+        p_star_2 = (P.a - q_bar_1)/(2*P.b)
+        q_star_2 = min(q_bar_2, max(0, demand(p_star_2, P) - q_bar_1))
+        π_2 = p_star_2 * q_star_2
+
+        # firm 1's problem
+        # λ is the multiplier on minimization problem to make better for firm 2 to be the higher priced firm
+        λ = sqrt(P.a^2 - 4*P.b*π_2)
+        p_2_bar = 1/(2*P.b)*(P.a - λ)
+
+        p_star_1 = p_2_bar
+        q_star_1 = min(q_bar_1, demand(p_star_1, P))
+        π_1 = p_star_1 * q_star_1
+        
+        return "B_1", q_star_1, q_star_2, p_star_1, p_star_2, π_1, π_2
+    
+    # region B_2 - firm 1 is larger than firm 2
+    else # q_bar_1 >= q_bar_2
+        
+        # firm 1's problem
+        p_star_1 = (P.a - q_bar_2)/(2*P.b)
+        q_star_1 = min(q_bar_1, max(0, demand(p_star_1, P) - q_bar_2))
+        π_1 = p_star_1 * q_star_1
+
+        # firm 2's problem
+        # λ is the multiplier on minimization problem to make better for firm 1 to be the higher priced firm
+        λ = sqrt(P.a^2 - 4*P.b*π_1)
+        p_1_bar = 1/(2*P.b)*(P.a - λ)
+
+        p_star_2 = p_1_bar
+        q_star_2 = min(q_bar_2, demand(p_star_2, P))
+        π_2 = p_star_2 * q_star_2
+
+        return "B_2", q_star_1, q_star_2, p_star_1, p_star_2, π_1, π_2
+    
     end
 end
 
-function compute_static_results!(competition::String, R::Results, P::Primitives)
+function compute_static_results!(R::Results, P::Primitives)
 
-    if competition == "quantity"
+    if R.competition == "quantity"
         for i = 1:P.n_q, j = 1:P.n_q
             R.q_star_1[i,j], R.q_star_2[i,j] = compute_static_cournot(P.q_bar_grid[i], P.q_bar_grid[j], P)
             R.p_star_1[i,j] = inv_demand(R.q_star_1[i,j] + R.q_star_2[i,j], P)
@@ -143,29 +198,24 @@ function compute_static_results!(competition::String, R::Results, P::Primitives)
             R.π_1[i,j] = R.p_star_1[i,j] * R.q_star_1[i,j]
             R.π_2[i,j] = R.p_star_2[i,j] * R.q_star_2[i,j]
         end
-    elseif competition == "price"
+    elseif R.competition == "price"
         for i = 1:P.n_q, j = 1:P.n_q
-            R.q_star_1[i,j], R.q_star_2[i,j], R.p_star_1[i,j], R.p_star_2[i,j], R.π_1[i,j], R.π_2[i,j] = compute_static_bertand(P.q_bar_grid[i], P.q_bar_grid[j], P)
+            R.region[i,j], R.q_star_1[i,j], R.q_star_2[i,j], R.p_star_1[i,j], R.p_star_2[i,j], R.π_1[i,j], R.π_2[i,j] = compute_static_bertand(P.q_bar_grid[i], P.q_bar_grid[j], P)
         end
     end
 end
 
 # returns the probability of going from q_bar to q_bar_next given investment x
 function pr(q_bar::Float64, q_bar_next::Float64, x::Float64, δ::Float64, α::Float64, P::Primitives)
-    
-    # based on the stochastic capacity constraint change formula
-    pr_increase = ((1-δ)*α*x)/(1+α*x)
-    pr_constant = (1-δ)/(1+α*x) + (δ*α*x)/(1+α*x)
-    pr_decrease = δ/(1+α*x)
 
     # if at the minimum capacity constraint, you can't drop further down.
     if q_bar == P.q_bar_min
         if q_bar_next < q_bar
             return 0.0
         elseif q_bar_next == q_bar
-            return pr_constant + pr_decrease
+            return 1/(1+α*x)
         elseif q_bar_next == q_bar + P.q_bar_increment
-            return pr_increase
+            return (α*x)/ (1+α*x)
         else
             return 0.0
         end
@@ -174,19 +224,19 @@ function pr(q_bar::Float64, q_bar_next::Float64, x::Float64, δ::Float64, α::Fl
         if q_bar_next > q_bar
             return 0.0
         elseif q_bar_next == q_bar
-            return pr_constant + pr_increase
+            return (1-δ+α*x)/(1+α*x)/(1+α*x)
         elseif q_bar_next == q_bar - P.q_bar_increment
-            return pr_decrease
+            return δ/(1+α*x)
         else
             return 0.0
         end
     else # interior capacity constraint levels
         if q_bar_next == q_bar + P.q_bar_increment
-            return pr_increase
+            return ((1-δ)*α*x)/(1+α*x)
         elseif q_bar_next == q_bar
-            return pr_constant
+            return (1-δ)/(1+α*x) + (δ*α*x)/(1+α*x)
         elseif q_bar_next == q_bar - P.q_bar_increment
-            return pr_decrease
+            return δ/(1+α*x)
         else
             return 0.0
         end
@@ -273,7 +323,7 @@ function Solve_model(competition::String, δ::Float64; verbose::Bool = false)
     R = Initialize(competition, δ)
     P = Primitives()
     
-    compute_static_results!(competition, R, P)
+    compute_static_results!(R, P)
 
     i, maxiter, err = 1, 1000, 100
     i = 1
@@ -301,64 +351,3 @@ function Solve_model(competition::String, δ::Float64; verbose::Bool = false)
     return R
 end
 
-model_quantity_competition = Solve_model("quantity", 0.1)
-
-
-############################################################################
-# Plots
-############################################################################
-
-function plot_surface(matrix::Array{Float64})
-    P = Primitives()
-    function f(x, y)
-        matrix[x, y]
-    end
-    plot(1:P.n_q, 1:P.n_q, f, st=:surface, legend = false)
-    xlabel!("q_bar_1")
-    ylabel!("q_bar_2")
-end
-
-function plot_static_results(R::Results)
-
-    p1 = plot_surface(model_quantity_competition.q_star_1);
-    title!("q_star_1");
-
-    p2 = plot_surface(model_quantity_competition.q_star_2);
-    title!("q_star_2");
-
-    p3 = plot_surface(model_quantity_competition.p_star_1);
-    title!("p_star_1");
-
-    p4 = plot_surface(model_quantity_competition.p_star_2);
-    title!("p_star_2");
-
-    p5 = plot_surface(model_quantity_competition.π_1);
-    title!("π_1");
-
-    p6 = plot_surface(model_quantity_competition.π_2);
-    title!("π_2");
-
-    plot(p1, p2, p3, p4, p5, p6, layout =  (3, 2));
-    plot!(size=(700,900), titlefontsize = 12, guidefontsize=8)
-end
-
-function plot_dynamic_results(R::Results)
-
-    p1 = plot_surface(model_quantity_competition.x_pf_1);
-    title!("x_pf_1");
-
-    p2 = plot_surface(model_quantity_competition.x_pf_2);
-    title!("x_pf_2");
-
-    p3 = plot_surface(model_quantity_competition.vf_1);
-    title!("vf_1");
-
-    p4 = plot_surface(model_quantity_competition.vf_2);
-    title!("vf_2");
-
-    plot(p1, p2, p3, p4, layout =  (2, 2));
-    plot!(size=(700,700), titlefontsize = 12, guidefontsize=8)
-end
-
-plot_static_results(model_quantity_competition)
-plot_dynamic_results(model_quantity_competition)
