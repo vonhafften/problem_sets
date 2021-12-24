@@ -127,9 +127,11 @@ function compute_static_cournot(q_bar_1::Float64, q_bar_2::Float64, P::Primitive
 end
 
 function compute_static_bertand(q_bar_1::Float64, q_bar_2::Float64, P::Primitives)
+    @unpack a, b = Primitives()
+
     # optimal quantities in cournot game with zero mc and unlimited capacity
-    q_tilde_1 = (P.a - q_bar_2) / 2
-    q_tilde_2 = (P.a - q_bar_1) / 2
+    q_tilde_1 = (a - q_bar_2) / 2
+    q_tilde_2 = (a - q_bar_1) / 2
 
     # demand at a price of zero
     Q_0 = demand(0.0, P)
@@ -151,14 +153,14 @@ function compute_static_bertand(q_bar_1::Float64, q_bar_2::Float64, P::Primitive
     elseif q_bar_1 <= q_bar_2
 
         # firm 2's problem
-        p_star_2 = (P.a - q_bar_1)/(2*P.b)
+        p_star_2 = (a - q_bar_1)/(2 * b)
         q_star_2 = min(q_bar_2, max(0, demand(p_star_2, P) - q_bar_1))
         π_2 = p_star_2 * q_star_2
 
         # firm 1's problem
         # λ is the multiplier on minimization problem to make better for firm 2 to be the higher priced firm
-        λ = sqrt(P.a^2 - 4*P.b*π_2)
-        p_2_bar = 1/(2*P.b)*(P.a - λ)
+        λ = sqrt(a^2 - 4* b *π_2)
+        p_2_bar = 1/(2 * b)*(a - λ)
 
         p_star_1 = p_2_bar
         q_star_1 = min(q_bar_1, demand(p_star_1, P))
@@ -170,14 +172,14 @@ function compute_static_bertand(q_bar_1::Float64, q_bar_2::Float64, P::Primitive
     else # q_bar_1 >= q_bar_2
         
         # firm 1's problem
-        p_star_1 = (P.a - q_bar_2)/(2*P.b)
+        p_star_1 = (a - q_bar_2)/(2 * b)
         q_star_1 = min(q_bar_1, max(0, demand(p_star_1, P) - q_bar_2))
         π_1 = p_star_1 * q_star_1
 
         # firm 2's problem
         # λ is the multiplier on minimization problem to make better for firm 1 to be the higher priced firm
-        λ = sqrt(P.a^2 - 4*P.b*π_1)
-        p_1_bar = 1/(2*P.b)*(P.a - λ)
+        λ = sqrt(a^2 - 4 * b * π_1)
+        p_1_bar = 1/(2*b)*(P.a - λ)
 
         p_star_2 = p_1_bar
         q_star_2 = min(q_bar_2, demand(p_star_2, P))
@@ -203,6 +205,8 @@ function compute_static_results!(R::Results, P::Primitives)
             R.region[i,j], R.q_star_1[i,j], R.q_star_2[i,j], R.p_star_1[i,j], R.p_star_2[i,j], R.π_1[i,j], R.π_2[i,j] = compute_static_bertand(P.q_bar_grid[i], P.q_bar_grid[j], P)
         end
     end
+
+    println("Done.")
 end
 
 # returns the probability of going from q_bar to q_bar_next given investment x
@@ -260,7 +264,7 @@ function W(q_bar_1::Float64, q_bar_2::Float64, x_2::Float64, δ::Float64, α::Fl
     return result
 end
 
-function Bellman(R::Results, P::Primitives)
+function apply_bellman_operator(R::Results, P::Primitives)
     @unpack δ, α = R
     @unpack β, n_q, q_bar_grid, q_bar_increment = P
 
@@ -319,17 +323,12 @@ function Bellman(R::Results, P::Primitives)
     x_pf_1_next, x_pf_2_next, vf_1_next, vf_2_next
 end
 
-function Solve_model(competition::String, δ::Float64; verbose::Bool = false)
-    R = Initialize(competition, δ)
-    P = Primitives()
-    
-    compute_static_results!(R, P)
-
-    i, maxiter, err = 1, 1000, 100
+function solve_firm_problem!(R::Results, P::Primitives; verbose::Bool = false, γ::Float64 = 1.0)
+    i, maxiter, err = 1, 10000, 100
     i = 1
     
-    while (err > 1e-12) & (maxiter > i)
-        x_pf_1_next, x_pf_2_next, vf_1_next, vf_2_next = Bellman(R, P)
+    while (err > 1e-4) & (maxiter > i)
+        x_pf_1_next, x_pf_2_next, vf_1_next, vf_2_next = apply_bellman_operator(R, P)
 
         err = max(norm(x_pf_1_next - R.x_pf_1), norm(x_pf_2_next - R.x_pf_2), norm(vf_1_next - R.vf_1), norm(vf_2_next - R.vf_2))
 
@@ -338,15 +337,66 @@ function Solve_model(competition::String, δ::Float64; verbose::Bool = false)
             println("Sup norm: ", err)
         end
 
-        R.x_pf_1 = copy(x_pf_1_next)
-        R.x_pf_2 = copy(x_pf_2_next)
-        R.vf_1 = copy(vf_1_next)
-        R.vf_2 = copy(vf_2_next)
+        R.x_pf_1 = (1-γ)*R.x_pf_1 + γ*copy(x_pf_1_next)
+        R.x_pf_2 = (1-γ)*R.x_pf_2 + γ*copy(x_pf_2_next)
+        R.vf_1 = (1-γ)*R.vf_1 + γ*copy(vf_1_next)
+        R.vf_2 = (1-γ)*R.vf_2 + γ*copy(vf_2_next)
 
         i+=1
     end
 
-    println("Converged in ", i, " iterations.")
+    println("Done, converged in ", i, " iterations.")
+end
+
+function apply_distribution_operator(R::Results, P::Primitives)
+    @unpack n_q, q_bar_grid = Primitives()
+    μ_next = zeros(P.n_q, P.n_q)
+
+    for i = 1:n_q, j = 1:n_q
+        for i_p = 1:n_q, j_p = 1:n_q
+            pr_1 = pr(q_bar_grid[i], q_bar_grid[i_p], R.x_pf_1[i,j], R.δ, R.α, P)
+            pr_2 = pr(q_bar_grid[j], q_bar_grid[j_p], R.x_pf_2[i,j], R.δ, R.α, P)
+            μ_next[i_p, j_p] += R.μ[i,j] * pr_1 * pr_2
+        end
+    end
+
+    return μ_next
+end
+
+function solve_stationary_distribution!(R::Results, P::Primitives; verbose::Bool = false)
+    i, maxiter, err = 1, 10000, 100
+    i = 1
+
+    while (err > 1e-4) & (maxiter > i)
+        μ_next = apply_distribution_operator(R, P)
+
+        err = norm(R.μ - μ_next)
+
+        if verbose
+            println("Iteration #", i)
+            println("Sup norm: ", err)
+        end
+
+        R.μ = copy(μ_next)
+
+        i+=1
+    end
+
+    println("Done, converged in ", i, " iterations.")
+end
+
+function Solve_model(competition::String, δ::Float64)
+    R = Initialize(competition, δ)
+    P = Primitives()
+    
+    print("Computing static prices, quantities, and profits... ")
+    compute_static_results!(R, P)
+
+    print("Solving firm policy and value functions... ")
+    solve_firm_problem!(R, P)
+
+    print("Solving stationary distribution... ")
+    solve_stationary_distribution!(R, P)
     
     return R
 end

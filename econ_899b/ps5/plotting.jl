@@ -59,6 +59,11 @@ function plot_dynamic_results(R::Results)
     p4 = plot_surface(R.vf_2);
     title!("vf_2");
 
-    plot(p1, p2, p3, p4, layout =  (2, 2));
-    plot!(size=(700,700), titlefontsize = 12, guidefontsize=8)
+    p5 = plot_surface(R.μ);
+    title!("μ");
+
+    p6 = plot();
+
+    plot(p1, p2, p3, p4, p5, p6, layout =  (3, 2));
+    plot!(size=(700,900), titlefontsize = 12, guidefontsize=8)
 end
