@@ -28,12 +28,12 @@
 
 \bigskip
 
-\item But recent media coverage indicate that firms invest in a broader set of financial assets.
+\item But recent media coverage indicates that firms invest in a broader set of financial assets.
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{What do Duchin et al. do?}
+\frametitle{What do Duchin et al do?}
 \begin{itemize}[<+->]
 \item Measure the financial portfolios of large U.S. industrial firms.
 \bigskip
@@ -68,8 +68,8 @@
 
 
 \begin{frame}[label=standardapproach]
-\frametitle{Standard Approach to Measure Financial Portfolio}
-From the consolidated balance sheet,
+\frametitle{Standard Approach to Measure Financial Portfolios}
+From consolidated balance sheet,
 \bigskip
 \begin{itemize}[<+->]
 \item ``Cash and cash equivalents" ($CH$ in Compustat)
@@ -98,11 +98,11 @@ From the consolidated balance sheet,
 
 
 \begin{frame}[label=duchinapproach]
-\frametitle{Duchin et al. (2017) Approach}
+\frametitle{Duchin et al (2017) Approach}
 \begin{itemize}[<+->]
 \item In 2009, the SEC began requiring firms to disclose more information about their financial assets. \hyperlink{APPL2011}{\beamerskipbutton{Apple 2011 10-K}}
 \bigskip
-\item Duchin et al. (2017) hand-collect data from the footnotes to the balance sheet of all industrial firms in the S\&P 500. 
+\item Duchin et al. (2017) hand collect data from the footnotes to the balance sheet of all industrial firms in the S\&P 500. 
 \bigskip
 \item They divide financial assets by riskiness and liquidity. \hyperlink{classify}{\beamerskipbutton{More}}
 \end{itemize}
@@ -161,7 +161,7 @@ From the consolidated balance sheet,
 \normalsize
 
 \begin{itemize}[<+->]
-\item A substantial fraction of financial assets are illiquid contradicting traditional assumption in corporate finance model.
+\item A substantial fraction of financial assets are illiquid contradicting traditional assumption in corporate finance models.
 \item Negative, but imperfect, correlation of riskiness and liquidity.
 \end{itemize}
 
@@ -177,8 +177,12 @@ From the consolidated balance sheet,
 \frametitle{Main Question}
 \begin{itemize}[<+->]
 \item How does a firm's degree of financial constraint change the composition of its financial portfolio?
-\item Use the size of a firm's financial portfolio as proxy for the degree of financial constraint.
-\item Theoretical prediction is less financially constrained firms invest relatively more in risky and illiquid financial assets.
+\item Use the overall size of the financial portfolio as a proxy for the degree of financial constraint.
+\item Theoretical prediction:
+
+\bigskip
+
+\textit{Firms that are less financially constrained invest relatively more in risky and illiquid financial assets.}
 \end{itemize}
 \end{frame}
 
@@ -203,7 +207,7 @@ $$
 \frametitle{Endogeneity}
 
 \begin{itemize}[<+->]
-\item Firms likely jointly determine the size and composition of their financial portfolio.
+\item \textbf{Problem:} Firms likely jointly determine the size and composition of their financial portfolio.
 
 \bigskip
 
@@ -211,7 +215,7 @@ $\implies$ A violation of the conditional mean independence assumption.
 
 \bigskip
 
-\item Use two-stage least squares to exploit the variation in the portfolio size due to unexpected cash flow shocks. \hyperlink{unexpected}{\beamerskipbutton{More}}
+\item \textbf{Solution:} Use two-stage least squares to exploit the variation in the portfolio size due to unexpected cash flow shocks. \hyperlink{unexpected}{\beamerskipbutton{More}}
 \end{itemize}
 
 \end{frame}
@@ -240,21 +244,24 @@ Risky \; financial \; assets_{i,t} &= \alpha_0 + \alpha_1 Financial \; assets_{i
 \begin{frame}
 \frametitle{Other Findings}
 \begin{itemize}[<+->]
-\item Duchin et al. (2017) also find that firms invest more in risky financial assets if they have
+\item Firms invest more in risky financial assets if they have
 
 \begin{itemize}[<+->]
 \item Worse corporate governance
-\item A overconfident CEO
+\item An overconfident CEO
 \end{itemize}
 
 \bigskip
 
-\item They also find that industrial firms cannot generate a positive alpha through their risky financial asset holdings.
+\item Industrial firms cannot generate a positive alpha through their risky financial asset holdings.
 
 \bigskip
 
-\item They also develop a theory of industrial firms investing in risky and illiquid financial assets with predictions that are consistent with their empirical analysis.
+\item Develop a theory of industrial firms investing in risky and illiquid financial assets.
 
+\begin{itemize}
+\item Predictions that are consistent with their empirical analysis.
+\end{itemize}
 
 \end{itemize}
 
@@ -269,10 +276,9 @@ Risky \; financial \; assets_{i,t} &= \alpha_0 + \alpha_1 Financial \; assets_{i
 \begin{frame}
 \frametitle{Takeaways}
 \begin{itemize}[<+->]
-\item How we measure things is important. Make friends with accounts.
-\item Have RAs.
+\item How we measure things is important. Make friends with accountants.
 \bigskip
-\item Develop theory of industrial firms investing in risky and illiquid financial assets.
+\item Have RAs.
 
 \end{itemize}
 \end{frame}
@@ -418,7 +424,7 @@ Risky financial assets
 \frametitle{Unexpected Cash Flows Shocks}
 \begin{itemize}
 
-\item Unexpected cash flow shocks ($e_{i,t}$) are estimated with the pooled corss-sectional time-series model below:
+\item Unexpected cash flow shocks ($e_{i,t}$) are estimated with the pooled cross-sectional time-series model below:
 
 $$
 \Delta CF_{i,t}
@@ -432,7 +438,7 @@ where $\Delta CF_{i,t} \equiv CF_{i,t} - CF_{i,t-1}$ and $CF_{i,t}$ is the cash 
 \begin{itemize}
 
 \item \textit{Inclusion restriction:} Unexpected cash flow shocks affect the size of the firm's financial portfolio.
-\item \textit{Exclusion restriction:} Unexpected cash flow do not shocks affect the composition of the firm's financial portfolio.
+\item \textit{Exclusion restriction:} Unexpected cash flow shocks do not affect the composition of the firm's financial portfolio.
 
 
 
