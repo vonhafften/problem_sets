@@ -61,6 +61,13 @@
 \end{frame}
 }
 
+\AtBeginSection[ ]
+{
+\begin{frame}{Outline}
+    \tableofcontents[currentsection]
+\end{frame}
+}
+
 \section{Summary of Duchin et al (2017)}
 
 \subsection{Measurement}
@@ -215,9 +222,35 @@ $\implies$ A violation of the conditional mean independence assumption.
 
 \bigskip
 
-\item \textbf{Solution:} Use two-stage least squares to exploit the variation in the portfolio size due to unexpected cash flow shocks. \hyperlink{unexpected}{\beamerskipbutton{More}}
+\item \textbf{Solution:} Use two-stage least squares to exploit the variation in the portfolio size due to unexpected cash flow shocks.
 \end{itemize}
 
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Unexpected Cash Flows Shocks as Instrument}
+
+\begin{itemize}[<+->]
+
+\item Unexpected cash flow shocks ($e_{i,t}$) are estimated with the pooled cross-sectional time-series model below:
+
+$$
+\Delta CF_{i,t}
+= \alpha + \beta_1 \Delta CF_{i,t-1} + \beta_2 \Delta CF_{i,t-2} + \beta_3 \Delta CF_{i,t-3} + e_{i,t}
+$$
+
+where $\Delta CF_{i,t} \equiv CF_{i,t} - CF_{i,t-1}$ and $CF_{i,t}$ is the cash flow for firm $i$ in year $t$.
+
+\bigskip
+
+\item \textit{Inclusion restriction:} Unexpected cash flow shocks affect the size of the firm's financial portfolio.
+
+\bigskip
+
+\item \textit{Exclusion restriction:} Unexpected cash flow shocks do not affect the composition of the firm's financial portfolio.
+
+\end{itemize}
 \end{frame}
 
 
@@ -240,6 +273,16 @@ Risky \; financial \; assets_{i,t} &= \alpha_0 + \alpha_1 Financial \; assets_{i
 \end{frame}
 
 
+\begin{frame}
+\frametitle{Main findings}
+\begin{itemize}[<+->]
+\item Coefficient is smaller in 2SLS than in OLS $\implies$ firms do jointly determine stuff.
+\item Still statistically and economically significant.
+
+\item One percentage point increase in financial asset portfolio leads to a 30 basis point increase in risky financial asset holdings.
+\end{itemize}
+\end{frame}
+
 
 \begin{frame}
 \frametitle{Other Findings}
@@ -247,8 +290,11 @@ Risky \; financial \; assets_{i,t} &= \alpha_0 + \alpha_1 Financial \; assets_{i
 \item Firms invest more in risky financial assets if they have
 
 \begin{itemize}[<+->]
+
 \item Worse corporate governance
+
 \item An overconfident CEO
+
 \end{itemize}
 
 \bigskip
@@ -274,15 +320,20 @@ Risky \; financial \; assets_{i,t} &= \alpha_0 + \alpha_1 Financial \; assets_{i
 
 
 \begin{frame}
-\frametitle{Takeaways}
+\frametitle{Weaknesses}
 \begin{itemize}[<+->]
-\item How we measure things is important. Make friends with accountants.
-\bigskip
-\item Have RAs.
-
+\item Instrument validity
 \end{itemize}
 \end{frame}
 
+
+\begin{frame}
+\frametitle{New Questions}
+\begin{itemize}[<+->]
+\item Broad literature on corporate cash holdings with the traditional assumption.  How does including risky financial assets change those model?
+\item The authors say that the industrial firm's risky financial asset holdings constitute a \$1.5 trillion unregulated asset management industry. Should it be regulated and how?
+\end{itemize}
+\end{frame}
 
 
 
@@ -420,33 +471,6 @@ Risky financial assets
 
 
 
-\begin{frame}[label=unexpected]
-\frametitle{Unexpected Cash Flows Shocks}
-\begin{itemize}
-
-\item Unexpected cash flow shocks ($e_{i,t}$) are estimated with the pooled cross-sectional time-series model below:
-
-$$
-\Delta CF_{i,t}
-= \alpha + \beta_1 \Delta CF_{i,t-1} + \beta_2 \Delta CF_{i,t-2} + \beta_3 \Delta CF_{i,t-3} + e_{i,t}
-$$
-
-where $\Delta CF_{i,t} \equiv CF_{i,t} - CF_{i,t-1}$ and $CF_{i,t}$ is the cash flow for firm $i$ in year $t$.
-
-\item Identifying assumptions:
-
-\begin{itemize}
-
-\item \textit{Inclusion restriction:} Unexpected cash flow shocks affect the size of the firm's financial portfolio.
-\item \textit{Exclusion restriction:} Unexpected cash flow shocks do not affect the composition of the firm's financial portfolio.
-
-
-
-\end{itemize}
-
-\end{itemize}
-\hyperlink{endogeneity}{\beamerskipbutton{Back}}
-\end{frame}
 
 
 \end{document}

@@ -1,6 +1,6 @@
 \beamer@endinputifotherversion {3.36pt}
 \beamer@sectionintoc {1}{Summary of Duchin et al (2017)}{5}{0}{1}
-\beamer@subsectionintoc {1}{1}{Measurement}{5}{0}{1}
-\beamer@subsectionintoc {1}{2}{Empirical Analysis}{10}{0}{1}
-\beamer@sectionintoc {2}{Concluding Thoughts}{16}{0}{2}
-\beamer@sectionintoc {3}{Appendix}{17}{0}{3}
+\beamer@subsectionintoc {1}{1}{Measurement}{6}{0}{1}
+\beamer@subsectionintoc {1}{2}{Empirical Analysis}{11}{0}{1}
+\beamer@sectionintoc {2}{Concluding Thoughts}{19}{0}{2}
+\beamer@sectionintoc {3}{Appendix}{22}{0}{3}
