@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  29 JAN 2022 17:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  31 JAN 2022 14:38
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -958,17 +958,17 @@ thkerncmss.
 File: regression_1_ols.png Graphic file (type png)
 
 <use regression_1_ols.png>
-Package pdftex.def Info: regression_1_ols.png used on input line 211.
+Package pdftex.def Info: regression_1_ols.png used on input line 215.
 (pdftex.def)             Requested size: 179.80704pt x 131.74606pt.
 
 <regression_2_ols.png, id=156, 852.18375pt x 294.09875pt>
 File: regression_2_ols.png Graphic file (type png)
 
 <use regression_2_ols.png>
-Package pdftex.def Info: regression_2_ols.png used on input line 211.
+Package pdftex.def Info: regression_2_ols.png used on input line 215.
 (pdftex.def)             Requested size: 178.96387pt x 61.76256pt.
 
-Overfull \vbox (0.63045pt too high) detected at line 211
+Overfull \vbox (0.63045pt too high) detected at line 215
  []
 
 [13
@@ -982,17 +982,17 @@ Overfull \vbox (0.63045pt too high) detected at line 211
 File: regression_1_2sls.png Graphic file (type png)
 
 <use regression_1_2sls.png>
-Package pdftex.def Info: regression_1_2sls.png used on input line 273.
+Package pdftex.def Info: regression_1_2sls.png used on input line 277.
 (pdftex.def)             Requested size: 169.22925pt x 123.6598pt.
 
 <regression_2_2sls.png, id=190, 852.18375pt x 294.09875pt>
 File: regression_2_2sls.png Graphic file (type png)
 
 <use regression_2_2sls.png>
-Package pdftex.def Info: regression_2_2sls.png used on input line 273.
+Package pdftex.def Info: regression_2_2sls.png used on input line 277.
 (pdftex.def)             Requested size: 170.43372pt x 58.8187pt.
 
-Overfull \vbox (0.47351pt too high) detected at line 273
+Overfull \vbox (0.47351pt too high) detected at line 277
  []
 
 [16
@@ -1012,37 +1012,37 @@ Overfull \vbox (0.47351pt too high) detected at line 273
 (./Duchin_et_al_2017_JF_vonHafften.toc) [22
 
 ]
-<AAPL_2007_bs.png, id=247, 500.87125pt x 290.08376pt>
+<AAPL_2007_bs.png, id=249, 500.87125pt x 290.08376pt>
 File: AAPL_2007_bs.png Graphic file (type png)
  <use AAPL_2007_bs.png>
-Package pdftex.def Info: AAPL_2007_bs.png used on input line 352.
+Package pdftex.def Info: AAPL_2007_bs.png used on input line 376.
 (pdftex.def)             Requested size: 250.435pt x 145.04152pt.
 
 [23
 
  <./AAPL_2007_bs.png>]
-<AAPL_2007_note2.png, id=256, 434.62375pt x 303.1325pt>
+<AAPL_2007_note2.png, id=258, 434.62375pt x 303.1325pt>
 File: AAPL_2007_note2.png Graphic file (type png)
 
 <use AAPL_2007_note2.png>
-Package pdftex.def Info: AAPL_2007_note2.png used on input line 368.
+Package pdftex.def Info: AAPL_2007_note2.png used on input line 392.
 (pdftex.def)             Requested size: 217.31134pt x 151.56587pt.
  [24
 
  <./AAPL_2007_note2.png>]
-<AAPL_2011_bs.png, id=265, 531.9875pt x 295.1025pt>
+<AAPL_2011_bs.png, id=267, 531.9875pt x 295.1025pt>
 File: AAPL_2011_bs.png Graphic file (type png)
  <use AAPL_2011_bs.png>
-Package pdftex.def Info: AAPL_2011_bs.png used on input line 380.
+Package pdftex.def Info: AAPL_2011_bs.png used on input line 404.
 (pdftex.def)             Requested size: 265.9931pt x 147.55087pt.
 
 [25
 
- <./AAPL_2011_bs.png>] <AAPL_2011_note2.png, id=275, 811.03pt x 315.1775pt>
+ <./AAPL_2011_bs.png>] <AAPL_2011_note2.png, id=277, 811.03pt x 315.1775pt>
 File: AAPL_2011_note2.png Graphic file (type png)
 
 <use AAPL_2011_note2.png>
-Package pdftex.def Info: AAPL_2011_note2.png used on input line 395.
+Package pdftex.def Info: AAPL_2011_note2.png used on input line 419.
 (pdftex.def)             Requested size: 324.40625pt x 126.06876pt.
  [26
 
@@ -1060,12 +1060,12 @@ Package pdftex.def Info: AAPL_2011_note2.png used on input line 395.
 \tf@snm=\write8
 \openout8 = `Duchin_et_al_2017_JF_vonHafften.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 476.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 476.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 498.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 498.
 
 (./Duchin_et_al_2017_JF_vonHafften.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 476.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 476.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 498.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 498.
 Package rerunfilecheck Info: File `Duchin_et_al_2017_JF_vonHafften.out' has not
  changed.
 (rerunfilecheck)             Checksum: 6096576411182BC915EB44DFF5B71393;292.
@@ -1074,13 +1074,13 @@ Package rerunfilecheck Info: File `Duchin_et_al_2017_JF_vonHafften.out' has not
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 476.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 498.
  ) 
 Here is how much of TeX's memory you used:
- 17099 strings out of 493014
- 332143 string characters out of 6133351
- 392833 words of memory out of 5000000
- 20144 multiletter control sequences out of 15000+600000
+ 17112 strings out of 493014
+ 332380 string characters out of 6133351
+ 392919 words of memory out of 5000000
+ 20155 multiletter control sequences out of 15000+600000
  16487 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  56i,16n,65p,430b,703s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1104,11 +1104,11 @@ al/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local
 /texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/t
 exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/tex
 live/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on Duchin_et_al_2017_JF_vonHafften.pdf (28 pages, 538212 bytes).
+Output written on Duchin_et_al_2017_JF_vonHafften.pdf (28 pages, 539062 bytes).
 
 PDF statistics:
- 382 PDF objects out of 1000 (max. 8388607)
- 301 compressed objects within 4 object streams
- 74 named destinations out of 1000 (max. 500000)
+ 384 PDF objects out of 1000 (max. 8388607)
+ 303 compressed objects within 4 object streams
+ 76 named destinations out of 1000 (max. 500000)
  147 words of extra memory for PDF output out of 10000 (max. 10000000)
 
