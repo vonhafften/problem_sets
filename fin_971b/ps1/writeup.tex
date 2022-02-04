@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{natbib}
+\usepackage{lscape}
 \usepackage{afterpage}
 \usepackage{xcolor}
 \usepackage{etoolbox}
@@ -49,24 +50,120 @@
 
 \section{Question 1}
 
+Below is my replication of table 1 from LRZ (2008) for all firms.  The numbers line up relatively well with LRZ.  My method of filtering the data resulted in a smaller dataset by half.  I tried my best to follow their description in the beginning of section 1.  I limited the sample to observations with reported book assets and book and market leverage between zero and one.  Furthermore, I computed the 1st and 99th percentile for each variable and then drop observations that fell outside of that for one of the variables. The statistics for book leverage, market leverage, log sales, market-to-book, tangibility, median industry book leverage, and intangible assets are pretty close.  My statistics for profitability and cash flow volatility are about half of LRZ.  One contributing factor could have been that I scaled both cash flow volatility and intangible assets by book assets (the data appendix is silent on any scaling); otherwise they would be in dollar terms.  Another omission from the data appendix is the definition of dividend payer.  Here, I pull Compustat variable \texttt{dv}, which is the cash dividend, and defined ``Dividend Payer" as a dummy that equals one if \texttt{dv} is greater than zero.
+
+\bigskip
+
+\input{table_1_a}
+
+\bigskip
+
+Below is my replication of table 1 from LRZ (2008) for survivor firms. Similar to all firms, my sample is about half that of LRZ (2008). The same statistics as above (plus profitability) are close to that of LRZ, but my statistics for cash flow volatility are similarly about half of LRZ.
+
+\bigskip
+
+\input{table_1_b}
+
+\pagebreak
+
+\begin{landscape}
 \section{Question 2}
+
+Below is my replication of panel A (all firms) of table 2 in LRZ (2008). As in LRZ, I normalized all independent variables (i.e. minus mean divided by standard deviation), so the coefficient is the change in the leverage ratio in pp given a one standard deviation change in the independent variable.
+
+\begin{enumerate}
+
+\item My coefficient estimate is much lower than LRZ as well as a much lower R-squared. This finding would contest their argument that initial leverage is such as important determinant of future leverage.
+
+\item My coefficient estimates are much closer to LRZ. For example, same significant variables with the same sign.
+
+\item Similar to (2). I do get a negative coefficent on cash flow volatility unlike LRZ.
+
+\item Similar finding to (1). Much lower coefficient and lower R-squared.
+
+\item Similar to (2). Coefficients are closer to LRZ in terms of significance and sign.
+
+\item Same as (3).
+
+\end{enumerate}
+
+\bigskip
 
 \input{table_2_a}
 
+Below is my replication of panel B (survivors) of table 2 in LRZ (2008).
+
+\begin{enumerate}
+
+\item In contrast, to finding a much lower coefficient on initial leverage than LRZ for all firms. Here, I find a much large coefficient.  This worries me that I have defined a variable incorrectly or something.
+
+\item Again, initial leverage is very important.  Same sign and significance as LRZ for other coefficients.
+
+\item Similar to (2). Negative coefficient on cash-flow volatility matches both my previous regression and LRZ's regression.
+
+\item , 5. and 6. very similar store for market leverage.
+
+\end{enumerate}
+
+\bigskip
 
 \input{table_2_b}
 
+\pagebreak
+
 \section{Question 3}
+
+Here, I omit initial book leverage as regressor, but include firm fixed effects.  Also note here that standard errors are clustered at the firm level, but are not heteroskedastic robust (as in the regressions in question 2).  I was running into trouble both clustering and producing heteroskedastic robust standard errors (which are how standard errors in LRZ are computed).
+
+\begin{enumerate}
+
+\item Just including the firm effects explains 70 percent of the variation in leverage ratios.
+
+\item Adding additional regressors, although significant, only explains two more percent of the variation.
+
+\item More additional regressors only explain one more percent.  This is quite striking, these regressions demonstrate the extent of the unexplained heterogeneity in leverage across firms that.  Much of this heterogeneity is not explained by observables.
+
+\item, 5. and 6. very similar store for market leverage.
+
+\end{enumerate}
 
 \input{table_2_a_fe}
 
+\end{landscape}
+
+\pagebreak
+
 \section{Question 4}
+
+Here, I compute the market value of equity using CRSP data.  I merge monthly CRSP data with Compustat on the \texttt{datadate}. Save the linked data within the link date range and the link type ``LU" and ``CU".  I do this for the entire sample of firms, so these figures do not include the filtering from LRZ. Below is both a scatterplot of the two methods of computing the market value of equity and a simple regression of one on the other.  The scatterplot of shows that in general, these measures are quite close.  When these measures are different, Compustat is more likely to be higher than CRSP.  The outliers (i.e., the points in the northwest area of the scatterplot) are mostly tech-related firms in the late 1990s and early 2000s.  This was the height of the dotcom bubble and many of these firms were right in it, so their stock volatility was also quite high.  Thus, it's not very surprising that market-based measures of the equity of such firms would differ.  The regression confirms that Compustat and CRSP measures of market equity are on average pretty close (i.e., the coefficient close to one).  But the R-squared is around 60 percent.  These same outliers drive the R-squared lower.
+
+\bigskip
 
 \includegraphics[scale=0.5]{m_equity_scatter}
 
+\bigskip
+
 \input{m_equity_reg}
 
+\pagebreak
+
 \section{Question 5}
+
+Here, I compute the volatility of the return on assets.  First, I estimate the rolling standard deviation of the stock return over a 36 month window and then lever it up using market equity and total debt, as outlined in the problem set.
+
+\begin{enumerate}
+
+\item This is column (3) from panel A of my replication of table 2 (see question 2).
+
+\item I find a much higher coefficient on initial book leverage, but I think mostly is due to the much lower sample due with observations getting lost in the merging process.  It would be interesting to try to improve the merge to get a more similar sample.  The coefficient on ROA volatility is very similar to that of cash-flow volatility, indicating that a one standard deviation change in these variables would have a similar effect on leverage.
+
+\item This is column (6) from panel A of my replication of table 2 (see question 2).
+
+\item Similar to (2).
+
+\end{enumerate}
+
+\bigskip
 
 \input{table_2_a_crsp}
 

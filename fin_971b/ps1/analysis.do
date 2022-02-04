@@ -6,18 +6,22 @@
 
 cd "/Users/alexandervonhafften/Documents/UW Madison/problem_sets/fin_971b/ps1"
 
+* Install user-defined functions
 ssc install asrol
 ssc install winsor2
 ssc install reghdfe
 ssc install ftools
 ssc install extremes 
 ssc install outreg2
+ssc install estout
 
-* crsp.dta is from the "LRZ (2018) Extension" data query on WRDS.
-* compute equity volatility from CRPS
+*******************************************************************
+* computes equity volatility from CRPS data
+*******************************************************************
 
 clear
 
+* crsp.dta is from the "LRZ (2018) Extension" data query on WRDS.
 use crsp
 gen monthly_date = mofd(date)
 
@@ -26,10 +30,18 @@ xtset PERMNO monthly_date, monthly
 drop if PRC < 0
 drop if missing(PRC)
 
+* computes stock return
 gen s_return = (PRC - L.PRC)/L.PRC
+
+* computes rolling standard deviation of stock return
 bys PERMNO: asrol s_return, stat(sd) window(date 36)
 
+* saves dataset to be merged with compustat
 save crsp_2, replace
+
+*******************************************************************
+* Main compustat datawork starts here
+*******************************************************************
 
 * compustat.dta is from the "Lemmon, Roberts, and Zender (2018) Replication" data query on WRDS.
 
@@ -82,14 +94,14 @@ gen survivor = n_periods >= 20
 bys id: gen i_b_lev = b_lev[1]
 bys id: gen i_m_lev = m_lev[1]
 
-* creates cash flow volatility
+* computes cash flow volatility - rolling sd of cashflow in past 3 years
 bys id: asrol oibdp, stat(sd) window(fyear 3) min(3)
 gen cf_vol = oibdp_sd3 / at
 
 * create roa volatility from crsp data
 gen roa_vol = m_equity / (m_equity + debt) * s_return_sd36
 
-* trims variables
+* trims variables between p1 and p99
 winsor2 b_lev, trim
 winsor2 m_lev, trim
 winsor2 l_sales, trim
@@ -99,7 +111,9 @@ winsor2 tang, trim
 winsor2 cf_vol, trim
 winsor2 intangibles, trim
 
-* normalize (i.e. substract mean and divide by std dev for each regression var)
+* normalizes (i.e. substract mean and divide by std dev)  for each regression analysis
+* coefficients can be interpretted as a one standard deviation change in the independent var
+
 norm i_b_lev, method(zee)
 norm i_m_lev, method(zee)
 norm l_sales_tr, method(zee)
@@ -132,59 +146,86 @@ norm ind_b_lev, method(zee)
 * Replication of table 1
 *******************************************************************
 
-tabstat b_lev_tr m_lev_tr l_sales_tr m_b_tr profit_tr tang_tr cf_vol_tr ind_b_lev pays_dv intangibles_tr, stat(mean, median, sd, count)
+* Makes variable names pretty for the table
 
-tabstat b_lev_tr m_lev_tr l_sales_tr m_b_tr profit_tr tang_tr cf_vol_tr ind_b_lev pays_dv intangibles_tr, stat(mean, median, sd, count), if survivor
+gen Book_Leverage = b_lev_tr
+gen Market_Leverage = m_lev_tr
+gen log_Sales = l_sales_tr
+gen Market_to_Book = m_b_tr
+gen Profitability = profit_tr
+gen Tangibility = tang_tr
+gen Cash_Flow_Volatility = cf_vol_tr
+gen Median_Industry_Book_Leverage = ind_b_lev
+gen Dividend_Payer = pays_dv
+gen Intangible_Assets = intangibles_tr
 
-* To do
-* - Export summary statistics tables
+est clear
+estpost tabstat Book_Leverage Market_Leverage log_Sales Market_to_Book Profitability Tangibility Cash_Flow_Volatility Median_Industry_Book_Leverage Dividend_Payer Intangible_Assets, c(stat) stat(mean, median, sd, count)
+esttab, cells("mean(fmt(%13.2fc)) p50(fmt(%13.2fc)) sd(fmt(%13.2fc)) count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "Median" "SD" "N")
+esttab using "table_1_a.tex", replace cells("mean(fmt(%13.2fc)) p50(fmt(%13.2fc)) sd(fmt(%13.2fc)) count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "Median" "SD" "N")
+  
+est clear
+estpost tabstat Book_Leverage Market_Leverage log_Sales Market_to_Book Profitability Tangibility Cash_Flow_Volatility Median_Industry_Book_Leverage Dividend_Payer Intangible_Assets, c(stat) stat(mean, median, sd, count), if survivor
+esttab, cells("mean(fmt(%13.2fc)) p50(fmt(%13.2fc)) sd(fmt(%13.2fc)) count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "Median" "SD" "N")
+esttab using "table_1_b.tex", replace cells("mean(fmt(%13.2fc)) p50(fmt(%13.2fc)) sd(fmt(%13.2fc)) count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "Median" "SD" "N")
 
 *******************************************************************
 * Replication of table 2
 *******************************************************************
 
+* Makes variable names pretty for the table
+
+gen Initial_Book_Leverage = zee_i_b_lev
+replace log_Sales = zee_l_sales_tr
+replace Market_to_Book = zee_m_b_tr
+replace Profitability = zee_profit_tr
+replace Tangibility = zee_tang_tr
+replace Cash_Flow_Volatility = zee_cf_vol_tr
+replace Median_Industry_Book_Leverage = zee_ind_b_lev
+gen ROA_Volatility = zee_roa_vol
+
 * Panel A
 * All firm. Dependent variable book leverage
-reg  b_lev_tr zee_i_b_lev, robust cluster(id)
-outreg2 using table_2_a, tex(frag) replace
+reg  Book_Leverage Initial_Book_Leverage, robust cluster(id)
+outreg2 using table_2_a, tex(frag) replace nocons
 
-areg b_lev_tr zee_i_b_lev zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr, absorb(fyear) robust cluster(id)
-outreg2 using table_2_a, tex(frag) append
+areg Book_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility, absorb(fyear) robust cluster(id)
+outreg2 using table_2_a, tex(frag) append nocons
 
-areg b_lev_tr zee_i_b_lev zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr zee_ind_b_lev zee_cf_vol_tr pays_dv, absorb(fyear) robust cluster(id)
-outreg2 using table_2_a, tex(frag) append
+areg Book_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility Median_Industry_Book_Leverage Cash_Flow_Volatility Dividend_Payer, absorb(fyear) robust cluster(id)
+outreg2 using table_2_a, tex(frag) append nocons
 
 * All firm. Dependent variable market leverage
-reg  m_lev_tr zee_i_m_lev, robust cluster(id)
-outreg2 using table_2_a, tex(frag) append
+reg  Market_Leverage Initial_Book_Leverage, robust cluster(id)
+outreg2 using table_2_a, tex(frag) append nocons
 
-areg m_lev_tr zee_i_m_lev zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr, absorb(fyear) robust cluster(id)
-outreg2 using table_2_a, tex(frag) append
+areg Market_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility, absorb(fyear) robust cluster(id)
+outreg2 using table_2_a, tex(frag) append nocons
 
-areg m_lev_tr zee_i_m_lev zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr zee_ind_b_lev zee_cf_vol_tr pays_dv, absorb(fyear) robust cluster(id)
-outreg2 using table_2_a, tex(frag) append
+areg Market_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility Median_Industry_Book_Leverage Cash_Flow_Volatility Dividend_Payer, absorb(fyear) robust cluster(id)
+outreg2 using table_2_a, tex(frag) append nocons
 
 * Panel B
 * Survivors. Dependent variable book leverage
-reg  b_lev_tr zee_i_b_lev, robust cluster(id), if survivor
-outreg2 using table_2_b, tex(frag) replace
+reg  Book_Leverage Initial_Book_Leverage, robust cluster(id), if survivor
+outreg2 using table_2_b, tex(frag) replace nocons
 
-areg b_lev_tr zee_i_b_lev zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr, absorb(fyear) robust cluster(id), if survivor
-outreg2 using table_2_b, tex(frag) append
+areg Book_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility, absorb(fyear) robust cluster(id), if survivor
+outreg2 using table_2_b, tex(frag) append nocons
 
-areg b_lev_tr zee_i_b_lev zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr zee_ind_b_lev zee_cf_vol_tr pays_dv, absorb(fyear) robust cluster(id), if survivor
-outreg2 using table_2_b, tex(frag) append
+areg Book_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility Median_Industry_Book_Leverage Cash_Flow_Volatility Dividend_Payer, absorb(fyear) robust cluster(id), if survivor
+outreg2 using table_2_b, tex(frag) append nocons
 
 
 * Survivors. Dependent variable market leverage
-reg  m_lev_tr zee_i_m_lev, robust cluster(id), if survivor
-outreg2 using table_2_b, tex(frag) append
+reg  Market_Leverage Initial_Book_Leverage, robust cluster(id), if survivor
+outreg2 using table_2_b, tex(frag) append nocons
 
-areg m_lev_tr zee_i_m_lev zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr, absorb(fyear) robust cluster(id), if survivor
-outreg2 using table_2_b, tex(frag) append
+areg Market_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility, absorb(fyear) robust cluster(id), if survivor
+outreg2 using table_2_b, tex(frag) append nocons
 
-areg m_lev_tr zee_i_m_lev zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr zee_ind_b_lev zee_cf_vol_tr pays_dv, absorb(fyear) robust cluster(id), if survivor
-outreg2 using table_2_b, tex(frag) append
+areg Market_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility Median_Industry_Book_Leverage Cash_Flow_Volatility Dividend_Payer, absorb(fyear) robust cluster(id), if survivor
+outreg2 using table_2_b, tex(frag) append nocons
 
 *******************************************************************
 * Replication of table 2 Panel A but with firm FEs instead of initial leverage
@@ -192,34 +233,40 @@ outreg2 using table_2_b, tex(frag) append
 
 * Panel A
 * All firm. Dependent variable book leverage
-areg  b_lev_tr, absorb(id) robust cluster(id)
-outreg2 using table_2_a_fe, tex(frag) replace
+areg  Book_Leverage, absorb(id) cluster(id)
+outreg2 using table_2_a_fe, tex(frag) replace nocons
 
-reghdfe b_lev_tr zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr, absorb(fyear id) vce(cluster id)
-outreg2 using table_2_a_fe, tex(frag) append
+reghdfe Book_Leverage log_Sales Market_to_Book Profitability Tangibility, absorb(fyear id) vce(cluster id)
+outreg2 using table_2_a_fe, tex(frag) append nocons
 
-reghdfe b_lev_tr zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr zee_ind_b_lev zee_cf_vol_tr pays_dv, absorb(fyear id) vce(cluster id)
-outreg2 using table_2_a_fe, tex(frag) append
+reghdfe Book_Leverage log_Sales Market_to_Book Profitability Tangibility Median_Industry_Book_Leverage Cash_Flow_Volatility Dividend_Payer, absorb(fyear id) vce(cluster id)
+outreg2 using table_2_a_fe, tex(frag) append nocons
 
 * All firm. Dependent variable market leverage
-areg  m_lev_tr, absorb(id) robust cluster(id)
-outreg2 using table_2_a_fe, tex(frag) append
+areg  Market_Leverage, absorb(id) cluster(id)
+outreg2 using table_2_a_fe, tex(frag) append nocons
 
-reghdfe m_lev_tr zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr, absorb(fyear id) vce(cluster id)
-outreg2 using table_2_a_fe, tex(frag) append
+reghdfe Market_Leverage log_Sales Market_to_Book Profitability Tangibility, absorb(fyear id) vce(cluster id)
+outreg2 using table_2_a_fe, tex(frag) append nocons
 
-reghdfe m_lev_tr zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr zee_ind_b_lev zee_cf_vol_tr pays_dv, absorb(fyear id) vce(cluster id)
-outreg2 using table_2_a_fe, tex(frag) append
+reghdfe Market_Leverage log_Sales Market_to_Book Profitability Tangibility Median_Industry_Book_Leverage Cash_Flow_Volatility Dividend_Payer, absorb(fyear id) vce(cluster id)
+outreg2 using table_2_a_fe, tex(frag) append nocons
 
 *******************************************************************
 * Replication of table 2 Panel A with return on assets from crsp 
 *******************************************************************
 
-areg b_lev_tr zee_i_b_lev zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr zee_ind_b_lev roa_vol pays_dv, absorb(fyear) robust cluster(id)
-outreg2 using table_2_a_crsp, tex(frag) replace
+areg Book_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility Median_Industry_Book_Leverage Cash_Flow_Volatility Dividend_Payer, absorb(fyear) robust cluster(id)
+outreg2 using table_2_a_crsp, tex(frag) replace nocons
 
-areg m_lev_tr zee_i_m_lev zee_l_sales_tr zee_m_b_tr zee_profit_tr zee_tang_tr zee_ind_b_lev roa_vol pays_dv, absorb(fyear) robust cluster(id)
-outreg2 using table_2_a_crsp, tex(frag) append
+areg Book_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility Median_Industry_Book_Leverage ROA_Volatility Dividend_Payer, absorb(fyear) robust cluster(id)
+outreg2 using table_2_a_crsp, tex(frag) append nocons
+
+areg Market_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility Median_Industry_Book_Leverage Cash_Flow_Volatility Dividend_Payer, absorb(fyear) robust cluster(id)
+outreg2 using table_2_a_crsp, tex(frag) append nocons
+
+areg Market_Leverage Initial_Book_Leverage log_Sales Market_to_Book Profitability Tangibility Median_Industry_Book_Leverage ROA_Volatility Dividend_Payer, absorb(fyear) robust cluster(id)
+outreg2 using table_2_a_crsp, tex(frag) append nocons
 
 *******************************************************************
 * Comparison of market equity from compustat vs crsp
@@ -244,21 +291,18 @@ drop if LINKENDDT < datadate
 keep if LINKTYPE == "LU" | LINKTYPE == "LC"
 keep if LINKPRIM == "C"
 
-gen m_equity_compustat = prcc_f * cshpri
-gen m_equity_crsp = PRC * SHROUT / 1000
+gen Market_Equity_Compustat = prcc_f * cshpri
+gen Market_Equity_CRPS = PRC * SHROUT / 1000
 
-drop if missing(m_equity_compustat)
+drop if missing(Market_Equity_Compustat)
 
-reg m_equity_compustat m_equity_crsp
+reg Market_Equity_Compustat Market_Equity_CRPS
 outreg2 using m_equity_reg, tex(frag) replace
 
-scatter m_equity_compustat m_equity_crsp
-graph export m_equity_scatter.png, width(600) height(450)
+scatter Market_Equity_Compustat Market_Equity_CRPS
+graph export m_equity_scatter.png, width(600) height(450) replace
 
 predict residual_m_equity, residuals
 
 extremes residual_m_equity conm fyear
-
-* To do 
-* - outlier tables
 

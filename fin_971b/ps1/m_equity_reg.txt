@@ -1,7 +1,7 @@
 	(1)
-VARIABLES	m_equity_compustat
+VARIABLES	Market_Equity_Compustat
 	
-m_equity_crsp	1.050***
+Market_Equity_CRPS	1.050***
 	(0.00701)
 Constant	108.4***
 	(19.05)
