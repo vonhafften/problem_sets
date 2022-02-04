@@ -1,0 +1,5 @@
+# Mac OS files
+.DS_Store
+
+# Stata data files
+*.dta
