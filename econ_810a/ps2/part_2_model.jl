@@ -5,7 +5,7 @@
 # ECON 810A Advanced Macro Theory
 # Problem Set 2 - Part 2
 
-using Parameters, Distributions, Plots
+using Parameters, Distributions
 
 cd("/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_810a/ps2/")
 
@@ -145,12 +145,3 @@ function vfi!(R::Results; progress::Bool = false)
         end
     end
 end
-
-@unpack grid_h = Primitives()
-
-R = Initialize()
-vfi!(R)
-
-plot(grid_h, R.S_pf[336:3:360,:]', label =(336:3:360)')
-plot(grid_h, R.RW_pf[30:60:330,:]', label =(30:60:330)')
-plot(grid_h, R.RW_pf[336:6:360,:]', label =(336:6:360)')

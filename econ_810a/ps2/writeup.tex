@@ -96,8 +96,37 @@
 
 \section{Part 2: Model}
 
-\item See \texttt{part\_2.jl} for implementation.
+\item I use $\psi_e = 0.5$ and $\psi_u = 0.2$.
 
+\item I use $b = 0.5$.
+
+\item The search effort policy function ends up equaling one for all levels and human capital period expect for the end.  Below is the search policy function for the every three months in the last two years.  As an unemployed worker get closer to the end of the model, they spend less effort searching for more levels of human capital.
+
+\includegraphics[scale=0.5]{search_pf}
+
+\item Below is the reservation wage policy function for every five years starting at 2.5 years.  It is generally increasing in human capital.
+
+\includegraphics[scale = 0.5]{reservation_wage_pf}
+
+\pagebreak
+
+\item I simulated a panel of 10000 individuals.  Below is the mean level of human capital by employment status.  The initial spike of high human capital in the unemployed and low human capital in the employed makes sense because everyone starts off as unemployed.  I'm surprised by how constant the mean level is over time.  Nearing death, the human capital level of employed starts to dip and the unemployed starts to rise.
+
+\includegraphics[scale=0.5]{mean_human_capital}
+
+\item I compute an average earnings growth when employed of 32.16 percent, which is substantially larger than the value I computed from the data.
+
+\item I searched through the simulations for job losses and below plot the average earnings from six months before to 2 years after job loss. We see a similar pattern to Davis and von Wachter (2011) with a drop in earnings and then a slow recovery but never reaching the same level.
+
+\includegraphics[scale=0.5]{jl}
+
+\item See \texttt{part\_2\_XXX.jl} files for implementation.
+
+\begin{itemize}
+\item See \texttt{part\_2\_model.jl} contains code to estimate the model.
+\item See \texttt{part\_2\_simulation.jl} contains code to simulate the model.
+\item See \texttt{part\_2\_run.jl} contains runs the estimate and simulation and creates charts.
+\end{itemize}
 \end{itemize}
 \end{document}
 
