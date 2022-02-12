@@ -1,0 +1,1275 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1/analysis.smcl
+  log type:  smcl
+ opened on:  11 Feb 2022, 16:57:29
+
+. 
+. * Alex von Hafften
+
+. * Problem set 1
+
+. * ECON 717A: Applied Economics
+
+. 
+. * clear workspace
+
+. clear
+
+. 
+. * install user defined functions (if needed)
+
+. ssc install outreg2
+checking outreg2 consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. 
+. * change working directory
+
+. cd "/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1/"
+/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1
+
+. 
+. * open dataset
+
+. use "Field et al (2010) Analysis Sample"
+(ATTENTION: Type notes in the command line for information on this dataset)
+
+. 
+. ********************************************************************************
+
+. * problem #1 - drop missing values
+
+. ********************************************************************************
+
+. 
+. drop if missing(HH_Income)
+(36 observations deleted)
+
+. drop if miss_Client_Age == 1
+(6 observations deleted)
+
+. drop if miss_Client_Married == 1
+(7 observations deleted)
+
+. drop if miss_Client_Education == 1
+(16 observations deleted)
+
+. 
+. ********************************************************************************
+
+. * problem #2 - estimate linear probability model with homoskedastic standard errors
+
+. ********************************************************************************
+
+. 
+. * define list of variable in usual_covariate
+
+. local covariates " Client_Married Client_Education HH_Size HH_Income muslim Hindu_SC_Kat Treated"
+
+. 
+. * estimate LPM
+
+. regress taken_new Client_Age `covariates'
+
+      Source |       SS           df       MS      Number of obs   =       532
+-------------+----------------------------------   F(8, 523)       =      0.52
+       Model |  .586701556         8  .073337695   Prob > F        =    0.8405
+    Residual |  73.5242007       523  .140581646   R-squared       =    0.0079
+-------------+----------------------------------   Adj R-squared   =   -0.0073
+       Total |  74.1109023       531  .139568554   Root MSE        =    .37494
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |  -.0000283   .0021572    -0.01   0.990     -.004266    .0042095
+  Client_Married |   .0117141   .0529309     0.22   0.825    -.0922693    .1156975
+Client_Education |  -.0036931   .0041228    -0.90   0.371    -.0117924    .0044062
+         HH_Size |  -.0113264   .0093055    -1.22   0.224    -.0296072    .0069544
+       HH_Income |   3.14e-06   3.68e-06     0.85   0.393    -4.08e-06    .0000104
+          muslim |  -.0075629   .0366854    -0.21   0.837    -.0796318    .0645061
+    Hindu_SC_Kat |  -.0274764   .0526227    -0.52   0.602    -.1308542    .0759015
+         Treated |   .0426031   .0346907     1.23   0.220    -.0255471    .1107532
+           _cons |   .1993902   .1142909     1.74   0.082    -.0251353    .4239158
+----------------------------------------------------------------------------------
+
+. outreg2 using p2_table, tex(frag) replace
+p2_table.tex
+dir : seeout
+
+. 
+. ********************************************************************************
+
+. * problem #3 - estimate linear probability model with heteroskedastic standard errors
+
+. ********************************************************************************
+
+. 
+. regress taken_new Client_Age `covariates'
+
+      Source |       SS           df       MS      Number of obs   =       532
+-------------+----------------------------------   F(8, 523)       =      0.52
+       Model |  .586701556         8  .073337695   Prob > F        =    0.8405
+    Residual |  73.5242007       523  .140581646   R-squared       =    0.0079
+-------------+----------------------------------   Adj R-squared   =   -0.0073
+       Total |  74.1109023       531  .139568554   Root MSE        =    .37494
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |  -.0000283   .0021572    -0.01   0.990     -.004266    .0042095
+  Client_Married |   .0117141   .0529309     0.22   0.825    -.0922693    .1156975
+Client_Education |  -.0036931   .0041228    -0.90   0.371    -.0117924    .0044062
+         HH_Size |  -.0113264   .0093055    -1.22   0.224    -.0296072    .0069544
+       HH_Income |   3.14e-06   3.68e-06     0.85   0.393    -4.08e-06    .0000104
+          muslim |  -.0075629   .0366854    -0.21   0.837    -.0796318    .0645061
+    Hindu_SC_Kat |  -.0274764   .0526227    -0.52   0.602    -.1308542    .0759015
+         Treated |   .0426031   .0346907     1.23   0.220    -.0255471    .1107532
+           _cons |   .1993902   .1142909     1.74   0.082    -.0251353    .4239158
+----------------------------------------------------------------------------------
+
+. outreg2 using p3_table, tex(frag) replace addtext(Comma Robust SEs, No)
+p3_table.tex
+dir : seeout
+
+. regress taken_new Client_Age `covariates', robust
+
+Linear regression                               Number of obs     =        532
+                                                F(8, 523)         =       0.56
+                                                Prob > F          =     0.8074
+                                                R-squared         =     0.0079
+                                                Root MSE          =     .37494
+
+----------------------------------------------------------------------------------
+                 |               Robust
+       taken_new | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |  -.0000283   .0022749    -0.01   0.990    -.0044974    .0044409
+  Client_Married |   .0117141   .0518841     0.23   0.821    -.0902127    .1136409
+Client_Education |  -.0036931   .0041013    -0.90   0.368    -.0117502    .0043641
+         HH_Size |  -.0113264   .0092822    -1.22   0.223    -.0295613    .0069085
+       HH_Income |   3.14e-06   3.71e-06     0.85   0.398    -4.15e-06    .0000104
+          muslim |  -.0075629   .0365483    -0.21   0.836    -.0793625    .0642367
+    Hindu_SC_Kat |  -.0274764   .0509678    -0.54   0.590    -.1276031    .0726504
+         Treated |   .0426031   .0334686     1.27   0.204    -.0231463    .1083524
+           _cons |   .1993902   .1168783     1.71   0.089    -.0302184    .4289989
+----------------------------------------------------------------------------------
+
+. outreg2 using p3_table, tex(frag) append addtext(Comma Robust SEs, Yes)
+p3_table.tex
+dir : seeout
+
+. 
+. ********************************************************************************
+
+. * problem #4 - predicted probabilities
+
+. ********************************************************************************
+
+. 
+. predict taken_new_hat_lpm
+(option xb assumed; fitted values)
+
+. histogram taken_new_hat_lpm
+(bin=23, start=.05766389, width=.00975825)
+
+. graph export p4_figure.png, replace
+file /Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1/p4_figure.png saved as PNG format
+
+. count if taken_new_hat_lpm > 1
+  0
+
+. count if taken_new_hat_lpm < 0
+  0
+
+. 
+. ********************************************************************************
+
+. * problem #5 - weighted least squares
+
+. ********************************************************************************
+
+. 
+. vwls taken_new `covariates'
+note: Client_Married omitted because of collinearity
+note: Hindu_SC_Kat omitted because of collinearity
+
+Variance-weighted least-squares regression      Number of obs     =         12
+Goodness-of-fit chi2(0)    =       .            Model chi2(5)     =       0.00
+Prob > chi2                =       .            Prob > chi2       =     1.0000
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+  Client_Married |          0  (omitted)
+Client_Education |          0   .1234568     0.00   1.000    -.2419709    .2419709
+         HH_Size |          0   .8894888     0.00   1.000    -1.743366    1.743366
+       HH_Income |          0   .0010218     0.00   1.000    -.0020027    .0020027
+          muslim |          0   1.007025     0.00   1.000    -1.973732    1.973732
+    Hindu_SC_Kat |          0  (omitted)
+         Treated |          0   1.302893     0.00   1.000    -2.553624    2.553624
+           _cons |         .5   9.101962     0.05   0.956    -17.33952    18.33952
+----------------------------------------------------------------------------------
+
+. 
+. * Doesn't work due to small sample, but works for more parsimonious model
+
+. regress taken_new Client_Age Client_Education HH_Size  Treated, robust
+
+Linear regression                               Number of obs     =        532
+                                                F(4, 527)         =       0.73
+                                                Prob > F          =     0.5703
+                                                R-squared         =     0.0058
+                                                Root MSE          =     .37391
+
+----------------------------------------------------------------------------------
+                 |               Robust
+       taken_new | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |  -.0000451   .0022433    -0.02   0.984     -.004452    .0043619
+Client_Education |    -.00325   .0039959    -0.81   0.416    -.0110998    .0045997
+         HH_Size |  -.0101567   .0093619    -1.08   0.278     -.028548    .0082346
+         Treated |   .0412283   .0332486     1.24   0.216    -.0240878    .1065443
+           _cons |    .215995    .106784     2.02   0.044     .0062205    .4257696
+----------------------------------------------------------------------------------
+
+. outreg2 using p5_table, tex(frag) addtext(Weighted By, None) replace
+p5_table.tex
+dir : seeout
+
+. vwls taken_new Client_Age Client_Education HH_Size  Treated 
+
+Variance-weighted least-squares regression      Number of obs     =         65
+Goodness-of-fit chi2(19)   =    4.20            Model chi2(4)     =       0.14
+Prob > chi2                =  0.9998            Prob > chi2       =     0.9978
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |  -.0005351   .0197968    -0.03   0.978    -.0393361     .038266
+Client_Education |   .0021375   .0183518     0.12   0.907    -.0338314    .0381063
+         HH_Size |   .0035293   .0576289     0.06   0.951    -.1094213    .1164798
+         Treated |  -.1251191   .3727442    -0.34   0.737    -.8556843    .6054462
+           _cons |   .4895395   .8772291     0.56   0.577    -1.229798    2.208877
+----------------------------------------------------------------------------------
+
+. outreg2 using p5_table, tex(frag) addtext(Weighted By, Variance) append
+p5_table.tex
+dir : seeout
+
+. 
+. ********************************************************************************
+
+. * problem #6 - probit and logit
+
+. ********************************************************************************
+
+. 
+. regress taken_new Client_Age `covariates', robust
+
+Linear regression                               Number of obs     =        532
+                                                F(8, 523)         =       0.56
+                                                Prob > F          =     0.8074
+                                                R-squared         =     0.0079
+                                                Root MSE          =     .37494
+
+----------------------------------------------------------------------------------
+                 |               Robust
+       taken_new | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |  -.0000283   .0022749    -0.01   0.990    -.0044974    .0044409
+  Client_Married |   .0117141   .0518841     0.23   0.821    -.0902127    .1136409
+Client_Education |  -.0036931   .0041013    -0.90   0.368    -.0117502    .0043641
+         HH_Size |  -.0113264   .0092822    -1.22   0.223    -.0295613    .0069085
+       HH_Income |   3.14e-06   3.71e-06     0.85   0.398    -4.15e-06    .0000104
+          muslim |  -.0075629   .0365483    -0.21   0.836    -.0793625    .0642367
+    Hindu_SC_Kat |  -.0274764   .0509678    -0.54   0.590    -.1276031    .0726504
+         Treated |   .0426031   .0334686     1.27   0.204    -.0231463    .1083524
+           _cons |   .1993902   .1168783     1.71   0.089    -.0302184    .4289989
+----------------------------------------------------------------------------------
+
+. outreg2 using p6_table, tex(frag) replace addtext(Model, LPM)
+p6_table.tex
+dir : seeout
+
+. probit taken_new Client_Age `covariates'
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -238.07858  
+Iteration 2:   log likelihood = -238.07469  
+Iteration 3:   log likelihood = -238.07469  
+
+Probit regression                                       Number of obs =    532
+                                                        LR chi2(8)    =   4.32
+                                                        Prob > chi2   = 0.8272
+Log likelihood = -238.07469                             Pseudo R2     = 0.0090
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |   .0001538   .0085639     0.02   0.986    -.0166311    .0169387
+  Client_Married |   .0495006     .21405     0.23   0.817    -.3700297     .469031
+Client_Education |  -.0146394     .01661    -0.88   0.378    -.0471945    .0179157
+         HH_Size |   -.047596    .037897    -1.26   0.209    -.1218727    .0266807
+       HH_Income |   .0000133   .0000144     0.92   0.356    -.0000149    .0000415
+          muslim |  -.0325982   .1467714    -0.22   0.824    -.3202648    .2550683
+    Hindu_SC_Kat |  -.1099977   .2152225    -0.51   0.609     -.531826    .3118307
+         Treated |   .1751011   .1418766     1.23   0.217    -.1029719    .4531741
+           _cons |  -.8526965   .4591759    -1.86   0.063    -1.752665    .0472717
+----------------------------------------------------------------------------------
+
+. outreg2 using p6_table, tex(frag) append addtext(Model, Probit)
+p6_table.tex
+dir : seeout
+
+. logit taken_new Client_Age `covariates'
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -238.09541  
+Iteration 2:   log likelihood = -238.07838  
+Iteration 3:   log likelihood = -238.07838  
+
+Logistic regression                                     Number of obs =    532
+                                                        LR chi2(8)    =   4.31
+                                                        Prob > chi2   = 0.8280
+Log likelihood = -238.07838                             Pseudo R2     = 0.0090
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |   -.000382   .0156578    -0.02   0.981    -.0310707    .0303066
+  Client_Married |   .0930805   .3876506     0.24   0.810    -.6667008    .8528617
+Client_Education |  -.0275642   .0299653    -0.92   0.358    -.0862951    .0311666
+         HH_Size |  -.0854032   .0693938    -1.23   0.218    -.2214126    .0506061
+       HH_Income |   .0000223   .0000253     0.88   0.377    -.0000272    .0000718
+          muslim |  -.0532995   .2633343    -0.20   0.840    -.5694252    .4628263
+    Hindu_SC_Kat |  -.2078404     .39463    -0.53   0.598     -.981301    .5656203
+         Treated |   .3186872   .2585782     1.23   0.218    -.1881167    .8254911
+           _cons |  -1.374046   .8354666    -1.64   0.100     -3.01153    .2634387
+----------------------------------------------------------------------------------
+
+. outreg2 using p6_table, tex(frag) append addtext(Model, Logit)
+p6_table.tex
+dir : seeout
+
+. 
+. 
+. ********************************************************************************
+
+. * problem #7 - mean partial derivatives of Client_Age
+
+. ********************************************************************************
+
+. 
+. * LPM 
+
+. regress taken_new Client_Age `covariates'
+
+      Source |       SS           df       MS      Number of obs   =       532
+-------------+----------------------------------   F(8, 523)       =      0.52
+       Model |  .586701556         8  .073337695   Prob > F        =    0.8405
+    Residual |  73.5242007       523  .140581646   R-squared       =    0.0079
+-------------+----------------------------------   Adj R-squared   =   -0.0073
+       Total |  74.1109023       531  .139568554   Root MSE        =    .37494
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |  -.0000283   .0021572    -0.01   0.990     -.004266    .0042095
+  Client_Married |   .0117141   .0529309     0.22   0.825    -.0922693    .1156975
+Client_Education |  -.0036931   .0041228    -0.90   0.371    -.0117924    .0044062
+         HH_Size |  -.0113264   .0093055    -1.22   0.224    -.0296072    .0069544
+       HH_Income |   3.14e-06   3.68e-06     0.85   0.393    -4.08e-06    .0000104
+          muslim |  -.0075629   .0366854    -0.21   0.837    -.0796318    .0645061
+    Hindu_SC_Kat |  -.0274764   .0526227    -0.52   0.602    -.1308542    .0759015
+         Treated |   .0426031   .0346907     1.23   0.220    -.0255471    .1107532
+           _cons |   .1993902   .1142909     1.74   0.082    -.0251353    .4239158
+----------------------------------------------------------------------------------
+
+. * mean partial derivative is just the LPM coefficient = -.0000283
+
+. 
+. * probit 
+
+. * part a - using dprobit
+
+. dprobit taken_new Client_Age `covariates'
+
+Iteration 0:   log likelihood = -240.23429
+Iteration 1:   log likelihood = -238.07858
+Iteration 2:   log likelihood = -238.07469
+Iteration 3:   log likelihood = -238.07469
+
+Probit regression, reporting marginal effects           Number of obs =    532
+                                                        LR chi2(8)    =   4.32
+                                                        Prob > chi2   = 0.8272
+Log likelihood = -238.07469                             Pseudo R2     = 0.0090
+
+------------------------------------------------------------------------------
+taken_~w |      dF/dx   Std. err.      z    P>|z|     x-bar  [    95% C.I.   ]
+---------+--------------------------------------------------------------------
+Clien~ge |   .0000382   .0021261     0.02   0.986   34.8947  -.004129  .004205
+Cl~rried*|   .0120563   .0511232     0.23   0.817   .892857  -.088143  .112256
+Client~n |  -.0036344   .0041208    -0.88   0.378   6.35338  -.011711  .004442
+ HH_Size |  -.0118163   .0093894    -1.26   0.209   5.30827  -.030219  .006587
+HH_Inc~e |   3.30e-06   3.57e-06     0.92   0.356   6096.04  -3.7e-06   .00001
+  muslim*|  -.0080417    .035974    -0.22   0.824   .300752   -.07855  .062466
+Hi~C_Kat*|  -.0261864    .049033    -0.51   0.609   .116541  -.122289  .069917
+ Treated*|   .0422445   .0331814     1.23   0.217   .665414   -.02279  .107279
+---------+--------------------------------------------------------------------
+  obs. P |   .1672932
+ pred. P |   .1650313  (at x-bar)
+------------------------------------------------------------------------------
+(*) dF/dx is for discrete change of dummy variable from 0 to 1
+    z and P>|z| correspond to the test of the underlying coefficient being 0
+
+. * mean partial is the value that dprobit outputs = .0000382
+
+. 
+. * part b - analytical derivative
+
+. probit taken_new Client_Age `covariates'
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -238.07858  
+Iteration 2:   log likelihood = -238.07469  
+Iteration 3:   log likelihood = -238.07469  
+
+Probit regression                                       Number of obs =    532
+                                                        LR chi2(8)    =   4.32
+                                                        Prob > chi2   = 0.8272
+Log likelihood = -238.07469                             Pseudo R2     = 0.0090
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |   .0001538   .0085639     0.02   0.986    -.0166311    .0169387
+  Client_Married |   .0495006     .21405     0.23   0.817    -.3700297     .469031
+Client_Education |  -.0146394     .01661    -0.88   0.378    -.0471945    .0179157
+         HH_Size |   -.047596    .037897    -1.26   0.209    -.1218727    .0266807
+       HH_Income |   .0000133   .0000144     0.92   0.356    -.0000149    .0000415
+          muslim |  -.0325982   .1467714    -0.22   0.824    -.3202648    .2550683
+    Hindu_SC_Kat |  -.1099977   .2152225    -0.51   0.609     -.531826    .3118307
+         Treated |   .1751011   .1418766     1.23   0.217    -.1029719    .4531741
+           _cons |  -.8526965   .4591759    -1.86   0.063    -1.752665    .0472717
+----------------------------------------------------------------------------------
+
+. * get the linear prediction based on probit
+
+. predict taken_new_hat_xb, xb
+
+. * using formula phi(xb)*b_j
+
+. gen Client_Age_Partial_a = normalden(taken_new_hat_xb) * e(b)[1,1]
+
+. summarize Client_Age_Partial_a
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+Client_Age~a |        532    .0000382    5.01e-06   .0000224   .0000546
+
+. * mean partial derivative is the mean = .0000382
+
+. 
+. * part c - numerically calculating marginal effects
+
+. * predict probability based on probit
+
+. probit taken_new Client_Age `covariates'
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -238.07858  
+Iteration 2:   log likelihood = -238.07469  
+Iteration 3:   log likelihood = -238.07469  
+
+Probit regression                                       Number of obs =    532
+                                                        LR chi2(8)    =   4.32
+                                                        Prob > chi2   = 0.8272
+Log likelihood = -238.07469                             Pseudo R2     = 0.0090
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |   .0001538   .0085639     0.02   0.986    -.0166311    .0169387
+  Client_Married |   .0495006     .21405     0.23   0.817    -.3700297     .469031
+Client_Education |  -.0146394     .01661    -0.88   0.378    -.0471945    .0179157
+         HH_Size |   -.047596    .037897    -1.26   0.209    -.1218727    .0266807
+       HH_Income |   .0000133   .0000144     0.92   0.356    -.0000149    .0000415
+          muslim |  -.0325982   .1467714    -0.22   0.824    -.3202648    .2550683
+    Hindu_SC_Kat |  -.1099977   .2152225    -0.51   0.609     -.531826    .3118307
+         Treated |   .1751011   .1418766     1.23   0.217    -.1029719    .4531741
+           _cons |  -.8526965   .4591759    -1.86   0.063    -1.752665    .0472717
+----------------------------------------------------------------------------------
+
+. predict taken_new_hat_probit, pr
+
+. 
+. * perturb Client_Age by epsilon and rerun probit
+
+. gen Client_Age_epsilon = Client_Age + 0.001
+
+. probit taken_new Client_Age_epsilon `covariates'
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -238.07858  
+Iteration 2:   log likelihood = -238.07469  
+Iteration 3:   log likelihood = -238.07469  
+
+Probit regression                                       Number of obs =    532
+                                                        LR chi2(8)    =   4.32
+                                                        Prob > chi2   = 0.8272
+Log likelihood = -238.07469                             Pseudo R2     = 0.0090
+
+------------------------------------------------------------------------------------
+         taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------------+----------------------------------------------------------------
+Client_Age_epsilon |   .0001538   .0085639     0.02   0.986    -.0166311    .0169387
+    Client_Married |   .0495006     .21405     0.23   0.817    -.3700297     .469031
+  Client_Education |  -.0146394     .01661    -0.88   0.378    -.0471945    .0179157
+           HH_Size |   -.047596    .037897    -1.26   0.209    -.1218727    .0266807
+         HH_Income |   .0000133   .0000144     0.92   0.356    -.0000149    .0000415
+            muslim |  -.0325982   .1467714    -0.22   0.824    -.3202648    .2550683
+      Hindu_SC_Kat |  -.1099977   .2152225    -0.51   0.609     -.531826    .3118307
+           Treated |   .1751011   .1418766     1.23   0.217    -.1029719    .4531741
+             _cons |  -.8526967   .4591818    -1.86   0.063    -1.752676    .0472831
+------------------------------------------------------------------------------------
+
+. predict taken_new_hat_probit_epsilon, pr
+
+. 
+. * compute numerical derivative
+
+. gen Client_Age_Partial_n =  (taken_new_hat_probit - taken_new_hat_probit_epsilon) / 0.001
+
+. summarize Client_Age_Partial_n
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+Client_Ag~_n |        532           0           0          0          0
+
+. * mean partial derivative is the mean = 0
+
+. 
+. * part d - using margins
+
+. probit taken_new `covariates'
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -238.07872  
+Iteration 2:   log likelihood = -238.07485  
+Iteration 3:   log likelihood = -238.07485  
+
+Probit regression                                       Number of obs =    532
+                                                        LR chi2(7)    =   4.32
+                                                        Prob > chi2   = 0.7424
+Log likelihood = -238.07485                             Pseudo R2     = 0.0090
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+  Client_Married |   .0494511   .2140315     0.23   0.817     -.370043    .4689452
+Client_Education |  -.0147024   .0162362    -0.91   0.365    -.0465248      .01712
+         HH_Size |  -.0475642   .0378571    -1.26   0.209    -.1217628    .0266343
+       HH_Income |   .0000133   .0000144     0.93   0.355    -.0000149    .0000414
+          muslim |  -.0326231   .1467642    -0.22   0.824    -.3202757    .2550295
+    Hindu_SC_Kat |  -.1096493   .2143456    -0.51   0.609     -.529759    .3104604
+         Treated |   .1748804   .1413406     1.24   0.216    -.1021422    .4519029
+           _cons |  -.8470259   .3333622    -2.54   0.011    -1.500404   -.1936481
+----------------------------------------------------------------------------------
+
+. margins , dydx(Client_Age) atmeans
+invalid dydx() option;
+Client_Age not found in list of covariates
+r(322);
+
+. * mean partial derivative is the mean =  0.0000382
+
+. 
+. * logit
+
+. logit taken_new `covariates'
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -238.09565  
+Iteration 2:   log likelihood = -238.07868  
+Iteration 3:   log likelihood = -238.07868  
+
+Logistic regression                                     Number of obs =    532
+                                                        LR chi2(7)    =   4.31
+                                                        Prob > chi2   = 0.7433
+Log likelihood = -238.07868                             Pseudo R2     = 0.0090
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+  Client_Married |   .0933263    .387527     0.24   0.810    -.6662126    .8528652
+Client_Education |  -.0273985   .0291845    -0.94   0.348    -.0845992    .0298021
+         HH_Size |  -.0854613   .0693465    -1.23   0.218    -.2213779    .0504553
+       HH_Income |   .0000223   .0000252     0.88   0.377    -.0000271    .0000716
+          muslim |  -.0531028   .2632067    -0.20   0.840    -.5689784    .4627727
+    Hindu_SC_Kat |  -.2085972   .3934071    -0.53   0.596    -.9796609    .5624665
+         Treated |   .3191612   .2578518     1.24   0.216     -.186219    .8245414
+           _cons |  -1.388376   .5942478    -2.34   0.019    -2.553081   -.2236721
+----------------------------------------------------------------------------------
+
+. margins , dydx(Client_Age) atmeans
+invalid dydx() option;
+Client_Age not found in list of covariates
+r(322);
+
+. * mean partial derivative is the mean =   -.0000525
+
+. 
+. ********************************************************************************
+
+. * problem #8 - LPM with quadratic age
+
+. ********************************************************************************
+
+. 
+. * baseline
+
+. regress taken_new `covariates', robust
+
+Linear regression                               Number of obs     =        532
+                                                F(7, 524)         =       0.64
+                                                Prob > F          =     0.7206
+                                                R-squared         =     0.0079
+                                                Root MSE          =     .37458
+
+----------------------------------------------------------------------------------
+                 |               Robust
+       taken_new | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+  Client_Married |   .0117163   .0518345     0.23   0.821    -.0901127    .1135453
+Client_Education |  -.0036812    .003937    -0.94   0.350    -.0114154     .004053
+         HH_Size |  -.0113324   .0092732    -1.22   0.222    -.0295496    .0068847
+       HH_Income |   3.14e-06   3.71e-06     0.85   0.398    -4.15e-06    .0000104
+          muslim |  -.0075461   .0363378    -0.21   0.836    -.0789317    .0638396
+    Hindu_SC_Kat |  -.0275317   .0509772    -0.54   0.589    -.1276765    .0726131
+         Treated |   .0426362   .0335181     1.27   0.204      -.02321    .1084825
+           _cons |   .1983494   .0779066     2.55   0.011     .0453018     .351397
+----------------------------------------------------------------------------------
+
+. outreg2 using p8_table, tex(frag) replace
+p8_table.tex
+dir : seeout
+
+. 
+. * create quadratic transformations of age
+
+. gen Client_Age_2 = Client_Age^2 
+
+. gen Client_Age_3 = Client_Age^3 
+
+. gen Client_Age_4 = Client_Age^4 
+
+. 
+. * estimate lpm with quadratic transformations of age
+
+. regress taken_new Client_Age Client_Age_2 Client_Age_3 Client_Age_4 `covariates', robust
+
+Linear regression                               Number of obs     =        532
+                                                F(11, 520)        =      26.51
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0311
+                                                Root MSE          =      .3716
+
+----------------------------------------------------------------------------------
+                 |               Robust
+       taken_new | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |  -.4933651   .1676673    -2.94   0.003    -.8227536   -.1639766
+    Client_Age_2 |   .0198727   .0062055     3.20   0.001     .0076817    .0320637
+    Client_Age_3 |  -.0003363   .0000968    -3.47   0.001    -.0005265   -.0001461
+    Client_Age_4 |   2.01e-06   5.35e-07     3.76   0.000     9.60e-07    3.06e-06
+  Client_Married |   .0151682   .0552224     0.27   0.784    -.0933182    .1236546
+Client_Education |  -.0031541   .0041087    -0.77   0.443    -.0112258    .0049176
+         HH_Size |  -.0088907   .0092416    -0.96   0.336    -.0270461    .0092647
+       HH_Income |   3.65e-06   3.70e-06     0.99   0.325    -3.62e-06    .0000109
+          muslim |  -.0128246   .0361322    -0.35   0.723    -.0838076    .0581584
+    Hindu_SC_Kat |  -.0333433   .0506817    -0.66   0.511    -.1329092    .0662227
+         Treated |   .0464548   .0334116     1.39   0.165    -.0191835    .1120931
+           _cons |   4.517748   1.604795     2.82   0.005     1.365071    7.670425
+----------------------------------------------------------------------------------
+
+. outreg2 using p8_table, tex(frag) append
+p8_table.tex
+dir : seeout
+
+. predict taken_new_hat_lpm_q
+(option xb assumed; fitted values)
+
+. 
+. * check for observations outside 0, 1
+
+. count if taken_new_hat_lpm_q > 1
+  1
+
+. count if taken_new_hat_lpm_q < 0
+  5
+
+. histogram taken_new_hat_lpm_q
+(bin=23, start=-.16169128, width=.05206823)
+
+. graph export p8_figure.png, replace
+file /Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1/p8_figure.png saved as PNG format
+
+. 
+. * create quadratic transformations with epsilon
+
+. gen Client_Age_epsilon_2 = Client_Age_epsilon^2 
+
+. gen Client_Age_epsilon_3 = Client_Age_epsilon^3 
+
+. gen Client_Age_epsilon_4 = Client_Age_epsilon^4 
+
+. regress taken_new Client_Age_epsilon Client_Age_epsilon_2 Client_Age_epsilon_3 Client_Age_epsilon_4 `covariates'
+
+      Source |       SS           df       MS      Number of obs   =       532
+-------------+----------------------------------   F(11, 520)      =      1.52
+       Model |  2.30782478        11  .209802252   Prob > F        =    0.1205
+    Residual |  71.8030775       520  .138082841   R-squared       =    0.0311
+-------------+----------------------------------   Adj R-squared   =    0.0106
+       Total |  74.1109023       531  .139568554   Root MSE        =    .37159
+
+--------------------------------------------------------------------------------------
+           taken_new | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+---------------------+----------------------------------------------------------------
+  Client_Age_epsilon |  -.4934055   .1790728    -2.76   0.006    -.8452005   -.1416105
+Client_Age_epsilon_2 |   .0198737   .0068759     2.89   0.004     .0063657    .0333818
+Client_Age_epsilon_3 |  -.0003363   .0001114    -3.02   0.003    -.0005552   -.0001174
+Client_Age_epsilon_4 |   2.01e-06   6.40e-07     3.14   0.002     7.54e-07    3.27e-06
+      Client_Married |   .0151682   .0553267     0.27   0.784    -.0935231    .1238596
+    Client_Education |  -.0031541   .0041053    -0.77   0.443    -.0112191     .004911
+             HH_Size |  -.0088907   .0093101    -0.95   0.340    -.0271807    .0093992
+           HH_Income |   3.65e-06   3.67e-06     0.99   0.321    -3.56e-06    .0000109
+              muslim |  -.0128246     .03645    -0.35   0.725     -.084432    .0587828
+        Hindu_SC_Kat |  -.0333433   .0522834    -0.64   0.524    -.1360559    .0693693
+             Treated |   .0464549   .0344114     1.35   0.178    -.0211475    .1140573
+               _cons |   4.518247   1.655823     2.73   0.007     1.265323    7.771171
+--------------------------------------------------------------------------------------
+
+. predict taken_new_hat_lpm_q_epsilon
+(option xb assumed; fitted values)
+
+. 
+. * numerically compute derivative
+
+. gen Client_Age_Partial_q_n =  (taken_new_hat_lpm_q - taken_new_hat_lpm_q_epsilon) / 0.001
+
+. summarize Client_Age_Partial_q_n
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+Client_A~q_n |        532    2.32e-07    .0004894  -.0016466   .0021122
+
+. * mean is 2.32e-07
+
+. 
+. ********************************************************************************
+
+. * problem #9 - LRI
+
+. ********************************************************************************
+
+. 
+. * baseline probit
+
+. probit taken_new Client_Age `covariates'
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -238.07858  
+Iteration 2:   log likelihood = -238.07469  
+Iteration 3:   log likelihood = -238.07469  
+
+Probit regression                                       Number of obs =    532
+                                                        LR chi2(8)    =   4.32
+                                                        Prob > chi2   = 0.8272
+Log likelihood = -238.07469                             Pseudo R2     = 0.0090
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |   .0001538   .0085639     0.02   0.986    -.0166311    .0169387
+  Client_Married |   .0495006     .21405     0.23   0.817    -.3700297     .469031
+Client_Education |  -.0146394     .01661    -0.88   0.378    -.0471945    .0179157
+         HH_Size |   -.047596    .037897    -1.26   0.209    -.1218727    .0266807
+       HH_Income |   .0000133   .0000144     0.92   0.356    -.0000149    .0000415
+          muslim |  -.0325982   .1467714    -0.22   0.824    -.3202648    .2550683
+    Hindu_SC_Kat |  -.1099977   .2152225    -0.51   0.609     -.531826    .3118307
+         Treated |   .1751011   .1418766     1.23   0.217    -.1029719    .4531741
+           _cons |  -.8526965   .4591759    -1.86   0.063    -1.752665    .0472717
+----------------------------------------------------------------------------------
+
+. * ll_hat is  -238.07469
+
+. 
+. * probit only with constant
+
+. probit taken_new
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -240.23429  
+
+Probit regression                                       Number of obs =    532
+                                                        LR chi2(0)    =   0.00
+                                                        Prob > chi2   =      .
+Log likelihood = -240.23429                             Pseudo R2     = 0.0000
+
+------------------------------------------------------------------------------
+   taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       _cons |  -.9649168   .0646097   -14.93   0.000    -1.091549   -.8382842
+------------------------------------------------------------------------------
+
+. * ll_0 is -240.23429
+
+. 
+. * lri = 1 - ll_hat/ll_0 = 0.00898955765
+
+. 
+. ********************************************************************************
+
+. * problem #10 - Prediction rate
+
+. ********************************************************************************
+
+. 
+. * using cutoff of 50 percent
+
+. gen predicted_over_50 =  taken_new_hat_probit > .5
+
+. tab taken_new predicted_over_50, nofreq cell
+
+ Has taken |
+a new loan |
+    in the |
+    last 4 | predicted_
+    months |  over_50
+ (midline) |         0 |     Total
+-----------+-----------+----------
+         0 |     83.27 |     83.27 
+         1 |     16.73 |     16.73 
+-----------+-----------+----------
+     Total |    100.00 |    100.00 
+
+. 
+. * using unconditional probability as cutoff
+
+. tab taken_new
+
+Has taken a |
+new loan in |
+ the last 4 |
+     months |
+  (midline) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        443       83.27       83.27
+          1 |         89       16.73      100.00
+------------+-----------------------------------
+      Total |        532      100.00
+
+. * unconditional probability = .1673
+
+. gen predicted_over_up =  taken_new_hat_probit > .1673
+
+. tab taken_new predicted_over_up, nofreq cell
+
+ Has taken |
+a new loan |
+    in the |
+    last 4 |
+    months |   predicted_over_up
+ (midline) |         0          1 |     Total
+-----------+----------------------+----------
+         0 |     42.67      40.60 |     83.27 
+         1 |      6.02      10.71 |     16.73 
+-----------+----------------------+----------
+     Total |     48.68      51.32 |    100.00 
+
+. 
+. ********************************************************************************
+
+. * problem #11 - In sample vs. out-of-sample prediction
+
+. ********************************************************************************
+
+. 
+. gen estimation_sample = imidlineid < 1400
+
+. 
+. * estimate probit on subsample
+
+. probit taken_new Client_Age `covariates' if estimation_sample
+
+Iteration 0:   log likelihood = -117.67911  
+Iteration 1:   log likelihood = -115.82624  
+Iteration 2:   log likelihood = -115.80635  
+Iteration 3:   log likelihood = -115.80635  
+
+Probit regression                                       Number of obs =    266
+                                                        LR chi2(8)    =   3.75
+                                                        Prob > chi2   = 0.8793
+Log likelihood = -115.80635                             Pseudo R2     = 0.0159
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |   .0095479   .0132631     0.72   0.472    -.0164472    .0355431
+  Client_Married |   .1217882    .317054     0.38   0.701    -.4996262    .7432027
+Client_Education |   .0020014   .0246685     0.08   0.935    -.0463478    .0503507
+         HH_Size |   .0450808   .0526267     0.86   0.392    -.0580656    .1482272
+       HH_Income |   4.91e-06     .00002     0.25   0.806    -.0000342    .0000441
+          muslim |   .0064283   .2123982     0.03   0.976    -.4098646    .4227212
+    Hindu_SC_Kat |  -.5059869    .387024    -1.31   0.191     -1.26454    .2525661
+         Treated |   .0434882   .2025915     0.21   0.830     -.353584    .4405603
+           _cons |  -1.708002   .7275063    -2.35   0.019    -3.133888    -.282116
+----------------------------------------------------------------------------------
+
+. predict taken_new_hat_probit_11, pr
+
+. 
+. * using cutoff of 50 percent
+
+. gen predicted_over_50_11 =  taken_new_hat_probit_11 > .5
+
+. tab taken_new predicted_over_50_11 if estimation_sample, cell nofreq
+
+ Has taken |
+a new loan |
+    in the |
+    last 4 | predicted_
+    months | over_50_11
+ (midline) |         0 |     Total
+-----------+-----------+----------
+         0 |     83.83 |     83.83 
+         1 |     16.17 |     16.17 
+-----------+-----------+----------
+     Total |    100.00 |    100.00 
+
+. tab taken_new predicted_over_50_11 if !estimation_sample, cell  nofreq
+
+ Has taken |
+a new loan |
+    in the |
+    last 4 | predicted_
+    months | over_50_11
+ (midline) |         0 |     Total
+-----------+-----------+----------
+         0 |     82.71 |     82.71 
+         1 |     17.29 |     17.29 
+-----------+-----------+----------
+     Total |    100.00 |    100.00 
+
+. 
+. * using unconditional probability as cutoff
+
+. gen predicted_over_up_11 =  taken_new_hat_probit_11 > .1673
+
+. tab taken_new predicted_over_up_11 if estimation_sample, cell nofreq
+
+ Has taken |
+a new loan |
+    in the |
+    last 4 |
+    months | predicted_over_up_11
+ (midline) |         0          1 |     Total
+-----------+----------------------+----------
+         0 |     48.12      35.71 |     83.83 
+         1 |      8.27       7.89 |     16.17 
+-----------+----------------------+----------
+     Total |     56.39      43.61 |    100.00 
+
+. tab taken_new predicted_over_up_11 if !estimation_sample, cell nofreq
+
+ Has taken |
+a new loan |
+    in the |
+    last 4 |
+    months | predicted_over_up_11
+ (midline) |         0          1 |     Total
+-----------+----------------------+----------
+         0 |     44.36      38.35 |     82.71 
+         1 |     11.28       6.02 |     17.29 
+-----------+----------------------+----------
+     Total |     55.64      44.36 |    100.00 
+
+. 
+. ********************************************************************************
+
+. * problem #12 - Interaction terms
+
+. ********************************************************************************
+
+. 
+. probit taken_new Client_Age `covariates'
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -238.07858  
+Iteration 2:   log likelihood = -238.07469  
+Iteration 3:   log likelihood = -238.07469  
+
+Probit regression                                       Number of obs =    532
+                                                        LR chi2(8)    =   4.32
+                                                        Prob > chi2   = 0.8272
+Log likelihood = -238.07469                             Pseudo R2     = 0.0090
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |   .0001538   .0085639     0.02   0.986    -.0166311    .0169387
+  Client_Married |   .0495006     .21405     0.23   0.817    -.3700297     .469031
+Client_Education |  -.0146394     .01661    -0.88   0.378    -.0471945    .0179157
+         HH_Size |   -.047596    .037897    -1.26   0.209    -.1218727    .0266807
+       HH_Income |   .0000133   .0000144     0.92   0.356    -.0000149    .0000415
+          muslim |  -.0325982   .1467714    -0.22   0.824    -.3202648    .2550683
+    Hindu_SC_Kat |  -.1099977   .2152225    -0.51   0.609     -.531826    .3118307
+         Treated |   .1751011   .1418766     1.23   0.217    -.1029719    .4531741
+           _cons |  -.8526965   .4591759    -1.86   0.063    -1.752665    .0472717
+----------------------------------------------------------------------------------
+
+. outreg2 using p12_table, tex(frag) replace
+p12_table.tex
+dir : seeout
+
+. 
+. gen married_muslim = Client_Married * muslim
+
+. probit taken_new Client_Age `covariates' married_muslim
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -237.89689  
+Iteration 2:   log likelihood = -237.89262  
+Iteration 3:   log likelihood = -237.89262  
+
+Probit regression                                       Number of obs =    532
+                                                        LR chi2(9)    =   4.68
+                                                        Prob > chi2   = 0.8610
+Log likelihood = -237.89262                             Pseudo R2     = 0.0097
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |   .0009312   .0086796     0.11   0.915    -.0160805    .0179429
+  Client_Married |   .1556674   .2806756     0.55   0.579    -.3944468    .7057815
+Client_Education |  -.0153534   .0166616    -0.92   0.357    -.0480094    .0173027
+         HH_Size |  -.0502379   .0381311    -1.32   0.188    -.1249735    .0244977
+       HH_Income |   .0000126   .0000145     0.87   0.383    -.0000157     .000041
+          muslim |   .2059269    .420573     0.49   0.624    -.6183811    1.030235
+    Hindu_SC_Kat |  -.1142815   .2152731    -0.53   0.596     -.536209     .307646
+         Treated |   .1819567   .1423657     1.28   0.201    -.0970751    .4609884
+  married_muslim |  -.2709185   .4481227    -0.60   0.545    -1.149223    .6073858
+           _cons |  -.9589165   .4938953    -1.94   0.052    -1.926934    .0091005
+----------------------------------------------------------------------------------
+
+. outreg2 using p12_table, tex(frag) append
+p12_table.tex
+dir : seeout
+
+. 
+. ********************************************************************************
+
+. * problem #13 - Interaction effects
+
+. ********************************************************************************
+
+. 
+. * compute interaction effect without accounting for terms in Ai and Norton (2003)
+
+. margins , dydx(married_muslim)
+
+Average marginal effects                                   Number of obs = 532
+Model VCE: OIM
+
+Expression: Pr(taken_new), predict()
+dy/dx wrt:  married_muslim
+
+--------------------------------------------------------------------------------
+               |            Delta-method
+               |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+married_muslim |  -.0671875   .1110788    -0.60   0.545     -.284898    .1505229
+--------------------------------------------------------------------------------
+
+. * interaction effect estimate is -.0671875
+
+. 
+. * compute interaction effect by hand accounting for terms in Ai and Norton (2003)
+
+. * follows logic from lecture notes
+
+. predict index_hat, xb
+
+. * predicted index with both dummies zero
+
+. gen index_hat_0 = index_hat - Client_Married * e(b)[1,2] - muslim * e(b)[1,6] - married_muslim *e(b)[1, 9]
+
+. * predicted index with both married one and muslim zero
+
+. gen index_hat_01 = index_hat_0 + e(b)[1,2]
+
+. * predicted index with both muslim one and married zero
+
+. gen index_hat_02 = index_hat_0 + e(b)[1,6]
+
+. * predicted index with both dummies zero
+
+. gen index_hat_012 = index_hat_0 + e(b)[1,2] + e(b)[1,6] + e(b)[1,9]
+
+. gen finite_difference = (normal(index_hat_012) - normal(index_hat_02)) - (normal(index_hat_01) - normal(index_hat_0))
+
+. summarize finite_difference
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+finite_dif~e |        532   -.0656881    .0090154  -.0940148  -.0364692
+
+. * interaction effect estimate is -.0656881
+
+. 
+. ********************************************************************************
+
+. * problem #14 - Interaction effects variance
+
+. ********************************************************************************
+
+. 
+. * see summarize table from problem #13.
+
+. 
+. ********************************************************************************
+
+. * problem #15 - Heteroskedasticity test
+
+. ********************************************************************************
+
+. 
+. * compute residuals
+
+. regress taken_new Client_Age `covariates' 
+
+      Source |       SS           df       MS      Number of obs   =       532
+-------------+----------------------------------   F(8, 523)       =      0.52
+       Model |  .586701556         8  .073337695   Prob > F        =    0.8405
+    Residual |  73.5242007       523  .140581646   R-squared       =    0.0079
+-------------+----------------------------------   Adj R-squared   =   -0.0073
+       Total |  74.1109023       531  .139568554   Root MSE        =    .37494
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |  -.0000283   .0021572    -0.01   0.990     -.004266    .0042095
+  Client_Married |   .0117141   .0529309     0.22   0.825    -.0922693    .1156975
+Client_Education |  -.0036931   .0041228    -0.90   0.371    -.0117924    .0044062
+         HH_Size |  -.0113264   .0093055    -1.22   0.224    -.0296072    .0069544
+       HH_Income |   3.14e-06   3.68e-06     0.85   0.393    -4.08e-06    .0000104
+          muslim |  -.0075629   .0366854    -0.21   0.837    -.0796318    .0645061
+    Hindu_SC_Kat |  -.0274764   .0526227    -0.52   0.602    -.1308542    .0759015
+         Treated |   .0426031   .0346907     1.23   0.220    -.0255471    .1107532
+           _cons |   .1993902   .1142909     1.74   0.082    -.0251353    .4239158
+----------------------------------------------------------------------------------
+
+. predict residuals_p, residuals
+
+. 
+. * regress squared residuals on usual covariates.
+
+. gen residuals_p_2 = residuals_p^2
+
+. regress residuals_p_2 Client_Age `covariates' 
+
+      Source |       SS           df       MS      Number of obs   =       532
+-------------+----------------------------------   F(8, 523)       =      0.56
+       Model |  .271068132         8  .033883517   Prob > F        =    0.8130
+    Residual |  31.8045385       523  .060811737   R-squared       =    0.0085
+-------------+----------------------------------   Adj R-squared   =   -0.0067
+       Total |  32.0756066       531  .060406039   Root MSE        =     .2466
+
+----------------------------------------------------------------------------------
+   residuals_p_2 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+      Client_Age |   .0001681   .0014188     0.12   0.906     -.002619    .0029553
+  Client_Married |   .0077442   .0348128     0.22   0.824    -.0606459    .0761344
+Client_Education |   -.002132   .0027116    -0.79   0.432    -.0074589    .0031949
+         HH_Size |   -.007861   .0061203    -1.28   0.200    -.0198843    .0041623
+       HH_Income |   2.51e-06   2.42e-06     1.04   0.299    -2.24e-06    7.27e-06
+          muslim |  -.0063261   .0241281    -0.26   0.793     -.053726    .0410738
+    Hindu_SC_Kat |  -.0167612   .0346101    -0.48   0.628    -.0847531    .0512306
+         Treated |   .0281959   .0228161     1.24   0.217    -.0166267    .0730184
+           _cons |   .1504638   .0751694     2.00   0.046     .0027929    .2981348
+----------------------------------------------------------------------------------
+
+. outreg2 using p15_table, tex(frag) replace
+p15_table.tex
+dir : seeout
+
+. 
+. 
+. ********************************************************************************
+
+. * problem #16 - hetprob
+
+. ********************************************************************************
+
+. 
+. hetprob taken_new Client_Age `covariates', het(Client_Age Client_Education)
+
+Fitting probit model:
+
+Iteration 0:   log likelihood = -240.23429  
+Iteration 1:   log likelihood = -238.07858  
+Iteration 2:   log likelihood = -238.07469  
+Iteration 3:   log likelihood = -238.07469  
+
+Fitting full model:
+
+Iteration 0:   log likelihood = -238.07469  (not concave)
+Iteration 1:   log likelihood = -237.99107  
+Iteration 2:   log likelihood = -237.64163  
+Iteration 3:   log likelihood = -237.57256  
+Iteration 4:   log likelihood = -237.11403  
+Iteration 5:   log likelihood =  -236.9148  
+Iteration 6:   log likelihood = -236.69574  
+Iteration 7:   log likelihood = -236.60898  
+Iteration 8:   log likelihood = -236.59195  
+Iteration 9:   log likelihood = -236.59073  
+Iteration 10:  log likelihood =  -236.5907  
+Iteration 11:  log likelihood =  -236.5907  
+
+Heteroskedastic probit model                    Number of obs     =        532
+                                                Zero outcomes     =        443
+                                                Nonzero outcomes  =         89
+
+                                                Wald chi2(8)      =       2.19
+Log likelihood = -236.5907                      Prob > chi2       =     0.9745
+
+----------------------------------------------------------------------------------
+       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+taken_new        |
+      Client_Age |  -.1123273   .1374995    -0.82   0.414    -.3818214    .1571668
+  Client_Married |   .1288146   .8458704     0.15   0.879    -1.529061     1.78669
+Client_Education |  -.3106294   .2555354    -1.22   0.224    -.8114697    .1902108
+         HH_Size |  -.2261131   .1970247    -1.15   0.251    -.6122744    .1600482
+       HH_Income |   .0000693   .0000723     0.96   0.338    -.0000723    .0002109
+          muslim |  -.1792461   .5843143    -0.31   0.759    -1.324481    .9659888
+    Hindu_SC_Kat |  -.3442778   .9618559    -0.36   0.720    -2.229481    1.540925
+         Treated |   .9149664   .7866622     1.16   0.245    -.6268631    2.456796
+           _cons |    1.71513    3.57286     0.48   0.631    -5.287547    8.717807
+-----------------+----------------------------------------------------------------
+lnsigma          |
+      Client_Age |   .0285154   .0196403     1.45   0.147    -.0099788    .0670096
+Client_Education |   .0694184    .047379     1.47   0.143    -.0234426    .1622795
+----------------------------------------------------------------------------------
+LR test of lnsigma=0: chi2(2) = 2.97                      Prob > chi2 = 0.2267
+
+. outreg2 using p16_table, tex(frag) replace
+p16_table.tex
+dir : seeout
+
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1/analysis.smcl
+  log type:  smcl
+ closed on:  11 Feb 2022, 16:57:45
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

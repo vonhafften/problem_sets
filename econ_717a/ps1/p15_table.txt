@@ -1,0 +1,26 @@
+	(1)
+VARIABLES	residuals_p_2
+	
+Client_Age	0.000168
+	(0.00142)
+Client_Married	0.00774
+	(0.0348)
+Client_Education	-0.00213
+	(0.00271)
+HH_Size	-0.00786
+	(0.00612)
+HH_Income	2.51e-06
+	(2.42e-06)
+muslim	-0.00633
+	(0.0241)
+Hindu_SC_Kat	-0.0168
+	(0.0346)
+Treated	0.0282
+	(0.0228)
+Constant	0.150**
+	(0.0752)
+	
+Observations	532
+R-squared	0.008
+Standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	

@@ -1,0 +1,27 @@
+	(1)	(2)	(3)
+VARIABLES	taken_new	taken_new	taken_new
+			
+Client_Age	-2.83e-05	3.82e-05	0.000154
+	(0.00227)	(0.00213)	(0.00856)
+Client_Married	0.0117	0.0121	0.0495
+	(0.0519)	(0.0511)	(0.214)
+Client_Education	-0.00369	-0.00363	-0.0146
+	(0.00410)	(0.00412)	(0.0166)
+HH_Size	-0.0113	-0.0118	-0.0476
+	(0.00928)	(0.00939)	(0.0379)
+HH_Income	3.14e-06	3.30e-06	1.33e-05
+	(3.71e-06)	(3.57e-06)	(1.44e-05)
+muslim	-0.00756	-0.00804	-0.0326
+	(0.0365)	(0.0360)	(0.147)
+Hindu_SC_Kat	-0.0275	-0.0262	-0.110
+	(0.0510)	(0.0490)	(0.215)
+Treated	0.0426	0.0422	0.175
+	(0.0335)	(0.0332)	(0.142)
+Constant			-0.853*
+			(0.459)
+			
+Observations	532	532	532
+Model	LPM	Probit	Probit
+Approach		dprobit	margins
+Robust standard errors in parentheses			
+*** p<0.01, ** p<0.05, * p<0.1			

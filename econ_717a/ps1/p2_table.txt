@@ -1,0 +1,26 @@
+	(1)
+VARIABLES	taken_new
+	
+Client_Age	-2.83e-05
+	(0.00216)
+Client_Married	0.0117
+	(0.0529)
+Client_Education	-0.00369
+	(0.00412)
+HH_Size	-0.0113
+	(0.00931)
+HH_Income	3.14e-06
+	(3.68e-06)
+muslim	-0.00756
+	(0.0367)
+Hindu_SC_Kat	-0.0275
+	(0.0526)
+Treated	0.0426
+	(0.0347)
+Constant	0.199*
+	(0.114)
+	
+Observations	532
+R-squared	0.008
+Standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	

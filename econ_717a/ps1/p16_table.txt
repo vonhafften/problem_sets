@@ -1,0 +1,25 @@
+	(1)	(2)
+VARIABLES	taken_new	lnsigma
+		
+Client_Age	-0.112	0.0285
+	(0.137)	(0.0196)
+Client_Married	0.129	
+	(0.846)	
+Client_Education	-0.311	0.0694
+	(0.256)	(0.0474)
+HH_Size	-0.226	
+	(0.197)	
+HH_Income	6.93e-05	
+	(7.23e-05)	
+muslim	-0.179	
+	(0.584)	
+Hindu_SC_Kat	-0.344	
+	(0.962)	
+Treated	0.915	
+	(0.787)	
+Constant	1.715	
+	(3.573)	
+		
+Observations	532	532
+Standard errors in parentheses		
+*** p<0.01, ** p<0.05, * p<0.1		
