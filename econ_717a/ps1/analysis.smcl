@@ -3,7 +3,7 @@
       name:  {res}<unnamed>
        {txt}log:  {res}/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1/analysis.smcl
   {txt}log type:  {res}smcl
- {txt}opened on:  {res}11 Feb 2022, 16:57:29
+ {txt}opened on:  {res}12 Feb 2022, 13:29:44
 
 {com}. 
 . * Alex von Hafften
@@ -480,6 +480,26 @@ Client_Age~a {c |}{res}        532    .0000382    5.01e-06   .0000224   .0000546
 
 . * predict probability based on probit
 
+. predict taken_new_hat_probit, pr
+
+. gen taken_new_hat_probit_epsilon = normal(taken_new_hat_xb + 0.001*e(b)[1,1])
+
+. 
+. * compute numerical derivative
+
+. gen Client_Age_Partial_n =  (taken_new_hat_probit_epsilon - taken_new_hat_probit) / 0.001
+
+. summarize Client_Age_Partial_n
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+Client_Age~n {c |}{res}        532    .0000386    9.50e-06   .0000149   .0000596
+
+{com}. * mean partial derivative is the mean = 0
+
+. 
+. * part d - using margins
+
 . probit taken_new Client_Age `covariates'
 
 {res}{txt}Iteration 0:{space 3}log likelihood = {res:-240.23429}  
@@ -506,122 +526,87 @@ Iteration 3:{space 3}log likelihood = {res:-238.07469}
 {txt}{space 11}_cons {c |}{col 18}{res}{space 2}-.8526965{col 30}{space 2} .4591759{col 41}{space 1}   -1.86{col 50}{space 3}0.063{col 58}{space 4}-1.752665{col 71}{space 3} .0472717
 {txt}{hline 17}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
 
-{com}. predict taken_new_hat_probit, pr
-
-. 
-. * perturb Client_Age by epsilon and rerun probit
-
-. gen Client_Age_epsilon = Client_Age + 0.001
-
-. probit taken_new Client_Age_epsilon `covariates'
-
-{res}{txt}Iteration 0:{space 3}log likelihood = {res:-240.23429}  
-Iteration 1:{space 3}log likelihood = {res:-238.07858}  
-Iteration 2:{space 3}log likelihood = {res:-238.07469}  
-Iteration 3:{space 3}log likelihood = {res:-238.07469}  
-{res}
-{txt}{col 1}Probit regression{col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:532}
-{txt}{col 57}{lalign 13:LR chi2({res:8})}{col 70} = {res}{ralign 6:4.32}
-{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.8272}
-{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-238.07469}{txt}{col 57}{lalign 13:Pseudo R2}{col 70} = {res}{ralign 6:0.0090}
-
-{txt}{hline 19}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{col 1}         taken_new{col 20}{c |} Coefficient{col 32}  Std. err.{col 44}      z{col 52}   P>|z|{col 60}     [95% con{col 73}f. interval]
-{hline 19}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-Client_Age_epsilon {c |}{col 20}{res}{space 2} .0001538{col 32}{space 2} .0085639{col 43}{space 1}    0.02{col 52}{space 3}0.986{col 60}{space 4}-.0166311{col 73}{space 3} .0169387
-{txt}{space 4}Client_Married {c |}{col 20}{res}{space 2} .0495006{col 32}{space 2}   .21405{col 43}{space 1}    0.23{col 52}{space 3}0.817{col 60}{space 4}-.3700297{col 73}{space 3}  .469031
-{txt}{space 2}Client_Education {c |}{col 20}{res}{space 2}-.0146394{col 32}{space 2}   .01661{col 43}{space 1}   -0.88{col 52}{space 3}0.378{col 60}{space 4}-.0471945{col 73}{space 3} .0179157
-{txt}{space 11}HH_Size {c |}{col 20}{res}{space 2} -.047596{col 32}{space 2}  .037897{col 43}{space 1}   -1.26{col 52}{space 3}0.209{col 60}{space 4}-.1218727{col 73}{space 3} .0266807
-{txt}{space 9}HH_Income {c |}{col 20}{res}{space 2} .0000133{col 32}{space 2} .0000144{col 43}{space 1}    0.92{col 52}{space 3}0.356{col 60}{space 4}-.0000149{col 73}{space 3} .0000415
-{txt}{space 12}muslim {c |}{col 20}{res}{space 2}-.0325982{col 32}{space 2} .1467714{col 43}{space 1}   -0.22{col 52}{space 3}0.824{col 60}{space 4}-.3202648{col 73}{space 3} .2550683
-{txt}{space 6}Hindu_SC_Kat {c |}{col 20}{res}{space 2}-.1099977{col 32}{space 2} .2152225{col 43}{space 1}   -0.51{col 52}{space 3}0.609{col 60}{space 4} -.531826{col 73}{space 3} .3118307
-{txt}{space 11}Treated {c |}{col 20}{res}{space 2} .1751011{col 32}{space 2} .1418766{col 43}{space 1}    1.23{col 52}{space 3}0.217{col 60}{space 4}-.1029719{col 73}{space 3} .4531741
-{txt}{space 13}_cons {c |}{col 20}{res}{space 2}-.8526967{col 32}{space 2} .4591818{col 43}{space 1}   -1.86{col 52}{space 3}0.063{col 60}{space 4}-1.752676{col 73}{space 3} .0472831
-{txt}{hline 19}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-
-{com}. predict taken_new_hat_probit_epsilon, pr
-
-. 
-. * compute numerical derivative
-
-. gen Client_Age_Partial_n =  (taken_new_hat_probit - taken_new_hat_probit_epsilon) / 0.001
-
-. summarize Client_Age_Partial_n
-
-{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
-{hline 13}{c +}{hline 57}
-Client_Ag~_n {c |}{res}        532           0           0          0          0
-
-{com}. * mean partial derivative is the mean = 0
-
-. 
-. * part d - using margins
-
-. probit taken_new `covariates'
-
-{res}{txt}Iteration 0:{space 3}log likelihood = {res:-240.23429}  
-Iteration 1:{space 3}log likelihood = {res:-238.07872}  
-Iteration 2:{space 3}log likelihood = {res:-238.07485}  
-Iteration 3:{space 3}log likelihood = {res:-238.07485}  
-{res}
-{txt}{col 1}Probit regression{col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:532}
-{txt}{col 57}{lalign 13:LR chi2({res:7})}{col 70} = {res}{ralign 6:4.32}
-{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.7424}
-{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-238.07485}{txt}{col 57}{lalign 13:Pseudo R2}{col 70} = {res}{ralign 6:0.0090}
-
-{txt}{hline 17}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{col 1}       taken_new{col 18}{c |} Coefficient{col 30}  Std. err.{col 42}      z{col 50}   P>|z|{col 58}     [95% con{col 71}f. interval]
-{hline 17}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{space 2}Client_Married {c |}{col 18}{res}{space 2} .0494511{col 30}{space 2} .2140315{col 41}{space 1}    0.23{col 50}{space 3}0.817{col 58}{space 4} -.370043{col 71}{space 3} .4689452
-{txt}Client_Education {c |}{col 18}{res}{space 2}-.0147024{col 30}{space 2} .0162362{col 41}{space 1}   -0.91{col 50}{space 3}0.365{col 58}{space 4}-.0465248{col 71}{space 3}   .01712
-{txt}{space 9}HH_Size {c |}{col 18}{res}{space 2}-.0475642{col 30}{space 2} .0378571{col 41}{space 1}   -1.26{col 50}{space 3}0.209{col 58}{space 4}-.1217628{col 71}{space 3} .0266343
-{txt}{space 7}HH_Income {c |}{col 18}{res}{space 2} .0000133{col 30}{space 2} .0000144{col 41}{space 1}    0.93{col 50}{space 3}0.355{col 58}{space 4}-.0000149{col 71}{space 3} .0000414
-{txt}{space 10}muslim {c |}{col 18}{res}{space 2}-.0326231{col 30}{space 2} .1467642{col 41}{space 1}   -0.22{col 50}{space 3}0.824{col 58}{space 4}-.3202757{col 71}{space 3} .2550295
-{txt}{space 4}Hindu_SC_Kat {c |}{col 18}{res}{space 2}-.1096493{col 30}{space 2} .2143456{col 41}{space 1}   -0.51{col 50}{space 3}0.609{col 58}{space 4} -.529759{col 71}{space 3} .3104604
-{txt}{space 9}Treated {c |}{col 18}{res}{space 2} .1748804{col 30}{space 2} .1413406{col 41}{space 1}    1.24{col 50}{space 3}0.216{col 58}{space 4}-.1021422{col 71}{space 3} .4519029
-{txt}{space 11}_cons {c |}{col 18}{res}{space 2}-.8470259{col 30}{space 2} .3333622{col 41}{space 1}   -2.54{col 50}{space 3}0.011{col 58}{space 4}-1.500404{col 71}{space 3}-.1936481
-{txt}{hline 17}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-
 {com}. margins , dydx(Client_Age) atmeans
-{err}invalid dydx() option;
-{bf:Client_Age} not found in list of covariates
-{txt}{search r(322), local:r(322);}
+{res}
+{txt}{col 1}Conditional marginal effects{col 60}{lalign 13:Number of obs}{col 73} = {res}{ralign 3:532}
+{txt}{col 1}Model VCE: {res:OIM}
 
+{txt}{p2colset 1 13 13 2}{...}
+{p2col:Expression:}{res:Pr(taken_new), predict()}{p_end}
+{p2col:dy/dx wrt:}{res:Client_Age}{p_end}
+{p2colreset}{...}
+{lalign 4:At: }{space 0}{lalign 16:Client_Age} = {res:{ralign 8:34.89474}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:Client_Married} = {res:{ralign 8:.8928571}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:Client_Education} = {res:{ralign 8:6.353383}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:HH_Size} = {res:{ralign 8:5.308271}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:HH_Income} = {res:{ralign 8:6096.039}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:muslim} = {res:{ralign 8:.3007519}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:Hindu_SC_Kat} = {res:{ralign 8:.1165414}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:Treated} = {res:{ralign 8:.6654135}} {txt:(mean)}
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26} Delta-method
+{col 14}{c |}      dy/dx{col 26}   std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}Client_Age {c |}{col 14}{res}{space 2} .0000382{col 26}{space 2} .0021261{col 37}{space 1}    0.02{col 46}{space 3}0.986{col 54}{space 4}-.0041289{col 67}{space 3} .0042052
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
 {com}. * mean partial derivative is the mean =  0.0000382
 
 . 
 . * logit
 
-. logit taken_new `covariates'
+. logit taken_new Client_Age `covariates'
 
 {res}{txt}Iteration 0:{space 3}log likelihood = {res:-240.23429}  
-Iteration 1:{space 3}log likelihood = {res:-238.09565}  
-Iteration 2:{space 3}log likelihood = {res:-238.07868}  
-Iteration 3:{space 3}log likelihood = {res:-238.07868}  
+Iteration 1:{space 3}log likelihood = {res:-238.09541}  
+Iteration 2:{space 3}log likelihood = {res:-238.07838}  
+Iteration 3:{space 3}log likelihood = {res:-238.07838}  
 {res}
 {txt}{col 1}Logistic regression{col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:532}
-{txt}{col 57}{lalign 13:LR chi2({res:7})}{col 70} = {res}{ralign 6:4.31}
-{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.7433}
-{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-238.07868}{txt}{col 57}{lalign 13:Pseudo R2}{col 70} = {res}{ralign 6:0.0090}
+{txt}{col 57}{lalign 13:LR chi2({res:8})}{col 70} = {res}{ralign 6:4.31}
+{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.8280}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-238.07838}{txt}{col 57}{lalign 13:Pseudo R2}{col 70} = {res}{ralign 6:0.0090}
 
 {txt}{hline 17}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
 {col 1}       taken_new{col 18}{c |} Coefficient{col 30}  Std. err.{col 42}      z{col 50}   P>|z|{col 58}     [95% con{col 71}f. interval]
 {hline 17}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{space 2}Client_Married {c |}{col 18}{res}{space 2} .0933263{col 30}{space 2}  .387527{col 41}{space 1}    0.24{col 50}{space 3}0.810{col 58}{space 4}-.6662126{col 71}{space 3} .8528652
-{txt}Client_Education {c |}{col 18}{res}{space 2}-.0273985{col 30}{space 2} .0291845{col 41}{space 1}   -0.94{col 50}{space 3}0.348{col 58}{space 4}-.0845992{col 71}{space 3} .0298021
-{txt}{space 9}HH_Size {c |}{col 18}{res}{space 2}-.0854613{col 30}{space 2} .0693465{col 41}{space 1}   -1.23{col 50}{space 3}0.218{col 58}{space 4}-.2213779{col 71}{space 3} .0504553
-{txt}{space 7}HH_Income {c |}{col 18}{res}{space 2} .0000223{col 30}{space 2} .0000252{col 41}{space 1}    0.88{col 50}{space 3}0.377{col 58}{space 4}-.0000271{col 71}{space 3} .0000716
-{txt}{space 10}muslim {c |}{col 18}{res}{space 2}-.0531028{col 30}{space 2} .2632067{col 41}{space 1}   -0.20{col 50}{space 3}0.840{col 58}{space 4}-.5689784{col 71}{space 3} .4627727
-{txt}{space 4}Hindu_SC_Kat {c |}{col 18}{res}{space 2}-.2085972{col 30}{space 2} .3934071{col 41}{space 1}   -0.53{col 50}{space 3}0.596{col 58}{space 4}-.9796609{col 71}{space 3} .5624665
-{txt}{space 9}Treated {c |}{col 18}{res}{space 2} .3191612{col 30}{space 2} .2578518{col 41}{space 1}    1.24{col 50}{space 3}0.216{col 58}{space 4} -.186219{col 71}{space 3} .8245414
-{txt}{space 11}_cons {c |}{col 18}{res}{space 2}-1.388376{col 30}{space 2} .5942478{col 41}{space 1}   -2.34{col 50}{space 3}0.019{col 58}{space 4}-2.553081{col 71}{space 3}-.2236721
+{space 6}Client_Age {c |}{col 18}{res}{space 2} -.000382{col 30}{space 2} .0156578{col 41}{space 1}   -0.02{col 50}{space 3}0.981{col 58}{space 4}-.0310707{col 71}{space 3} .0303066
+{txt}{space 2}Client_Married {c |}{col 18}{res}{space 2} .0930805{col 30}{space 2} .3876506{col 41}{space 1}    0.24{col 50}{space 3}0.810{col 58}{space 4}-.6667008{col 71}{space 3} .8528617
+{txt}Client_Education {c |}{col 18}{res}{space 2}-.0275642{col 30}{space 2} .0299653{col 41}{space 1}   -0.92{col 50}{space 3}0.358{col 58}{space 4}-.0862951{col 71}{space 3} .0311666
+{txt}{space 9}HH_Size {c |}{col 18}{res}{space 2}-.0854032{col 30}{space 2} .0693938{col 41}{space 1}   -1.23{col 50}{space 3}0.218{col 58}{space 4}-.2214126{col 71}{space 3} .0506061
+{txt}{space 7}HH_Income {c |}{col 18}{res}{space 2} .0000223{col 30}{space 2} .0000253{col 41}{space 1}    0.88{col 50}{space 3}0.377{col 58}{space 4}-.0000272{col 71}{space 3} .0000718
+{txt}{space 10}muslim {c |}{col 18}{res}{space 2}-.0532995{col 30}{space 2} .2633343{col 41}{space 1}   -0.20{col 50}{space 3}0.840{col 58}{space 4}-.5694252{col 71}{space 3} .4628263
+{txt}{space 4}Hindu_SC_Kat {c |}{col 18}{res}{space 2}-.2078404{col 30}{space 2}   .39463{col 41}{space 1}   -0.53{col 50}{space 3}0.598{col 58}{space 4} -.981301{col 71}{space 3} .5656203
+{txt}{space 9}Treated {c |}{col 18}{res}{space 2} .3186872{col 30}{space 2} .2585782{col 41}{space 1}    1.23{col 50}{space 3}0.218{col 58}{space 4}-.1881167{col 71}{space 3} .8254911
+{txt}{space 11}_cons {c |}{col 18}{res}{space 2}-1.374046{col 30}{space 2} .8354666{col 41}{space 1}   -1.64{col 50}{space 3}0.100{col 58}{space 4} -3.01153{col 71}{space 3} .2634387
 {txt}{hline 17}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
 
 {com}. margins , dydx(Client_Age) atmeans
-{err}invalid dydx() option;
-{bf:Client_Age} not found in list of covariates
-{txt}{search r(322), local:r(322);}
+{res}
+{txt}{col 1}Conditional marginal effects{col 60}{lalign 13:Number of obs}{col 73} = {res}{ralign 3:532}
+{txt}{col 1}Model VCE: {res:OIM}
 
+{txt}{p2colset 1 13 13 2}{...}
+{p2col:Expression:}{res:Pr(taken_new), predict()}{p_end}
+{p2col:dy/dx wrt:}{res:Client_Age}{p_end}
+{p2colreset}{...}
+{lalign 4:At: }{space 0}{lalign 16:Client_Age} = {res:{ralign 8:34.89474}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:Client_Married} = {res:{ralign 8:.8928571}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:Client_Education} = {res:{ralign 8:6.353383}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:HH_Size} = {res:{ralign 8:5.308271}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:HH_Income} = {res:{ralign 8:6096.039}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:muslim} = {res:{ralign 8:.3007519}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:Hindu_SC_Kat} = {res:{ralign 8:.1165414}} {txt:(mean)}
+{lalign 4:}{space 0}{lalign 16:Treated} = {res:{ralign 8:.6654135}} {txt:(mean)}
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26} Delta-method
+{col 14}{c |}      dy/dx{col 26}   std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}Client_Age {c |}{col 14}{res}{space 2}-.0000525{col 26}{space 2} .0021521{col 37}{space 1}   -0.02{col 46}{space 3}0.981{col 54}{space 4}-.0042706{col 67}{space 3} .0041656
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
 {com}. * mean partial derivative is the mean =   -.0000525
 
 . 
@@ -730,37 +715,21 @@ format
 . * create quadratic transformations with epsilon
 
 . gen Client_Age_epsilon_2 = Client_Age_epsilon^2 
+{err}Client_Age_epsilon not found
+{txt}{search r(111), local:r(111);}
 
-. gen Client_Age_epsilon_3 = Client_Age_epsilon^3 
+{com}. gen Client_Age_epsilon_3 = Client_Age_epsilon^3 
+{err}Client_Age_epsilon not found
+{txt}{search r(111), local:r(111);}
 
-. gen Client_Age_epsilon_4 = Client_Age_epsilon^4 
+{com}. gen Client_Age_epsilon_4 = Client_Age_epsilon^4 
+{err}Client_Age_epsilon not found
+{txt}{search r(111), local:r(111);}
 
-. regress taken_new Client_Age_epsilon Client_Age_epsilon_2 Client_Age_epsilon_3 Client_Age_epsilon_4 `covariates'
+{com}. regress taken_new Client_Age_epsilon Client_Age_epsilon_2 Client_Age_epsilon_3 Client_Age_epsilon_4 `covariates'
+{err}variable {bf}Client_Age_epsilon{sf} not found
+{txt}{search r(111), local:r(111);}
 
-{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       532
-{txt}{hline 13}{c +}{hline 34}   F(11, 520)      = {res}     1.52
-{txt}       Model {c |} {res} 2.30782478        11  .209802252   {txt}Prob > F        ={res}    0.1205
-{txt}    Residual {c |} {res} 71.8030775       520  .138082841   {txt}R-squared       ={res}    0.0311
-{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0106
-{txt}       Total {c |} {res} 74.1109023       531  .139568554   {txt}Root MSE        =   {res} .37159
-
-{txt}{hline 21}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{col 1}           taken_new{col 22}{c |} Coefficient{col 34}  Std. err.{col 46}      t{col 54}   P>|t|{col 62}     [95% con{col 75}f. interval]
-{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{space 2}Client_Age_epsilon {c |}{col 22}{res}{space 2}-.4934055{col 34}{space 2} .1790728{col 45}{space 1}   -2.76{col 54}{space 3}0.006{col 62}{space 4}-.8452005{col 75}{space 3}-.1416105
-{txt}Client_Age_epsilon_2 {c |}{col 22}{res}{space 2} .0198737{col 34}{space 2} .0068759{col 45}{space 1}    2.89{col 54}{space 3}0.004{col 62}{space 4} .0063657{col 75}{space 3} .0333818
-{txt}Client_Age_epsilon_3 {c |}{col 22}{res}{space 2}-.0003363{col 34}{space 2} .0001114{col 45}{space 1}   -3.02{col 54}{space 3}0.003{col 62}{space 4}-.0005552{col 75}{space 3}-.0001174
-{txt}Client_Age_epsilon_4 {c |}{col 22}{res}{space 2} 2.01e-06{col 34}{space 2} 6.40e-07{col 45}{space 1}    3.14{col 54}{space 3}0.002{col 62}{space 4} 7.54e-07{col 75}{space 3} 3.27e-06
-{txt}{space 6}Client_Married {c |}{col 22}{res}{space 2} .0151682{col 34}{space 2} .0553267{col 45}{space 1}    0.27{col 54}{space 3}0.784{col 62}{space 4}-.0935231{col 75}{space 3} .1238596
-{txt}{space 4}Client_Education {c |}{col 22}{res}{space 2}-.0031541{col 34}{space 2} .0041053{col 45}{space 1}   -0.77{col 54}{space 3}0.443{col 62}{space 4}-.0112191{col 75}{space 3}  .004911
-{txt}{space 13}HH_Size {c |}{col 22}{res}{space 2}-.0088907{col 34}{space 2} .0093101{col 45}{space 1}   -0.95{col 54}{space 3}0.340{col 62}{space 4}-.0271807{col 75}{space 3} .0093992
-{txt}{space 11}HH_Income {c |}{col 22}{res}{space 2} 3.65e-06{col 34}{space 2} 3.67e-06{col 45}{space 1}    0.99{col 54}{space 3}0.321{col 62}{space 4}-3.56e-06{col 75}{space 3} .0000109
-{txt}{space 14}muslim {c |}{col 22}{res}{space 2}-.0128246{col 34}{space 2}   .03645{col 45}{space 1}   -0.35{col 54}{space 3}0.725{col 62}{space 4} -.084432{col 75}{space 3} .0587828
-{txt}{space 8}Hindu_SC_Kat {c |}{col 22}{res}{space 2}-.0333433{col 34}{space 2} .0522834{col 45}{space 1}   -0.64{col 54}{space 3}0.524{col 62}{space 4}-.1360559{col 75}{space 3} .0693693
-{txt}{space 13}Treated {c |}{col 22}{res}{space 2} .0464549{col 34}{space 2} .0344114{col 45}{space 1}    1.35{col 54}{space 3}0.178{col 62}{space 4}-.0211475{col 75}{space 3} .1140573
-{txt}{space 15}_cons {c |}{col 22}{res}{space 2} 4.518247{col 34}{space 2} 1.655823{col 45}{space 1}    2.73{col 54}{space 3}0.007{col 62}{space 4} 1.265323{col 75}{space 3} 7.771171
-{txt}{hline 21}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{res}
 {com}. predict taken_new_hat_lpm_q_epsilon
 {txt}(option {bf:xb} assumed; fitted values)
 
@@ -773,7 +742,7 @@ format
 
 {txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
 {hline 13}{c +}{hline 57}
-Client_A~q_n {c |}{res}        532    2.32e-07    .0004894  -.0016466   .0021122
+Client_A~q_n {c |}{res}        532           0           0          0          0
 
 {com}. * mean is 2.32e-07
 
@@ -1286,7 +1255,7 @@ LR test of lnsigma=0: chi2({res}2{txt}) = {res}2.97                      {txt}Pr
       {txt}name:  {res}<unnamed>
        {txt}log:  {res}/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1/analysis.smcl
   {txt}log type:  {res}smcl
- {txt}closed on:  {res}11 Feb 2022, 16:57:45
+ {txt}closed on:  {res}12 Feb 2022, 13:29:57
 {txt}{.-}
 {smcl}
 {txt}{sf}{ul off}

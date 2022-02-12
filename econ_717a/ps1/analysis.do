@@ -103,26 +103,21 @@ summarize Client_Age_Partial_a
 
 * part c - numerically calculating marginal effects
 * predict probability based on probit
-probit taken_new Client_Age `covariates'
 predict taken_new_hat_probit, pr
-
-* perturb Client_Age by epsilon and rerun probit
-gen Client_Age_epsilon = Client_Age + 0.001
-probit taken_new Client_Age_epsilon `covariates'
-predict taken_new_hat_probit_epsilon, pr
+gen taken_new_hat_probit_epsilon = normal(taken_new_hat_xb + 0.001*e(b)[1,1])
 
 * compute numerical derivative
-gen Client_Age_Partial_n =  (taken_new_hat_probit - taken_new_hat_probit_epsilon) / 0.001
+gen Client_Age_Partial_n =  (taken_new_hat_probit_epsilon - taken_new_hat_probit) / 0.001
 summarize Client_Age_Partial_n
 * mean partial derivative is the mean = 0
 
 * part d - using margins
-probit taken_new `covariates'
+probit taken_new Client_Age `covariates'
 margins , dydx(Client_Age) atmeans
 * mean partial derivative is the mean =  0.0000382
 
 * logit
-logit taken_new `covariates'
+logit taken_new Client_Age `covariates'
 margins , dydx(Client_Age) atmeans
 * mean partial derivative is the mean =   -.0000525
 

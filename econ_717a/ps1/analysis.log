@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1/analysis.smcl
   log type:  smcl
- opened on:  11 Feb 2022, 16:57:29
+ opened on:  12 Feb 2022, 13:29:44
 
 . 
 . * Alex von Hafften
@@ -473,6 +473,26 @@ Client_Age~a |        532    .0000382    5.01e-06   .0000224   .0000546
 
 . * predict probability based on probit
 
+. predict taken_new_hat_probit, pr
+
+. gen taken_new_hat_probit_epsilon = normal(taken_new_hat_xb + 0.001*e(b)[1,1])
+
+. 
+. * compute numerical derivative
+
+. gen Client_Age_Partial_n =  (taken_new_hat_probit_epsilon - taken_new_hat_probit) / 0.001
+
+. summarize Client_Age_Partial_n
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+Client_Age~n |        532    .0000386    9.50e-06   .0000149   .0000596
+
+. * mean partial derivative is the mean = 0
+
+. 
+. * part d - using margins
+
 . probit taken_new Client_Age `covariates'
 
 Iteration 0:   log likelihood = -240.23429  
@@ -499,121 +519,82 @@ Client_Education |  -.0146394     .01661    -0.88   0.378    -.0471945    .01791
            _cons |  -.8526965   .4591759    -1.86   0.063    -1.752665    .0472717
 ----------------------------------------------------------------------------------
 
-. predict taken_new_hat_probit, pr
-
-. 
-. * perturb Client_Age by epsilon and rerun probit
-
-. gen Client_Age_epsilon = Client_Age + 0.001
-
-. probit taken_new Client_Age_epsilon `covariates'
-
-Iteration 0:   log likelihood = -240.23429  
-Iteration 1:   log likelihood = -238.07858  
-Iteration 2:   log likelihood = -238.07469  
-Iteration 3:   log likelihood = -238.07469  
-
-Probit regression                                       Number of obs =    532
-                                                        LR chi2(8)    =   4.32
-                                                        Prob > chi2   = 0.8272
-Log likelihood = -238.07469                             Pseudo R2     = 0.0090
-
-------------------------------------------------------------------------------------
-         taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
--------------------+----------------------------------------------------------------
-Client_Age_epsilon |   .0001538   .0085639     0.02   0.986    -.0166311    .0169387
-    Client_Married |   .0495006     .21405     0.23   0.817    -.3700297     .469031
-  Client_Education |  -.0146394     .01661    -0.88   0.378    -.0471945    .0179157
-           HH_Size |   -.047596    .037897    -1.26   0.209    -.1218727    .0266807
-         HH_Income |   .0000133   .0000144     0.92   0.356    -.0000149    .0000415
-            muslim |  -.0325982   .1467714    -0.22   0.824    -.3202648    .2550683
-      Hindu_SC_Kat |  -.1099977   .2152225    -0.51   0.609     -.531826    .3118307
-           Treated |   .1751011   .1418766     1.23   0.217    -.1029719    .4531741
-             _cons |  -.8526967   .4591818    -1.86   0.063    -1.752676    .0472831
-------------------------------------------------------------------------------------
-
-. predict taken_new_hat_probit_epsilon, pr
-
-. 
-. * compute numerical derivative
-
-. gen Client_Age_Partial_n =  (taken_new_hat_probit - taken_new_hat_probit_epsilon) / 0.001
-
-. summarize Client_Age_Partial_n
-
-    Variable |        Obs        Mean    Std. dev.       Min        Max
--------------+---------------------------------------------------------
-Client_Ag~_n |        532           0           0          0          0
-
-. * mean partial derivative is the mean = 0
-
-. 
-. * part d - using margins
-
-. probit taken_new `covariates'
-
-Iteration 0:   log likelihood = -240.23429  
-Iteration 1:   log likelihood = -238.07872  
-Iteration 2:   log likelihood = -238.07485  
-Iteration 3:   log likelihood = -238.07485  
-
-Probit regression                                       Number of obs =    532
-                                                        LR chi2(7)    =   4.32
-                                                        Prob > chi2   = 0.7424
-Log likelihood = -238.07485                             Pseudo R2     = 0.0090
-
-----------------------------------------------------------------------------------
-       taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
------------------+----------------------------------------------------------------
-  Client_Married |   .0494511   .2140315     0.23   0.817     -.370043    .4689452
-Client_Education |  -.0147024   .0162362    -0.91   0.365    -.0465248      .01712
-         HH_Size |  -.0475642   .0378571    -1.26   0.209    -.1217628    .0266343
-       HH_Income |   .0000133   .0000144     0.93   0.355    -.0000149    .0000414
-          muslim |  -.0326231   .1467642    -0.22   0.824    -.3202757    .2550295
-    Hindu_SC_Kat |  -.1096493   .2143456    -0.51   0.609     -.529759    .3104604
-         Treated |   .1748804   .1413406     1.24   0.216    -.1021422    .4519029
-           _cons |  -.8470259   .3333622    -2.54   0.011    -1.500404   -.1936481
-----------------------------------------------------------------------------------
-
 . margins , dydx(Client_Age) atmeans
-invalid dydx() option;
-Client_Age not found in list of covariates
-r(322);
+
+Conditional marginal effects                               Number of obs = 532
+Model VCE: OIM
+
+Expression: Pr(taken_new), predict()
+dy/dx wrt:  Client_Age
+At: Client_Age       = 34.89474 (mean)
+    Client_Married   = .8928571 (mean)
+    Client_Education = 6.353383 (mean)
+    HH_Size          = 5.308271 (mean)
+    HH_Income        = 6096.039 (mean)
+    muslim           = .3007519 (mean)
+    Hindu_SC_Kat     = .1165414 (mean)
+    Treated          = .6654135 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  Client_Age |   .0000382   .0021261     0.02   0.986    -.0041289    .0042052
+------------------------------------------------------------------------------
 
 . * mean partial derivative is the mean =  0.0000382
 
 . 
 . * logit
 
-. logit taken_new `covariates'
+. logit taken_new Client_Age `covariates'
 
 Iteration 0:   log likelihood = -240.23429  
-Iteration 1:   log likelihood = -238.09565  
-Iteration 2:   log likelihood = -238.07868  
-Iteration 3:   log likelihood = -238.07868  
+Iteration 1:   log likelihood = -238.09541  
+Iteration 2:   log likelihood = -238.07838  
+Iteration 3:   log likelihood = -238.07838  
 
 Logistic regression                                     Number of obs =    532
-                                                        LR chi2(7)    =   4.31
-                                                        Prob > chi2   = 0.7433
-Log likelihood = -238.07868                             Pseudo R2     = 0.0090
+                                                        LR chi2(8)    =   4.31
+                                                        Prob > chi2   = 0.8280
+Log likelihood = -238.07838                             Pseudo R2     = 0.0090
 
 ----------------------------------------------------------------------------------
        taken_new | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
 -----------------+----------------------------------------------------------------
-  Client_Married |   .0933263    .387527     0.24   0.810    -.6662126    .8528652
-Client_Education |  -.0273985   .0291845    -0.94   0.348    -.0845992    .0298021
-         HH_Size |  -.0854613   .0693465    -1.23   0.218    -.2213779    .0504553
-       HH_Income |   .0000223   .0000252     0.88   0.377    -.0000271    .0000716
-          muslim |  -.0531028   .2632067    -0.20   0.840    -.5689784    .4627727
-    Hindu_SC_Kat |  -.2085972   .3934071    -0.53   0.596    -.9796609    .5624665
-         Treated |   .3191612   .2578518     1.24   0.216     -.186219    .8245414
-           _cons |  -1.388376   .5942478    -2.34   0.019    -2.553081   -.2236721
+      Client_Age |   -.000382   .0156578    -0.02   0.981    -.0310707    .0303066
+  Client_Married |   .0930805   .3876506     0.24   0.810    -.6667008    .8528617
+Client_Education |  -.0275642   .0299653    -0.92   0.358    -.0862951    .0311666
+         HH_Size |  -.0854032   .0693938    -1.23   0.218    -.2214126    .0506061
+       HH_Income |   .0000223   .0000253     0.88   0.377    -.0000272    .0000718
+          muslim |  -.0532995   .2633343    -0.20   0.840    -.5694252    .4628263
+    Hindu_SC_Kat |  -.2078404     .39463    -0.53   0.598     -.981301    .5656203
+         Treated |   .3186872   .2585782     1.23   0.218    -.1881167    .8254911
+           _cons |  -1.374046   .8354666    -1.64   0.100     -3.01153    .2634387
 ----------------------------------------------------------------------------------
 
 . margins , dydx(Client_Age) atmeans
-invalid dydx() option;
-Client_Age not found in list of covariates
-r(322);
+
+Conditional marginal effects                               Number of obs = 532
+Model VCE: OIM
+
+Expression: Pr(taken_new), predict()
+dy/dx wrt:  Client_Age
+At: Client_Age       = 34.89474 (mean)
+    Client_Married   = .8928571 (mean)
+    Client_Education = 6.353383 (mean)
+    HH_Size          = 5.308271 (mean)
+    HH_Income        = 6096.039 (mean)
+    muslim           = .3007519 (mean)
+    Hindu_SC_Kat     = .1165414 (mean)
+    Treated          = .6654135 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  Client_Age |  -.0000525   .0021521    -0.02   0.981    -.0042706    .0041656
+------------------------------------------------------------------------------
 
 . * mean partial derivative is the mean =   -.0000525
 
@@ -717,36 +698,20 @@ file /Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1/
 . * create quadratic transformations with epsilon
 
 . gen Client_Age_epsilon_2 = Client_Age_epsilon^2 
+Client_Age_epsilon not found
+r(111);
 
 . gen Client_Age_epsilon_3 = Client_Age_epsilon^3 
+Client_Age_epsilon not found
+r(111);
 
 . gen Client_Age_epsilon_4 = Client_Age_epsilon^4 
+Client_Age_epsilon not found
+r(111);
 
 . regress taken_new Client_Age_epsilon Client_Age_epsilon_2 Client_Age_epsilon_3 Client_Age_epsilon_4 `covariates'
-
-      Source |       SS           df       MS      Number of obs   =       532
--------------+----------------------------------   F(11, 520)      =      1.52
-       Model |  2.30782478        11  .209802252   Prob > F        =    0.1205
-    Residual |  71.8030775       520  .138082841   R-squared       =    0.0311
--------------+----------------------------------   Adj R-squared   =    0.0106
-       Total |  74.1109023       531  .139568554   Root MSE        =    .37159
-
---------------------------------------------------------------------------------------
-           taken_new | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
----------------------+----------------------------------------------------------------
-  Client_Age_epsilon |  -.4934055   .1790728    -2.76   0.006    -.8452005   -.1416105
-Client_Age_epsilon_2 |   .0198737   .0068759     2.89   0.004     .0063657    .0333818
-Client_Age_epsilon_3 |  -.0003363   .0001114    -3.02   0.003    -.0005552   -.0001174
-Client_Age_epsilon_4 |   2.01e-06   6.40e-07     3.14   0.002     7.54e-07    3.27e-06
-      Client_Married |   .0151682   .0553267     0.27   0.784    -.0935231    .1238596
-    Client_Education |  -.0031541   .0041053    -0.77   0.443    -.0112191     .004911
-             HH_Size |  -.0088907   .0093101    -0.95   0.340    -.0271807    .0093992
-           HH_Income |   3.65e-06   3.67e-06     0.99   0.321    -3.56e-06    .0000109
-              muslim |  -.0128246     .03645    -0.35   0.725     -.084432    .0587828
-        Hindu_SC_Kat |  -.0333433   .0522834    -0.64   0.524    -.1360559    .0693693
-             Treated |   .0464549   .0344114     1.35   0.178    -.0211475    .1140573
-               _cons |   4.518247   1.655823     2.73   0.007     1.265323    7.771171
---------------------------------------------------------------------------------------
+variable Client_Age_epsilon not found
+r(111);
 
 . predict taken_new_hat_lpm_q_epsilon
 (option xb assumed; fitted values)
@@ -760,7 +725,7 @@ Client_Age_epsilon_4 |   2.01e-06   6.40e-07     3.14   0.002     7.54e-07    3.
 
     Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-Client_A~q_n |        532    2.32e-07    .0004894  -.0016466   .0021122
+Client_A~q_n |        532           0           0          0          0
 
 . * mean is 2.32e-07
 
@@ -1271,5 +1236,5 @@ dir : seeout
       name:  <unnamed>
        log:  /Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_717a/ps1/analysis.smcl
   log type:  smcl
- closed on:  11 Feb 2022, 16:57:45
+ closed on:  12 Feb 2022, 13:29:57
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
