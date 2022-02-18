@@ -1,0 +1,132 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{accents}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\setlength{\parindent}{0cm}
+\geometry{margin = 1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+
+\newtoggle{extended}
+\settoggle{extended}{false}
+
+\title{ECON 810A: Project Idea}
+\author{Alex von Hafften }
+
+\begin{document}
+
+\maketitle
+
+\begin{itemize}
+
+\section{February 18th} 
+
+\item The kernel of the idea is Bewley with long-term illiquid assets. 
+\item Exogenous two-state Markov earnings process $y$.
+\item Zero borrowing constraint.
+\item Assets in positive supply. 
+\item Partial equilibrium: HHs face exogenous interest rate term structure $(r_S, r_L)$.
+\item Assets have stochastic maturity: Every period, a fraction $\delta$ of a HH's assets mature, so they collect $(1 + r_S)a\delta$ in principal and interest.  
+\item HHs have $(1+r_L)a(1-\delta)$ long-term assets.
+\item They choose $\ell$ fraction of their long-term assets to  liquidate and $f((1+r_L)a(1-\delta)\ell)$ where $f$ is strictly increasing and strictly concave.
+\item Their budget for the period is $y + \delta a (1+r_S) + f((1-\delta)a\ell(1+r_L))$.
+\item With their budget, they consumption $c$ and purchase $\tilde{\Delta} a'$ new assets.
+\item If the HH chooses to assets for next period and the fraction of long-term assets to liquidate, their value function is:
+
+\begin{align*}
+V(a) &= \max_{c, \ell, a',  \tilde{\Delta} a'}\{u(c) + \beta E[V(a')]\} \\
+\text{s.t. } c + \tilde{\Delta} a' &= y + \delta a (1+r_S) + f((1-\delta)a\ell(1+r_L))\\
+a' &= \tilde{\Delta} a' + (1+r_L)(1-\delta)a(1-\ell)\\
+a', \tilde{\Delta} a' &\ge 0
+\end{align*}
+
+
+\item Note on Feb 16 idea: I wrote up some Julia code to solve my idea from February 16th.  The discrete choice (liquidate, not liquidate) causes it to converge very slowly.  Interesting only one state involves liquidation.  You need to be have few assets to liquidate because its a big penalty, but you can be so poor because you don't have anything to liquidate.  I'm going to move to a continuous liquidation choice (between 0 and 1). I think that'll speed up convergence plus, I think the pattern will be more interesting.
+
+\pagebreak
+
+
+\section{February 16th}
+
+\item The kernel of the idea is Bewley with long-term illiquid assets. 
+\item Exogenous Markov earnings process $y$.
+\item Zero borrowing constraint.
+\item Assets in positive supply. 
+\item Partial equilibrium: HHs face exogenous interest rate term structure $(r_S, r_L)$.
+\item Assets have stochastic maturity: Every period, a fraction $\delta$ of a HH's assets mature, so they collect $(1 + r_S)a\delta$ in principal and interest.  
+\item They can liquidate their long-term assets at a haircut $\kappa \in (0,1)$ to get $\kappa(1+r_L)a(1-\delta)$.
+\item If the HH chooses to liquidate their long-term assets, their value function is:
+
+\begin{align*}
+V_1(a) &= \max\{u(c_1) + \beta E[V(a_1')]\} \\
+\text{s.t. } c_1 + a_1' &= y + \delta a (1+r_S) + \kappa(1-\delta)a(1+r_L)\\
+a'_1 &\ge 0
+\end{align*}
+
+\item If the HH chooses to not liquidate their long-term assets, their value function is:
+
+\begin{align*}
+V_2(a) &= \max\{u(c_2) + \beta E[V(a_2')]\} \\
+\text{s.t. } c_2 + \tilde{\Delta}a_2' &= y + \delta a (1 +r_S)\\
+a'_2 &= (1-\delta) a(1+r) + \tilde{\Delta}a'_2\\
+\tilde{\Delta}a_2', a_2' &\ge 0\\
+\end{align*}
+
+where $\tilde{\Delta} a'_2$ is the new asset purchases.
+
+\item Putting these together, the HH problem:
+
+\begin{align*}
+V(a) &= \max\{\max\{u(c_1) + \beta E[V(a_1')]\}, \max\{u(c_2) + \beta E[V(a_2')]\}\} \\
+\text{s.t. } c_1 + a_1' &= y + \delta a (1+r_S) + \kappa(1-\delta)a(1+r_L)\\
+c_2 + \tilde{\Delta}a_2' &= y + \delta a (1 +r_S)\\
+a'_2 &= (1-\delta) a(1+r_L) + \tilde{\Delta}a'_2\\
+\tilde{\Delta}a_2', a_2', a'_1 &\ge 0\\
+\end{align*}
+
+\item Policy experiment: Change $\kappa$ to see the effect of the policies that change the secondary market liquidity of long-term assets.
+
+\item Calibration:
+
+\begin{itemize}
+\item Choose $\delta$ based on the average maturity of US Treasuries.
+\item Choose $\kappa$ based on average haircut (book value relative to market value) in secondary Treasury market.
+\end{itemize}
+
+\item Next steps:
+
+\begin{itemize}
+\item Model financial intermediary to make $\kappa$ endogenous. HH and financial intermediary are matched and bargain over long-term assets.
+\item General equilibrium? I'm thinking of $a$ as government assets, so add taxes?  Or relax borrowing constraint so HHs borrow and apply market clearing.
+\item Add aggregate risk (maybe earnings and secondary market liquidity depends on state of economy)? The Treasury market works relatively well in good times, but issues in stressed times.
+\end{itemize}
+
+
+\end{itemize}
+
+\end{document}
+
