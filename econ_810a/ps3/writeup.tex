@@ -50,7 +50,7 @@
 
 \begin{itemize}
 
-\section{Part 1: Data}
+\section{Data}
 
 \item I use the PSID with the following filters:
 
@@ -75,7 +75,10 @@
 \begin{itemize}
 \item There's evidence of a pre-trend with the coefficients statistically significantly negative, around between negative \$2,000 to \$4,000.  I think this pre-trend is likely due to not limiting our analysis to ``mass layoffs" like Davis and von Wachter that can be identified using an employee-employer matched dataset.  We're capturing all job losses, so it reasonable to suspect that losing a job might not be a fully exogenous event.
 \item The drop in earning from the period before job loss $k = -1$ to the period after job loss $k = 1$ is about \$9,700.  This estimate is smaller than Davis and von Wachter's estimate for both an expansion and a recession. I think this estimate being smaller could also be due to the definition of job loss being ``less exogenous" here than in Davis and von Wachter.  Indeed, the estimate after job loss $k=1$ relative to the control group is about \$14,100, which is more in align is Davis and von Wachter's estimates.
+
 \end{itemize}
+
+\item See \texttt{part\_1.R} for implementation.
 
 \end{itemize}
 
@@ -83,7 +86,25 @@
 
 \pagebreak
 
-\section{Part 2 and 3: Model}
+\section{Model}
+
+Since the matching function $M$ is CRS, we can rewrite the job finding rate and the hiring rate in terms of market tightness $\theta \equiv \frac{v}{u}$ where $v$ is vacancies and $u$ is applicants. The job-finding rate becomes:
+
+\begin{align*}
+p(\theta) = \frac{M(u, v)}{u} = M(1, \frac{v}{u}) = M(1, \theta) = \frac{\theta}{(1+\theta^\zeta)^{1/\zeta}}
+\end{align*}
+
+The hiring rate becomes:
+
+\begin{align*}
+p_f(\theta) = \frac{M(u, v)}{v} =M( \frac{u}{v}, 1) = M(\theta^{-1}, 1) = \frac{\theta^{-1}}{(\theta^{-\zeta}+ 1)^{1/\zeta}} = \frac{1}{(1+\theta^\zeta)^{1/\zeta}}
+\end{align*}
+
+The inverse of the hiring rate is:
+
+\begin{align*}
+\theta(p_f) = (p_f^{-\zeta} - 1)^{1/\zeta}
+\end{align*}
 
 \begin{enumerate}
 
