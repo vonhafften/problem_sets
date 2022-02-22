@@ -14,6 +14,7 @@
 \usepackage{accents}
 \usepackage{bbm}
 \usepackage{placeins}
+\usepackage{verbatim}
 \hypersetup{
 	colorlinks,
 	linkcolor={blue!90!black},
@@ -55,7 +56,7 @@ Write a code to implement a GMM estimation of a linear regression model, $Y_t = 
 
 \bigskip
 
-\textbf{Solution:} See \texttt{gmm.jl} for implementation. Also see \texttt{gmm\_test.jl} for a test of the GMM estimation using simulated data.
+\textbf{Solution:} See \texttt{gmm.jl} for implementation (also in appendix). Also see \texttt{gmm\_test.jl} for a test of the GMM estimation using simulated data (also in appendix).
 
 \section{Problem 2: Bayesian Estimation of an Autoregressive Model}
 
@@ -119,7 +120,6 @@ f(y^T|\mu, \rho, \sigma)
 &\propto \prod_{t=1}^T \frac{1}{\sigma}\exp \Bigg( - \frac{1}{2 \sigma^2} (y_t^2 + \mu^2+ \rho^2 y_{t-1}^2 - 2\mu y_t - 2 \rho y_{t-1}y_t + 2\rho \mu y_{t-1})\Bigg)\\
 &= \frac{1}{\sigma^T} \exp \Bigg(\sum_{t=1}^T  - \frac{1}{2 \sigma^2} (y_t^2 + \mu^2+ \rho^2 y_{t-1}^2 - 2\mu y_t - 2 \rho y_{t-1}y_t + 2\rho \mu y_{t-1})\Bigg)\\
 &= \frac{1}{\sigma^T} \exp \Bigg( - \frac{1}{2 \sigma^2} (\sum_{t=1}^T y_t^2 + T\mu^2 + \rho^2 \sum_{t=1}^T y_{t-1}^2 - 2\mu \sum_{t=1}^T y_t - 2 \rho \sum_{t=1}^T y_{t-1}y_t + 2\rho \mu \sum_{t=1}^T y_{t-1})\Bigg)\\
-&= \frac{1}{\sigma^T} \exp \Bigg( - \frac{T}{2 \sigma^2} (\frac{1}{T}\sum_{t=1}^T y_t^2 + \mu^2 + \frac{\rho^2}{T} \sum_{t=1}^T y_{t-1}^2 - \frac{2\mu}{T} \sum_{t=1}^T y_t - \frac{2 \rho}{T} \sum_{t=1}^T y_{t-1}y_t + \frac{2\rho \mu }{T}\sum_{t=1}^T y_{t-1})\Bigg)\\
 &= \frac{1}{\sigma^T} \exp \Bigg( - \frac{T}{2 \sigma^2} (\overline{y_T^2} + \mu^2 +  \rho^2 \overline{y_{T-1}^2} - 2\mu \overline{ y_T } - 2 \rho \overline{ z_T} + 2\rho \mu \overline{y_{T-1}})\Bigg)
 \end{align*}
 
@@ -146,11 +146,9 @@ f(\mu|y^T, \rho, \sigma) &\propto f(\mu) f(y^T|\mu, \rho, \sigma)\\
 &= \exp \Bigg(- \frac{1}{2\Big(\frac{1}{s^2} + \frac{T}{\sigma^2} \Big)^{-1}}\Bigg(\mu^2 - 2\mu \Bigg(\frac{m}{2s^2} + \frac{T(\rho  \overline{y_{T-1}}- \overline{ y_T }))}{2 \sigma^2} \Bigg)\Bigg(\frac{1}{s^2} + \frac{T}{\sigma^2} \Bigg)^{-1}\Bigg)\Bigg)
 \end{align*}
 
-Thus, $\mu| y^T, \mu, \rho, \sigma \sim N(\tilde{m}, \tilde{s}^2)$ where:
+Thus, $\mu| y^T, \mu, \rho, \sigma \sim N(\tilde{m}, \tilde{s}^2)$ where $\nu_\mu\equiv \frac{\sigma^2}{s^2}$ and:
 
 \begin{align*}
-\nu_\mu
-&\equiv \frac{\sigma^2}{s^2}\\
 \tilde{s}^2 
 &\equiv \Bigg(\frac{1}{s^2} + \frac{T}{\sigma^2} \Bigg)^{-1} \\
 &= \Bigg(\frac{\nu_\mu}{\sigma^2} + \frac{T}{\sigma^2} \Bigg)^{-1} \\
@@ -173,11 +171,9 @@ f(\rho|y^T, \sigma, \mu) &\propto f(\rho) f(y^T|\mu, \rho, \sigma)\\
 &= \exp \Bigg(-\frac{1}{2\Big(\frac{1}{\omega^2} + \frac{T\overline{y_{T-1}^2}}{\sigma^2}\Big)^{-1}}  \Bigg(\rho^2   +  2\rho\Bigg( \frac{\tilde\rho}{\omega^2} + \frac{T\overline{ z_T}}{\sigma^2} - \frac{T\mu\overline{y_{T-1}}}{\sigma^2} \Bigg)\Bigg(\frac{1}{\omega^2} + \frac{T\overline{y_{T-1}^2}}{\sigma^2}\Bigg)^{-1}\Bigg)\Bigg)
 \end{align*}
 
-Thus, $\rho | y^T, \mu, \rho, \sigma \sim N(\tilde{\tilde{\rho}}, \tilde{\omega}^2)$ where:
+Thus, $\rho | y^T, \mu, \rho, \sigma \sim N(\tilde{\tilde{\rho}}, \tilde{\omega}^2)$ where $\nu_\rho\equiv \frac{\sigma^2}{\omega^2}$ and:
 
 \begin{align*}
-\nu_\rho
-&\equiv \frac{\sigma^2}{\omega^2}\\
 \tilde{\omega}^2
 &\equiv \Bigg(\frac{1}{\omega^2} + \frac{T\overline{y_{T-1}^2}}{\sigma^2}\Bigg)^{-1}\\
 &= \Bigg(\frac{\nu_\rho}{\sigma^2} + \frac{T\overline{y_{T-1}^2}}{\sigma^2}\Bigg)^{-1}\\
@@ -193,7 +189,6 @@ Applying Bayes' Rule for $\sigma$, we know that:
 f(\sigma|y^T, \rho, \mu) 
 &\propto f(\rho) f(y^T|\mu, \rho, \sigma)\\
 &\propto \frac{1}{\sigma^T} \sigma^{2(-\alpha/2 - 1)} \exp \Bigg( - \frac{\beta}{2\sigma^2}\Bigg) \exp \Bigg( - \frac{T}{2 \sigma^2} (\overline{y_T^2} + \mu^2 +  \rho^2 \overline{y_{T-1}^2} - 2\mu \overline{ y_T } - 2 \rho \overline{ z_T} + 2\rho \mu \overline{y_{T-1}})\Bigg)\\
-&= \sigma^{2(-\alpha/2 - 1) - T} \exp \Bigg( - \frac{\beta}{2\sigma^2} - \frac{T}{2 \sigma^2} (\overline{y_T^2} + \mu^2 +  \rho^2 \overline{y_{T-1}^2} - 2\mu \overline{ y_T } - 2 \rho \overline{ z_T} + 2\rho \mu \overline{y_{T-1}})\Bigg)\\
 &= \sigma^{2(-(\alpha+T)/2 - 1)} \exp \Bigg( - \frac{1}{2\sigma^2} [\beta + T (\overline{y_T^2} + \mu^2 +  \rho^2 \overline{y_{T-1}^2} - 2\mu \overline{ y_T } - 2 \rho \overline{ z_T} + 2\rho \mu \overline{y_{T-1}})]\Bigg)\\
 \end{align*}
 
@@ -207,10 +202,8 @@ Thus, $\sigma | y^T, \mu, \rho, \sigma \sim IG(\tilde{\alpha}/2, \tilde{\beta}/2
 \end{align*}
 
 
-\item The Excel file \texttt{Longyielddata.xls} contains the annual data for long-term 10-year US
-government bond yields from Global Financial Data (GFD) database.
-
-Choose the priors for the model parameters. For example, we can use fairly uninformative
+\item The Excel file \texttt{Longyielddata.xlsx} contains the annual data for long-term 10-year US
+government bond yields from Global Financial Data (GFD) database. Choose the priors for the model parameters. For example, we can use fairly uninformative
 priors:
 
 \begin{center}
@@ -227,25 +220,88 @@ Design and implement an MCMC algorithm to draw a long sample from the joint post
 distribution of the three parameters, where the sampling of each parameter is implemented
 via Gibbs sampler.
 
-...
+\textbf{Solution:} See \texttt{gibbs.jl} for the implementation simulates a MCMC using a Gibbs sampler (also in appendix). See \texttt{gibbs\_run.jl} for code that runs a MCMC and plots the results (also in appendix). 
 
 \item Run a long MCMC chain and discard appropriate number of initial draws due to burn-in.
 Plot the three chains. Do the chains mix well? Does it look like they come from a stationary
 distribution? How large is the persistence in the chains? Plot the autocorrelation plots for
 the chains, and the scatter plots of each parameter against the others. You might find that
-the most problematic is the persistence and cross-correlation between $\mu$ and $\rho$, and there's
-a good reason for it. Notice that µ is an intercept, and not the unconditional mean of $y_t:E(y) = \mu/(1 - \rho)$. So every time we change $\rho$, intuitively, the draw for $\mu$ has to adjust to
+the most problematic is the persistence and cross-correlation between $\mu$ and $\rho$, and there's a good reason for it. Notice that $\mu$ is an intercept, and not the unconditional mean of $y_t$: $E(y) = \mu/(1 - \rho)$. So every time we change $\rho$, intuitively, the draw for $\mu$ has to adjust to
 target the unconditional mean of the process. How would you change the problem to break
 up this almost mechanical correlation between the parameters?
 
-...
+\textbf{Solution:} I simulate MCMC of length 1000 with a 100 periods for burn in.\footnote{Mean of inverse gamma distribution is $\beta/(\alpha-1)$ and variance is $\beta^2/((\alpha - 1)^2(\alpha-2))$. For unit mean and unit variance/standard deviation, $\alpha = 3$ and $\beta = 2$.}  The chains are plotted below:
+
+\begin{center}
+
+\includegraphics[scale=0.5]{p2_q3_mu.png}
+
+\includegraphics[scale=0.5]{p2_q3_rho.png}
+
+\includegraphics[scale=0.5]{p2_q3_sigma.png}
+
+\end{center}
+
+Yes, I think the chains mix pretty well. And yes, it looks like they come from a stationary distribution. The AR(1) coefficients for each chain are below.  All coefficients are very close to zero, so the persistence is quite low.
+
+\begin{center}
+\begin{tabular}{ l | c c }
+& Constant & Lagged Value \\ 
+\hline
+$\mu$  & -0.0264 & 0.0040 \\  
+$\rho$ & 1.0035 & -0.0151  \\
+$\sigma$ & 1.0504 & 0.0612
+\end{tabular}
+\end{center}
+
+\pagebreak
+
+The autocorrelation functions are plotted below.  These plots tell a different story.  We see that the first lag almost zero correlation but the second is strongly (negatively for $\mu$ and $\rho$ and positively for $\sigma$) correlated.  The third is back to zero correlation, but the fourth is strongly positively correlated.  This pattern repeats.
+
+\begin{center}
+
+\includegraphics[scale=0.5]{p2_q3_mu_acf.png}
+
+\includegraphics[scale=0.5]{p2_q3_rho_acf.png}
+
+\includegraphics[scale=0.5]{p2_q3_sigma_acf.png}
+
+\end{center}
+
+
+The scatterplots of the simulated parameters are below.  These scatterplots suggest that the chains mix well because they look essentially like a cloud of points.  However, we see a similar pattern to the ACF plots when we look at $\mu$ relative to lagged $\rho$.
+
+\begin{center}
+
+\includegraphics[scale=0.5]{p2_q3_mu_rho.png}
+
+\includegraphics[scale=0.5]{p2_q3_mu_sigma.png}
+
+\includegraphics[scale=0.5]{p2_q3_rho_sigma.png}
+
+\includegraphics[scale=0.5]{p2_q3_mu_rho_lag.png}
+
+\end{center}
+
+We could fix this by simulating the chain and then only saving a simulation something like every twenty rounds.
+
 
 \item Report the posterior means and standard deviations of the parameters - how different the
 posterior means are from the prior, and from the standard OLS estimates in the data? How
 do the prior and posterior standard deviations compare? Overall, do you think your results
 look reasonable?
 
-...
+\begin{center}
+\begin{tabular}{ l | c c c c}
+& Prior Mean & Prior Std. Dev. & Post. Mean & Post. Std. Dev.  \\ 
+\hline
+ $\mu$  & 0.3 & 0.5 & -0.0267 & 0.2328 \\  
+ $\rho$ & 0.95 & 0.2 & 0.9886 & 0.0412 \\
+ $\sigma$ & 1 & 1 & 1.1186 & 0.2448
+\end{tabular}
+\end{center}
+
+The posterior mean for $\mu$ is much different than the prior mean (-0.03 vs 0.3).  The posterior mean for $\rho$ is pretty close to the prior (0.99 vs 0.95).  The posterior mean for $\sigma$ is pretty close to the prior (1 vs 1.12).  The posterior standard deviation for all parameters is much small than the prior standard deviation.  That makes sense because we chose a relatively loose prior.  I'm suspicious of these results due to the strong correlation between draws as discussed in question 3.
 
 \item  If you carefully examine your chain for $\rho$, you might find that some draws are above 1. This
 does not look reasonable, as we have good reasons to believe that interest rates are stationary.
@@ -257,12 +313,13 @@ f(\rho) \propto N (\tilde\rho, \omega^2) \text{ if } \rho \in (-1, 1); f(\rho) =
 $$
 
 Further, instead of using Gibbs to draw $\rho$, now let's use Independence Metropolis-Hastings
-where the proposal density is equal to the Normal conditional posterior of $\rho$ you found in part
-1). Design and implement the new MCMC algorithm. Notice that a new algorithm (known
+where the proposal density is equal to the Normal conditional posterior of $\rho$ you found in part 1). Design and implement the new MCMC algorithm. Notice that a new algorithm (known
 as a Rejection Sampling) should be a very simple and intuitive modification of the previous
 one.
 
-...
+\textbf{Solutions}  See \texttt{gibbs.jl} for implementation.  If the option \texttt{truncate\_rho} is set to \texttt{true}, then the normal distribution for $\rho$ is truncated to be between -1 and 1.  A resulting MCMC for $\rho$ looks like:
+
+\includegraphics[scale =0.5]{p2_q5_rho}
 
 \item Examine the chain, report the posterior means and standard deviations. Overall, do you think your results look reasonable?
 
@@ -372,5 +429,29 @@ Cov(\Delta c_t, \Delta c_{t-2})
 ...
 
 \end{enumerate}
+
+\pagebreak
+
+\section{Appendix}
+
+\subsection{Problem 1}
+
+The code for GMM estimation of linear model:
+
+\verbatiminput{gmm.jl}
+
+The code for testing:
+
+\verbatiminput{gmm_test.jl}
+
+\subsection{Problem 2}
+
+The code for simulating MCMC using Gibbs sampler:
+
+\verbatiminput{gibbs.jl}
+
+The code that produces and plots a MCMC:
+
+\verbatiminput{gibbs_run.jl}
 
 \end{document}

@@ -17,9 +17,9 @@ n = 1000
 X_1 = rand(Normal(0, 1), n)
 X_2 = rand(Normal(0, 1), n)
 X_3 = rand(Normal(0, 1), n)
-ε = rand(Normal(0, 1), n)
+epsilon = rand(Normal(0, 1), n)
 
-Y = 1 .+ 2 .* X_1 .+ 3 .* X_2 .+ 4 .* X_3 + ε
+Y = 1 .+ 2 .* X_1 .+ 3 .* X_2 .+ 4 .* X_3 + epsilon
 X = hcat(ones(n), X_1, X_2, X_3)
 Z = copy(X)
 

@@ -22,13 +22,13 @@ mutable struct GMM
     L::Int64                 # number of lags for newey-west SEs
 
     # first stage
-    β_1::Array{Float64}     # point estimates
+    beta_1::Array{Float64}     # point estimates
     S_1::Array{Float64}     # newey-West variance-covariance matrix esimate
     se_1::Array{Float64}    # newey-West standard errors
 
     # second stage
     W::Array{Float64}       # optimal weighting matrix
-    β_2::Array{Float64}     # point estimates
+    beta_2::Array{Float64}     # point estimates
     S_2::Array{Float64}     # newey-West variance-covariance matrix esimate
     se_2::Array{Float64}    # newey-West standard errors
 
@@ -45,18 +45,18 @@ function gmm(Y::Array{Float64}, X::Array{Float64}, Z::Array{Float64}, L::Int64)
     r = size(Z)[2]
 
     # gmm objective function
-    function gmm_obj(β::Array{Float64}, W)
-        moments = 1/T*Z'*(Y .- X*β)
+    function gmm_obj(beta::Array{Float64}, W)
+        moments = 1/T*Z'*(Y .- X*beta)
         return moments'*W*moments
     end
 
     # first stage coefficient estimates
-    β_1 = optimize(β -> gmm_obj(β, I), zeros(k)).minimizer
+    beta_1 = optimize(beta -> gmm_obj(beta, I), zeros(k)).minimizer
     
     # newey-west variance covariance estimate
-    function newey_west_S(β::Array{Float64}, L::Int64)
+    function newey_west_S(beta::Array{Float64}, L::Int64)
         
-        h = (Y.-X*β).*Z
+        h = (Y.-X*beta).*Z
         S = 1/T * h' * h
 
         for i = 1:L
@@ -70,22 +70,22 @@ function gmm(Y::Array{Float64}, X::Array{Float64}, Z::Array{Float64}, L::Int64)
     end
 
     # first stage newey west var-cov matrix and ses.
-    S_1 = newey_west_S(β_1, L)
+    S_1 = newey_west_S(beta_1, L)
     se_1 = sqrt.(diag(S_1))
 
     # optimal weighting matrix
     W = inv(S_1)
 
     # second stage point estimates
-    β_2 = optimize(β -> gmm_obj(β, W), zeros(k)).minimizer
+    beta_2 = optimize(beta -> gmm_obj(beta, W), zeros(k)).minimizer
 
     # second stage newey west var-cov matrix and ses.
-    S_2 = newey_west_S(β_2, L)
+    S_2 = newey_west_S(beta_2, L)
     se_2 = sqrt.(diag(S_2))
 
     # R-squared
-    R_2 = 1 - var(Y .- X*β_2)/var(Y)
+    R_2 = 1 - var(Y .- X*beta_2)/var(Y)
 
-    return GMM(Y, X, Z, T, r, k, L, β_1, S_1, se_1, W, β_2, S_2, se_2, R_2)
+    return GMM(Y, X, Z, T, r, k, L, beta_1, S_1, se_1, W, beta_2, S_2, se_2, R_2)
 end
 
