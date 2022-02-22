@@ -242,21 +242,21 @@ up this almost mechanical correlation between the parameters?
 
 \end{center}
 
-Yes, I think the chains mix pretty well. And yes, it looks like they come from a stationary distribution. The AR(1) coefficients for each chain are below.  All coefficients are very close to zero, so the persistence is quite low.
+Yes, I think the chains mix pretty well. And yes, it looks like they come from a stationary distribution. The AR(1) coefficients for $\mu$ and $\rho$ are quite high in magnitude at around $-0.7$ while the AR(1) coefficient for $\sigma$ is relatively small in magnitude at around $-0.05$ (see below).  Thus, the persistence of $\sigma$ is low, but values $\mu$ and $\rho$ are typical succeeded by large values of the opposite sign.
 
 \begin{center}
 \begin{tabular}{ l | c c }
 & Constant & Lagged Value \\ 
 \hline
-$\mu$  & -0.0264 & 0.0040 \\  
-$\rho$ & 1.0035 & -0.0151  \\
-$\sigma$ & 1.0504 & 0.0612
+$\mu$  & -0.0442 & -0.7151 \\  
+$\rho$ & 1.7036 & -0.7235  \\
+$\sigma$ & 1.0792 & -0.0467
 \end{tabular}
 \end{center}
 
 \pagebreak
 
-The autocorrelation functions are plotted below.  These plots tell a different story.  We see that the first lag almost zero correlation but the second is strongly (negatively for $\mu$ and $\rho$ and positively for $\sigma$) correlated.  The third is back to zero correlation, but the fourth is strongly positively correlated.  This pattern repeats.
+The autocorrelation functions are plotted below. For $\mu$ and $\rho$, the autocorrelations bounce back and forth from negative to positive with diminishing magnitude, confirming the AR(1) coefficients.  For $\sigma$, the autocorrelation drops at the first lag is small for the rest of the lags.
 
 \begin{center}
 
@@ -269,7 +269,7 @@ The autocorrelation functions are plotted below.  These plots tell a different s
 \end{center}
 
 
-The scatterplots of the simulated parameters are below.  These scatterplots suggest that the chains mix well because they look essentially like a cloud of points.  However, we see a similar pattern to the ACF plots when we look at $\mu$ relative to lagged $\rho$.
+The scatterplots of the simulated parameters are below.  These scatterplots confirm the analysis so far.  We see a similar pattern to the ACF plots when we look at $\mu$ relative to $\rho$. Since $\mu$ and $\rho$ are almost mechanically connected, there's a negative relationship. The scatterplots of $\rho$ and $\mu$ relative to $\sigma$ show basically a cloud of points.
 
 \begin{center}
 
@@ -279,11 +279,10 @@ The scatterplots of the simulated parameters are below.  These scatterplots sugg
 
 \includegraphics[scale=0.5]{p2_q3_rho_sigma.png}
 
-\includegraphics[scale=0.5]{p2_q3_mu_rho_lag.png}
 
 \end{center}
 
-We could fix this by simulating the chain and then only saving a simulation something like every twenty rounds.
+We could fix this issue by simulating the chain and then only saving simulations every ten rounds where the ACF is basically zero.
 
 
 \item Report the posterior means and standard deviations of the parameters - how different the
@@ -303,6 +302,8 @@ look reasonable?
 
 The posterior mean for $\mu$ is much different than the prior mean (-0.03 vs 0.3).  The posterior mean for $\rho$ is pretty close to the prior (0.99 vs 0.95).  The posterior mean for $\sigma$ is pretty close to the prior (1 vs 1.12).  The posterior standard deviation for all parameters is much small than the prior standard deviation.  That makes sense because we chose a relatively loose prior.  I'm suspicious of these results due to the strong correlation between draws as discussed in question 3.
 
+\pagebreak
+
 \item  If you carefully examine your chain for $\rho$, you might find that some draws are above 1. This
 does not look reasonable, as we have good reasons to believe that interest rates are stationary.
 Let's correct that. First, let's use a truncated Normal prior for $\rho$ to ensure that this parameter
@@ -313,17 +314,49 @@ f(\rho) \propto N (\tilde\rho, \omega^2) \text{ if } \rho \in (-1, 1); f(\rho) =
 $$
 
 Further, instead of using Gibbs to draw $\rho$, now let's use Independence Metropolis-Hastings
-where the proposal density is equal to the Normal conditional posterior of $\rho$ you found in part 1). Design and implement the new MCMC algorithm. Notice that a new algorithm (known
+where the proposal density is equal to the Normal conditional posterior of $\rho$ you found in part 1. Design and implement the new MCMC algorithm. Notice that a new algorithm (known
 as a Rejection Sampling) should be a very simple and intuitive modification of the previous
 one.
 
-\textbf{Solutions}  See \texttt{gibbs.jl} for implementation.  If the option \texttt{truncate\_rho} is set to \texttt{true}, then the normal distribution for $\rho$ is truncated to be between -1 and 1.  A resulting MCMC for $\rho$ looks like:
+\textbf{Solutions}  See \texttt{gibbs.jl} for implementation.  If the option \texttt{rho\_distribution} is set to \texttt{"truncated\_normal"}, then the normal distribution for $\rho$ is truncated to be between -1 and 1.  A resulting MCMC for $\rho$ looks like:
 
-\includegraphics[scale =0.5]{p2_q5_rho}
+\begin{center}
+\includegraphics[scale =0.5]{p2_q5_rho_truncated_normal}
+\end{center}
+
+If the option \texttt{rho\_distribution} is set to \texttt{"imh"}, then Independence Metropolis-Hastings is used with the proposal density equal to the Normal conditional posterior of $\rho$. A resulting MCMC for $\rho$ looks like:
+
+\begin{center}
+\includegraphics[scale =0.5]{p2_q5_rho_imh}
+\end{center}
+
 
 \item Examine the chain, report the posterior means and standard deviations. Overall, do you think your results look reasonable?
 
-...
+The posterior means and standard deviations across the three methods of simulating $\rho$ are below. Means and standard deviations for all parameters decrease compared to using normal sampling. For $\rho$, the means and standard deviations are lower with using a truncated normal and the MH.  This makes sense because we are limiting $\rho$ is be below one so the mean is lower.  It looks like $\rho$ is close to one though, so the simulations are generally closer to one, so the standard deviation is also lower.  This increase in $\rho$ reduces $\mu$ because of their ``almost" mechanical relationship with the unconditional mean.  It makes sense that if we're lower $\rho$, estimates of $\mu$ increase.  The standard deviation for $\mu$ also drops.
+
+\begin{center}
+\begin{tabular}{ l | c c c c c}
+         &           & Prior & Normal  & Truncated Normal & MH  \\ 
+\hline
+$\mu$    & Mean      & 0.3   & -0.0267 & -0.0740 & -0.0981 \\  
+         & Std. Dev. & 0.5   & 0.2328  & 0.1323 & 0.1437 \\  
+$\rho$   & Mean      & 0.95  & 0.9886  & 0.9798 & 0.9726 \\
+         & Std. Dev. & 0.2   & 0.0412  & 0.0161 & 0.0185 \\
+$\sigma$ & Mean      & 1     & 1.1186  & 1.0481 & 1.0817 \\
+         & Std. Dev. & 1     & 0.2448  & 0.1629 & 0.2007
+\end{tabular}
+\end{center}
+
+Limiting $\rho \in [-1, 1]$, so seems to help to some degree with the strong relationship between $\mu$ and $\rho$, which we saw in the scatterplot of $\mu$ relative to $\rho$.
+
+\begin{center}
+\includegraphics[scale =0.5]{p2_q6_mu_rho_truncated_normal}
+\end{center}
+
+\begin{center}
+\includegraphics[scale =0.5]{p2_q6_mu_rho_imh}
+\end{center}
 
 \item Having simulation output from the MCMC chains makes it easy to compute, and assess
 significance of, any complicated non-linear functions of the parameters and the data. Suppose
@@ -337,7 +370,9 @@ $$
 Fix $t$. You can compute the implied forecast $(E_t y_{t+N})^i$ for each parameter draw from the chain $\theta^i$, for $i$ from 1 to $M$. Having the distribution of time-$t$ forecasts $\{(E_t y_{t+N})^i\}_{i=1}^M$, you
 can numerically compute their mean, and 2.5\% - 97.5\% confidence band. Now do it for all $t$, and plot the posterior mean and the confidence band for the yield forecasts from the model.
 
-...
+\begin{center}
+\includegraphics[scale =0.5]{p2_q6_forecast}
+\end{center}
 
 \end{enumerate}
 

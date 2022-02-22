@@ -11,7 +11,7 @@ include("gibbs.jl")
 
 using Plots, StatsBase
 
-M_1 = Initialize()
+M_1 = Initialize_MCMC()
 Simulate_MCMC!(M_1)
 
 # question 3
@@ -91,13 +91,6 @@ xlabel!("ρ")
 ylabel!("σ")
 savefig("p2_q3_rho_sigma.png")
 
-# scatterplots with lags
-
-scatter(M_1.mu[1:end-1], M_1.rho[2:end], legend = false, title = "Scatterplot of μ and ρ lag", smooth=true)
-xlabel!("μ")
-ylabel!("ρ_lag")
-savefig("p2_q3_mu_rho_lag.png")
-
 
 # question 4 - posterior mean and standard deviations
 
@@ -111,20 +104,56 @@ mean(M_1.sigma)
 std(M_1.sigma)
 
 
-# question 5 - truncated rho distributions
+# question 5/6 - truncated rho distributions
 
 # use truncate_normal distribution
-M_2 = Initialize()
+M_2 = Initialize_MCMC()
 Simulate_MCMC!(M_2; rho_distribution = "truncated_normal")
 
-plot(M_2.rho, legend = false, title = "MCMC of ρ")
+plot(M_2.rho, legend = false, title = "MCMC of ρ (Truncated Normal)")
 ylabel!("ρ")
-savefig("p2_q5_rho.png")
+savefig("p2_q5_rho_truncated_normal.png")
+
+mean(M_2.mu)
+std(M_2.mu)
+
+mean(M_2.rho)
+std(M_2.rho)
+
+mean(M_2.sigma)
+std(M_2.sigma)
 
 # use independence metropolis-hastings
-M_3 = Initialize()
+M_3 = Initialize_MCMC()
 Simulate_MCMC!(M_3; rho_distribution = "imh")
 
-plot(M_3.rho, legend = false, title = "MCMC of ρ")
+plot(M_3.rho, legend = false, title = "MCMC of ρ (IMH)")
 ylabel!("ρ")
-savefig("p2_q5_rho.png")
+savefig("p2_q5_rho_imh.png")
+
+mean(M_3.mu)
+std(M_3.mu)
+
+mean(M_3.rho)
+std(M_3.rho)
+
+mean(M_3.sigma)
+std(M_3.sigma)
+
+scatter(M_2.mu, M_2.rho, legend = false, title = "Scatterplot of μ and ρ using truncated normal", smooth=true)
+xlabel!("μ")
+ylabel!("ρ")
+savefig("p2_q6_mu_rho_truncated_normal.png")
+
+scatter(M_3.mu, M_3.rho, legend = false, title = "Scatterplot of μ and ρ using IMH", smooth=true)
+xlabel!("μ")
+ylabel!("ρ")
+savefig("p2_q6_mu_rho_imh.png")
+
+# question 6
+
+forecast_5 = forecast(M_1, 5)
+
+plot(forecast_5.mean, label = "Mean", title = "Five-Year Yield Forecast")
+plot!(forecast_5.ci, label = ["CI 2.5%" "CI 97.5%"], line=:dash)
+savefig("p2_q6_forecast.png")
