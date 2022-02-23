@@ -395,32 +395,36 @@ where $\eta$ and $e$ are independent (over time and from each other) shocks with
 
 \bigskip
 
-\textbf{Solutions:} We can rewrite $x_t$:
+\textbf{Solutions:} We can find expectation of $x_t$:
 
 \begin{align*}
-x_{t}
-&= \rho x_{t-1} + \sigma_x e_{t} \\
-&= \rho (\rho x_{t-2} + \sigma_x e_{t-1}) + \sigma_x e_{t} \\
-&= \rho^2x_{t-2} + \sigma_x (\rho e_{t-1} + e_t)\\
-&= \rho^2(\rho x_{t-3} + \sigma_x e_{t-2}) + \sigma_x (\rho e_{t-1} + e_t)\\
-&= \rho^3 x_{t-3} + \sigma_x (\rho^2 e_{t-2} + \rho e_{t-1} + e_t)\\
-&= \rho^t x_0 + \sigma_x \sum_{j=0}^{t-1} \rho^j e_{t-j}\\
-&= \sigma_x \sum_{j=0}^{t-1} \rho^j e_{t-j}
+E[x_{t}]
+&= E[\rho x_{t-1} + \sigma_x e_{t}] \\
+&= E[\rho (\rho x_{t-2} + \sigma_x e_{t-1}) + \sigma_x e_{t}] \\
+&= E[\rho^2x_{t-2} + \sigma_x (\rho e_{t-1} + e_t)]\\
+&= E[\rho^2(\rho x_{t-3} + \sigma_x e_{t-2}) + \sigma_x (\rho e_{t-1} + e_t)]\\
+&= E[\rho^3 x_{t-3} + \sigma_x (\rho^2 e_{t-2} + \rho e_{t-1} + e_t)]\\
+&= E[\rho^j x_{t-j} + \sigma_x \sum_{i=0}^{j-1} \rho^i e_{t-i}]\\
+&= E[\lim_{j\to\infty} \{\rho^j x_{t-j} + \sigma_x \sum_{i=0}^{j-1} \rho^i e_{t-i}\}]\\
+&= E[\lim_{j\to\infty} \{\sigma_x \sum_{i=0}^{j-1} \rho^i e_{t-i}\}]\\
+&= \lim_{j\to\infty} \{\sigma_x \sum_{i=0}^{j-1} \rho^i E[e_{t-i}]\}\\
+&= 0
 \end{align*}
 
-assuming $x_0 = 0$.  Thus, 
+if $\rho \in (-1, 1)$.  Furthermore, we get find the variance of $x_t$:
+
 
 \begin{align*}
-E[x_t] 
-&= \sigma_x \sum_{j=0}^{t-1} \rho^j E[e_{t-j}] \\
-&= 0\\
-E[x_t^2] 
-&= \sigma_x^2 \sum_{j=0}^{t-1} \rho^{2j} E[e_{t-j}^2]\\
-&= t\sigma_x^2 \rho^{2j}\\
-Var[x_t] 
-&= E[x_t^2] - [E[x_t]]^2 \\
-&= t\sigma_x^2 \rho^{2j}
-\end{align*} 
+Var[x_{t}]
+&= Var[\lim_{j\to\infty} \{\sigma_x \sum_{i=0}^{j-1} \rho^i e_{t-i}\}]\\
+&= \lim_{j\to\infty} \{\sigma_x \sum_{i=0}^{j-1} \rho^i Var[e_{t-i}]\}\\
+&= \lim_{j\to\infty} \{\sigma_x \sum_{i=0}^{j-1} \rho^i\} \\
+&= \frac{\sigma_x}{1-\rho}
+\end{align*}
+
+\pagebreak
+
+Thus,
 
 \begin{align*}
 E[\Delta c_t] 
@@ -430,38 +434,69 @@ E[\Delta c_t]
 \end{align*}
 
 \begin{align*}
-E[(\Delta c_t)^2] 
-&= E[(\mu + x_{t-1} + \sigma_c \eta_t)(\mu + x_{t-1} + \sigma_c \eta_t)]\\
-&= E[\mu^2 + x_{t-1}^2 + \sigma_c^2 \eta_t]\\
-&= \mu^2 + (t-1)\sigma_x^2 \rho^{2j}
-\end{align*}
-
-\begin{align*}
 Var[\Delta c_t] 
-&= E[(\Delta c_t)^2]  - [E[\Delta c_t] ]^2]\\ 
-&= (t-1)\sigma_x^2 \rho^{2j}
+&= Var[\mu + x_{t-1} + \sigma_c \eta_t] \\
+&= Var(x_{t-1}) + \sigma_c Var(\eta_t) \\
+&= \frac{\sigma_x}{1-\rho} + \sigma_c
 \end{align*}
 
 \begin{align*}
-Cov(\Delta c_t, \Delta c_{t-1}) 
-&= Cov(\mu + x_{t-1} + \sigma_c \eta_{t}, \mu + x_{t-2} + \sigma_c \eta_{t-1}) \\
-&= Cov(\mu + (\rho x_{t-2} + \sigma_x e_{t-1}) + \sigma_c \eta_{t}, \mu + x_{t-2} + \sigma_c \eta_{t-1}) \\
-&= \rho Cov( x_{t-2} , x_{t-2}) \\
-&= \rho (t-2) \sigma_x^2 \rho^{2j}
+Cov[\Delta c_t, \Delta c_{t-1}] 
+&= Cov[\mu + x_{t-1} + \sigma_c \eta_{t}, \mu + x_{t-2} + \sigma_c \eta_{t-1}] \\
+&= Cov[\mu + (\rho x_{t-2} + \sigma_x e_{t-1}) + \sigma_c \eta_{t}, \mu + x_{t-2} + \sigma_c \eta_{t-1}] \\
+&= Cov[\rho x_{t-2}, x_{t-2}] \\
+&= \frac{\rho\sigma_x}{1-\rho}
 \end{align*}
 
 \begin{align*}
-Cov(\Delta c_t, \Delta c_{t-2})
-&= Cov(\mu + x_{t-1} + \sigma_c \eta_{t}, \mu + x_{t-3} + \sigma_c \eta_{t-2}) \\
-&= Cov(\mu + (\rho x_{t-2} + \sigma_x e_{t-1}) + \sigma_c \eta_{t}, \mu + x_{t-3} + \sigma_c \eta_{t-2}) \\
-&= Cov(\mu + (\rho (\rho x_{t-3} + \sigma_x e_{t-2}) + \sigma_x e_{t-1}) + \sigma_c \eta_{t}, \mu + x_{t-3} + \sigma_c \eta_{t-2}) \\
-&= \rho^2 Cov( x_{t-3} , x_{t-3}) \\
-&= \rho^2 \rho (t-3) \sigma_x^2 \rho^{2j} \\
+Cov[\Delta c_t, \Delta c_{t-2}] 
+&= Cov[\mu + x_{t-1} + \sigma_c \eta_{t}, \mu + x_{t-3} + \sigma_c \eta_{t-2}] \\
+&= Cov[\mu + (\rho x_{t-2} + \sigma_x e_{t-1}) + \sigma_c \eta_{t}, \mu + x_{t-3} + \sigma_c \eta_{t-2}] \\
+&= Cov[\mu + \rho (\rho x_{t-3} + \sigma_x e_{t-2}) + \sigma_x e_{t-1} + \sigma_c \eta_{t}, \mu + x_{t-3} + \sigma_c \eta_{t-2}] \\
+&= Cov[\mu + \rho^2 x_{t-3} + \rho \sigma_x e_{t-2} + \sigma_x e_{t-1} + \sigma_c \eta_{t}, \mu + x_{t-3} + \sigma_c \eta_{t-2}] \\
+&= Cov[ \rho^2 x_{t-3}, x_{t-3}] \\
+&= \frac{\rho^2\sigma_x}{1-\rho}
 \end{align*}
+
+Notice that since we have four population moments that perfectly pin down four parameters, we can use Method of Moments for the point estimates instead of full fledged GMM.  Namely, we have the sample analog of each population moment:
+
+\begin{align*}
+\hat{E}[\Delta c_t]  &= \overline{\Delta c} = \frac{1}{T} \sum_{t=1}^T \Delta c_t\\
+\hat{Var}[\Delta c_t] &= \frac{1}{T}\sum_{t=1}^T (\Delta c_t - \overline{\Delta c})^2\\
+\hat{Cov}[\Delta c_t, \Delta c_{t-1}] &= \frac{1}{T}\sum_{t=2}^T (\Delta c_t - \overline{\Delta c})(\Delta c_{t-1} - \overline{\Delta c})\\
+\hat{Cov}[\Delta c_t, \Delta c_{t-2}] &=\frac{1}{T}\sum_{t=3}^T (\Delta c_t - \overline{\Delta c})(\Delta c_{t-2} - \overline{\Delta c})
+\end{align*}
+
+\pagebreak
+
+From our derivations above, we get parameter estimates as
+
+\begin{align*}
+\hat{\mu} &= \overline{\Delta c}\\
+\hat{\rho} &= \frac{\hat{Cov}[\Delta c_t, \Delta c_{t-2}]}{\hat{Cov}[\Delta c_t, \Delta c_{t-1}]}\\
+\hat{\sigma}_c &= \hat{Var}[\Delta c_t] - \frac{\hat{Cov}[\Delta c_t, \Delta c_{t-1}]^2}{\hat{Cov}[\Delta c_t, \Delta c_{t-2}]}\\
+\hat{\sigma}_c &=\frac{1 - \frac{\hat{Cov}[\Delta c_t, \Delta c_{t-2}]}{\hat{Cov}[\Delta c_t, \Delta c_{t-1}]}}{\frac{\hat{Cov}[\Delta c_t, \Delta c_{t-2}]}{\hat{Cov}[\Delta c_t, \Delta c_{t-1}]}}\hat{Cov}[\Delta c_t, \Delta c_{t-1}]
+\end{align*}
+
+For GMM, I would use the following sample analog to the population moment conditions for parameters $\theta = (\mu, \rho, \sigma_x, \sigma_c)$:
+
+$$
+g(\{\Delta c_t\}_{t=1}^T; \theta) = 
+\begin{pmatrix}
+\overline{\Delta c} - \mu \\
+\frac{1}{T}\sum_{t=1}^T (\Delta c_t - \overline{\Delta c})^2 - \frac{\sigma_x}{1-\rho} - \sigma_c\\
+\frac{1}{T}\sum_{t=2}^T (\Delta c_t - \overline{\Delta c})(\Delta c_{t-1} - \overline{\Delta c}) -  \frac{\rho \sigma_x}{1-\rho} - \rho\sigma_c\\
+\frac{1}{T}\sum_{t=3}^T (\Delta c_t - \overline{\Delta c})(\Delta c_{t-2} - \overline{\Delta c}) -  \frac{\rho^2 \sigma_x}{1-\rho} - \rho^2\sigma_c\\
+\end{pmatrix}
+$$
+
+We can use a two-stage process by first using the identity matrix as a weighting matrix and then getting an estimate for the variance-covariance matrix via Newey-West.  Then we can estimate second stage coefficients and then reestimate the Newey-West variance-covariance matrix and jacobian to get standard errors.
+
+Using these estimates, we could use a Kalman filter to infer the unobserved $x_t$.
 
 \item  The shocks $\eta$ and $e$ are assumed to be independent from each other. Can we estimate the correlation between the shocks in the data? If so, show what data moments would identify it.
 
-...
+No, we would be unable to distinguish between persistence of the unobserved state (i.e. $\rho$) and correlation in $e$ and $\eta$.
 
 \end{enumerate}
 

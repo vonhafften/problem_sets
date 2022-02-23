@@ -21,7 +21,6 @@ epsilon = rand(Normal(0, 1), n)
 
 Y = 1 .+ 2 .* X_1 .+ 3 .* X_2 .+ 4 .* X_3 + epsilon
 X = hcat(ones(n), X_1, X_2, X_3)
-Z = copy(X)
 
 # estimate gmm
-gmm_estimate = gmm(Y, X, Z, 1)
+gmm_estimate = gmm(Y, X, 3)
