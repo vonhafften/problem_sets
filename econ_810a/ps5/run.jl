@@ -21,4 +21,7 @@ Simulate!(R, S)
 plot(4:12, mean(S.b, dims = 1)')
 plot(4:12, var(S.b, dims = 1)')
 
+histogram(S.h_c[:, end])
+
+
 

@@ -29,11 +29,13 @@ sample <- psid %>%
 
 # Estimate fixed effects for age and cohort
 ols <- sample %>%
-  lm(log(income) ~ factor(age) + factor(cohort), data = .)
+  lm(log(income) ~ factor(age) + factor(cohort) - 1, data = .)
+
+summary(ols)
 
 # pull out age and cohort fixed effects
 age_profile <- tibble(age = 24:77,
-                      age_fe = ols$coefficients[1] + c(0, unname( ols$coefficients[2:54]))) %>%
+                      age_fe = c(unname( ols$coefficients[1:54]))) %>%
   mutate(model_age = floor(age / 6)) %>%
   group_by(model_age) %>%
   summarize(kappa = mean(age_fe))

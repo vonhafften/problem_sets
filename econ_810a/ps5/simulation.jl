@@ -22,18 +22,17 @@ end
 function Initialize_simulation(N::Int64)
     P = Primitives()
 
-    h = zeros(N, 9)
-    b = zeros(N, 9)
-    i = zeros(N, 4)
-    τ = zeros(N)
+    h   = zeros(N, 9)
+    h_c = zeros(N, 5)
+    b   = zeros(N, 9)
+    i   = zeros(N, 4)
+    τ   = zeros(N)
 
-    for i = 1:N
-        h[i, :] = simulate(P.tauchen_h, 9) # simulate human capital for whole life
-    end
-
+    # set initial simulation set
+    h[:, 1] .= P.min_h
     b[:, 1] .= 100000.0
 
-    Simulation_Results(N, h, b, i, τ)
+    Simulation_Results(N, h, h_c, b, i, τ)
 end
 
 function Simulate_generation!(R::Results, S::Simulation_Results)
@@ -43,69 +42,78 @@ function Simulate_generation!(R::Results, S::Simulation_Results)
         # t = 4
         i_b = argmin(abs.(S.b[i, 4-3] .- P.grid_b))
         i_h = argmin(abs.(S.h[i, 4-3] .- P.grid_h))
+
         S.b[i, 5-3] = R.pf_b_4[i_b, i_h]
+        S.h[i, 5-3] = sample(P.grid_h, Weights(P.Π_h[i_h, :]), 1)[1]
 
         # t = 5
-        h_c = sample(P.grid_h, Weights(P.Π_h_0), 1)[1] # draw child's starting human capital
+        S.h_c[i, 5-4] = sample(P.grid_h, Weights(P.Π_h_0), 1)[1] # draw child's starting human capital
 
         i_b = argmin(abs.(S.b[i, 5-3] .- P.grid_b))
         i_h = argmin(abs.(S.h[i, 5-3] .- P.grid_h))
-        i_h_c = argmin(abs.(P.grid_h .- h_c))
+        i_h_c = argmin(abs.(S.h_c[i, 5-4] .- P.grid_h))
 
         S.i[i, 6-5] = R.pf_i_5[i_b, i_h, i_h_c]
         S.b[i, 6-3] = R.pf_b_5[i_b, i_h, i_h_c]
+        S.h[i, 6-3] = sample(P.grid_h, Weights(P.Π_h[i_h, :]), 1)[1]
 
         # t = 6
-        h_c = log((1-P.ω_c)*exp(h_c) + P.γ*P.ω_c * S.i[i, 6-5])
+        S.h_c[i, 6-4] = log((1-P.ω_c)*exp(S.h_c[i, 5-4]) + P.γ*P.ω_c * S.i[i, 6-5])
 
         i_b = argmin(abs.(S.b[i, 6-3] .- P.grid_b))
         i_h = argmin(abs.(S.h[i, 6-3] .- P.grid_h))
-        i_h_c = argmin(abs.(P.grid_h .- h_c))
+        i_h_c = argmin(abs.(S.h_c[i, 6-4] .- P.grid_h))
 
         S.i[i, 7-5] = R.pf_i_6[i_b, i_h, i_h_c]
         S.b[i, 7-3] = R.pf_b_6[i_b, i_h, i_h_c]
+        S.h[i, 7-3] = sample(P.grid_h, Weights(P.Π_h[i_h, :]), 1)[1]
 
         # t = 7
-        h_c = log((1-P.ω_c)*exp(h_c) + P.γ*P.ω_c * S.i[i, 7-5])
+        S.h_c[i, 7-4] = log((1-P.ω_c)*exp(S.h_c[i, 6-4]) + P.γ*P.ω_c * S.i[i, 7-5])
 
         i_b = argmin(abs.(S.b[i, 7-3] .- P.grid_b))
         i_h = argmin(abs.(S.h[i, 7-3] .- P.grid_h))
-        i_h_c = argmin(abs.(P.grid_h .- h_c))
+        i_h_c = argmin(abs.(S.h_c[i, 7-4] .- P.grid_h))
 
         S.i[i, 8-5] = R.pf_i_7[i_b, i_h, i_h_c]
         S.b[i, 8-3] = R.pf_b_7[i_b, i_h, i_h_c]
+        S.h[i, 8-3] = sample(P.grid_h, Weights(P.Π_h[i_h, :]), 1)[1]
 
         # t = 8
-        h_c = log((1-P.ω_c)*exp(h_c) + P.γ*P.ω_c * S.i[i, 8-5])
+        S.h_c[i, 8-4] = log((1-P.ω_c)*exp(S.h_c[i, 7-4]) + P.γ*P.ω_c * S.i[i, 8-5])
 
         i_b = argmin(abs.(S.b[i, 8-3] .- P.grid_b))
         i_h = argmin(abs.(S.h[i, 8-3] .- P.grid_h))
-        i_h_c = argmin(abs.(P.grid_h .- h_c))
+        i_h_c = argmin(abs.(S.h_c[i, 8-4] .- P.grid_h))
 
         S.i[i, 9-5] = R.pf_i_8[i_b, i_h, i_h_c]
         S.b[i, 9-3] = R.pf_b_8[i_b, i_h, i_h_c]
+        S.h[i, 9-3] = sample(P.grid_h, Weights(P.Π_h[i_h, :]), 1)[1]
 
         # t = 9
-        h_c = log((1-P.ω_c)*exp(h_c) + P.γ*P.ω_c * S.i[i, 9-5])
+        S.h_c[i, 9-4] = log((1-P.ω_c)*exp(S.h_c[i, 8-4]) + P.γ*P.ω_c * S.i[i, 9-5])
 
         i_b = argmin(abs.(S.b[i, 9-3] .- P.grid_b))
         i_h = argmin(abs.(S.h[i, 9-3] .- P.grid_h))
-        i_h_c = argmin(abs.(P.grid_h .- h_c))
+        i_h_c = argmin(abs.(S.h_c[i, 9-4] .- P.grid_h))
 
         S.τ[i] = R.pf_τ_9[i_b, i_h, i_h_c]
         S.b[i, 10-3] = R.pf_b_9[i_b, i_h, i_h_c]
+        S.h[i, 10-3] = sample(P.grid_h, Weights(P.Π_h[i_h, :]), 1)[1]
 
         # t = 10
         i_b = argmin(abs.(S.b[i, 10-3] .- P.grid_b))
         i_h = argmin(abs.(S.h[i, 10-3] .- P.grid_h))
 
         S.b[i, 11-3] = R.pf_b_10[i_b, i_h]
+        S.h[i, 11-3] = sample(P.grid_h, Weights(P.Π_h[i_h, :]), 1)[1]
 
         # t = 11
         i_b = argmin(abs.(S.b[i, 11-3] .- P.grid_b))
         i_h = argmin(abs.(S.h[i, 11-3] .- P.grid_h))
 
         S.b[i, 12-3] = R.pf_b_11[i_b, i_h]
+        S.h[i, 12-3] = sample(P.grid_h, Weights(P.Π_h[i_h, :]), 1)[1]
     end
 end
 
@@ -113,27 +121,16 @@ function Simulate!(R::Results, S::Simulation_Results)
     P = Primitives()
     
     i = 1
-    max_iter = 1000
+    max_iter = 200
 
-    while true
-        if i > max_iter
-            break
-        end
+    while i < max_iter
         
         println("Generation #", i)
 
-        # randomly select simulation to be parent
-        for i=1:S.N
-            j = sample(1:S.N)
+        Simulate_generation!(R, S)
 
-            j_b = argmin(abs.(S.b[j, 9-3] .- P.grid_b))
-            j_h = argmin(abs.(S.h[j, 9-3] .- P.grid_h))
-            i_h_c = argmin(abs.(S.h[i, 4-3] .- P.grid_h))
-            
-            S.b[i, 1] = R.pf_τ_9[j_b, j_h, i_h_c]
-        end
-
-        T_star!(R, S)
+        S.h[:, 1] .= S.h_c[:, end]
+        S.b[:, 1] .= S.τ
 
         i += 1
     end
