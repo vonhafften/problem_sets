@@ -24,7 +24,7 @@ cd("/Users/vonhafften/Documents/uw_madison/problem_sets/econ_810a/ps5/")
     κ::Vector{Float64} = CSV.read("age_profile.csv", DataFrame).kappa
 
     # human capital grid
-    N_h::Int64              = 21                      # number of points
+    N_h::Int64              = 11                      # number of points
     tauchen_h               = tauchen(N_h, ρ_h, σ_h) # tauchen object
     Π_h::Matrix{Float64}    = tauchen_h.p            # transition probabilities
     grid_h::Vector{Float64} = tauchen_h.state_values # grid for human capital
@@ -206,6 +206,12 @@ function solve_9!(R::Results)
         
         # cycle over assets tomorrow and transfers to child
         for (i_b_p, b_p) = enumerate(P.grid_b), (i_τ, τ) = enumerate(P.grid_b)
+
+            # trying to speed things up
+            if b_p + τ > budget
+                continue
+            end
+
             consumption = budget - b_p - τ
 
             # instanteous value
@@ -243,7 +249,7 @@ function solve_8!(R::Results)
         for (i_b_p, b_p) = enumerate(P.grid_b), (i_h_c_p, h_c_p) =  enumerate(P.grid_h)
 
             # investment required to get child human capital to i_h_c_p
-            investment = (h_c_p - (1 - P.ω_c) * h_c) / (P.γ * P.ω_c)
+            investment = (exp(h_c_p) - (1 - P.ω_c) * exp(h_c)) / (P.γ * P.ω_c)
 
             # prevents negative investment in childs human capital
             if investment < 0
@@ -260,11 +266,6 @@ function solve_8!(R::Results)
 
             # save if new candidate
             if value > candidate_max
-                println(value)
-                println(b_p)
-                println(investment)
-                println(h_c_p)
-                println("")
                 R.vf_8[i_b, i_h, i_h_c] = value
                 R.pf_b_8[i_b, i_h, i_h_c] = b_p
                 R.pf_i_8[i_b, i_h, i_h_c] = investment
@@ -286,10 +287,10 @@ function solve_7!(R::Results)
         candidate_max = -1/eps()
 
         # cycle over assets tomorrow and transfers to child
-        for (i_b_p, b_p) = enumerate(P.grid_b), (i_h_c_p, h_c_p) = enumerate(grid_h_tilde)
+        for (i_b_p, b_p) = enumerate(P.grid_b), (i_h_c_p, h_c_p) = enumerate(P.grid_h)
 
             # investment required to get child human capital to i_h_c_p
-            investment = (h_c_p - (1 - P.ω_c) * h_c) / (P.γ * P.ω_c)
+            investment = (exp(h_c_p) - (1 - P.ω_c) * exp(h_c)) / (P.γ * P.ω_c)
 
             # prevents negative investment in childs human capital
             if investment < 0
@@ -330,7 +331,7 @@ function solve_6!(R::Results)
         for (i_b_p, b_p) = enumerate(P.grid_b), (i_h_c_p, h_c_p) = enumerate(P.grid_h)
 
             # investment required to get child human capital to i_h_c_p
-            investment = (h_c_p - (1 - P.ω_c) * h_c) / (P.γ * P.ω_c)
+            investment = (exp(h_c_p) - (1 - P.ω_c) * exp(h_c)) / (P.γ * P.ω_c)
 
             # prevents negative investment in childs human capital
             if investment < 0
@@ -371,7 +372,7 @@ function solve_5!(R::Results)
         for (i_b_p, b_p) = enumerate(P.grid_b), (i_h_c_p, h_c_p) = enumerate(P.grid_h)
 
             # investment required to get child human capital to i_h_c_p
-            investment = (h_c_p - (1 - P.ω_c) * h_c) / (P.γ * P.ω_c)
+            investment = (exp(h_c_p) - (1 - P.ω_c) * exp(h_c)) / (P.γ * P.ω_c)
 
             # prevents negative investment in childs human capital
             if investment < 0
@@ -437,7 +438,7 @@ function Solve!(R::Results)
     i = 1
     error = 100
     max_iter = 10
-    tolerence = 1e-4
+    tolerence = 1e-5
 
     while error > tolerence
         if i > max_iter
