@@ -16,7 +16,7 @@ cd("/Users/vonhafften/Documents/uw_madison/problem_sets/econ_810a/ps5/")
     ρ_h::Float64 = (0.97)^6 # persistence of human capital shocks
     σ_h::Float64 = 0.13     # variance of human capital shocks
     ω_c::Float64 = 0.5      # relative weight of previous hc and current investment in child's human capital evolution
-    γ::Float64   = 1/10     # dollars to human capital exchange rate
+    γ::Float64   = 1/750   # dollars to human capital exchange rate
     θ::Float64   = 0.5      # altruism
     σ::Float64   = 2.0      # coefficient of relative risk aversion
 
