@@ -10,6 +10,7 @@ clear
 * install user defined functions (if needed)
 ssc install outreg2
 ssc install psmatch2
+ssc install texdoc
 
 * change working directory
 cd "/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps2/"
@@ -97,7 +98,20 @@ graph export figure_5b_2.png, replace
 * problem #6 - Nearest neighbor wo replacement
 ********************************************************************************
 
+texdoc init "table_7.tex", replace
+
+/*tex
+\begin{table}[h!]
+	\label{table_7}
+\begin{center}
+\begin{tabular}{rll}
+\toprule
+Test & Test & Test \\
+\hline
+tex*/
+
 psmatch2 in_control, noreplacement outcome(re78) pscore(pscorea) neighbor(1) common
+
 list if _support == 0
 
 psmatch2 in_control, noreplacement outcome(re78) pscore(pscoreb) neighbor(1) common
@@ -108,6 +122,9 @@ list if _support == 0
 ********************************************************************************
 * problem #7 - Nearest neighbor w replacement
 ********************************************************************************
+
+texdoc init "table_7.tex", replace
+
 
 psmatch2 in_control, outcome(re78) pscore(pscorea) neighbor(1) common
 list if _support == 0
