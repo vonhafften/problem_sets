@@ -1,0 +1,13 @@
+	(1)	(2)	(3)
+VARIABLES	re78	re78	re78
+			
+_treated	-9,757***	-9,757***	-9,757***
+	(470.2)	(470.2)	(470.2)
+Constant	14,847***	14,847***	14,847***
+	(75.65)	(75.65)	(75.65)
+			
+Observations	16,417	16,417	16,417
+R-squared	0.026	0.026	0.026
+Matched on	pscorea	pscoreb	pscoreb
+Standard errors in parentheses			
+*** p<0.01, ** p<0.05, * p<0.1			

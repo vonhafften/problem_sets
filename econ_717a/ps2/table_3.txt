@@ -1,0 +1,29 @@
+	(1)	(2)
+VARIABLES	in_control	in_control
+		
+age	0.253***	0.322***
+	(0.0293)	(0.0316)
+age_2	-0.00453***	-0.00548***
+	(0.000493)	(0.000530)
+educ	0.0169	0.0178
+	(0.0181)	(0.0183)
+black	1.990***	1.950***
+	(0.0778)	(0.0796)
+hisp	0.973***	0.978***
+	(0.103)	(0.106)
+married	-1.101***	-0.909***
+	(0.0826)	(0.0869)
+nodegree	1.133***	1.071***
+	(0.100)	(0.104)
+re74		-1.07e-06
+		(8.60e-06)
+re75		-5.76e-05***
+		(9.56e-06)
+Constant	-6.358***	-7.108***
+	(0.483)	(0.509)
+		
+Observations	16,417	16,417
+Failures completely determined	727	1359
+Successes completely determined	0	0
+Standard errors in parentheses		
+*** p<0.01, ** p<0.05, * p<0.1		

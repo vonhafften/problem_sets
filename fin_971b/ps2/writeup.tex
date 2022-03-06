@@ -1,0 +1,157 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{lscape}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{bbm}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\setlength{\parindent}{0cm}
+\geometry{margin = 1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+\newcommand{\one}{\mathbbm{1}}
+
+\newtoggle{extended}
+\settoggle{extended}{false}
+
+\title{FIN 971A: Homework 2}
+\author{Alex von Hafften }
+
+\begin{document}
+
+\maketitle
+
+Below is a table of summary statistics of investment, cash flow, and cash flow following the variable definitions in EW (2012) and the problem set.
+
+\begin{center}
+\input{table_0}
+\end{center}
+
+\section{Question 1}
+
+Below I estimate the Q regressions with and without cash flow and with and without firm FEs.  In all regression, the coefficient on Tobin's Q is very small but significantly negative and the coefficient on cash flow is significant, positive, and much larger.  These results are more-or-less in line with FHP (1988).
+
+\begin{align*}
+Investment_{i,t} &= \beta_0 + \beta_1 Q_{i,t-1} + u_{i,t} \\
+Investment_{i,t} &= \beta_0 + \beta_1 Q_{i,t-1} + \beta_2 CashFlow_{i,t} + u_{i,t}
+\end{align*}
+
+\begin{center}
+\input{table_1}
+\end{center}
+
+\pagebreak
+
+
+\section{Question 2}
+
+Below I estimate the Q regressions with lagged cash flow instead of current cash flow.  The cash flow coefficient is still positive and significant but it about ten times smaller.  The indicates that there is some simultaneity bias when including concurrent cash flow.
+
+\bigskip
+
+\begin{center}
+\input{table_2}
+\end{center}
+
+\bigskip
+
+
+\section{Question 3}
+
+Below I estimate the Q regressions with a quadratic term of Tobin's Q.  The coefficient on the squared term is positive and significant while the linear term remains negative and significant.  Yes, these regressions are evidence of functional form misspecification.
+
+\bigskip
+
+\begin{center}
+\input{table_3}
+\end{center}
+
+\pagebreak
+
+
+\section{Question 4}
+
+Below I estimate the Q regressions with heteroskedasticity robust standard error (i.e. ``commma robust" standard errors).  The coefficient are the same but the standard errors are larger. Although the standard errors are larger, the coefficient remain significant at the same levels, so the interpretation is not different.
+
+\bigskip
+
+\begin{center}
+\input{table_4}
+\end{center}
+
+\bigskip
+
+\section{Question 5}
+
+The t-statistic testing the difference between the coefficient on Tobin's Q in model 2 and model 4 is:
+
+$$
+\frac{-258 + 246}{\sqrt{56.1^2 + 56.8^2}} = -0.1503
+$$
+
+Thus, we fail to reject the null hypothesis that the coefficients are different at the 5\% significance level.
+
+\section{Question 6}
+
+Every year, I bin firms into quintiles by book leverage and estimate Q regressions. Model 1 is lowest book leverage and model 5 is highest book leverage.  Cash flow is increasingly positive and significant as leverage increases.  Interestingly, Tobin's Q is only significant for the middle quintile.
+
+\bigskip
+
+\begin{center}
+\input{table_6}
+\end{center}
+
+\bigskip
+
+
+\section{Question 7}
+
+I bin firms into quintiles by HP (2010)'s SA index. Model 1 is lowest SA index (smallest/youngest firms) and model 5 is highest SA index (largest/oldest firms).  Cash flow is positive and significant for the smallest/youngest firms and becomes less positive (eventually negative) as firms become older/larger.  This indicates that cash flow for investment matters less for ``more financially constrained" firms (at least as measured by HP 2010).
+
+\bigskip
+
+\begin{center}
+\input{table_7}
+\end{center}
+
+\bigskip
+
+\section{Question 8}
+
+Below I estimate the regression with EW (2010)'s \texttt{xtewreg}.  The results are more-or-less consistent with the baseline regressions.
+
+\bigskip
+
+\begin{center}
+\input{table_8}
+\end{center}
+
+\end{document}
+

@@ -1,0 +1,125 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{lscape}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{bbm}
+\usepackage{verbatim}
+\usepackage{lscape}
+
+\setlength{\parindent}{0cm}
+\geometry{margin = 1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+\newcommand{\one}{\mathbbm{1}}
+
+\newtoggle{extended}
+\settoggle{extended}{false}
+
+\title{ECON 717A: Problem Set 2}
+\author{Alex von Hafften }
+
+\begin{document}
+
+\maketitle
+
+\section{Write-Up}
+
+\subsection*{Problem 0}
+
+I drop observations with \texttt{sample} equal to 3.  This step dropped 2,490 observations.
+
+\subsection*{Problem 1}
+
+I regressed earnings in 1978 on treatment with and without the covariate of age, age squared, education, indicators for black, Hispanic, married, and no degree, and earnings in 1974 and 1975.  The treatment effect is \$886.30 without covariates and \$818.70 with covariates with both statistically significant at the 10 percent level.  It is important to include covariate even in experimental data because we get a more precise estimate for the treatment effect.
+
+\begin{center}
+\input{table_1}
+\end{center}
+
+\pagebreak
+
+\subsection*{Problem 2}
+
+I drop observations with \texttt{sample} equal to 1 and \texttt{treated} equal to 1.  This step dropped 297 observations.
+
+\subsection*{Problem 3}
+
+I define \texttt{in\_control} equal to one if \texttt{sample} equals one and zero otherwise.  The probit estimation for the propensity scores are the coarse scores and the rich scores are below.
+
+\begin{center}
+\input{table_3}
+\end{center}
+
+\textbf{Explain what is going on with the observations that are “completely determined”.}
+
+\pagebreak
+
+\subsection*{Problem 4}
+
+The table below shows descriptive statistics of \texttt{pscorea} and \texttt{pscoreb}.
+
+\begin{center}
+\input{table_4a}
+\end{center}
+
+\begin{center}
+\input{table_4b}
+\end{center}
+
+These descriptive statistics suggest that imposing the common support condition will not drop many observations.  For \texttt{pscorea}, the minimum is zero for both groups and the maximum is 0.69 for both groups.  This suggests that there are compared observations within the comparison group to the control group.  Similarly for \texttt{pscoreb}, the minimum is zero for both groups and the maximum is around 0.8 for both groups. These descriptive statistics suggest that the CPS group is not very comparable to the experimental control group.  That is, these descriptive statistics highlight the importance of matching because the control group has a much higher mean propensity score than the comparison group (i.e., 0.39 vs. 0.02 for \texttt{pscorea} and 0.42 vs. 0.02 for \texttt{proscoreb}).
+
+\subsection*{Problem 5}
+
+Below are histograms (based on the provided code) for \texttt{pscorea} and \texttt{pscoreb} across the CPS comparison group (i.e., 0) and the experimental control group (i.e., 1) with and without the lowest bin (i.e., \texttt{pscorex} $\in (0.0, 0.05)$). Looking at the first two histograms, most of the comparison group observations have a very low estimated propensity score (confirming the descriptive statistics), so the comparison group is not very comparable to the control group. I added histograms without the lowest bin because many observations in the comparison group have estimated propensity scores of basically zero impairing our ability to evaluate the common support condition.  Looking at the second two histograms, the common support condition seems to be well satisfied with comparison group observations at all propensity levels of the control group. These histograms highlight concerns about matching without replacement because the number of observations in the control group with high propensity scores is larger than the number of observations in the comparison group with large propensity scores (i.e. on the right of the graphs the red bars are taller than the blue bars).  Matching without replacement would cause these the control group observations to be matched with comparison group observations with significantly lower propensity scores.
+
+\begin{center}
+\includegraphics[scale = 0.5]{figure_5a}
+\includegraphics[scale = 0.5]{figure_5b}
+\includegraphics[scale = 0.5]{figure_5a_2}
+\includegraphics[scale = 0.5]{figure_5b_2}
+\end{center}
+
+\pagebreak
+
+\subsection*{Problem 6}
+
+Using single nearest neighbor matching without replacement and common support condition, I estimate the non-experimental bias reported in the table below.  Matching is the same using \texttt{pscorea} and \texttt{pscoreb}, so the estimated non-experimental bias is the same.  The non-experimental bias is significant and negative indicating that 
+
+\begin{center}
+\input{table_6}
+\end{center}
+
+\subsection*{Problem 7}
+\subsection*{Problem 8}
+\subsection*{Problem 9}
+\subsection*{Problem 10}
+\subsection*{Problem 11}
+\subsection*{Problem 12}
+\subsection*{Problem 13}
+
+%\pagebreak
+%\begin{landscape}
+%\section{Stata Log File}
+%\verbatiminput{analysis.log}
+%\end{landscape}
+
+\end{document}
+

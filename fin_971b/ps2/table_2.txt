@@ -1,0 +1,13 @@
+	(1)	(2)
+VARIABLES	investment_tr	investment_tr
+		
+tobin_q_tr_l	-4.83e-05***	-2.30e-05***
+	(7.70e-06)	(5.96e-06)
+cash_flow_tr_l	0.00461***	0.00107*
+	(0.000752)	(0.000580)
+		
+Observations	139,026	139,026
+R-squared	0.001	0.536
+Firm FEs	No	Yes
+Standard errors in parentheses		
+*** p<0.01, ** p<0.05, * p<0.1		
