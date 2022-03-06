@@ -1,0 +1,28 @@
+	(1)
+VARIABLES	re78
+	
+age	-252.0***
+	(40.92)
+age_2	2.041***
+	(0.561)
+educ	166.6***
+	(28.79)
+black	-773.9***
+	(199.6)
+hisp	-168.2
+	(218.9)
+married	244.1
+	(153.1)
+nodegree	330.7*
+	(176.9)
+re74	0.299***
+	(0.0152)
+re75	0.470***
+	(0.0153)
+Constant	7,908***
+	(739.7)
+	
+Observations	15,992
+R-squared	0.476
+Robust standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	

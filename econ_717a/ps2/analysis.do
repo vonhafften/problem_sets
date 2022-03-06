@@ -11,6 +11,7 @@ clear
 ssc install outreg2
 ssc install psmatch2
 ssc install texdoc
+ssc install stddiff
 
 * change working directory
 cd "/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps2/"
@@ -119,7 +120,7 @@ global att_fine_se = r(seatt)
 texdoc do table_maker
 
 ********************************************************************************
-* problem #7 - Nearest neighbor w replacement
+* problem #7 - nearest neighbor w replacement
 ********************************************************************************
 
 global table_number = 7
@@ -142,3 +143,87 @@ global att_fine_se = r(seatt)
 
 texdoc do table_maker
 
+********************************************************************************
+* problem #8 - standardized differences
+********************************************************************************
+
+
+
+
+
+
+********************************************************************************
+* problem #9 - gaussian kernel matching
+********************************************************************************
+
+global table_number = 9
+
+psmatch2 in_control, kernel outcome(re78) kerneltype(normal) pscore(pscoreb) bwidth(0.02) common
+
+global att_low = r(att)
+global att_low_se = r(seatt)
+
+psmatch2 in_control, kernel outcome(re78) kerneltype(normal) pscore(pscoreb) bwidth(0.2) common
+
+global att_med = r(att)
+global att_med_se = r(seatt)
+
+psmatch2 in_control, kernel outcome(re78) kerneltype(normal) pscore(pscoreb) bwidth(2.0) common
+
+global att_hi = r(att)
+global att_hi_se = r(seatt)
+
+texdoc do table_maker_2
+
+********************************************************************************
+* problem #10 - local linear matching
+********************************************************************************
+
+
+global table_number = 10
+
+psmatch2 in_control, llr outcome(re78) pscore(pscoreb) bwidth(0.02) common
+
+global att_low = r(att)
+global att_low_se = r(seatt)
+
+psmatch2 in_control, llr outcome(re78) pscore(pscoreb) bwidth(0.2) common
+
+global att_med = r(att)
+global att_med_se = r(seatt)
+
+psmatch2 in_control, llr outcome(re78) pscore(pscoreb) bwidth(2.0) common
+
+global att_hi = r(att)
+global att_hi_se = r(seatt)
+
+texdoc do table_maker_2
+
+
+
+
+********************************************************************************
+* problem #11 - linear regression of in_control
+********************************************************************************
+
+regress re78 in_control age age_2 educ black hisp married nodegree re74 re75, robust
+outreg2 using table_11, tex(frag) replace
+
+
+********************************************************************************
+* problem #12 - linear regression of in_control out-of-sample
+********************************************************************************
+
+regress re78 age age_2 educ black hisp married nodegree re74 re75 if in_control == 0, robust 
+outreg2 using table_12a, tex(frag) replace
+
+predict re78_oos
+
+est clear
+estpost tabstat re78_oos, by(in_control) c(stat) stat(mean, sd, min, median, max, count)
+esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+esttab using "table_12b.tex", replace cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+
+********************************************************************************
+* problem #12 - inverse probability weighting
+********************************************************************************
