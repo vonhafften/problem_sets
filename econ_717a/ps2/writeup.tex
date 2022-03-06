@@ -68,7 +68,7 @@ I define \texttt{in\_control} equal to one if \texttt{sample} equals one and zer
 \input{table_3}
 \end{center}
 
-\textbf{Explain what is going on with the observations that are “completely determined”.}
+The completely determined observations are 727 and 1359 comparison group observations that have propensity scores with almost zero.
 
 \pagebreak
 
@@ -101,13 +101,20 @@ Below are histograms (based on the provided code) for \texttt{pscorea} and \text
 
 \subsection*{Problem 6}
 
-Using single nearest neighbor matching without replacement and common support condition, I estimate the non-experimental bias reported in the table below.  Matching is the same using \texttt{pscorea} and \texttt{pscoreb}, so the estimated non-experimental bias is the same.  The non-experimental bias is significant and negative indicating that 
+Using single nearest neighbor matching without replacement and common support condition, I estimate the non-experimental bias reported in the table below.  The non-experimental bias is significant and negative indicating that even after matching observations in the control group that significantly lower earnings in 1978.  The non-experimental bias is lower when matching based on the rich propensity scores.  No observations are dropped when matching with coarse propensity scores.  Seven observations are dropped when matching with fine propensity scores.
 
 \begin{center}
 \input{table_6}
 \end{center}
 
 \subsection*{Problem 7}
+
+Using single nearest neighbor matching with replacement and common support condition, I estimate the non-experimental bias reported in the table below.  The non-experimental bias is still significant and negative but it is lower than without replacement.  As mentioned in problem 5, this reduction in the non-experimental bias is due the relatively fewer comparison group observations with high propensity scores, so that there's more non-experimental bias when matching without replacement.
+
+\begin{center}
+\input{table_7}
+\end{center}
+
 \subsection*{Problem 8}
 \subsection*{Problem 9}
 \subsection*{Problem 10}

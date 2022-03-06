@@ -23,7 +23,7 @@ Constant	-6.358***	-7.108***
 	(0.483)	(0.509)
 		
 Observations	16,417	16,417
-Failures completely determined	727	1359
-Successes completely determined	0	0
+Comparison group obs. completely determined	727	1359
+Control group obs. completely determined	0	0
 Standard errors in parentheses		
 *** p<0.01, ** p<0.05, * p<0.1		

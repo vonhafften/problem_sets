@@ -49,11 +49,11 @@ drop if treated == 1  & sample==1
 gen in_control = (sample ==1) 
 
 probit in_control age age_2 educ black hisp married nodegree
-outreg2 using table_3, tex(frag) replace addstat(Failures completely determined, e(N_cdf), Successes completely determined,  e(N_cds))
+outreg2 using table_3, tex(frag) replace addstat(Comparison group obs. completely determined, e(N_cdf), Control group obs. completely determined,  e(N_cds))
 predict pscorea, pr
 
 probit in_control age age_2 educ black hisp married nodegree re74 re75
-outreg2 using table_3, tex(frag) append addstat(Failures completely determined, e(N_cdf), Successes completely determined,  e(N_cds))
+outreg2 using table_3, tex(frag) append addstat(Comparison group obs. completely determined, e(N_cdf), Control group obs. completely determined,  e(N_cds))
 predict pscoreb, pr
 
 ********************************************************************************
@@ -98,37 +98,47 @@ graph export figure_5b_2.png, replace
 * problem #6 - Nearest neighbor wo replacement
 ********************************************************************************
 
-texdoc init "table_7.tex", replace
+global table_number = 6
 
-/*tex
-\begin{table}[h!]
-	\label{table_7}
-\begin{center}
-\begin{tabular}{rll}
-\toprule
-Test & Test & Test \\
-\hline
-tex*/
+est clear 
+eststo: psmatch2 in_control, noreplacement outcome(re78) pscore(pscorea) neighbor(1) common
 
-psmatch2 in_control, noreplacement outcome(re78) pscore(pscorea) neighbor(1) common
+global att_coarse = r(att)
+global att_coarse_se = r(seatt)
 
-list if _support == 0
+esttab, se
+
+global unm_coef = r(coefs)[1, 1]
+global unm_se = r(coefs)[1, 2]
 
 psmatch2 in_control, noreplacement outcome(re78) pscore(pscoreb) neighbor(1) common
-list if _support == 0
 
-* figure out outreg-ing
+global att_fine = r(att)
+global att_fine_se = r(seatt)
+
+texdoc do table_maker
 
 ********************************************************************************
 * problem #7 - Nearest neighbor w replacement
 ********************************************************************************
 
-texdoc init "table_7.tex", replace
+global table_number = 7
 
+est clear 
+eststo: psmatch2 in_control, outcome(re78) pscore(pscorea) neighbor(1) common
 
-psmatch2 in_control, outcome(re78) pscore(pscorea) neighbor(1) common
-list if _support == 0
+global att_coarse = r(att)
+global att_coarse_se = r(seatt)
+
+esttab, se
+
+global unm_coef = r(coefs)[1, 1]
+global unm_se = r(coefs)[1, 2]
 
 psmatch2 in_control, outcome(re78) pscore(pscoreb) neighbor(1) common
-list if _support == 0
+
+global att_fine = r(att)
+global att_fine_se = r(seatt)
+
+texdoc do table_maker
 
