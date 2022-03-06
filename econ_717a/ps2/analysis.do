@@ -147,10 +147,14 @@ texdoc do table_maker
 * problem #8 - standardized differences
 ********************************************************************************
 
+* raw data
+stddiff re74 re75, by(in_control)
 
+* rich pscore nearest neighbor - re74
+psmatch2 in_control, outcome(re74) pscore(pscoreb) neighbor(1) common
 
-
-
+* rich pscore nearest neighbor - re74
+psmatch2 in_control, outcome(re75) pscore(pscoreb) neighbor(1) common
 
 ********************************************************************************
 * problem #9 - gaussian kernel matching
@@ -179,7 +183,6 @@ texdoc do table_maker_2
 * problem #10 - local linear matching
 ********************************************************************************
 
-
 global table_number = 10
 
 psmatch2 in_control, llr outcome(re78) pscore(pscoreb) bwidth(0.02) common
@@ -199,16 +202,19 @@ global att_hi_se = r(seatt)
 
 texdoc do table_maker_2
 
-
-
-
 ********************************************************************************
 * problem #11 - linear regression of in_control
 ********************************************************************************
 
 regress re78 in_control age age_2 educ black hisp married nodegree re74 re75, robust
-outreg2 using table_11, tex(frag) replace
+outreg2 using table_11a, tex(frag) replace
 
+predict y_hat_11
+
+est clear
+estpost tabstat y_hat_11, by(in_control) c(stat) stat(mean, sd, min, median, max, count)
+esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+esttab using "table_11b.tex", replace cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
 
 ********************************************************************************
 * problem #12 - linear regression of in_control out-of-sample
@@ -217,13 +223,54 @@ outreg2 using table_11, tex(frag) replace
 regress re78 age age_2 educ black hisp married nodegree re74 re75 if in_control == 0, robust 
 outreg2 using table_12a, tex(frag) replace
 
-predict re78_oos
+predict y_hat_12
 
 est clear
-estpost tabstat re78_oos, by(in_control) c(stat) stat(mean, sd, min, median, max, count)
+estpost tabstat y_hat_12, by(in_control) c(stat) stat(mean, sd, min, median, max, count)
 esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
 esttab using "table_12b.tex", replace cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
 
 ********************************************************************************
-* problem #12 - inverse probability weighting
+* problem #13 - inverse probability weighting
 ********************************************************************************
+
+* get number of treated
+count if in_control == 1
+scalar n_1 = r(N)
+
+* get number of untreated
+count if in_control == 0
+scalar n_0 = r(N)
+
+* get unconditional probability of treatment
+scalar p_hat = n_1/(n_0 + n_1)
+
+* get y * d
+gen y_d = re78 * in_control
+summarize y_d
+scalar y_d_sum = r(sum)
+
+* get second term wo rescaling
+gen wo_rescale = (1 - p_hat) / p_hat * pscoreb * re78 * (1 - in_control)/(1 - pscoreb)
+summarize wo_rescale
+scalar wo_rescale_sum = r(sum)
+
+* get second term w rescaling
+gen rescaling = pscoreb * (1-in_control)/(1-pscoreb) 
+summarize rescaling
+scalar rescaling = 1/n_0 * r(sum)
+gen w_rescale = (1/rescaling) * pscoreb * re78 * (1 - in_control)/(1-pscoreb)
+summarize w_rescale
+scalar w_rescale_sum = r(sum)
+
+* treatment effect on treated ipw w and wo rescaling
+display 1/n_1 * y_d_sum - 1/n_0 * wo_rescale_sum
+display 1/n_1 * y_d_sum - 1/n_0 * w_rescale_sum
+
+
+
+
+
+
+
+

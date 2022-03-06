@@ -33,5 +33,4 @@ texdoc write `row2'
 \end{table}
 tex*/
 
-
 texdoc close 
