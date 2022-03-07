@@ -110,47 +110,134 @@ The inverse of the hiring rate is:
 
 \item Write down the definition of equilibrium for this economy.
 
-...
+An recursive competitive equilibrium is
+
+\begin{itemize}
+
+\item Market tightnesses $\{\theta_t(\omega, h): t \in \{1, ..., 120\}, \omega \in [0, 1], h \in [0.5, 1.5]\}$,
+
+\item Job search decisions $\{\omega_t(b, h): t \in \{1, ..., 120\}, h \in [0.5, 1.5], b \in \R_+\}$,
+
+\item Savings decisions for unemployed workers $\{b^U_t(b, h): t \in \{1, ..., 120\}, h \in [0.5, 1.5], b \in \R_+\}$,
+
+\item Savings decision for employed workers $\{b_t^W(\omega, b, h): t \in \{1, ..., 120\}, \omega \in [0, 1], h \in [0.5, 1.5], b \in \R_+\}$, 
+
+\item A distribution of unemployed workers $\{\lambda_t^U(b, h): t \in \{1, ..., 120\}, h \in [0.5, 1.5], b \in \R_+\}$, 
+
+\item A distribution of employed workers $\{\lambda_t^W(\omega, b, h): t \in \{1, ..., 120\}, \omega \in [0, 1], h \in [0.5, 1.5], b \in \R_+\}$ 
+ 
+\end{itemize}
+
+such that
+
+\begin{itemize}
+
+\item The free-entry of firms pin down market tightnesses.
+
+\item Given market tightnesses, the job search decisions are optimal.
+
+\item Savings decisions are optimal.
+
+\item The distribution of unemployed and employed workers is consistent with policy functions.
+
+\end{itemize}
+
+\pagebreak
  
 \item Prove that the equilibrium is \textit{Block Recursive}.
 
-...
+We start in the terminal period. In the terminal period, the firm value is not a function of the distribution of workers: $J_T(h, \omega) = (1-\omega) f(h)$. By the free entry condition, 
+
+$$
+\theta_T(h, \omega) J_T(h, \omega) \le \kappa
+$$
+
+So market tightness in the terminal period is not a function of the distribution of workers.  All workers eat everything in the terminal period, so their value functions are also not functions of the distribution of workers:
+
+\begin{align*}
+W_T(\omega, b, h) &= u((1-\tau)\omega f(h) + b) \\
+U_T(\omega, b, h) &= z + b \\
+\end{align*}
+
+Now we proceed by induction. Assume that decisions in period $t+1$ do not depend on the distribution of workers.  Since the firm value function does not depend on the distribution of workers, the market tightness in $t$ does not depend on the distribution of workers.. Since the unemployed worker Bellman does not depend on the distribution of workers, the optimal decisions of the unemployed worker does not depend on the distribution of workers.  This similarly holds for the employed worker.  Thus, the equilibrium is block recursive.
 
 \item Solve the model above using the suggested parameters and report the following:
+
+\bigskip
+
+One note on my approach: I was running into uninteresting simulation results when I started all simulations from the minimum human capital level, so for each simulation I drew a random starting point between 0.5 and 1.5.
+
+\bigskip
 
 \begin{enumerate}
 
 \item Make a histogram of the distribution of assets from your simulated data.
 
-...
+\begin{center}
+\includegraphics[scale = 0.5]{figure_3a}
+\end{center}
+
+\pagebreak
 
 \item Make a histogram of the distribution of wages from your simulated data.
 
-...
+\begin{center}
+\includegraphics[scale = 0.5]{figure_3b}
+\end{center}
 
 \item What is the unemployment rate in your economy?
 
-...
+\bigskip
+
+The unemployment rate is 48 percent.
+
+\bigskip
 
 \item Plot average earnings and assets over the life-cycle from your model. How do the earnings data compare to your age earnings profile from the PSID?
 
-...
+\begin{center}
+\includegraphics[scale = 0.5]{figure_3d_1}
+\includegraphics[scale = 0.5]{figure_3d_2}
+\end{center}
 
-\item In your simulated data, what is the average gain in earnings when employed? How does this compare to your data estimate from last week?s assignment?
+The age earnings profile from the PSD is much different compared the earnings profile here.  Average earnings steadily fall here whereas in the PSID the earnings follow a hump shape that peaks in middle age.
 
-...
+\bigskip
+
+\item In your simulated data, what is the average gain in earnings when employed? How does this compare to your data estimate from last week's assignment?
+
+\bigskip
+
+The average gain while employed is about 0.5 percent.  That is much smaller than my estimate from last week's assignment.  Although I did not adjust my data estimates for inflation.
+
+\bigskip
 
 \item In your simulated data, make a graph of earnings around job loss (following an individual for 4 quarters before job loss to 8 quarters after job loss). How does the graph compare to the estimates from Davis and von Wachter and your estimates from part of the assignment?
 
-...
+\bigskip
+
+This graph more-or-less resembles the Davis and von Wachter graph, but the the initial recovery is much faster.  The earnings drop to the unemployment benefit level and quickly recover at first, but earnings stay about 15 percent lower for an extended period.
+
+\begin{center}
+\includegraphics[scale = 0.5]{figure_3f}
+\end{center}
+
+\pagebreak
 
 \item In your simulated data, make a graph of consumption around job loss.
 
-...
+\begin{center}
+\includegraphics[scale = 0.5]{figure_3g}
+\end{center}
 
 \item Increase the transfer to the unemployed by 10\%. How do the above graphs of earnings and consumption around job loss change? What happens to the unemployment rate in your economy?
 
-...
+\begin{center}
+\includegraphics[scale = 0.5]{figure_3h_1}
+\includegraphics[scale = 0.5]{figure_3h_2}
+\end{center}
+
+The unemployment rate is higher at about 50 percent.
 
 \end{enumerate}
 

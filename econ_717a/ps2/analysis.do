@@ -1,3 +1,5 @@
+log using analysis, replace
+
 * ECON 717A: Applied Econometrics
 * Problem set 2
 * Professor: Jeff Smith
@@ -268,7 +270,9 @@ display 1/n_1 * y_d_sum - 1/n_0 * wo_rescale_sum
 display 1/n_1 * y_d_sum - 1/n_0 * w_rescale_sum
 
 
+log close
 
+translate analysis.smcl analysis.log, linesize(255) replace
 
 
 

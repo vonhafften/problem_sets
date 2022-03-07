@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  6 MAR 2022 15:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  6 MAR 2022 16:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -605,41 +605,150 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 (./table_3.tex) [2] (./table_4a.tex) (./table_4b.tex)
-<figure_5a.png, id=28, 662.475pt x 481.8pt>
+<figure_5a.png, id=32, 662.475pt x 481.8pt>
 File: figure_5a.png Graphic file (type png)
 <use figure_5a.png>
 Package pdftex.def Info: figure_5a.png  used on input line 94.
 (pdftex.def)             Requested size: 331.2367pt x 240.8994pt.
-<figure_5b.png, id=30, 662.475pt x 481.8pt>
+<figure_5b.png, id=34, 662.475pt x 481.8pt>
 File: figure_5b.png Graphic file (type png)
 <use figure_5b.png>
 Package pdftex.def Info: figure_5b.png  used on input line 95.
 (pdftex.def)             Requested size: 331.2367pt x 240.8994pt.
-<figure_5a_2.png, id=31, 662.475pt x 481.8pt>
+<figure_5a_2.png, id=35, 662.475pt x 481.8pt>
 File: figure_5a_2.png Graphic file (type png)
 <use figure_5a_2.png>
 Package pdftex.def Info: figure_5a_2.png  used on input line 96.
 (pdftex.def)             Requested size: 331.2367pt x 240.8994pt.
-<figure_5b_2.png, id=32, 662.475pt x 481.8pt>
+<figure_5b_2.png, id=36, 662.475pt x 481.8pt>
 File: figure_5b_2.png Graphic file (type png)
 <use figure_5b_2.png>
 Package pdftex.def Info: figure_5b_2.png  used on input line 97.
 (pdftex.def)             Requested size: 331.2367pt x 240.8994pt.
  [3] [4 <./figure_5a.png> <./figure_5b.png>] [5 <./figure_5a_2.png> <./figure_5
 b_2.png>] (./table_6.tex)
-(./table_7.tex) (./table_9.tex) (./table_10.tex) (./table_11a.tex) [6]
-(./table_11b.tex) (./table_12a.tex) [7] (./table_12b.tex) [8] (./writeup.aux)
+(./table_7.tex) (./table_9.tex) [6] (./table_10.tex) (./table_11a.tex)
+(./table_11b.tex) [7] (./table_12a.tex) (./table_12b.tex) [8]
+File: "analysis.log"  (verbatim)
+
+Overfull \hbox (688.30832pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 ------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+------------------------------------- 
+ []
+
+[9
+
+] [10] [11] [12]
+Overfull \hbox (179.06276pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . outreg2 using table_3, tex(frag) replace addstat(Compariso
+n group obs. completely determined, e(N_cdf), Control group obs. completely det
+ermined,  e(N_cds))[] 
+ []
+
+[13]
+Overfull \hbox (173.8128pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . outreg2 using table_3, tex(frag) append addstat(Comparison
+ group obs. completely determined, e(N_cdf), Control group obs. completely dete
+rmined,  e(N_cds))[] 
+ []
+
+[14]
+Overfull \hbox (473.0602pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt
+(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber 
+nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")[] 
+ []
+
+
+Overfull \hbox (625.30887pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . esttab using "table_4a.tex", replace cells("mean(fmt(%13.2
+fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  co
+unt(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" 
+"Min" "Median" "Max" "N")[] 
+ []
+
+
+Overfull \hbox (473.0602pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt
+(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber 
+nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")[] 
+ []
+
+[15]
+Overfull \hbox (625.30887pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . esttab using "table_4b.tex", replace cells("mean(fmt(%13.2
+fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  co
+unt(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" 
+"Min" "Median" "Max" "N")[] 
+ []
+
+[16]
+Overfull \hbox (63.56377pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . graph bar (count) pscorea if binsa > 0, over(in_control) o
+ver(binsa, label(nolab)) asyvars title("Histogram of pscorea wo lowest bin")[] 
+
+ []
+
+
+Overfull \hbox (63.56377pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . graph bar (count) pscoreb if binsb > 0, over(in_control) o
+ver(binsb, label(nolab)) asyvars title("Histogram of pscoreb wo lowest bin")[] 
+
+ []
+
+[17] [18] [19] [20] [21] [22] [23] [24] [25] [26] [27] [28] [29] [30] [31]
+[32]
+Overfull \hbox (473.0602pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt
+(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber 
+nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")[] 
+ []
+
+[33]
+Overfull \hbox (630.55882pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . esttab using "table_11b.tex", replace cells("mean(fmt(%13.
+2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  c
+ount(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD"
+ "Min" "Median" "Max" "N")[] 
+ []
+
+[34]
+Overfull \hbox (473.0602pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt
+(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber 
+nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")[] 
+ []
+
+
+Overfull \hbox (630.55882pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 . esttab using "table_12b.tex", replace cells("mean(fmt(%13.
+2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  c
+ount(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD"
+ "Min" "Median" "Max" "N")[] 
+ []
+
+[35] [36] [37]
+Overfull \hbox (688.30832pt too wide) in paragraph at lines 189--189
+[]\OT1/cmtt/m/n/10 ------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------[] 
+ []
+
+[38] (./writeup.aux)
 Package rerunfilecheck Info: File `writeup.out' has not changed.
-(rerunfilecheck)             Checksum: 63C0A783AA1A9B87A9F372F7CAE75AEA;83.
+(rerunfilecheck)             Checksum: C48B1F3705C0F4F4F3918424C11B3006;202.
  ) 
 Here is how much of TeX's memory you used:
- 12011 strings out of 478994
- 172547 string characters out of 5858184
- 500385 words of memory out of 5000000
- 29248 multiletter control sequences out of 15000+600000
+ 12046 strings out of 478994
+ 172815 string characters out of 5858184
+ 509388 words of memory out of 5000000
+ 29251 multiletter control sequences out of 15000+600000
  411488 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,8n,74p,1412b,406s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,8n,74p,1412b,548s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -649,10 +758,10 @@ sr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
 ocal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
 cal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/loc
 al/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on writeup.pdf (8 pages, 301990 bytes).
+Output written on writeup.pdf (38 pages, 342004 bytes).
 PDF statistics:
- 108 PDF objects out of 1000 (max. 8388607)
- 81 compressed objects within 1 object stream
- 24 named destinations out of 1000 (max. 500000)
- 29 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 248 PDF objects out of 1000 (max. 8388607)
+ 190 compressed objects within 2 object streams
+ 55 named destinations out of 1000 (max. 500000)
+ 37 words of extra memory for PDF output out of 10000 (max. 10000000)
 

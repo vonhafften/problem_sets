@@ -3,9 +3,9 @@
 # PS 3 - Part 2 - Code for simulating the model
 # Professor Carter Braxton
 
-using Parameters
+using Parameters, StatsBase
 
-cd("/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_810a/ps3/")
+cd("/Users/vonhafften/Documents/UW Madison/problem_sets/econ_810a/ps3/")
 
 include("part_2_model.jl")
 
@@ -23,10 +23,13 @@ function Initialize_simulation(N::Int64)
     G = Grids()
 
     e = fill(0, N, P.T)
-    h = fill(G.min_h, N, P.T)
+    h = zeros(N, P.T)
     b = zeros(N, P.T)
     ω = zeros(N, P.T)
     θ = zeros(N, P.T)
+
+    h[:, 1] = sample(G.grid_h, N)
+    # h[:, 1] .= G.min_h
 
     Simulation_Results(N, e, h, b, ω, θ)
 end
@@ -101,6 +104,7 @@ function Simulate_model!(S::Simulation_Results, R::Results; progress::Bool = fal
                 S.e[i, t+1] = 0
             else
                 S.e[i, t+1] = 1
+                S.ω[i, t+1] = ω
             end
 
         else
@@ -108,4 +112,53 @@ function Simulate_model!(S::Simulation_Results, R::Results; progress::Bool = fal
         end
     end
     S
+end
+
+
+function earnings_around_jl(S::Simulation_Results, R::Results)
+    P = Primitives()
+
+    j = 1
+    max_j = 1000000
+    results = zeros(max_j, 4+8+1)
+
+    for t = 5:(P.T-8), i = 1:S.N
+        if (S.e[i, (t-4):(t-1)] == fill(1, 4)) & (S.e[i,t+1] == 0)
+            indexes = (t-4):(t+8)
+            results[j, :] = f.(S.h[i, indexes]) .* S.ω[i, indexes]  .* S.e[i, indexes] .+ (1 .- S.e[i, indexes]) * R.z
+            j += 1
+        end
+
+        if j > max_j
+            break
+        end
+    end
+
+    results[1:j-1,:]
+end
+
+function consumption_around_jl(S::Simulation_Results, R::Results)
+    P = Primitives()
+
+    j = 1
+    max_j = 1000000
+    results = zeros(max_j, 4+8+1)
+
+    for t = 5:(P.T-8), i = 1:S.N
+        if (S.e[i, (t-4):(t-1)] == fill(1, 4)) & (S.e[i,t+1] == 0)
+            indexes = (t-4):(t+8)
+
+            earnings = (1 - P.τ).*f.(S.h[i, indexes]) .* S.ω[i, indexes]  .* S.e[i, indexes] .+ (1 .- S.e[i, indexes]) * R.z
+            savings_today = S.b[i, indexes .- 1]
+            savings_tomorrow = (1/(1+P.r_f)) .* S.b[i, indexes]
+            results[j, :] = max.(earnings .+ savings_today .- savings_tomorrow, 0)
+            j += 1
+        end
+
+        if j > max_j
+            break
+        end
+    end
+
+    results[1:j-1,:]
 end

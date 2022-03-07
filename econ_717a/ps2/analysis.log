@@ -1,0 +1,1148 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps2/analysis.smcl
+  log type:  smcl
+ opened on:   6 Mar 2022, 16:02:41
+
+. 
+. * ECON 717A: Applied Econometrics
+
+. * Problem set 2
+
+. * Professor: Jeff Smith
+
+. * Alex von Hafften
+
+. * Matching and weighting
+
+. 
+. * clear workspace
+
+. clear
+
+. 
+. * install user defined functions (if needed)
+
+. ssc install outreg2
+checking outreg2 consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. ssc install psmatch2
+checking psmatch2 consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. ssc install texdoc
+checking texdoc consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. ssc install stddiff
+checking stddiff consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. 
+. * change working directory
+
+. cd "/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps2/"
+/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps2
+
+. 
+. * open dataset
+
+. use "Economics 717 Spring 2022 NSW Data.dta"
+
+. 
+. ********************************************************************************
+
+. * problem #0 - drop observation from the PSID
+
+. ********************************************************************************
+
+. 
+. drop if sample == 3
+(2,490 observations deleted)
+
+. 
+. ********************************************************************************
+
+. * problem #1 - treatment effect from experimental data
+
+. ********************************************************************************
+
+. 
+. gen age_2 = age^2
+
+. 
+. regress re78 treated, robust
+
+Linear regression                               Number of obs     =        722
+                                                F(1, 720)         =       3.30
+                                                Prob > F          =     0.0698
+                                                R-squared         =     0.0049
+                                                Root MSE          =       6242
+
+------------------------------------------------------------------------------
+             |               Robust
+        re78 | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     treated |   886.3038   488.1385     1.82   0.070    -72.04111    1844.649
+       _cons |   5090.048    277.426    18.35   0.000     4545.388    5634.709
+------------------------------------------------------------------------------
+
+. outreg2 using table_1, tex(frag) replace
+table_1.tex
+dir : seeout
+
+. 
+. regress re78 treated age age_2 educ black hisp married nodegree re74 re75, robust
+
+Linear regression                               Number of obs     =        722
+                                                F(10, 711)        =       2.75
+                                                Prob > F          =     0.0025
+                                                R-squared         =     0.0454
+                                                Root MSE          =     6152.3
+
+------------------------------------------------------------------------------
+             |               Robust
+        re78 | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     treated |   818.7003   487.8295     1.68   0.094    -139.0582    1776.459
+         age |  -145.9217   200.7603    -0.73   0.468    -540.0755    248.2322
+       age_2 |   2.799479   3.245728     0.86   0.389     -3.57288    9.171837
+        educ |   206.8112   165.4509     1.25   0.212    -118.0195     531.642
+       black |  -1461.261   734.3153    -1.99   0.047    -2902.947   -19.57563
+        hisp |   100.4831   958.5652     0.10   0.917    -1781.474     1982.44
+     married |   133.9094   660.0178     0.20   0.839    -1161.908    1429.726
+    nodegree |   -405.909   752.0756    -0.54   0.590    -1882.464    1070.646
+        re74 |   .0871344   .1061708     0.82   0.412    -.1213114    .2955802
+        re75 |   .0839624   .1188638     0.71   0.480    -.1494036    .3173283
+       _cons |    5648.81   3757.499     1.50   0.133     -1728.31    13025.93
+------------------------------------------------------------------------------
+
+. outreg2 using table_1, tex(frag) append
+table_1.tex
+dir : seeout
+
+. 
+. ********************************************************************************
+
+. * problem #2 - drop the experimental treatment group
+
+. ********************************************************************************
+
+. 
+. drop if treated == 1  & sample==1 
+(297 observations deleted)
+
+. 
+. ********************************************************************************
+
+. * problem #3 - estimate propensity scores
+
+. ********************************************************************************
+
+. 
+. gen in_control = (sample ==1) 
+
+. 
+. probit in_control age age_2 educ black hisp married nodegree
+
+Iteration 0:   log likelihood = -1972.3937  
+Iteration 1:   log likelihood = -1152.9501  
+Iteration 2:   log likelihood = -946.08275  
+Iteration 3:   log likelihood = -919.36768  
+Iteration 4:   log likelihood = -917.89575  
+Iteration 5:   log likelihood =  -917.8945  
+Iteration 6:   log likelihood =  -917.8945  
+
+Probit regression                                      Number of obs =  16,417
+                                                       LR chi2(7)    = 2109.00
+                                                       Prob > chi2   =  0.0000
+Log likelihood = -917.8945                             Pseudo R2     =  0.5346
+
+------------------------------------------------------------------------------
+  in_control | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .2532387   .0293232     8.64   0.000     .1957664    .3107111
+       age_2 |  -.0045319   .0004929    -9.19   0.000    -.0054981   -.0035658
+        educ |   .0168833   .0180737     0.93   0.350    -.0185405     .052307
+       black |   1.989908   .0778422    25.56   0.000      1.83734    2.142476
+        hisp |   .9732994   .1033626     9.42   0.000     .7707124    1.175886
+     married |  -1.101057   .0826205   -13.33   0.000     -1.26299   -.9391236
+    nodegree |   1.132688   .1004559    11.28   0.000     .9357984    1.329578
+       _cons |     -6.358   .4834229   -13.15   0.000    -7.305492   -5.410509
+------------------------------------------------------------------------------
+Note: 727 failures and 0 successes completely determined.
+
+. outreg2 using table_3, tex(frag) replace addstat(Comparison group obs. completely determined, e(N_cdf), Control group obs. completely determined,  e(N_cds))
+table_3.tex
+dir : seeout
+
+. predict pscorea, pr
+
+. 
+. probit in_control age age_2 educ black hisp married nodegree re74 re75
+
+Iteration 0:   log likelihood = -1972.3937  
+Iteration 1:   log likelihood = -1134.7468  
+Iteration 2:   log likelihood = -901.47114  
+Iteration 3:   log likelihood =  -864.6975  
+Iteration 4:   log likelihood = -862.49864  
+Iteration 5:   log likelihood = -862.48901  
+Iteration 6:   log likelihood = -862.48901  
+
+Probit regression                                      Number of obs =  16,417
+                                                       LR chi2(9)    = 2219.81
+                                                       Prob > chi2   =  0.0000
+Log likelihood = -862.48901                            Pseudo R2     =  0.5627
+
+------------------------------------------------------------------------------
+  in_control | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .3224723    .031638    10.19   0.000     .2604629    .3844817
+       age_2 |  -.0054825   .0005302   -10.34   0.000    -.0065216   -.0044433
+        educ |   .0178156   .0182703     0.98   0.330    -.0179934    .0536247
+       black |   1.950403   .0795723    24.51   0.000     1.794444    2.106362
+        hisp |   .9775352   .1061721     9.21   0.000     .7694418    1.185629
+     married |  -.9090639    .086934   -10.46   0.000    -1.079451   -.7386764
+    nodegree |   1.071194   .1039852    10.30   0.000     .8673865    1.275001
+        re74 |  -1.07e-06   8.60e-06    -0.12   0.901    -.0000179    .0000158
+        re75 |  -.0000576   9.56e-06    -6.03   0.000    -.0000764   -.0000389
+       _cons |  -7.108113   .5090983   -13.96   0.000    -8.105928   -6.110299
+------------------------------------------------------------------------------
+Note: 1359 failures and 0 successes completely determined.
+
+. outreg2 using table_3, tex(frag) append addstat(Comparison group obs. completely determined, e(N_cdf), Control group obs. completely determined,  e(N_cds))
+table_3.tex
+dir : seeout
+
+. predict pscoreb, pr
+
+. 
+. ********************************************************************************
+
+. * problem #4 - compare pscorea and pscoreb descriptive statistics
+
+. ********************************************************************************
+
+. 
+. est clear
+
+. estpost tabstat pscorea, by(in_control) c(stat) stat(mean, sd, min, median, max, count)
+
+Summary statistics: mean sd min p50 max count
+     for variables: pscorea
+  by categories of: in_control
+
+  in_control |   e(mean)      e(sd)     e(min)     e(p50)     e(max)   e(count) 
+-------------+------------------------------------------------------------------
+           0 |  .0164119   .0654307   9.79e-13   .0001069   .6872082      15992 
+           1 |  .3873009    .230529   .0000756   .4716014   .6872082        425 
+-------------+------------------------------------------------------------------
+       Total |  .0260134   .0949319   9.79e-13   .0001121   .6872082      16417 
+
+. esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+
+--------------------------------------------------------------------------------------------------
+                             Mean           SD          Min       Median          Max            N
+--------------------------------------------------------------------------------------------------
+0                            0.02         0.07         0.00         0.00         0.69       15,992
+1                            0.39         0.23         0.00         0.47         0.69          425
+Total                        0.03         0.09         0.00         0.00         0.69       16,417
+--------------------------------------------------------------------------------------------------
+
+. esttab using "table_4a.tex", replace cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+(output written to table_4a.tex)
+
+. 
+. est clear
+
+. estpost tabstat pscoreb, by(in_control) c(stat) stat(mean, sd, min, median, max, count)
+
+Summary statistics: mean sd min p50 max count
+     for variables: pscoreb
+  by categories of: in_control
+
+  in_control |   e(mean)      e(sd)     e(min)     e(p50)     e(max)   e(count) 
+-------------+------------------------------------------------------------------
+           0 |  .0154465   .0642919   2.08e-16   .0000677   .7886285      15992 
+           1 |  .4248305   .2459295   1.64e-06   .4634333   .8024473        425 
+-------------+------------------------------------------------------------------
+       Total |  .0260445   .0990717   2.08e-16   .0000899   .8024473      16417 
+
+. esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+
+--------------------------------------------------------------------------------------------------
+                             Mean           SD          Min       Median          Max            N
+--------------------------------------------------------------------------------------------------
+0                            0.02         0.06         0.00         0.00         0.79       15,992
+1                            0.42         0.25         0.00         0.46         0.80          425
+Total                        0.03         0.10         0.00         0.00         0.80       16,417
+--------------------------------------------------------------------------------------------------
+
+. esttab using "table_4b.tex", replace cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+(output written to table_4b.tex)
+
+. 
+. ********************************************************************************
+
+. * problem #5 - histograms
+
+. ********************************************************************************
+
+. 
+. * create bins based on pscorea and pscoreb
+
+. egen binsa=cut(pscorea), at(0(.05)1) icodes
+
+. egen binsb=cut(pscoreb), at(0(.05)1) icodes
+
+. 
+. * histogram of pscorea
+
+. graph bar (count) pscorea, over(in_control) over(binsa, label(nolab)) asyvars title("Histogram of pscorea")
+
+. graph export figure_5a.png, replace
+file /Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps2/figure_5a.png saved as PNG format
+
+. 
+. * histogram of pscoreb
+
+. graph bar (count) pscoreb, over(in_control) over(binsb, label(nolab)) asyvars title("Histogram of pscoreb")
+
+. graph export figure_5b.png, replace
+file /Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps2/figure_5b.png saved as PNG format
+
+. 
+. * histogram of pscorea wo lowest bin
+
+. graph bar (count) pscorea if binsa > 0, over(in_control) over(binsa, label(nolab)) asyvars title("Histogram of pscorea wo lowest bin")
+
+. graph export figure_5a_2.png, replace
+file /Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps2/figure_5a_2.png saved as PNG format
+
+. 
+. * histogram of pscoreb wo lowest bin
+
+. graph bar (count) pscoreb if binsb > 0, over(in_control) over(binsb, label(nolab)) asyvars title("Histogram of pscoreb wo lowest bin")
+
+. graph export figure_5b_2.png, replace
+file /Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps2/figure_5b_2.png saved as PNG format
+
+.  
+. ********************************************************************************
+
+. * problem #6 - Nearest neighbor wo replacement
+
+. ********************************************************************************
+
+. 
+. global table_number = 6
+
+. 
+. est clear 
+
+. eststo: psmatch2 in_control, noreplacement outcome(re78) pscore(pscorea) neighbor(1) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re78  Unmatched |  5090.0482   14846.6596  -9756.61142   470.155617   -20.75
+                        ATT |  5090.0482   9529.11811  -4439.06991   486.482153    -9.12
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+           | psmatch2:
+ psmatch2: |   Common
+ Treatment |  support
+assignment | On suppor |     Total
+-----------+-----------+----------
+ Untreated |    15,992 |    15,992 
+   Treated |       425 |       425 
+-----------+-----------+----------
+     Total |    16,417 |    16,417 
+(est1 stored)
+
+. 
+. global att_coarse = r(att)
+
+. global att_coarse_se = r(seatt)
+
+. 
+. esttab, se
+
+----------------------------
+                      (1)   
+                     re78   
+----------------------------
+_treated          -9756.6***
+                  (470.2)   
+
+_cons             14846.7***
+                  (75.65)   
+----------------------------
+N                   16417   
+----------------------------
+Standard errors in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+
+. 
+. global unm_coef = r(coefs)[1, 1]
+
+. global unm_se = r(coefs)[1, 2]
+
+. 
+. psmatch2 in_control, noreplacement outcome(re78) pscore(pscoreb) neighbor(1) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re78  Unmatched |  5090.0482   14846.6596  -9756.61142   470.155617   -20.75
+                        ATT | 5067.39448   7408.17564  -2340.78116   449.369786    -5.21
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+ psmatch2: |   psmatch2: Common
+ Treatment |        support
+assignment | Off suppo  On suppor |     Total
+-----------+----------------------+----------
+ Untreated |         0     15,992 |    15,992 
+   Treated |         7        418 |       425 
+-----------+----------------------+----------
+     Total |         7     16,410 |    16,417 
+
+. 
+. global att_fine = r(att)
+
+. global att_fine_se = r(seatt)
+
+. 
+. texdoc do table_maker
+
+. global unm_coef = round($unm_coef, 0.01)
+
+. global unm_se = round($unm_se, 0.01)
+
+. 
+. global att_coarse = round($att_coarse, 0.01)
+
+. global att_fine = round($att_fine, 0.01)
+
+. 
+. global att_coarse_se = round($att_coarse_se, 0.01)
+
+. global att_fine_se = round($att_fine_se, 0.01)
+
+. 
+. global table_name = "table_$table_number.tex"
+
+. 
+. local row1 = "Difference & $unm_coef & $att_coarse & $att_fine \\" 
+
+. local row2 = "SE & $unm_se & $att_coarse_se & $att_fine_se \\"
+
+. 
+. texdoc init $table_name, replace
+(texdoc output file is table_6.tex)
+
+. 
+. texdoc append_snippet 2
+
+. 
+. texdoc write `row1'
+
+. texdoc write `row2'
+
+. 
+. texdoc append_snippet 3
+
+. 
+. texdoc close 
+(texdoc output written to table_6.tex)
+
+. 
+end of do-file
+
+. 
+. ********************************************************************************
+
+. * problem #7 - nearest neighbor w replacement
+
+. ********************************************************************************
+
+. 
+. global table_number = 7
+
+. 
+. est clear 
+
+. eststo: psmatch2 in_control, outcome(re78) pscore(pscorea) neighbor(1) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re78  Unmatched |  5090.0482   14846.6596  -9756.61142   470.155617   -20.75
+                        ATT |  5090.0482   8767.08057  -3677.03237   934.497524    -3.93
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+           | psmatch2:
+ psmatch2: |   Common
+ Treatment |  support
+assignment | On suppor |     Total
+-----------+-----------+----------
+ Untreated |    15,992 |    15,992 
+   Treated |       425 |       425 
+-----------+-----------+----------
+     Total |    16,417 |    16,417 
+(est1 stored)
+
+. 
+. global att_coarse = r(att)
+
+. global att_coarse_se = r(seatt)
+
+. 
+. esttab, se
+
+----------------------------
+                      (1)   
+                     re78   
+----------------------------
+_treated          -9756.6***
+                  (470.2)   
+
+_cons             14846.7***
+                  (75.65)   
+----------------------------
+N                   16417   
+----------------------------
+Standard errors in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+
+. 
+. global unm_coef = r(coefs)[1, 1]
+
+. global unm_se = r(coefs)[1, 2]
+
+. 
+. psmatch2 in_control, outcome(re78) pscore(pscoreb) neighbor(1) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re78  Unmatched |  5090.0482   14846.6596  -9756.61142   470.155617   -20.75
+                        ATT | 5067.39448   6583.38855  -1515.99407   707.616814    -2.14
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+ psmatch2: |   psmatch2: Common
+ Treatment |        support
+assignment | Off suppo  On suppor |     Total
+-----------+----------------------+----------
+ Untreated |         0     15,992 |    15,992 
+   Treated |         7        418 |       425 
+-----------+----------------------+----------
+     Total |         7     16,410 |    16,417 
+
+. 
+. global att_fine = r(att)
+
+. global att_fine_se = r(seatt)
+
+. 
+. texdoc do table_maker
+
+. global unm_coef = round($unm_coef, 0.01)
+
+. global unm_se = round($unm_se, 0.01)
+
+. 
+. global att_coarse = round($att_coarse, 0.01)
+
+. global att_fine = round($att_fine, 0.01)
+
+. 
+. global att_coarse_se = round($att_coarse_se, 0.01)
+
+. global att_fine_se = round($att_fine_se, 0.01)
+
+. 
+. global table_name = "table_$table_number.tex"
+
+. 
+. local row1 = "Difference & $unm_coef & $att_coarse & $att_fine \\" 
+
+. local row2 = "SE & $unm_se & $att_coarse_se & $att_fine_se \\"
+
+. 
+. texdoc init $table_name, replace
+(texdoc output file is table_7.tex)
+
+. 
+. texdoc append_snippet 2
+
+. 
+. texdoc write `row1'
+
+. texdoc write `row2'
+
+. 
+. texdoc append_snippet 3
+
+. 
+. texdoc close 
+(texdoc output written to table_7.tex)
+
+. 
+end of do-file
+
+. 
+. ********************************************************************************
+
+. * problem #8 - standardized differences
+
+. ********************************************************************************
+
+. 
+. * raw data
+
+. stddiff re74 re75, by(in_control)
+
+------------------------------------------------------------------------------
+             |      in_control=0       |      in_control=1       |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+        re74 |     14017        9569.8 |      3672        6521.5 |    1.26323
+        re75 |     13651        9270.4 |      3027        5201.2 |    1.41345
+------------------------------------------------------------------------------
+
+. 
+. * rich pscore nearest neighbor - re74
+
+. psmatch2 in_control, outcome(re74) pscore(pscoreb) neighbor(1) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re74  Unmatched | 3672.48515   14016.8007  -10344.3156   467.066411   -22.15
+                        ATT |  3733.9861   4475.24661  -741.260515   638.936788    -1.16
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+ psmatch2: |   psmatch2: Common
+ Treatment |        support
+assignment | Off suppo  On suppor |     Total
+-----------+----------------------+----------
+ Untreated |         0     15,992 |    15,992 
+   Treated |         7        418 |       425 
+-----------+----------------------+----------
+     Total |         7     16,410 |    16,417 
+
+. 
+. * rich pscore nearest neighbor - re74
+
+. psmatch2 in_control, outcome(re75) pscore(pscoreb) neighbor(1) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re75  Unmatched | 3026.68274   13650.8032  -10624.1204   451.566731   -23.53
+                        ATT | 3077.36881   3629.42503  -552.056218   562.743993    -0.98
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+ psmatch2: |   psmatch2: Common
+ Treatment |        support
+assignment | Off suppo  On suppor |     Total
+-----------+----------------------+----------
+ Untreated |         0     15,992 |    15,992 
+   Treated |         7        418 |       425 
+-----------+----------------------+----------
+     Total |         7     16,410 |    16,417 
+
+. 
+. ********************************************************************************
+
+. * problem #9 - gaussian kernel matching
+
+. ********************************************************************************
+
+. 
+. global table_number = 9
+
+. 
+. psmatch2 in_control, kernel outcome(re78) kerneltype(normal) pscore(pscoreb) bwidth(0.02) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re78  Unmatched |  5090.0482   14846.6596  -9756.61142   470.155617   -20.75
+                        ATT | 5067.39448   7416.48625  -2349.09177   658.531426    -3.57
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+ psmatch2: |   psmatch2: Common
+ Treatment |        support
+assignment | Off suppo  On suppor |     Total
+-----------+----------------------+----------
+ Untreated |         0     15,992 |    15,992 
+   Treated |         7        418 |       425 
+-----------+----------------------+----------
+     Total |         7     16,410 |    16,417 
+
+. 
+. global att_low = r(att)
+
+. global att_low_se = r(seatt)
+
+. 
+. psmatch2 in_control, kernel outcome(re78) kerneltype(normal) pscore(pscoreb) bwidth(0.2) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re78  Unmatched |  5090.0482   14846.6596  -9756.61142   470.155617   -20.75
+                        ATT | 5067.39448   12110.8234  -7043.42897     337.0603   -20.90
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+ psmatch2: |   psmatch2: Common
+ Treatment |        support
+assignment | Off suppo  On suppor |     Total
+-----------+----------------------+----------
+ Untreated |         0     15,992 |    15,992 
+   Treated |         7        418 |       425 
+-----------+----------------------+----------
+     Total |         7     16,410 |    16,417 
+
+. 
+. global att_med = r(att)
+
+. global att_med_se = r(seatt)
+
+. 
+. psmatch2 in_control, kernel outcome(re78) kerneltype(normal) pscore(pscoreb) bwidth(2.0) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re78  Unmatched |  5090.0482   14846.6596  -9756.61142   470.155617   -20.75
+                        ATT | 5067.39448   14839.5273  -9772.13283   289.251216   -33.78
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+ psmatch2: |   psmatch2: Common
+ Treatment |        support
+assignment | Off suppo  On suppor |     Total
+-----------+----------------------+----------
+ Untreated |         0     15,992 |    15,992 
+   Treated |         7        418 |       425 
+-----------+----------------------+----------
+     Total |         7     16,410 |    16,417 
+
+. 
+. global att_hi = r(att)
+
+. global att_hi_se = r(seatt)
+
+. 
+. texdoc do table_maker_2
+
+. 
+. global att_low = round($att_low, 0.01)
+
+. global att_med = round($att_med, 0.01)
+
+. global att_hi = round($att_hi, 0.01)
+
+. 
+. global att_low_se = round($att_low_se, 0.01)
+
+. global att_med_se = round($att_med_se, 0.01)
+
+. global att_hi_se = round($att_hi_se, 0.01)
+
+. 
+. global table_name = "table_$table_number.tex"
+
+. 
+. local row1 = "Difference & $att_low & $att_med & $att_hi \\" 
+
+. local row2 = "SE & $att_low_se & $att_med_se & $att_hi_se \\"
+
+. 
+. texdoc init $table_name, replace
+(texdoc output file is table_9.tex)
+
+. 
+. texdoc append_snippet 2
+
+. 
+. texdoc write `row1'
+
+. texdoc write `row2'
+
+. 
+. texdoc append_snippet 3
+
+. 
+. texdoc close 
+(texdoc output written to table_9.tex)
+
+. 
+end of do-file
+
+. 
+. ********************************************************************************
+
+. * problem #10 - local linear matching
+
+. ********************************************************************************
+
+. 
+. global table_number = 10
+
+. 
+. psmatch2 in_control, llr outcome(re78) pscore(pscoreb) bwidth(0.02) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re78  Unmatched |  5090.0482   14846.6596  -9756.61142   470.155617   -20.75
+                        ATT | 5067.39448   7048.27098   -1980.8765   707.616814    -2.80
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+ psmatch2: |   psmatch2: Common
+ Treatment |        support
+assignment | Off suppo  On suppor |     Total
+-----------+----------------------+----------
+ Untreated |         0     15,992 |    15,992 
+   Treated |         7        418 |       425 
+-----------+----------------------+----------
+     Total |         7     16,410 |    16,417 
+
+. 
+. global att_low = r(att)
+
+. global att_low_se = r(seatt)
+
+. 
+. psmatch2 in_control, llr outcome(re78) pscore(pscoreb) bwidth(0.2) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re78  Unmatched |  5090.0482   14846.6596  -9756.61142   470.155617   -20.75
+                        ATT | 5067.39448   7488.81187  -2421.41739   707.616814    -3.42
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+ psmatch2: |   psmatch2: Common
+ Treatment |        support
+assignment | Off suppo  On suppor |     Total
+-----------+----------------------+----------
+ Untreated |         0     15,992 |    15,992 
+   Treated |         7        418 |       425 
+-----------+----------------------+----------
+     Total |         7     16,410 |    16,417 
+
+. 
+. global att_med = r(att)
+
+. global att_med_se = r(seatt)
+
+. 
+. psmatch2 in_control, llr outcome(re78) pscore(pscoreb) bwidth(2.0) common
+----------------------------------------------------------------------------------------
+        Variable     Sample |    Treated     Controls   Difference         S.E.   T-stat
+----------------------------+-----------------------------------------------------------
+            re78  Unmatched |  5090.0482   14846.6596  -9756.61142   470.155617   -20.75
+                        ATT | 5067.39448   4073.51859   993.875888   707.616814     1.40
+----------------------------+-----------------------------------------------------------
+Note: S.E. does not take into account that the propensity score is estimated.
+
+ psmatch2: |   psmatch2: Common
+ Treatment |        support
+assignment | Off suppo  On suppor |     Total
+-----------+----------------------+----------
+ Untreated |         0     15,992 |    15,992 
+   Treated |         7        418 |       425 
+-----------+----------------------+----------
+     Total |         7     16,410 |    16,417 
+
+. 
+. global att_hi = r(att)
+
+. global att_hi_se = r(seatt)
+
+. 
+. texdoc do table_maker_2
+
+. 
+. global att_low = round($att_low, 0.01)
+
+. global att_med = round($att_med, 0.01)
+
+. global att_hi = round($att_hi, 0.01)
+
+. 
+. global att_low_se = round($att_low_se, 0.01)
+
+. global att_med_se = round($att_med_se, 0.01)
+
+. global att_hi_se = round($att_hi_se, 0.01)
+
+. 
+. global table_name = "table_$table_number.tex"
+
+. 
+. local row1 = "Difference & $att_low & $att_med & $att_hi \\" 
+
+. local row2 = "SE & $att_low_se & $att_med_se & $att_hi_se \\"
+
+. 
+. texdoc init $table_name, replace
+(texdoc output file is table_10.tex)
+
+. 
+. texdoc append_snippet 2
+
+. 
+. texdoc write `row1'
+
+. texdoc write `row2'
+
+. 
+. texdoc append_snippet 3
+
+. 
+. texdoc close 
+(texdoc output written to table_10.tex)
+
+. 
+end of do-file
+
+. 
+. ********************************************************************************
+
+. * problem #11 - linear regression of in_control
+
+. ********************************************************************************
+
+. 
+. regress re78 in_control age age_2 educ black hisp married nodegree re74 re75, robust
+
+Linear regression                               Number of obs     =     16,417
+                                                F(10, 16406)      =    1816.18
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.4834
+                                                Root MSE          =       6967
+
+------------------------------------------------------------------------------
+             |               Robust
+        re78 | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  in_control |   -1853.39   343.2473    -5.40   0.000    -2526.192   -1180.588
+         age |  -235.5257   40.07742    -5.88   0.000    -314.0818   -156.9696
+       age_2 |   1.857809   .5503194     3.38   0.001     .7791228    2.936494
+        educ |   163.3092   28.52916     5.72   0.000      107.389    219.2295
+       black |  -832.3813     193.93    -4.29   0.000    -1212.505   -452.2574
+        hisp |  -114.1536   213.9065    -0.53   0.594    -533.4335    305.1264
+     married |   199.4396   150.7536     1.32   0.186    -96.05388    494.9331
+    nodegree |   296.5755   174.3492     1.70   0.089    -45.16774    638.3188
+        re74 |   .2912688   .0151515    19.22   0.000     .2615701    .3209675
+        re75 |   .4710542   .0152652    30.86   0.000     .4411326    .5009757
+       _cons |    7757.18   726.6778    10.67   0.000     6332.813    9181.548
+------------------------------------------------------------------------------
+
+. outreg2 using table_11a, tex(frag) replace
+table_11a.tex
+dir : seeout
+
+. 
+. predict y_hat_11
+(option xb assumed; fitted values)
+
+. 
+. est clear
+
+. estpost tabstat y_hat_11, by(in_control) c(stat) stat(mean, sd, min, median, max, count)
+
+Summary statistics: mean sd min p50 max count
+     for variables: y_hat_11
+  by categories of: in_control
+
+  in_control |   e(mean)      e(sd)     e(min)     e(p50)     e(max)   e(count) 
+-------------+------------------------------------------------------------------
+           0 |  14846.66   6608.113   241.1631   15369.08   25559.22      15992 
+           1 |  5090.048   4227.391  -1476.131   3915.223   31078.45        425 
+-------------+------------------------------------------------------------------
+       Total |  14594.08   6737.868  -1476.131   15111.14   31078.45      16417 
+
+. esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+
+--------------------------------------------------------------------------------------------------
+                             Mean           SD          Min       Median          Max            N
+--------------------------------------------------------------------------------------------------
+0                       14,846.66     6,608.11       241.16    15,369.08    25,559.22       15,992
+1                        5,090.05     4,227.39    -1,476.13     3,915.22    31,078.45          425
+Total                   14,594.08     6,737.87    -1,476.13    15,111.14    31,078.45       16,417
+--------------------------------------------------------------------------------------------------
+
+. esttab using "table_11b.tex", replace cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+(output written to table_11b.tex)
+
+. 
+. ********************************************************************************
+
+. * problem #12 - linear regression of in_control out-of-sample
+
+. ********************************************************************************
+
+. 
+. regress re78 age age_2 educ black hisp married nodegree re74 re75 if in_control == 0, robust 
+
+Linear regression                               Number of obs     =     15,992
+                                                F(9, 15982)       =    1896.13
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.4758
+                                                Root MSE          =       6987
+
+------------------------------------------------------------------------------
+             |               Robust
+        re78 | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |  -252.0485    40.9195    -6.16   0.000    -332.2553   -171.8417
+       age_2 |   2.040805   .5606718     3.64   0.000     .9418257    3.139785
+        educ |   166.5983    28.7942     5.79   0.000     110.1584    223.0382
+       black |  -773.8793   199.5513    -3.88   0.000    -1165.022   -382.7364
+        hisp |  -168.2284   218.9343    -0.77   0.442    -597.3642    260.9074
+     married |   244.1442   153.1012     1.59   0.111     -55.9513    544.2398
+    nodegree |   330.6767   176.8639     1.87   0.062    -15.99642    677.3497
+        re74 |   .2988693    .015235    19.62   0.000     .2690069    .3287317
+        re75 |   .4699589   .0153351    30.65   0.000     .4399004    .5000173
+       _cons |   7908.362   739.6679    10.69   0.000      6458.53    9358.194
+------------------------------------------------------------------------------
+
+. outreg2 using table_12a, tex(frag) replace
+table_12a.tex
+dir : seeout
+
+. 
+. predict y_hat_12
+(option xb assumed; fitted values)
+
+. 
+. est clear
+
+. estpost tabstat y_hat_12, by(in_control) c(stat) stat(mean, sd, min, median, max, count)
+
+Summary statistics: mean sd min p50 max count
+     for variables: y_hat_12
+  by categories of: in_control
+
+  in_control |   e(mean)      e(sd)     e(min)     e(p50)     e(max)   e(count) 
+-------------+------------------------------------------------------------------
+           0 |  14846.66    6654.46   162.9647   15370.95   25693.43      15992 
+           1 |  6941.597   4269.447   275.7228   5770.588   33124.62        425 
+-------------+------------------------------------------------------------------
+       Total |  14642.01   6721.768   162.9647   15110.59   33124.62      16417 
+
+. esttab, cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+
+--------------------------------------------------------------------------------------------------
+                             Mean           SD          Min       Median          Max            N
+--------------------------------------------------------------------------------------------------
+0                       14,846.66     6,654.46       162.96    15,370.95    25,693.43       15,992
+1                        6,941.60     4,269.45       275.72     5,770.59    33,124.62          425
+Total                   14,642.01     6,721.77       162.96    15,110.59    33,124.62       16,417
+--------------------------------------------------------------------------------------------------
+
+. esttab using "table_12b.tex", replace cells("mean(fmt(%13.2fc)) sd(fmt(%13.2fc)) min(fmt(%13.2fc)) p50(fmt(%13.2fc)) max(fmt(%13.2fc))  count(fmt(%13.0fc))") nonumber nomtitle nonote noobs label collabels("Mean" "SD" "Min" "Median" "Max" "N")
+(output written to table_12b.tex)
+
+. 
+. ********************************************************************************
+
+. * problem #13 - inverse probability weighting
+
+. ********************************************************************************
+
+. 
+. * get number of treated
+
+. count if in_control == 1
+  425
+
+. scalar n_1 = r(N)
+
+. 
+. * get number of untreated
+
+. count if in_control == 0
+  15,992
+
+. scalar n_0 = r(N)
+
+. 
+. * get unconditional probability of treatment
+
+. scalar p_hat = n_1/(n_0 + n_1)
+
+. 
+. * get y * d
+
+. gen y_d = re78 * in_control
+
+. summarize y_d
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         y_d |     16,417    131.7701    1223.885          0   39483.53
+
+. scalar y_d_sum = r(sum)
+
+. 
+. * get second term wo rescaling
+
+. gen wo_rescale = (1 - p_hat) / p_hat * pscoreb * re78 * (1 - in_control)/(1 - pscoreb)
+
+. summarize wo_rescale
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+  wo_rescale |     16,417    6341.886    45200.03          0    1596524
+
+. scalar wo_rescale_sum = r(sum)
+
+. 
+. * get second term w rescaling
+
+. gen rescaling = pscoreb * (1-in_control)/(1-pscoreb) 
+
+. summarize rescaling
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   rescaling |     16,417    .0237833    .1427705          0   3.731006
+
+. scalar rescaling = 1/n_0 * r(sum)
+
+. gen w_rescale = (1/rescaling) * pscoreb * re78 * (1 - in_control)/(1-pscoreb)
+(425 missing values generated)
+
+. summarize w_rescale
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   w_rescale |     15,992    14846.66    9647.391          0   25564.67
+
+. scalar w_rescale_sum = r(sum)
+
+. 
+. * treatment effect on treated ipw w and wo rescaling
+
+. display 1/n_1 * y_d_sum - 1/n_0 * wo_rescale_sum
+-1420.3787
+
+. display 1/n_1 * y_d_sum - 1/n_0 * w_rescale_sum
+-9756.6114
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps2/analysis.smcl
+  log type:  smcl
+ closed on:   6 Mar 2022, 16:03:56
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

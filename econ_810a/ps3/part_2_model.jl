@@ -5,7 +5,7 @@
 
 using Parameters
 
-cd("/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_810a/ps3/")
+cd("/Users/vonhafften/Documents/UW Madison/problem_sets/econ_810a/ps3/")
 
 # Primitive structure
 @with_kw struct Primitives
@@ -14,8 +14,7 @@ cd("/Users/alexandervonhafften/Documents/UW Madison/problem_sets/econ_810a/ps3/"
     r_f::Float64 = 0.04  # risk-free rate
     δ::Float64   = 0.1   # job destruction rate
     ζ::Float64   = 1.6   # matching elasticity
-    κ::Float64   = 0.5   # vacancy posting cost
-    z::Float64   = 0.4   # unemployment benefit
+    κ::Float64   = 0.995 # vacancy posting cost
     σ::Float64   = 2.0   # coefficient of relative risk aversion
     p_L::Float64 = 0.5   # probability of human capital drop while unemployed
     p_H::Float64 = 0.05  # probability of human capital improvement while employed
@@ -36,14 +35,14 @@ end
     # wage piece rate grid
     min_ω::Float64            = 0.1                               # lower bound
     max_ω::Float64            = 1.0                               # upper bound
-    N_ω::Int64                = 9                                 # number of points
+    N_ω::Int64                = 10                                # number of points
     grid_srl_ω                = range(min_ω, max_ω; length = N_ω) # step range
     grid_ω::Array{Float64, 1} = collect(grid_srl_ω)               # grid array
 
     # bond grid
     min_b::Float64            = 0.0                               # lower bound
     max_b::Float64            = 30.0                              # upper bound
-    N_b::Int64                = 31                                # number of points
+    N_b::Int64                = 101                               # number of points
     grid_srl_b                = range(min_b, max_b; length = N_b) # step range
     grid_b::Array{Float64, 1} = collect(grid_srl_b)               # grid array
 
@@ -51,6 +50,9 @@ end
 
 # Results
 mutable struct Results
+
+    z::Float64                 # unemployment benefit
+
     j_vf::Array{Float64}       # firm value function
     θ::Array{Float64}          # market tightness
 
@@ -63,7 +65,7 @@ mutable struct Results
 end
 
 # Initialize results structure
-function Initialize()
+function Initialize(z::Float64)
     @unpack T = Primitives()
     @unpack N_ω, N_b, N_h = Grids()
 
@@ -78,7 +80,7 @@ function Initialize()
     u_b_pf = zeros(T, N_b, N_h)
     u_ω_pf = zeros(T, N_b, N_h)
     
-    Results(j_vf, θ, w_vf, w_b_pf, u_vf, u_b_pf, u_ω_pf)
+    Results(z, j_vf, θ, w_vf, w_b_pf, u_vf, u_b_pf, u_ω_pf)
 end
 
 # utility function
@@ -157,7 +159,7 @@ function Solve_terminal_period!(R::Results; progress::Bool = false)
 
         # compute unemployed work value (eats everything)
         for (i_b, b) = enumerate(G.grid_b)
-            R.u_vf[P.T, i_b, i_h] = u(P.z + b, P.σ)
+            R.u_vf[P.T, i_b, i_h] = u(R.z + b, P.σ)
         end
     end
 
@@ -180,7 +182,7 @@ function Solve_nonterminal_periods!(R::Results; progress::Bool = false)
             i_h_up = min(i_h + 1, G.N_h)
 
             # instanteous value
-            R.j_vf[t, i_ω, i_h] = (1-ω) * f(h)
+            R.j_vf[t, i_ω, i_h] = ((1-ω) * f(h))
             # continuation value if human capital increases
             R.j_vf[t, i_ω, i_h] += P.β_f * (1-P.δ) * P.p_H * R.j_vf[t+1, i_ω, i_h_up]
             # continuation value if human capital stays the same
@@ -230,7 +232,7 @@ function Solve_nonterminal_periods!(R::Results; progress::Bool = false)
         # cycle over assets today and human capital levels
         for (i_b, b) = enumerate(G.grid_b), (i_h, h) = enumerate(G.grid_h)
             # budget is savings plus unemployment benefit
-            budget = P.z + b
+            budget = R.z + b
 
             # find index for human capital changes
             i_h_down = max(i_h - 1, 1)

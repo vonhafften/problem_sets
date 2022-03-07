@@ -117,6 +117,8 @@ Using single nearest neighbor matching with replacement and common support condi
 
 \subsection*{Problem 8}
 
+The standardized differences are in the table below.  Conditioning reduces the standardized bias for \texttt{re74} by 8 percent and for \texttt{re75} by 34 percent.
+
 \begin{center}
 \begin{tabular}{ l r r}
 \hline
@@ -128,14 +130,19 @@ Matched by \texttt{pscoreb} using Single Nearest Neighbor & 1.16 & 0.98 \\
 \end{tabular}
 \end{center}
 
-
 \subsection*{Problem 9}
+
+Matching using the Gaussian kernel results in larger estimates of the non-experimental bias. As the bandwidth increases, the estimate of the non-experimental bias grows but the SE of the estimate decreases.  This is probably due to putting positive weight on the mass of observations in the comparison group with propensity scores around zero.
 
 \begin{center}
 \input{table_9}
 \end{center}
 
+\pagebreak
+
 \subsection*{Problem 10}
+
+Using local linear matching, the estimates for the non-experimental bias is more-or-less in line with previous estimates for the two smaller bandwidths, but the estimate for the larger bandwidth is opposite sign.
 
 \begin{center}
 \input{table_10}
@@ -143,21 +150,29 @@ Matched by \texttt{pscoreb} using Single Nearest Neighbor & 1.16 & 0.98 \\
 
 \subsection*{Problem 11}
 
+In the table below is a regression with a dummy for \texttt{in\_control}.  The coefficient estimate is on the low side compared to the other estimates, but it is more-or-less in line with the previous results.
+
 \begin{center}
 \input{table_11a}
 \end{center}
 
+Below is a table of summary statistics of the predicted values split by whether \texttt{in\_control} equals one or zero.
 
 \begin{center}
 \input{table_11b}
 \end{center}
 
+\pagebreak
 
 \subsection*{Problem 12}
+
+In the table below is a regression the typical covariate but only on the comparison group.
 
 \begin{center}
 \input{table_12a}
 \end{center}
+
+Below is a table of summary statistics of the predicted values split by whether \texttt{in\_control} equals one (out of sample) or zero (in sample).  While the mean predicted value is different compared to problem 11, the difference is statistically insignificant.
 
 \begin{center}
 \input{table_12b}
@@ -165,11 +180,14 @@ Matched by \texttt{pscoreb} using Single Nearest Neighbor & 1.16 & 0.98 \\
 
 \subsection*{Problem 13}
 
-%\pagebreak
-%\begin{landscape}
-%\section{Stata Log File}
-%\verbatiminput{analysis.log}
-%\end{landscape}
+The inverse probability weighting estimate for the treatment effect on the treated is -1420.38 without rescaling and -9756.61 with rescaling.  In general, these estimates are in line with the previous estimates.
+
+\pagebreak
+
+\begin{landscape}
+\section{Stata Log File}
+\verbatiminput{analysis.log}
+\end{landscape}
 
 \end{document}
 
