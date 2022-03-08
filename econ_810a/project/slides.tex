@@ -1,0 +1,358 @@
+\documentclass[handout]{beamer}
+\usetheme{Boadilla}
+\usepackage{graphicx}
+
+\title[Intermediation Frictions]{Intermediation Frictions in Incomplete Markets}
+\subtitle{ECON 810A - Project}
+\author{Alex von Hafften}
+\institute{UW-Madison}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Secondary Treasury Market in COVID-19 Crisis}
+\begin{itemize}[<+->]
+\item The U.S. Treasury market - widely considered the world's deepest and most liquid financial market - is intermediated by large U.S. banks acting as broker-dealers.
+\bigskip
+\item In March 2020, concerns about COVID-19 prompted many large investors (e.g., hedge funds and foreign governments) to liquidate their holdings of Treasuries.
+\bigskip
+\item Intermediaries in the secondary market for U.S. Treasuries were overwhelmed (Duffie 2020).
+\bigskip
+\begin{itemize}[<+->]
+\item Yield rose sharply.
+\item Space on the balance sheet of broker-dealers for warehousing additional trades diminished.
+\item Bid-offer spreads widened.
+\item Settlement failures increased.
+\end{itemize}
+\bigskip
+\item Aggressive intervention by the Fed restored market liquidity.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Sources of Intermediation Frictions in Treasury Market}
+\begin{itemize}[<+->]
+\item This episode raised questions about the functioning of the secondary Treasury market, doubts about the safe-haven status of Treasuries, and calls for reform.
+\bigskip
+\item The growth in U.S. government debt outstanding may have outstripped the ability of broker-dealers to effective intermediate the secondary Treasury market.
+\bigskip
+\item Broker-dealers pointed to post-financial-crisis bank regulatory reform - in particular, the Supplementary Leverage Ratio requirement - as the source of the disruption.
+\bigskip
+\item \textbf{Research Question:} How does the intermediation of illiquid assets affect portfolio choice?
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Multiple Assets}
+\begin{itemize}[<+->]
+\item To explore this question, I turned to Bewley-style models with multiple assets.
+\bigskip
+\item In the baseline Bewley model (and models covered in ECON 810A), household can only invest in risk-free bonds.
+\bigskip
+\item In reality, households invest in many assets, including cash, real estate, stocks, bonds, etc.
+\bigskip
+\item Optimal portfolio choices change with wealth and age (Brandsas 2020).
+\bigskip
+\item The curse of dimensionality quickly hampers rich portfolio choice problems in Bewley-style model.
+\end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Literature Review - Kaplan and Violante (2014)}
+
+
+\begin{itemize}[<+->]
+\item Empirical literature finds that households spend about 25 percent of tax rebates on consumption immediately inconsistent with prediction from single-asset Bewley.
+\bigskip
+\item Build a Bewley-style model with two assets: low return liquid asset and high return illiquid asset.
+\bigskip
+\item HHs must pay fixed cost to adjust illiquid asset holding.
+\bigskip
+\item Many HHs are optimally ``wealthy hand-to-mouth" (i.e., hold very little liquid assets despite sizable amount of illiquid assets).
+\bigskip
+\item Wealthy hand-to-mouth HHs have high MPC and rationalize empirical motivation.
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Literature Review - Rios-Rull and Sanchez-Marcos (2008)}
+
+\begin{itemize}[<+->]
+\item Build a Bewley-style model with financial assets and nonfinancial assets.
+\bigskip
+\item Financial assets are perfectly divisible and costless to buy or sell.
+\bigskip
+\item Nonfinancial assets are bulky and indivisible and have transaction costs.
+\bigskip
+\item Label the nonfinancial assets as ``houses".
+\bigskip
+\item Find reasonable lifecycle pattern: HHs accumulate some financial assets for downpayment, then buy a small house, then buy a large house.
+\bigskip
+\item HHs pay a fixed cost to trade their house.
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Environment}
+
+\begin{itemize}[<+->]
+
+\item Two agents: 
+\begin{itemize}[<+->]
+
+\item Households.
+\item Intermediaries.
+
+\end{itemize}
+
+\bigskip
+
+\item Two assets:
+
+\begin{itemize}[<+->]
+
+\item Cash/consumption good without no return.
+\item Long-term illiquid bonds with return $r$. 
+\item Each period fraction $\delta \in (0, 1)$ of long-term bonds mature into cash each period. 
+
+\end{itemize}
+
+\bigskip
+
+\item Households and intermediaries randomly meet:
+
+\begin{itemize}[<+->]
+
+\item If an household and an intermediary meet, they can trade long-term bonds.
+\item Nash bargain over price with $\theta \in (0, 1)$ being the bargaining power of the household. Let $P(b)$ be the price for $b$ long-term bonds.
+\item HHs can always buy long-term bonds at price $q = \frac{1}{1+r}$ (i.e. ``on-the-run" Treasuries), but can only sell them through an intermediary (e.g. ``off-the-run" Treasuries).
+
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Model Timing}
+
+\begin{itemize}[<+->]
+
+\item Exogenous labor income is drawn.
+\item Long-term bonds return $r$.
+\item Households and intermediaries meet.
+\item Matched households decide the LT bonds to sell.
+\item Households and intermediaries bargain.
+\item Value functions are evaluated.
+\item Consumption good is eaten.
+
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Intermediaries}
+
+\begin{itemize}[<+->]
+
+\item Intermediaries are infinitely lived and risk-neutral.
+\item Discount factor $\beta_I$.
+\item They have ``deep pocket".
+\item They consume long-term bonds as they mature.
+\item Their value for buying $b$ long-term bonds from a HH:
+
+\begin{align*}
+W(b) 
+&= \underbrace{\delta b}_{\text{consumption in period of trade}} + \underbrace{\beta_I(1-\delta)\delta b}_{\text{consumption one period after trade}} \\
+&+ \underbrace{\beta_I^2(1-\delta)^2\delta b}_{\text{consumption two periods after trade}} + ...\\\\
+&= \frac{\delta b }{1 - \beta_I (1-\delta)}
+\end{align*}
+
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Households}
+
+\begin{itemize}[<+->]
+
+\item Live for $T$ periods.
+\item Risk averse.
+\item Discount factor $\beta$.
+\item Exogenous Markov process for labor earnings $y$.
+\item Make consumption-savings choice with zero borrowing limit.
+\item Hold cash $a$.
+\item Hold long-term illiquid bonds $b$.
+\item Meet an intermediaries with probability $\gamma$ and can liquidate fraction $\ell$ of their long-term illiquid bonds.
+\item The HHs value function is:
+
+$$
+E[V_t(a, b)] \equiv \underbrace{\gamma E[V^M_{t}(a', b')]}_{\text{value if matched}} + \underbrace{(1-\gamma) E[V^U_{t}(a', b')]}_{\text{value if matched}}
+$$
+
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+\frametitle{Unmatched Households Value Function}
+
+\begin{itemize}[<+->]
+
+\item A HH that is not matched with an intermediary choose consumption $c$, cash tomorrow $a'$, and purchase new long-term bonds $\tilde{b}'$ to maximize utility:
+
+\begin{align*}
+V_{t}^U(a, b) 
+= \max_{c, a', \tilde{b}'} 
+\Bigg\{ 
+\underbrace{u(c)}_{\text{instantaneous value}} 
+&+ \underbrace{\beta E[V_{t+1}(a', b')]}_{\text{continuation value }} \Bigg\}
+\end{align*}
+
+subject to
+
+\begin{align*}
+c + a' + \underbrace{q\tilde{b}'}_{\text{spending on new LT bonds}} &= y + a + \underbrace{\delta b (1 + r)}_{\text{matured LT bonds}} \\ 
+b' &= \underbrace{\tilde{b}'}_{\text{new LT bonds}} + \underbrace{(1-\delta)b(1+r)}_{\text{unmatured LT bonds}}\\
+a', \tilde{b}' &\ge 0
+\end{align*}
+
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Matched Households Value Function}
+
+\begin{itemize}[<+->]
+
+\item A HH that is matched with an intermediary can choose either to buy LT bonds (same problem as unmatched)  or sell LT bonds:
+
+\begin{align*}
+V_{t}^M(a, b) 
+= \max_{c, a', \ell} 
+\Bigg\{ 
+\underbrace{ V_t^U(a, b)}_{\text{buying LT bonds}},\underbrace{  u(c) + \beta E[V_{t+1}(a', b')]}_{\text{selling LT bonds }} \Bigg\}
+\end{align*}
+
+subject to
+
+\begin{align*}
+c + a' &= y + a + \delta b (1 + r)+ \underbrace{P(\ell (1-\delta)b(1+r))}_{\text{proceeds from the sale of LT bonds}}\\ 
+b' &= \underbrace{(1-\ell)(1-\delta)b(1+r)}_{\text{unsold, unmatured LT bonds}}\\
+a' &\ge 0\\
+\ell &\in [0, 1]
+\end{align*}
+
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{Nash Bargaining}
+
+\begin{itemize}[<+->]
+
+\item The matched household has $\hat{b} \equiv \ell(1-\delta)b(1+r)$ LT bonds to sell.
+
+\bigskip
+
+\item The outside option for the household is the unmatched value function: $V_t^U(a, b)$.
+
+\bigskip
+
+\item The outside option for the intermediary is zero. 
+
+\bigskip
+
+\item Nash bargaining solves:
+
+\end{itemize}
+
+\begin{align*}
+\max_{P(\hat{b})} [P(\hat{b}) - V_t^U(a, b)]^\theta [ W(\hat{b}) - P(\hat{b})]^{1-\theta} \\
+\implies P(\hat{b}) = \theta V_t^U(a, b) + (1-\theta) W(\hat{b})
+\end{align*}
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{References}
+\scriptsize
+
+Brandsas, Eirik (2020) ``Stock Market Participation and Exit: The Role of Homeownership," Working Paper.
+
+\smallskip
+
+Duffie, Darrell (2020) ``Still the World's Safe Haven? Redesigning the U.S. Treasury Market After the COVID-19 Crisis," Hutchins Center Working Paper \#62, June 2020.
+
+\smallskip
+
+Kaplan, Greg and Giovanni L. Violante (2014). ``A Model of the Consumption Response to Fiscal Stimulus Payments," Econometrica, Vol. 82, No. 4, July 2014, 1199-1239.
+
+\smallskip
+
+Rios-Rull, Jose-Victor and Virginia Sanchez-Marcos (2008). ``An Aggregate Economy with different Size Houses," Journal of European Economic Association, Vol. 6, No. 2/3, Proceedings of the Twenty-Second Annual Congress of the European Economic Association (Apr. - May, 2008), pp. 705-714
+
+\end{frame}
+
+\end{document}
+

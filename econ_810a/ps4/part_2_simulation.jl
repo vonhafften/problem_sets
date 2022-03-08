@@ -34,7 +34,7 @@ function Simulate_model!(S::Simulation_Results, R::Results)
     G = Grids()
 
     # pull initial human capital level
-    h[:, 1] = max.(min.(rand(R.distribution_h_0, N), G.max_h), G.min_h)
+    S.h[:, 1] = max.(min.(rand(R.distribution_h_0, S.N), G.max_h), G.min_h)
 
     for i = 1:S.N, t = 1:(P.T-1)
 
