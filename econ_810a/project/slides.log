@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  8 MAR 2022 12:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  9 MAR 2022 11:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -990,6 +990,55 @@ thkerncmss.
 
 ] [14
 
+] [15
+
+] [16
+
+] [17
+
+]
+[18
+
+] [19
+
+]
+<bond.png, id=153, 602.25pt x 401.5pt>
+File: bond.png Graphic file (type png)
+<use bond.png>
+Package pdftex.def Info: bond.png  used on input line 470.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [20
+
+ <./bond.png>]
+<cash.png, id=161, 602.25pt x 401.5pt>
+File: cash.png Graphic file (type png)
+<use cash.png>
+Package pdftex.def Info: cash.png  used on input line 481.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [21
+
+ <./cash.png>]
+<portfolio.png, id=168, 602.25pt x 401.5pt>
+File: portfolio.png Graphic file (type png)
+<use portfolio.png>
+Package pdftex.def Info: portfolio.png  used on input line 491.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [22
+
+ <./portfolio.png>]
+<problem.png, id=175, 602.25pt x 401.5pt>
+File: problem.png Graphic file (type png)
+<use problem.png>
+Package pdftex.def Info: problem.png  used on input line 501.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [23
+
+ <./problem.png>] [24
+
+] [25
+
+] [26
+
 ]
 \tf@nav=\write6
 \openout6 = `slides.nav'.
@@ -1005,30 +1054,32 @@ Package rerunfilecheck Info: File `slides.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 20600 strings out of 478994
- 383416 string characters out of 5858184
- 673342 words of memory out of 5000000
- 37605 multiletter control sequences out of 15000+600000
- 414268 words of font info for 66 fonts, out of 8000000 for 9000
+ 20764 strings out of 478994
+ 386308 string characters out of 5858184
+ 672278 words of memory out of 5000000
+ 37738 multiletter control sequences out of 15000+600000
+ 415918 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 131i,17n,132p,429b,606s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 131i,23n,132p,429b,606s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
-</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></
-usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></u
-sr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></us
-r/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/
-local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr
-/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr
-/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb></usr/
-local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/l
-ocal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/loc
-al/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local
-/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on slides.pdf (14 pages, 145070 bytes).
+</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
+/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
+sr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></us
+r/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr
+/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/l
+ocal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/
+local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/
+local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb></usr/l
+ocal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
+cal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/loca
+l/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/
+texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/te
+xlive/2021/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
+Output written on slides.pdf (26 pages, 291279 bytes).
 PDF statistics:
- 166 PDF objects out of 1000 (max. 8388607)
- 127 compressed objects within 2 object streams
- 29 named destinations out of 1000 (max. 500000)
- 49 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 266 PDF objects out of 1000 (max. 8388607)
+ 208 compressed objects within 3 object streams
+ 57 named destinations out of 1000 (max. 500000)
+ 69 words of extra memory for PDF output out of 10000 (max. 10000000)
 
