@@ -36,8 +36,8 @@ function Simulate!(S::Simulation_Results_2, R::Results)
     P = Primitives()
 
     # first period. everyone starts with uniform distribution of cash and LT bonds on support
-    S.a[:, 1] = rand(S.N) * (P.min_a + P.max_a)/4
-    S.b[:, 1] = rand(S.N) * (P.min_b + P.max_b)/4
+    S.a[:, 1] = rand(S.N) * (P.min_a + P.max_a)/2
+    S.b[:, 1] = rand(S.N) * (P.min_b + P.max_b)/2
 
     # everyone starts employed
     S.y[:, 1] .= sample([1.0, 0.5], Weights(diag((P.Π_y)^1000)), S.N)
@@ -131,12 +131,12 @@ function Simulate!(S::Simulation_Results_2, R::Results)
                     if t < P.T
                         # if choose to liquidate LT bonds
                         if (pf_m_l_e_i[S.a[i, t], S.b[i, t]] > 0.0)
-                            S.a[i, t+1] = pf_m_a_e_i[S.a[i, t], S.b[i, t]] + price_e[S.a[i, t], S.b[i, t]]
-                            S.b[i, t+1] = (1- pf_m_l_e_i[S.a[i, t], S.b[i, t]][1]) * (1+P.r) * (1-P.δ) * S.b[i, t]
+                            S.a[i, t+1] = max(pf_m_a_e_i[S.a[i, t], S.b[i, t]] + price_e[S.a[i, t], S.b[i, t]], 0.0)
+                            S.b[i, t+1] = max((1- pf_m_l_e_i[S.a[i, t], S.b[i, t]][1]) * (1+P.r) * (1-P.δ) * S.b[i, t], 0.0)
 
                         else # if to buy LT bonds
-                            S.a[i, t+1] = pf_m_a_e_i[S.a[i, t], S.b[i, t]][1]
-                            S.b[i, t+1] =  (1+P.r) * (1-P.δ) * S.b[i, t] + pf_m_b_tilde_e_i[S.a[i, t], S.b[i, t]][1]
+                            S.a[i, t+1] = max(pf_m_a_e_i[S.a[i, t], S.b[i, t]][1], 0.0)
+                            S.b[i, t+1] = max( (1+P.r) * (1-P.δ) * S.b[i, t] + pf_m_b_tilde_e_i[S.a[i, t], S.b[i, t]], 0.0)
                         end
                     end
 
@@ -145,8 +145,8 @@ function Simulate!(S::Simulation_Results_2, R::Results)
                     S.c[i, t] = pf_u_c_e_i[S.a[i,t], S.b[i,t]]
                     
                     if t < P.T
-                        S.a[i, t + 1] = pf_u_a_e_i[S.a[i, t], S.b[i, t]]
-                        S.b[i, t + 1] = (1+P.r) * (1-P.δ) * S.b[i, t] + pf_u_b_tilde_e_i[S.a[i, t], S.b[i, t]]
+                        S.a[i, t + 1] = max(pf_u_a_e_i[S.a[i, t], S.b[i, t]], 0.0)
+                        S.b[i, t + 1] = max((1+P.r) * (1-P.δ) * S.b[i, t] + pf_u_b_tilde_e_i[S.a[i, t], S.b[i, t]], 0.0)
                     end
                 end
             end
@@ -162,12 +162,12 @@ function Simulate!(S::Simulation_Results_2, R::Results)
         
                         # if choose to liquidate LT bonds
                         if (pf_m_l_u_i[S.a[i, t], S.b[i, t]] > 0.0)
-                            S.a[i, t+1] = pf_m_a_u_i[S.a[i, t], S.b[i, t]][1] + price_u[S.a[i, t], S.b[i, t]]
-                            S.b[i, t+1] = (1- pf_m_l_u_i[S.a[i, t], S.b[i, t]][1]) * (1+P.r) * (1-P.δ) * S.b[i, t]
+                            S.a[i, t+1] = max(pf_m_a_u_i[S.a[i, t], S.b[i, t]][1] + price_u[S.a[i, t], S.b[i, t]], 0.0)
+                            S.b[i, t+1] = max((1- pf_m_l_u_i[S.a[i, t], S.b[i, t]][1]) * (1+P.r) * (1-P.δ) * S.b[i, t], 0.0)
 
                         else # if to buy LT bonds
-                            S.a[i, t+1] = pf_m_a_u_i[S.a[i, t], S.b[i, t]]
-                            S.b[i, t+1] =  (1+P.r) * (1-P.δ) * S.b[i, t] + pf_m_b_tilde_u_i[S.a[i, t], S.b[i, t]]
+                            S.a[i, t+1] = max(pf_m_a_u_i[S.a[i, t], S.b[i, t]], 0.0)
+                            S.b[i, t+1] = max((1+P.r) * (1-P.δ) * S.b[i, t] + pf_m_b_tilde_u_i[S.a[i, t], S.b[i, t]], 0.0)
                         end
                     end
 
@@ -176,8 +176,8 @@ function Simulate!(S::Simulation_Results_2, R::Results)
                     S.c[i, t] = pf_u_c_u_i[S.a[i, t], S.b[i, t]]
 
                     if t < P.T
-                        S.a[i, t + 1] = pf_u_a_u_i[S.a[i, t], S.b[i, t]]
-                        S.b[i, t + 1] = (1+P.r) * (1-P.δ) * S.b[i, t] + pf_u_b_tilde_u_i[S.a[i, t], S.b[i, t]]
+                        S.a[i, t + 1] = max(pf_u_a_u_i[S.a[i, t], S.b[i, t]], 0.0)
+                        S.b[i, t + 1] = max((1+P.r) * (1-P.δ) * S.b[i, t] + pf_u_b_tilde_u_i[S.a[i, t], S.b[i, t]], 0.0)
                     end
                 end
             end

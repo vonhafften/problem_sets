@@ -1,4 +1,4 @@
-\documentclass[handout]{beamer}
+\documentclass{beamer}
 \usetheme{Boadilla}
 \usepackage{graphicx}
 
@@ -62,6 +62,8 @@
 \item Optimal portfolio choices change with wealth and age (Brandsas 2020).
 \bigskip
 \item The curse of dimensionality quickly hampers rich portfolio choice problems in Bewley-style model.
+\bigskip
+\item GE with aggregate uncertainty and heterogenous households is difficult (Bhandari 2022).
 \end{itemize}
 \end{frame}
 
@@ -89,6 +91,88 @@
 
 
 
+
+
+
+
+
+\begin{frame}
+\frametitle{Kaplan and Violante (2014) Household Value Function}
+
+
+\begin{itemize}[<+->]
+
+\item Household with age $j$. If $V_j^0(\mathbf{s}_j) \ge V_j^1(\mathbf{s}_j)$, the HH do not adjusted its illiquid assets:
+
+\scriptsize
+
+\begin{align*}
+V_j^0(\mathbf{s}_j) =\max_{c_j, h_j, m_{j+1}}[(1-\beta) (c_j^\phi s_j^{1-\phi})^{1-\sigma} &+ \beta\{C_j[V-{j+1}^{1-\gamma}]\}^{(1-\sigma)/(1-\gamma)}]^{1/(1-\sigma)}\\
+\text{s.t. }
+(1+\tau^c)(c_j + h_j) + q^m(m_{j+1}) m_{j+1} &= y_j + m_j - \tau(y_j, a_j, m_j)\\
+s_j &= h_j + \zeta a_j\\
+q^a a_{j+1} &= a_j\\
+c_j &\ge 0, \\
+h_j &\ge - \zeta a_j, \\
+m_{j+1} &\ge - \underline{m}_{j+1}(y_j),\\
+y_j &= \begin{cases}
+\exp(\xi_j + \alpha + z_j), &\text{if } j \ge J^w\\
+p(\xi_{J^w}, \alpha, z_{J^w}), &\text{otherwise.}
+\end{cases}
+\end{align*}
+
+\normalsize
+
+where $\mathbf{s}_j = (m_j, a_j, \alpha, z_j)$ and $z_j$  evolves according to a conditional cdf $\Gamma_j^z$.
+
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Kaplan and Violante (2014) Household Value Function (con't)}
+
+
+\begin{itemize}[<+->]
+
+\item If $V_j^1(\mathbf{s}_j) \ge V_j^0(\mathbf{s}_j)$, the HH adjusted its illiquid assets:
+
+\scriptsize
+
+\begin{align*}
+V_j^1(\mathbf{s}_j) =\max_{c_j, h_j, m_{j+1}, \textcolor{red}{a_{j+1}}}[(1-\beta) (c_j^\phi s_j^{1-\phi})^{1-\sigma} &+ \beta\{C_j[V-{j+1}^{1-\gamma}]\}^{(1-\sigma)/(1-\gamma)}]^{1/(1-\sigma)}\\
+\text{s.t. }
+(1+\tau^c)(c_j + h_j) + q^m(m_{j+1}) m_{j+1} + \textcolor{blue}{q^a a_{j+1}}&= y_j + m_j + \textcolor{blue}{a_j} - \textcolor{red}{\kappa} - \tau(y_j, a_j, m_j)\\
+s_j &= h_j + \zeta a_j\\
+c_j &\ge 0, \\
+h_j &\ge - \zeta a_j, \\
+m_{j+1} &\ge - \underline{m}_{j+1}(y_j),\\
+y_j &= \begin{cases}
+\exp(\xi_j + \alpha + z_j), &\text{if } j \ge J^w\\
+p(\xi_{J^w}, \alpha, z_{J^w}), &\text{otherwise.}
+\end{cases}
+\end{align*}
+
+\normalsize
+
+where $\kappa$ is fixed cost of adjusting illiquid assets.
+
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+
+
+
+
 \begin{frame}
 \frametitle{Literature Review - Rios-Rull and Sanchez-Marcos (2008)}
 
@@ -112,7 +196,7 @@
 
 
 \begin{frame}
-\frametitle{Approach}
+\frametitle{This Approach}
 
 \begin{itemize}[<+->]
 \item Similar to Kaplan and Violante (2014) and Rios-Rull and Sanchez-Marcos (2008), I use two assets. 
@@ -123,7 +207,7 @@
 \end{itemize}
 
 \bigskip
-\item Instead of second asset coming from fixed transaction cost, I use random search for intermediary (i.e. broker-dealer).
+\item Instead of illiquidity of second asset coming from fixed transaction cost, I use random search for intermediary (i.e. broker-dealer).
 \end{itemize}
 
 \end{frame}
@@ -367,7 +451,7 @@ b' &= \underbrace{(1-\ell)(1-\delta)b(1+r)}_{\text{unsold, unmatured LT bonds}},
 
 \begin{align*}
 &\theta E[V_{a,t+1}(y', a' + P, b')] \Bigg[ W(\hat{b}') - P\Bigg]\\
-&- (1-\theta)\Bigg[ E[V_{t+1}(y', a' + P, b') - E[V_{t+1}(y', a', b' + \hat{b}')]\Bigg] = 0
+&\underbrace{- (1-\theta)\Bigg[ E[V_{t+1}(y', a' + P, b') - E[V_{t+1}(y', a', b' + \hat{b}')]\Bigg]}_{\equiv g(P)} = 0
 \end{align*}
 
 \bigskip
@@ -377,10 +461,26 @@ We can solve this pricing condition numerically by:
 \begin{itemize}[<+->]
 \item Numerically calculating $E[V_{a,t+1}(y', a' + P, b')]$.
 \item Using root solver.
+\item This step really slows down solving the model. 
+\item Use first-order Newton approximation around zero?
+
+$$
+P \approx \frac{-g(0)}{g'(0)}
+$$
+
+(needs 2d cubic interpolation instead of bilinear)
+ 
 \end{itemize}
 
 \end{frame}
 
+
+\begin{frame}
+\frametitle{Pricing Condition}
+
+\includegraphics[scale = 0.5]{pricing_condition}
+
+\end{frame}
 
 
 
@@ -419,12 +519,50 @@ We can solve this pricing condition numerically by:
 \item Annual frequency.
 \item Two state Markov earnings process with $y_e = 1.0$ and $y_u = 0.5$ with $\pi_{ee} = 0.9$ and $\pi_{uu} = 0.5$ to match employment rate and employment duration.
 \item $T = 30$.
-\item $\beta = 0.99$
+\item $\beta = \beta_I = 0.99$
 \item $\theta = 0.5$
 \item $r = 0.1$
+\item $\gamma =0.2$
 \bigskip
 
 \end{itemize}
+
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{Baseline}
+
+\begin{center}
+\includegraphics[scale = 0.5]{bond}
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Baseline}
+
+\begin{center}
+\includegraphics[scale = 0.5]{cash}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Baseline}
+
+\begin{center}
+\includegraphics[scale = 0.5]{portfolio}
+\end{center}
 
 \end{frame}
 
@@ -436,7 +574,7 @@ We can solve this pricing condition numerically by:
 \begin{tabular}{ l | r r r }
 & Baseline & Policy Experiment \#1 & Policy Experiment \#2\\ 
 \hline 
-$\beta_I$ & 0.99 & 0.95 & 0.99 \\
+$\beta_I$ & 0.99 & 0.9 & 0.99 \\
 $\gamma$  & 0.2 & 0.2 & 0.1 \\ 
 \end{tabular}
 \end{center}
@@ -455,52 +593,6 @@ $\gamma$  & 0.2 & 0.2 & 0.1 \\
 
 
 \end{frame}
-
-
-
-
-
-\begin{frame}
-\frametitle{Policy Experiment \#1}
-
-\begin{center}
-\includegraphics[scale = 0.5]{bond}
-\end{center}
-
-\end{frame}
-
-
-
-\begin{frame}
-\frametitle{Policy Experiment \#1}
-
-\begin{center}
-\includegraphics[scale = 0.5]{cash}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Policy Experiment \#1}
-
-\begin{center}
-\includegraphics[scale = 0.5]{portfolio}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Something is wrong here...}
-
-\begin{center}
-\includegraphics[scale = 0.5]{problem}
-\end{center}
-
-\end{frame}
-
-
 
 
 

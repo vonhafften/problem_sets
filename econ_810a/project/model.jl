@@ -11,8 +11,8 @@ cd("/Users/vonhafften/Documents/UW Madison/problem_sets/econ_810a/project/")
 
     # parameters
     δ::Float64                = 0.17143                           # stochastic maturity
-    r::Float64                = 0.1                               # exogeneous LT bond interest rate
     β::Float64                = 0.99                              # discount rate
+    r::Float64                = 0.01                              # exogeneous LT bond interest rate
     σ::Float64                = 2.0                               # coefficient of relative risk aversion
     γ::Float64                = 0.2                               # probability of meeting intermediary
     T::Int64                  = 30                                # lifespan
@@ -301,7 +301,9 @@ function Solve_nonterminal_period!(R::Results)
 end
 
 
-function Solve!(R::Results)
+function Solve(β_I::Float64, γ::Float64)
+    R = Initialize(β_I, γ)
     Solve_terminal_period!(R)
     Solve_nonterminal_period!(R)
+    R
 end

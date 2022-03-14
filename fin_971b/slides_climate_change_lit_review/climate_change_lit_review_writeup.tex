@@ -1,0 +1,191 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{accents}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\setlength{\parindent}{0cm}
+\geometry{margin = 1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+
+\newtoggle{extended}
+\settoggle{extended}{false}
+
+\title{Recent Developments in \\ Climate Change and Corporate Finance}
+
+\author{Alex von Hafften}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+
+
+The economic and financial implications of climate change is a growing area of research, including within corporate finance. The most recent programs of all top five financial conferences had paper presentations on related topics. In fact, four out of five conferences had entire sessions dedicated to related topics.
+
+\bigskip
+
+In this literature review, I summarize recent development in the intersection of climate change and corporate finance.  The starting point is related papers in the most recent programs of the following finance conferences: Western Finance Association Meetings 2021, American Finance Association Meetings 2022, Society for Financial Studies Cavalcade North America 2021, Utah Winter Finance Conference 2022, and NBER Corporate Finance Summer Institute 2021. All told, these conferences alone had twenty-seven related papers.\footnote{A quick note on terminology and acronyms: ESG = ``Environmental, Social, and Governance", E\&S = ``Environmental and Social",  SRI = ``Socially Responsible Investing", CSR = ``Corporate Social Responsibility", impact investing, ``green investors" or ``social investors" are investors who care about monetary and non-monetary payoffs, ``traditional investors" or ``commercial investors" are investors who only care about monetary payoffs, CEI = ``Carbon Emission Intensity", and GHG = ``Greenhouse Gas".}
+
+\bigskip
+
+Almost every paper included one or both of two motivating ideas.  First, as of 2020, one-third of U.S. assets under management (\$17 trillion) have some sort of ESG objective.  This share is even higher for the EU.  The second motivating question is about recent changes in the ``social contract" of corporations.  Traditionally, the role of corporations is thought to be limited to the maximization of profits.  For example, from Friedman (1970), ``the social responsibility of business is to increase its profits."  More recently, the view of the role of corporations in society has widened. In 2019, a group of the chief executives of the largest corporations in the U.S. released a statement that stated that the purpose of a corporation is to promote ``an economy that serves all Americans" (Business Roundtable 2019).
+
+\bigskip
+
+In this review of the literature, I identified that papers were focused on six major questions:
+
+\begin{enumerate}
+\item How should a firm's social impact be measured?
+
+\item How should investors' preferences about firm ethical behavior be characterized?
+
+\item How do investors with heterogenous preferences affect asset prices and capital allocation?
+
+\item How costly is ESG investing relative to traditional investing?
+
+\item What does ESG investing look like outside of public equity?
+
+\item What are the real effects of ESG investing?
+\end{enumerate}
+
+\section{How to measure a firm's ESG impacts?}
+
+In most jurisdictions, there are minimal requirements for detailed disclosures about ESG impact. Filling this information gap, a plethora of rating agencies produce ESG ratings for firms.  The methodologies of these ratings are relatively ad hoc methodology (weighted average of emissions, board diversity, recycling policies, etc.) and ratings from different agencies often conflict. In this realm, recent papers suggest new rating methodologies, ways to deal with conflicting ratings, and the effects of mandatory ESG disclosures with more detail than currently required.
+
+\bigskip
+
+Using survey data, Allcott et al (2021) measure social impact as the social welfare loss from a firm's exit in equilibrium. The social impact includes consumer surplus, worker surplus, profits, and externalities.  Allcott et al (2021) find that consumer surplus dominates profits, worker surplus, and externalities and their ratings are largely orthogonal to existing ESG ratings. Huang et al (2020) measure ESG impact based on firms' internet search intensity around ESG-related topics. Increases in attention to ESG topics as measured by internet searches predicts
+improvements in that firm's ESG ratings. Sautner et al (2021) measure firms' climate change exposures using text analysis of earnings conference calls. 
+
+\bigskip
+
+Addressing the problem of conflicting ratings, Berg et al (2021) refine ESG ratings from various agencies using classical errors-in-variables approach with ESG ratings from other agencies as instruments. OLS estimates of stock prices on ESG ratings are biased downward by 60\% compared to 2SLS that correct for the errors-in-variables problem (i.e. evidence of attenuation bias). Across the ESG ratings, the authors find an average signal-to-noise is 60\%.
+
+\bigskip
+
+A few papers considered the effects of mandatory ESG disclosures with more detail. Kreuger et al (2021) find that mandatory ESG reporting improves firms' information
+environment (analysts' earnings forecasts become more accurate and less dispersed), negative ESG incidents become less likely, and stock price crash risk declines. In a theoretical model, Goldstein et al (2021) show that an improvement in
+the quality of non-monetary information can reduce overall price informativeness for traditional investors
+and increase firms' cost of capital.\footnote{I discuss Goldstein et al (2021) in more depth in section 3.} 
+
+
+
+\section{How should we characterize investors' preferences about firm ethical behavior?}
+
+A few recent paper use experiments to learn about how investors' ``moral" preferences about firm behavior. Bonnefon et al (2021) find participants are willing to pay \$0.70 more for buying a share in a firm that gives one more dollar per share to charities. Symmetrically, a firm that makes profits by exercising a negative externality of \$1 on a charity is valued \$0.90 less. In addition, they find that scaling of non-pecuniary preferences is linear. Heeb et al (2021) find that investors have a higher WTP for a sustainable investment, but it does not grow with the social impact of the investment. Colonnelli and Gormsen (2021) find evidence of ``big business discontent" using perceptions of ESG impact.  They find that higher discontent leads to lower support for corporate bailouts.
+
+
+
+\section{How do investors with heterogenous preferences affect asset prices and capital allocation?}
+
+Goldstein et al (2021) create a rational expectation equilibrium model with two types of investors: green and traditional. Heterogeneous preferences contaminate price informativeness for each type.  Positive signal about non-monetary payoff increases green investor demand.  In response, traditional investors cut back demand because they infer from the price a worse realization of the monetary payoff.
+
+\bigskip
+
+Two papers consider how investors with heterogenous preferences affect capital allocation. A ``value-aligned" investment strategy posits that investors should ``put their money where their mouth is."  For example, if an investor is concerned about climate change, then they should invest in the more environmentally friendly firms. Green and Roth (2020) argue against value-aligned investment strategies for green investors using a general equilibrium model. However, the essence of their argument can be captured in a simple game between green and commercial investors. The green and commercial investors choose to invest in three different firms (in a competitive market such that they are paid the firm profit):
+
+\begin{itemize}
+\item Firm A generates a 10\% profit and 10 units of social value.
+\item Firm B generates a 8\% profit and 5 units of social value.
+\item Firm C generates a 9\% profit and 0 units of social value.
+\end{itemize}
+
+Consider that the green investor moves first. Using a ``value-aligned" strategy would prompt the green investor to invest in Firm A because its social value is highest. Then the commercial investor invests in Firm C because its profit is higher than Firm B.  However, if the green investor wants to maximize social value, she should invest in Firm B knowing that the commercial investor would then invest in Firm A.
+
+\bigskip
+
+Landier (2021) argue that a socially responsible fund should prioritize investments in
+companies with acute negative externalities and facing strong capital search frictions that commit to capping their emissions.
+
+\section{How costly is ESG investing?}
+
+Lindsey et al (2021) find that implementing ESG strategies in equities sacrifices negligible profits.  Lo and Zhang (2021) derive conditions under which impact investing detracts from, improves on, or is neutral to the performance of traditional mean-variance optimal portfolios.  These conditions depend on whether the correlation between the impact and unobserved excess return are negative, positive, or zero, respectively.  Pastor et al (2021) construct a ``green factor", a return spread between environmentally friendly and unfriendly stocks. They show that U.S. green stocks outperformed peers as climate concerns strengthened, but their positive performance would disappear without climate-concern shocks.
+
+
+\section{What does ESG investing look like outside of public equity?}
+
+Historically, ESG investing has largely been confined to public equity markets, but it has moved into corporate bonds, options, and bank lending. A few recent papers explore how issues with ESG investing in these asset classes.  Diep et al (2021) find that there are only modest distortions to incorporate ESG objectives in corporate bond portfolio, but ESG measures do not predict future credit excess returns.  Duan et al (2021) find that the bonds of high CEI firms are riskier on average than those of low CEI firms (higher bond market beta, higher downside risk, higher illiquidity, and lower credit ratings). However, they find no evidence of a ``carbon risk premium" in pricing. Cao et al (2021) find that uncertainty around ESG issues is priced in the option market.  The implied volatility is higher (thus, the option prices higher) for firms with poor ESG ratings.  Ivanov et al (2021) estimate how CEI affect bank loans.  High-emission firms face shorter loan maturities, lower access to permanent forms of bank financing, higher interest rates, and higher participation of shadow banks in their lending syndicates.
+
+
+\pagebreak
+
+\section{What are the real effects of ESG investing?}
+
+A few papers consider how ESG investing creates or does not create real effects.  Gantchev et al (2021) find that negative news coverage of ESG risks leads green investors to divest.  This temporarily lowers valuation, and then firms improve their ESG policies. Heath et al (2021) find that SRI funds select firms with higher E\&S standards, but there is no evidence that they actually improve firm behavior. Naaraayan et al (2020) find that shareholder environmental activism leads to firms reducing pollution by taking on costly abatement initiatives.   Krueger (2021) find that firms' sustainability policies reduce labor costs and enable firms to recruit and retain high skilled workers. Workers earn about 10\% lower wages in firms that operate in more sustainable sectors. Hong et al (2021) build a DSGE model to evaluate the welfare consequences of mandates to invest in sustainable firms. They argue that existing mandates are insufficient to achieve the first best allocation.
+
+
+\section*{Other}
+
+I came across three papers that did not fit well into these six major questions:
+
+\begin{itemize}
+\item \textbf{Greenwashing:} Gibson et al (2020) find that U.S. institutional investors that make public commitments to responsible investing have portfolios with weakly worse ESG ratings than institutional investors that did not make public commitments.  They found that outside of the U.S., institutional investors did follow through with their commitments and had portfolios with higher ESG ratings.
+
+\item \textbf{Effect of competition on pollution:} Grinstein and Larkin (2021) find that electric utilities surprisingly polluted less after competition pressures increased. These utilities generally moved to cheaper and less polluting production processes (in this case, oil to natural gas).  In addition, the increased competitive shifted the production allocation to newer and more efficient plants.
+
+\item \textbf{Political ideology:} Kaviani et al (2021) find that the CSR rating of firms declined significantly after increased exposure to conservative media. They posit that changes in local ideology drives this result.
+\end{itemize}
+
+
+
+
+\section*{Conclusions}
+
+This literature is large and it is growing.  There are lots of different angles and sub-areas to explore. The approach of this literature review focused on the frontiers of this literature (all papers were from 2020 or later). A drawback of this approach is that this literature review covered more breadth than depth. The next steps would be to hone in on a single more specific sub-area (for example, one of the major questions) and review older/seminal papers within that sub-area.
+
+
+\section{References}
+\begin{itemize}
+\item Allcott, Montanari, Tan. (2021) ``An Economic View of Corporate Social Impact." NBER Corporate Finance SI 2021 Working Paper.
+\item Berg, Koelbel, Pavlova, Rigobon. (2021) ``ESG Confusion and Stock Returns: Tackling the Problem of Noise." AFA Annual Meeting 2022 Working Paper.
+\item Bonnefon, Landier, Sastry, Thesmar. (2021) ``Do Investors Care about Corporate Externalities? Experimental Evidence." AFA Annual Meeting 2022 Working Paper.
+\item Cao, Goyal, Zhan, Zhang. (2021) ``Unlocking ESG Premium from Options." AFA Annual Meeting 2022 Working Paper.
+\item Colonnelli, Gormsen. (2021) ``Selfish Corporations." WFA Meeting 2021 Working Paper.
+\item Diep, Pomorski, Richardson. (2021) ``Sustainable Systematic Credit." AFA Annual Meeting 2022 Working Paper.
+\item Duan, Li, Wen. (2021) ``Is Carbon Risk Priced in the Cross-Section of Corporate Bond Returns." SFS Cavalcade North America 2021 Working Paper.
+"\item Gantchev, Giannetti, Li. (2021) ``Does Money Talk? Market Discpline through Selloffs and Boycotts." SFS Cavalcade North America 2021, AFA Annual Meeting 2022 Working Paper."
+\item Brandon Gibson, Glossner, Krueger, Matos, Steffen. (2020) ``Do Responsible Investors Invest Responsibly?." SFS Cavalcade North America 2021 Working Paper.
+\item Goldstein, Kopytov, Shen, Xiang. (2021) ``On ESG Investing: Heterogeneous Preferences, Information, and Asset Prices." SFS Cavalcade North America 2021, AFA Annual Meeting 2022 Working Paper.
+\item Green, Roth. (2020) ``The Allocation of Socially Responsible Capital." SFS Cavalcade North America 2021, Utah Winter Conference 2022, WFA Meeting 2021 Working Paper.
+\item Grinstein, Larkin. (2021) ``Minimizing Costs, Maximizing Sustainability." SFS Cavalcade North America 2021 Working Paper.
+\item Heath, Macciocchi, Michaely, Ringgenberg. (2021) ``Does Socially Responsible Investing Change Firm Behavior?." AFA Annual Meeting 2022 Working Paper.
+\item Heeb, Koelbel, Paetzold, Zeisberger. (2021) ``Do Investors Care about Impact?." AFA Annual Meeting 2022 Working Paper.
+\item Hong, Wang, Yang. (2021) ``Welfare Consequences of Sustainable Finance." AFA Annual Meeting 2022 Working Paper.
+\item Huang, Karolyi, Kwan. (2020) ``Paying Attention to ESG: Evidence from Big Data Analytics." SFS Cavalcade North America 2021, AFA Annual Meeting 2022 Working Paper.
+\item Ivanov, Kruttli, Watugala. (2021) ``Banking on Carbon: Corporate Lending and Cap-and-Trade Policy." SFS Cavalcade North America 2021 Working Paper.
+\item Kaviani, Li, Maleki. (2021) ``Media, Partisan Ideology, and CSR." AFA Annual Meeting 2022 Working Paper.
+\item Krueger, Metzger, Wu. (2021) ``The Sustainability Wage Gap." AFA Annual Meeting 2022 Working Paper.
+\item Krueger, Sautner, Tang, Zhong. (2021) ``The Effects of Mandatory ESG Disclosure around the World." AFA Annual Meeting 2022 Working Paper.
+\item Landier, Lovo. (2021) ``Socially Responsible Finance: How to Optimize Impact?." AFA Annual Meeting 2022 Working Paper.
+\item Lindsey, Pruitt, Schiller. (2021) ``The Cost of ESG Investing." AFA Annual Meeting 2022 Working Paper.
+\item Lo, Zhang. (2021) ``Quantifying the Impact of Impact Investing." AFA Annual Meeting 2022 Working Paper.
+\item Pastor, Stambaugh, Taylor. (2021) ``Dissecting Green Returns." AFA Annual Meeting 2022 Working Paper.
+\item Sautner, van Lent, Vilkov, Zhang. (2021) ``Firm-level Climate Change Exposure." AFA Annual Meeting 2022 Working Paper.
+\end{itemize}
+
+
+\end{document}
+

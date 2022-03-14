@@ -94,6 +94,7 @@ plot(R.pf_m_c[which_t, 2, :, [1, 10, P.N_b]])
 plot(R.pf_m_l[which_t, 2, :, [1, 10, P.N_b]])
 
 plot(R.pf_m_l[which_t, 1, [12, 13, 14, 15], :]')
+plot(R.pf_m_b_hat[which_t, 2, :, [1, 10, P.N_b]])
 
 ############
 
