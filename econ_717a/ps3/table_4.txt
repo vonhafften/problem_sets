@@ -1,0 +1,11 @@
+	(1)	(2)
+VARIABLES	rate18_20ht	rate18_20ht
+		
+mlda21	-9.293***	8.886***
+	(1.323)	(2.328)
+		
+Observations	651	651
+R-squared	0.500	0.238
+FEs	state	year
+Robust standard errors in parentheses		
+*** p<0.01, ** p<0.05, * p<0.1		

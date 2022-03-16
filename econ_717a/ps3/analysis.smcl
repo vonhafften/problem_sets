@@ -1,0 +1,1566 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3/analysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}15 Mar 2022, 10:08:39
+
+{com}. 
+. * ECON 717A: Applied Econometrics
+
+. * Problem Set 3
+
+. * Professor: Jeff Smith
+
+. * Alex von Hafften
+
+. * Diff-in-diff
+
+. 
+. * clear workspace
+
+. clear
+
+. 
+. * install user defined functions (if needed)
+
+. ssc install outreg2
+{txt}checking {hilite:outreg2} consistency and verifying not already installed...
+all files already exist and are up to date.
+
+{com}. ssc install asreg
+{txt}checking {hilite:asreg} consistency and verifying not already installed...
+all files already exist and are up to date.
+
+{com}. 
+. 
+. * change working directory
+
+. cd "/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3/"
+{res}/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3
+
+{com}. 
+. * open dataset
+
+. use "Economics 717 Miron and Tetelbaum Data"
+
+. 
+. ********************************************************************************
+
+. * problem #1 - create panel
+
+. ********************************************************************************
+
+. 
+. xtset state year
+{res}
+{col 1}{txt:Panel variable: }{res:state}{txt: (strongly balanced)}
+{p 1 16 2}{txt:Time variable: }{res:year}{txt:, }{res:{bind:1975}}{txt: to }{res:{bind:2005}}{p_end}
+{txt}{col 10}Delta: {res}1 unit
+
+{com}. 
+. ********************************************************************************
+
+. * problem #2 - create treatment indicator
+
+. ********************************************************************************
+
+. 
+. gen mlda21 = (mlda == 21)
+
+. tab mlda21
+
+     {txt}mlda21 {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}         96       14.75       14.75
+{txt}          1 {c |}{res}        555       85.25      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        651      100.00
+
+{com}. 
+. ********************************************************************************
+
+. * problem #3 - naive treatment estimate
+
+. ********************************************************************************
+
+. 
+. regress rate18_20ht mlda21, robust
+
+{txt}Linear regression                               Number of obs     = {res}       651
+                                                {txt}F(1, 649)         =  {res}     2.54
+                                                {txt}Prob > F          = {res}    0.1111
+                                                {txt}R-squared         = {res}    0.0044
+                                                {txt}Root MSE          =    {res} 16.802
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} rate18_20ht{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}mlda21 {c |}{col 14}{res}{space 2}-3.150429{col 26}{space 2} 1.974831{col 37}{space 1}   -1.60{col 46}{space 3}0.111{col 54}{space 4} -7.02826{col 67}{space 3} .7274009
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 45.32411{col 26}{space 2} 1.845321{col 37}{space 1}   24.56{col 46}{space 3}0.000{col 54}{space 4} 41.70059{col 67}{space 3} 48.94763
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using table_3, addtext(Fixed Effects, None, Clusters, None) tex(frag) replace
+{txt}{stata `"shellout using `"table_3.tex"'"':table_3.tex}
+{browse `"/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3"' :dir}{com} : {txt}{stata `"seeout using "table_3.txt""':seeout}
+
+{com}. 
+. * summary statistics by year
+
+. tab year, sum(rate18_20ht)
+
+            {txt}{c |}  Summary of Total TFR per 100,000
+            {c |}           18-20 year olds
+       year {c |}        Mean   Std. dev.       Freq.
+{hline 12}{c +}{hline 36}
+       1975 {c |}  {res} 50.818062   20.707453          21
+  {txt}     1976 {c |}  {res} 52.404836   17.196789          21
+  {txt}     1977 {c |}  {res}     55.29   22.491982          21
+  {txt}     1978 {c |}  {res} 57.760944   20.614483          21
+  {txt}     1979 {c |}  {res} 56.251402   20.889067          21
+  {txt}     1980 {c |}  {res} 55.005035   19.566773          21
+  {txt}     1981 {c |}  {res} 48.512411   12.776335          21
+  {txt}     1982 {c |}  {res} 49.872219   19.871372          21
+  {txt}     1983 {c |}  {res} 43.004066   14.330768          21
+  {txt}     1984 {c |}  {res} 45.649467   13.269491          21
+  {txt}     1985 {c |}  {res} 43.744915   12.479557          21
+  {txt}     1986 {c |}  {res}  47.44816   17.405369          21
+  {txt}     1987 {c |}  {res} 45.831965    16.21545          21
+  {txt}     1988 {c |}  {res} 46.836771   14.144787          21
+  {txt}     1989 {c |}  {res} 42.544014   11.999172          21
+  {txt}     1990 {c |}  {res}  45.07175   15.013165          21
+  {txt}     1991 {c |}  {res}  41.53127   14.192476          21
+  {txt}     1992 {c |}  {res} 33.879187   9.6341663          21
+  {txt}     1993 {c |}  {res} 35.403993   13.276247          21
+  {txt}     1994 {c |}  {res} 39.090837   12.248997          21
+  {txt}     1995 {c |}  {res}  40.39688   14.091257          21
+  {txt}     1996 {c |}  {res} 36.780595   14.239405          21
+  {txt}     1997 {c |}  {res} 35.766272   11.082532          21
+  {txt}     1998 {c |}  {res}  36.03141   13.541888          21
+  {txt}     1999 {c |}  {res} 33.634857   11.772848          21
+  {txt}     2000 {c |}  {res} 34.435184    12.17759          21
+  {txt}     2001 {c |}  {res} 32.841452   11.452997          21
+  {txt}     2002 {c |}  {res} 34.921019   14.736202          21
+  {txt}     2003 {c |}  {res} 34.388073   9.6995214          21
+  {txt}     2004 {c |}  {res} 34.097601   16.424139          21
+  {txt}     2005 {c |}  {res} 32.541424   14.573919          21
+{txt}{hline 12}{c +}{hline 36}
+      Total {c |}  {res}  42.63826   16.826073         651
+
+{com}. tab year, sum( mlda21)
+
+            {txt}{c |}          Summary of mlda21
+       year {c |}        Mean   Std. dev.       Freq.
+{hline 12}{c +}{hline 36}
+       1975 {c |}  {res} .57142857   .50709255          21
+  {txt}     1976 {c |}  {res} .57142857   .50709255          21
+  {txt}     1977 {c |}  {res} .57142857   .50709255          21
+  {txt}     1978 {c |}  {res} .57142857   .50709255          21
+  {txt}     1979 {c |}  {res} .61904762   .49761335          21
+  {txt}     1980 {c |}  {res} .61904762   .49761335          21
+  {txt}     1981 {c |}  {res} .61904762   .49761335          21
+  {txt}     1982 {c |}  {res} .61904762   .49761335          21
+  {txt}     1983 {c |}  {res} .66666667   .48304589          21
+  {txt}     1984 {c |}  {res} .66666667   .48304589          21
+  {txt}     1985 {c |}  {res} .66666667   .48304589          21
+  {txt}     1986 {c |}  {res} .71428571   .46291005          21
+  {txt}     1987 {c |}  {res} .95238095   .21821789          21
+  {txt}     1988 {c |}  {res}         1           0          21
+  {txt}     1989 {c |}  {res}         1           0          21
+  {txt}     1990 {c |}  {res}         1           0          21
+  {txt}     1991 {c |}  {res}         1           0          21
+  {txt}     1992 {c |}  {res}         1           0          21
+  {txt}     1993 {c |}  {res}         1           0          21
+  {txt}     1994 {c |}  {res}         1           0          21
+  {txt}     1995 {c |}  {res}         1           0          21
+  {txt}     1996 {c |}  {res}         1           0          21
+  {txt}     1997 {c |}  {res}         1           0          21
+  {txt}     1998 {c |}  {res}         1           0          21
+  {txt}     1999 {c |}  {res}         1           0          21
+  {txt}     2000 {c |}  {res}         1           0          21
+  {txt}     2001 {c |}  {res}         1           0          21
+  {txt}     2002 {c |}  {res}         1           0          21
+  {txt}     2003 {c |}  {res}         1           0          21
+  {txt}     2004 {c |}  {res}         1           0          21
+  {txt}     2005 {c |}  {res}         1           0          21
+{txt}{hline 12}{c +}{hline 36}
+      Total {c |}  {res} .85253456   .35484193         651
+
+{com}. 
+. * run ar regression by state
+
+. gen rate18_20ht_ar = .
+{txt}(651 missing values generated)
+
+{com}. gen mlda21_ar = .
+{txt}(651 missing values generated)
+
+{com}. 
+. sort state year 
+
+. by state: gen rate18_20ht_lag = rate18_20ht[_n-1]
+{txt}(21 missing values generated)
+
+{com}. by state: gen mlda21_lag = mlda21[_n-1]
+{txt}(21 missing values generated)
+
+{com}. 
+. egen group = group(state)
+
+. summ group
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}group {c |}{res}        651          11    6.059957          1         21
+
+{com}. 
+. forvalues i = 1/`r(max)' {c -(}
+{txt}  2{com}. reg rate18_20ht rate18_20ht_lag if `i'==group
+{txt}  3{com}. replace rate18_20ht_ar = _b[rate18_20ht_lag] if `i'==group
+{txt}  4{com}. 
+. reg mlda21 mlda21_lag if `i'==group
+{txt}  5{com}. replace mlda21_ar = _b[mlda21_lag] if `i'==group
+{txt}  6{com}. {c )-}
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}     0.99
+{txt}       Model {c |} {res} 50.8910411         1  50.8910411   {txt}Prob > F        ={res}    0.3275
+{txt}    Residual {c |} {res} 1434.47443        28  51.2312295   {txt}R-squared       ={res}    0.0343
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}   -0.0002
+{txt}       Total {c |} {res} 1485.36547        29  51.2194988   {txt}Root MSE        =   {res} 7.1576
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2}  .185344{col 29}{space 2} .1859625{col 40}{space 1}    1.00{col 49}{space 3}0.327{col 57}{space 4}-.1955828{col 70}{space 3} .5662709
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 43.64718{col 29}{space 2} 10.05279{col 40}{space 1}    4.34{col 49}{space 3}0.000{col 57}{space 4} 23.05497{col 70}{space 3} 64.23939
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}   192.98
+{txt}       Model {c |} {res} 2876.35219         1  2876.35219   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 417.346485        28  14.9052316   {txt}R-squared       ={res}    0.8733
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8688
+{txt}       Total {c |} {res} 3293.69868        29  113.575816   {txt}Root MSE        =   {res} 3.8607
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .9447954{col 29}{space 2} .0680121{col 40}{space 1}   13.89{col 49}{space 3}0.000{col 57}{space 4}  .805479{col 70}{space 3} 1.084112
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 1.467115{col 29}{space 2} 2.559468{col 40}{space 1}    0.57{col 49}{space 3}0.571{col 57}{space 4}-3.775718{col 70}{space 3} 6.709948
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    21.64
+{txt}       Model {c |} {res} 951.879576         1  951.879576   {txt}Prob > F        ={res}    0.0001
+{txt}    Residual {c |} {res} 1231.75417        28  43.9912203   {txt}R-squared       ={res}    0.4359
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.4158
+{txt}       Total {c |} {res} 2183.63375        29  75.2977154   {txt}Root MSE        =   {res} 6.6326
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .6690986{col 29}{space 2} .1438408{col 40}{space 1}    4.65{col 49}{space 3}0.000{col 57}{space 4}  .374454{col 70}{space 3} .9637431
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 12.74533{col 29}{space 2} 5.828401{col 40}{space 1}    2.19{col 49}{space 3}0.037{col 57}{space 4} .8063903{col 70}{space 3} 24.68427
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}   190.40
+{txt}       Model {c |} {res} 6.27692308         1  6.27692308   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} .923076923        28  .032967033   {txt}R-squared       ={res}    0.8718
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8672
+{txt}       Total {c |} {res}        7.2        29  .248275862   {txt}Root MSE        =   {res} .18157
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2} .9230769{col 26}{space 2} .0668967{col 37}{space 1}   13.80{col 46}{space 3}0.000{col 54}{space 4} .7860453{col 67}{space 3} 1.060109
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0769231{col 26}{space 2}  .050358{col 37}{space 1}    1.53{col 46}{space 3}0.138{col 54}{space 4}-.0262306{col 67}{space 3} .1800767
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}     1.33
+{txt}       Model {c |} {res} 114.631166         1  114.631166   {txt}Prob > F        ={res}    0.2592
+{txt}    Residual {c |} {res} 2419.83615        28  86.4227195   {txt}R-squared       ={res}    0.0452
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0111
+{txt}       Total {c |} {res} 2534.46731        29  87.3954246   {txt}Root MSE        =   {res} 9.2964
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .2098069{col 29}{space 2} .1821723{col 40}{space 1}    1.15{col 49}{space 3}0.259{col 57}{space 4}-.1633561{col 70}{space 3} .5829698
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 12.21977{col 29}{space 2} 3.248335{col 40}{space 1}    3.76{col 49}{space 3}0.001{col 57}{space 4} 5.565856{col 70}{space 3} 18.87368
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}   184.80
+{txt}       Model {c |} {res}       6.05         1        6.05   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} .916666667        28  .032738095   {txt}R-squared       ={res}    0.8684
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8637
+{txt}       Total {c |} {res} 6.96666667        29  .240229885   {txt}Root MSE        =   {res} .18094
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2} .9166667{col 26}{space 2} .0674311{col 37}{space 1}   13.59{col 46}{space 3}0.000{col 54}{space 4} .7785403{col 67}{space 3} 1.054793
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0833333{col 26}{space 2} .0522319{col 37}{space 1}    1.60{col 46}{space 3}0.122{col 54}{space 4}-.0236589{col 67}{space 3} .1903256
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}     1.83
+{txt}       Model {c |} {res} 257.018472         1  257.018472   {txt}Prob > F        ={res}    0.1868
+{txt}    Residual {c |} {res} 3929.59712        28  140.342754   {txt}R-squared       ={res}    0.0614
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0279
+{txt}       Total {c |} {res} 4186.61559        29  144.366055   {txt}Root MSE        =   {res} 11.847
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .2541491{col 29}{space 2} .1878025{col 40}{space 1}    1.35{col 49}{space 3}0.187{col 57}{space 4}-.1305469{col 70}{space 3} .6388452
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2}  20.7189{col 29}{space 2} 5.805045{col 40}{space 1}    3.57{col 49}{space 3}0.001{col 57}{space 4} 8.827801{col 70}{space 3} 32.60999
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}   184.80
+{txt}       Model {c |} {res}       6.05         1        6.05   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} .916666667        28  .032738095   {txt}R-squared       ={res}    0.8684
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8637
+{txt}       Total {c |} {res} 6.96666667        29  .240229885   {txt}Root MSE        =   {res} .18094
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2} .9166667{col 26}{space 2} .0674311{col 37}{space 1}   13.59{col 46}{space 3}0.000{col 54}{space 4} .7785403{col 67}{space 3} 1.054793
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0833333{col 26}{space 2} .0522319{col 37}{space 1}    1.60{col 46}{space 3}0.122{col 54}{space 4}-.0236589{col 67}{space 3} .1903256
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    15.41
+{txt}       Model {c |} {res} 557.913904         1  557.913904   {txt}Prob > F        ={res}    0.0005
+{txt}    Residual {c |} {res} 1013.66921        28  36.2024719   {txt}R-squared       ={res}    0.3550
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.3320
+{txt}       Total {c |} {res} 1571.58312        29  54.1925213   {txt}Root MSE        =   {res} 6.0168
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .5971387{col 29}{space 2}  .152111{col 40}{space 1}    3.93{col 49}{space 3}0.001{col 57}{space 4} .2855534{col 70}{space 3}  .908724
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 15.18936{col 29}{space 2} 6.090247{col 40}{space 1}    2.49{col 49}{space 3}0.019{col 57}{space 4} 2.714051{col 70}{space 3} 27.66466
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}     7.84
+{txt}       Model {c |} {res} 644.528657         1  644.528657   {txt}Prob > F        ={res}    0.0091
+{txt}    Residual {c |} {res} 2301.13766        28  82.1834878   {txt}R-squared       ={res}    0.2188
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.1909
+{txt}       Total {c |} {res} 2945.66632        29  101.574701   {txt}Root MSE        =   {res} 9.0655
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .4991763{col 29}{space 2} .1782482{col 40}{space 1}    2.80{col 49}{space 3}0.009{col 57}{space 4} .1340514{col 70}{space 3} .8643011
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 23.02791{col 29}{space 2} 8.549602{col 40}{space 1}    2.69{col 49}{space 3}0.012{col 57}{space 4}  5.51484{col 70}{space 3} 40.54097
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}   177.33
+{txt}       Model {c |} {res} 5.75757576         1  5.75757576   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} .909090909        28  .032467532   {txt}R-squared       ={res}    0.8636
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8588
+{txt}       Total {c |} {res} 6.66666667        29  .229885057   {txt}Root MSE        =   {res} .18019
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2} .9090909{col 26}{space 2} .0682672{col 37}{space 1}   13.32{col 46}{space 3}0.000{col 54}{space 4} .7692519{col 67}{space 3}  1.04893
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0909091{col 26}{space 2} .0543286{col 37}{space 1}    1.67{col 46}{space 3}0.105{col 54}{space 4}-.0203779{col 67}{space 3} .2021961
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}     0.00
+{txt}       Model {c |} {res}  .11027627         1   .11027627   {txt}Prob > F        ={res}    0.9501
+{txt}    Residual {c |} {res} 774.128609        28  27.6474503   {txt}R-squared       ={res}    0.0001
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}   -0.0356
+{txt}       Total {c |} {res} 774.238885        29  26.6978926   {txt}Root MSE        =   {res} 5.2581
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2}-.0119019{col 29}{space 2} .1884536{col 40}{space 1}   -0.06{col 49}{space 3}0.950{col 57}{space 4}-.3979316{col 70}{space 3} .3741277
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 49.82445{col 29}{space 2} 9.342207{col 40}{space 1}    5.33{col 49}{space 3}0.000{col 57}{space 4} 30.68781{col 70}{space 3}  68.9611
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    10.18
+{txt}       Model {c |} {res} 550.719155         1  550.719155   {txt}Prob > F        ={res}    0.0035
+{txt}    Residual {c |} {res} 1515.36243        28  54.1200868   {txt}R-squared       ={res}    0.2666
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.2404
+{txt}       Total {c |} {res} 2066.08159        29  71.2441926   {txt}Root MSE        =   {res} 7.3566
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .5260287{col 29}{space 2} .1649011{col 40}{space 1}    3.19{col 49}{space 3}0.003{col 57}{space 4} .1882441{col 70}{space 3} .8638132
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 21.44179{col 29}{space 2} 7.687575{col 40}{space 1}    2.79{col 49}{space 3}0.009{col 57}{space 4} 5.694512{col 70}{space 3} 37.18908
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}   184.80
+{txt}       Model {c |} {res}       6.05         1        6.05   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} .916666667        28  .032738095   {txt}R-squared       ={res}    0.8684
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8637
+{txt}       Total {c |} {res} 6.96666667        29  .240229885   {txt}Root MSE        =   {res} .18094
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2} .9166667{col 26}{space 2} .0674311{col 37}{space 1}   13.59{col 46}{space 3}0.000{col 54}{space 4} .7785403{col 67}{space 3} 1.054793
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0833333{col 26}{space 2} .0522319{col 37}{space 1}    1.60{col 46}{space 3}0.122{col 54}{space 4}-.0236589{col 67}{space 3} .1903256
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    16.90
+{txt}       Model {c |} {res} 628.320704         1  628.320704   {txt}Prob > F        ={res}    0.0003
+{txt}    Residual {c |} {res} 1041.26082        28  37.1878864   {txt}R-squared       ={res}    0.3763
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.3541
+{txt}       Total {c |} {res} 1669.58152        29  57.5717767   {txt}Root MSE        =   {res} 6.0982
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .6413244{col 29}{space 2} .1560227{col 40}{space 1}    4.11{col 49}{space 3}0.000{col 57}{space 4} .3217263{col 70}{space 3} .9609224
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 11.11797{col 29}{space 2} 5.208105{col 40}{space 1}    2.13{col 49}{space 3}0.042{col 57}{space 4} .4496501{col 70}{space 3} 21.78629
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}   143.73
+{txt}       Model {c |} {res} 4.49166667         1  4.49166667   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res}       .875        28      .03125   {txt}R-squared       ={res}    0.8370
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8311
+{txt}       Total {c |} {res} 5.36666667        29  .185057471   {txt}Root MSE        =   {res} .17678
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}     .875{col 26}{space 2} .0729843{col 37}{space 1}   11.99{col 46}{space 3}0.000{col 54}{space 4} .7254985{col 67}{space 3} 1.024502
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}     .125{col 26}{space 2}    .0625{col 37}{space 1}    2.00{col 46}{space 3}0.055{col 54}{space 4}-.0030254{col 67}{space 3} .2530254
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    70.67
+{txt}       Model {c |} {res} 1309.76588         1  1309.76588   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 518.955397        28  18.5341213   {txt}R-squared       ={res}    0.7162
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.7061
+{txt}       Total {c |} {res} 1828.72128        29  63.0593545   {txt}Root MSE        =   {res} 4.3051
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2}  .800356{col 29}{space 2} .0952078{col 40}{space 1}    8.41{col 49}{space 3}0.000{col 57}{space 4} .6053317{col 70}{space 3} .9953803
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 6.347582{col 29}{space 2} 3.405383{col 40}{space 1}    1.86{col 49}{space 3}0.073{col 57}{space 4}-.6280293{col 70}{space 3} 13.32319
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    72.80
+{txt}       Model {c |} {res}       1.95         1        1.95   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res}        .75        28  .026785714   {txt}R-squared       ={res}    0.7222
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.7123
+{txt}       Total {c |} {res}        2.7        29  .093103448   {txt}Root MSE        =   {res} .16366
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}      .75{col 26}{space 2} .0879014{col 37}{space 1}    8.53{col 46}{space 3}0.000{col 54}{space 4} .5699422{col 67}{space 3} .9300578
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}      .25{col 26}{space 2} .0818317{col 37}{space 1}    3.06{col 46}{space 3}0.005{col 54}{space 4} .0823753{col 67}{space 3} .4176247
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}     0.03
+{txt}       Model {c |} {res} 1.53655217         1  1.53655217   {txt}Prob > F        ={res}    0.8678
+{txt}    Residual {c |} {res} 1525.26228        28  54.4736529   {txt}R-squared       ={res}    0.0010
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}   -0.0347
+{txt}       Total {c |} {res} 1526.79883        29  52.6482356   {txt}Root MSE        =   {res} 7.3806
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} -.030577{col 29}{space 2}   .18206{col 40}{space 1}   -0.17{col 49}{space 3}0.868{col 57}{space 4}-.4035099{col 70}{space 3} .3423559
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 58.24621{col 29}{space 2} 10.22354{col 40}{space 1}    5.70{col 49}{space 3}0.000{col 57}{space 4} 37.30425{col 70}{space 3} 79.18818
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}   184.80
+{txt}       Model {c |} {res}       6.05         1        6.05   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} .916666667        28  .032738095   {txt}R-squared       ={res}    0.8684
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8637
+{txt}       Total {c |} {res} 6.96666667        29  .240229885   {txt}Root MSE        =   {res} .18094
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2} .9166667{col 26}{space 2} .0674311{col 37}{space 1}   13.59{col 46}{space 3}0.000{col 54}{space 4} .7785403{col 67}{space 3} 1.054793
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0833333{col 26}{space 2} .0522319{col 37}{space 1}    1.60{col 46}{space 3}0.122{col 54}{space 4}-.0236589{col 67}{space 3} .1903256
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}     1.33
+{txt}       Model {c |} {res} 65.8488274         1  65.8488274   {txt}Prob > F        ={res}    0.2585
+{txt}    Residual {c |} {res} 1385.98041        28  49.4993005   {txt}R-squared       ={res}    0.0454
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0113
+{txt}       Total {c |} {res} 1451.82924        29  50.0630772   {txt}Root MSE        =   {res} 7.0356
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2}-.2129115{col 29}{space 2}  .184597{col 40}{space 1}   -1.15{col 49}{space 3}0.259{col 57}{space 4}-.5910414{col 70}{space 3} .1652183
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 60.46621{col 29}{space 2} 9.293029{col 40}{space 1}    6.51{col 49}{space 3}0.000{col 57}{space 4}  41.4303{col 70}{space 3} 79.50211
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    41.56
+{txt}       Model {c |} {res} 10152.2733         1  10152.2733   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 6839.14891        28  244.255318   {txt}R-squared       ={res}    0.5975
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.5831
+{txt}       Total {c |} {res} 16991.4222        29  585.911111   {txt}Root MSE        =   {res} 15.629
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .7612829{col 29}{space 2} .1180827{col 40}{space 1}    6.45{col 49}{space 3}0.000{col 57}{space 4} .5194014{col 70}{space 3} 1.003164
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 11.81063{col 29}{space 2}  7.23613{col 40}{space 1}    1.63{col 49}{space 3}0.114{col 57}{space 4}-3.011912{col 70}{space 3} 26.63317
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    24.80
+{txt}       Model {c |} {res} 6106.58482         1  6106.58482   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 6894.56356        28  246.234413   {txt}R-squared       ={res}    0.4697
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.4508
+{txt}       Total {c |} {res} 13001.1484        29  448.315461   {txt}Root MSE        =   {res} 15.692
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .6681955{col 29}{space 2} .1341772{col 40}{space 1}    4.98{col 49}{space 3}0.000{col 57}{space 4}  .393346{col 70}{space 3}  .943045
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 21.81069{col 29}{space 2} 9.884604{col 40}{space 1}    2.21{col 49}{space 3}0.036{col 57}{space 4} 1.562997{col 70}{space 3} 42.05839
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    13.27
+{txt}       Model {c |} {res} 2374.41032         1  2374.41032   {txt}Prob > F        ={res}    0.0011
+{txt}    Residual {c |} {res} 5008.37239        28  178.870442   {txt}R-squared       ={res}    0.3216
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.2974
+{txt}       Total {c |} {res}  7382.7827        29  254.578714   {txt}Root MSE        =   {res} 13.374
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2}    .5414{col 29}{space 2} .1485969{col 40}{space 1}    3.64{col 49}{space 3}0.001{col 57}{space 4} .2370131{col 70}{space 3} .8457868
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2}  17.0394{col 29}{space 2} 6.346977{col 40}{space 1}    2.68{col 49}{space 3}0.012{col 57}{space 4} 4.038211{col 70}{space 3}  30.0406
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    37.56
+{txt}       Model {c |} {res} 3882.76723         1  3882.76723   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 2894.57842        28  103.377801   {txt}R-squared       ={res}    0.5729
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.5577
+{txt}       Total {c |} {res} 6777.34565        29  233.701574   {txt}Root MSE        =   {res} 10.167
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .7691456{col 29}{space 2} .1255023{col 40}{space 1}    6.13{col 49}{space 3}0.000{col 57}{space 4} .5120659{col 70}{space 3} 1.026225
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 9.632915{col 29}{space 2} 6.071371{col 40}{space 1}    1.59{col 49}{space 3}0.124{col 57}{space 4}-2.803724{col 70}{space 3} 22.06955
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    48.05
+{txt}       Model {c |} {res}  855.31834         1   855.31834   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 498.437111        28  17.8013254   {txt}R-squared       ={res}    0.6318
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.6187
+{txt}       Total {c |} {res} 1353.75545        29  46.6812224   {txt}Root MSE        =   {res} 4.2192
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .7953728{col 29}{space 2} .1147448{col 40}{space 1}    6.93{col 49}{space 3}0.000{col 57}{space 4} .5603287{col 70}{space 3} 1.030417
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 6.534121{col 29}{space 2} 3.964868{col 40}{space 1}    1.65{col 49}{space 3}0.111{col 57}{space 4}-1.587543{col 70}{space 3} 14.65579
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    19.69
+{txt}       Model {c |} {res} 1519.60253         1  1519.60253   {txt}Prob > F        ={res}    0.0001
+{txt}    Residual {c |} {res} 2160.62801        28   77.165286   {txt}R-squared       ={res}    0.4129
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.3919
+{txt}       Total {c |} {res} 3680.23054        29  126.904501   {txt}Root MSE        =   {res} 8.7844
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .6968599{col 29}{space 2} .1570332{col 40}{space 1}    4.44{col 49}{space 3}0.000{col 57}{space 4}  .375192{col 70}{space 3} 1.018528
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 10.38513{col 29}{space 2} 5.967755{col 40}{space 1}    1.74{col 49}{space 3}0.093{col 57}{space 4}-1.839259{col 70}{space 3} 22.60952
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    12.28
+{txt}       Model {c |} {res} 3193.91674         1  3193.91674   {txt}Prob > F        ={res}    0.0016
+{txt}    Residual {c |} {res} 7281.68317        28  260.060113   {txt}R-squared       ={res}    0.3049
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.2801
+{txt}       Total {c |} {res} 10475.5999        29  361.227583   {txt}Root MSE        =   {res} 16.126
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .5328112{col 29}{space 2} .1520367{col 40}{space 1}    3.50{col 49}{space 3}0.002{col 57}{space 4} .2213782{col 70}{space 3} .8442443
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 22.78523{col 29}{space 2} 8.592281{col 40}{space 1}    2.65{col 49}{space 3}0.013{col 57}{space 4} 5.184737{col 70}{space 3} 40.38572
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}   184.80
+{txt}       Model {c |} {res}       6.05         1        6.05   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} .916666667        28  .032738095   {txt}R-squared       ={res}    0.8684
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8637
+{txt}       Total {c |} {res} 6.96666667        29  .240229885   {txt}Root MSE        =   {res} .18094
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2} .9166667{col 26}{space 2} .0674311{col 37}{space 1}   13.59{col 46}{space 3}0.000{col 54}{space 4} .7785403{col 67}{space 3} 1.054793
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0833333{col 26}{space 2} .0522319{col 37}{space 1}    1.60{col 46}{space 3}0.122{col 54}{space 4}-.0236589{col 67}{space 3} .1903256
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(1, 28)        = {res}    93.00
+{txt}       Model {c |} {res} 3745.92859         1  3745.92859   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 1127.80373        28  40.2787046   {txt}R-squared       ={res}    0.7686
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.7603
+{txt}       Total {c |} {res} 4873.73232        29  168.059735   {txt}Root MSE        =   {res} 6.3466
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    rate18_20ht{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      t{col 49}   P>|t|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+rate18_20ht_lag {c |}{col 17}{res}{space 2} .8909771{col 29}{space 2} .0923899{col 40}{space 1}    9.64{col 49}{space 3}0.000{col 57}{space 4} .7017249{col 70}{space 3} 1.080229
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} 3.111875{col 29}{space 2} 3.757227{col 40}{space 1}    0.83{col 49}{space 3}0.415{col 57}{space 4}-4.584456{col 70}{space 3} 10.80821
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+{p 0 6 2}note: {bf:mlda21_lag} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}        30
+{txt}{hline 13}{c +}{hline 34}   F(0, 29)        = {res}     0.00
+{txt}       Model {c |} {res}          0         0           .   {txt}Prob > F        ={res}         .
+{txt}    Residual {c |} {res}          0        29           0   {txt}R-squared       ={res}         .
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}         .
+{txt}       Total {c |} {res}          0        29           0   {txt}Root MSE        =   {res}      0
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      mlda21{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mlda21_lag {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2}        1{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}(31 real changes made)
+
+{com}. 
+. * if mlda never changes, then set ar coefficient to 1.
+
+. replace mlda21_ar = 1 if mldayr == 0
+{txt}(372 real changes made)
+
+{com}. 
+. summ rate18_20ht_ar
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+rate18_20h~r {c |}{res}        651    .5108511     .315745  -.2129115   .9447954
+
+{com}. summ mlda21_ar
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 3}mlda21_ar {c |}{res}        651    .9543096    .0629879        .75          1
+
+{com}. 
+. ********************************************************************************
+
+. * problem #4 - naive treatment estimate with state or year fes
+
+. ********************************************************************************
+
+. 
+. regress rate18_20ht mlda21 i.state, robust
+
+{txt}Linear regression                               Number of obs     = {res}       651
+                                                {txt}F(21, 629)        =  {res}    38.72
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.5003
+                                                {txt}Root MSE          =    {res} 12.091
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} rate18_20ht{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}mlda21 {c |}{col 14}{res}{space 2}-9.293325{col 26}{space 2} 1.322639{col 37}{space 1}   -7.03{col 46}{space 3}0.000{col 54}{space 4}-11.89065{col 67}{space 3}-6.696002
+{txt}{space 12} {c |}
+{space 7}state {c |}
+{space 10}5  {c |}{col 14}{res}{space 2}-17.63309{col 26}{space 2} 2.279453{col 37}{space 1}   -7.74{col 46}{space 3}0.000{col 54}{space 4}-22.10934{col 67}{space 3}-13.15683
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-18.00307{col 26}{space 2} 1.721575{col 37}{space 1}  -10.46{col 46}{space 3}0.000{col 54}{space 4} -21.3838{col 67}{space 3}-14.62234
+{txt}{space 10}9  {c |}{col 14}{res}{space 2}-41.94561{col 26}{space 2} 2.520803{col 37}{space 1}  -16.64{col 46}{space 3}0.000{col 54}{space 4}-46.89581{col 67}{space 3} -36.9954
+{txt}{space 9}12  {c |}{col 14}{res}{space 2}-28.88859{col 26}{space 2} 2.290481{col 37}{space 1}  -12.61{col 46}{space 3}0.000{col 54}{space 4} -33.3865{col 67}{space 3}-24.39067
+{txt}{space 9}15  {c |}{col 14}{res}{space 2}-14.43497{col 26}{space 2} 1.847908{col 37}{space 1}   -7.81{col 46}{space 3}0.000{col 54}{space 4}-18.06379{col 67}{space 3}-10.80616
+{txt}{space 9}17  {c |}{col 14}{res}{space 2}-10.34093{col 26}{space 2} 2.054942{col 37}{space 1}   -5.03{col 46}{space 3}0.000{col 54}{space 4}-14.37631{col 67}{space 3}-6.305552
+{txt}{space 9}18  {c |}{col 14}{res}{space 2}-4.167683{col 26}{space 2} 1.565229{col 37}{space 1}   -2.66{col 46}{space 3}0.008{col 54}{space 4} -7.24139{col 67}{space 3}-1.093976
+{txt}{space 9}19  {c |}{col 14}{res}{space 2}-11.45499{col 26}{space 2} 1.752748{col 37}{space 1}   -6.54{col 46}{space 3}0.000{col 54}{space 4}-14.89693{col 67}{space 3}-8.013039
+{txt}{space 9}21  {c |}{col 14}{res}{space 2} -23.6835{col 26}{space 2} 1.704102{col 37}{space 1}  -13.90{col 46}{space 3}0.000{col 54}{space 4}-27.02991{col 67}{space 3}-20.33708
+{txt}{space 9}23  {c |}{col 14}{res}{space 2}-19.97684{col 26}{space 2} 1.693737{col 37}{space 1}  -11.79{col 46}{space 3}0.000{col 54}{space 4} -23.3029{col 67}{space 3}-16.65078
+{txt}{space 9}25  {c |}{col 14}{res}{space 2}-1.037205{col 26}{space 2} 2.268139{col 37}{space 1}   -0.46{col 46}{space 3}0.648{col 54}{space 4}-5.491246{col 67}{space 3} 3.416836
+{txt}{space 9}26  {c |}{col 14}{res}{space 2}-3.567835{col 26}{space 2} 1.782715{col 37}{space 1}   -2.00{col 46}{space 3}0.046{col 54}{space 4}-7.068628{col 67}{space 3}-.0670416
+{txt}{space 9}29  {c |}{col 14}{res}{space 2} 2.198612{col 26}{space 2}  4.57074{col 37}{space 1}    0.48{col 46}{space 3}0.631{col 54}{space 4}-6.777145{col 67}{space 3} 11.17437
+{txt}{space 9}32  {c |}{col 14}{res}{space 2} 16.47085{col 26}{space 2} 4.081429{col 37}{space 1}    4.04{col 46}{space 3}0.000{col 54}{space 4} 8.455978{col 67}{space 3} 24.48573
+{txt}{space 9}35  {c |}{col 14}{res}{space 2}-14.19745{col 26}{space 2} 3.218416{col 37}{space 1}   -4.41{col 46}{space 3}0.000{col 54}{space 4}-20.51759{col 67}{space 3}-7.877306
+{txt}{space 9}38  {c |}{col 14}{res}{space 2}-8.028192{col 26}{space 2} 3.009831{col 37}{space 1}   -2.67{col 46}{space 3}0.008{col 54}{space 4}-13.93873{col 67}{space 3}-2.117659
+{txt}{space 9}39  {c |}{col 14}{res}{space 2}-19.78079{col 26}{space 2} 1.763229{col 37}{space 1}  -11.22{col 46}{space 3}0.000{col 54}{space 4}-23.24332{col 67}{space 3}-16.31826
+{txt}{space 9}45  {c |}{col 14}{res}{space 2}-17.64001{col 26}{space 2} 2.361935{col 37}{space 1}   -7.47{col 46}{space 3}0.000{col 54}{space 4}-22.27824{col 67}{space 3}-13.00178
+{txt}{space 9}46  {c |}{col 14}{res}{space 2} -4.78062{col 26}{space 2} 3.383739{col 37}{space 1}   -1.41{col 46}{space 3}0.158{col 54}{space 4}-11.42541{col 67}{space 3} 1.864173
+{txt}{space 9}48  {c |}{col 14}{res}{space 2}-15.41629{col 26}{space 2} 2.662471{col 37}{space 1}   -5.79{col 46}{space 3}0.000{col 54}{space 4} -20.6447{col 67}{space 3}-10.18788
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 62.76629{col 26}{space 2} 1.833272{col 37}{space 1}   34.24{col 46}{space 3}0.000{col 54}{space 4} 59.16622{col 67}{space 3} 66.36637
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using table_4_state, addtext(Fixed Effects, State, Clusters, None) tex(frag) replace
+{txt}{stata `"shellout using `"table_4_state.tex"'"':table_4_state.tex}
+{browse `"/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3"' :dir}{com} : {txt}{stata `"seeout using "table_4_state.txt""':seeout}
+
+{com}. 
+. regress rate18_20ht mlda21 i.year, robust
+
+{txt}Linear regression                               Number of obs     = {res}       651
+                                                {txt}F(31, 619)        =  {res}     6.06
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.2382
+                                                {txt}Root MSE          =    {res} 15.049
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} rate18_20ht{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}mlda21 {c |}{col 14}{res}{space 2}  8.88623{col 26}{space 2} 2.327919{col 37}{space 1}    3.82{col 46}{space 3}0.000{col 54}{space 4} 4.314654{col 67}{space 3} 13.45781
+{txt}{space 12} {c |}
+{space 8}year {c |}
+{space 7}1976  {c |}{col 14}{res}{space 2} 1.586774{col 26}{space 2} 5.516733{col 37}{space 1}    0.29{col 46}{space 3}0.774{col 54}{space 4}-9.247007{col 67}{space 3} 12.42055
+{txt}{space 7}1977  {c |}{col 14}{res}{space 2} 4.471938{col 26}{space 2} 6.311562{col 37}{space 1}    0.71{col 46}{space 3}0.479{col 54}{space 4}-7.922732{col 67}{space 3} 16.86661
+{txt}{space 7}1978  {c |}{col 14}{res}{space 2} 6.942881{col 26}{space 2} 6.015238{col 37}{space 1}    1.15{col 46}{space 3}0.249{col 54}{space 4}-4.869867{col 67}{space 3} 18.75563
+{txt}{space 7}1979  {c |}{col 14}{res}{space 2} 5.010186{col 26}{space 2} 6.146383{col 37}{space 1}    0.82{col 46}{space 3}0.415{col 54}{space 4}-7.060104{col 67}{space 3} 17.08047
+{txt}{space 7}1980  {c |}{col 14}{res}{space 2} 3.763819{col 26}{space 2} 5.903032{col 37}{space 1}    0.64{col 46}{space 3}0.524{col 54}{space 4}-7.828577{col 67}{space 3} 15.35621
+{txt}{space 7}1981  {c |}{col 14}{res}{space 2}-2.728805{col 26}{space 2}  5.13647{col 37}{space 1}   -0.53{col 46}{space 3}0.595{col 54}{space 4}-12.81582{col 67}{space 3} 7.358213
+{txt}{space 7}1982  {c |}{col 14}{res}{space 2}-1.368997{col 26}{space 2} 6.110785{col 37}{space 1}   -0.22{col 46}{space 3}0.823{col 54}{space 4}-13.36938{col 67}{space 3} 10.63139
+{txt}{space 7}1983  {c |}{col 14}{res}{space 2}-8.660304{col 26}{space 2} 5.374272{col 37}{space 1}   -1.61{col 46}{space 3}0.108{col 54}{space 4}-19.21432{col 67}{space 3} 1.893711
+{txt}{space 7}1984  {c |}{col 14}{res}{space 2}-6.014903{col 26}{space 2} 5.364249{col 37}{space 1}   -1.12{col 46}{space 3}0.263{col 54}{space 4}-16.54923{col 67}{space 3} 4.519429
+{txt}{space 7}1985  {c |}{col 14}{res}{space 2}-7.919455{col 26}{space 2} 5.167422{col 37}{space 1}   -1.53{col 46}{space 3}0.126{col 54}{space 4}-18.06726{col 67}{space 3} 2.228348
+{txt}{space 7}1986  {c |}{col 14}{res}{space 2}-4.639364{col 26}{space 2} 5.654572{col 37}{space 1}   -0.82{col 46}{space 3}0.412{col 54}{space 4}-15.74383{col 67}{space 3} 6.465106
+{txt}{space 7}1987  {c |}{col 14}{res}{space 2}-8.371328{col 26}{space 2} 5.591144{col 37}{space 1}   -1.50{col 46}{space 3}0.135{col 54}{space 4}-19.35124{col 67}{space 3} 2.608581
+{txt}{space 7}1988  {c |}{col 14}{res}{space 2}-7.789676{col 26}{space 2}  5.36555{col 37}{space 1}   -1.45{col 46}{space 3}0.147{col 54}{space 4}-18.32656{col 67}{space 3}  2.74721
+{txt}{space 7}1989  {c |}{col 14}{res}{space 2}-12.08243{col 26}{space 2} 5.110149{col 37}{space 1}   -2.36{col 46}{space 3}0.018{col 54}{space 4}-22.11776{col 67}{space 3}-2.047103
+{txt}{space 7}1990  {c |}{col 14}{res}{space 2}-9.554697{col 26}{space 2} 5.476933{col 37}{space 1}   -1.74{col 46}{space 3}0.082{col 54}{space 4}-20.31032{col 67}{space 3} 1.200924
+{txt}{space 7}1991  {c |}{col 14}{res}{space 2}-13.09518{col 26}{space 2} 5.371553{col 37}{space 1}   -2.44{col 46}{space 3}0.015{col 54}{space 4}-23.64385{col 67}{space 3}-2.546502
+{txt}{space 7}1992  {c |}{col 14}{res}{space 2}-20.74726{col 26}{space 2} 4.865527{col 37}{space 1}   -4.26{col 46}{space 3}0.000{col 54}{space 4} -30.3022{col 67}{space 3}-11.19232
+{txt}{space 7}1993  {c |}{col 14}{res}{space 2}-19.22245{col 26}{space 2} 5.258629{col 37}{space 1}   -3.66{col 46}{space 3}0.000{col 54}{space 4}-29.54937{col 67}{space 3}-8.895537
+{txt}{space 7}1994  {c |}{col 14}{res}{space 2}-15.53561{col 26}{space 2} 5.138342{col 37}{space 1}   -3.02{col 46}{space 3}0.003{col 54}{space 4}-25.62631{col 67}{space 3}-5.444915
+{txt}{space 7}1995  {c |}{col 14}{res}{space 2}-14.22957{col 26}{space 2} 5.358827{col 37}{space 1}   -2.66{col 46}{space 3}0.008{col 54}{space 4}-24.75325{col 67}{space 3}-3.705882
+{txt}{space 7}1996  {c |}{col 14}{res}{space 2}-17.84585{col 26}{space 2} 5.377473{col 37}{space 1}   -3.32{col 46}{space 3}0.001{col 54}{space 4}-28.40615{col 67}{space 3} -7.28555
+{txt}{space 7}1997  {c |}{col 14}{res}{space 2}-18.86017{col 26}{space 2} 5.010438{col 37}{space 1}   -3.76{col 46}{space 3}0.000{col 54}{space 4}-28.69969{col 67}{space 3}-9.020657
+{txt}{space 7}1998  {c |}{col 14}{res}{space 2}-18.59504{col 26}{space 2} 5.290838{col 37}{space 1}   -3.51{col 46}{space 3}0.000{col 54}{space 4} -28.9852{col 67}{space 3}-8.204869
+{txt}{space 7}1999  {c |}{col 14}{res}{space 2}-20.99159{col 26}{space 2} 5.084979{col 37}{space 1}   -4.13{col 46}{space 3}0.000{col 54}{space 4}-30.97749{col 67}{space 3}-11.00569
+{txt}{space 7}2000  {c |}{col 14}{res}{space 2}-20.19126{col 26}{space 2}  5.13024{col 37}{space 1}   -3.94{col 46}{space 3}0.000{col 54}{space 4}-30.26605{col 67}{space 3}-10.11648
+{txt}{space 7}2001  {c |}{col 14}{res}{space 2}  -21.785{col 26}{space 2} 5.050018{col 37}{space 1}   -4.31{col 46}{space 3}0.000{col 54}{space 4}-31.70224{col 67}{space 3}-11.86775
+{txt}{space 7}2002  {c |}{col 14}{res}{space 2}-19.70543{col 26}{space 2} 5.440937{col 37}{space 1}   -3.62{col 46}{space 3}0.000{col 54}{space 4}-30.39036{col 67}{space 3}-9.020494
+{txt}{space 7}2003  {c |}{col 14}{res}{space 2}-20.23837{col 26}{space 2} 4.871717{col 37}{space 1}   -4.15{col 46}{space 3}0.000{col 54}{space 4}-29.80547{col 67}{space 3}-10.67128
+{txt}{space 7}2004  {c |}{col 14}{res}{space 2}-20.52885{col 26}{space 2} 5.666785{col 37}{space 1}   -3.62{col 46}{space 3}0.000{col 54}{space 4} -31.6573{col 67}{space 3}-9.400393
+{txt}{space 7}2005  {c |}{col 14}{res}{space 2}-22.08502{col 26}{space 2} 5.420049{col 37}{space 1}   -4.07{col 46}{space 3}0.000{col 54}{space 4}-32.72894{col 67}{space 3}-11.44111
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 45.74022{col 26}{space 2} 4.539007{col 37}{space 1}   10.08{col 46}{space 3}0.000{col 54}{space 4}  36.8265{col 67}{space 3} 54.65393
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using table_4_year, addtext(Fixed Effects, Year, Clusters, None) tex(frag) replace
+{txt}{stata `"shellout using `"table_4_year.tex"'"':table_4_year.tex}
+{browse `"/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3"' :dir}{com} : {txt}{stata `"seeout using "table_4_year.txt""':seeout}
+
+{com}. 
+. ********************************************************************************
+
+. * problem #5 - naive treatment estimate 
+
+. * with state and year fes and clustered ses
+
+. ********************************************************************************
+
+. 
+. regress rate18_20ht mlda21 i.year i.state, robust cluster(state)
+
+{txt}Linear regression                               Number of obs     = {res}       651
+                                                {txt}{help j_robustsingular:F(19, 20) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.6914
+                                                {txt}Root MSE          =    {res} 9.7375
+
+{txt}{ralign 78:(Std. err. adjusted for {res:21} clusters in {res:state})}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} rate18_20ht{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}mlda21 {c |}{col 14}{res}{space 2} 5.755264{col 26}{space 2} 4.764454{col 37}{space 1}    1.21{col 46}{space 3}0.241{col 54}{space 4}-4.183213{col 67}{space 3} 15.69374
+{txt}{space 12} {c |}
+{space 8}year {c |}
+{space 7}1976  {c |}{col 14}{res}{space 2} 1.586774{col 26}{space 2} 2.074697{col 37}{space 1}    0.76{col 46}{space 3}0.453{col 54}{space 4}-2.740968{col 67}{space 3} 5.914516
+{txt}{space 7}1977  {c |}{col 14}{res}{space 2} 4.471938{col 26}{space 2} 2.212946{col 37}{space 1}    2.02{col 46}{space 3}0.057{col 54}{space 4}-.1441867{col 67}{space 3} 9.088062
+{txt}{space 7}1978  {c |}{col 14}{res}{space 2} 6.942881{col 26}{space 2} 2.423455{col 37}{space 1}    2.86{col 46}{space 3}0.010{col 54}{space 4} 1.887642{col 67}{space 3} 11.99812
+{txt}{space 7}1979  {c |}{col 14}{res}{space 2} 5.159279{col 26}{space 2} 2.291585{col 37}{space 1}    2.25{col 46}{space 3}0.036{col 54}{space 4} .3791171{col 67}{space 3} 9.939441
+{txt}{space 7}1980  {c |}{col 14}{res}{space 2} 3.912912{col 26}{space 2} 2.523114{col 37}{space 1}    1.55{col 46}{space 3}0.137{col 54}{space 4}-1.350212{col 67}{space 3} 9.176037
+{txt}{space 7}1981  {c |}{col 14}{res}{space 2}-2.579711{col 26}{space 2} 3.524938{col 37}{space 1}   -0.73{col 46}{space 3}0.473{col 54}{space 4}-9.932604{col 67}{space 3} 4.773181
+{txt}{space 7}1982  {c |}{col 14}{res}{space 2}-1.219903{col 26}{space 2} 2.025216{col 37}{space 1}   -0.60{col 46}{space 3}0.554{col 54}{space 4} -5.44443{col 67}{space 3} 3.004623
+{txt}{space 7}1983  {c |}{col 14}{res}{space 2}-8.362117{col 26}{space 2} 2.877852{col 37}{space 1}   -2.91{col 46}{space 3}0.009{col 54}{space 4}-14.36521{col 67}{space 3}-2.359023
+{txt}{space 7}1984  {c |}{col 14}{res}{space 2}-5.716716{col 26}{space 2} 3.685785{col 37}{space 1}   -1.55{col 46}{space 3}0.137{col 54}{space 4}-13.40513{col 67}{space 3} 1.971698
+{txt}{space 7}1985  {c |}{col 14}{res}{space 2}-7.621268{col 26}{space 2} 3.288115{col 37}{space 1}   -2.32{col 46}{space 3}0.031{col 54}{space 4}-14.48016{col 67}{space 3}-.7623797
+{txt}{space 7}1986  {c |}{col 14}{res}{space 2}-4.192083{col 26}{space 2} 3.448021{col 37}{space 1}   -1.22{col 46}{space 3}0.238{col 54}{space 4}-11.38453{col 67}{space 3} 3.000363
+{txt}{space 7}1987  {c |}{col 14}{res}{space 2}-7.178579{col 26}{space 2} 3.857767{col 37}{space 1}   -1.86{col 46}{space 3}0.078{col 54}{space 4}-15.22574{col 67}{space 3} .8685828
+{txt}{space 7}1988  {c |}{col 14}{res}{space 2}-6.447833{col 26}{space 2} 3.883399{col 37}{space 1}   -1.66{col 46}{space 3}0.112{col 54}{space 4}-14.54846{col 67}{space 3} 1.652795
+{txt}{space 7}1989  {c |}{col 14}{res}{space 2}-10.74059{col 26}{space 2} 3.983096{col 37}{space 1}   -2.70{col 46}{space 3}0.014{col 54}{space 4}-19.04918{col 67}{space 3}-2.431999
+{txt}{space 7}1990  {c |}{col 14}{res}{space 2}-8.212854{col 26}{space 2} 3.135324{col 37}{space 1}   -2.62{col 46}{space 3}0.016{col 54}{space 4}-14.75302{col 67}{space 3}-1.672683
+{txt}{space 7}1991  {c |}{col 14}{res}{space 2}-11.75333{col 26}{space 2} 3.834787{col 37}{space 1}   -3.06{col 46}{space 3}0.006{col 54}{space 4}-19.75256{col 67}{space 3}-3.754109
+{txt}{space 7}1992  {c |}{col 14}{res}{space 2}-19.40542{col 26}{space 2} 4.517521{col 37}{space 1}   -4.30{col 46}{space 3}0.000{col 54}{space 4} -28.8288{col 67}{space 3}-9.982033
+{txt}{space 7}1993  {c |}{col 14}{res}{space 2}-17.88061{col 26}{space 2} 4.811318{col 37}{space 1}   -3.72{col 46}{space 3}0.001{col 54}{space 4}-27.91684{col 67}{space 3}-7.844378
+{txt}{space 7}1994  {c |}{col 14}{res}{space 2}-14.19377{col 26}{space 2}   4.9687{col 37}{space 1}   -2.86{col 46}{space 3}0.010{col 54}{space 4}-24.55829{col 67}{space 3} -3.82924
+{txt}{space 7}1995  {c |}{col 14}{res}{space 2}-12.88772{col 26}{space 2} 4.097612{col 37}{space 1}   -3.15{col 46}{space 3}0.005{col 54}{space 4}-21.43519{col 67}{space 3}-4.340255
+{txt}{space 7}1996  {c |}{col 14}{res}{space 2}-16.50401{col 26}{space 2} 4.355753{col 37}{space 1}   -3.79{col 46}{space 3}0.001{col 54}{space 4}-25.58995{col 67}{space 3}-7.418067
+{txt}{space 7}1997  {c |}{col 14}{res}{space 2}-17.51833{col 26}{space 2} 4.417279{col 37}{space 1}   -3.97{col 46}{space 3}0.001{col 54}{space 4}-26.73261{col 67}{space 3} -8.30405
+{txt}{space 7}1998  {c |}{col 14}{res}{space 2}-17.25319{col 26}{space 2} 4.725276{col 37}{space 1}   -3.65{col 46}{space 3}0.002{col 54}{space 4}-27.10995{col 67}{space 3}-7.396441
+{txt}{space 7}1999  {c |}{col 14}{res}{space 2}-19.64975{col 26}{space 2} 4.916104{col 37}{space 1}   -4.00{col 46}{space 3}0.001{col 54}{space 4}-29.90456{col 67}{space 3}-9.394934
+{txt}{space 7}2000  {c |}{col 14}{res}{space 2}-18.84942{col 26}{space 2}  4.81127{col 37}{space 1}   -3.92{col 46}{space 3}0.001{col 54}{space 4}-28.88555{col 67}{space 3}-8.813287
+{txt}{space 7}2001  {c |}{col 14}{res}{space 2}-20.44315{col 26}{space 2} 5.869097{col 37}{space 1}   -3.48{col 46}{space 3}0.002{col 54}{space 4}-32.68587{col 67}{space 3}-8.200431
+{txt}{space 7}2002  {c |}{col 14}{res}{space 2}-18.36358{col 26}{space 2} 4.861316{col 37}{space 1}   -3.78{col 46}{space 3}0.001{col 54}{space 4}-28.50411{col 67}{space 3}-8.223058
+{txt}{space 7}2003  {c |}{col 14}{res}{space 2}-18.89653{col 26}{space 2} 4.613319{col 37}{space 1}   -4.10{col 46}{space 3}0.001{col 54}{space 4}-28.51975{col 67}{space 3}-9.273316
+{txt}{space 7}2004  {c |}{col 14}{res}{space 2}  -19.187{col 26}{space 2} 4.939236{col 37}{space 1}   -3.88{col 46}{space 3}0.001{col 54}{space 4}-29.49007{col 67}{space 3}-8.883937
+{txt}{space 7}2005  {c |}{col 14}{res}{space 2}-20.74318{col 26}{space 2} 4.590038{col 37}{space 1}   -4.52{col 46}{space 3}0.000{col 54}{space 4}-30.31783{col 67}{space 3}-11.16853
+{txt}{space 12} {c |}
+{space 7}state {c |}
+{space 10}5  {c |}{col 14}{res}{space 2}-17.63309{col 26}{space 2} 9.75e-14{col 37}{space 1}-1.8e+14{col 46}{space 3}0.000{col 54}{space 4}-17.63309{col 67}{space 3}-17.63309
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-11.69237{col 26}{space 2} 1.997997{col 37}{space 1}   -5.85{col 46}{space 3}0.000{col 54}{space 4}-15.86012{col 67}{space 3}-7.524622
+{txt}{space 10}9  {c |}{col 14}{res}{space 2}-36.12035{col 26}{space 2} 1.844305{col 37}{space 1}  -19.58{col 46}{space 3}0.000{col 54}{space 4} -39.9675{col 67}{space 3}-32.27319
+{txt}{space 9}12  {c |}{col 14}{res}{space 2}-23.06333{col 26}{space 2} 1.844305{col 37}{space 1}  -12.51{col 46}{space 3}0.000{col 54}{space 4}-26.91048{col 67}{space 3}-19.21618
+{txt}{space 9}15  {c |}{col 14}{res}{space 2}-14.43497{col 26}{space 2} 9.75e-14{col 37}{space 1}-1.5e+14{col 46}{space 3}0.000{col 54}{space 4}-14.43497{col 67}{space 3}-14.43497
+{txt}{space 9}17  {c |}{col 14}{res}{space 2}-5.001109{col 26}{space 2} 1.690613{col 37}{space 1}   -2.96{col 46}{space 3}0.008{col 54}{space 4}-8.527665{col 67}{space 3}-1.474552
+{txt}{space 9}18  {c |}{col 14}{res}{space 2}-4.167683{col 26}{space 2} 9.75e-14{col 37}{space 1}-4.3e+13{col 46}{space 3}0.000{col 54}{space 4}-4.167683{col 67}{space 3}-4.167683
+{txt}{space 9}19  {c |}{col 14}{res}{space 2}-5.629725{col 26}{space 2} 1.844305{col 37}{space 1}   -3.05{col 46}{space 3}0.006{col 54}{space 4}-9.476877{col 67}{space 3}-1.782573
+{txt}{space 9}21  {c |}{col 14}{res}{space 2}-19.79999{col 26}{space 2} 1.229536{col 37}{space 1}  -16.10{col 46}{space 3}0.000{col 54}{space 4}-22.36476{col 67}{space 3}-17.23522
+{txt}{space 9}23  {c |}{col 14}{res}{space 2}-18.03509{col 26}{space 2} .6147682{col 37}{space 1}  -29.34{col 46}{space 3}0.000{col 54}{space 4}-19.31747{col 67}{space 3} -16.7527
+{txt}{space 9}25  {c |}{col 14}{res}{space 2} 4.788055{col 26}{space 2} 1.844305{col 37}{space 1}    2.60{col 46}{space 3}0.017{col 54}{space 4} .9409026{col 67}{space 3} 8.635207
+{txt}{space 9}26  {c |}{col 14}{res}{space 2}-3.567835{col 26}{space 2} 9.75e-14{col 37}{space 1}-3.7e+13{col 46}{space 3}0.000{col 54}{space 4}-3.567835{col 67}{space 3}-3.567835
+{txt}{space 9}29  {c |}{col 14}{res}{space 2} 2.198612{col 26}{space 2} 9.79e-14{col 37}{space 1} 2.2e+13{col 46}{space 3}0.000{col 54}{space 4} 2.198612{col 67}{space 3} 2.198612
+{txt}{space 9}32  {c |}{col 14}{res}{space 2} 16.47085{col 26}{space 2} 9.78e-14{col 37}{space 1} 1.7e+14{col 46}{space 3}0.000{col 54}{space 4} 16.47085{col 67}{space 3} 16.47085
+{txt}{space 9}35  {c |}{col 14}{res}{space 2}-14.19745{col 26}{space 2} 9.75e-14{col 37}{space 1}-1.5e+14{col 46}{space 3}0.000{col 54}{space 4}-14.19745{col 67}{space 3}-14.19745
+{txt}{space 9}38  {c |}{col 14}{res}{space 2}-8.028192{col 26}{space 2} 9.77e-14{col 37}{space 1}-8.2e+13{col 46}{space 3}0.000{col 54}{space 4}-8.028192{col 67}{space 3}-8.028192
+{txt}{space 9}39  {c |}{col 14}{res}{space 2}-19.78079{col 26}{space 2} 9.76e-14{col 37}{space 1}-2.0e+14{col 46}{space 3}0.000{col 54}{space 4}-19.78079{col 67}{space 3}-19.78079
+{txt}{space 9}45  {c |}{col 14}{res}{space 2}-17.64001{col 26}{space 2} 9.76e-14{col 37}{space 1}-1.8e+14{col 46}{space 3}0.000{col 54}{space 4}-17.64001{col 67}{space 3}-17.64001
+{txt}{space 9}46  {c |}{col 14}{res}{space 2}  1.04464{col 26}{space 2} 1.844305{col 37}{space 1}    0.57{col 46}{space 3}0.577{col 54}{space 4}-2.802512{col 67}{space 3} 4.891792
+{txt}{space 9}48  {c |}{col 14}{res}{space 2}-15.41629{col 26}{space 2} 9.76e-14{col 37}{space 1}-1.6e+14{col 46}{space 3}0.000{col 54}{space 4}-15.41629{col 67}{space 3}-15.41629
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 57.51535{col 26}{space 2} 4.778858{col 37}{space 1}   12.04{col 46}{space 3}0.000{col 54}{space 4} 47.54682{col 67}{space 3} 67.48387
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using table_5, keep(mlda21) addtext(Fixed Effects, State and Year, Clusters, States) nocons tex(frag) replace
+{txt}{stata `"shellout using `"table_5.tex"'"':table_5.tex}
+{browse `"/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3"' :dir}{com} : {txt}{stata `"seeout using "table_5.txt""':seeout}
+
+{com}. 
+. ********************************************************************************
+
+. * problem #6 - treatment estimate 
+
+. * with state and year fes and unclustered ses
+
+. ********************************************************************************
+
+. 
+. regress rate18_20ht mlda21 i.year i.state, robust
+
+{txt}Linear regression                               Number of obs     = {res}       651
+                                                {txt}F(51, 599)        =  {res}    25.04
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.6914
+                                                {txt}Root MSE          =    {res} 9.7375
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} rate18_20ht{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}mlda21 {c |}{col 14}{res}{space 2} 5.755264{col 26}{space 2} 1.668881{col 37}{space 1}    3.45{col 46}{space 3}0.001{col 54}{space 4} 2.477694{col 67}{space 3} 9.032833
+{txt}{space 12} {c |}
+{space 8}year {c |}
+{space 7}1976  {c |}{col 14}{res}{space 2} 1.586774{col 26}{space 2} 3.550686{col 37}{space 1}    0.45{col 46}{space 3}0.655{col 54}{space 4}-5.386533{col 67}{space 3} 8.560081
+{txt}{space 7}1977  {c |}{col 14}{res}{space 2} 4.471938{col 26}{space 2} 4.322481{col 37}{space 1}    1.03{col 46}{space 3}0.301{col 54}{space 4}-4.017121{col 67}{space 3}   12.961
+{txt}{space 7}1978  {c |}{col 14}{res}{space 2} 6.942881{col 26}{space 2} 3.678828{col 37}{space 1}    1.89{col 46}{space 3}0.060{col 54}{space 4}-.2820875{col 67}{space 3} 14.16785
+{txt}{space 7}1979  {c |}{col 14}{res}{space 2} 5.159279{col 26}{space 2} 4.149023{col 37}{space 1}    1.24{col 46}{space 3}0.214{col 54}{space 4}-2.989121{col 67}{space 3} 13.30768
+{txt}{space 7}1980  {c |}{col 14}{res}{space 2} 3.912912{col 26}{space 2} 3.888638{col 37}{space 1}    1.01{col 46}{space 3}0.315{col 54}{space 4}-3.724109{col 67}{space 3} 11.54993
+{txt}{space 7}1981  {c |}{col 14}{res}{space 2}-2.579711{col 26}{space 2} 3.497186{col 37}{space 1}   -0.74{col 46}{space 3}0.461{col 54}{space 4}-9.447947{col 67}{space 3} 4.288525
+{txt}{space 7}1982  {c |}{col 14}{res}{space 2}-1.219903{col 26}{space 2} 4.101644{col 37}{space 1}   -0.30{col 46}{space 3}0.766{col 54}{space 4}-9.275254{col 67}{space 3} 6.835448
+{txt}{space 7}1983  {c |}{col 14}{res}{space 2}-8.362117{col 26}{space 2} 3.350342{col 37}{space 1}   -2.50{col 46}{space 3}0.013{col 54}{space 4}-14.94196{col 67}{space 3}-1.782271
+{txt}{space 7}1984  {c |}{col 14}{res}{space 2}-5.716716{col 26}{space 2} 3.585548{col 37}{space 1}   -1.59{col 46}{space 3}0.111{col 54}{space 4}-12.75849{col 67}{space 3} 1.325059
+{txt}{space 7}1985  {c |}{col 14}{res}{space 2}-7.621268{col 26}{space 2} 3.300416{col 37}{space 1}   -2.31{col 46}{space 3}0.021{col 54}{space 4}-14.10306{col 67}{space 3}-1.139475
+{txt}{space 7}1986  {c |}{col 14}{res}{space 2}-4.192083{col 26}{space 2} 3.362003{col 37}{space 1}   -1.25{col 46}{space 3}0.213{col 54}{space 4}-10.79483{col 67}{space 3} 2.410663
+{txt}{space 7}1987  {c |}{col 14}{res}{space 2}-7.178579{col 26}{space 2} 3.462968{col 37}{space 1}   -2.07{col 46}{space 3}0.039{col 54}{space 4}-13.97961{col 67}{space 3}-.3775437
+{txt}{space 7}1988  {c |}{col 14}{res}{space 2}-6.447833{col 26}{space 2}  3.46534{col 37}{space 1}   -1.86{col 46}{space 3}0.063{col 54}{space 4}-13.25353{col 67}{space 3} .3578594
+{txt}{space 7}1989  {c |}{col 14}{res}{space 2}-10.74059{col 26}{space 2} 3.345871{col 37}{space 1}   -3.21{col 46}{space 3}0.001{col 54}{space 4}-17.31166{col 67}{space 3}-4.169526
+{txt}{space 7}1990  {c |}{col 14}{res}{space 2}-8.212854{col 26}{space 2} 3.323583{col 37}{space 1}   -2.47{col 46}{space 3}0.014{col 54}{space 4}-14.74014{col 67}{space 3}-1.685563
+{txt}{space 7}1991  {c |}{col 14}{res}{space 2}-11.75333{col 26}{space 2}   3.1375{col 37}{space 1}   -3.75{col 46}{space 3}0.000{col 54}{space 4}-17.91517{col 67}{space 3}-5.591497
+{txt}{space 7}1992  {c |}{col 14}{res}{space 2}-19.40542{col 26}{space 2} 3.331777{col 37}{space 1}   -5.82{col 46}{space 3}0.000{col 54}{space 4} -25.9488{col 67}{space 3}-12.86203
+{txt}{space 7}1993  {c |}{col 14}{res}{space 2}-17.88061{col 26}{space 2} 3.576713{col 37}{space 1}   -5.00{col 46}{space 3}0.000{col 54}{space 4}-24.90503{col 67}{space 3}-10.85619
+{txt}{space 7}1994  {c |}{col 14}{res}{space 2}-14.19377{col 26}{space 2} 3.779159{col 37}{space 1}   -3.76{col 46}{space 3}0.000{col 54}{space 4}-21.61578{col 67}{space 3}-6.771754
+{txt}{space 7}1995  {c |}{col 14}{res}{space 2}-12.88772{col 26}{space 2} 3.436375{col 37}{space 1}   -3.75{col 46}{space 3}0.000{col 54}{space 4}-19.63653{col 67}{space 3}-6.138917
+{txt}{space 7}1996  {c |}{col 14}{res}{space 2}-16.50401{col 26}{space 2} 3.416089{col 37}{space 1}   -4.83{col 46}{space 3}0.000{col 54}{space 4}-23.21298{col 67}{space 3}-9.795041
+{txt}{space 7}1997  {c |}{col 14}{res}{space 2}-17.51833{col 26}{space 2} 3.498008{col 37}{space 1}   -5.01{col 46}{space 3}0.000{col 54}{space 4}-24.38818{col 67}{space 3}-10.64848
+{txt}{space 7}1998  {c |}{col 14}{res}{space 2}-17.25319{col 26}{space 2} 3.556255{col 37}{space 1}   -4.85{col 46}{space 3}0.000{col 54}{space 4}-24.23744{col 67}{space 3}-10.26895
+{txt}{space 7}1999  {c |}{col 14}{res}{space 2}-19.64975{col 26}{space 2} 3.771412{col 37}{space 1}   -5.21{col 46}{space 3}0.000{col 54}{space 4}-27.05654{col 67}{space 3}-12.24295
+{txt}{space 7}2000  {c |}{col 14}{res}{space 2}-18.84942{col 26}{space 2} 3.410245{col 37}{space 1}   -5.53{col 46}{space 3}0.000{col 54}{space 4}-25.54691{col 67}{space 3}-12.15193
+{txt}{space 7}2001  {c |}{col 14}{res}{space 2}-20.44315{col 26}{space 2} 3.962487{col 37}{space 1}   -5.16{col 46}{space 3}0.000{col 54}{space 4}-28.22521{col 67}{space 3} -12.6611
+{txt}{space 7}2002  {c |}{col 14}{res}{space 2}-18.36358{col 26}{space 2}  3.61721{col 37}{space 1}   -5.08{col 46}{space 3}0.000{col 54}{space 4}-25.46754{col 67}{space 3}-11.25963
+{txt}{space 7}2003  {c |}{col 14}{res}{space 2}-18.89653{col 26}{space 2} 3.633407{col 37}{space 1}   -5.20{col 46}{space 3}0.000{col 54}{space 4} -26.0323{col 67}{space 3}-11.76077
+{txt}{space 7}2004  {c |}{col 14}{res}{space 2}  -19.187{col 26}{space 2}  3.71457{col 37}{space 1}   -5.17{col 46}{space 3}0.000{col 54}{space 4}-26.48217{col 67}{space 3}-11.89184
+{txt}{space 7}2005  {c |}{col 14}{res}{space 2}-20.74318{col 26}{space 2} 3.556779{col 37}{space 1}   -5.83{col 46}{space 3}0.000{col 54}{space 4}-27.72845{col 67}{space 3}-13.75791
+{txt}{space 12} {c |}
+{space 7}state {c |}
+{space 10}5  {c |}{col 14}{res}{space 2}-17.63309{col 26}{space 2} 1.666067{col 37}{space 1}  -10.58{col 46}{space 3}0.000{col 54}{space 4}-20.90513{col 67}{space 3}-14.36104
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-11.69237{col 26}{space 2} 1.951735{col 37}{space 1}   -5.99{col 46}{space 3}0.000{col 54}{space 4}-15.52545{col 67}{space 3}-7.859295
+{txt}{space 10}9  {c |}{col 14}{res}{space 2}-36.12035{col 26}{space 2} 2.996451{col 37}{space 1}  -12.05{col 46}{space 3}0.000{col 54}{space 4}-42.00517{col 67}{space 3}-30.23552
+{txt}{space 9}12  {c |}{col 14}{res}{space 2}-23.06333{col 26}{space 2} 2.330228{col 37}{space 1}   -9.90{col 46}{space 3}0.000{col 54}{space 4}-27.63974{col 67}{space 3}-18.48692
+{txt}{space 9}15  {c |}{col 14}{res}{space 2}-14.43497{col 26}{space 2} 1.720481{col 37}{space 1}   -8.39{col 46}{space 3}0.000{col 54}{space 4}-17.81388{col 67}{space 3}-11.05607
+{txt}{space 9}17  {c |}{col 14}{res}{space 2}-5.001109{col 26}{space 2} 2.063429{col 37}{space 1}   -2.42{col 46}{space 3}0.016{col 54}{space 4}-9.053544{col 67}{space 3}-.9486732
+{txt}{space 9}18  {c |}{col 14}{res}{space 2}-4.167683{col 26}{space 2} 2.078342{col 37}{space 1}   -2.01{col 46}{space 3}0.045{col 54}{space 4}-8.249405{col 67}{space 3}-.0859611
+{txt}{space 9}19  {c |}{col 14}{res}{space 2}-5.629725{col 26}{space 2} 2.008666{col 37}{space 1}   -2.80{col 46}{space 3}0.005{col 54}{space 4}-9.574609{col 67}{space 3}-1.684841
+{txt}{space 9}21  {c |}{col 14}{res}{space 2}-19.79999{col 26}{space 2}  1.81642{col 37}{space 1}  -10.90{col 46}{space 3}0.000{col 54}{space 4}-23.36732{col 67}{space 3}-16.23266
+{txt}{space 9}23  {c |}{col 14}{res}{space 2}-18.03509{col 26}{space 2} 1.824432{col 37}{space 1}   -9.89{col 46}{space 3}0.000{col 54}{space 4}-21.61815{col 67}{space 3}-14.45203
+{txt}{space 9}25  {c |}{col 14}{res}{space 2} 4.788055{col 26}{space 2} 2.607444{col 37}{space 1}    1.84{col 46}{space 3}0.067{col 54}{space 4}-.3327885{col 67}{space 3} 9.908898
+{txt}{space 9}26  {c |}{col 14}{res}{space 2}-3.567835{col 26}{space 2} 2.239547{col 37}{space 1}   -1.59{col 46}{space 3}0.112{col 54}{space 4}-7.966154{col 67}{space 3} .8304842
+{txt}{space 9}29  {c |}{col 14}{res}{space 2} 2.198612{col 26}{space 2} 3.411899{col 37}{space 1}    0.64{col 46}{space 3}0.520{col 54}{space 4}-4.502126{col 67}{space 3} 8.899351
+{txt}{space 9}32  {c |}{col 14}{res}{space 2} 16.47085{col 26}{space 2} 3.071123{col 37}{space 1}    5.36{col 46}{space 3}0.000{col 54}{space 4} 10.43938{col 67}{space 3} 22.50233
+{txt}{space 9}35  {c |}{col 14}{res}{space 2}-14.19745{col 26}{space 2} 2.578666{col 37}{space 1}   -5.51{col 46}{space 3}0.000{col 54}{space 4}-19.26177{col 67}{space 3} -9.13312
+{txt}{space 9}38  {c |}{col 14}{res}{space 2}-8.028192{col 26}{space 2} 2.209552{col 37}{space 1}   -3.63{col 46}{space 3}0.000{col 54}{space 4} -12.3676{col 67}{space 3}-3.688781
+{txt}{space 9}39  {c |}{col 14}{res}{space 2}-19.78079{col 26}{space 2} 1.840723{col 37}{space 1}  -10.75{col 46}{space 3}0.000{col 54}{space 4}-23.39585{col 67}{space 3}-16.16574
+{txt}{space 9}45  {c |}{col 14}{res}{space 2}-17.64001{col 26}{space 2} 2.003659{col 37}{space 1}   -8.80{col 46}{space 3}0.000{col 54}{space 4}-21.57506{col 67}{space 3}-13.70496
+{txt}{space 9}46  {c |}{col 14}{res}{space 2}  1.04464{col 26}{space 2} 3.280043{col 37}{space 1}    0.32{col 46}{space 3}0.750{col 54}{space 4}-5.397142{col 67}{space 3} 7.486423
+{txt}{space 9}48  {c |}{col 14}{res}{space 2}-15.41629{col 26}{space 2} 1.848006{col 37}{space 1}   -8.34{col 46}{space 3}0.000{col 54}{space 4}-19.04565{col 67}{space 3}-11.78693
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 57.51535{col 26}{space 2}  3.51386{col 37}{space 1}   16.37{col 46}{space 3}0.000{col 54}{space 4} 50.61436{col 67}{space 3} 64.41633
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using table_6, keep(mlda21) addtext(Fixed Effects, State and Year, Clusters, None) nocons tex(frag) replace
+{txt}{stata `"shellout using `"table_6.tex"'"':table_6.tex}
+{browse `"/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3"' :dir}{com} : {txt}{stata `"seeout using "table_6.txt""':seeout}
+
+{com}. 
+. ********************************************************************************
+
+. * problem #7 - treatment estimate 
+
+. * with state and year fes and unclustered ses
+
+. * before and including 1990
+
+. ********************************************************************************
+
+. 
+. regress rate18_20ht mlda21 i.year i.state if year <= 1990, robust cluster(state) 
+
+{txt}Linear regression                               Number of obs     = {res}       336
+                                                {txt}{help j_robustsingular:F(15, 20) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.7694
+                                                {txt}Root MSE          =    {res} 8.8637
+
+{txt}{ralign 78:(Std. err. adjusted for {res:21} clusters in {res:state})}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} rate18_20ht{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}mlda21 {c |}{col 14}{res}{space 2} 1.164507{col 26}{space 2} 2.989659{col 37}{space 1}    0.39{col 46}{space 3}0.701{col 54}{space 4}-5.071813{col 67}{space 3} 7.400826
+{txt}{space 12} {c |}
+{space 8}year {c |}
+{space 7}1976  {c |}{col 14}{res}{space 2} 1.586774{col 26}{space 2} 2.108134{col 37}{space 1}    0.75{col 46}{space 3}0.460{col 54}{space 4}-2.810717{col 67}{space 3} 5.984264
+{txt}{space 7}1977  {c |}{col 14}{res}{space 2} 4.471938{col 26}{space 2} 2.248611{col 37}{space 1}    1.99{col 46}{space 3}0.061{col 54}{space 4}-.2185829{col 67}{space 3} 9.162458
+{txt}{space 7}1978  {c |}{col 14}{res}{space 2} 6.942881{col 26}{space 2} 2.462513{col 37}{space 1}    2.82{col 46}{space 3}0.011{col 54}{space 4} 1.806169{col 67}{space 3} 12.07959
+{txt}{space 7}1979  {c |}{col 14}{res}{space 2} 5.377887{col 26}{space 2} 2.246382{col 37}{space 1}    2.39{col 46}{space 3}0.027{col 54}{space 4} .6920164{col 67}{space 3} 10.06376
+{txt}{space 7}1980  {c |}{col 14}{res}{space 2}  4.13152{col 26}{space 2}  2.51051{col 37}{space 1}    1.65{col 46}{space 3}0.115{col 54}{space 4}-1.105312{col 67}{space 3} 9.368352
+{txt}{space 7}1981  {c |}{col 14}{res}{space 2}-2.361104{col 26}{space 2} 3.525772{col 37}{space 1}   -0.67{col 46}{space 3}0.511{col 54}{space 4}-9.715736{col 67}{space 3} 4.993529
+{txt}{space 7}1982  {c |}{col 14}{res}{space 2}-1.001296{col 26}{space 2} 1.930725{col 37}{space 1}   -0.52{col 46}{space 3}0.610{col 54}{space 4}-5.028717{col 67}{space 3} 3.026125
+{txt}{space 7}1983  {c |}{col 14}{res}{space 2}-7.924902{col 26}{space 2} 2.937378{col 37}{space 1}   -2.70{col 46}{space 3}0.014{col 54}{space 4}-14.05216{col 67}{space 3}-1.797639
+{txt}{space 7}1984  {c |}{col 14}{res}{space 2}-5.279501{col 26}{space 2} 3.675871{col 37}{space 1}   -1.44{col 46}{space 3}0.166{col 54}{space 4}-12.94723{col 67}{space 3} 2.388233
+{txt}{space 7}1985  {c |}{col 14}{res}{space 2}-7.184053{col 26}{space 2} 3.398726{col 37}{space 1}   -2.11{col 46}{space 3}0.047{col 54}{space 4}-14.27367{col 67}{space 3}-.0944344
+{txt}{space 7}1986  {c |}{col 14}{res}{space 2}-3.536261{col 26}{space 2} 3.624687{col 37}{space 1}   -0.98{col 46}{space 3}0.341{col 54}{space 4}-11.09723{col 67}{space 3} 4.024705
+{txt}{space 7}1987  {c |}{col 14}{res}{space 2}-5.429719{col 26}{space 2} 3.878214{col 37}{space 1}   -1.40{col 46}{space 3}0.177{col 54}{space 4}-13.51953{col 67}{space 3} 2.660093
+{txt}{space 7}1988  {c |}{col 14}{res}{space 2}-4.480366{col 26}{space 2} 3.667831{col 37}{space 1}   -1.22{col 46}{space 3}0.236{col 54}{space 4}-12.13133{col 67}{space 3} 3.170595
+{txt}{space 7}1989  {c |}{col 14}{res}{space 2}-8.773123{col 26}{space 2}  4.11817{col 37}{space 1}   -2.13{col 46}{space 3}0.046{col 54}{space 4}-17.36347{col 67}{space 3}-.1827716
+{txt}{space 7}1990  {c |}{col 14}{res}{space 2}-6.245387{col 26}{space 2} 3.153536{col 37}{space 1}   -1.98{col 46}{space 3}0.062{col 54}{space 4}-12.82355{col 67}{space 3} .3327748
+{txt}{space 12} {c |}
+{space 7}state {c |}
+{space 10}5  {c |}{col 14}{res}{space 2}-11.45413{col 26}{space 2} 5.43e-14{col 37}{space 1}-2.1e+14{col 46}{space 3}0.000{col 54}{space 4}-11.45413{col 67}{space 3}-11.45413
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-10.65691{col 26}{space 2} 2.429098{col 37}{space 1}   -4.39{col 46}{space 3}0.000{col 54}{space 4}-15.72392{col 67}{space 3}-5.589897
+{txt}{space 10}9  {c |}{col 14}{res}{space 2}-44.13431{col 26}{space 2} 2.242244{col 37}{space 1}  -19.68{col 46}{space 3}0.000{col 54}{space 4}-48.81155{col 67}{space 3}-39.45707
+{txt}{space 9}12  {c |}{col 14}{res}{space 2}-20.49993{col 26}{space 2} 2.242244{col 37}{space 1}   -9.14{col 46}{space 3}0.000{col 54}{space 4}-25.17717{col 67}{space 3}-15.82269
+{txt}{space 9}15  {c |}{col 14}{res}{space 2}-12.36255{col 26}{space 2} 5.40e-14{col 37}{space 1}-2.3e+14{col 46}{space 3}0.000{col 54}{space 4}-12.36255{col 67}{space 3}-12.36255
+{txt}{space 9}17  {c |}{col 14}{res}{space 2}-2.703161{col 26}{space 2} 2.055391{col 37}{space 1}   -1.32{col 46}{space 3}0.203{col 54}{space 4}-6.990631{col 67}{space 3} 1.584308
+{txt}{space 9}18  {c |}{col 14}{res}{space 2}-5.478406{col 26}{space 2} 5.43e-14{col 37}{space 1}-1.0e+14{col 46}{space 3}0.000{col 54}{space 4}-5.478406{col 67}{space 3}-5.478406
+{txt}{space 9}19  {c |}{col 14}{res}{space 2}-5.158613{col 26}{space 2} 2.242244{col 37}{space 1}   -2.30{col 46}{space 3}0.032{col 54}{space 4}-9.835852{col 67}{space 3}-.4813731
+{txt}{space 9}21  {c |}{col 14}{res}{space 2}-18.11521{col 26}{space 2}  1.49483{col 37}{space 1}  -12.12{col 46}{space 3}0.000{col 54}{space 4}-21.23337{col 67}{space 3}-14.99705
+{txt}{space 9}23  {c |}{col 14}{res}{space 2}-15.61975{col 26}{space 2} .7474148{col 37}{space 1}  -20.90{col 46}{space 3}0.000{col 54}{space 4}-17.17883{col 67}{space 3}-14.06067
+{txt}{space 9}25  {c |}{col 14}{res}{space 2}-1.754381{col 26}{space 2} 2.242244{col 37}{space 1}   -0.78{col 46}{space 3}0.443{col 54}{space 4}-6.431621{col 67}{space 3} 2.922858
+{txt}{space 9}26  {c |}{col 14}{res}{space 2} -5.17912{col 26}{space 2} 5.42e-14{col 37}{space 1}-9.6e+13{col 46}{space 3}0.000{col 54}{space 4} -5.17912{col 67}{space 3} -5.17912
+{txt}{space 9}29  {c |}{col 14}{res}{space 2} 17.42928{col 26}{space 2} 6.08e-14{col 37}{space 1} 2.9e+14{col 46}{space 3}0.000{col 54}{space 4} 17.42928{col 67}{space 3} 17.42928
+{txt}{space 9}32  {c |}{col 14}{res}{space 2} 29.07168{col 26}{space 2} 5.57e-14{col 37}{space 1} 5.2e+14{col 46}{space 3}0.000{col 54}{space 4} 29.07168{col 67}{space 3} 29.07168
+{txt}{space 9}35  {c |}{col 14}{res}{space 2}-8.097558{col 26}{space 2} 5.40e-14{col 37}{space 1}-1.5e+14{col 46}{space 3}0.000{col 54}{space 4}-8.097558{col 67}{space 3}-8.097558
+{txt}{space 9}38  {c |}{col 14}{res}{space 2} .8843718{col 26}{space 2} 5.39e-14{col 37}{space 1} 1.6e+13{col 46}{space 3}0.000{col 54}{space 4} .8843718{col 67}{space 3} .8843718
+{txt}{space 9}39  {c |}{col 14}{res}{space 2}-18.59664{col 26}{space 2} 5.39e-14{col 37}{space 1}-3.4e+14{col 46}{space 3}0.000{col 54}{space 4}-18.59664{col 67}{space 3}-18.59664
+{txt}{space 9}45  {c |}{col 14}{res}{space 2}-13.06255{col 26}{space 2} 5.42e-14{col 37}{space 1}-2.4e+14{col 46}{space 3}0.000{col 54}{space 4}-13.06255{col 67}{space 3}-13.06255
+{txt}{space 9}46  {c |}{col 14}{res}{space 2} 9.841345{col 26}{space 2} 2.242244{col 37}{space 1}    4.39{col 46}{space 3}0.000{col 54}{space 4} 5.164105{col 67}{space 3} 14.51858
+{txt}{space 9}48  {c |}{col 14}{res}{space 2}-7.806229{col 26}{space 2} 5.40e-14{col 37}{space 1}-1.4e+14{col 46}{space 3}0.000{col 54}{space 4}-7.806229{col 67}{space 3}-7.806229
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 56.98371{col 26}{space 2} 3.369066{col 37}{space 1}   16.91{col 46}{space 3}0.000{col 54}{space 4} 49.95597{col 67}{space 3} 64.01146
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using table_7, keep(mlda21)  addtext(Fixed Effects, State and Year, Clusters, States, Period, Before 1990)  nocons tex(frag) replace
+{txt}{stata `"shellout using `"table_7.tex"'"':table_7.tex}
+{browse `"/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3"' :dir}{com} : {txt}{stata `"seeout using "table_7.txt""':seeout}
+
+{com}. 
+. ********************************************************************************
+
+. * problem #8 - placebo test
+
+. ********************************************************************************
+
+. 
+. * placebo treatment indicator equals one in states treated in 1987 and in years 1982 or later
+
+. gen placebo82 = (mldayr == 1987) & (year >= 1982)
+
+. 
+. * in_placebo82_sample is 1 for states with 21 drinking ages always (mldayr == 0) and that switched in 1987 (mldayr == 1987)
+
+. gen in_placebo82_sample = ((mldayr == 0) | (mldayr == 1987)) & (year < 1987)
+
+. 
+. regress rate18_20ht placebo82 i.year i.state if in_placebo82_sample == 1, robust cluster(state)
+
+{txt}Linear regression                               Number of obs     = {res}       204
+                                                {txt}{help j_robustsingular:F(11, 16) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.8141
+                                                {txt}Root MSE          =    {res}  9.079
+
+{txt}{ralign 78:(Std. err. adjusted for {res:17} clusters in {res:state})}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} rate18_20ht{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}placebo82 {c |}{col 14}{res}{space 2} 10.71436{col 26}{space 2} 3.559679{col 37}{space 1}    3.01{col 46}{space 3}0.008{col 54}{space 4} 3.168178{col 67}{space 3} 18.26054
+{txt}{space 12} {c |}
+{space 8}year {c |}
+{space 7}1976  {c |}{col 14}{res}{space 2} .5042435{col 26}{space 2} 2.541749{col 37}{space 1}    0.20{col 46}{space 3}0.845{col 54}{space 4}-4.884023{col 67}{space 3}  5.89251
+{txt}{space 7}1977  {c |}{col 14}{res}{space 2} 3.675133{col 26}{space 2} 2.524776{col 37}{space 1}    1.46{col 46}{space 3}0.165{col 54}{space 4}-1.677152{col 67}{space 3} 9.027419
+{txt}{space 7}1978  {c |}{col 14}{res}{space 2} 6.772235{col 26}{space 2} 2.973331{col 37}{space 1}    2.28{col 46}{space 3}0.037{col 54}{space 4} .4690553{col 67}{space 3} 13.07542
+{txt}{space 7}1979  {c |}{col 14}{res}{space 2} 6.258322{col 26}{space 2} 2.706132{col 37}{space 1}    2.31{col 46}{space 3}0.034{col 54}{space 4} .5215786{col 67}{space 3} 11.99507
+{txt}{space 7}1980  {c |}{col 14}{res}{space 2} 3.968481{col 26}{space 2} 2.917742{col 37}{space 1}    1.36{col 46}{space 3}0.193{col 54}{space 4}-2.216856{col 67}{space 3} 10.15382
+{txt}{space 7}1981  {c |}{col 14}{res}{space 2} -3.53396{col 26}{space 2} 4.080142{col 37}{space 1}   -0.87{col 46}{space 3}0.399{col 54}{space 4}-12.18347{col 67}{space 3} 5.115555
+{txt}{space 7}1982  {c |}{col 14}{res}{space 2}-4.046942{col 26}{space 2} 2.420896{col 37}{space 1}   -1.67{col 46}{space 3}0.114{col 54}{space 4}-9.179012{col 67}{space 3} 1.085127
+{txt}{space 7}1983  {c |}{col 14}{res}{space 2}-11.43139{col 26}{space 2}  3.63236{col 37}{space 1}   -3.15{col 46}{space 3}0.006{col 54}{space 4}-19.13165{col 67}{space 3}-3.731128
+{txt}{space 7}1984  {c |}{col 14}{res}{space 2}-8.680898{col 26}{space 2} 4.479935{col 37}{space 1}   -1.94{col 46}{space 3}0.071{col 54}{space 4}-18.17794{col 67}{space 3} .8161407
+{txt}{space 7}1985  {c |}{col 14}{res}{space 2}-11.66481{col 26}{space 2}  4.09754{col 37}{space 1}   -2.85{col 46}{space 3}0.012{col 54}{space 4} -20.3512{col 67}{space 3}-2.978408
+{txt}{space 7}1986  {c |}{col 14}{res}{space 2}-7.973633{col 26}{space 2} 4.744501{col 37}{space 1}   -1.68{col 46}{space 3}0.112{col 54}{space 4}-18.03153{col 67}{space 3}  2.08426
+{txt}{space 12} {c |}
+{space 7}state {c |}
+{space 10}5  {c |}{col 14}{res}{space 2}-9.770672{col 26}{space 2} 5.44e-14{col 37}{space 1}-1.8e+14{col 46}{space 3}0.000{col 54}{space 4}-9.770672{col 67}{space 3}-9.770672
+{txt}{space 10}9  {c |}{col 14}{res}{space 2} -49.7497{col 26}{space 2} 1.483199{col 37}{space 1}  -33.54{col 46}{space 3}0.000{col 54}{space 4}-52.89395{col 67}{space 3}-46.60546
+{txt}{space 9}12  {c |}{col 14}{res}{space 2}-25.00101{col 26}{space 2} 1.483199{col 37}{space 1}  -16.86{col 46}{space 3}0.000{col 54}{space 4}-28.14525{col 67}{space 3}-21.85677
+{txt}{space 9}15  {c |}{col 14}{res}{space 2} -10.2753{col 26}{space 2} 5.41e-14{col 37}{space 1}-1.9e+14{col 46}{space 3}0.000{col 54}{space 4} -10.2753{col 67}{space 3} -10.2753
+{txt}{space 9}18  {c |}{col 14}{res}{space 2}-4.551913{col 26}{space 2} 5.45e-14{col 37}{space 1}-8.4e+13{col 46}{space 3}0.000{col 54}{space 4}-4.551913{col 67}{space 3}-4.551913
+{txt}{space 9}19  {c |}{col 14}{res}{space 2}-7.537435{col 26}{space 2} 1.483199{col 37}{space 1}   -5.08{col 46}{space 3}0.000{col 54}{space 4}-10.68168{col 67}{space 3}-4.393193
+{txt}{space 9}25  {c |}{col 14}{res}{space 2}-7.779954{col 26}{space 2} 1.483199{col 37}{space 1}   -5.25{col 46}{space 3}0.000{col 54}{space 4} -10.9242{col 67}{space 3}-4.635712
+{txt}{space 9}26  {c |}{col 14}{res}{space 2}-4.291239{col 26}{space 2} 5.40e-14{col 37}{space 1}-7.9e+13{col 46}{space 3}0.000{col 54}{space 4}-4.291239{col 67}{space 3}-4.291239
+{txt}{space 9}29  {c |}{col 14}{res}{space 2} 23.76574{col 26}{space 2} 5.44e-14{col 37}{space 1} 4.4e+14{col 46}{space 3}0.000{col 54}{space 4} 23.76574{col 67}{space 3} 23.76574
+{txt}{space 9}32  {c |}{col 14}{res}{space 2} 32.75593{col 26}{space 2} 5.86e-14{col 37}{space 1} 5.6e+14{col 46}{space 3}0.000{col 54}{space 4} 32.75593{col 67}{space 3} 32.75593
+{txt}{space 9}35  {c |}{col 14}{res}{space 2}-3.500052{col 26}{space 2} 5.39e-14{col 37}{space 1}-6.5e+13{col 46}{space 3}0.000{col 54}{space 4}-3.500052{col 67}{space 3}-3.500052
+{txt}{space 9}38  {c |}{col 14}{res}{space 2} 1.080626{col 26}{space 2} 5.49e-14{col 37}{space 1} 2.0e+13{col 46}{space 3}0.000{col 54}{space 4} 1.080626{col 67}{space 3} 1.080626
+{txt}{space 9}39  {c |}{col 14}{res}{space 2}-16.80038{col 26}{space 2} 5.48e-14{col 37}{space 1}-3.1e+14{col 46}{space 3}0.000{col 54}{space 4}-16.80038{col 67}{space 3}-16.80038
+{txt}{space 9}45  {c |}{col 14}{res}{space 2}-11.43358{col 26}{space 2} 5.48e-14{col 37}{space 1}-2.1e+14{col 46}{space 3}0.000{col 54}{space 4}-11.43358{col 67}{space 3}-11.43358
+{txt}{space 9}46  {c |}{col 14}{res}{space 2} 8.397175{col 26}{space 2} 1.483199{col 37}{space 1}    5.66{col 46}{space 3}0.000{col 54}{space 4} 5.252933{col 67}{space 3} 11.54142
+{txt}{space 9}48  {c |}{col 14}{res}{space 2}-4.932319{col 26}{space 2} 5.40e-14{col 37}{space 1}-9.1e+13{col 46}{space 3}0.000{col 54}{space 4}-4.932319{col 67}{space 3}-4.932319
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 57.89408{col 26}{space 2} 2.344635{col 37}{space 1}   24.69{col 46}{space 3}0.000{col 54}{space 4} 52.92368{col 67}{space 3} 62.86449
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using table_8, keep(placebo82) addtext(Fixed Effects, State and Year, Clusters, States) tex(frag) nocons replace
+{txt}{stata `"shellout using `"table_8.tex"'"':table_8.tex}
+{browse `"/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3"' :dir}{com} : {txt}{stata `"seeout using "table_8.txt""':seeout}
+
+{com}. 
+. ********************************************************************************
+
+. * problem #9 - mi and md
+
+. ********************************************************************************
+
+. 
+. gen in_mi_sample = (mldayr == 0) | (state == 23)
+
+. gen mlda21_mi = (mlda21 == 1) & (state == 23)
+
+. regress rate18_20ht mlda21_mi i.year i.state if in_mi_sample, robust cluster(state) 
+
+{txt}Linear regression                               Number of obs     = {res}       403
+                                                {txt}{help j_robustsingular:F(11, 12) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.7165
+                                                {txt}Root MSE          =    {res} 9.3313
+
+{txt}{ralign 78:(Std. err. adjusted for {res:13} clusters in {res:state})}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} rate18_20ht{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}mlda21_mi {c |}{col 14}{res}{space 2}-1.006005{col 26}{space 2} 3.745579{col 37}{space 1}   -0.27{col 46}{space 3}0.793{col 54}{space 4} -9.16692{col 67}{space 3}  7.15491
+{txt}{space 12} {c |}
+{space 8}year {c |}
+{space 7}1976  {c |}{col 14}{res}{space 2} 2.031494{col 26}{space 2} 2.028091{col 37}{space 1}    1.00{col 46}{space 3}0.336{col 54}{space 4}-2.387337{col 67}{space 3} 6.450325
+{txt}{space 7}1977  {c |}{col 14}{res}{space 2} 6.179146{col 26}{space 2} 2.425904{col 37}{space 1}    2.55{col 46}{space 3}0.026{col 54}{space 4} .8935549{col 67}{space 3} 11.46474
+{txt}{space 7}1978  {c |}{col 14}{res}{space 2} 7.255482{col 26}{space 2} 2.446089{col 37}{space 1}    2.97{col 46}{space 3}0.012{col 54}{space 4} 1.925913{col 67}{space 3} 12.58505
+{txt}{space 7}1979  {c |}{col 14}{res}{space 2} 4.785462{col 26}{space 2} 2.272617{col 37}{space 1}    2.11{col 46}{space 3}0.057{col 54}{space 4}-.1661456{col 67}{space 3} 9.737069
+{txt}{space 7}1980  {c |}{col 14}{res}{space 2} 4.211526{col 26}{space 2} 3.170428{col 37}{space 1}    1.33{col 46}{space 3}0.209{col 54}{space 4}-2.696243{col 67}{space 3}  11.1193
+{txt}{space 7}1981  {c |}{col 14}{res}{space 2}-5.841014{col 26}{space 2} 4.206005{col 37}{space 1}   -1.39{col 46}{space 3}0.190{col 54}{space 4}-15.00511{col 67}{space 3} 3.323084
+{txt}{space 7}1982  {c |}{col 14}{res}{space 2}-4.206605{col 26}{space 2} 2.199267{col 37}{space 1}   -1.91{col 46}{space 3}0.080{col 54}{space 4}-8.998397{col 67}{space 3} .5851867
+{txt}{space 7}1983  {c |}{col 14}{res}{space 2}-11.26196{col 26}{space 2} 3.755885{col 37}{space 1}   -3.00{col 46}{space 3}0.011{col 54}{space 4}-19.44533{col 67}{space 3}-3.078592
+{txt}{space 7}1984  {c |}{col 14}{res}{space 2} -10.3078{col 26}{space 2} 5.092158{col 37}{space 1}   -2.02{col 46}{space 3}0.066{col 54}{space 4}-21.40266{col 67}{space 3} .7870569
+{txt}{space 7}1985  {c |}{col 14}{res}{space 2}-11.78031{col 26}{space 2}  3.48542{col 37}{space 1}   -3.38{col 46}{space 3}0.005{col 54}{space 4}-19.37439{col 67}{space 3}-4.186228
+{txt}{space 7}1986  {c |}{col 14}{res}{space 2}-4.658539{col 26}{space 2} 4.106761{col 37}{space 1}   -1.13{col 46}{space 3}0.279{col 54}{space 4} -13.6064{col 67}{space 3} 4.289325
+{txt}{space 7}1987  {c |}{col 14}{res}{space 2}-7.302451{col 26}{space 2} 4.781042{col 37}{space 1}   -1.53{col 46}{space 3}0.153{col 54}{space 4}-17.71945{col 67}{space 3} 3.114545
+{txt}{space 7}1988  {c |}{col 14}{res}{space 2}-6.359619{col 26}{space 2} 4.637228{col 37}{space 1}   -1.37{col 46}{space 3}0.195{col 54}{space 4}-16.46327{col 67}{space 3} 3.744033
+{txt}{space 7}1989  {c |}{col 14}{res}{space 2}-11.29659{col 26}{space 2} 4.761565{col 37}{space 1}   -2.37{col 46}{space 3}0.035{col 54}{space 4}-21.67115{col 67}{space 3}-.9220354
+{txt}{space 7}1990  {c |}{col 14}{res}{space 2}-8.347942{col 26}{space 2}  2.80854{col 37}{space 1}   -2.97{col 46}{space 3}0.012{col 54}{space 4}-14.46723{col 67}{space 3}-2.228659
+{txt}{space 7}1991  {c |}{col 14}{res}{space 2}-12.02875{col 26}{space 2} 4.391135{col 37}{space 1}   -2.74{col 46}{space 3}0.018{col 54}{space 4}-21.59621{col 67}{space 3}-2.461285
+{txt}{space 7}1992  {c |}{col 14}{res}{space 2}-23.28178{col 26}{space 2} 5.303142{col 37}{space 1}   -4.39{col 46}{space 3}0.001{col 54}{space 4}-34.83633{col 67}{space 3}-11.72722
+{txt}{space 7}1993  {c |}{col 14}{res}{space 2}-19.69281{col 26}{space 2} 6.043486{col 37}{space 1}   -3.26{col 46}{space 3}0.007{col 54}{space 4}-32.86044{col 67}{space 3}-6.525188
+{txt}{space 7}1994  {c |}{col 14}{res}{space 2}-17.71542{col 26}{space 2} 5.710183{col 37}{space 1}   -3.10{col 46}{space 3}0.009{col 54}{space 4}-30.15684{col 67}{space 3}-5.273995
+{txt}{space 7}1995  {c |}{col 14}{res}{space 2}-15.26065{col 26}{space 2} 4.969782{col 37}{space 1}   -3.07{col 46}{space 3}0.010{col 54}{space 4}-26.08887{col 67}{space 3}-4.432422
+{txt}{space 7}1996  {c |}{col 14}{res}{space 2}-17.40881{col 26}{space 2} 4.507592{col 37}{space 1}   -3.86{col 46}{space 3}0.002{col 54}{space 4}-27.23001{col 67}{space 3}-7.587607
+{txt}{space 7}1997  {c |}{col 14}{res}{space 2} -17.9841{col 26}{space 2} 5.058319{col 37}{space 1}   -3.56{col 46}{space 3}0.004{col 54}{space 4}-29.00524{col 67}{space 3}-6.962975
+{txt}{space 7}1998  {c |}{col 14}{res}{space 2} -20.5469{col 26}{space 2} 5.733437{col 37}{space 1}   -3.58{col 46}{space 3}0.004{col 54}{space 4}-33.03899{col 67}{space 3}-8.054813
+{txt}{space 7}1999  {c |}{col 14}{res}{space 2}-23.78082{col 26}{space 2} 5.340904{col 37}{space 1}   -4.45{col 46}{space 3}0.001{col 54}{space 4}-35.41765{col 67}{space 3}-12.14399
+{txt}{space 7}2000  {c |}{col 14}{res}{space 2}-20.88136{col 26}{space 2}  5.65991{col 37}{space 1}   -3.69{col 46}{space 3}0.003{col 54}{space 4}-33.21324{col 67}{space 3}-8.549476
+{txt}{space 7}2001  {c |}{col 14}{res}{space 2}-23.08371{col 26}{space 2} 7.180313{col 37}{space 1}   -3.21{col 46}{space 3}0.007{col 54}{space 4}-38.72827{col 67}{space 3}-7.439155
+{txt}{space 7}2002  {c |}{col 14}{res}{space 2}-18.70232{col 26}{space 2} 4.984972{col 37}{space 1}   -3.75{col 46}{space 3}0.003{col 54}{space 4}-29.56365{col 67}{space 3}-7.841003
+{txt}{space 7}2003  {c |}{col 14}{res}{space 2}-20.38625{col 26}{space 2} 4.884749{col 37}{space 1}   -4.17{col 46}{space 3}0.001{col 54}{space 4} -31.0292{col 67}{space 3}-9.743294
+{txt}{space 7}2004  {c |}{col 14}{res}{space 2}-21.70361{col 26}{space 2} 5.808899{col 37}{space 1}   -3.74{col 46}{space 3}0.003{col 54}{space 4}-34.36012{col 67}{space 3}-9.047108
+{txt}{space 7}2005  {c |}{col 14}{res}{space 2}-21.57339{col 26}{space 2} 5.023058{col 37}{space 1}   -4.29{col 46}{space 3}0.001{col 54}{space 4} -32.5177{col 67}{space 3}-10.62909
+{txt}{space 12} {c |}
+{space 7}state {c |}
+{space 10}5  {c |}{col 14}{res}{space 2}-17.63309{col 26}{space 2} 6.91e-14{col 37}{space 1}-2.6e+14{col 46}{space 3}0.000{col 54}{space 4}-17.63309{col 67}{space 3}-17.63309
+{txt}{space 9}15  {c |}{col 14}{res}{space 2}-14.43497{col 26}{space 2} 6.91e-14{col 37}{space 1}-2.1e+14{col 46}{space 3}0.000{col 54}{space 4}-14.43497{col 67}{space 3}-14.43497
+{txt}{space 9}18  {c |}{col 14}{res}{space 2}-4.167683{col 26}{space 2} 6.92e-14{col 37}{space 1}-6.0e+13{col 46}{space 3}0.000{col 54}{space 4}-4.167683{col 67}{space 3}-4.167683
+{txt}{space 9}23  {c |}{col 14}{res}{space 2}-17.90151{col 26}{space 2} 3.262278{col 37}{space 1}   -5.49{col 46}{space 3}0.000{col 54}{space 4} -25.0094{col 67}{space 3}-10.79361
+{txt}{space 9}26  {c |}{col 14}{res}{space 2}-3.567835{col 26}{space 2} 6.94e-14{col 37}{space 1}-5.1e+13{col 46}{space 3}0.000{col 54}{space 4}-3.567835{col 67}{space 3}-3.567835
+{txt}{space 9}29  {c |}{col 14}{res}{space 2} 2.198612{col 26}{space 2} 6.91e-14{col 37}{space 1} 3.2e+13{col 46}{space 3}0.000{col 54}{space 4} 2.198612{col 67}{space 3} 2.198612
+{txt}{space 9}32  {c |}{col 14}{res}{space 2} 16.47085{col 26}{space 2} 8.14e-14{col 37}{space 1} 2.0e+14{col 46}{space 3}0.000{col 54}{space 4} 16.47085{col 67}{space 3} 16.47085
+{txt}{space 9}35  {c |}{col 14}{res}{space 2}-14.19745{col 26}{space 2} 6.91e-14{col 37}{space 1}-2.1e+14{col 46}{space 3}0.000{col 54}{space 4}-14.19745{col 67}{space 3}-14.19745
+{txt}{space 9}38  {c |}{col 14}{res}{space 2}-8.028192{col 26}{space 2} 6.92e-14{col 37}{space 1}-1.2e+14{col 46}{space 3}0.000{col 54}{space 4}-8.028192{col 67}{space 3}-8.028192
+{txt}{space 9}39  {c |}{col 14}{res}{space 2}-19.78079{col 26}{space 2} 6.91e-14{col 37}{space 1}-2.9e+14{col 46}{space 3}0.000{col 54}{space 4}-19.78079{col 67}{space 3}-19.78079
+{txt}{space 9}45  {c |}{col 14}{res}{space 2}-17.64001{col 26}{space 2} 6.91e-14{col 37}{space 1}-2.6e+14{col 46}{space 3}0.000{col 54}{space 4}-17.64001{col 67}{space 3}-17.64001
+{txt}{space 9}48  {c |}{col 14}{res}{space 2}-15.41629{col 26}{space 2} 6.91e-14{col 37}{space 1}-2.2e+14{col 46}{space 3}0.000{col 54}{space 4}-15.41629{col 67}{space 3}-15.41629
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  64.7933{col 26}{space 2} 3.618512{col 37}{space 1}   17.91{col 46}{space 3}0.000{col 54}{space 4} 56.90924{col 67}{space 3} 72.67736
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using table_9, keep(mlda21_mi mlda21_md)  ctitle(Michigan) addtext(Fixed Effects, State and Year)  tex(frag) nocons replace
+{err}variable {bf}mlda21_md{sf} not found
+{txt}{search r(111), local:r(111);}
+
+{com}. 
+. gen in_md_sample = (mldayr == 0) | (state == 21)
+
+. gen mlda21_md = (mlda21 == 1) & (state == 21)
+
+. regress rate18_20ht mlda21_md i.year i.state if in_md_sample, robust cluster(state) 
+
+{txt}Linear regression                               Number of obs     = {res}       403
+                                                {txt}{help j_robustsingular:F(11, 12) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.7189
+                                                {txt}Root MSE          =    {res} 9.3487
+
+{txt}{ralign 78:(Std. err. adjusted for {res:13} clusters in {res:state})}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} rate18_20ht{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}mlda21_md {c |}{col 14}{res}{space 2} 7.651658{col 26}{space 2} 3.915349{col 37}{space 1}    1.95{col 46}{space 3}0.074{col 54}{space 4}-.8791561{col 67}{space 3} 16.18247
+{txt}{space 12} {c |}
+{space 8}year {c |}
+{space 7}1976  {c |}{col 14}{res}{space 2} 2.390141{col 26}{space 2} 2.065784{col 37}{space 1}    1.16{col 46}{space 3}0.270{col 54}{space 4}-2.110815{col 67}{space 3} 6.891096
+{txt}{space 7}1977  {c |}{col 14}{res}{space 2} 5.662221{col 26}{space 2} 2.474736{col 37}{space 1}    2.29{col 46}{space 3}0.041{col 54}{space 4} .2702347{col 67}{space 3} 11.05421
+{txt}{space 7}1978  {c |}{col 14}{res}{space 2} 8.198509{col 26}{space 2} 2.237057{col 37}{space 1}    3.66{col 46}{space 3}0.003{col 54}{space 4} 3.324379{col 67}{space 3} 13.07264
+{txt}{space 7}1979  {c |}{col 14}{res}{space 2} 5.209574{col 26}{space 2} 2.053598{col 37}{space 1}    2.54{col 46}{space 3}0.026{col 54}{space 4} .7351684{col 67}{space 3} 9.683979
+{txt}{space 7}1980  {c |}{col 14}{res}{space 2}  5.21733{col 26}{space 2}  2.87236{col 37}{space 1}    1.82{col 46}{space 3}0.094{col 54}{space 4}-1.041005{col 67}{space 3} 11.47567
+{txt}{space 7}1981  {c |}{col 14}{res}{space 2}-4.148287{col 26}{space 2} 3.970967{col 37}{space 1}   -1.04{col 46}{space 3}0.317{col 54}{space 4}-12.80028{col 67}{space 3} 4.503707
+{txt}{space 7}1982  {c |}{col 14}{res}{space 2}-3.133128{col 26}{space 2} 1.924821{col 37}{space 1}   -1.63{col 46}{space 3}0.130{col 54}{space 4}-7.326953{col 67}{space 3} 1.060696
+{txt}{space 7}1983  {c |}{col 14}{res}{space 2}-11.29489{col 26}{space 2} 3.763394{col 37}{space 1}   -3.00{col 46}{space 3}0.011{col 54}{space 4}-19.49462{col 67}{space 3}-3.095162
+{txt}{space 7}1984  {c |}{col 14}{res}{space 2}-10.77581{col 26}{space 2} 5.130771{col 37}{space 1}   -2.10{col 46}{space 3}0.058{col 54}{space 4} -21.9548{col 67}{space 3} .4031748
+{txt}{space 7}1985  {c |}{col 14}{res}{space 2}-11.22028{col 26}{space 2} 3.570174{col 37}{space 1}   -3.14{col 46}{space 3}0.008{col 54}{space 4}-18.99902{col 67}{space 3}-3.441537
+{txt}{space 7}1986  {c |}{col 14}{res}{space 2} -4.73139{col 26}{space 2} 4.126421{col 37}{space 1}   -1.15{col 46}{space 3}0.274{col 54}{space 4}-13.72209{col 67}{space 3} 4.259309
+{txt}{space 7}1987  {c |}{col 14}{res}{space 2}-6.702025{col 26}{space 2} 4.815573{col 37}{space 1}   -1.39{col 46}{space 3}0.189{col 54}{space 4}-17.19426{col 67}{space 3} 3.790209
+{txt}{space 7}1988  {c |}{col 14}{res}{space 2}-6.196403{col 26}{space 2} 4.665265{col 37}{space 1}   -1.33{col 46}{space 3}0.209{col 54}{space 4}-16.36114{col 67}{space 3} 3.968336
+{txt}{space 7}1989  {c |}{col 14}{res}{space 2}-11.28368{col 26}{space 2} 4.780289{col 37}{space 1}   -2.36{col 46}{space 3}0.036{col 54}{space 4}-21.69904{col 67}{space 3}-.8683259
+{txt}{space 7}1990  {c |}{col 14}{res}{space 2}-7.643565{col 26}{space 2} 2.770352{col 37}{space 1}   -2.76{col 46}{space 3}0.017{col 54}{space 4}-13.67964{col 67}{space 3}-1.607487
+{txt}{space 7}1991  {c |}{col 14}{res}{space 2}-11.71906{col 26}{space 2} 4.400461{col 37}{space 1}   -2.66{col 46}{space 3}0.021{col 54}{space 4}-21.30684{col 67}{space 3}-2.131274
+{txt}{space 7}1992  {c |}{col 14}{res}{space 2} -22.5946{col 26}{space 2} 5.311574{col 37}{space 1}   -4.25{col 46}{space 3}0.001{col 54}{space 4}-34.16752{col 67}{space 3}-11.02167
+{txt}{space 7}1993  {c |}{col 14}{res}{space 2}-19.37074{col 26}{space 2} 6.064803{col 37}{space 1}   -3.19{col 46}{space 3}0.008{col 54}{space 4}-32.58481{col 67}{space 3}-6.156669
+{txt}{space 7}1994  {c |}{col 14}{res}{space 2}-18.36901{col 26}{space 2} 5.710607{col 37}{space 1}   -3.22{col 46}{space 3}0.007{col 54}{space 4}-30.81135{col 67}{space 3}-5.926662
+{txt}{space 7}1995  {c |}{col 14}{res}{space 2}-15.22019{col 26}{space 2} 4.984877{col 37}{space 1}   -3.05{col 46}{space 3}0.010{col 54}{space 4} -26.0813{col 67}{space 3}-4.359071
+{txt}{space 7}1996  {c |}{col 14}{res}{space 2}-17.47879{col 26}{space 2}  4.53413{col 37}{space 1}   -3.85{col 46}{space 3}0.002{col 54}{space 4}-27.35781{col 67}{space 3} -7.59977
+{txt}{space 7}1997  {c |}{col 14}{res}{space 2}-18.37339{col 26}{space 2} 5.049941{col 37}{space 1}   -3.64{col 46}{space 3}0.003{col 54}{space 4}-29.37627{col 67}{space 3}-7.370516
+{txt}{space 7}1998  {c |}{col 14}{res}{space 2}-20.37062{col 26}{space 2} 5.731796{col 37}{space 1}   -3.55{col 46}{space 3}0.004{col 54}{space 4}-32.85913{col 67}{space 3}-7.882104
+{txt}{space 7}1999  {c |}{col 14}{res}{space 2}-22.63834{col 26}{space 2} 5.453008{col 37}{space 1}   -4.15{col 46}{space 3}0.001{col 54}{space 4}-34.51942{col 67}{space 3}-10.75726
+{txt}{space 7}2000  {c |}{col 14}{res}{space 2}-20.34534{col 26}{space 2} 5.713698{col 37}{space 1}   -3.56{col 46}{space 3}0.004{col 54}{space 4}-32.79442{col 67}{space 3}-7.896259
+{txt}{space 7}2001  {c |}{col 14}{res}{space 2}-22.67601{col 26}{space 2}    7.211{col 37}{space 1}   -3.14{col 46}{space 3}0.008{col 54}{space 4}-38.38743{col 67}{space 3}-6.964595
+{txt}{space 7}2002  {c |}{col 14}{res}{space 2}-18.98767{col 26}{space 2} 5.012156{col 37}{space 1}   -3.79{col 46}{space 3}0.003{col 54}{space 4}-29.90822{col 67}{space 3} -8.06712
+{txt}{space 7}2003  {c |}{col 14}{res}{space 2}-19.90012{col 26}{space 2} 4.866201{col 37}{space 1}   -4.09{col 46}{space 3}0.002{col 54}{space 4}-30.50266{col 67}{space 3} -9.29758
+{txt}{space 7}2004  {c |}{col 14}{res}{space 2}-21.79337{col 26}{space 2} 5.842166{col 37}{space 1}   -3.73{col 46}{space 3}0.003{col 54}{space 4}-34.52235{col 67}{space 3}-9.064383
+{txt}{space 7}2005  {c |}{col 14}{res}{space 2}-22.18755{col 26}{space 2} 5.022494{col 37}{space 1}   -4.42{col 46}{space 3}0.001{col 54}{space 4}-33.13063{col 67}{space 3}-11.24448
+{txt}{space 12} {c |}
+{space 7}state {c |}
+{space 10}5  {c |}{col 14}{res}{space 2}-17.63309{col 26}{space 2} 7.12e-15{col 37}{space 1}-2.5e+15{col 46}{space 3}0.000{col 54}{space 4}-17.63309{col 67}{space 3}-17.63309
+{txt}{space 9}15  {c |}{col 14}{res}{space 2}-14.43497{col 26}{space 2} 7.46e-15{col 37}{space 1}-1.9e+15{col 46}{space 3}0.000{col 54}{space 4}-14.43497{col 67}{space 3}-14.43497
+{txt}{space 9}18  {c |}{col 14}{res}{space 2}-4.167683{col 26}{space 2} 3.93e-15{col 37}{space 1}-1.1e+15{col 46}{space 3}0.000{col 54}{space 4}-4.167683{col 67}{space 3}-4.167683
+{txt}{space 9}21  {c |}{col 14}{res}{space 2}-26.96226{col 26}{space 2} 2.904937{col 37}{space 1}   -9.28{col 46}{space 3}0.000{col 54}{space 4}-33.29157{col 67}{space 3}-20.63294
+{txt}{space 9}26  {c |}{col 14}{res}{space 2}-3.567835{col 26}{space 2} 1.05e-14{col 37}{space 1}-3.4e+14{col 46}{space 3}0.000{col 54}{space 4}-3.567835{col 67}{space 3}-3.567835
+{txt}{space 9}29  {c |}{col 14}{res}{space 2} 2.198612{col 26}{space 2} 1.64e-14{col 37}{space 1} 1.3e+14{col 46}{space 3}0.000{col 54}{space 4} 2.198612{col 67}{space 3} 2.198612
+{txt}{space 9}32  {c |}{col 14}{res}{space 2} 16.47085{col 26}{space 2} 2.17e-14{col 37}{space 1} 7.6e+14{col 46}{space 3}0.000{col 54}{space 4} 16.47085{col 67}{space 3} 16.47085
+{txt}{space 9}35  {c |}{col 14}{res}{space 2}-14.19745{col 26}{space 2} 1.35e-14{col 37}{space 1}-1.1e+15{col 46}{space 3}0.000{col 54}{space 4}-14.19745{col 67}{space 3}-14.19745
+{txt}{space 9}38  {c |}{col 14}{res}{space 2}-8.028192{col 26}{space 2} 1.52e-14{col 37}{space 1}-5.3e+14{col 46}{space 3}0.000{col 54}{space 4}-8.028192{col 67}{space 3}-8.028192
+{txt}{space 9}39  {c |}{col 14}{res}{space 2}-19.78079{col 26}{space 2} 9.70e-15{col 37}{space 1}-2.0e+15{col 46}{space 3}0.000{col 54}{space 4}-19.78079{col 67}{space 3}-19.78079
+{txt}{space 9}45  {c |}{col 14}{res}{space 2}-17.64001{col 26}{space 2} 1.03e-14{col 37}{space 1}-1.7e+15{col 46}{space 3}0.000{col 54}{space 4}-17.64001{col 67}{space 3}-17.64001
+{txt}{space 9}48  {c |}{col 14}{res}{space 2}-15.41629{col 26}{space 2} 1.04e-14{col 37}{space 1}-1.5e+15{col 46}{space 3}0.000{col 54}{space 4}-15.41629{col 67}{space 3}-15.41629
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  64.5206{col 26}{space 2} 3.581634{col 37}{space 1}   18.01{col 46}{space 3}0.000{col 54}{space 4} 56.71689{col 67}{space 3} 72.32431
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using table_9, keep(mlda21_mi mlda21_md)  ctitle(Maryland) addtext(Fixed Effects, State and Year)  tex(frag) nocons append
+{txt}{stata `"shellout using `"table_9.tex"'"':table_9.tex}
+{browse `"/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3"' :dir}{com} : {txt}{stata `"seeout using "table_9.txt""':seeout}
+
+{com}. 
+. ********************************************************************************
+
+. * problem #10 - early vs late treatment
+
+. ********************************************************************************
+
+. 
+. gen mlda21_14 = mlda21 & (year < mldayr + 4)
+
+. gen mlda_later = mlda21 & (year >= mldayr + 4)
+
+. 
+. regress rate18_20ht mlda21_14 mlda_later i.year i.state, robust cluster(state) 
+
+{txt}Linear regression                               Number of obs     = {res}       651
+                                                {txt}{help j_robustsingular:F(19, 20) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.6950
+                                                {txt}Root MSE          =    {res} 9.6877
+
+{txt}{ralign 78:(Std. err. adjusted for {res:21} clusters in {res:state})}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} rate18_20ht{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}mlda21_14 {c |}{col 14}{res}{space 2} 1.704927{col 26}{space 2} 3.251781{col 37}{space 1}    0.52{col 46}{space 3}0.606{col 54}{space 4}-5.078169{col 67}{space 3} 8.488024
+{txt}{space 2}mlda_later {c |}{col 14}{res}{space 2} 7.259914{col 26}{space 2} 5.414923{col 37}{space 1}    1.34{col 46}{space 3}0.195{col 54}{space 4}-4.035417{col 67}{space 3} 18.55524
+{txt}{space 12} {c |}
+{space 8}year {c |}
+{space 7}1976  {c |}{col 14}{res}{space 2} 1.586774{col 26}{space 2} 2.076431{col 37}{space 1}    0.76{col 46}{space 3}0.454{col 54}{space 4}-2.744585{col 67}{space 3} 5.918133
+{txt}{space 7}1977  {c |}{col 14}{res}{space 2} 4.471938{col 26}{space 2} 2.214796{col 37}{space 1}    2.02{col 46}{space 3}0.057{col 54}{space 4}-.1480448{col 67}{space 3}  9.09192
+{txt}{space 7}1978  {c |}{col 14}{res}{space 2} 6.942881{col 26}{space 2} 2.425481{col 37}{space 1}    2.86{col 46}{space 3}0.010{col 54}{space 4} 1.883417{col 67}{space 3} 12.00235
+{txt}{space 7}1979  {c |}{col 14}{res}{space 2} 5.352152{col 26}{space 2}  2.21569{col 37}{space 1}    2.42{col 46}{space 3}0.025{col 54}{space 4} .7303031{col 67}{space 3} 9.974002
+{txt}{space 7}1980  {c |}{col 14}{res}{space 2} 4.105786{col 26}{space 2} 2.468563{col 37}{space 1}    1.66{col 46}{space 3}0.112{col 54}{space 4}-1.043548{col 67}{space 3} 9.255119
+{txt}{space 7}1981  {c |}{col 14}{res}{space 2}-2.386838{col 26}{space 2} 3.462257{col 37}{space 1}   -0.69{col 46}{space 3}0.499{col 54}{space 4}-9.608979{col 67}{space 3} 4.835303
+{txt}{space 7}1982  {c |}{col 14}{res}{space 2} -1.02703{col 26}{space 2} 1.914603{col 37}{space 1}   -0.54{col 46}{space 3}0.598{col 54}{space 4}-5.020822{col 67}{space 3} 2.966762
+{txt}{space 7}1983  {c |}{col 14}{res}{space 2}-8.240894{col 26}{space 2} 2.885021{col 37}{space 1}   -2.86{col 46}{space 3}0.010{col 54}{space 4}-14.25894{col 67}{space 3}-2.222844
+{txt}{space 7}1984  {c |}{col 14}{res}{space 2}-5.595492{col 26}{space 2} 3.658452{col 37}{space 1}   -1.53{col 46}{space 3}0.142{col 54}{space 4}-13.22689{col 67}{space 3} 2.035904
+{txt}{space 7}1985  {c |}{col 14}{res}{space 2}-7.500045{col 26}{space 2} 3.319304{col 37}{space 1}   -2.26{col 46}{space 3}0.035{col 54}{space 4}-14.42399{col 67}{space 3}-.5760985
+{txt}{space 7}1986  {c |}{col 14}{res}{space 2}-3.877987{col 26}{space 2} 3.504181{col 37}{space 1}   -1.11{col 46}{space 3}0.282{col 54}{space 4}-11.18758{col 67}{space 3} 3.431606
+{txt}{space 7}1987  {c |}{col 14}{res}{space 2} -6.16464{col 26}{space 2} 3.695778{col 37}{space 1}   -1.67{col 46}{space 3}0.111{col 54}{space 4} -13.8739{col 67}{space 3} 1.544618
+{txt}{space 7}1988  {c |}{col 14}{res}{space 2}-5.241021{col 26}{space 2} 3.599635{col 37}{space 1}   -1.46{col 46}{space 3}0.161{col 54}{space 4}-12.74973{col 67}{space 3} 2.267685
+{txt}{space 7}1989  {c |}{col 14}{res}{space 2}-9.533778{col 26}{space 2} 3.842636{col 37}{space 1}   -2.48{col 46}{space 3}0.022{col 54}{space 4}-17.54938{col 67}{space 3}-1.518181
+{txt}{space 7}1990  {c |}{col 14}{res}{space 2}-7.270565{col 26}{space 2} 2.986735{col 37}{space 1}   -2.43{col 46}{space 3}0.024{col 54}{space 4}-13.50079{col 67}{space 3}-1.040345
+{txt}{space 7}1991  {c |}{col 14}{res}{space 2}-12.13366{col 26}{space 2}   3.9676{col 37}{space 1}   -3.06{col 46}{space 3}0.006{col 54}{space 4}-20.40993{col 67}{space 3}-3.857393
+{txt}{space 7}1992  {c |}{col 14}{res}{space 2}-20.05027{col 26}{space 2} 4.648536{col 37}{space 1}   -4.31{col 46}{space 3}0.000{col 54}{space 4}-29.74694{col 67}{space 3}-10.35359
+{txt}{space 7}1993  {c |}{col 14}{res}{space 2}-18.52546{col 26}{space 2}  4.93186{col 37}{space 1}   -3.76{col 46}{space 3}0.001{col 54}{space 4}-28.81314{col 67}{space 3} -8.23778
+{txt}{space 7}1994  {c |}{col 14}{res}{space 2}-14.83862{col 26}{space 2} 5.069159{col 37}{space 1}   -2.93{col 46}{space 3}0.008{col 54}{space 4} -25.4127{col 67}{space 3}-4.264538
+{txt}{space 7}1995  {c |}{col 14}{res}{space 2}-13.53257{col 26}{space 2}  4.21749{col 37}{space 1}   -3.21{col 46}{space 3}0.004{col 54}{space 4}-22.33011{col 67}{space 3}-4.735044
+{txt}{space 7}1996  {c |}{col 14}{res}{space 2}-17.14886{col 26}{space 2} 4.457115{col 37}{space 1}   -3.85{col 46}{space 3}0.001{col 54}{space 4}-26.44624{col 67}{space 3} -7.85148
+{txt}{space 7}1997  {c |}{col 14}{res}{space 2}-18.16318{col 26}{space 2} 4.526362{col 37}{space 1}   -4.01{col 46}{space 3}0.001{col 54}{space 4}-27.60501{col 67}{space 3}-8.721356
+{txt}{space 7}1998  {c |}{col 14}{res}{space 2}-17.89804{col 26}{space 2}  4.89894{col 37}{space 1}   -3.65{col 46}{space 3}0.002{col 54}{space 4}-28.11705{col 67}{space 3}-7.679034
+{txt}{space 7}1999  {c |}{col 14}{res}{space 2} -20.2946{col 26}{space 2} 5.000969{col 37}{space 1}   -4.06{col 46}{space 3}0.001{col 54}{space 4}-30.72644{col 67}{space 3}-9.862758
+{txt}{space 7}2000  {c |}{col 14}{res}{space 2}-19.49427{col 26}{space 2} 4.943825{col 37}{space 1}   -3.94{col 46}{space 3}0.001{col 54}{space 4}-29.80691{col 67}{space 3}-9.181633
+{txt}{space 7}2001  {c |}{col 14}{res}{space 2}  -21.088{col 26}{space 2} 5.991911{col 37}{space 1}   -3.52{col 46}{space 3}0.002{col 54}{space 4}-33.58691{col 67}{space 3}-8.589094
+{txt}{space 7}2002  {c |}{col 14}{res}{space 2}-19.00843{col 26}{space 2} 5.006649{col 37}{space 1}   -3.80{col 46}{space 3}0.001{col 54}{space 4}-29.45212{col 67}{space 3}-8.564748
+{txt}{space 7}2003  {c |}{col 14}{res}{space 2}-19.54138{col 26}{space 2}   4.7112{col 37}{space 1}   -4.15{col 46}{space 3}0.000{col 54}{space 4}-29.36877{col 67}{space 3}-9.713989
+{txt}{space 7}2004  {c |}{col 14}{res}{space 2}-19.83185{col 26}{space 2} 5.060665{col 37}{space 1}   -3.92{col 46}{space 3}0.001{col 54}{space 4}-30.38822{col 67}{space 3}-9.275492
+{txt}{space 7}2005  {c |}{col 14}{res}{space 2}-21.38803{col 26}{space 2} 4.699788{col 37}{space 1}   -4.55{col 46}{space 3}0.000{col 54}{space 4}-31.19162{col 67}{space 3}-11.58444
+{txt}{space 12} {c |}
+{space 7}state {c |}
+{space 10}5  {c |}{col 14}{res}{space 2}-17.63309{col 26}{space 2} 1.43e-13{col 37}{space 1}-1.2e+14{col 46}{space 3}0.000{col 54}{space 4}-17.63309{col 67}{space 3}-17.63309
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-10.34462{col 26}{space 2} 2.611231{col 37}{space 1}   -3.96{col 46}{space 3}0.001{col 54}{space 4}-15.79155{col 67}{space 3}-4.897683
+{txt}{space 10}9  {c |}{col 14}{res}{space 2}-34.82113{col 26}{space 2} 2.437132{col 37}{space 1}  -14.29{col 46}{space 3}0.000{col 54}{space 4} -39.9049{col 67}{space 3}-29.73736
+{txt}{space 9}12  {c |}{col 14}{res}{space 2}-21.76411{col 26}{space 2} 2.437132{col 37}{space 1}   -8.93{col 46}{space 3}0.000{col 54}{space 4}-26.84788{col 67}{space 3}-16.68034
+{txt}{space 9}15  {c |}{col 14}{res}{space 2}-14.43497{col 26}{space 2} 1.43e-13{col 37}{space 1}-1.0e+14{col 46}{space 3}0.000{col 54}{space 4}-14.43497{col 67}{space 3}-14.43497
+{txt}{space 9}17  {c |}{col 14}{res}{space 2}-3.750428{col 26}{space 2} 2.263122{col 37}{space 1}   -1.66{col 46}{space 3}0.113{col 54}{space 4}-8.471217{col 67}{space 3} .9703616
+{txt}{space 9}18  {c |}{col 14}{res}{space 2}-4.167683{col 26}{space 2} 1.44e-13{col 37}{space 1}-2.9e+13{col 46}{space 3}0.000{col 54}{space 4}-4.167683{col 67}{space 3}-4.167683
+{txt}{space 9}19  {c |}{col 14}{res}{space 2}-4.330507{col 26}{space 2} 2.437132{col 37}{space 1}   -1.78{col 46}{space 3}0.091{col 54}{space 4}-9.414276{col 67}{space 3} .7532611
+{txt}{space 9}21  {c |}{col 14}{res}{space 2}-18.69492{col 26}{space 2} 1.741889{col 37}{space 1}  -10.73{col 46}{space 3}0.000{col 54}{space 4}-22.32844{col 67}{space 3} -15.0614
+{txt}{space 9}23  {c |}{col 14}{res}{space 2}-17.12417{col 26}{space 2} 1.051241{col 37}{space 1}  -16.29{col 46}{space 3}0.000{col 54}{space 4}-19.31702{col 67}{space 3}-14.93132
+{txt}{space 9}25  {c |}{col 14}{res}{space 2} 6.087273{col 26}{space 2} 2.437132{col 37}{space 1}    2.50{col 46}{space 3}0.021{col 54}{space 4} 1.003504{col 67}{space 3} 11.17104
+{txt}{space 9}26  {c |}{col 14}{res}{space 2}-3.567835{col 26}{space 2} 1.44e-13{col 37}{space 1}-2.5e+13{col 46}{space 3}0.000{col 54}{space 4}-3.567835{col 67}{space 3}-3.567835
+{txt}{space 9}29  {c |}{col 14}{res}{space 2} 2.198612{col 26}{space 2} 1.43e-13{col 37}{space 1} 1.5e+13{col 46}{space 3}0.000{col 54}{space 4} 2.198612{col 67}{space 3} 2.198612
+{txt}{space 9}32  {c |}{col 14}{res}{space 2} 16.47085{col 26}{space 2} 1.43e-13{col 37}{space 1} 1.2e+14{col 46}{space 3}0.000{col 54}{space 4} 16.47085{col 67}{space 3} 16.47085
+{txt}{space 9}35  {c |}{col 14}{res}{space 2}-14.19745{col 26}{space 2} 1.43e-13{col 37}{space 1}-9.9e+13{col 46}{space 3}0.000{col 54}{space 4}-14.19745{col 67}{space 3}-14.19745
+{txt}{space 9}38  {c |}{col 14}{res}{space 2}-8.028192{col 26}{space 2} 1.43e-13{col 37}{space 1}-5.6e+13{col 46}{space 3}0.000{col 54}{space 4}-8.028192{col 67}{space 3}-8.028192
+{txt}{space 9}39  {c |}{col 14}{res}{space 2}-19.78079{col 26}{space 2} 1.43e-13{col 37}{space 1}-1.4e+14{col 46}{space 3}0.000{col 54}{space 4}-19.78079{col 67}{space 3}-19.78079
+{txt}{space 9}45  {c |}{col 14}{res}{space 2}-17.64001{col 26}{space 2} 1.43e-13{col 37}{space 1}-1.2e+14{col 46}{space 3}0.000{col 54}{space 4}-17.64001{col 67}{space 3}-17.64001
+{txt}{space 9}46  {c |}{col 14}{res}{space 2} 2.343858{col 26}{space 2} 2.437132{col 37}{space 1}    0.96{col 46}{space 3}0.348{col 54}{space 4}-2.739911{col 67}{space 3} 7.427626
+{txt}{space 9}48  {c |}{col 14}{res}{space 2}-15.41629{col 26}{space 2} 1.43e-13{col 37}{space 1}-1.1e+14{col 46}{space 3}0.000{col 54}{space 4}-15.41629{col 67}{space 3}-15.41629
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 56.12647{col 26}{space 2} 5.235915{col 37}{space 1}   10.72{col 46}{space 3}0.000{col 54}{space 4} 45.20455{col 67}{space 3}  67.0484
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using table_10, keep(mlda21_14 mlda_later)  addtext(Fixed Effects, State and Year)  tex(frag) nocons replace
+{txt}{stata `"shellout using `"table_10.tex"'"':table_10.tex}
+{browse `"/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3"' :dir}{com} : {txt}{stata `"seeout using "table_10.txt""':seeout}
+
+{com}. 
+. 
+. ********************************************************************************
+
+. * create and translate log file
+
+. ********************************************************************************
+
+. 
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}/Users/vonhafften/Documents/UW Madison/problem_sets/econ_717a/ps3/analysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}15 Mar 2022, 10:08:46
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

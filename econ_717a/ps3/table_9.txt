@@ -1,0 +1,13 @@
+	(1)	(2)	(3)
+VARIABLES	Michigan	Maryland	Maryland
+			
+mlda21_mi	-1.006		
+	(3.746)		
+mlda21_md		7.652*	7.652*
+		(3.915)	(3.915)
+			
+Observations	403	403	403
+R-squared	0.716	0.719	0.719
+Fixed Effects	State and Year	State and Year	State and Year
+Robust standard errors in parentheses			
+*** p<0.01, ** p<0.05, * p<0.1			

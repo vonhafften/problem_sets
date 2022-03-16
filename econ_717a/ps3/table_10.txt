@@ -1,0 +1,13 @@
+	(1)
+VARIABLES	rate18_20ht
+	
+mlda21_14	1.705
+	(3.252)
+mlda_later	7.260
+	(5.415)
+	
+Observations	651
+R-squared	0.695
+Fixed Effects	State and Year
+Robust standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	

@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{bbm}
+\usepackage{placeins}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\geometry{margin = 1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+\newcommand{\one}{\mathbbm{1}}
+
+\newtoggle{extended}
+\settoggle{extended}{false}
+
+\title{``You can check out any time you like, but you can never leave" \\ A Case Study on the Effects of Bank Supervision}
+\author{Alex von Hafften}
+
+\begin{document}
+
+\maketitle
+
+\doublespacing
+
+\section{Introduction}
+
+Bank holding companies are highly regulated and supervised entities that must compile with a wide variety of different regulations and supervisory requirements. Isolating the effects of different regulatory and supervisory instruments is challenging. Using synthetic control, I study the effects of reduced bank supervision on Zions Bancorporation stemming from a change in corporate structure.  I find that...
+
+In November 2017, Zions Bancorporation announced plans to merge with its major commercial banking subsidiary.  Section 117 of the Dodd-Frank Act (DFA) requires that if certain bank holding companies (such as Zions Bancorporation) change their corporate structure, they remain regulated and supervised by Federal Reserve as a nonbank systemically important financial institution (SIFI). Zions Bancorporation appealed their impending status as a nonbank SIFI and its removal was granted. Zions was the first bank holding company to go through this process. The major outcome of this process is that Zions Bancorporation no longer needs to participate in Dodd-Frank Act Stress Tests (DFAST) and Comprehensive Capital Analysis and Review (CCAR).
+
+I use synthetic control to evaluate the effects of the reduced bank supervision of Zions Bancorporation. I use the other thirty-three bank holding companies with the DFAST/CCAR sample as donor units. The outcome variables of interest are leverage, profitability (measured by return-on-assets and return-on-equity), default risk (measured by Altman Z score), loan growth, and loss recognition (measured by net charge-offs).
+
+Section 117 of the DFA stipulates that any bank holding company that participated in the Troubled Asset Relief Program (TARP) and had \$50 billion or more in total consolidated assets as of January 1, 2010 will be treated as a nonbank SIFI and thus will continue to be supervised and regulated by the Federal Reserve if it ceases to be a bank holding company.  This section is known as the ``Hotel California" provision after 1976 song of the same name by the Eagle with lyric ``you can check out any time you like (i.e. stop being a bank holding company), but you can never leave (the sphere of Federal Reserve regulation and supervision)".  The motivation for this provision was to avoid institutions becoming bank holding companies to access support during periods of stress.  For example, large investment banks - Goldman Sachs and Morgan Stanley - became bank holding companies in 2008 and were able to access TARP funds.
+
+\section{Literature Review}
+
+Many recent papers evaluate the effects of bank supervision.  Using confidential supervisory data, Passalacqua et al (2020) find evidence that bank supervision reduces distortions in credit markets and produces positive real spillovers.  They exploit quasi-random selection of Italian bank inspections and find that inspected banks are more likely to reclassify loans as nonperforming.  This suggests that banks may hold zombie loans on their books to avoid recognizing the charge-off.  After the inspection, banks reduce lending to underperforming firms and increase lending to more productive firms.  The authors find that banks inspection also led to positive spillovers in the local economy - higher firm productivity, more entrepreneurship, and underperforming firms exit more.
+
+...
+
+\section{Data}
+
+Three variables of interest to start with: Book leverage (TA-TE)/TA, Net Charge-Off Rate (charge-offs - recoveries)/TL, and Provision rate (provisions/TL)
+
+
+\end{document}
+

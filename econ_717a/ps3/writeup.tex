@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{lscape}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{bbm}
+\usepackage{verbatim}
+\usepackage{lscape}
+
+\setlength{\parindent}{0cm}
+\geometry{margin = 1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+\newcommand{\one}{\mathbbm{1}}
+
+\newtoggle{extended}
+\settoggle{extended}{false}
+
+\title{ECON 717A: Problem Set 3}
+\author{Alex von Hafften}
+
+\begin{document}
+
+\maketitle
+
+\section{Write-Up}
+
+\subsection*{Problem 1 - Use \texttt{xtset state year}}
+
+\subsection*{Problem 2 - Define Treatment Variable}
+
+I define the treatment indicator as one for state-years if \texttt{mlda == 21} and zero otherwise.  This results in 96 zeros and 555 ones.
+
+\subsection*{Problem 3 - Naive Treatment Estimate}
+
+Below is a simple OLS regression of \texttt{rate18\_20ht} on \texttt{mlda21}.  The coefficient estimate on \texttt{mlda21} is negative but statistically insignificant, so this regression suggests that a minimum legal drinking age of 21 has no effect on the traffic fatality rate in the 18-20 age group. Thus, the estimate of the constant align relatively well with the unconditional mean of \texttt{mlda21} at 42.64.  We do not want to take this estimate as the treatment effect too seriously.  On the time dimension, \texttt{rate18\_20ht} is generally decreasing over time and \texttt{mlda21} is generally increasing over time, and this estimate of the treatment effect do not control for time trends.  Cross sectionally across states, the persistence of the both \texttt{rate18\_20ht} and \texttt{mlda21} are quite high with average AR(1) coefficient around 0.5 and 0.95, respectively. Also we should be concerned about selection effects; for example, state with higher fatality rate may raise the drinking age to try to lower it.  This estimate does not control for constant state-level effects.
+
+\bigskip
+
+\begin{center}
+\input{table_3}
+\end{center}
+
+\pagebreak
+
+\subsection*{Problem 4 - State or Year Fixed Effects}
+
+Below is the same regression as in (3) with state fixed effects and the same regression as in (2) with year fixed effects.  The estimate of the treatment effect is now statistically significant, but with opposite signs.  With state fixed effects, it is negative and, with year fixed effects, it is positive.  The magnitude for both is about 9 percent. These findings makes sense. As mentioned in (3), \texttt{rate18\_20ht} is generally decreasing over time and \texttt{mlda21} is generally increasing over time, so the coefficient on \texttt{mlda21} capture the time trend when controlling for state fixed effect.  If you interpreted the results from the regression with the year fixed effects as treatment effects, it would suggest that a higher drinking age raises fatalities.  This may be the selection effect at work.  The state choose to have higher drinking ages because their fatality rates are high. Again, we should include both state-level and year-level fixed effects to get a better estimate of the treatment effect.
+
+\scriptsize
+
+\begin{center}
+\input{table_4_state}
+\end{center}
+
+\begin{center}
+\input{table_4_year}
+\end{center}
+
+\normalsize
+
+\pagebreak
+
+\subsection*{Problem 5 - State and Year Fixed Effects with Clustered Standard Errors}
+
+Below is the regression with state and year fixed effects (suppressed due to space) with standard errors clustered at the state level.  The coefficient is positive but statistically insignificant.  This suggests that a higher drinking age has no effect on the fatality rate.  This estimate is probably the most reasonable so far; however, we have not attempted to validate the parallel pre-trends assumption. I think I would be more convinced by a plausible natural experiment finding that exogenously changed the drinking age. 
+
+\bigskip
+
+\begin{center}
+\input{table_5}
+\end{center}
+
+\subsection*{Problem 6 - State and Year Fixed Effects with Unclustered Standard Errors}
+
+Clearly, the unclustered standard errors are much lower than the clustered standard errors.  This is the bias-variance trade-off.  By clustering the standard errors we allow for more flexible estimation.  This increased flexibility lowers the bias of our estimates, but increases the variance and thus the standard error.
+
+\bigskip
+
+\begin{center}
+\input{table_6}
+\end{center}
+
+\pagebreak
+
+\subsection*{Problem 7 - Omitting after 1990}
+
+Below are estimates with data before and including 1990.  The coefficient is much smaller (and still statistically insignificant).  A larger estimate with the longer panel and a smaller estimate with the shorter panel may occur because the treatment effect takes awhile to materialize.  For example, the law may not have been immediately enforced.
+
+\begin{center}
+\input{table_7}
+\end{center}
+
+\subsection*{Problem 8 - Placebo Test}
+
+This placebo test tests whether there was an effect on traffic fatalities in 1982 in the states that subsequently raised their minimum drinking age in 1987 relative to the state with drinking ages at 21 for the entire sample period.  We find a positive and statistically significant coefficient on the placebo indicator.  This indicates that traffic fatality may have been rising in these state which then led them to increase the drinking age 5 years later.
+
+\begin{center}
+\input{table_8}
+\end{center}
+
+\pagebreak
+
+\subsection*{Problem 9 - Michigan and Maryland}
+
+Below is a test of the treatment effect for early movers - Michigan and Maryland - relative to the sample of state with drinking ages at 21 for the entire sample period.  The insignificant coefficient estimate for Michigan is in line with the zero impact for the larger sample.  For Maryland, we find a slightly statistically significant increase in traffic fatality.  If we take the estimate as statistically significant here, I think this increase could be driven by increased traffic fatalities from 18-20 year olds drinking and back driving from neighboring states like Virginia, DC, Pennsylvania, Delaware and West Virginia. 
+
+\begin{center}
+\input{table_9}
+\end{center}
+
+\subsection*{Problem 10 - Early and Late Treatment Effects}
+
+Below is the regression breaking apart the treatment indicator into the first four years after treatment and the rest of the sample period.  Both estimates are statistically indistinguishable from zero, but the late treatment estimate is much larger.  This supports the discussion in (7) that the effects of this policy may be slow to materialize.
+
+\begin{center}
+\input{table_10}
+\end{center}
+
+\begin{landscape}
+\section{Stata Log File}
+\verbatiminput{analysis.log}
+\end{landscape}
+
+\end{document}
+
