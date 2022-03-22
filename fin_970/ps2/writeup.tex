@@ -1,0 +1,363 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{bbm}
+\usepackage{placeins}
+\usepackage{verbatim}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\setlength{\parindent}{0cm}
+\geometry{margin = 1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+\newcommand{\one}{\mathbbm{1}}
+
+\newtoggle{extended}
+\settoggle{extended}{false}
+
+\title{FIN 970: Homework 2}
+\author{Alex von Hafften }
+
+\begin{document}
+
+\maketitle
+
+\section{Cash-Flow and Return Predictability}
+
+The goal for this exercise is to examine the evidence on cash flow and return predictability in the data.
+
+\bigskip
+
+Get annual data from 1930 to most recent period for log nominal market return $r_{d,t}^{\$}$, nominal dividends $\Delta d_{t}^{\$}$, and log price-dividend ratio $pd_t$ from CRSP. We also want to use log inflation rate $\pi_t$ (for example, from FRED) to help us convert nominal series into real.
+
+\begin{enumerate}
+
+\item To get real market returns, we can just subtract inflation from nominal market returns: $r_{d,t} = r^{\$}_{d,t} - \pi_t$. Do similar adjustment to remove inflation from nominal dividends.
+
+...
+
+\item Let us consider $h$-horizon forecasts of future cumulative returns and dividends:
+
+\begin{align*}
+\frac{1}{h} \sum_{j=1}^h \Delta d_{t+j} &= const + \beta_d x_t + error \\
+\frac{1}{h} \sum_{j=1}^h \Delta r_{t+j} &= const + \beta_r x_t + error
+\end{align*}
+
+where $x_t$ is a predictive variable, and $h$ is the forecast horizon. We can compute slope coefficients and $R^2$ using standard OLS regressions.  Note the overlapping observations on the LHS - how would that affect the computation of the standard errors?
+
+...
+
+\item Run these regressions for the horizons of $h$ 1 year to 5 years, using price dividend ratio as a predictive variable, i.e. set $x_t = pd_t$. What are the slope coefficients and $R^2$s? Do you find the signs of slope coefficients reasonable? What is the statistical significance of the slope coefficients and the $R^2$s? What does this evidence suggest in terms of the drivers of the aggregate equity prices in the data?
+
+...
+
+\end{enumerate}
+
+\pagebreak
+
+\section{Twist on Log-Linearization}
+
+The return log-linearization formula is typically written as
+
+\begin{align}
+r_{t+1} \approx \kappa_0 + \kappa_1 pd_{t+1} - pd_t + \Delta d_{t+1} \label{p3_ll1}
+\end{align}
+
+where $\kappa_0$ and $\kappa_1$ are log-linearization constants which depend on the mean of price-dividend ratio. Use their solution to show that you can rewrite this formula in the following way:
+
+\begin{align}
+r_{t+1} \approx - \log k_1 + \kappa_1 \tilde{pd}_{t+1} - \tilde{pd}_t + \Delta d_{t+1} \label{p3_ll2}
+\end{align}
+
+where $\tilde{pd}$ is the demeaned price-dividend ratio, $\tilde{pd}_t = pd_t - E(pd_t)$.  There is nothing deep about this result. However, it's oftentimes more convenient to use (e.g., in equilibrium model solutions), as we do not need to keep track of $\kappa_0$ and the (unimportant) intercepts in the solution of price-dividend ratios.
+
+\bigskip
+
+\textbf{\underline{Solution:}} Following the lecture notes from class,
+
+\begin{align*}
+R_{t+1} 
+&= \frac{P_{t+1} + D_{t+1}}{P_t}\\
+&= \frac{D_{t+1}(\frac{P_{t+1}}{D_{t+1}} + 1)}{D_t \frac{P_t}{D_t}}\\
+&= \frac{D_{t+1}}{D_t} \frac{PD_{t+1} + 1}{PD_{t}}\\
+\text{where } PD_t &:= P_t/D_t \\
+\implies
+\log(R_t) &= \log(\frac{D_{t+1}}{D_t}) + \log(PD_{t+1} + 1) - \log(PD_t)\\
+r_t &= \Delta d_{t+1} - pd_t + \log(\exp(pd_t)+1)\\
+\text{where } r_t &:= \log(R_t)\\
+\text{and } pd_t &:= \log(PD_t)\\
+f(x) &:= \log(\exp(x) + 1)\\
+\implies
+f'(x) &= \frac{\exp(x)}{\exp(x) + 1} \\
+f(x) &\approx f(\bar{x}) + f'(\bar{x})(x - \bar{x}) \\ 
+&= \log(\exp(\bar{x}) + 1) + \frac{\exp(\bar{x})}{\exp(\bar{x}) + 1}(x - \bar{x})\\
+\implies
+\log(\exp(pd_t)+1) &\approx \log(\exp(E(pd_t))+1) + \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1}(pd_t - E(pd_t)) \\
+\implies
+r_{t+1} &\approx \Delta d_{t+1} - pd_t + \log(\exp(E(pd_t))+1) + \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1}(pd_t - E(pd_t)) \\
+&= \kappa_0 + \kappa_1 pd_{t+1} + \Delta d_{t+1} - pd_t \\
+\text{where }
+\kappa_0 &= \log(\exp(E(pd_t))+1) - \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1}E(pd_t)\\
+\text{and }
+\kappa_1 &= \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1}
+\end{align*}
+
+\pagebreak
+
+($\ref{p3_ll1}$) and ($\ref{p3_ll2}$) are equivalent iff 
+
+\begin{align*}
+\kappa_0 + \kappa_1 pd_{t+1} - pd_t 
+&= - \log k_1 + \kappa_1 \tilde{pd}_{t+1} - \tilde{pd}_t \\
+\iff
+\Bigg[\log(\exp(E(pd_t))+1) - \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1}E(pd_t)\Bigg] &+ \Bigg[ \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1} \Bigg] pd_{t+1} - pd_t \\
+= - \log \Bigg[ \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1} \Bigg] &+ \Bigg[ \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1} \Bigg] [pd_{t+1} - E(pd_{t+1})] - [pd_{t} - E(pd_{t})] \\
+\iff
+\log(\exp(E(pd_t))+1) &- \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1}E(pd_t)\\
+= - \log \Bigg[ \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1} \Bigg] -& \Bigg[ \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1} \Bigg] E(pd_{t+1}) + E(pd_{t}) \\
+\iff
+\log(\exp(E(pd_t))+1) &- \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1}E(pd_t)\\
+= - \log (\exp(E(pd_t))) &+ \log(\exp(E(pd_t)) + 1) - \Bigg[ \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1} \Bigg] E(pd_{t+1}) + E(pd_{t}) \\
+\iff
+- \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1}E(pd_t)
+&= - E(pd_t) - \Bigg[ \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1} \Bigg] E(pd_{t+1}) + E(pd_{t}) \\
+\iff
+- \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1}E(pd_t)
+&= - \Bigg[ \frac{\exp(E(pd_t))}{\exp(E(pd_t)) + 1} \Bigg] E(pd_{t+1}) \\
+E(pd_t)
+&= E(pd_{t+1})
+\end{align*}
+
+$E(pd_t)= E(pd_{t+1})$ holds iff $pd_t$ is a martingale.
+
+\pagebreak
+
+\section{External Habits}
+
+Consider an environment very similar to the external habits model of Campbell-Cochrane, 1999.
+
+\begin{itemize}
+
+\item Investors have utility over consumption relative to a reference point $X_t$:
+
+$$
+u_t = \frac{(C_t - X_t)^{1-\gamma} - 1}{1-\gamma}
+$$
+
+\item Consumption growth is iid Normal:
+
+$$
+g_{t+1} = g + v_{t +1}, \;\;\; Var(v_{t+1}) = \sigma_v^2
+$$
+
+\item Define surplus consumption $S_t$:
+
+$$
+S_t = \frac{C-t - X_t}{C_t}
+$$
+
+\item Log surplus consumption is driven by the consumption news:
+
+$$
+s_{t+1} = \bar{s} + \phi(s_t - \bar{s}) + \lambda(s_t) v_{t+1}
+$$
+
+where the sensitivity function is specified as in CC, 99:
+
+$$
+\lambda(s_t) = \frac{1}{\bar{S}} \sqrt{1 - 2(s-\bar{s})} - 1,
+$$
+
+when $s_t < s_{max}$ and 0 otherwise.
+
+\item The only difference between CC, 99 is the specification of $\bar{s} = \log \bar{S}$
+
+$$
+\bar{S} = \sigma_v \sqrt{\frac{\gamma}{1- \phi - b/\gamma}}
+$$
+
+where $b$ is a preference parameter.
+
+\end{itemize}
+
+\begin{enumerate}
+
+\item Show that the one-period real risk-free rates are now time-varying, and are linear in the consumption surplus $s_t$.
+
+...
+
+\item Consider the case of $b > 0$ - this is the case studied in Wachter, 2006. How do the interest rates vary with the consumption surplus ratio? Are they low or high in ``good times"? Are the real bonds risky in this model, or do they hedge aggregate risks?
+
+...
+
+\item Compare the behavior of interest rates in this model with the predictions in the Long-Run Risk model.  In the long-run risks model, do real rates fall or rise in ``good" times (think about ``good" times as high expected growth and/or low conditional volatility).
+
+...
+
+\item Can you use these model predictions to test the two asset-pricing theories? How would you do that?
+
+...
+
+\end{enumerate}
+
+\pagebreak
+
+\section{Long-Run Risks Model}
+
+Consider the following specification of the long-run risks model. Consumption and dividend dynamics are given by
+
+\begin{align*}
+\Delta c_{t+1} &= \mu_g + x_t + \sigma_t \eta_{t+1}, \\
+x_{t+1} &= \rho x_t + \varphi_e \sigma_t e_{t+1}, \\
+\sigma_{t+1}^2 &= \sigma_0^2 \nu(\sigma_t^2 - \sigma_0^2) + \sigma_w w_{t+1},\\
+\Delta d_{t+1} &= \mu_d + \phi x_t + \pi_d \sigma_t \eta_{t+1} + \varphi_d \sigma_t u_{d,t+1}
+\end{align*}
+
+where all shocks are iid uncorrelated standard Normal.
+
+\bigskip
+
+The investor has recursive Epstein-Zin preferences over the future consumption,
+
+$$
+U_t = \Bigg[(1-\delta)C_t^{1- \frac{1}{\psi}} + \delta (E_t U_{t+1}^{1 - \gamma})^{\frac{1-\frac{1}{\psi}}{1 - \gamma}} \Bigg]^{\frac{1}{1-\frac{1}{\psi}}}
+$$
+
+Theoretical Model Solution
+
+\begin{enumerate}
+
+\item Conjecture that price-consumption ratio is linear in expected growth,
+
+$$
+pc_t = A_0 + A_xx_t + A_\sigma \sigma_t^2,
+$$
+
+and use Euler equation on consumption asset and log-linearization of consumption return to solve for $A_0,A_1,A_2$ and log-linearization coefficient $\kappa_1$ in terms of the fundamental model parameters. Under what conditions asset valuations respond positively to expected growth? negatively to consumption volatility? What do those conditions mean, economically?
+
+...
+
+\item Express the stochastic discount factor in terms of the primitive state variables and parameters of the model:
+
+$$
+m_{t+1} = m_0 + m_x x_t + m_\sigma \sigma_t^2 - \lambda_c \eta_{t+1} - \lambda_x \varphi_e \sigma_t e_{t+1} - \lambda_w \sigma_w w_{t+1}.
+$$
+
+What are the signs of market prices of risks? Under what conditions the market prices of expected growth and volatility risk are equal to zero?
+
+...
+
+\item Conjecture that the log price of an $n$-period zero-coupon risk-free bond satisfies
+
+$$
+p_{n,t} = - B_{0, n} - B_{x,n} x_t - B_{\sigma,n} \sigma_t^2,
+$$
+
+so that (monthly) yields are given by $y_{n,t} = -p_{n,t}/n$. Set up equations for $B_{x,n}$ and $B_{\sigma,n}$. How do risk-free rates respond to expected growth and volatility shocks?
+
+...
+
+\item Define $rx_{n,t+1}$ a one-period log excess return on an $n$-period bond. That is, it is the excess return on buying an $n$-period bond now and selling it tomorrow as an $(n - 1)$ period bond:
+
+$$
+rx_{n,t+1} = -p_{n,t} + p_{n-1,t+1} - y_{t,1}.
+$$
+
+Show that the risk-premia on bonds is time-varying and driven by stochastic volatility:
+
+$$
+E_t r x_{n,t+1} + \frac{1}{2}Var_t r x_{n,t+1} = r_{n,0} + r_{n,1} \sigma_t^2.
+$$
+
+What is the sign of $r_{n,1}$? Show that the real bond risk premium \textit{decreases} in high uncertainty times. Why does it happen in the model, from an economic point of view?
+
+...
+
+\item Conjecture that price-dividend ratio is linear in expected growth, 
+
+$$
+pd_t = H_0 + H_x x_t + H_\sigma \sigma_t^2,
+$$
+
+and use Euler equation on a dividend-paying asset and log-linearization of the return to solve for $H_0, H_x, H_\sigma$ and log-linearization coefficient $\kappa_{1,d}$ in terms of the fundamental model parameters.
+
+...
+
+\item Show that the risk-premia on the stock market is time-varying and driven by stochastic volatility:
+
+$$
+E_t r_{d,t+1} + \frac{1}{2} Var_t r_{d,t+1} = r_{d,0} + r_{d,1} \sigma_t^2
+$$
+
+What is the sign of $r_{d,1}$? Under what conditions do market premia go up in high volatility times?
+
+...
+
+\end{enumerate}
+
+Calibration and Asset-Pricing Implications:
+
+\begin{enumerate}
+
+\item The Matlab code on Canvas contains a calibration and solution of the long-run risk model. The calibration is very similar, though it might not be exactly identical to Bansal Yaron 2004 and BKY, 2009.\footnote{The model produces output on monthly frequency, which is then annualized for an easier comparison to the data. For mean equity returns and risk premia, it’s acceptable to multiply monthly numbers by 12 to convert to per annum numbers. Standard deviations of equity returns are multiplied by the square root of 12 (equity returns are approximately i.i.d., so variance of the sum of 12 returns is approximately 12 times the variance of a single return). The interest rates are typically converted to annual yields first: e.g., multiply 1-month interest rate by 12 to get an annualized yield on an 1-month bond. Then we can report the mean and standard deviation of the yield directly. For price-dividend ratios, $PD_{annual} = P/D_{annual}$, where annual D is the sum over 12 past dividends. Approximately, $D_{annual} = 12D_{monthly}$, so that $PD_{annual} = P/D_{annual} = PD_{monthly}/12$. So, to convert monthly PD (levels) to annual PD, divide it by 12 - in logs, subtract $log(12)$ from average log monthly pd to get to annual log pd. Annualization of consumption growth is more delicate. It is NOT the case that log annual consumption growth is the sum of log monthly consumption growth rates (why?). A proper way to handle it is in simulations, get monthly consumption growth rates, convert them to monthly (un-log) levels of consumption, sum up monthly consumption over the year to get annual consumption, and then compute log annual consumption growth and its statistics directly in simulations.} It computes equilibrium solutions to the price- consumption ratio, SDF, and one-period risk-free rate. After you run this code it should display unconditional log consumption return and average one-period risk-free rate.
+
+...
+
+\item  What is the average conditional volatility of the stochastic discount factor? Decompose the volatility into components related to short-run, long-run and volatility news.
+
+...
+
+\item  Extend the code to solve for the term-structure of real rates, and the price-dividend ratio on the dividend-paying asset.
+
+...
+
+\item  What are the model implications for the levels of the risk-free rates from 1 month to 5 years in maturity?
+
+...
+
+\item  What are the average log price-consumption and log price-dividend ratios? How does the market pd ratio compare to the data?
+
+...
+
+\item What is the average equity premium on consumption asset? on dividend-paying asset? Decompose the premia into components related to short-run, long-run and volatility risks.
+
+...
+
+\item  What is the volatility of equity returns and risk-free rates in the model? How do they compare to the data?
+
+...
+
+\item  Comment on the ability of the model to solve equity premium, risk-free rate, and return volatility puzzles.
+
+...
+
+\end{enumerate}
+
+\end{document}

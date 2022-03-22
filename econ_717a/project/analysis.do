@@ -17,8 +17,12 @@ use "jlnb4ujafkjqwza4"
 
 gen BHCK2170 = RCON2170
 gen BHCK3210 = RCON3210
-gen RSSD9001 = 1027004
+replace RSSD9001 = 1027004
 drop if RSSD9999 < 20180930
+
+save "commercial_bank.dta"
+
+clear
 
 ********************************************************************************
 * BHC data
@@ -26,5 +30,8 @@ drop if RSSD9999 < 20180930
 
 use "ct2lkiyvusf2codh"
 
+append using "commercial_bank.dta"
+
 gen leverage = (BHCK2170 - BHCK3210)/BHCK2170
 
+clear
