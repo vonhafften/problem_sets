@@ -61,7 +61,11 @@ Get annual data from 1930 to most recent period for log nominal market return $r
 
 \item To get real market returns, we can just subtract inflation from nominal market returns: $r_{d,t} = r^{\$}_{d,t} - \pi_t$. Do similar adjustment to remove inflation from nominal dividends.
 
-...
+\bigskip
+
+\underline{Solution:} See \texttt{data.xlsx}.
+
+\bigskip
 
 \item Let us consider $h$-horizon forecasts of future cumulative returns and dividends:
 
@@ -72,11 +76,22 @@ Get annual data from 1930 to most recent period for log nominal market return $r
 
 where $x_t$ is a predictive variable, and $h$ is the forecast horizon. We can compute slope coefficients and $R^2$ using standard OLS regressions.  Note the overlapping observations on the LHS - how would that affect the computation of the standard errors?
 
-...
+\bigskip
+
+\underline{Solution:} Since we're average future dividends and returns, the observations on LHS are now mechanically correlated we each other.  For example, if $h=3$, the dividends in 1980 are included in the LHS variable for 1977, 1978, and 1979.  Asymptotic standard errors are only valid if observations are a random sample. Not accounting for this correlation will bias the standard errors upward.  For valid standard errors, we use bootstrap or use Newey-West standard errors.
+
+\pagebreak
 
 \item Run these regressions for the horizons of $h$ 1 year to 5 years, using price dividend ratio as a predictive variable, i.e. set $x_t = pd_t$. What are the slope coefficients and $R^2$s? Do you find the signs of slope coefficients reasonable? What is the statistical significance of the slope coefficients and the $R^2$s? What does this evidence suggest in terms of the drivers of the aggregate equity prices in the data?
 
-...
+\bigskip
+
+\underline{Solution:} My estimates for slope coefficients and $R^2$s are within the confidence intervals for such regression in the lecture slides.  My regressions feature the same pattern for dividends the $R^2$s starts relatively high and then drops as you extend the forecasting window and the $R^2$s for returns starts relatively low and increases. The significance and magnitude of the slope coefficients for the dividend regressions grow whereas the slope coefficient for the return regressions stay about the same magnitude and become more significant. For dividend, the sign of the slope coefficients indicate that higher $pd$ ratios predict higher future dividends and lower market returns.  This suggests that $pd$ ratios are better predictors of returns than dividends.
+
+\bigskip
+
+\input{p1_delta_d_table.tex}
+\input{p1_r_table.tex}
 
 \end{enumerate}
 
