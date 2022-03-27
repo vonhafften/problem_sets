@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 \usepackage{amsmath,amsthm,amssymb,amsfonts}
 \usepackage{setspace,enumitem}
 \usepackage{graphicx}
@@ -15,6 +15,7 @@
 \usepackage{accents}
 \usepackage{bbm}
 \usepackage{placeins}
+\usepackage[affil-it]{authblk} 
 \hypersetup{
 	colorlinks,
 	linkcolor={blue!90!black},
@@ -41,7 +42,7 @@
 \newtoggle{extended}
 \settoggle{extended}{false}
 
-\title{``You can check out any time you like, but you can never leave" \\ A Case Study on the Effects of Bank Supervision}
+\title{\Large ``You can check out any time you like, but you can never leave" \\ A case study on the effects of bank supervision}
 \author{Alex von Hafften}
 
 \begin{document}
@@ -52,24 +53,50 @@
 
 \section{Introduction}
 
-Bank holding companies are highly regulated and supervised entities that must compile with a wide variety of different regulations and supervisory requirements. Isolating the effects of different regulatory and supervisory instruments is challenging. Using synthetic control, I study the effects of reduced bank supervision on Zions Bancorporation stemming from a change in corporate structure.  I find that...
+Bank holding companies must comply with a wide variety of regulations and supervisory requirements. Isolating the effects of regulatory instruments (e.g. capital requirements, liquidity requirements, etc.) versus supervisory instruments (e.g., stress tests) is an empirical challenge.  Empirical challenges include---but are not limited to---the implementation of such instruments overlapping, long delays between the announcement and the implementation of such instruments creating anticipation effects, and differential effects across the economic cycle.  However, understanding the effects of these instruments is important for understanding the trade-off between different regulatory and supervisory approaches.
 
-In November 2017, Zions Bancorporation announced plans to merge with its major commercial banking subsidiary.  Section 117 of the Dodd-Frank Act (DFA) requires that if certain bank holding companies (such as Zions Bancorporation) change their corporate structure, they remain regulated and supervised by Federal Reserve as a nonbank systemically important financial institution (SIFI). Zions Bancorporation appealed their impending status as a nonbank SIFI and its removal was granted. Zions was the first bank holding company to go through this process. The major outcome of this process is that Zions Bancorporation no longer needs to participate in Dodd-Frank Act Stress Tests (DFAST) and Comprehensive Capital Analysis and Review (CCAR).
+In 2017, Zions Bancorporation (``Zions") changed its corporate structure, which resulted in a reduction in the degree to which it was supervised. I propose studying the effects of bank supervision on bank riskiness by creating a ``more supervised" synthetic control bank to compare to Zions. I propose looking at the effect of bank supervision on size, leverage, asset composition, and loan loss provisioning. If supervision indeed makes banks safer financial institutions, I expected to find that Zions will be larger, more levered, more invested in riskier and less liquid assets, and hold fewer provisions against loan losses relative to the ``more supervised" synthetic control.
 
-I use synthetic control to evaluate the effects of the reduced bank supervision of Zions Bancorporation. I use the other thirty-three bank holding companies with the DFAST/CCAR sample as donor units. The outcome variables of interest are leverage, profitability (measured by return-on-assets and return-on-equity), default risk (measured by Altman Z score), loan growth, and loss recognition (measured by net charge-offs).
+\pagebreak
 
-Section 117 of the DFA stipulates that any bank holding company that participated in the Troubled Asset Relief Program (TARP) and had \$50 billion or more in total consolidated assets as of January 1, 2010 will be treated as a nonbank SIFI and thus will continue to be supervised and regulated by the Federal Reserve if it ceases to be a bank holding company.  This section is known as the ``Hotel California" provision after 1976 song of the same name by the Eagle with lyric ``you can check out any time you like (i.e. stop being a bank holding company), but you can never leave (the sphere of Federal Reserve regulation and supervision)".  The motivation for this provision was to avoid institutions becoming bank holding companies to access support during periods of stress.  For example, large investment banks - Goldman Sachs and Morgan Stanley - became bank holding companies in 2008 and were able to access TARP funds.
+\subsection{Institutional Background}
+
+In November 2017, Zions announced plans to merge with its major commercial banking subsidiary.  Section 117 of the Dodd-Frank Act (DFA) ~\cite{dfa2010} requires that if certain bank holding companies (including Zions) change their corporate structure, they remain regulated and supervised by the Federal Reserve as a nonbank systemically important financial institution (SIFI). Zions appealed their impending status as a nonbank SIFI to the Financial Stability Oversight Council (FSOC) and its removal was granted. Zions was the first and only bank holding company to go through this process. Its primary outcome was that Zions no longer participates in Dodd-Frank Act Stress Tests (DFAST) nor the Comprehensive Capital Analysis and Review (CCAR).
+
+Section 117 of the DFA stipulates that any bank holding company that participated in the Troubled Asset Relief Program (TARP) and had consolidated assets  of \$50 billion or more in January 2010 would be be treated as a nonbank SIFI and thus would continue to be supervised and regulated by the Federal Reserve even if it ceases to be a bank holding company.  This section is colloquially known as the ``Hotel California" provision after 1976 song of the same name by the Eagles with the lyric ``you can check out any time you like (i.e. stop being a bank holding company), but you can never leave (the sphere of Federal Reserve regulation and supervision)".\footnote{Here, ``never" does not including appealing to FSOC and getting approval for the removal of such a SIFI status.} The likely motivation for Section 117 was to reduce the moral hazard of large and complex financial institutions avoiding supervision in good economic times and then becoming bank holding companies and accessing government support, like taxpayer bailouts, during periods of stress.  For example, large investment banks---Goldman Sachs and Morgan Stanley---became bank holding companies in 2008 to be able to access TARP funds.  Compared to investment banks like Goldman Sachs and Morgan Stanley, Zions is a much smaller regional bank that engages primarily in traditional commercial banking activities.
+
+\subsection{Empirical Methodology}
+
+I propose creating a synthetic control bank holding company to evaluate the effects of the reduced bank supervision of Zions (following Abadie, Diamond, and Hainmuller ~\cite{adh2010} and Abadie ~\cite{abadie2021}). The donor units for the synthetic control bank holding company would include the other thirty-three bank holding companies in the DFAST/CCAR sample when Zions exited the sample.\footnote{As a robustness check, I would create a synthetic control bank limiting the donor units to the eighteen bank holding companies in the DFAST/CCAR sample after the passage of Economic Growth, Regulatory Relief, and Consumer Protection Act in 2019.} The pre-treatment period would be from the passage of the DFA in 2010 to Zions' change to a commercial bank in 2017. The post-treatment period would be from 2017 to the most recently available data, which is at year-end 2021. 
+
+The outcome variables would be size (measured by total assets and/or total loans), book leverage (measured by total equity over total assets), liquid assets (measured by sum of cash, cash equivalents, Treasuries, and Fed funds over total assets), and loan loss reserve provisioning (measured by allowance for loan and lease losses over total loans and/or provisions over total loans).\footnote{Additional outcome variables could include profitability (measured by return-on-equity and/or return-on-assets) and loan loss recognition (measured by net charge-offs over nonperforming loans). The interpretation of these outcome variables is less straightforward than those proposed in the main text. For profitability, theory would predict a ``more supervised" (i.e., more constrained) bank would report lower profit than a ``less supervised" (i.e., less constrained) bank, but this direction might switch in a downturn if better supervised banks are more prepared for poor economic times.  For loan loss recognition, a ``more supervised" bank may be expected to report lower because they are making lower risk loans ex ante, but supervision may make banks more likely to recognize losses (Passalacqua ~\cite{passalacqua2020}).}  Other predictors would include variables on liability composition (e.g., insured deposits over total debt, short-term debt over total debt) and income sheet composition (e.g., interest income over total income, noninterest income over total income) to ensure that the synthetic control bank has a similar business model to Zions.  Quarterly call report data for bank holding companies and commercial banks is available from National Information Center of the Federal Financial Institutions Examination Council (also available through the Wharton Research Data Service).
+
+\subsection{Identification Strategy}
+
+As discussed in Smith ~\cite{smith2022}, three key conditions are required for synthetic control to produce credible causal estimates: (1) good pre-treatment predictions, (2) persistence of predictive success, and (3) no anticipation.  
+
+For (1), the quality of the pre-treatment prediction is observable.  In addition, the pre-treatment period with seven years of quarterly data is long enough to use the out-of-sample validation strategy from Abadie, Diamond, and Hainmueller ~\cite{adh2010}. 
+
+Unfortunately, the persistence of predictive success in (2) is unobservable, so it is a common issue for most applications of synthetic control. Further complicating (2) in this context is the comparability of commercial banks and bank holding companies.  By their legal structure, bank holding companies can engage in a much wider array of activities than a commercial bank.  For this reason, I have focused on outcome variables that are closely aligned with traditional commercial banking activities. To interpret the estimate as causal effects of bank supervision, we must assume that such outcome variable must be comparable between bank holding companies and commercial banks.
+
+On one hand, the lack of anticipation in (3) is problematic in this context because Zions itself pursued the change of corporate structure from bank holding company to commercial bank and subsequently appealed the SIFI status through FSOC.  On the other hand, FSOC needed to approve the removal of the Zions' SIFI status. This process included a detailed look into both publicly available data as well as the acquisition of additional confidential supervisory information. This process may have incentivized Zions to appear to be as safe a bank as possible, so that FSOC would approve its appeal. 
+
+\pagebreak
 
 \section{Literature Review}
 
-Many recent papers evaluate the effects of bank supervision.  Using confidential supervisory data, Passalacqua et al (2020) find evidence that bank supervision reduces distortions in credit markets and produces positive real spillovers.  They exploit quasi-random selection of Italian bank inspections and find that inspected banks are more likely to reclassify loans as nonperforming.  This suggests that banks may hold zombie loans on their books to avoid recognizing the charge-off.  After the inspection, banks reduce lending to underperforming firms and increase lending to more productive firms.  The authors find that banks inspection also led to positive spillovers in the local economy - higher firm productivity, more entrepreneurship, and underperforming firms exit more.
+As Cerulli, Fiordelisi, and Marques-Ibanez ~\cite{cerulli2021} point out, the literature on the effects of bank supervision is less developed compared to many strands of the banking literature (e.g., the effects of capital and liquidity requirements). To my knowledge, no research focuses on the aftermath of the Zions' Section 117 appeal. Inherent in using synthetic control, my estimates would be the treatment effect on the treated, so causal interpretation should be limited to only Zions itself.  However, my proposal could confirm findings from recent papers filling this gap and evaluating the effects of bank supervision in a variety of other specific contexts.
 
-...
+Using confidential supervisory data, Passalacqua et al ~\cite{passalacqua2020} find evidence that bank supervision reduces distortions in credit markets and produces positive real spillovers.  They exploit quasi-random selection of Italian bank inspections and find that inspected banks are more likely to reclassify loans as nonperforming.  This suggests that banks may hold zombie loans on their books to avoid recognizing the charge-offs.  After the inspection, banks reduce lending to underperforming firms and increase lending to more productive firms.  The authors find that bank inspections also led to positive spillovers in the local economy---higher firm productivity, more entrepreneurship, and underperforming firms exit more.
 
-\section{Data}
+Cerulli, Fiordelisi, and Marques-Ibanez ~\cite{cerulli2021} document that bank behavior when the European Central Banking (ECB) started to supervise European banks with 30 billion euros or more in total assets. The banks just above the threshold significantly reduced lending compared to a control group of banks far away from the threshold. The authors also estimate large shadow cost of supervision for the banks just below the threshold (i.e., missed opportunities to expand their business).
 
-Three variables of interest to start with: Book leverage (TA-TE)/TA, Net Charge-Off Rate (charge-offs - recoveries)/TL, and Provision rate (provisions/TL)
+Granja and Leuz ~\cite{granja2018} analyze the dissolution of the Office of Thrift Supervision (OTS), which was seen as a lax supervisor before the financial crisis. The DFA dissolved the OTS and other government agencies, like the Federal Reserve, started supervising former OTS banks. The authors find that the supervision of former OTS banks after DFA became stricter, the former OTS bank's capital position improved, and they increased small business lending.
 
+\pagebreak
+
+\bibliography{refs}{}
+\bibliographystyle{plain}
 
 \end{document}
 
