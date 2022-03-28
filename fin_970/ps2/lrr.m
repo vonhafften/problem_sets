@@ -1,6 +1,7 @@
 %% Solution of the Long Run risks Model 
 % Produced by Ivan Shaliastovich
 % !!! For Teaching Purposes Only !!!
+% Modified by Alex von Hafften on March 27, 2022
 
 clear all
 close all
@@ -43,7 +44,7 @@ dif = 100;
 kappa1 = delta;
 count = 0;
 
-while dif>1.0e-006
+while dif>1.0e-10
     
     
     A_x = (1-1/psi)/(1-kappa1*rho);  
@@ -62,6 +63,8 @@ while dif>1.0e-006
         kappa1=2; 
         break;
     end
+
+    disp(count)
 end
 
 if (kappa1>1 || kappa1<0.0) 
@@ -79,11 +82,24 @@ Lambda_x = (1-theta)*kappa1*A_x;
 Lambda_s = (1-theta)*kappa1*A_s;
 
 % Parameters of the Real Yield curve
-B_x(1) = -m_x;
-B_s(1) = -m_s -0.5*(ga^2 +  varphi_e^2*Lambda_x^2);
-B_c0(1) = -m_c0 - 0.5*Lambda_s^2*sigma_w^2;
+B_c0(1) = m_c0 + 0.5*Lambda_s^2*sigma_w^2;
+B_x(1) = m_x;
+B_s(1) = m_s + 0.5*(ga^2 +  varphi_e^2*Lambda_x^2);
 
+disp('Question 1: ')
 fprintf(' Average annualized log return on consumption asset is  %2.5f  \n',  (-log(kappa1) + mu_c)*100*freq);
-fprintf(' Average annualized one-period real risk-free  rate is  %2.5f  \n',  (B_c0 + B_s*sigma_c0^2)*100*freq);
+fprintf(' Average annualized one-period real risk-free  rate is  %2.5f  \n',  (-B_c0 - B_s*sigma_c0^2)*100*freq);
 
+% SDF volatility decomposition
+c_vol = Lambda_g^2*sigma_c0^2;
+x_vol = Lambda_x^2*varphi_e^2*sigma_c0^2;
+s_vol = sigma_w^2*Lambda_s^2;
+sdf_vol = c_vol + x_vol + s_vol;
+
+
+disp('Question 2: ')
+fprintf(' Average conditional volatility of SDF %2.5f  \n',  sdf_vol*100*freq);
+fprintf(' Fraction from short-run news %2.5f  percent \n',  c_vol/sdf_vol*100);
+fprintf(' Fraction from long-run news %2.5f  percent \n',  x_vol/sdf_vol*100);
+fprintf(' Fraction from volatility news %2.5f  percent \n',  s_vol/sdf_vol*100);
 

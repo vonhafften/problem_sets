@@ -712,11 +712,36 @@ What is the sign of $r_{n,1}$? Show that the real bond risk premium \textit{decr
 
 \bigskip
 
-\underline{Solution:}  ....
+\underline{Solution:}  The Euler equation must hold for the $n$-period zero-coupon risk-free bond:
+
+\begin{align*}
+1 &= E_t [M_{t+1} R_{n,t+1}]\\
+  &= E_t [\exp(m_{t+1} + r_{n,t+1})]\\
+  &= E_t [\exp(m_{t+1} + rx_{n,t+1} + r_{f,t})]\\
+\implies
+0 &= E_t[m_{t+1} + rx_{n,t+1} + r_{f,t}] + \frac{1}{2}Var_t[m_{t+1} + rx_{n,t+1} + r_{f,t}]\\
+  &= E_t[m_{t+1}] + E_t[rx_{n,t+1}] + E_t[r_{f,t}] \\&+ \frac{1}{2}Var_t[m_{t+1}] + \frac{1}{2}Var_t[rx_{n,t+1}] + \frac{1}{2}Var_t[r_{f,t}] \\&+ Cov_t[m_{t+1}, rx_{n, t+1}] + Cov_t[m_{t+1}, r_{f, t}] + Cov_t[r_{f, t}, rx_{n, t+1}]
+\end{align*}
+
+$r_{f,t}$ is known, so $Var_t[r_{f,t}] = Cov_t[m_{t+1}, r_{f, t}] = Cov_t[r_{f, t}, rx_{n, t+1}]=0$ and $E_t[m_{t+1}] + \frac{1}{2} Var_t[m_{t+1}] = - r_{f,t} = -E_t[r_{f,t}]$, so
 
 
+\begin{align*}
+0 &= E_t[rx_{n,t+1}] + \frac{1}{2}Var_t[rx_{n,t+1}] + Cov_t[m_{t+1}, rx_{n, t+1}] \\
+\implies
+E_t[rx_{n,t+1}] + \frac{1}{2}Var_t[rx_{n,t+1}] 
+&= - Cov_t[m_{t+1}, rx_{n, t+1}] \\
+&= - Cov_t[m_{t+1}, -p_{n,t} + p_{n-1,t+1} - y_{t,1}]\\
+&= - Cov_t[m_{t+1}, p_{n-1,t+1}]\\
+&= - Cov_t[m_0 + m_x x_t + m_\sigma \sigma_t^2 - \lambda_c \sigma_t \eta_{t+1} - \lambda_x \varphi_e \sigma_t e_{t+1} - \lambda_w \sigma_w w_{t+1},\\& - B_{0, n-1} - B_{x,n-1} x_{t+1} - B_{\sigma,n-1} \sigma_{t+1}^2] \\
+&= -Cov_t[ \lambda_c \sigma_t \eta_{t+1} + \lambda_x \varphi_e \sigma_t e_{t+1} + \lambda_w \sigma_w w_{t+1},
+B_{x,n-1} \varphi_e \sigma_t e_{t+1} + B_{\sigma,n-1} \nu \sigma_w w_{t+1}] \\
+&= \underbrace{-\lambda_w B_{\sigma,n-1} \nu \sigma_w^2}_{\equiv r_{n,0}} + \underbrace{-\lambda_x B_{x,n-1} \varphi_e^2}_{\equiv r_{n,1}} \sigma_t^2
+\end{align*}
 
-\bigskip
+$r_{n,1}$ is negative, so the real bond risk premium decreases when uncertainty is high.
+
+\pagebreak
 
 \item Conjecture that price-dividend ratio is linear in expected growth, 
 
@@ -746,7 +771,6 @@ r_{d,t+1}
 &+ \pi_d \sigma_t \eta_{t+1} + \varphi_d  \sigma_t u_{d,t+1} + \kappa_{d,1} H_x \varphi_e \sigma_t e_{t+1} + \kappa_{d,1} H_\sigma \sigma_w w_{t+1}
 \end{align*}
 
-\pagebreak
 
 Furthermore,
 
@@ -769,6 +793,7 @@ E_t[m_{t+1} + r_{d,t+1}] &= m_0 - \log(\kappa_{d,1} + \mu_d - H_\sigma(\kappa_{d
 Var_t[m_{t+1} + r_{d,t+1}] &= [\lambda_c - \pi_d]^2 \sigma_t^2 + [\lambda_x - \kappa_{d,1} H_x \varphi_e]^2 \sigma_t^2 + [\lambda_w - \kappa_{d,1} H_\sigma \sigma_w]^2 + \varphi_d^2 \sigma_t^2
 \end{align*}
 
+\pagebreak
 
 By the Euler equation,
 
@@ -810,7 +835,17 @@ What is the sign of $r_{d,1}$? Under what conditions do market premia go up in h
 
 \bigskip
 
-\underline{Solution:}  ....
+\underline{Solution:}  Similar to the argument in part 4, we can express dividend returns as:
+
+\begin{align*}
+E_t [r_{d,t+1}] + \frac{1}{2} Var_t [r_{d,t+1}] 
+&= - Cov_t(m_{t+1}, r_{d,t+1})\\
+&= - Cov_t(- \lambda_c \sigma_t \eta_{t+1} - \lambda_x \varphi_e \sigma_t e_{t+1} - \lambda_w \sigma_w w_{t+1}, \\& \pi_d \sigma_t \eta_{t+1} + \varphi_d  \sigma_t u_{d,t+1} + \kappa_{d,1} H_x \varphi_e \sigma_t e_{t+1} + \kappa_{d,1} H_\sigma \sigma_w w_{t+1})\\
+&= Cov_t(\lambda_c \sigma_t \eta_{t+1} + \lambda_x \varphi_e \sigma_t e_{t+1} + \lambda_w \sigma_w w_{t+1}, \\& \pi_d \sigma_t \eta_{t+1} + \kappa_{d,1} H_x \varphi_e \sigma_t e_{t+1} + \kappa_{d,1} H_\sigma \sigma_w w_{t+1})\\
+&= \underbrace{\lambda_w \kappa_{d,1}H_{\sigma} \sigma_w^2}_{\equiv r_{d,0}} + \underbrace{[\lambda_c \pi_d + \lambda_x \kappa_{d,1} H_x]}_{\equiv r_{d,1}} \sigma_t^2 
+\end{align*}
+
+$r_{d,1}$ is positive, so risk-premia in the market premia increases when volatility increases.
 
 \bigskip
 
@@ -826,7 +861,9 @@ Calibration and Asset-Pricing Implications:
 
 \bigskip
 
-\underline{Solution:}  ...
+\underline{Solution:}  The output from the original:
+
+\includegraphics[scale = 0.75]{output_p4_q1}
 
 \bigskip
 
