@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  28 MAR 2022 17:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  28 MAR 2022 22:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -633,17 +633,49 @@ Overfull \hbox (63.99608pt too wide) detected at line 740
  []
 
 [14] [15]
-Overfull \hbox (32.24469pt too wide) detected at line 817
+Overfull \hbox (36.13359pt too wide) detected at line 817
 []
  []
 
 [16]
-<output_p4_q1.png, id=123, 517.935pt x 38.1425pt>
-File: output_p4_q1.png Graphic file (type png)
-<use output_p4_q1.png>
-Package pdftex.def Info: output_p4_q1.png  used on input line 866.
-(pdftex.def)             Requested size: 388.45029pt x 28.6068pt.
- [17 <./output_p4_q1.png>] [18] (./writeup.aux)
+<p4_output_1.png, id=123, 499.8675pt x 33.12375pt>
+File: p4_output_1.png Graphic file (type png)
+<use p4_output_1.png>
+Package pdftex.def Info: p4_output_1.png  used on input line 867.
+(pdftex.def)             Requested size: 374.8997pt x 24.84274pt.
+<p4_output_2.png, id=125, 391.4625pt x 72.27pt>
+File: p4_output_2.png Graphic file (type png)
+<use p4_output_2.png>
+Package pdftex.def Info: p4_output_2.png  used on input line 877.
+(pdftex.def)             Requested size: 293.59615pt x 54.20235pt.
+ [17 <./p4_output_1.png> <./p4_output_2.png>]
+<p4_output_4.png, id=140, 562.2606pt x 421.575pt>
+File: p4_output_4.png Graphic file (type png)
+<use p4_output_4.png>
+Package pdftex.def Info: p4_output_4.png  used on input line 895.
+(pdftex.def)             Requested size: 421.69441pt x 316.18047pt.
+<p4_output_5.png, id=141, 372.39125pt x 52.195pt>
+File: p4_output_5.png Graphic file (type png)
+<use p4_output_5.png>
+Package pdftex.def Info: p4_output_5.png  used on input line 905.
+(pdftex.def)             Requested size: 279.29274pt x 39.14615pt.
+<p4_output_6a.png, id=142, 483.8075pt x 71.26625pt>
+File: p4_output_6a.png Graphic file (type png)
+<use p4_output_6a.png>
+Package pdftex.def Info: p4_output_6a.png  used on input line 915.
+(pdftex.def)             Requested size: 362.85474pt x 53.44954pt.
+ [18 <./p4_output_4.png (PNG copy)> <./p4_output_5.png> <./p4_output_6a.png>]
+<p4_output_6b.png, id=152, 480.79625pt x 72.27pt>
+File: p4_output_6b.png Graphic file (type png)
+<use p4_output_6b.png>
+Package pdftex.def Info: p4_output_6b.png  used on input line 921.
+(pdftex.def)             Requested size: 360.59628pt x 54.20235pt.
+<p4_output_7.png, id=153, 525.965pt x 55.20625pt>
+File: p4_output_7.png Graphic file (type png)
+<use p4_output_7.png>
+Package pdftex.def Info: p4_output_7.png  used on input line 931.
+(pdftex.def)             Requested size: 394.47276pt x 41.40457pt.
+ [19 <./p4_output_6b.png> <./p4_output_7.png>] (./writeup.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -651,13 +683,13 @@ Package rerunfilecheck Info: File `writeup.out' has not changed.
 (rerunfilecheck)             Checksum: BAAC522DC123F596E7096F7DB49A72AF;676.
  ) 
 Here is how much of TeX's memory you used:
- 12035 strings out of 478994
- 172806 string characters out of 5858184
+ 12078 strings out of 478994
+ 173564 string characters out of 5858184
  509651 words of memory out of 5000000
- 29272 multiletter control sequences out of 15000+600000
+ 29314 multiletter control sequences out of 15000+600000
  411527 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,19n,74p,1976b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,19n,74p,1976b,466s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -679,10 +711,10 @@ dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2021/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2021/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2021/texmf-dist
 /fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on writeup.pdf (18 pages, 285308 bytes).
+Output written on writeup.pdf (19 pages, 336509 bytes).
 PDF statistics:
- 226 PDF objects out of 1000 (max. 8388607)
- 182 compressed objects within 2 object streams
- 49 named destinations out of 1000 (max. 500000)
- 38 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 242 PDF objects out of 1000 (max. 8388607)
+ 186 compressed objects within 2 object streams
+ 50 named destinations out of 1000 (max. 500000)
+ 68 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -776,21 +776,21 @@ Furthermore,
 
 \begin{align*}
 m_{t+1} + r_{d,t+1} 
-&= m_0 + m_x x_t + m_\sigma \sigma_t^2 - \lambda_c \sigma_t \eta_{t+1} - \lambda_x \sigma_t e_{t+1} - \lambda_w w_{t+1} \\
+&= m_0 + m_x x_t + m_\sigma \sigma_t^2 - \lambda_c \sigma_t \eta_{t+1} - \lambda_x\varphi_e \sigma_t e_{t+1} - \lambda_w\sigma_w w_{t+1} \\
 &-\log(k_{d,1}) + \mu_d - H_\sigma (\kappa_{d,1} \nu - 1) \sigma_0^2 + (H_x(\kappa_{d,t} \rho - 1) + \phi) x_t + H_\sigma(\kappa_{d,1} \nu - 1) \sigma_t^2 \\
 &+ \pi_d \sigma_t \eta_{t+1} + \varphi_d  \sigma_t u_{d,t+1} + \kappa_{d,1} H_x \varphi_e \sigma_t e_{t+1} + \kappa_{d,1} H_\sigma \sigma_w w_{t+1} \\
 &= m_0 - \log(\kappa_{d,1}) + \mu_d - H_\sigma(\kappa_{d,1}\nu - 1) \sigma_0^2 \\
 &+ (m_x + H_x (\kappa_{d,1} \rho - 1) + \phi) x_t +[m_\sigma + H_\sigma(\kappa_{d,1} \nu - 1)] \sigma_t^2 \\
-&- [\lambda_c - \pi_d]\sigma_t \eta_{t+1} - [\lambda_x - \kappa_{d,1} H_x \varphi_e] \sigma_t e_{t+1} \\
-&- [\lambda_w - \kappa_{d,1} H_\sigma \sigma_w]w_{t+1} + \varphi_d \sigma_t u_{d,t+1}
+&- [\lambda_c - \pi_d]\sigma_t \eta_{t+1} - [\lambda_x\varphi_e - \kappa_{d,1} H_x \varphi_e] \sigma_t e_{t+1} \\
+&- [\lambda_w\sigma_w - \kappa_{d,1} H_\sigma \sigma_w]w_{t+1} + \varphi_d \sigma_t u_{d,t+1}
 \end{align*}
 
 The expected value and variance are
 
 \begin{align*}
-E_t[m_{t+1} + r_{d,t+1}] &= m_0 - \log(\kappa_{d,1} + \mu_d - H_\sigma(\kappa_{d,1} \nu - 1) \sigma^2_0 + (m_x + H_x (\kappa_{d,1} \rho - 1) + \phi) x_t \\
+E_t[m_{t+1} + r_{d,t+1}] &= m_0 - \log(\kappa_{d,1}) + \mu_d - H_\sigma(\kappa_{d,1} \nu - 1) \sigma^2_0 + (m_x + H_x (\kappa_{d,1} \rho - 1) + \phi) x_t \\
 &+ [m_\sigma + H-\sigma(\kappa_1 \nu - 1)] \sigma_t^2\\
-Var_t[m_{t+1} + r_{d,t+1}] &= [\lambda_c - \pi_d]^2 \sigma_t^2 + [\lambda_x - \kappa_{d,1} H_x \varphi_e]^2 \sigma_t^2 + [\lambda_w - \kappa_{d,1} H_\sigma \sigma_w]^2 + \varphi_d^2 \sigma_t^2
+Var_t[m_{t+1} + r_{d,t+1}] &= [\lambda_c - \pi_d]^2 \sigma_t^2 + [\lambda_x\varphi_e - \kappa_{d,1} H_x \varphi_e]^2 \sigma_t^2 + [\lambda_w\sigma_w - \kappa_{d,1} H_\sigma \sigma_w]^2 + \varphi_d^2 \sigma_t^2
 \end{align*}
 
 \pagebreak
@@ -802,17 +802,17 @@ By the Euler equation,
 \implies 
 0 &= E[m_{t+1} + r_{d,t+1}] + \frac{1}{2}Var_t[m_{t+1} + r_{d,t+1}] \\
 \implies 
-0 &= \Bigg[m_0 - \log(\kappa_{d,1} + \mu_d - H_\sigma(\kappa_{d,1} \nu - 1) \sigma^2_0 + (m_x + H_x (\kappa_{d,1} \rho - 1) + \phi) x_t + [m_\sigma + H-\sigma(\kappa_1 \nu - 1)] \sigma_t^2\Bigg] \\
-&+ \frac{1}{2}\Bigg[[\lambda_c - \pi_d]^2 \sigma_t^2 + [\lambda_x - \kappa_{d,1} H_x \varphi_e]^2 \sigma_t^2 + [\lambda_w - \kappa_{d,1} H_\sigma \sigma_w]^2 + \varphi_d^2 \sigma_t^2\Bigg] \\
+0 &= \Bigg[m_0 - \log(\kappa_{d,1}) + \mu_d - H_\sigma(\kappa_{d,1} \nu - 1) \sigma^2_0 + (m_x + H_x (\kappa_{d,1} \rho - 1) + \phi) x_t + [m_\sigma + H-\sigma(\kappa_1 \nu - 1)] \sigma_t^2\Bigg] \\
+&+ \frac{1}{2}\Bigg[[\lambda_c - \pi_d]^2 \sigma_t^2 + [\lambda_x\varphi_e - \kappa_{d,1} H_x \varphi_e]^2 \sigma_t^2 + [\lambda_w\sigma_w - \kappa_{d,1} H_\sigma \sigma_w]^2 + \varphi_d^2 \sigma_t^2\Bigg] \\
 \implies
-0 &= [m_0 - \log(\kappa_{d,1} + \mu_d - H_\sigma(\kappa_{d,1}\nu - 1)\sigma_0^2 + \frac{1}{2}[\lambda_w - \kappa_{d,1} H_\sigma \sigma_w]^2]\\
+0 &= [m_0 - \log(\kappa_{d,1}) + \mu_d - H_\sigma(\kappa_{d,1}\nu - 1)\sigma_0^2 + \frac{1}{2}[\lambda_w\sigma_w - \kappa_{d,1} H_\sigma \sigma_w]^2]\\
 &+ [m_x + H_w (\kappa_{d,1} \rho - 1) + \phi] x_t \\
-&+ [m_\sigma + H_\sigma(\kappa_{d,1} \nu - 1) + (\lambda_c - \pi_d)^2 + (\lambda_x - \kappa_{d,1} H_x \varphi_e)^2 + \varphi_d^2]\sigma_t^2 \\
+&+ [m_\sigma + H_\sigma(\kappa_{d,1} \nu - 1) + (\lambda_c - \pi_d)^2 + (\lambda_x\varphi_e - \kappa_{d,1} H_x \varphi_e)^2 + \varphi_d^2]\sigma_t^2 \\
 \implies &
 \begin{cases}
-0 &= m_0 - \log(\kappa_{d,1} + \mu_d - H_\sigma(\kappa_{d,1}\nu - 1)\sigma_0^2 + \frac{1}{2}[\lambda_w - \kappa_{d,1} H_\sigma \sigma_w]^2 \\
+0 &= m_0 - \log(\kappa_{d,1}) + \mu_d - H_\sigma(\kappa_{d,1}\nu - 1)\sigma_0^2 + \frac{1}{2}[\lambda_w\sigma_w - \kappa_{d,1} H_\sigma \sigma_w]^2 \\
 0 &= m_x + H_w (\kappa_{d,1} \rho - 1) + \phi\\
-0 &= m_\sigma + H_\sigma(\kappa_{d,1} \nu - 1) + \frac{1}{2}(\lambda_c - \pi_d)^2 + \frac{1}{2}(\lambda_x - \kappa_{d,1} H_x \varphi_e)^2 + \frac{1}{2}\varphi_d^2
+0 &= m_\sigma + H_\sigma(\kappa_{d,1} \nu - 1) + \frac{1}{2}(\lambda_c - \pi_d)^2 + \frac{1}{2}(\lambda_x\varphi_e - \kappa_{d,1} H_x \varphi_e)^2 + \frac{1}{2}\varphi_d^2
 \end{cases}
 \end{align*}
 
@@ -820,7 +820,8 @@ Three equations in three unknowns $(\kappa_{d,1}, H_x, H_\sigma)$.  We can expre
 
 \begin{align*}
 H_x &= \frac{m_x + \phi}{1 - \kappa_1 \rho}\\
-H_\sigma &= \frac{m_\sigma + \frac{1}{2}[(\lambda_c - \pi_d)^2 + (\lambda_x - \kappa_{d,1} H_x \varphi_e)^2 + \varphi_d^2]}{1 - \kappa_{d,1}\nu}
+H_\sigma &= \frac{m_\sigma + \frac{1}{2}[(\lambda_c - \pi_d)^2 + (\lambda_x\varphi_e - \kappa_{d,1} H_x \varphi_e)^2 + \varphi_d^2]}{1 - \kappa_{d,1}\nu}\\
+\kappa_{d,1}^{(n)}  &= \exp(m_0+ \mu_d - H_\sigma^{(n-1)}(\kappa_{d,1}^{(n-1)}\nu - 1)\sigma_0^2 + \frac{1}{2}[\lambda_w\sigma_w - \kappa_{d,1}^{(n-1)} H_\sigma^{(n-1)} \sigma_w]^2)
 \end{align*}
 
 \bigskip
@@ -861,9 +862,9 @@ Calibration and Asset-Pricing Implications:
 
 \bigskip
 
-\underline{Solution:}  The output from the original:
+\underline{Solution:}  The output from the original Matlab file (with $\sigma_w = 0.0000028$):
 
-\includegraphics[scale = 0.75]{output_p4_q1}
+\includegraphics[scale = 0.75]{p4_output_1}
 
 \bigskip
 
@@ -871,7 +872,9 @@ Calibration and Asset-Pricing Implications:
 
 \bigskip
 
-\underline{Solution:}  ...
+\underline{Solution:}  The average conditional volatility of the stochastic discount factor and decomposition:
+
+\includegraphics[scale = 0.75]{p4_output_2}
 
 \bigskip
 
@@ -879,15 +882,17 @@ Calibration and Asset-Pricing Implications:
 
 \bigskip
 
-\underline{Solution:}  ...
+\underline{Solution:}  See \texttt{p4\_lrr.m}.
 
-\bigskip
+\pagebreak
 
 \item  What are the model implications for the levels of the risk-free rates from 1 month to 5 years in maturity?
 
 \bigskip
 
-\underline{Solution:} ...
+\underline{Solution:} The yield curve is below:
+
+\includegraphics[scale = 0.75]{p4_output_4}
 
 \bigskip
 
@@ -895,7 +900,9 @@ Calibration and Asset-Pricing Implications:
 
 \bigskip
 
-\underline{Solution:} ...
+\underline{Solution:} The average log price-consumption and log price-dividend ratios are below along with market pd ratio from data:
+
+\includegraphics[scale = 0.75]{p4_output_5}
 
 \bigskip
 
@@ -903,15 +910,25 @@ Calibration and Asset-Pricing Implications:
 
 \bigskip
 
-\underline{Solution:}  ...
+\underline{Solution:}  The average equity premium on the consumption asset with decomposition is below:
+
+\includegraphics[scale = 0.75]{p4_output_6a}
+
+\pagebreak
+
+The average equity premium on the dividend-paying asset with decomposition is below:
+
+\includegraphics[scale = 0.75]{p4_output_6b}
 
 \bigskip
 
-\item  What is the volatility of equity returns and risk-free rates in the model? How do they compare to the data?
+\item  What is the volatility of equity returns and risk-free rates in the model?
 
 \bigskip
 
-\underline{Solution:} ...
+\underline{Solution:} 
+
+\includegraphics[scale = 0.75]{p4_output_7}
 
 \bigskip
 
@@ -919,7 +936,7 @@ Calibration and Asset-Pricing Implications:
 
 \bigskip
 
-\underline{Solution:}  ...
+\underline{Solution:}  This model seems to solve equity premium, risk-free rate, and return volatility puzzles pretty well.  In the data, the average stock return in excess of Treasury is about 5 percent, the risk-free rate is about 1 percent, and the volatility of equity returns is about 15-20 percent.  In the model, we have an average equity premium on the dividend-paying asset of about 7 percent, low risk-free rates with low volatility, and volatility of equity premium on dividend-paying asset of about 10 percent. We could play around with parameters to try to boost the volatility of the equity premium on the dividend-paying asset to get it higher.
 
 \end{enumerate}
 
