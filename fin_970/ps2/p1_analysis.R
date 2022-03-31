@@ -45,3 +45,8 @@ stargazer(r_1_lm, r_2_lm, r_3_lm, r_4_lm, r_5_lm,
           omit.stat = c("f", "ser", "adj.rsq"),
           title = "Market Returns")
 sink()
+
+# for comparison in part 4
+mean(data$pd)
+
+
