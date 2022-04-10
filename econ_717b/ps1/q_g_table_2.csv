@@ -1,0 +1,6 @@
+description,truth,data,mle,simulation
+Fraction choosing occupation 1,0.606,0.609,0.616,0.612
+Average observed W1,3.837,3.881,3.867,3.937
+Average observed W2,4.191,4.228,4.21,4.241
+Std of observed W1,1.485,1.475,1.502,1.501
+Std of observed W2,1.808,1.737,1.816,1.799
