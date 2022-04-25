@@ -1,0 +1,119 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{bbm}
+\usepackage{placeins}
+\usepackage{verbatim}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\setlength{\parindent}{0cm}
+\geometry{margin = 1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+\newcommand{\one}{\mathbbm{1}}
+
+\newtoggle{extended}
+\settoggle{extended}{false}
+
+\title{FIN 970: Final Exam}
+\author{Alex von Hafften}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem 1a}
+
+\begin{enumerate}
+
+\item Using SDF approach:
+
+Conjecture $P_t^n = \exp(A_n + B_n'X_t)$. Proof by induction.
+
+For $n=0$,
+
+\begin{align*}
+P_t^1 
+&= 
+E_t[M_{t+1} \cdot 1]\\
+\implies\exp(A_1 + B_1'X_t) 
+&= 
+E_t \Bigg[ \exp \Bigg(-\delta_0 - \delta_1 X_t - \frac{1}{2} \lambda_t'\lambda_t - \lambda_t' \varepsilon_{t+1}\Bigg) \Bigg]\\
+\implies E_t \Bigg[ -\delta_0 - \delta_1 X_t - \frac{1}{2} \lambda_t'\lambda_t - \lambda_t' \varepsilon_{t+1} \Bigg]
+&= -\delta_0 -\delta_1 X_t - \frac{1}{2}\lambda_t'\lambda_t \\
+Var_t\Bigg[ -\delta_0 - \delta_1 X_t - \frac{1}{2} \lambda_t'\lambda_t - \lambda_t' \varepsilon_{t+1} \Bigg]
+&= \lambda_t'\lambda_t\\
+\implies
+\exp(A_1 + B_1'X_t) 
+&= 
+\exp \Bigg(-\delta_0 - \delta_1 X_t\Bigg) \\
+\implies
+\begin{cases}
+A_1 = -\delta_0\\
+B_1 = -\delta_1'
+\end{cases}
+\end{align*}
+
+
+For some $n$, the Euler equation holds:
+
+\begin{align*}
+P_t^n &= E_t[M_{t+1} P_{t+1}^{n-1}]\\
+\exp(A_{n} + B_{n}'X_{t})
+&= E_t \Bigg[\exp \Bigg(-r_t - \frac{1}{2} \lambda_t'\lambda_t - \lambda_t' \varepsilon_{t+1}\Bigg) \exp(A_{n-1} + B_{n-1}'X_{t+1})\Bigg]\\
+&= E_t \Bigg[\exp \Bigg(-\delta_0 - \delta_1 X_t - \frac{1}{2} \lambda_t'\lambda_t - \lambda_t' \varepsilon_{t+1} + A_{n-1} + B_{n-1}'(\mu + \Phi X_t + \Sigma \varepsilon_{t+1} ) \Bigg)\Bigg]\\
+&= E_t \Bigg[\exp \Bigg(-\delta_0 - \delta_1 X_t - \frac{1}{2} \lambda_t'\lambda_t  + A_{n-1} + B_{n-1}'\mu + B_{n-1}'\Phi X_t + [B_{n-1}'\Sigma - \lambda_t'] \varepsilon_{t+1}  \Bigg)\Bigg]
+\end{align*}
+
+\begin{align*}
+& E_t \Bigg[-\delta_0 - \delta_1 X_t - \frac{1}{2} \lambda_t'\lambda_t  + A_{n-1} + B_{n-1}'\mu + B_{n-1}'\Phi X_t + [B_{n-1}'\Sigma - \lambda_t'] \varepsilon_{t+1}  \Bigg] \\
+&=  -\delta_0 - \delta_1 X_t - \frac{1}{2} \lambda_t'\lambda_t  + A_{n-1} + B_{n-1}'\mu + B_{n-1}'\Phi X_t\\
+& Var_t\Bigg[-\delta_0 - \delta_1 X_t - \frac{1}{2} \lambda_t'\lambda_t  + A_{n-1} + B_{n-1}'\mu + B_{n-1}'\Phi X_t + [B_{n-1}'\Sigma - \lambda_t'] \varepsilon_{t+1}  \Bigg] \\
+&= [B_{n-1}'\Sigma - \lambda_t'][B_{n-1}'\Sigma - \lambda_t']'\\
+&= B_{n-1}'\Sigma \Sigma' B_{n-1} + \lambda_t' \lambda_t - 2 B_{n-1}'\Sigma \lambda_t
+\end{align*}
+
+\begin{align*}
+\exp(A_{n} + B_{n}'X_{t})
+&= \exp\Bigg(-\delta_0 - \delta_1 X_t - \frac{1}{2} \lambda_t'\lambda_t  + A_{n-1} + B_{n-1}'\mu + B_{n-1}'\Phi X_t \\&+ \frac{1}{2} B_{n-1}'\Sigma \Sigma' B_{n-1} + \frac{1}{2}\lambda_t' \lambda_t - B_n'\Sigma (\lambda_0 + \lambda_1 X_t) \Bigg)\\
+&= \exp\Bigg(-\delta_0   + A_{n-1} + B_{n-1}'\mu - B_{n-1}'\Sigma \lambda_0 + \frac{1}{2} B_{n-1}'\Sigma \Sigma' B_{n-1}+ (- \delta_1  + B_{n-1}'\Phi - B_{n-1}'\Sigma \lambda_1 )X_t  ) \Bigg)\\
+\implies
+&
+\begin{cases}
+A_n = - \delta_0 + A_{n-1} + B_{n-1}'(\mu - \Sigma \lambda_0) + \frac{1}{2} B_{n-1}'\Sigma \Sigma' B_{n-1}\\
+B_n = - \delta_1  + (\Phi - \Sigma \lambda_1)' B_{n-1}
+\end{cases}
+\end{align*}
+
+
+\end{enumerate}
+
+
+\end{document}
