@@ -81,7 +81,6 @@ B_1 = -\delta_1'
 \end{cases}
 \end{align*}
 
-
 For some $n$, the Euler equation holds:
 
 \begin{align*}
@@ -112,6 +111,63 @@ B_n = - \delta_1  + (\Phi - \Sigma \lambda_1)' B_{n-1}
 \end{cases}
 \end{align*}
 
+\item Conjecture $P_t^n = \exp(C_n + D_n'X_t)$. Proof by induction.
+
+For $n=0$,
+
+\begin{align*}
+P_t^1 
+&= 
+e^{-r_t}E_t^Q[1]\\
+\exp(C_1 + D_1'X_t) 
+&= 
+\exp (-\delta_0 - \delta_1 X_t) \\
+\implies&
+\begin{cases}
+C_1 = -\delta_0\\
+D_1 = -\delta_1'
+\end{cases}
+\end{align*}
+
+For some $n$, the Euler equation holds:
+
+\begin{align*}
+P_t^n 
+&= e^{-r_t} E_t^Q [P_{t+1}^{n-1}]\\
+\exp(C_n + D_n'X_t)
+&= e^{-r_t} E_t^Q [\exp(C_{n-1} + D_{n-1}'X_{t+1})]\\
+&= e^{-r_t} E_t^Q [\exp(C_{n-1} + D_{n-1}'(\mu^Q + \Phi^Q X_t + \Sigma \varepsilon_{t+1}^Q))]\\
+&= e^{-r_t} E_t^Q [\exp(C_{n-1} + D_{n-1}'\mu^Q + D_{n-1}'\Phi^Q X_t + D_{n-1}'\Sigma \varepsilon_{t+1}^Q)]
+\end{align*}
+
+\begin{align*}
+E_t^Q[C_{n-1} + D_{n-1}'\mu^Q + D_{n-1}'\Phi^Q X_t + D_{n-1}'\Sigma \varepsilon_{t+1}^Q] 
+&= E_t[C_{n-1} + D_{n-1}'\mu^Q + D_{n-1}'\Phi^Q X_t]\\
+Var_t^Q [C_{n-1} + D_{n-1}'\mu^Q + D_{n-1}'\Phi^Q X_t + D_{n-1}'\Sigma \varepsilon_{t+1}^Q]
+&= D'_{n-1} \Sigma \Sigma' D_{n-1}
+\end{align*}
+
+\begin{align*}
+\exp(C_n + D_n'X_t)
+&=  \exp \Bigg(-\delta_0 - \delta_1 X_t + C_{n-1} + D_{n-1}'\mu^Q + D_{n-1}'\Phi^Q X_t + \frac{1}{2} D'_{n-1} \Sigma \Sigma' D_{n-1} \Bigg)\\
+& \begin{cases}
+C_n = -\delta_0  + C_{n-1} + D_{n-1}'\mu^Q  + \frac{1}{2} D'_{n-1} \Sigma \Sigma' D_{n-1}\\
+D_n = - \delta_1' + \Phi^{Q'} D_{n-1}
+\end{cases}
+\end{align*}
+
+\item Show that this is a one-to-one mapping between the risk-neutral parameters $(\mu^Q,  \Phi^Q)$ and the market prices of risk $(\lambda_0, \lambda_1)$.
+
+\bigskip
+
+Clearly, parts (1) and (2) are equivalent iff
+
+\begin{align*}
+\mu^Q &= \mu - \Sigma \lambda_0  \iff \lambda_0 = \Sigma^{-1}(\mu - \mu^Q)\\
+\Phi^Q &= \Phi - \Sigma \lambda_1 \iff \lambda_1 = \Sigma^{-1}(\Phi - \Phi^Q)
+\end{align*}
+
+with $A_n = C_n$ and $B_n = D_n$. Thus, we can go back and forth from SDF to risk-neutral densities to price bonds of any maturity.
 
 \end{enumerate}
 
