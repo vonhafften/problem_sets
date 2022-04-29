@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Introduction}{1}{0}{1}
+\beamer@sectionintoc {2}{Simplified Model}{5}{0}{2}
+\beamer@sectionintoc {3}{Other Findings}{14}{0}{3}
+\beamer@sectionintoc {4}{Conclusion and Discussion}{18}{0}{4}
