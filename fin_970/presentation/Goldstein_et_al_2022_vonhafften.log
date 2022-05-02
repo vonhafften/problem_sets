@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  29 APR 2022 14:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  2 MAY 2022 09:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -977,7 +977,7 @@ File: ts1cmss.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 ]
 [4
 
-] (./Goldstein_et_al_2022_vonhafften.toc) [5
+] [5
 
 ] [6
 
@@ -991,24 +991,143 @@ File: ts1cmss.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 
 ] [11
 
-]
-[12
+] [12
+
+] [13
+
+] [14
+
+] [15
+
+] [16
+
+] [17
+
+] [18
+
+] [19
 
 ]
-<multiple_equilibria.png, id=137, 918.43124pt x 408.52625pt>
+[20
+
+] [21
+
+] [22
+
+] [23
+
+] [24
+
+] [25
+
+] [26
+
+] [27
+
+] (./Goldstein_et_al_2022_vonhafften.toc) [28
+
+] [29
+
+] [30
+
+] [31
+
+] [32
+
+] [33
+
+] [34
+
+] [35
+
+] [36
+
+] [37
+
+] [38
+
+] [39
+
+] [40
+
+] [41
+
+] [42
+
+]
+[43
+
+] [44
+
+] [45
+
+] [46
+
+] [47
+
+] [48
+
+] [49
+
+] [50
+
+] [51
+
+] [52
+
+] [53
+
+] [54
+
+] [55
+
+] [56
+
+] [57
+
+]
+[58
+
+] [59
+
+] [60
+
+] [61
+
+] [62
+
+] [63
+
+]
+<multiple_equilibria.png, id=1724, 918.43124pt x 408.52625pt>
 File: multiple_equilibria.png Graphic file (type png)
 <use multiple_equilibria.png>
 Package pdftex.def Info: multiple_equilibria.png  used on input line 298.
 (pdftex.def)             Requested size: 321.45575pt x 142.98633pt.
- [13
+ [64
 
- <./multiple_equilibria.png>] (./Goldstein_et_al_2022_vonhafften.toc)
-[14
+ <./multiple_equilibria.png>]
+(./Goldstein_et_al_2022_vonhafften.toc) [65
 
-] [15
+] [66
+
+] [67
+
+] [68
+
+] [69
+
+] [70
+
+] [71
 
 ]
-<investor_share.png, id=162, 706.64pt x 298.11375pt>
+[72
+
+] [73
+
+]
+<investor_share.png, id=1996, 706.64pt x 298.11375pt>
 File: investor_share.png Graphic file (type png)
 <use investor_share.png>
 Package pdftex.def Info: investor_share.png  used on input line 335.
@@ -1018,26 +1137,74 @@ Overfull \hbox (11.02383pt too wide) in paragraph at lines 335--335
  [] 
  []
 
-[16
+[74
 
  <./investor_share.png>]
-<information.png, id=171, 732.7375pt x 213.79875pt>
+File: investor_share.png Graphic file (type png)
+<use investor_share.png>
+Package pdftex.def Info: investor_share.png  used on input line 335.
+(pdftex.def)             Requested size: 353.31914pt x 149.0565pt.
+
+Overfull \hbox (11.02383pt too wide) in paragraph at lines 335--335
+ [] 
+ []
+
+[75
+
+]
+<information.png, id=2050, 732.7375pt x 213.79875pt>
 File: information.png Graphic file (type png)
 <use information.png>
 Package pdftex.def Info: information.png  used on input line 347.
 (pdftex.def)             Requested size: 329.72884pt x 96.20854pt.
- [17
+ [76
 
  <./information.png>]
-(./Goldstein_et_al_2022_vonhafften.toc) [18
+File: information.png Graphic file (type png)
+<use information.png>
+Package pdftex.def Info: information.png  used on input line 347.
+(pdftex.def)             Requested size: 329.72884pt x 96.20854pt.
+ [77
 
-] [19
+]
+File: information.png Graphic file (type png)
+<use information.png>
+Package pdftex.def Info: information.png  used on input line 347.
+(pdftex.def)             Requested size: 329.72884pt x 96.20854pt.
+ [78
 
-] [20
+] (./Goldstein_et_al_2022_vonhafften.toc) [79
 
-] [21
+] [80
 
-] [22
+] [81
+
+] [82
+
+] [83
+
+] [84
+
+] [85
+
+] [86
+
+] [87
+
+] [88
+
+] [89
+
+] [90
+
+] [91
+
+] [92
+
+] [93
+
+]
+[94
 
 ]
 \tf@nav=\write6
@@ -1049,17 +1216,16 @@ Package pdftex.def Info: information.png  used on input line 347.
 \tf@snm=\write8
 \openout8 = `Goldstein_et_al_2022_vonhafften.snm'.
 
-
-(./Goldstein_et_al_2022_vonhafften.aux)
+ (./Goldstein_et_al_2022_vonhafften.aux)
 Package rerunfilecheck Info: File `Goldstein_et_al_2022_vonhafften.out' has not
  changed.
 (rerunfilecheck)             Checksum: 962BD6DC695F4FF42190E6D531E6D22C;519.
  ) 
 Here is how much of TeX's memory you used:
- 20775 strings out of 478994
- 387748 string characters out of 5858184
- 678516 words of memory out of 5000000
- 37748 multiletter control sequences out of 15000+600000
+ 20927 strings out of 478994
+ 389330 string characters out of 5858184
+ 683471 words of memory out of 5000000
+ 37756 multiletter control sequences out of 15000+600000
  415030 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  131i,18n,132p,454b,644s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1083,11 +1249,11 @@ xlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texl
 ive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texliv
 e/2021/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/local/tex
 live/2021/texmf-dist/fonts/type1/public/cm-super/sfss1000.pfb>
-Output written on Goldstein_et_al_2022_vonhafften.pdf (22 pages, 475959 bytes).
+Output written on Goldstein_et_al_2022_vonhafften.pdf (94 pages, 681800 bytes).
 
 PDF statistics:
- 289 PDF objects out of 1000 (max. 8388607)
- 227 compressed objects within 3 object streams
- 49 named destinations out of 1000 (max. 500000)
+ 2667 PDF objects out of 2984 (max. 8388607)
+ 2510 compressed objects within 26 object streams
+ 193 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
 
