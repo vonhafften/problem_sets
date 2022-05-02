@@ -15,6 +15,7 @@
 \usepackage{bbm}
 \usepackage{placeins}
 \usepackage{verbatim}
+\usepackage{lscape}
 \usepackage{csvsimple}
 \hypersetup{
 	colorlinks,
@@ -183,28 +184,80 @@ Using the uniform distribution, defiers are 0 percent, always takers are 50 perc
 
 \item Compute ATE
 
-...
+\begin{align*}
+ATE 
+&= E[\Delta]\\
+&= Pr(Type 1) E[\Delta | Type 1] + Pr(Type 2) E[\Delta | Type 2] \\
+&= (0.3) (2) + (0.7) (-1) \\
+&= -0.1
+\end{align*}
 
 \item Compute $Pr(D=1 | Z = 1)$ and $Pr(D=1 | Z = 0)$
 
-...
+\begin{align*}
+Pr(D=1 | Z = 1)
+&= Pr(D=1 | Z = 1, Type 1)Pr(Type 1) + Pr(D=1 | Z = 1, Type 2)Pr(Type 2) \\
+&= P(1+ U_V > 0)(0.3) + P(2+ U_V > 0)(0.7) \\
+&= (1.0)(0.3) + (1.0)(0.7) \\
+&= 1.0
+\end{align*}
+
+\begin{align*}
+Pr(D=1 | Z = 0)
+&= Pr(D=1 | Z = 0, Type 1)Pr(Type 1) + Pr(D=1 | Z = 0, Type 2)Pr(Type 2) \\
+&= P(U_V > 0)(0.3) + P(U_V > 0)(0.7) \\
+&= (0.5)(0.3) + (0.5)(0.7) \\
+&= 0.5
+\end{align*}
+
+\pagebreak
 
 \item Compute LATE
 
-...
+Notice that compliers of both Type 1 and Type 2 have $U_V \in [-1, 0]$
+
+\begin{align*}
+LATE 
+&= E[\Delta | U_V < 0]\\
+&= Pr(Type 1) E[\Delta | U_V < 0, Type 1] + Pr(Type 2) E[\Delta | U_V < 0, Type 2]\\
+&= (0.3)(2.0) + (0.7)(-1.0)\\
+&= -0.1
+\end{align*}
 
 \end{enumerate}
-
 \end{enumerate}
+\begin{landscape}
 
 \section{Monte Carlo Exercises}
 
 \subsection{Question 1}
 
-...
+\begin{enumerate}
+
+\item See \texttt{p2\_q2\_model.do}.
+
+\item See table below.
+
+\item  $z_1$ and $z_2$ are valid instruments because they affect schooling $s$ (i.e. relevance) but they do not affect log wages except through schooling (i.e. exogeneity). $z_3$ is not a valid instrument because it does not affect schooling (i.e., it fails relevance). $z_1$ is likely a weak instrument because its variance is relatively small.
+
+\item See table below.
+
+\input{table_1_p2_q2}
+
+\item The OLS estimate is biased upward for $\beta_2$.  Including just $z_1$ exacerbated the bias likely due it being a weak instrument. Including just $z_2$ reduces the bias and boosts the first stage F-statistic. Including just $z_3$, the results are way off which makes sense because it is not a relevant instrument. Any of the combinations that include $z_2$ do well, but without $z_2$ does poorly. Including all three instruments lowers the F-statistics.  This table suggest that we would want to include just $z_2$ or both $z_1$ and $z_2$.
+
+\pagebreak
+
+\item See table below for $N = 500,000$.
+
+\input{table_2_p2_q2}
+
+\end{enumerate}
 
 \subsection{Question 2}
 
 ...
+
+\end{landscape}
 
 \end{document}
