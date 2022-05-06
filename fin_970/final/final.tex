@@ -49,15 +49,15 @@
 
 \maketitle
 
-\section{Problem 1a}
+\section{Problem 1a: Term Structure and No Arbitrage Models}
 
 \begin{enumerate}
 
-\item Using SDF approach:
+\item Use SDF approach.
 
-Conjecture $P_t^n = \exp(A_n + B_n'X_t)$. Proof by induction.
+\textbf{Solution:} Conjecture $P_t^n = \exp(A_n + B_n'X_t)$. Proof by induction.
 
-For $n=0$,
+For $n=1$,
 
 \begin{align*}
 P_t^1 
@@ -73,7 +73,7 @@ Var_t\Bigg[ -\delta_0 - \delta_1 X_t - \frac{1}{2} \lambda_t'\lambda_t - \lambda
 \implies
 \exp(A_1 + B_1'X_t) 
 &= 
-\exp \Bigg(-\delta_0 - \delta_1 X_t\Bigg) \\
+\exp (-\delta_0 - \delta_1 X_t ) \\
 \implies
 \begin{cases}
 A_1 = -\delta_0\\
@@ -81,7 +81,7 @@ B_1 = -\delta_1'
 \end{cases}
 \end{align*}
 
-For some $n$, the Euler equation holds:
+For some $n>1$, the Euler equation holds:
 
 \begin{align*}
 P_t^n &= E_t[M_{t+1} P_{t+1}^{n-1}]\\
@@ -111,7 +111,9 @@ B_n = - \delta_1  + (\Phi - \Sigma \lambda_1)' B_{n-1}
 \end{cases}
 \end{align*}
 
-\item Conjecture $P_t^n = \exp(C_n + D_n'X_t)$. Proof by induction.
+\item Use risk-neutral density approach.
+
+\textbf{Solution:} Conjecture $P_t^n = \exp(C_n + D_n'X_t)$. Proof by induction.
 
 For $n=0$,
 
@@ -129,7 +131,7 @@ D_1 = -\delta_1'
 \end{cases}
 \end{align*}
 
-For some $n$, the Euler equation holds:
+For some $n>1$, the Euler equation holds:
 
 \begin{align*}
 P_t^n 
@@ -160,7 +162,7 @@ D_n = - \delta_1' + \Phi^{Q'} D_{n-1}
 
 \bigskip
 
-Clearly, parts (1) and (2) are equivalent iff
+\textbf{Solution:} Clearly, parts (1) and (2) are equivalent iff
 
 \begin{align*}
 \mu^Q &= \mu - \Sigma \lambda_0  \iff \lambda_0 = \Sigma^{-1}(\mu - \mu^Q)\\
@@ -171,5 +173,267 @@ with $A_n = C_n$ and $B_n = D_n$. Thus, we can go back and forth from SDF to ris
 
 \end{enumerate}
 
+\pagebreak
+
+\section{Problem 2h}
+
+\begin{enumerate}
+
+\item Conjecture $pc_t$ is linear in state variables. Solve for $pc_t$ and $r_{c,t+1}$. Explain how risk exposures depend on preferences and consumption dynamics.
+
+\bigskip
+
+\textbf{Solutions:} Conjecture that $pc_t = A_0 + A_x x_t$. 
+Using the Campbell-Schiller approximation to log-linearization the consumption return:
+
+\begin{align*}
+R_{C,t+1} 
+&= \frac{P_{C,t+1} + C_{t+1}}{P_{C,t}} \\
+&=  \frac{\frac{P_{C,t+1}}{C_{t+1}} + 1}{\frac{P_{C,t}}{C_t}} \frac{C_{t+1}}{C_{t}}\\
+r_{c,t+1} 
+&= \log(\exp(pc_{t+1}) +1) - pc_t +\Delta c_{t+1} \\
+&\approx \Bigg[\log(\exp(\bar{pc}) +1) + \frac{\exp(\bar{pc})}{\exp(\bar{pc}) + 1} (pc_{t+1} - \bar{pc})\Bigg]- pc_t +\Delta c_{t+1} \\
+&= \underbrace{\log(\exp(\bar{pc}) +1)- \frac{\exp(\bar{pc})}{\exp(\bar{pc}) + 1} \bar{pc}}_{\equiv \kappa_0} + \underbrace{\frac{\exp(\bar{pc})}{\exp(\bar{pc}) + 1}}_{\equiv \kappa_1} pc_{t+1} - pc_t +\Delta c_{t+1} 
+\end{align*}
+
+where $pc_t = \log(P_{C,t}/C_{t})$. Alternatively, we can express the return in terms of the demeaned price-consumption ratio,
+
+\begin{align*}
+r_{c, t+1} 
+&= \kappa_0 + \kappa_1 pc_{t+1} - pc_t + \Delta c_{t+1}\\
+&= -\log \kappa_1 + \kappa_1 \underbrace{\tilde{pc}_{t+1}}_{\equiv pc_{t+1} - \bar{pc}} - \tilde{pc}_t + \Delta c_{t+1}
+\end{align*}
+
+Given the guess for $pc_t$, its unconditional expected value is $\bar{pc} = A_0$, so $\tilde{pc}_t = A_x x_t$. Plugging the dynamics for volatility and consumption:
+
+\begin{align*}
+\tilde{pc}_{t+1} 
+&= A_x x_{t+1} \\
+&= A_x [\rho x_t + \varphi_e \sigma e_{t+1}] \\
+&= A_x \rho x_t  + A_x \varphi_e \sigma e_{t+1}  
+\end{align*}
+
+Plugging into the consumption return:
+
+\begin{align*}
+r_{c, t+1} 
+&= -\log \kappa_1 + \kappa_1 \tilde{pc}_{t+1} - \tilde{pc}_t + \Delta c_{t+1}\\
+&= -\log \kappa_1 + \kappa_1 [A_x \rho x_t  + A_x \varphi_e \sigma e_{t+1} ] - [A_x x_t] + [\mu + x_t + \sigma \varepsilon_{t+1}] \\
+&= [-\log \kappa_1 + \mu] +  [\kappa_1 A_x \rho - A_x + 1] x_t  + \kappa_1 A_x \varphi_e \sigma e_{t+1} + \sigma \varepsilon_{t+1}
+\end{align*}
+
+
+For any asset with return $R_{i,t+1}$, the Euler equation holds and if the return is log-normal:
+
+\begin{align*}
+1 &= E_t[M_{t+1} R_{i,t+1}]\\
+&= E_t[\exp(m_{t+1} + r_{i,t+1})]\\
+&= \exp(E_t[m_{t+1} + r_{i,t+1}] + \frac{1}{2} Var_t[m_{t+1} + r_{i,t+1}])\\
+\implies
+0&= E_t[m_{t+1} + r_{i,t+1}] + \frac{1}{2} Var_t[m_{t+1} + r_{i,t+1}]
+\end{align*}
+
+
+In particular for the consumption assets, the Euler equation holds. 
+
+\begin{align*}
+m_{t+1} + r_{c,t+1} 
+&= \theta \log \delta - \frac{\theta}{\psi} \Delta c_{t+1} + \theta r_{c,t+1}\\
+&= \theta \log \delta - \frac{\theta}{\psi} [\mu + x_t + \sigma \varepsilon_{t+1}] + \theta [(-\log \kappa_1 + \mu) +  (\kappa_1 A_x \rho - A_x + 1) x_t  + \kappa_1 A_x \varphi_e \sigma e_{t+1} + \sigma \varepsilon_{t+1}]\\
+&= 
+\Bigg[\theta \log \delta 
+- \frac{\theta}{\psi} \mu 
++  \theta (-\log \kappa_1 + \mu) \Bigg]
++  \Bigg[\theta(\kappa_1 A_x \rho - A_x + 1) - \frac{\theta}{\psi}\Bigg] x_t  
++ \theta\Bigg[1 - \frac{1}{\psi}  \Bigg]\sigma\varepsilon_{t+1} 
++ \theta\kappa_1 A_x \varphi_e \sigma e_{t+1}
+\end{align*}
+
+The expected value and variance of $m_{t+1} + r_{c,t+1}$ is
+
+\begin{align*}
+E_t[m_{t+1} + r_{c,t+1}] 
+&= \Bigg[\theta \log \delta 
+- \frac{\theta}{\psi} \mu 
++  \theta (-\log \kappa_1 + \mu) \Bigg]
++  \Bigg[\theta(\kappa_1 A_x \rho - A_x + 1) - \frac{\theta}{\psi}\Bigg] x_t \\
+Var_t[m_{t+1} + r_{c,t+1}]
+&= \theta^2 \Bigg[1 - \frac{1}{\psi}  \Bigg]^2\sigma^2 
++ \theta^2 \kappa_1^2 A_x^2 \varphi_e^2 \sigma^2
+\end{align*}
+
+Thus, we can plug the expected value and variance back in:
+
+\begin{align*}
+0&= E_t[m_{t+1} + r_{i,t+1}] + \frac{1}{2} Var_t[m_{t+1} + r_{i,t+1}]\\
+\implies
+0 &= \Bigg[\theta \log \delta 
+- \frac{\theta}{\psi} \mu 
++  \theta (-\log \kappa_1 + \mu) \Bigg]
++  \Bigg[\theta(\kappa_1 A_x \rho - A_x + 1) - \frac{\theta}{\psi}\Bigg] x_t 
++ \frac{1}{2} \theta^2 \Bigg[1 - \frac{1}{\psi}  \Bigg]^2\sigma^2 
++ \frac{1}{2} \theta^2 \kappa_1^2 A_x^2 \varphi_e^2 \sigma^2 \\
+\implies &
+\begin{cases}
+0 &=\Bigg[\theta \log \delta 
+- \frac{\theta}{\psi} \mu 
++  \theta (-\log \kappa_1 + \mu) \Bigg]
++ \frac{1}{2} \theta^2 \Bigg[1 - \frac{1}{\psi}  \Bigg]^2\sigma^2 
++ \frac{1}{2} \theta^2 \kappa_1^2 A_x^2 \varphi_e^2 \sigma^2 \\
+0 &=  \Bigg[\theta(\kappa_1 A_x \rho - A_x + 1) - \frac{\theta}{\psi}\Bigg]
+\end{cases}\\
+\implies
+A_x &= \frac{1 - 1/\psi}{1 - \kappa_1 \rho}
+\end{align*}
+
+
+Thus, asset valuations respond positive to expected growth if 
+
+\begin{align*}
+A_x > 0
+\iff 
+\frac{1 - 1/\psi}{1 - \kappa_1 \rho} > 0 
+\iff
+1 > 1/\psi 
+\iff
+\psi > 1
+\end{align*}
+
+Economically, this parameter restriction means that the substitution effect dominates the wealth effect.
+
+Using the solution for $A_x$, we can express $r_{c,t+1}$ as 
+
+\begin{align*}
+r_{c,t+1} &= [-\log \kappa_1 + \mu] +  [\kappa_1 A_x \rho - A_x + 1] x_t  + \kappa_1 A_x \varphi_e \sigma e_{t+1} + \sigma \varepsilon_{t+1}\\
+&= [-\log \kappa_1 + \mu] +  \frac{1}{\psi} x_t  + \frac{(1-1/\psi)\kappa_1 \varphi_e }{1- \kappa_1 \rho} \sigma e_{t+1} + \sigma \varepsilon_{t+1}\\
+&= r_{c,0} +  \frac{1}{\psi} x_t  + B_x \varphi_e\sigma e_{t+1} + B_c \sigma \varepsilon_{t+1}
+\end{align*}
+
+where $r_{c,0} \equiv -\log \kappa_1 + \mu$, $B_x \equiv \frac{(1-1/\psi)\kappa_1 }{1- \kappa_1 \rho}$, and $B_c \equiv 1$.
+
+\pagebreak
+
+\item Solve for $M_{t+1}$.
+
+\bigskip
+
+\textbf{Solution:} 
+
+\begin{align*}
+m_{t+1} 
+&= \theta \log \delta - \frac{\theta}{\psi} \Delta c_{t+1} + (\theta - 1)r_{c,t+1}\\
+&= \theta \log \delta - \frac{\theta}{\psi} \Bigg[\mu + x_t + \sigma \varepsilon_{t+1} \Bigg] + (\theta - 1)\Bigg[r_{c,0} +  \frac{1}{\psi} x_t  + B_x \varphi_e \sigma e_{t+1} + B_c \sigma \varepsilon_{t+1}\Bigg]\\
+&= \Bigg[\theta \log \delta - \frac{\theta}{\psi} \mu + (\theta - 1) r_{c,0}\Bigg]
++ \Bigg[-\frac{\theta}{\psi} + \frac{\theta - 1}{\psi} \Bigg] x_t
++ (\theta - 1)B_x \varphi_e \sigma e_{t+1}
++ (-\theta/\psi + (\theta - 1)B_c) \sigma \varepsilon_{t+1}\\
+&= m_0 - m_x x_t -\lambda_x \varphi_e \sigma e_{t+1} - \lambda_c \sigma \varepsilon_{t+1}
+\end{align*}
+
+where
+
+\begin{align*}
+m_0 &\equiv \Bigg[\theta \log \delta - \frac{\theta}{\psi} \mu + (\theta - 1) r_{c,0}\Bigg]\\
+m_x &\equiv -1/\psi \\
+\lambda_x 
+&\equiv (1 - \theta) B_x\\
+&= (1 - \theta )\frac{(1-1/\psi)\kappa_1 }{1- \kappa_1 \rho}\\
+\lambda_c 
+&\equiv \theta/\psi - \theta + 1 \\
+&= - \gamma
+\end{align*}
+
+If $\psi > 1 \implies \lambda_x > 0$ and $\lambda_c < 0$ by assumption.
+
+\bigskip
+
+\item Consumption strip at maturity $n = 1$.
+
+\bigskip
+
+\textbf{Solution:}
+
+\begin{align*}
+P_{t,1} &= E_t[M_{t+1} C_{t+1}]\\
+\implies
+\frac{P_{t,1}}{C_t} &= E_t \Bigg[M_{t+1} \frac{C_{t+1}}{C_t} \Bigg]\\
+&= E_t [\exp(m_{t+1} + \Delta c_{t+1} ) ]\\
+&= \exp(E_t [m_{t+1} + \Delta c_{t+1} ] + \frac{1}{2} V_t[m_{t+1} + \Delta c_{t+1} ])\\
+\implies
+pc_{t,1} &= E_t [m_{t+1} + \Delta c_{t+1} ] + \frac{1}{2} V_t[m_{t+1} + \Delta c_{t+1} ] \\
+\implies
+m_{t+1} + \Delta c_{t+1} 
+&= m_0 - m_x x_t -\lambda_x \varphi_e \sigma e_{t+1} - \lambda_c \sigma \varepsilon_{t+1} + \mu + x_t + \sigma \varepsilon_{t+1}\\
+&= m_0 + \mu - (m_x -1)x_t -\lambda_x \varphi_e \sigma e_{t+1} - (\lambda_c - 1) \sigma \varepsilon_{t+1}\\
+\implies
+E_t [m_{t+1} + \Delta c_{t+1} ] 
+&= m_0 + \mu - (m_x -1)x_t \\
+\implies
+V_t [m_{t+1} + \Delta c_{t+1} ]
+&=\lambda_x^2 \varphi_e^2 \sigma^2 + (\lambda_c - 1)^2 \sigma^2 \\
+pc_{t,1} &= m_0 + \mu + (1 - m_x)x_t + \frac{1}{2} \lambda_x^2 \varphi_e^2 \sigma^2 + \frac{1}{2}(\lambda_c - 1)^2 \sigma^2 
+\end{align*}
+
+\pagebreak
+
+\item Solve for the return on the consumption strip and risk premium
+
+\bigskip
+
+\textbf{Solution:} The return on the consumption strip is:
+
+\begin{align*}
+\log r_{t+1,1} 
+&= \Delta c_{t+1} - pc_{t,1} \\
+&= \mu + x_t + \sigma \varepsilon_{t+1} - m_0 - \mu - (1 - m_x)x_t - \frac{1}{2} \lambda_x^2 \varphi_e^2 \sigma^2 - \frac{1}{2}(\lambda_c - 1)^2 \sigma^2\\
+&=  - m_0 + m_x x_t + \sigma \varepsilon_{t+1}  - \frac{1}{2} \lambda_x^2 \varphi_e^2 \sigma^2 - \frac{1}{2}(\lambda_c - 1)^2 \sigma^2
+\end{align*}
+
+The risk premium of the consumption strip is
+
+\begin{align*}
+-Cov_t(r_{t+1, 1}, m_{t+1}) 
+&= -Cov_t(- m_0 + m_x x_t + \sigma \varepsilon_{t+1}  - \frac{1}{2} \lambda_x^2 \varphi_e^2 \sigma^2 - \frac{1}{2}(\lambda_c - 1)^2 \sigma^2, \\& m_0 - m_x x_t -\lambda_x \varphi_e \sigma e_{t+1} - \lambda_c \sigma \varepsilon_{t+1})\\
+&= -Cov_t( \sigma \varepsilon_{t+1}  , -\lambda_x \varphi_e \sigma e_{t+1} - \lambda_c \sigma \varepsilon_{t+1}) \\
+&= \lambda_c \sigma^2 \\
+&= -\gamma \sigma^2
+\end{align*}
+
+The risk premium on the consumption claim is
+
+\begin{align*}
+-Cov_t(r_{c,t+1}, m_{t+1}) 
+&= -Cov_t(r_{c,0} +  \frac{1}{\psi} x_t  + B_x \varphi_e\sigma e_{t+1} + B_c \sigma \varepsilon_{t+1}, m_0 - m_x x_t -\lambda_x \varphi_e \sigma e_{t+1} - \lambda_c \sigma \varepsilon_{t+1})\\
+&= -Cov_t( B_x \varphi_e\sigma e_{t+1} + B_c \sigma \varepsilon_{t+1}, -\lambda_x \varphi_e \sigma e_{t+1} - \lambda_c \sigma \varepsilon_{t+1})\\
+&= B_x\lambda_x \varphi_e^2 \sigma^2 + B_c \lambda_c \sigma^2\\
+&= (1-\theta)B_x^2 \varphi_e^2\sigma^2 -\gamma \sigma^2
+\end{align*}
+
+The consumption strip has a negative risk premium and the consumption claim has a higher risk premium, so this model is inconsistent with the evidence that short-term consumptions strips have higher average excess returns than claim on all future cash-flows.
+
+\begin{align*}
+-Cov_t(r_{t+1, 1}, m_{t+1}) &< -Cov_t(r_{c,t+1}, m_{t+1}) \\
+\iff
+-\gamma \sigma^2 &< (1-\theta)B_x^2 \varphi_e^2\sigma^2 -\gamma \sigma^2\\
+\iff
+0 &< (1-\theta)B_x^2 \varphi_e^2\sigma^2
+\end{align*}
+
+\item Time-varying risk premium on consumption strips.
+
+\bigskip
+
+\textbf{Solution:} No, this model implies a constant risk premium on consumption strips.  We can introduce time-varying volatility $\sigma_t$. With time-varying volatility, the risk premium of the consumption strip would be $-\gamma \sigma_t^2$, which would vary over time.
+
+\end{enumerate}
+
+\pagebreak
+
+\section{Problem 3}
+
+
+\pagebreak
+
+\section{Problem 4}
 
 \end{document}

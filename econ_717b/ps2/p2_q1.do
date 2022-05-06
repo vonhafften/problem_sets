@@ -44,31 +44,31 @@ outreg2 using table_1_p2_q2, tex(frag) replace ctitle(OLS)
 
 ivregress 2sls ln_w (s = z_1)
 estat firststage
-outreg2 using table_1_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1)
+outreg2 using table_1_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1)
 
 ivregress 2sls ln_w (s = z_2)
 estat firststage
-outreg2 using table_1_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_2)
+outreg2 using table_1_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_2)
 
 ivregress 2sls ln_w (s = z_3)
 estat firststage
-outreg2 using table_1_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_3)
+outreg2 using table_1_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_3)
 
 ivregress 2sls ln_w (s = z_1 z_2)
 estat firststage
-outreg2 using table_1_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_2)
+outreg2 using table_1_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_2)
 
 ivregress 2sls ln_w (s = z_2 z_3)
 estat firststage
-outreg2 using table_1_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig))addtext(Instruments, z_2 z_3)
+outreg2 using table_1_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig))addtext(Instruments, z_2 z_3)
 
 ivregress 2sls ln_w (s = z_1 z_3)
 estat firststage
-outreg2 using table_1_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_3)
+outreg2 using table_1_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_3)
 
 ivregress 2sls ln_w (s = z_1 z_2 z_3)
 estat firststage
-outreg2 using table_1_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_2 z_3)
+outreg2 using table_1_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_2 z_3)
 
 **********************************************
 * part e - see write-up
@@ -103,28 +103,28 @@ outreg2 using table_2_p2_q2, tex(frag) replace ctitle(OLS)
 * 2sls
 ivregress 2sls ln_w (s = z_1)
 estat firststage
-outreg2 using table_2_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1)
+outreg2 using table_2_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1)
 
 ivregress 2sls ln_w (s = z_2)
 estat firststage
-outreg2 using table_2_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_2)
+outreg2 using table_2_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_2)
 
 ivregress 2sls ln_w (s = z_3)
 estat firststage
-outreg2 using table_2_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_3)
+outreg2 using table_2_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_3)
 
 ivregress 2sls ln_w (s = z_1 z_2)
 estat firststage
-outreg2 using table_2_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_2)
+outreg2 using table_2_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_2)
 
 ivregress 2sls ln_w (s = z_2 z_3)
 estat firststage
-outreg2 using table_2_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_2 z_3)
+outreg2 using table_2_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_2 z_3)
 
 ivregress 2sls ln_w (s = z_1 z_3)
 estat firststage
-outreg2 using table_2_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_3)
+outreg2 using table_2_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_3)
 
 ivregress 2sls ln_w (s = z_1 z_2 z_3)
 estat firststage
-outreg2 using table_2_p2_q2, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_2 z_3)
+outreg2 using table_2_p2_q1, tex(frag) append ctitle(2SLS) addstat(F-Statistic, r(mineig)) addtext(Instruments, z_1 z_2 z_3)

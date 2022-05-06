@@ -234,7 +234,7 @@ LATE
 
 \begin{enumerate}
 
-\item See \texttt{p2\_q2\_model.do}.
+\item See \texttt{p2\_q1.do}.
 
 \item See table below.
 
@@ -242,7 +242,7 @@ LATE
 
 \item See table below.
 
-\input{table_1_p2_q2}
+\input{table_1_p2_q1}
 
 \item The OLS estimate is biased upward for $\beta_2$.  Including just $z_1$ exacerbated the bias likely due it being a weak instrument. Including just $z_2$ reduces the bias and boosts the first stage F-statistic. Including just $z_3$, the results are way off which makes sense because it is not a relevant instrument. Any of the combinations that include $z_2$ do well, but without $z_2$ does poorly. Including all three instruments lowers the F-statistics.  This table suggest that we would want to include just $z_2$ or both $z_1$ and $z_2$.
 
@@ -250,14 +250,24 @@ LATE
 
 \item See table below for $N = 500,000$.
 
-\input{table_2_p2_q2}
+\input{table_2_p2_q1}
 
 \end{enumerate}
 
+\end{landscape}
+
 \subsection{Question 2}
 
-...
+\begin{enumerate}
 
-\end{landscape}
+\item See \texttt{p2\_q2.jl}
+
+\item ATE is 2.992, ATET is 3.179, ATEU is 2.869, OLS/Naive estimator is 3.397, direct/reduced form/ITT estimator is 2.359, and IV estimator is 2.873.
+
+\item Fraction of compliers is 0.8216.
+
+\item  ATE is 2.995, ATET is 3.275, ATEU is 2.837, OLS/Naive estimator is 3.568, direct/reduced form/ITT estimator is 2.029, and IV estimator is 2.974. Fraction of compliers is 0.6863.
+
+\end{enumerate}
 
 \end{document}
