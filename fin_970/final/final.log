@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  6 MAY 2022 13:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  7 MAY 2022 18:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -624,37 +624,63 @@ Overfull \hbox (57.04745pt too wide) detected at line 112
  []
 
 [2] [3] [4]
-Overfull \hbox (62.28699pt too wide) detected at line 250
+Overfull \hbox (62.28699pt too wide) detected at line 254
 []
  []
 
 
-Overfull \hbox (41.32314pt too wide) detected at line 287
+Overfull \hbox (41.32314pt too wide) detected at line 291
 []
  []
 
 [5]
-Overfull \hbox (17.69623pt too wide) detected at line 331
+Overfull \hbox (17.69623pt too wide) detected at line 335
 []
  []
 
 [6]
-Overfull \hbox (4.61089pt too wide) detected at line 410
+Overfull \hbox (4.61089pt too wide) detected at line 414
 []
  []
 
-[7] [8] [9] (./final.aux)
+[7] [8]
+<p4_1.png, id=76, 481.8pt x 361.35pt>
+File: p4_1.png Graphic file (type png)
+<use p4_1.png>
+Package pdftex.def Info: p4_1.png  used on input line 473.
+(pdftex.def)             Requested size: 361.3491pt x 271.01184pt.
+<p4_2.png, id=78, 481.8pt x 361.35pt>
+File: p4_2.png Graphic file (type png)
+<use p4_2.png>
+Package pdftex.def Info: p4_2.png  used on input line 474.
+(pdftex.def)             Requested size: 361.3491pt x 271.01184pt.
+ [9] [10 <./p4_1.png> <./p4_2.png>] [11]
+Overfull \hbox (5.83122pt too wide) detected at line 551
+[]
+ []
+
+
+Overfull \hbox (31.70155pt too wide) detected at line 562
+[]
+ []
+
+[12]
+Overfull \hbox (57.05133pt too wide) detected at line 623
+[]
+ []
+
+[13] [14] (./final.aux)
 Package rerunfilecheck Info: File `final.out' has not changed.
-(rerunfilecheck)             Checksum: 57B1BCCBB5A2B7246AE4A3DDA7320A14;592.
+(rerunfilecheck)             Checksum: 97455ECF3A90DC4CDBBFA8BE89BE915B;575.
  ) 
 Here is how much of TeX's memory you used:
- 11978 strings out of 478994
- 172135 string characters out of 5858184
- 507460 words of memory out of 5000000
- 29251 multiletter control sequences out of 15000+600000
+ 12004 strings out of 478994
+ 172365 string characters out of 5858184
+ 507462 words of memory out of 5000000
+ 29265 multiletter control sequences out of 15000+600000
  410986 words of font info for 57 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,19n,74p,354b,472s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,19n,74p,665b,546s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -669,10 +695,10 @@ live/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texliv
 e/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
 /2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2
 021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on final.pdf (9 pages, 163992 bytes).
+Output written on final.pdf (14 pages, 216042 bytes).
 PDF statistics:
- 133 PDF objects out of 1000 (max. 8388607)
- 106 compressed objects within 2 object streams
- 22 named destinations out of 1000 (max. 500000)
- 33 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 167 PDF objects out of 1000 (max. 8388607)
+ 131 compressed objects within 2 object streams
+ 33 named destinations out of 1000 (max. 500000)
+ 43 words of extra memory for PDF output out of 10000 (max. 10000000)
 

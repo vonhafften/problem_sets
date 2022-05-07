@@ -49,7 +49,7 @@
 
 \maketitle
 
-\section{Problem 1a: Term Structure and No Arbitrage Models}
+\section{Problem 1a: Term Structure}
 
 \begin{enumerate}
 
@@ -171,11 +171,15 @@ D_n = - \delta_1' + \Phi^{Q'} D_{n-1}
 
 with $A_n = C_n$ and $B_n = D_n$. Thus, we can go back and forth from SDF to risk-neutral densities to price bonds of any maturity.
 
+\bigskip
+
+
+
 \end{enumerate}
 
 \pagebreak
 
-\section{Problem 2h}
+\section{Problem 2h - LRR Model}
 
 \begin{enumerate}
 
@@ -434,6 +438,204 @@ The consumption strip has a negative risk premium and the consumption claim has 
 
 \pagebreak
 
-\section{Problem 4}
+\section{Problem 4 - Jumps}
+
+\begin{enumerate}
+
+\item Show that $E_t[Q_{c,t+1}] = E_t[Q_{x,t+1}] = 0$. Sketch typical timeseries.
+
+\textbf{Solution:}
+
+\begin{align*}
+E_t[Q_{c,t+1}] 
+&= E_t \Bigg[ \sum_{i=1}^{N_{c,t+1}} J_{i,c,t+1} - \lambda_c \mu_{jc} \Bigg]\\
+&= E_t \Bigg[E_t \Bigg[ \sum_{i=1}^{N_{c,t+1}} J_{i,c,t+1}\Bigg| N_{c,t+1}\Bigg]\Bigg] - \lambda_c \mu_{jc} \\
+&= E_t \Bigg[\sum_{i=1}^{N_{c,t+1}} E_t [ J_{i,c,t+1}| N_{c,t+1}]\Bigg] - \lambda_c \mu_{jc} \\
+&= E_t \Bigg[\sum_{i=1}^{N_{c,t+1}} E_t [ J_{i,c,t+1}]\Bigg] - \lambda_c \mu_{jc} \\
+&= E_t \Bigg[\sum_{i=1}^{N_{c,t+1}} \mu_{jc}\Bigg] - \lambda_c \mu_{jc} \\
+&= \mu_{jc}E_t \Bigg[\sum_{i=1}^{N_{c,t+1}}1 \Bigg] - \lambda_c \mu_{jc} \\
+&= \mu_{jc}E_t[N_{c,t+1} ] - \lambda_c \mu_{jc} \\
+&= \mu_{jc} \lambda_c - \lambda_c \mu_{jc} \\
+&= 0
+\end{align*}
+
+Similar argument holds for $E_t[Q_{x,t+1}]$.  
+
+\bigskip
+
+Consider $Q_{c,t+1}] =\sum_{i=1}^{N_{c,t+1}} J_{i,c,t+1} - \lambda_c \mu_{jc}$. During jump times, the first term dominates the second term, so $Q$ is discontinuously negative.  During nonjump times, the first term is zero, so the shock is just $- \lambda_c \mu_{jc}$.  Notice that it is deterministic, constant over time, and positive (since $\mu_{jc} < 0$ by assumption and $\lambda_c > 0$ by definition).  
+
+\bigskip
+
+Thus, a typical time-series looks like the graphs on the following page.  I simulated this series with a $\lambda = 0.1$, $\mu = -1$, and a degenerate jump size distribution, $J_{i,c,t+1} = \mu$ $\forall i, t$.  During nonjump times, $Q$ is small and positive $-\mu\lambda = 0.1$.  With my choice of $\lambda$, my simulation returned only jumps of size one and two.  Size one jumps are $\mu - \mu \lambda = -1 + 0.1 = -0.9$ and size two jumps are $2\mu - \mu \lambda = -2 + 0.1 = -1.9$. In the second figure, I cumulatively adding up the realizations of $Q$.  The series slowly increases during nonjump periods and sharply decreases during jump periods.
+
+\begin{center}
+\includegraphics[scale = 0.75]{p4_1}
+\includegraphics[scale = 0.75]{p4_2}
+\end{center}
+
+\pagebreak
+
+\item Recursive utility environment. Solve for the equilibrium stochastic discount factor. Show that the jumps in realized and expected consumption growth are priced. Specifically, show that under the typical assumptions for the preference parameters the market prices of both jump risks are positive. Show that the market price of expected consumption jumps increases in the persistence of the expected consumption growth.
+
+\textbf{Solution:} Recursive preferences are as follows:
+
+$$
+U_t = \Bigg[ (1-\delta) C_t^{1-1/\psi} + \delta (E_t U_{t+1}^{1-\gamma})^{\frac{1 - 1/\psi}{1- \gamma}} \Bigg]^{\frac{1}{1-1/\psi}}
+$$
+
+They imply the following SDF:
+
+$$
+m_{t+1} = \theta \log \delta - \frac{\theta}{\psi} \Delta c_{t+1} + (\theta - 1) r_{c,t+1}
+$$
+
+where $\Delta c_{t+1}$ is change in log consumption, $r_{c,t+1}$ is the return on the consumption assets, and $\theta \equiv \frac{1-\gamma}{1-1/\psi}$. Using Campbell-Schiller return log-linearization, we can approximate $r_{c,t+1}$ as
+
+$$
+r_{c,t+1} \approx - \log \kappa_1 + \kappa_1 \tilde pc_{t+1} + \Delta c_{t+1} - \tilde pc_t
+$$
+
+where $\kappa_1 = \frac{\exp(\bar{pc})}{\exp(\bar{pc}) + 1}$, $\tilde pc_t = pc_t - \bar{pc}$ and $pc_t$ is the log price consumption ratio.  Guess that $pc_t = A_0 + A_x x_t$, then $\tilde pc_t = A_x x_t$ and 
+
+$$
+\tilde pc_{t+1} = A_x \rho x_t + A_x\varphi_e \sigma \varepsilon_{t+1} + A_x Q_{x,t+1}
+$$
+
+Plugging into the return on consumption asset
+
+\begin{align*}
+r_{c,t+1} 
+&= -\log \kappa_1 + \kappa_1 [A_x \rho x_t + A_x\varphi_e \sigma \varepsilon_{t+1} + A_x Q_{x,t+1}] + [\mu + x_t + \sigma \eta_{t+1} + Q_{c,t+1}] - A_x x_t\\
+&= [-\log \kappa_1 + \mu] + [\kappa_1 A_x \rho  + 1 - A_x] x_t + \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} + \sigma \eta_{t+1} + \kappa_1 A_x Q_{x,t+1} + Q_{c,t+1}
+\end{align*}
+
+Thus, the SDF plus consumption return is
+
+\begin{align*}
+m_{t+1} + r_{c,t+1}
+&= \theta \log \delta - \frac{\theta}{\psi} [\mu + x_t + \sigma \eta_{t+1} + Q_{c,t+1}] \\
+&+ \theta ([\log \kappa_1 + \mu] + [\kappa_1 A_x \rho  + 1 - A_x] x_t + \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} + \sigma \eta_{t+1} + \kappa_1 A_x Q_{x,t+1} + Q_{c,t+1})\\
+&= \theta[ \log \delta + (1-1/\psi)\mu - \log \kappa_1]
++ \theta [\kappa_1 A_x \rho  + 1 - A_x - 1/\psi] x_t \\
+&+ \theta  \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1}
++ \theta (1-1/\psi) \sigma \eta_{t+1}
++ \theta \kappa_1 A_x Q_{x,t+1} 
++ \theta (1- 1/\psi) Q_{c,t+1}
+\end{align*}
+
+
+By the Euler equation for any traded asset, $E_t[M_{t+1} R_{i,t+1}] = 1$.
+
+\begin{align*}
+& \theta[ \log \delta + (1-1/\psi)\mu - \log \kappa_1]
++ \theta [\kappa_1 A_x \rho  + 1 - A_x - 1/\psi] x_t \\
+&+ \frac{1}{2}\theta^2  \kappa_1^2 A_x^2 \varphi_e^2 \sigma^2
++ \frac{1}{2}\theta^2 (1-1/\psi)^2 \sigma^2 \\&
++ \lambda_x[\alpha_x(\theta \kappa_1 A_x)- \theta \kappa_1 A_x \mu_{jx} - 1]
++ \lambda_c[\alpha_c(\theta (1- 1/\psi)) - \theta (1- 1/\psi)\mu_{jc} - 1] = 0
+\end{align*}
+
+Therefore, $A_x = \frac{1 - 1/\psi}{1 - \rho \kappa_1}$, which matches the loading on $x_t$ without jumps.  Under typical preference parameter assumptions ($\psi >1, \gamma > 1$) $\implies A_x > 0$.
+
+\pagebreak
+
+The expected SDF is:
+
+\begin{align*}
+E_t[m_{t+1}] &= E_t\Bigg[ \theta \log \delta - \frac{\theta}{\psi} [\mu + x_t + \sigma \eta_{t+1} + Q_{c,t+1}] \\
+&+ (\theta - 1) ([\log \kappa_1 + \mu] + [\kappa_1 A_x \rho  + 1 - A_x] x_t + \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} + \sigma \eta_{t+1} + \kappa_1 A_x Q_{x,t+1} + Q_{c,t+1})\Bigg] \\
+&= \theta \log \delta - \frac{\theta}{\psi} \mu +(\theta - 1) [\log \kappa_1 + \mu] - \frac{\theta}{\psi} x_t +  (\theta - 1)[\kappa_1 A_x \rho  + 1 - A_x] x_t \\ 
+&+E_t\Bigg[  \Big[\theta - 1- \frac{\theta}{\psi}\Big] Q_{c,t+1}   + (\theta - 1)\kappa_1 A_x Q_{x,t+1} \Bigg] \\
+&= \theta \log \delta - \frac{\theta}{\psi} \mu +(\theta - 1) [\log \kappa_1 + \mu] - \frac{\theta}{\psi} x_t +  (\theta - 1)[\kappa_1 A_x \rho  + 1 - A_x] x_t
+\end{align*}
+
+Thus, the innovations in the SDF are
+
+\begin{align*}
+m_{t+1} - E[m_{t+1}]
+&= \theta \log \delta - \frac{\theta}{\psi} [\mu + x_t + \sigma \eta_{t+1} + Q_{c,t+1}] \\
+&+ (\theta - 1) ([\log \kappa_1 + \mu] + [\kappa_1 A_x \rho  + 1 - A_x] x_t + \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} + \sigma \eta_{t+1} + \kappa_1 A_x Q_{x,t+1} + Q_{c,t+1})\\
+&- \theta \log \delta + \frac{\theta}{\psi} \mu -(\theta - 1) [\log \kappa_1 + \mu] + \frac{\theta}{\psi} x_t -  (\theta - 1)[\kappa_1 A_x \rho  + 1 - A_x] x_t \\ 
+&= (\theta - 1 - \theta/\psi) \sigma \eta_{t+1} + (\theta - 1) \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} + (\theta - 1 - \theta/\psi) Q_{c,t+1} + (\theta - 1)\kappa_1 A_x Q_{x,t+1}\\ 
+&= -\gamma \sigma \eta_{t+1} + (\theta - 1) \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} -\gamma Q_{c,t+1} + (\theta - 1)\kappa_1 A_x Q_{x,t+1}
+\end{align*}
+
+The market price of each risk is the negative loading in the innovation of the SDF, so $\gamma > 1$ implies the market price of the realized consumption jump shock $Q_{c,t+1}$ is positive.  And $\gamma > 1, \psi > 1\implies \theta < 1$, so the market price of the expected consumption jump shock $Q_{x,t+1}$ is also positive. Therefore, since $A_x$ is increasing in $\rho$, the negative loading on $Q_{x,t+1}$ is also increasing in $\rho$.    Yes, economically this makes sense. So the more persistent $x$, the higher the market price of high for jump shocks. A negative jump in $x$ will affect $x$ for longer if $x$ is more persistent.
+
+\item Consider the return on consumption asset – we can think about it as an equity claim. Show that it is exposed to both types of jumps, and that its jump betas are both positive (under usual preference configuration).
+
+\bigskip
+
+\textbf{Solutions:} The return on the consumption asset is
+
+$$
+r_{c,t+1} 
+= [-\log \kappa_1 + \mu] + [\kappa_1 A_x \rho  + 1 - A_x] x_t + \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} + \sigma \eta_{t+1} + \kappa_1 A_x Q_{x,t+1} + Q_{c,t+1}
+$$
+
+where $A_x \equiv \frac{1 - 1/\psi}{1 - \rho \kappa_1}$.  The beta for each jump shock is
+
+\begin{align*}
+\beta_{Q,x} &= \kappa_1 \frac{1 - 1/\psi}{1 - \rho \kappa_1}\\
+\beta_{Q,c} &= 1
+\end{align*}
+
+Clearly, $\beta_{Q,c} = 1 > 0$. Usual preference assumptions $\gamma > 1$ and $\psi > 1$, so both $\beta_{Q,x} > 0$ as well.
+
+\pagebreak
+
+\item Let's consider the impact of jumps on the components of returns, such as the price-consumption ratio and the consumption growth itself. Show that when the economy gets hit by the realized consumption jumps $Q_c$, they immediately affect cash flows (consumption) but not asset valuations (price-dividend ratio). On the contrary, the expected consumption jumps $Q_x$ affect asset valuations, but have no immediate impact on cash flows. Why is this the case?
+
+\textbf{Solutions:} From the problem specification, we have consumption growth is given as:
+
+$$
+\Delta c_{t+1} = \mu + x_t + \sigma \eta_{t+1} + Q_{c,t+1}
+$$
+
+Clearly, a jump in realized consumption $Q_{c,t+1}$ immediately affects consumption, but a jump in expected consumption $Q_{x,t+1}$ does not affect realized consumption until $t+2$.  We showed that the price-consumption ratio is:
+
+$$
+pc_{t+1} = A_0 + \frac{1 - 1/\psi}{1 - \rho \kappa_1} x_{t+1}
+$$
+
+where expected consumption follows:
+
+$$
+x_{t+1} = \rho x_t + \varphi_e \sigma \varepsilon_{t+1} + Q_{x,t+1}
+$$
+
+Thus, a jump in expected consumption $Q_{x,t+1}$ lower $x_t$ which immediately lowers $pc_{t+1}$.  However, jumps in realized consumption never affect $pc_{t+1}$.  The price-consumption ratio is forward looking and depends only on expected consumption.  There is no persistence in realized consumption beyond the persistence in expected consumption, so a temporary shock in realized consumption holds no information for future realized consumption.
+
+\item How do these jumps affect equity risk premium? That is, does the conditional equity premium increase/decrease/stay the same when the economy gets hit by these jumps? Explain why.
+
+\textbf{Solution:} The equity risk premium is approximately the negative covariance of the return on the consumption asset and the SDF:
+
+\begin{align*}
+-Cov_t(r_{c,t+1}, m_{t+1}) 
+&= -Cov_t([-\log \kappa_1 + \mu] + [\kappa_1 A_x \rho  + 1 - A_x] x_t + \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} + \sigma \eta_{t+1} + \kappa_1 A_x Q_{x,t+1} + Q_{c,t+1}, \\
+&\theta \log \delta - \frac{\theta}{\psi} [\mu + x_t + \sigma \eta_{t+1} + Q_{c,t+1}] \\
+&+ (\theta - 1) ([\log \kappa_1 + \mu] + [\kappa_1 A_x \rho  + 1 - A_x] x_t + \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} + \sigma \eta_{t+1} + \kappa_1 A_x Q_{x,t+1} + Q_{c,t+1}))\\
+&= -Cov_t(  \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} + \sigma \eta_{t+1} + \kappa_1 A_x Q_{x,t+1} + Q_{c,t+1}, \\
+&  (\theta - 1)  \kappa_1 A_x \varphi_e \sigma \varepsilon_{t+1} -\gamma \sigma \eta_{t+1} + (\theta - 1) \kappa_1 A_x Q_{x,t+1} -\gamma Q_{c,t+1})\\
+&= -[(\theta - 1) \kappa_1^2 A_x^2 \varphi_e^2 \sigma^2 -\gamma \sigma^2  + (\theta - 1)\kappa_1^2 A_x^2 \alpha_x''(0) -\gamma\alpha_c''(0)]\\
+&= (1 - \theta) \kappa_1^2 A_x^2 \varphi_e^2 \sigma^2  + \gamma \sigma^2  + (1 - \theta)\kappa_1^2 A_x^2 \alpha_x''(0) +\gamma\alpha_c''(0)
+\end{align*}
+
+Without jumps, the risk premium is $(1 - \theta) \kappa_1^2 A_x^2 \varphi_e^2 \sigma^2  + \gamma \sigma^2$, so jumps increase the equity risk premium.  This makes sense. Additional shocks increase the premium required to bear risk.  The conditional equity premium stays the same when the economy gets hit by a jump because jumps are independent over time.  Risk premium is forward looking.  A jump at period $t$ contains no information about where there will be a jump in period $t+1$.
+
+\pagebreak
+
+\item In our setup, market volatility is constant. However, it is well known that return volatility fluctuates over time, and it can also jump upwards. Further, a lot of empirical evidence suggests that positive jumps in market volatility happen at times of large negative jumps in market returns themselves. How would you extend the model to capture this effect?
+
+\bigskip
+
+\textbf{Solution:} We could incorporate time-varying jump intensity similar to how we incorporate time-varying volatility of Gaussian shocks:
+
+$$
+\lambda_{t+1} = \lambda_0 + \nu ( \lambda_t - \lambda_0) + \sigma_w w_{t+1}, \; \; \; w_{t+1} \sim N(0,1)
+$$
+
+\end{enumerate}
 
 \end{document}
