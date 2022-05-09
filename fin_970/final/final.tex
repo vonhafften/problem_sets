@@ -30,6 +30,7 @@
 \geometry{margin = 1in}
 
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
 \newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
 \newcommand{\Int}{\text{Int}}
 \newcommand{\xbf}{\mathbf{x}}
@@ -433,8 +434,132 @@ The consumption strip has a negative risk premium and the consumption claim has 
 
 \pagebreak
 
-\section{Problem 3}
+\section{Problem 3a - Equity Return Predictability}
 
+Factor and return dynamics:
+
+\begin{align*}
+z_{t+1} &= \rho z_{t} + \eta_{t+1}\\
+r_{t+1} &= \beta_1 z_t + \varepsilon_{t+1}
+\end{align*}
+
+where $\eta_{t+1}, \varepsilon_{t+1}$ are iid over time and independent from $z_t$ with $0 < \rho < 1, \beta_1 > 0$. Predictability relationship:
+
+$$
+r_{t+1} + r_{t+2} + ... + r_{t+k} = \beta_k z_t + \varepsilon_{t,t+k}
+$$
+
+\begin{enumerate}
+
+\item How would you assess the economic and statistical significance of the predictor? What standard errors would you use and why?
+
+\textbf{Solution:} To assess the statistical significance, I would look at the estimate of $\beta_k$ along with Newey-West standard errors. Newey-West standard errors help account for overlapping forecasting intervals on the LHS.  To gauge economic significance, I would also look at the $R^2$ and compare $z_t$ relative to commonly used factors like Fama-French factors.  Using the canonical factors would help as a benchmark to gauge the economic importance of $z_t$.
+
+\item Show that $\beta_k$ coefficients increase with the horizon $k$ (if you are short on time, you can
+compare the results for $k = 2$ and $k = 1$.)
+
+\textbf{Solution:} For $k=1$,
+
+$$
+r_{t+1} = \beta_1 z_t + \varepsilon_{t+1}
+$$
+
+For $k=2$,
+
+\begin{align*}
+r_{t+1} + r_{t+2} 
+&= [\beta_1 z_t + \varepsilon_{t+1}] + [\beta_1 z_{t+1} + \varepsilon_{t+2}]\\
+&= [\beta_1 z_t + \varepsilon_{t+1}] + [\beta_1 (\rho z_{t} + \eta_{t+1}) + \varepsilon_{t+2}]\\
+&= \underbrace{\beta_1 (1 +\rho)}_{\equiv \beta_2} z_t + \underbrace{\varepsilon_{t+1}+ \varepsilon_{t+2} + \beta_1 \eta_{t+1}}_{\equiv \varepsilon_{t,t+2}}
+\end{align*}
+
+Clearly, $\beta_1 < \beta_1 (1 +\rho) = \beta_2$ with $\beta_1, \rho > 0$.
+
+\bigskip
+
+For general $k$, guess that $\beta_k = \beta_1 \sum_{i=0}^{k-1} \rho^i$ and $\varepsilon_{t,t+k} = \sum_{i=1}^k \varepsilon_{t+i} + \beta_1 \sum_{i=1}^k \rho^i \eta_{t+i}$. Proof by induction. Base step, $\beta_1 = \beta_1 \rho^0$. Induction step:
+
+\begin{align*}
+r_{t+1} + r_{t+2} + ... + r_{t+k} + r_{t+k+1} 
+&= [\beta_{k} z_t + \varepsilon_{t,t+k}] + [\beta_1 z_{t+k} + \varepsilon_{t+k+1}]\\
+&= \beta_1 \sum_{i=0}^{k-1} \rho^i z_t + \sum_{i=1}^k \varepsilon_{t+i} + \beta_1 \sum_{i=1}^k \rho^i \eta_{t+i} + \beta_1 (\rho^{k+1} z_t + \sum_{i=1}^{k+1} \rho^i \eta_{t+i}) + \varepsilon_{t+k+1}\\
+&= \beta_1 \sum_{i=0}^{k} \rho^i + \sum_{i=1}^{k+1} \varepsilon_{t+i} + \beta_1 \sum_{i=1}^{k+1} \rho^i \eta_{t+i}
+\end{align*}
+
+Thus, $\beta_k$ is increasing with the horizon $k$ as $k$ increases we add positive numbers to $\beta_k$.
+
+\pagebreak
+
+\item Suppose we modified the left-hand side to be the average cumulative return $\frac{1}{k} (r_{t+1} + r_{t+2} + . . . + r_{t+k})$. How would this change the slope coefficients, the $R^2$s, and your answer to 2).
+
+\textbf{Solution:} Generally, using the average return decreases the slope estimates and $R^2$ relative to regressing on the cumulative return. In addition, the slope estimates decrease as you extend $k$. To see this, repeat the answer for 2). For $k=1$,
+
+$$
+\frac{1}{1}r_{t+1} = \beta_1 z_t + \varepsilon_{t+1} \implies r_{t+1} = \beta_1 z_t + \varepsilon_{t+1}
+$$
+
+For $k = 2$,
+
+\begin{align*}
+\frac{1}{2}(r_{t+1} + r_{t+2})
+&= \frac{1}{2}[\beta_1 z_t + \varepsilon_{t+1}] + \frac{1}{2}[\beta_1 z_{t+1} + \varepsilon_{t+2}]\\
+&= \frac{1}{2}[\beta_1 z_t + \varepsilon_{t+1}] + \frac{1}{2}[\beta_1 (\rho z_{t} + \eta_{t+1}) + \varepsilon_{t+2}]\\
+&= \underbrace{\frac{1}{2}\beta_1 (1 +\rho)}_{\equiv \beta_2} z_t + \underbrace{\frac{1}{2}\varepsilon_{t+1}+ \frac{1}{2}\varepsilon_{t+2} + \frac{1}{2}\beta_1 \eta_{t+1}}_{\equiv \varepsilon_{t,t+2}}
+\end{align*}
+
+$\beta_2$ is larger than $\beta_1$ if
+
+\begin{align*}
+\beta_1 < \beta_2 \implies \beta_1 < \frac{1}{2}\beta_1 (1 +\rho) \implies 1 < \rho \Rightarrow \Leftarrow
+\end{align*}
+
+This contradicts $\rho < 1$, so $\beta_2$ is smaller than $\beta_1$.
+
+In general, $\beta_k = \frac{1}{k} \beta_1 \sum_{i=0}^{k-1} \rho^i$. So $\beta_k$ is increasing in $k$ if
+
+\begin{align*}
+\beta_{k+1} > \beta_{k} 
+\implies
+\frac{1}{k+1} \beta_1 \sum_{i=0}^{k} \rho^i &> \frac{1}{k} \beta_1 \sum_{i=0}^{k-1} \rho^i \\
+\implies 
+\frac{1}{k+1} \sum_{i=0}^{k} \rho^i + \frac{1}{k+1} \sum_{i=k+1}^{\infty} \rho^i - \frac{1}{k+1} \sum_{i=k+1}^{\infty} \rho^i &> \frac{1}{k} \sum_{i=0}^{k-1} \rho^i + \frac{1}{k} \sum_{i=k}^{\infty} \rho^i - \frac{1}{k} \sum_{i=k}^{\infty} \rho^i\\
+\implies
+\frac{1}{k+1} \sum_{i=0}^{\infty} \rho^i - \frac{1}{k+1}\rho^{k+1} \sum_{i=0}^{\infty} \rho^i &> \frac{1}{k} \sum_{i=0}^{\infty} \rho^i  - \frac{1}{k} \rho^k \sum_{i=0}^{\infty} \rho^i\\
+\implies
+\frac{1}{k+1} \frac{1}{1-\rho} - \frac{1}{k+1}\rho^{k+1} \frac{1}{1-\rho} &> \frac{1}{k} \frac{1}{1-\rho}  - \frac{1}{k} \rho^k \frac{1}{1-\rho}\\
+\implies
+\frac{1-\rho^{k+1}}{k+1} &> \frac{1 - \rho^k}{k }\\
+\implies
+k-k\rho^{k+1} &> 1 - \rho^k + k - k\rho^k\\
+\implies
+-k\rho^{k+1} + (k+1)\rho^k - 1&> 0
+\end{align*}
+
+For all $0 < \rho <1$ and $k\in \N$, this inequality is violated. Thus, $\beta_k$ is decreasing.
+
+Finally, comparing the error term when the LHS is cumulative return (from part 2) and the LHS is the average return, we see that we are dividing the error term by $k$, so the $R^2$ are lower with the average return on the LHS.
+
+\pagebreak
+
+\item Will the $R^2$ in regressions 5 grow with $k$? (again, you may want to compare the $R^2$ in $k = 2$ case to the $k = 1$). What is the intuition behind the results? For example, contrast two cases: $Var(\varepsilon_t)$ is very small, and $Var(\varepsilon_t)$ is very large.
+
+\bigskip
+
+\textbf{Solution:} From part 2, we can see that the error term in regression (5) is the sum of error terms.  Thus, the error term is growing as $k$ grows, thus the $R^2$ decreases.  By increasing $k$, we can increasing the amount of noise in regression.
+
+\item The assumption that $z$ shocks are independent from the return shocks may not be fully innocuous. What would you expect to be the sign of their correlation under a standard present-value decomposition? Given that it is assumed to be zero, what is the implied relationship between the factor and the cash flow news?
+
+\bigskip
+
+\textbf{Solution:} Standard present-value decomposition is that the innovation in the $r_{t+1}$ is the difference between the cashflow news and the discount rate news:
+
+$$
+(E_{t+1} - E_t) r_{t+1} = \underbrace{(E_{t+1} - E_t) \sum_{j=0}^\infty \kappa_1^j \Delta d_{t+1+j}}_{\text{Cashflow news}} - \underbrace{(E_{t+1} - E_t) \sum_{j=1}^{\infty} \kappa_1^j r_{t+1+j}}_{\text{Discount rate news}}
+$$
+
+where $\kappa_1$ is the coefficient on the $pd_{t+1}$ ratio in the Campbell-Schiller log-linear approximation of $pd_t$.  A high realization of $\eta_{t+1+j}$ in the future is associated with a lower return tomorrow $r_{t+1}$, so I would expected the correlation to be negative between $z$ shocks and return shocks. Since we assume it is zero, that implies that cashflow news must account for the decrease.  Thus, by assuming that return shocks and factor shocks are independent, we are implicitly assuming that the factor is correlated with higher cash flows.
+
+\end{enumerate}
 
 \pagebreak
 
