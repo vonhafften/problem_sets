@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{soul}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{accents}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+\usepackage{setspace}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Lfn}{\mathcal{L}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+
+\title{Referee Report on Chari and Kehoe (1990)}
+\author{Alex von Hafften}
+\date{\today}
+
+\doublespacing
+
+\begin{document}
+
+\maketitle
+
+\section{Summary}
+
+The main question of this paper is ``how do you deal with equilibria in infinite-horizon models with a large benevolent government and a continuum of competitive agents when the government cannot commit to future policies?"
+
+With commitment, the characterization of the equilibrium is relatively straightforward; the government announces a path of policies for all future dates and then the competitive agents make their consumption/savings/labor supply/etc. choices.  Since the government can commit to their announced policies, it cannot change its policies based on the competitive agents' decisions. This is a ``Ramsey equilibrium".  
+
+Without commitment, it is relatively straightforward to characterize a static equilibrium, where the government ``moves" after the competitive agents.  This ``static equilibrium" is worse for both the government and agents than the Ramsey equilibrium.
+
+Considering a lack of commitment over an infinite horizon is less clear. Kydland and Prescott (1977) argue that the decision problem of both the government should be set up the decision problem sequentially. Then they characterize the finite-horizon problem.  With a finite horizon, the final period looks like the static environment, so the equilibrium is the static equilibrium. Since there's no incentive for either the government nor the competitive agents to choose different in the prior periods, they also engender the static equilibrium.  Chari and Kehoe (1990) argue that this approach only recovers one possible equilibrium that is sequentially rational.
+
+Chari and Kehoe (1990) formulate the decision problems as depending on the entire history of government actions and aggregate household actions in the context of the Fischer (1980) capital taxation model. They find that are many equilibria that are better than the repeated static equilibrium that are supported by the agents threatening to revert to the static equilibrium if the government misbehaves. Discount rates are important for how much of an improvement relative to the static equilibrium is possible; indeed, if the discount rate is sufficiently high, the Ramsey equilibrium could be supported.
+
+The idea of paper is akin to the grime-trigger strategies and the folk theorem in repeated games. But there are some technicalities that prevent a direct application of the folk theorem (e.g., a benevolent government, a continuum of competitive agents, etc.).  Thus, Chari and Kehoe (1990) also reformulate this problem as a Bayesian game and show that the same result holds.
+
+\section{What I learned and relationship to in-class material}
+
+I found it very helpful to read the proofs in section III.  Specifically, the logic of using the worst outcome (i.e., the static equilibrium) to characterize the degree to which a better equilibrium could be supported by a revert-to-static strategy by the agents.  While reading the prior section and during the lecture on Chari, Kehoe, and Prescott (1988), I found it daunting to conceptualize decision rules by both governments and households being functions of the entire history of decisions. It seems like such a gnarly object (e.g., from a computational perspective) that it limited my intuition about what it meant. But the proofs in section III really helped to understand what these objects meant.
+
+In addition, the analogy of the folk theorem of repeated games from game theory helped me understand the big idea of the paper. The idea that the threat of reverting back to the static Nash equilibrium can induce ``good" behavior. Along these lines, I think it was helpful for me to understand why this idea is not a trivial application of the folk theorem as well. The key departures from a standard game are that the histories do not include past actions of all agents (just the government and aggregate households) and that utilities are not defined for all possible choices (because some choices violate budget constraints or some choices violate representativeness).
+
+This paper is very closely related to Chari, Kehoe, and Prescott (1988) presented during lecture. Chari, Kehoe, and Prescott (1988) describes a very general characterization about how commitment and no-commitment equilibria differ. And they apply this approach to a few different model while Chari and Kehoe (1990) focus on the Fischer (1980) capital taxation model.  Chari, Kehoe, and Prescott (1988) discuss time-consistent equilibria while Chari and Kehoe (1990) focus on ``sustainable" equilibria. Chari and Kehoe (1990) reformulate the problem as a Bayesian game, which is not done in Chari, Kehoe, and Prescott (1988).
+
+\section{Ideas that are influenced by this paper}
+
+In thinking about to apply this approach to different research questions, I am thinking about types of policies where it would be reasonable for the government to be unable to commit to taking a certain policy course over time.
+
+\textbf{Climate policy}---In general, climate policies---like carbon taxes, investment in green technology adoption, etc.---might suffer from commitment issues because their benefits---like avoiding catastrophic impacts---would likely occur far in the future while their costs---like more costly energy---would likely in the much nearer term. With political cycles, the government's leadership change many times before any benefits of such regulation are realized.  Furthermore, the benefits of these policies are relatively intangible---e.g., \textit{the lack of} climate-related disasters---while the cost of these policies is very tangible---e.g., higher energy prices.  For example, President Biden's administration simultaneously passed the Inflation Reduction Act of 2022, which is the largest investment into addressing climate change in US history, while negotiating an expansion of fossil fuel production with OPEC in response to higher energy prices associated with the Russian invasion of Ukraine.
+
+\textbf{Bank bailout during financial crisis}---Many regulatory changes enacted after the Great Financial Crisis sought to the prevent bank bailouts like the Trouble Asset Relief Program (TARP) from occurring in the future. These policies include orderly liquidation authority and total loss absorbing capacity.  With these regulatory changes, a bank is required to have a certain amount of long-term debt; if the bank fails and its equity holders are wiped out, the bank's long-term debt holders' claims is converted into equity (Meehl 2022).  This long-term debt would may receive a haircut (to absorb excess losses) and then be converted to equity to satisfy regulatory capital requirements. If the regulator can commit to these policies, then debt spreads should be higher to reflect the risk of the debt being converted to equity. But, in a banking panic, it seems plausible that the regulator may be unable to commit to inflicting losses on long-term debt holders and sparking more financial instability.
+
+\textbf{Asset Class Eligibility for Quantitative Easing}---Before the Great Financial Crisis, the Federal Reserve's balance sheet would composed of short-term Treasuries securities. Leading up to the crisis, there was concerns about a housing bubble and the credit quality of the underlying pool of mortgages of mortgage-based securities. In the aftermath of the crisis, the Federal Reserve enacted large scale asset purchase programs where the Federal Reserve bought both long-term Treasuries as well as mortgage backed securities by government-sponsored enterprises.  Leading up to the COVID crisis, there were concerns about deterioration in credit quality associated with the expansion of corporate debt through leveraged loans and collateralized loan obligations.  During the COVID crisis, the Federal Reserve set up a large scale asset purchase program where the Federal Reserve bought corporate bonds on both the primary and secondary market.  If the Federal Reserve could commit to not purchasing certain asset classes ahead of stress, prices would be higher to reflect the risk of downturns.  If the Federal Reserve cannot commit, then it provide an implicit lower bound on the losses from certain assets.
+
+\textbf{Government-Sponsored Enterprise Mortgage-Backed Securities}---Government-Sponsored Enterprises (GSE), Fannie Mae and Freddie Mac, purchase mortgages and pool them together and issue mortgage-backed securities.  The GSE guarantee timely payment of principal and interest.  Before and after the Great Financial Crisis, the prospectus of these MBS states:
+
+\textit{We alone are responsible for making payments under our guaranty. The certificates and payments of principal and interest on the certificates are not guaranteed by the United States and do not constitute a debt or obligation of the United States or any of its agencies or instrumentalities other than Fannie Mae.}
+
+Despite this statement in the prospectus, the US Treasury placed Fannie Mae and Freddie Mac in conservatorship during the Great Financial Crisis effectively guarantee the GSEs continued operation.  The government ahead of the financial crisis did not seem to be able to commit to not guaranteeing these institutions in a downturn.
+
+
+\end{document}
+
+
+
+
