@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  18 SEP 2022 11:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  21 SEP 2022 17:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -617,25 +617,24 @@ Package rerunfilecheck Info: File `report_von_Hafften.out' has not changed.
 (rerunfilecheck)             Checksum: D7655778A9CC9B272C255DE1214E8993;658.
  ) 
 Here is how much of TeX's memory you used:
- 12075 strings out of 478994
- 173216 string characters out of 5858184
- 494268 words of memory out of 5000000
- 29366 multiletter control sequences out of 15000+600000
- 411672 words of font info for 59 fonts, out of 8000000 for 9000
+ 12065 strings out of 478994
+ 173110 string characters out of 5858184
+ 495268 words of memory out of 5000000
+ 29358 multiletter control sequences out of 15000+600000
+ 409973 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,6n,74p,1277b,326s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,6n,74p,1264b,326s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
-/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></u
-sr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
-/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/l
-ocal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/lo
-cal/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on report_von_Hafften.pdf (4 pages, 90120 bytes).
+</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
+usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
+r/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
+local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/l
+ocal/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on report_von_Hafften.pdf (4 pages, 82899 bytes).
 PDF statistics:
- 69 PDF objects out of 1000 (max. 8388607)
- 55 compressed objects within 1 object stream
+ 65 PDF objects out of 1000 (max. 8388607)
+ 52 compressed objects within 1 object stream
  8 named destinations out of 1000 (max. 500000)
  25 words of extra memory for PDF output out of 10000 (max. 10000000)
 
