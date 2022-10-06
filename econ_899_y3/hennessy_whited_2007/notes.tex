@@ -1,0 +1,186 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{bbm}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{soul}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{accents}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+\usepackage{setspace}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Lfn}{\mathcal{L}}
+\newcommand{\one}{\mathbbm{1}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+
+\title{Notes on Hennessy and Whited (2007)}
+\author{Alex von Hafften}
+\date{\today}
+
+\doublespacing
+
+\begin{document}
+
+\maketitle
+
+\begin{itemize}
+
+\item Notation is a bit confusing in the original paper, so trying to clear up my confusion here.
+
+\item Notation: Current productivity is $z$, yesterday productivity is $z^-$, and tomorrow productivity is $z'$
+
+\item Cash flow from operations:
+
+$$
+z \pi(k) \equiv z k ^ \alpha
+$$
+
+\item Corporate tax income bill:
+
+$$
+T^C(k, b, z^-, z) \equiv [\tau_c^+ \chi + \tau_c^- ( 1 - \chi)] \cdot [z \pi (k) - \delta k - r(k, b, z^-) b]
+$$
+
+where  $\chi \equiv \one[z \pi (k) - \delta k - r(k, b, z^-) b > 0]$
+
+\item Individual tax rate $\tau_i$
+
+\item Cash distribution taxes
+
+\begin{align*}
+T^d(X) &\equiv \int_0^X \tau_d(x) dx \\
+\text{where } 
+\tau_d(x) &\equiv \bar \tau_d \times [1 - e^{-\phi x}] \\
+\implies
+T^d(X) &\equiv 
+\begin{cases}
+0,& X \le 0\\
+\frac{\bar \tau_d}{\phi}(\phi X + e^{-\phi X} - 1), & X > 0
+\end{cases}
+\end{align*}
+
+\item Costly external equity financing
+
+\begin{align*}
+\Lambda(x) = \lambda_0 +\lambda_1 x + \lambda_2 x^2
+\end{align*}
+
+where $\lambda_0 \ge 0$, $\lambda_1 \ge 0$, $\lambda_2 \ge 0$
+
+\item State variable is net worth $w$ and choice variables are debt and capital for next period
+
+\item Equity value function
+
+\begin{align*}
+V(w, z) 
+= \max_{k', b'} \Bigg\{ &\; \; \;  \;  \; 
+\underbrace{\Phi [w + b' - k' - T^d(w + b' - k')]}_{\text{cash payment to equity holders}}\\
+&\underbrace{- (1-\Phi) [k' - w - b' + \Lambda(k'-w - b')]}_{\text{equity issuance}}\\
+&+ \Bigg[ \frac{1}{1 + r ( 1-\tau_i)}\Bigg] E\Bigg[\Big(V(w(k', b', z, z'), z')\Big)^+\Bigg| z \Bigg]\Bigg\}
+\end{align*}
+
+where 
+
+\begin{align*}
+\Phi &\equiv \one (w + b' > k')\\
+w(k', b', z, z') &\equiv z' \pi(k') + (1-\delta) k' - T^C(k', b', z, z') - (1 +r(k', b', z)) b'
+\end{align*}
+
+\pagebreak
+
+\item Naive value function:
+
+\begin{align*}
+V(k, b, z, z^-) =
+\max_{(k', b')} \Bigg\{ 
+& \underbrace{w + b' - k'}_{\text{cash dividend if } (+) \text{ or equity issuance if } (-)} \\ 
+&- \underbrace{T^d(w + b' - k')}_{\text{taxes on cash dividend}} \\
+&- \underbrace{\Lambda(-(w + b' - k'))}_{\text{equity issuance cost}} \\
+&+ \frac{1}{1+r(1-\tau_i)} E\Big[\underbrace{\max\{ V(k', b', z', z), 0\}}_{\text{if }V \text{ is } (-) \text{ can default}}\Big] \Bigg\} \\
+\text{where }
+\underbrace{y}_{\text{taxable corporate income}} &\equiv \underbrace{z k^\alpha}_{\text{operating profits}} - \underbrace{\delta k}_{\text{depreciation}} - \underbrace{r(k, b, z^-) b}_{\text{interest on debt}} \\
+\underbrace{T^C(x)}_{\text{corporate income tax bill}} &\equiv 
+\begin{cases} 
+\tau_c^+ x, & \text{if }x > 0 \\
+\tau_c^- x, & \text{if }x \le 0
+\end{cases}\\
+\underbrace{w}_{\text{realized net worth}} &\equiv \underbrace{y - T^C(y)}_{\text{after-tax corporate income}}+ \underbrace{k}_{\text{capital}}  - \underbrace{b}_{\text{debt principal}} \\
+\underbrace{T^d(x)}_{\text{taxes on cash dividend}} &= 
+\begin{cases}
+\frac{\bar \tau_d}{\phi}(\phi x + e^{-\phi x} - 1), & x > 0 \\
+0,& x \le 0
+\end{cases} \\
+\underbrace{\Lambda(x)}_{\text{equity issuance cost}} &= 
+\begin{cases} 
+\lambda_0 + \lambda_1 x + \lambda_2 x^2, & \text{if }x > 0 \\
+0, & \text{if }x \le 0
+\end{cases}
+\end{align*}
+
+\pagebreak
+
+\item Smarter value function:
+
+\begin{align*}
+V(w, z) =
+\max_{(k', b')} \Bigg\{ 
+& \underbrace{w + b' - k'}_{\text{cash dividend if } (+) \text{ or equity issuance if } (-)} \\ 
+&- \underbrace{T^d(w + b' - k')}_{\text{taxes on cash dividend}} \\
+&- \underbrace{\Lambda(-(w + b' - k'))}_{\text{equity issuance cost}} \\
+&+ \frac{1}{1+r(1-\tau_i)} E\Big[\underbrace{\max\{ V(w', z'), 0\}}_{\text{if }V \text{ is } (-) \text{ can default}}\Big] \Bigg\} \\
+\text{where }
+\underbrace{y'}_{\text{taxable corporate income}} &\equiv \underbrace{z' (k')^\alpha}_{\text{operating profits}} - \underbrace{\delta k'}_{\text{depreciation}} - \underbrace{r(k', b', z) b'}_{\text{interest on debt}} \\
+\underbrace{T^C(x)}_{\text{corporate income tax bill}} &\equiv 
+\begin{cases} 
+\tau_c^+ x, & \text{if }x > 0 \\
+\tau_c^- x, & \text{if }x \le 0
+\end{cases}\\
+\underbrace{w'}_{\text{realized net worth}} &\equiv \underbrace{y' - T^C(y')}_{\text{after-tax corporate income}}+ \underbrace{k'}_{\text{capital}}  - \underbrace{b'}_{\text{debt principal}} \\
+\underbrace{T^d(x)}_{\text{taxes on cash dividend}} &= 
+\begin{cases}
+\frac{\bar \tau_d}{\phi}(\phi x + e^{-\phi x} - 1), & x > 0 \\
+0,& x \le 0
+\end{cases} \\
+\underbrace{\Lambda(x)}_{\text{equity issuance cost}} &= 
+\begin{cases} 
+\lambda_0 + \lambda_1 x + \lambda_2 x^2, & \text{if }x > 0 \\
+0, & \text{if }x \le 0
+\end{cases}
+\end{align*}
+
+
+
+\end{itemize}
+
+\end{document}
+
+
+
+
