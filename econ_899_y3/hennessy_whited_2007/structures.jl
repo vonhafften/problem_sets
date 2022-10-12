@@ -116,7 +116,7 @@ function Initialize_Grids(P::Primitives)
     # max_lz and min_lz should be the same as above
 
     # capital
-    k_bar      = compute_π_d_inv(P.δ / exp(max_lz), P)
+    k_bar      = ((P.δ / exp(max_lz))/P.α)^(1/(P.α-1))
     grid_k     = k_bar.*(1 - P.δ).^(15:-0.5:0)
     N_k        = length(grid_k)
     min_k      = grid_k[1]
@@ -132,11 +132,13 @@ function Initialize_Grids(P::Primitives)
     # min_w  = compute_nw(min_k, max_b, exp(min_lz), exp(min_lz), P.r, P) # approximate lower end w min k and z and max amount of debt with interest rate r
     # max_w  = compute_nw(max_k, min_b, exp(max_lz), exp(max_lz), P.r, P) # approximate upper end w max k and z and min amount of debt with interest rate r
     temp_grid_w = zeros(N_k, N_b, N_lz_c, N_lz_c)
-    for (i_k, k) = enumerate(grid_k), (i_b, b) = enumerate(grid_b), (i_z, z) = enumerate(grid_lz_c), (i_z_p, z_p) = enumerate(grid_lz_c)
-        temp_grid_w[i_k, i_b, i_z, i_z_p] = compute_nw(k, b, exp(z), exp(z_p), P.r, P)
+    for (i_k_p, k_p) = enumerate(grid_k), (i_b_p, b_p) = enumerate(grid_b), (i_lz, lz) = enumerate(grid_lz_c), (i_lz_p, lz_p) = enumerate(grid_lz_c)
+        y_p = exp(lz_p) * k_p ^ P.α - P.δ * k_p - P.r * b_p
+        w_p = y_p - T_C(y_p, P) + k_p - b_p
+        temp_grid_w[i_k_p, i_b_p, i_lz, i_lz_p] = w_p
     end
-    min_w = minimum(temp_grid_w)
-    max_w = maximum(temp_grid_w)
+    min_w  = minimum(temp_grid_w)
+    max_w  = maximum(temp_grid_w)
     N_w    = 100 # just a guess...
     grid_w = collect(range(min_w, max_w; length = N_w))
 

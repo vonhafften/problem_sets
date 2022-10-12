@@ -125,7 +125,7 @@ V(k, b, z, z^-) =
 &- \underbrace{\Lambda(-(w + b' - k'))}_{\text{equity issuance cost}} \\
 &+ \frac{1}{1+r(1-\tau_i)} E\Big[\underbrace{\max\{ V(k', b', z', z), 0\}}_{\text{if }V \text{ is } (-) \text{ can default}}\Big] \Bigg\} \\
 \text{where }
-\underbrace{y}_{\text{taxable corporate income}} &\equiv \underbrace{z k^\alpha}_{\text{operating profits}} - \underbrace{\delta k}_{\text{depreciation}} - \underbrace{r(k, b, z^-) b}_{\text{interest on debt}} \\
+\underbrace{y}_{\text{taxable corporate income}} &\equiv \underbrace{z k^\alpha}_{\text{operating profits}} - \underbrace{\delta k}_{\text{depreciation}} - \underbrace{\tilde r(k, b, z^-) b}_{\text{interest on debt}} \\
 \underbrace{T^C(x)}_{\text{corporate income tax bill}} &\equiv 
 \begin{cases} 
 \tau_c^+ x, & \text{if }x > 0 \\
@@ -156,7 +156,7 @@ V(w, z) =
 &- \underbrace{\Lambda(-(w + b' - k'))}_{\text{equity issuance cost}} \\
 &+ \frac{1}{1+r(1-\tau_i)} E\Big[\underbrace{\max\{ V(w', z'), 0\}}_{\text{if }V \text{ is } (-) \text{ can default}}\Big] \Bigg\} \\
 \text{where }
-\underbrace{y'}_{\text{taxable corporate income}} &\equiv \underbrace{z' (k')^\alpha}_{\text{operating profits}} - \underbrace{\delta k'}_{\text{depreciation}} - \underbrace{r(k', b', z) b'}_{\text{interest on debt}} \\
+\underbrace{y'}_{\text{taxable corporate income}} &\equiv \underbrace{z' (k')^\alpha}_{\text{operating profits}} - \underbrace{\delta k'}_{\text{depreciation}} - \underbrace{\tilde r(k', b', z) b'}_{\text{interest on debt}} \\
 \underbrace{T^C(x)}_{\text{corporate income tax bill}} &\equiv 
 \begin{cases} 
 \tau_c^+ x, & \text{if }x > 0 \\

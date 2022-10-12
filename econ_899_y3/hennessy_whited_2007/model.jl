@@ -23,19 +23,17 @@ function Apply_Bellman!(P::Primitives, G::Grids, R::Results, grid_search::Bool)
         
         # function to compute payoff
         function payoff(k_p::Float64, b_p::Float64)
-            # determine whether cash distribution or equity issuance
-            Φ = (w + b_p - k_p > 0)
-
-            # flow payoff
-            result = Φ * (w + b_p - k_p - compute_T_d(w + b_p - k_p, P))
-            result -= (1-Φ) * (k_p - w - b_p + compute_Λ(k_p - w - b_p, P))
-
+            result = w + b_p - k_p           # cash dividend if positive and equity issuance if negative
+            result -= T_d(w + b_p - k_p, P)  # cash dividend tax
+            result -= Λ(-(w + b_p - k_p), P) # equity issuance cost
+            
             # determine interest rate
             r_tilde = r_tilde_interp(k_p, b_p, lz)
 
             # add continuation value
             for (i_lz_p, lz_p) = enumerate(G.grid_lz_c)
-                w_p = compute_nw(k_p, b_p, exp(lz), exp(lz_p), r_tilde, P)
+                y_p = exp(lz_p) * k_p ^ P.α - P.δ * k_p - r_tilde * b_p # taxable income
+                w_p = y_p - T_C(y_p, P) + k_p - b_p                     # realized net worth
                 result += 1/(1+P.r*(1 - P.τ_i)) * G.Π_lz_c[i_lz, i_lz_p] * max(vf_interp(w_p, lz_p), 0.0)
             end
 

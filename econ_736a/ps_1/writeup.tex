@@ -1,0 +1,372 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{soul}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{accents}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+\usepackage{setspace}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Lfn}{\mathcal{L}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+
+\usepackage{amsthm}
+
+\newtheorem{manualtheoreminner}{Proposition}
+\newenvironment{manualtheorem}[1]{%
+  \renewcommand\themanualtheoreminner{#1}%
+  \manualtheoreminner
+}{\endmanualtheoreminner}
+
+\title{ECON 736A: Problem Set 1}
+\author{Alex von Hafften}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Battaglini and Coate (2008)}
+
+\begin{enumerate}
+
+\item \textit{Carefully derive equations (9), (10), and (11) in the paper.}
+
+I start from beginning of section 2. The recursive formulation of the Ramsay planner's problem (or ``social planner's problem") is to choose $\pi = \{\tau, g, x, s_1, ..., s_n\}$ to solve
+
+\begin{align*}
+v(b, A) = \max_{\pi} \Bigg\{& u(w(1-\tau), g; A) + \frac{\sum_i s_i}{n} + \delta E[v(x, A')] \Bigg\}\\
+\text{s.t. } \sum_i s_i &\le B(\tau, g, x; b)\\
+s_i &\ge 0 \;\; \forall i\\
+x &\in [\underline x, \bar x]
+\end{align*}
+
+where  $u(w(1-\tau), g; A) = \frac{\varepsilon^\varepsilon(w(1-\tau))^{\varepsilon + 1}}{\varepsilon + 1} + Ag^\alpha$ is the utility of the HH when it optimally supplies labor given $\pi$ and $A$. Thus, we have
+
+\begin{align*}
+u_\tau(w(1-\tau), g; A) &= - (\varepsilon w(1-\tau))^\varepsilon w\\
+u_g(w(1-\tau), g; A ) &= 0
+\end{align*}
+
+Notice that if $B(\tau, g, x; b)$ is positive then $\sum_i s_i = B(\tau, g, x; b) \equiv n \tau w(\varepsilon w(1-\tau))^\varepsilon - pg + x - (1+\rho)b$. Thus, we have
+
+\begin{align*}
+B_\tau (\tau, g, x; b) &= n w(\varepsilon w(1-\tau))^\varepsilon - \varepsilon^2 n \tau w^2(\varepsilon w(1-\tau))^{\varepsilon-1} \\
+B_g (\tau, g, x; b) &= - p\\
+B_x (\tau, g, x; b) &= 1
+\end{align*}
+
+Furthermore, notice that $x = \underline x$ will never binds. Thus, the problem can be rewritten:
+
+\begin{align*}
+v(b, A) = \max_{(\tau, g, x)} \Bigg\{& u(w(1-\tau), g; A) + Ag^\alpha + \frac{B(\tau, g, x; b)}{n} + \delta E[v(x, A')] \Bigg\}\\
+\text{s.t. } B(\tau, g, x; b) &\ge 0\\
+x &\le \bar x
+\end{align*}
+
+Let $\frac{\lambda}{n}$ and $\gamma$ be the multipliers on the first and second constraints, respectively. The lagrangian is 
+
+$$
+\Lfn = u(w(1-\tau), g; A) + Ag^\alpha + \frac{B(\tau, g, x; b)}{n} + \delta E[v(x, A')] + \frac{\lambda}{n} B(\tau, g, x;b) + \gamma (x - \bar x) 
+$$
+
+Taking the first order condition with respect to $\tau$ and substituting derivatives of $B$ and $u$ above:
+
+\begin{align*}
+-u_\tau(w(1-\tau), g; A) &= (1 + \lambda) \frac{1}{n} B_\tau(\tau, g, x;b)   \\
+\implies
+(\varepsilon w(1-\tau))^\varepsilon w &= (1 + \lambda) \frac{1}{n} [n w(\varepsilon w(1-\tau))^\varepsilon - \varepsilon^2 n \tau w^2(\varepsilon w(1-\tau))^{\varepsilon-1}]  \\
+\implies
+\varepsilon w(1-\tau) w &= (1 + \lambda)  [w^2\varepsilon (1-\tau) - \varepsilon^2 \tau w^2]  \\
+\implies
+ (1-\tau)  &= (1 + \lambda)  [ 1-\tau - \varepsilon \tau ]  \\
+\implies
+\frac{1-\tau}{1- \tau (1+\varepsilon)  }  &= (1 + \lambda)
+\end{align*}
+
+This equation matches (9).  Taking the first order condition with respect to $g$ and substituting derivatives of $B$ and $u$ above:
+
+\begin{align*}
+u_g(w(1-\tau), g; A) + \alpha A g^{\alpha-1} &= - \frac{B_g(\tau, g, x; b)}{n}  - \frac{\lambda}{n} B_g(\tau, g, x;b)\\
+\implies
+n \alpha A g^{\alpha-1} &= p (1  + \lambda)
+\end{align*}
+
+Substituting in equation (9), we get equation (10):
+
+\begin{align*}
+n \alpha A g^{\alpha-1} &= \Bigg[\frac{1-\tau}{1- \tau (1+\varepsilon)  } \Bigg]p 
+\end{align*}
+
+Taking the first order condition with respect to $x$:
+
+\begin{align*}
+\frac{B_x(\tau, g, x; b)}{n} + \frac{\lambda}{n} B_x(\tau, g, x;b) + \gamma  &= -\delta E[v_x(x, A')]\\
+\implies
+1 + \lambda + \gamma  &= -\delta  n E[v_x(x, A')]
+\end{align*}
+
+Substituting in equation (9),
+
+\begin{align*}
+\frac{1-\tau}{1- \tau (1+\varepsilon)  } + \gamma  &= -\delta  n E[v_x(x, A')]
+\end{align*}
+
+If $x < \bar x$, then $\gamma = 0$ by complementary slackness, so
+
+\begin{align*}
+\frac{1-\tau}{1- \tau (1+\varepsilon)  }  &= -\delta  n E[v_x(x, A')]
+\end{align*}
+
+If $x = \bar x$, then $\gamma \ge 0$ by complementary slackness, so
+
+\begin{align*}
+\frac{1-\tau}{1- \tau (1+\varepsilon)  }  &\ge -\delta  n E[v_x(x, A')]
+\end{align*}
+
+These equations match equation (11).
+
+\pagebreak
+
+\item \textit{Carefully prove Proposition 4 in the paper.}
+
+\begin{manualtheorem}{4}
+The equilibrium value function $v(b, A)$ solves the functional equation
+
+\begin{align*}
+v(b, A) = \max_{(r, g, x)} \Big \{ 
+&u(w(1-\tau), g; A) + \frac{B(\tau, g, x; b)}{n} + \delta E[v(x, A')]:\\
+& B(r, g, x; b) \ge 0, 
+\tau \ge \tau^*,
+g \le g^*(A),
+x \in [x^*, \bar x]
+\Big \}
+\end{align*}
+
+and the equilibrium policies $\{r(b, A), g(b, A), x(b, A)\}$ are the optimal policy functions for this program.
+
+\end{manualtheorem}
+
+Define $X$ as $[\underline x, \bar x] \times [\underbar A, \bar A]$. Define operator $T$ on the set of bounded continuous function on $X$, $B(X)$ as follows:
+
+\begin{align*}
+Tv(b, A) = \max_{(r, g, x)} \Big \{ 
+&u(w(1-\tau), g; A) + \frac{B(\tau, g, x; b)}{n} + \delta E[v(x, A')]:\\
+& B(r, g, x; b) \ge 0, 
+\tau \ge \tau^*,
+g \le g^*(A),
+x \in [x^*, \bar x]
+\Big \}
+\end{align*}
+
+I claim that $T$ is a contraction and show via Blackwell sufficient conditions. For monotonicity, let $v_1, v_2 \in B(X)$ with $v_1(b, A) \le v_2(b, A)$ for all $b$ and $A$ in $X$, then
+
+\begin{align*}
+E[v_1(x, A')] \le E[v_2(x,& A')] \\
+\implies
+ \max_{(r, g, x)} \Big \{ 
+&u(w(1-\tau), g; A) + \frac{B(\tau, g, x; b)}{n} + \delta E[v_1(x, A')]:\\
+& B(r, g, x; b) \ge 0, 
+\tau \ge \tau^*,
+g \le g^*(A),
+x \in [x^*, \bar x]
+\Big \}\\
+ \le 
+  \max_{(r, g, x)} \Big \{ 
+&u(w(1-\tau), g; A) + \frac{B(\tau, g, x; b)}{n} + \delta E[v_2(x, A')]:\\
+& B(r, g, x; b) \ge 0, 
+\tau \ge \tau^*,
+g \le g^*(A),
+x \in [x^*, \bar x]
+\Big \}\\
+\implies 
+Tv_1(b, A) \le Tv_2(b,&A)
+\end{align*}
+
+For discounting, let $v \in B(X)$ and $a \ge 0$ and $(b, A) \in X$, then
+
+\begin{align*}
+[T(v+a)](b, A) 
+=
+ \max_{(r, g, x)} \Big \{ 
+&u(w(1-\tau), g; A) + \frac{B(\tau, g, x; b)}{n} + \delta E[v(x, A') + a]:\\
+& B(r, g, x; b) \ge 0, 
+\tau \ge \tau^*,
+g \le g^*(A),
+x \in [x^*, \bar x]
+\Big \}\\
+=
+ \max_{(r, g, x)} \Big \{ 
+&u(w(1-\tau), g; A) + \frac{B(\tau, g, x; b)}{n} + \delta E[v(x, A')]:\\
+& B(r, g, x; b) \ge 0, 
+\tau \ge \tau^*,
+g \le g^*(A),
+x \in [x^*, \bar x]
+\Big \} + \delta a\\
+=
+Tv(b, A) &+ \delta a
+\end{align*}
+
+Thus, $T$ is a contraction and thus it has a fixed point.  The fixed point $v$ solves the functional equation.
+
+
+\pagebreak
+
+\item \textit{Suppose we impose the additional requirement on the legislature
+that the debt level cannot increase, i.e., in each period $x \le b$. How
+would we solve for the political equilibrium in this case? Characterize as
+best you can how the equilibrium will change.}
+
+We can modify the value function discussed in section IV:
+
+\begin{align*}
+v(b, A) 
+&=
+\begin{cases}
+\max_{(r, g, x)} \Big \{ 
+u(w(1-\tau), g; A) + \frac{B(\tau, g, x; b)}{n} + \delta E[v(x, A')]: &\\
+\;\;\;\;\;\;
+\;\;\;\;\;\;
+\;\;\;\;\;\;
+B(r, g, x; b) \ge 0, 
+\tau \ge \tau^*,
+g \le g^*(A),
+x \in [x^*, b]
+\Big \}, &
+\text{if } b > x^*\\
+\max_{(r, g)} \Big \{ 
+u(w(1-\tau), g; A) + \frac{B(\tau, g, b; b)}{n} + \delta E[v(b, A')]:&\\
+\;\;\;\;\;\;
+\;\;\;\;\;\;
+\;\;\;\;\;\;
+B(r, g, b; b) \ge 0, 
+\tau \ge \tau^*,
+g \le g^*(A)
+\Big \}, &
+\text{if } b \le x^*
+\end{cases}
+\end{align*}
+
+The idea is if the government comes into the period with debt $b$ that is higher than $x^*$, they can choose any $x$ between $b$ and $x^*$.  If they come into the period with debt $b$ that is less than $x^*$ that is below $x^*$, they'll borrow again at $b$ because they can't borrow more (per the new restriction) and they won't borrow less because they're in the BAU regime and want to borrow as much as possible to pay transfers to the group of $q$ regions that support the proposal.  Thus, there are two political equilibria that depend on the starting value of debt.  If $b_0 \le x^*$, the government will keep borrowing $b_0$ in all future periods.  If $b_0 > x^*$, the equilibrium is more complicated.  With high realizations of $A$, the government borrowing will be bound at the previous level. In the baseline case, the government would increase its borrowing, but here it is constrained by the previous quantity of borrowing.  As in the baseline case, with low realizations of $A$, the government will reduce its borrowing.  In the following period, that new lower level of borrowing will constrain the government's choice of borrowing.  Thus, the political equilibrium will eventually converge to the BAU regime outcome (given enough low realizations of $A$) and stay there forever if $b_0 > x^*$.
+
+\end{enumerate}
+
+\pagebreak
+
+\section{Werning (2015)}
+
+\begin{enumerate}
+
+\item \textit{Carefully derive Proposition 3 in the paper.}
+
+
+\begin{manualtheorem}{3} Suppose utilities satisfy (14). Then
+
+\begin{align*}
+d \log R_t + \alpha_{C, t} d \log C_t - \alpha_{C', t} d \log C_{t+1} = 0
+\end{align*}
+
+with 
+
+\begin{align*}
+\alpha_{C, t} &= C g_{C, t} (R, C, C') = \sigma \varepsilon_t^i\\
+\alpha_{C', t} &= -C' g_{C', t} (R, C, C') = \sigma \frac{E_t[u_{c, t+1} \varepsilon_{t+1}^i]}{E_t[u_{c, t+1}]}
+\end{align*}
+
+for the household type $i \in I$ and history $s^t$ that attains the maximum in (16).
+
+\end{manualtheorem}
+
+The Euler equation holds with equality for the household type $i$ and history $s^t$ that attains the maximum in (16):
+
+$$
+\beta_t^i c_t^i(s_t)^{-\sigma} = \beta_{t+1}^i R_t E_t[c_{t+1}^i(s_{t+1})^{-\sigma}]
+$$
+
+Without trade, the household consumes their income, $c_t(s_t) = \gamma_t^i(s_t, C_t)$:
+
+$$
+\beta_t (\gamma_t^i(s_t, C_t))^{-\sigma} = \beta_{t+1} R_t E_t[(\gamma_{t+1}^i(s_{t+1}, C_{t+1}))^{-\sigma}]
+$$
+
+Taking logs:
+
+$$
+\log \beta_t - \sigma \log \gamma_t^i(s_t, C_t) = \log \beta_{t+1} + \log R_t +\log \Big[E_t[(\gamma_{t+1}^i(s_{t+1}, C_{t+1}))^{-\sigma}]\Big]
+$$
+
+Implicitly differentiating:
+
+\begin{align}
+- \sigma \frac{d\gamma_t^i(s_t, C_t)}{\gamma_t^i(s_t, C_t)} =  d\log R_t +\frac{E_t[-\sigma(\gamma_{t+1}^i(s_{t+1}, C_{t+1}))^{-\sigma-1}d\gamma_{t+1}^i(s_{t+1}, C_{t+1})]}{ E_t[(\gamma_{t+1}^i(s_{t+1}, C_{t+1}))^{-\sigma}]}\label{p4}
+\end{align}
+
+Focus on LHS of \ref{p4}.  Multiply by $1 = \frac{dC_t/C_t}{dC_t/C_t}$
+
+$$
+- \sigma \frac{d\gamma_t^i(s_t, C_t)}{\gamma_t^i(s_t, C_t)} = - \sigma \frac{d\gamma_t^i(s_t, C_t)/\gamma_t^i(s_t, C_t)}{dC_t/C_t} \frac{dC_t}{C_t}
+=
+-\sigma \frac{d\gamma_t^i(s_t, Y_t)/\gamma_t^i(s_t, Y_t)}{dY_t/Y_t} d\log C_t 
+=
+-\underbrace{\sigma \varepsilon_t^i(s_t, Y_t)}_{\equiv \alpha_{C, t}} d\log C_t
+$$
+
+Because $dC_t/C_t = dY_t /Y_t = d\log C_t$, and $\varepsilon_t^i(s_t, Y_t) \equiv \frac{d\gamma_t^i(s_t, Y_t)/\gamma_t^i(s_t, Y_t)}{dY_t/Y_t}$. 
+
+Turning to the second term on RHS of \ref{p4}, notice that $(\gamma_{t+1}^i(s_{t+1}, C_{t+1}))^{-\sigma} = c_{t+1}(s_{t+1})^{-\sigma}  \equiv u_{c, t+1}^i(s_{t+1})$:
+
+\begin{align*}
+\frac{E_t[-\sigma(\gamma_{t+1}^i(s_{t+1}, C_{t+1}))^{-\sigma-1}d\gamma_{t+1}^i(s_{t+1}, C_{t+1})]}{ E_t[(\gamma_{t+1}^i(s_{t+1}, C_{t+1}))^{-\sigma}]}
+&=
+-\sigma \frac{E_t[(\gamma_{t+1}^i(s_{t+1}, C_{t+1}))^{-\sigma}\frac{d\gamma_{t+1}^i(s_{t+1}, C_{t+1})}{\gamma_{t+1}^i(s_{t+1}, C_{t+1})}]}{ E_t[u_{c, t+1}^i(s_{t+1})]}\\
+&=
+-\sigma \frac{E_t[u_{c, t+1}^i(s_{t+1})\frac{d\gamma_{t+1}^i(s_{t+1}, C_{t+1})}{\gamma_{t+1}^i(s_{t+1}, C_{t+1})}]}{ E_t[u_{c, t+1}^i(s_{t+1})]}\\
+&=
+-\sigma \frac{E_t[u_{c, t+1}^i(s_{t+1})\frac{d\gamma_{t+1}^i(s_{t+1}, C_{t+1})}{\gamma_{t+1}^i(s_{t+1}, C_{t+1})}]}{ E_t[u_{c, t+1}^i(s_{t+1})]}\frac{dC_{t+1}/C_{t+1}}{dC_{t+1}/C_{t+1}}\\
+&=
+-\sigma \frac{E_t[u_{c, t+1}^i(s_{t+1})\frac{d\gamma_{t+1}^i(s_{t+1}, C_{t+1})/\gamma_{t+1}^i(s_{t+1}, C_{t+1})}{dC_{t+1}/C_{t+1}}]}{ E_t[u_{c, t+1}^i(s_{t+1})]}dC_{t+1}/C_{t+1}\\
+&=
+-\sigma \frac{E_t[u_{c, t+1}^i(s_{t+1})\frac{d\gamma_{t+1}^i(s_{t+1}, Y_{t+1})/\gamma_{t+1}^i(s_{t+1}, Y_{t+1})}{dY_{t+1}/Y_{t+1}}]}{ E_t[u_{c, t+1}^i(s_{t+1})]}d\log C_{t+1}\\
+&=
+-\underbrace{\sigma \frac{E_t[u_{c, t+1}^i\varepsilon_{t+1}^i(s_{t+1}, Y_{t+1})]}{ E_t[u_{c, t+1}^i]}}_{\equiv \alpha_{C',t}}d\log C_{t+1}
+\end{align*}
+
+By multiplying by $1 = \frac{dC_{t+1}/C_{t+1}}{dC_{t+1}/C_{t+1}}$ and recognizing that $\frac{dC_{t+1}}{C_{t+1}} = \frac{dY_{t+1}}{Y_{t+1}} = d \log C_{t+1}$.
+
+
+\end{enumerate}
+
+\end{document}
+
+
+
+
