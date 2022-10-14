@@ -175,7 +175,44 @@ V(w, z) =
 \end{cases}
 \end{align*}
 
+\pagebreak
 
+\item Smarter value function with bond prices instead of interest rates:
+
+\begin{align*}
+V(w, z) =
+\max_{(k', b')} \Bigg\{ 
+& \underbrace{w + b'q(k',b',z) - k'}_{\text{cash dividend if } (+) \text{ or equity issuance if } (-)} \\ 
+&- \underbrace{T^d(w + b'q(k',b',z) - k')}_{\text{taxes on cash dividend}} \\
+&- \underbrace{\Lambda(-(w + b'q(k',b',z) - k'))}_{\text{equity issuance cost}} \\
+&+ \frac{1}{1+r(1-\tau_i)} E\Big[\underbrace{\max\{ V(w', z'), 0\}}_{\text{if }V \text{ is } (-) \text{, firm can default}}| z\Big] \Bigg\} \\
+\text{where }
+\underbrace{y'}_{\text{taxable corporate income}} &\equiv \underbrace{z' (k')^\alpha}_{\text{operating profits}} - \underbrace{\delta k'}_{\text{depreciation}} - \underbrace{(1-q(k',b',z)) b'}_{\text{interest on debt}} \\
+\underbrace{T^C(x)}_{\text{corporate income tax bill}} &\equiv 
+\begin{cases} 
+\tau_c^+ x, & \text{if }x > 0 \\
+\tau_c^- x, & \text{if }x \le 0
+\end{cases}\\
+\underbrace{w'}_{\text{realized net worth}} &\equiv \underbrace{y' - T^C(y')}_{\text{after-tax corporate income}}+ \underbrace{k'}_{\text{capital}}  - \underbrace{q(k',b',z)b'}_{\text{debt principal}} \\
+\underbrace{T^d(x)}_{\text{taxes on cash dividend}} &= 
+\begin{cases}
+\frac{\bar \tau_d}{\phi}(\phi x + e^{-\phi x} - 1), & x > 0 \\
+0,& x \le 0
+\end{cases} \\
+\underbrace{\Lambda(x)}_{\text{equity issuance cost}} &= 
+\begin{cases} 
+\lambda_0 + \lambda_1 x + \lambda_2 x^2, & \text{if }x > 0 \\
+0, & \text{if }x \le 0
+\end{cases}
+\end{align*}
+
+\pagebreak
+
+\item Zero profit condition:
+
+\begin{align*}
+b' (1+r(1-\tau_i)) = (1+(1-\tau_i)\tilde r(k', b', z)) b' \int_{z_d(k', b', z)}^{\bar z} Q(z, dz') + \int_{\underline z}^{z_d(k', b', z)} R(k', z') Q(z, dz')
+\end{align*}
 
 \end{itemize}
 

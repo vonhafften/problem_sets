@@ -64,16 +64,10 @@ mutable struct Grids
     max_lz::Float64                # maximum
 
     # coarse productivity
-    N_lz_c::Int64                  # number of grid points
-    MC_lz_c::MarkovChain           # tauchen as MarkovChain
-    grid_lz_c::Vector{Float64}     # grid
-    Π_lz_c::Matrix{Float64}        # transition probabilities
-
-    # fine productivity
-    N_lz_f::Int64                  # number of grid points
-    MC_lz_f::MarkovChain           # tauchen as MarkovChain
-    grid_lz_f::Vector{Float64}     # grid
-    Π_lz_f::Matrix{Float64}        # transition probabilities
+    N_lz::Int64                  # number of grid points
+    MC_lz::MarkovChain           # tauchen as MarkovChain
+    grid_lz::Vector{Float64}     # grid
+    Π_lz::Matrix{Float64}        # transition probabilities
 
     # capital
     min_k::Float64              # minimum
@@ -87,33 +81,18 @@ mutable struct Grids
     N_b::Int64                  # number of grid points
     grid_b::Vector{Float64}     # grid
 
-    # net worth
-    min_w::Float64              # minimum
-    max_w::Float64              # maximum
-    N_w::Int64                  # number of grid points
-    grid_w::Vector{Float64}     # grid
 end
 
 # creates Grids based on In_Primitives
 function Initialize_Grids(P::Primitives)
 
     # coarse productivity
-    N_lz_c        = 15
-    MC_lz_c       = tauchen(N_lz_c, P.ρ, P.σ_ε, 0, 4)
-    grid_lz_c     = collect(MC_lz_c.state_values)
-    π_lz_c        = MC_lz_c.p
-    min_lz        = grid_lz_c[1]
-    max_lz        = grid_lz_c[N_lz_c]
-    # min_lz and max_lz should be about the following...
-    # min_lz        = -4*P.σ_ε/ sqrt(1- P.ρ^2)
-    # max_lz        =  4*P.σ_ε/ sqrt(1- P.ρ^2)
-
-    # fine productivity
-    N_lz_f        = 60
-    MC_lz_f       = tauchen(N_lz_f, P.ρ, P.σ_ε, 0, 4)
-    grid_lz_f     = collect(MC_lz_f.state_values)
-    π_lz_f        = MC_lz_f.p
-    # max_lz and min_lz should be the same as above
+    N_lz        = 15
+    MC_lz       = tauchen(N_lz, P.ρ, P.σ_ε, 0, 4)
+    grid_lz     = collect(MC_lz.state_values)
+    Π_lz        = MC_lz.p
+    min_lz      = grid_lz[1]    # should be about min_lz = -4*P.σ_ε/ sqrt(1- P.ρ^2)
+    max_lz      = grid_lz[N_lz] # should be about max_lz =  4*P.σ_ε/ sqrt(1- P.ρ^2)    
 
     # capital
     k_bar      = ((P.δ / exp(max_lz))/P.α)^(1/(P.α-1))
@@ -123,55 +102,74 @@ function Initialize_Grids(P::Primitives)
     max_k      = grid_k[N_k]
 
     # debt
-    min_b  = -(1-P.τ_c_p) * k_bar ^ P.α / P.r
-    max_b  = (1-P.τ_c_p) * k_bar ^ P.α / P.r
     N_b    = Int64(floor(N_k/2))
-    grid_b = collect(range(min_b, max_b; length = N_b))
-
-    # net worth grid - HW doesn't say much about this...
-    # min_w  = compute_nw(min_k, max_b, exp(min_lz), exp(min_lz), P.r, P) # approximate lower end w min k and z and max amount of debt with interest rate r
-    # max_w  = compute_nw(max_k, min_b, exp(max_lz), exp(max_lz), P.r, P) # approximate upper end w max k and z and min amount of debt with interest rate r
-    temp_grid_w = zeros(N_k, N_b, N_lz_c, N_lz_c)
-    for (i_k_p, k_p) = enumerate(grid_k), (i_b_p, b_p) = enumerate(grid_b), (i_lz, lz) = enumerate(grid_lz_c), (i_lz_p, lz_p) = enumerate(grid_lz_c)
-        y_p = exp(lz_p) * k_p ^ P.α - P.δ * k_p - P.r * b_p
-        w_p = y_p - T_C(y_p, P) + k_p - b_p
-        temp_grid_w[i_k_p, i_b_p, i_lz, i_lz_p] = w_p
-    end
-    min_w  = minimum(temp_grid_w)
-    max_w  = maximum(temp_grid_w)
-    N_w    = 100 # just a guess...
-    grid_w = collect(range(min_w, max_w; length = N_w))
+    max_b  = (1-P.τ_c_p) * k_bar ^ P.α / P.r
+    min_b  = -(1-P.τ_c_p) * k_bar ^ P.α / P.r
+    temp_grid = collect(range(0.001, 0.999; length = N_b))
+    temp_grid = log.(temp_grid ./ (1 .- temp_grid))
+    grid_b = temp_grid ./ temp_grid[1] * min_b
 
     return Grids(min_lz, max_lz, 
-                 N_lz_c, MC_lz_c, grid_lz_c, π_lz_c, 
-                 N_lz_f, MC_lz_f, grid_lz_f, π_lz_f, 
+                 N_lz, MC_lz, grid_lz, Π_lz, 
                  min_k, max_k, N_k, grid_k, 
-                 min_b, max_b, N_b, grid_b,
-                 min_w, max_w, N_w, grid_w)
+                 min_b, max_b, N_b, grid_b)
 end
 
 # structure for Results
 mutable struct Results
-    r_tilde::Array{Float64} # bond prices
+
+    # net worth grid
+    min_w::Float64              # minimum
+    max_w::Float64              # maximum
+    N_w::Int64                  # number of grid points
+    grid_w::Vector{Float64}     # grid
+
+    # results
+    q::Array{Float64}       # bond prices
     vf::Array{Float64}      # value function
     pf_b::Array{Float64}    # bond policy function 
     pf_k::Array{Float64}    # capital policy function 
-    pf_d::Array{Int64}    # default policy function
     w_bar::Array{Float64}   # default threshold net worth 
+    lz_d::Array{Float64}      # default policy function
+end
+
+# net worth grid - HW doesn't say much about this...
+function compute_w_grid(q::Array{Float64}, N_w::Int64, P::Primitives, G::Grids)
+    temp_grid_w = zeros(G.N_k, G.N_b, G.N_lz, G.N_lz)
+    
+    for (i_k_p, k_p) = enumerate(G.grid_k), (i_b_p, b_p) = enumerate(G.grid_b), (i_lz, lz) = enumerate(G.grid_lz), (i_lz_p, lz_p) = enumerate(G.grid_lz)
+        y_p = exp(lz_p) * k_p ^ P.α - P.δ * k_p - (1-q[i_k_p,i_b_p,i_lz]) * b_p
+        w_p = y_p - T_C(y_p, P) + k_p - q[i_k_p,i_b_p,i_lz]*b_p
+        temp_grid_w[i_k_p, i_b_p, i_lz, i_lz_p] = w_p
+    end
+
+    min_w  = minimum(temp_grid_w) - 0.1
+    max_w  = maximum(temp_grid_w) + 0.1
+    
+    linear_grid = collect(range(0.0, log(max_w-min_w + 1); length = N_w))
+
+    return exp.(linear_grid) .+ min_w .- 1
 end
 
 function Initialize_Results(P::Primitives, G::Grids)
+    
     # start bond rates at r
     # bond price dimensions are capital, bonds, productivity
-    r_tilde = zeros(G.N_k, G.N_b, G.N_lz_c)
-    r_tilde .+= P.r
+    q = zeros(G.N_k, G.N_b, G.N_lz)
+    q .+= 1/(1+P.r)
+
+    #  w grid
+    N_w    = 20 # just a guess...
+    grid_w = compute_w_grid(q, N_w, P, G)
+    min_w  = minimum(grid_w)
+    max_w  = maximum(grid_w)
 
     # vf dimensions are realized net worth and current productivity
-    vf   = zeros(G.N_w, G.N_lz_c)
-    pf_b = zeros(G.N_w, G.N_lz_c)
-    pf_k = zeros(G.N_w, G.N_lz_c)
-    pf_d = fill(0, G.N_w, G.N_lz_c)
-    w_bar = zeros(G.N_lz_c)
+    vf   = zeros(N_w, G.N_lz)
+    pf_b = zeros(N_w, G.N_lz)
+    pf_k = zeros(N_w, G.N_lz)
+    w_bar = zeros(G.N_lz)
+    lz_d = zeros(G.N_k, G.N_b, G.N_lz)
 
-    Results(r_tilde, vf, pf_b, pf_k, pf_d, w_bar)
+    Results(min_w, max_w, N_w, grid_w, q, vf, pf_b, pf_k, w_bar, lz_d)
 end

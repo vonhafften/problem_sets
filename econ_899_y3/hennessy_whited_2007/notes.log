@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  6 OCT 2022 12:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  13 OCT 2022 23:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -625,13 +625,18 @@ File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
 
 {/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
  [4]
-[5] (./notes.aux)
+[5] [6]
+Overfull \hbox (4.16052pt too wide) detected at line 215
+[]
+ []
+
+[7] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 12104 strings out of 478994
- 173868 string characters out of 5858184
+ 12106 strings out of 478994
+ 173880 string characters out of 5858184
  503362 words of memory out of 5000000
  29389 multiletter control sequences out of 15000+600000
  411116 words of font info for 59 fonts, out of 8000000 for 9000
@@ -651,10 +656,10 @@ sr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></us
 r/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/
 local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/lo
 cal/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on notes.pdf (5 pages, 130556 bytes).
+Output written on notes.pdf (7 pages, 135953 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
- 62 compressed objects within 1 object stream
- 6 named destinations out of 1000 (max. 500000)
+ 95 PDF objects out of 1000 (max. 8388607)
+ 72 compressed objects within 1 object stream
+ 8 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
