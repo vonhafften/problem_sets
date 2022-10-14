@@ -9,10 +9,9 @@ include("structures.jl")
 include("helper_functions.jl")
 
 # applies bellman operator
-function Apply_Bellman!(P::Primitives, G::Grids, R::Results)
+function apply_Bellman!(P::Primitives, G::Grids, R::Results)
 
     # interpolate interest rates and value
-    q_interp = LinearInterpolation((G.grid_k, G.grid_b, G.grid_lz), R.q)
     vf_interp = LinearInterpolation((R.grid_w, G.grid_lz), R.vf)
 
     # initialize next guess for value function
@@ -26,7 +25,7 @@ function Apply_Bellman!(P::Primitives, G::Grids, R::Results)
         for (i_k_p, k_p) = enumerate(G.grid_k), (i_b_p, b_p) = enumerate(G.grid_b)
             
             # bond price
-            q = q_interp(k_p, b_p, lz)
+            q = R.q[i_k_p, i_b_p, i_lz]
 
             candidate = w + q*b_p - k_p           # cash dividend if positive and equity issuance if negative
             candidate -= T_d(w + q*b_p - k_p, P)  # cash dividend tax
@@ -52,7 +51,7 @@ end
 
 
 # solves for policy and value function with bond prices given
-function Solve_vf!(P::Primitives, G::Grids, R::Results; show_progress::Bool = true)
+function solve_vf!(P::Primitives, G::Grids, R::Results; show_progress::Bool = true)
     err = 100
     tolerence = 0.0001
     i = 1
@@ -62,7 +61,7 @@ function Solve_vf!(P::Primitives, G::Grids, R::Results; show_progress::Bool = tr
         if show_progress
             println(err)
         end
-        vf_next = Apply_Bellman!(P, G, R)
+        vf_next = apply_Bellman!(P, G, R)
         err = maximum(abs.(vf_next - R.vf))
         R.vf = vf_next
         if err < tolerence
@@ -80,13 +79,23 @@ function compute_default_states!(P::Primitives, G::Grids, R::Results)
     # determine default net worth threshold
     for i_lz = 1:G.N_lz
         # vf must be monotone
-        if sum((R.vf[1:end-1, i_lz] - R.vf[2:end, i_lz]) .< 0.0) != R.N_w - 1
-            println("R.vf is not monotone")
+        if sum((R.vf[1:end-1, i_lz] - R.vf[2:end, i_lz]) .<= 0.0) != R.N_w - 1
+            error("R.vf is not monotone")
         end
-        # invert value function
-        vf_inv_interp = LinearInterpolation(R.vf[:, i_lz], R.grid_w)
-        # get value at zero
-        R.w_bar[i_lz] = vf_inv_interp(0.0)
+
+        # get value at zero by inverting  value function w linear Interpolations 
+        # vf_inv_interp = LinearInterpolation(R.vf[:, i_lz], R.grid_w)
+        # R.w_bar[i_lz] = vf_inv_interp(0.0)
+
+        # use math; speeds up because you don't need the full interpolated object
+        for i_w = 1:(R.N_w-1)
+            if (R.vf[i_w, i_lz] < 0) & (R.vf[i_w+1, i_lz] > 0)
+                m = (R.vf[i_w+1, i_lz] - R.vf[i_w, i_lz])/(R.grid_w[i_w+1] - R.grid_w[i_w])
+                b = R.vf[i_w, i_lz] - m * R.grid_w[i_w]
+                R.w_bar[i_lz] = -b/m
+                break
+            end
+        end
     end
 
     # determine default threshold
@@ -107,13 +116,24 @@ function compute_default_states!(P::Primitives, G::Grids, R::Results)
             R.lz_d[i_k_p, i_b_p, i_lz] = G.min_lz
         else
             # w_over_w_bar must be monotone
-            if sum((w_over_w_bar[1:end-1] - w_over_w_bar[2:end]) .< 0.0) != G.N_lz - 1
-                println("w_over_w_bar is not monotone")
+            #if sum((w_over_w_bar[1:end-1] - w_over_w_bar[2:end]) .<= 0.0) != G.N_lz - 1
+            #    println(w_over_w_bar)
+            #    error("w_over_w_bar is not monotone")
+            #end
+
+            # invert value function to get value at zero using linear interpolation
+            # w_over_w_bar_inv_interp = LinearInterpolation(w_over_w_bar, G.grid_lz)
+            # R.lz_d[i_k_p, i_b_p, i_lz] = w_over_w_bar_inv_interp(0.0)
+
+            # use math; speeds up because you don't need the full interpolated object
+            for i_lz_p = 1:(G.N_lz-1)
+                if (w_over_w_bar[i_lz_p] < 0) & (w_over_w_bar[i_lz_p+1] > 0)
+                    m = (w_over_w_bar[i_lz_p+1] - w_over_w_bar[i_lz_p])/(G.grid_lz[i_lz_p+1] - G.grid_lz[i_lz_p])
+                    b = w_over_w_bar[i_lz_p] - m * G.grid_lz[i_lz_p]
+                    R.lz_d[i_k_p, i_b_p, i_lz] = -b/m
+                    break
+                end
             end
-            # invert value function
-            w_over_w_bar_inv_interp = LinearInterpolation(w_over_w_bar, G.grid_lz)
-            # get value at zero
-            R.lz_d[i_k_p, i_b_p, i_lz] = w_over_w_bar_inv_interp(0.0)
         end
     end
 end
@@ -129,7 +149,7 @@ function compute_q!(P::Primitives, G::Grids, R::Results)
             if lz_p >= R.lz_d[i_k_p, i_b_p, i_lz]
                 nondefault_mass += G.Π_lz[i_lz, i_lz_p]
             else
-                recovery_value = (1-P.ξ)*(1-P.δ)*k_p + exp(lz_p) * k_p^P.α - T_C(exp(lz_p) * k_p^P.α - P.δ * k_p, P) #- R.w_bar[i_lz_p]
+                recovery_value = (1-P.ξ)*(1-P.δ)*k_p + exp(lz_p) * k_p^P.α - T_C(exp(lz_p) * k_p^P.α - P.δ * k_p, P) - R.w_bar[i_lz_p]
                 if recovery_value < 0.0
                     error("recovery value negative")
                 end
@@ -145,7 +165,7 @@ function compute_q!(P::Primitives, G::Grids, R::Results)
     return q_next
 end
 
-function Solve_model(;show_progress = true)
+function solve_model(;show_progress = true)
     P = Initialize_Primitives()
     G = Initialize_Grids(P)
     R = Initialize_Results(P, G)
@@ -153,17 +173,16 @@ function Solve_model(;show_progress = true)
     tolerence = 0.001
     err = 100.0
     i = 1
-    max_iterations = 200
+    max_iterations = 100
 
-    λ = 0.9
+    λ = 0.99
 
     while true
-        Solve_vf!(P, G, R; show_progress = false)
+        solve_vf!(P, G, R; show_progress = false)
         compute_default_states!(P, G, R)
         q_guess = compute_q!(P, G, R)
-        q_next = R.q .* λ .+ q_guess .* (1-λ);
-        err = maximum(abs.(R.q - q_next))
-        R.q = q_next
+        err = maximum(abs.(R.q - q_guess))
+        R.q = R.q .* λ .+ q_guess .* (1-λ);
         if show_progress
             println(err)
         end
@@ -177,9 +196,9 @@ function Solve_model(;show_progress = true)
         end
 
         # update net worth grid
-        R.grid_w = compute_w_grid(R.q, R.N_w, P, G)
-        R.min_w  = minimum(R.grid_w)
-        R.max_w  = maximum(R.grid_w)
+        # R.grid_w = compute_w_grid(R.q, R.N_w, P, G)
+        # R.min_w  = minimum(R.grid_w)
+        # R.max_w  = maximum(R.grid_w)
 
         i+=1
     end

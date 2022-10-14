@@ -95,7 +95,7 @@ function Initialize_Grids(P::Primitives)
     max_lz      = grid_lz[N_lz] # should be about max_lz =  4*P.σ_ε/ sqrt(1- P.ρ^2)    
 
     # capital
-    k_bar      = ((P.δ / exp(max_lz))/P.α)^(1/(P.α-1))
+    k_bar      = ((P.δ / exp(max_lz))/P.α)^(1/(P.α-1)) - 50
     grid_k     = k_bar.*(1 - P.δ).^(15:-0.5:0)
     N_k        = length(grid_k)
     min_k      = grid_k[1]
@@ -104,7 +104,9 @@ function Initialize_Grids(P::Primitives)
     # debt
     N_b    = Int64(floor(N_k/2))
     max_b  = (1-P.τ_c_p) * k_bar ^ P.α / P.r
-    min_b  = -(1-P.τ_c_p) * k_bar ^ P.α / P.r
+    # min_b  = -(1-P.τ_c_p) * k_bar ^ P.α / P.r
+    # max_b  = 250  # tighten bounds on bonds
+    min_b  = -150 # tighten bounds on bonds
     temp_grid = collect(range(0.001, 0.999; length = N_b))
     temp_grid = log.(temp_grid ./ (1 .- temp_grid))
     grid_b = temp_grid ./ temp_grid[1] * min_b
@@ -135,20 +137,33 @@ end
 
 # net worth grid - HW doesn't say much about this...
 function compute_w_grid(q::Array{Float64}, N_w::Int64, P::Primitives, G::Grids)
-    temp_grid_w = zeros(G.N_k, G.N_b, G.N_lz, G.N_lz)
+    # temp_grid_w = zeros(G.N_k, G.N_b, G.N_lz, G.N_lz)
+    
+    # for (i_k_p, k_p) = enumerate(G.grid_k), (i_b_p, b_p) = enumerate(G.grid_b), (i_lz, lz) = enumerate(G.grid_lz), (i_lz_p, lz_p) = enumerate(G.grid_lz)
+    #     y_p = exp(lz_p) * k_p ^ P.α - P.δ * k_p - (1-q[i_k_p,i_b_p,i_lz]) * b_p
+    #     w_p = y_p - T_C(y_p, P) + k_p - q[i_k_p,i_b_p,i_lz]*b_p
+    #     temp_grid_w[i_k_p, i_b_p, i_lz, i_lz_p] = w_p
+    # end
+
+    temp_grid_w_1 = zeros(G.N_k, G.N_b, G.N_lz, G.N_lz)
+    temp_grid_w_2 = zeros(G.N_k, G.N_b, G.N_lz, G.N_lz)
     
     for (i_k_p, k_p) = enumerate(G.grid_k), (i_b_p, b_p) = enumerate(G.grid_b), (i_lz, lz) = enumerate(G.grid_lz), (i_lz_p, lz_p) = enumerate(G.grid_lz)
-        y_p = exp(lz_p) * k_p ^ P.α - P.δ * k_p - (1-q[i_k_p,i_b_p,i_lz]) * b_p
-        w_p = y_p - T_C(y_p, P) + k_p - q[i_k_p,i_b_p,i_lz]*b_p
-        temp_grid_w[i_k_p, i_b_p, i_lz, i_lz_p] = w_p
+        y_p = exp(lz_p) * k_p ^ P.α - P.δ * k_p - (1-(1/(1+P.r))) * b_p
+        w_p = y_p - T_C(y_p, P) + k_p - (1/(1+P.r))*b_p
+        temp_grid_w_1[i_k_p, i_b_p, i_lz, i_lz_p] = w_p
+        y_p = exp(lz_p) * k_p ^ P.α - P.δ * k_p - (1-0.0) * b_p
+        w_p = y_p - T_C(y_p, P) + k_p - 0.0*b_p
+        temp_grid_w_2[i_k_p, i_b_p, i_lz, i_lz_p] = w_p
     end
 
-    min_w  = minimum(temp_grid_w) - 0.1
-    max_w  = maximum(temp_grid_w) + 0.1
-    
-    linear_grid = collect(range(0.0, log(max_w-min_w + 1); length = N_w))
 
-    return exp.(linear_grid) .+ min_w .- 1
+    min_w  = min(minimum(temp_grid_w_1), minimum(temp_grid_w_2))
+    max_w  = max(maximum(temp_grid_w_1), maximum(temp_grid_w_2))
+    
+    # linear_grid = collect(range(0.0, log(max_w-min_w + 1); length = N_w))
+    # return exp.(linear_grid) .+ min_w .- 1
+    return collect(range(min_w, max_w; length = N_w))
 end
 
 function Initialize_Results(P::Primitives, G::Grids)
@@ -159,7 +174,7 @@ function Initialize_Results(P::Primitives, G::Grids)
     q .+= 1/(1+P.r)
 
     #  w grid
-    N_w    = 20 # just a guess...
+    N_w    = 11 # just a guess...
     grid_w = compute_w_grid(q, N_w, P, G)
     min_w  = minimum(grid_w)
     max_w  = maximum(grid_w)
