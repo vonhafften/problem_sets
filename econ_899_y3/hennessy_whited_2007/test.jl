@@ -153,11 +153,21 @@ P = Initialize_Primitives()
 G = Initialize_Grids(P)
 R = solve_model()
 
-plot(R.grid_w, R.vf)
-plot(R.grid_w, R.pf_b)
-plot(G.grid_lz, R.pf_b') # on second pass this is weird. Low productivity firms choose more capital.
-plot(R.grid_w, R.pf_k) # on second pass this is weird. Low productivity firms choose more capital.
-plot(G.grid_lz, R.pf_k') # on second pass this is weird. Low productivity firms choose more capital.
+# calculate cash dividends
+cash_dividends =  max.(G.grid_w * ones(G.N_lz)' + R.pf_b - R.pf_k, 0.0)
+
+# calculate equity issuance
+equity_issuance =  max.(R.pf_k - G.grid_w * ones(G.N_lz)' - R.pf_b, 0.0)
+
+plot(G.grid_w, R.vf)
+plot(G.grid_w, R.pf_b)
+plot(G.grid_lz, R.pf_b', legend = :topleft, label = round.(G.grid_w')) # on second pass this is weird. Low productivity firms choose more capital.
+plot(G.grid_w, R.pf_k) # on second pass this is weird. Low productivity firms choose more capital.
+plot(G.grid_lz, R.pf_k', legend = :topleft, label = round.(G.grid_w')) # on second pass this is weird. Low productivity firms choose more capital.
+plot(G.grid_w, cash_dividends)
+plot(G.grid_lz, cash_dividends')
+plot(G.grid_w, equity_issuance)
+plot(G.grid_lz, equity_issuance')
 plot(G.grid_lz, R.w_bar) # on second pass this is weird. Low productivity firms choose more capital.
 
 plot(G.grid_k, R.lz_d[:,G.N_b,:])
@@ -213,3 +223,22 @@ plot(G.grid_k, R.q[:,:,12])
 plot(G.grid_k, R.q[:,:,13])
 plot(G.grid_k, R.q[:,:,14])
 plot(G.grid_k, R.q[:,:,15])
+
+
+########################################################
+# test simulations.jl
+########################################################
+
+using Plots
+
+include("structures.jl");
+include("helper_functions.jl");
+include("model.jl");
+include("simulations.jl");
+
+P = Initialize_Primitives()
+G = Initialize_Grids(P)
+R = solve_model()
+S = simulate_model(P, G, R)
+
+compute_moments(P, S)
