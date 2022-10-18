@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  17 OCT 2022 18:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  17 OCT 2022 19:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1082,23 +1082,19 @@ thkerncmss.
 ] [5
 
 ]
-Overfull \hbox (7.1687pt too wide) detected at line 160
+Overfull \hbox (7.1687pt too wide) detected at line 161
 []
  []
 
 
-Overfull \vbox (7.71277pt too high) detected at line 160
+Overfull \vbox (7.71277pt too high) detected at line 161
  []
 
 [6
 
 ]
-Overfull \hbox (7.1687pt too wide) detected at line 190
+Overfull \hbox (7.1687pt too wide) detected at line 175
 []
- []
-
-
-Overfull \vbox (7.65724pt too high) detected at line 190
  []
 
 [7
@@ -1108,13 +1104,22 @@ Overfull \vbox (7.65724pt too high) detected at line 190
 ] [9
 
 ]
-Overfull \hbox (6.30779pt too wide) detected at line 258
+Overfull \hbox (6.30779pt too wide) detected at line 243
 []
  []
 
 [10
 
 ] [11
+
+] [12
+
+]
+Overfull \hbox (6.00613pt too wide) in paragraph at lines 317--317
+ [] 
+ []
+
+[13
 
 ]
 \tf@nav=\write7
@@ -1131,10 +1136,10 @@ Package rerunfilecheck Info: File `hw_slides.out' has not changed.
 (rerunfilecheck)             Checksum: 5C616A2E90C93E0CACD5CF670D17E239;264.
  ) 
 Here is how much of TeX's memory you used:
- 21612 strings out of 478994
- 404144 string characters out of 5858184
- 709119 words of memory out of 5000000
- 38591 multiletter control sequences out of 15000+600000
+ 21642 strings out of 478994
+ 404685 string characters out of 5858184
+ 709344 words of memory out of 5000000
+ 38615 multiletter control sequences out of 15000+600000
  412995 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  131i,18n,132p,432b,618s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1155,10 +1160,10 @@ al/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local
 exlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/tex
 live/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texli
 ve/2021/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on hw_slides.pdf (11 pages, 179221 bytes).
+Output written on hw_slides.pdf (13 pages, 184589 bytes).
 PDF statistics:
- 178 PDF objects out of 1000 (max. 8388607)
- 138 compressed objects within 2 object streams
- 26 named destinations out of 1000 (max. 500000)
+ 191 PDF objects out of 1000 (max. 8388607)
+ 149 compressed objects within 2 object streams
+ 30 named destinations out of 1000 (max. 500000)
  73 words of extra memory for PDF output out of 10000 (max. 10000000)
 

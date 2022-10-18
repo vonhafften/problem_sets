@@ -18,7 +18,7 @@
 \newcommand{\Lfn}{\mathcal{L}}
 \newcommand{\one}{\mathbbm{1}}
 
-\title[HW (2007)]{``How Costly is External Financing? Evidence from a Structural Estimation"\\Christopher Hennessy and Toni Whited (2007)\\Journal of Finance}
+\title[HW (2007)]{``How Costly is External Financing? Evidence from a Structural Estimation"\\Christopher A. Hennessy and Toni M. Whited (2007)\\Journal of Finance}
 \author{Alex von Hafften}
 \institute{UW-Madison}
 
@@ -77,6 +77,7 @@
 \frametitle{Environment - Production and Debt}
 \small
 \begin{itemize}
+\item Estimated parameters in {\color{red}red}
 \item Firm produces with $k$ capital
 \item Productivity follows discretized AR(1) process in logs: 
 
@@ -117,7 +118,7 @@ $$
 $$
 T^d(X) = \int_0^X \tau_d(x) dx \text{ where } \tau_d(x) \equiv \bar \tau_d * [1 - e^{-{\color{red}\phi} x}]
 $$
-\item Firm bears cost for external equity issuance:
+\item Firm pays fixed, linear, and quadratic costs for external equity issuance:
 $$
 \Lambda(x) \equiv 
 \begin{cases} 
@@ -140,20 +141,20 @@ V(k, b, z, z^-) =
 &+ \frac{1}{1+r(1-\tau_i)} E\Big[\underbrace{\max\{ V(k', b', z', z), 0\}}_{\text{if }V(\cdot) \text{ is } (-) \implies\text{ default}}\Big] \Bigg\} \\
 \text{where }
 \underbrace{y}_{\text{taxable corporate income}} &\equiv \underbrace{z k^\alpha}_{\text{operating profits}} - \underbrace{\delta k}_{\text{depreciation}} - \underbrace{\tilde r(k, b, z^-) b}_{\text{interest on debt}} \\
+\underbrace{w}_{\text{realized net worth}} &\equiv \underbrace{y - T^C(y)}_{\text{after-tax corporate income}}+ \underbrace{k}_{\text{capital}}  - \underbrace{b}_{\text{debt principal}} \\
 \underbrace{T^C(x)}_{\text{corporate income tax bill}} &\equiv 
 \begin{cases} 
 \tau_c^+ x, & \text{if }x > 0 \\
 \tau_c^- x, & \text{if }x \le 0
 \end{cases}\\
-\underbrace{w}_{\text{realized net worth}} &\equiv \underbrace{y - T^C(y)}_{\text{after-tax corporate income}}+ \underbrace{k}_{\text{capital}}  - \underbrace{b}_{\text{debt principal}} \\
 \underbrace{T^d(x)}_{\text{taxes on cash dividend}} &\equiv 
 \begin{cases}
-\frac{\bar \tau_d}{\phi}(\phi x + e^{-\phi x} - 1), & \text{if }x > 0 \\
+\frac{\bar \tau_d}{{\color{red}\phi}}({\color{red}\phi} x + e^{-{\color{red}\phi} x} - 1), & \text{if }x > 0 \\
 0,& \text{if } x \le 0
 \end{cases} \\
 \underbrace{\Lambda(x)}_{\text{equity issuance cost}} &\equiv 
 \begin{cases} 
-\lambda_0 + \lambda_1 x + \lambda_2 x^2, & \text{if }x > 0 \\
+{\color{red}\lambda_0} + {\color{red}\lambda_1} x + {\color{red}\lambda_2} x^2, & \text{if }x > 0 \\
 0, & \text{if }x \le 0
 \end{cases}
 \end{align*}
@@ -170,23 +171,7 @@ V(w, z) =
 &+ \frac{1}{1+r(1-\tau_i)} E\Big[\underbrace{\max\{ V(w', z'), 0\}}_{\text{if }V \text{ is } (-) \text{ can default}}\Big] \Bigg\} \\
 \text{where }
 \underbrace{y'}_{\text{taxable corporate income}} &\equiv \underbrace{z' (k')^\alpha}_{\text{operating profits}} - \underbrace{\delta k'}_{\text{depreciation}} - \underbrace{\tilde r(k', b', z) b'}_{\text{interest on debt}} \\
-\underbrace{T^C(x)}_{\text{corporate income tax bill}} &\equiv 
-\begin{cases} 
-\tau_c^+ x, & \text{if }x > 0 \\
-\tau_c^- x, & \text{if }x \le 0
-\end{cases}\\
-\underbrace{w'}_{\text{realized net worth}} &\equiv \underbrace{y' - T^C(y')}_{\text{after-tax corporate income}}+ \underbrace{k'}_{\text{capital}}  - \underbrace{b'}_{\text{debt principal}} \\
-\underbrace{T^d(x)}_{\text{taxes on cash dividend}} &\equiv 
-\begin{cases}
-\frac{\bar \tau_d}{\phi}(\phi x + e^{-\phi x} - 1), & \text{if }x > 0 \\
-0,& \text{if } x \le 0
-\end{cases} \\
-\underbrace{\Lambda(x)}_{\text{equity issuance cost}} &\equiv 
-\begin{cases} 
-\lambda_0 + \lambda_1 x + \lambda_2 x^2, & \text{if }x > 0 \\
-0, & \text{if }x \le 0
-\end{cases}
-\end{align*}
+\underbrace{w'}_{\text{realized net worth}} &\equiv \underbrace{y' - T^C(y')}_{\text{after-tax corporate income}}+ \underbrace{k'}_{\text{capital}}  - \underbrace{b'}_{\text{debt principal}} \end{align*}
 \end{frame}
 
 
@@ -200,7 +185,7 @@ $$
 $$
 \item If firm defaults, outside investor gets recovery value
 \begin{align*}
-R(k', z') &= \underbrace{(1-{\color{red}\xi}) (1-\delta)k'}_{\text{depreciated capital}} + \underbrace{z'(k')^\alpha}_{\text{operating profit}} - \underbrace{T_c(z'(k')^\alpha - \delta k')}_{\text{corporate tax bill }} - \underbrace{\underline w (z')}_{\text{going-concern}}
+R(k', z') &= \underbrace{(1-{\color{red}\xi}) (1-\delta)k'}_{\text{depreciated capital net of deadweight bankruptcy cost}} + \underbrace{z'(k')^\alpha}_{\text{operating profit}} \\&- \underbrace{T_c(z'(k')^\alpha - \delta k')}_{\text{corporate tax bill }} - \underbrace{\underline w (z')}_{\text{going-concern}}
 \end{align*}
 \item Interest rates on debt determined by zero-profit condition for outside investor
 \begin{align*}
@@ -233,7 +218,7 @@ R(k', z') &= \underbrace{(1-{\color{red}\xi}) (1-\delta)k'}_{\text{depreciated c
 
 
 \begin{frame}
-\frametitle{Some things to keep in mind}
+\frametitle{Computation Issues}
 \small
 \begin{enumerate}
 \item Discount bond prices are bounded whereas interest rates are not:
@@ -253,26 +238,85 @@ V(w, z) =
 \item HW (2007) are specific about $z$, $b$, $k$ grids, but quiet about the $w$ grid
 \item My solution: Loop over $z$, $b$, $k$ grids and solve $w$ for $q = 0$ and $q = 1/(1+r)$, then linear interpolate between min and max
 \end{itemize}
-\item No contraction mapping for bond prices $\implies$ update $q$ slowly
+\item No contraction mapping for bond prices $\implies$ update $q$ guess slowly
 \end{enumerate}
 \end{frame}
 
 \section{Estimation}
 
 \begin{frame}
-\frametitle{External Parameters}
+\frametitle{External Parameters from Related Literature}
 \small
 \begin{center}
-\begin{tabular}{ |c|c|c| } 
+\begin{tabular}{ cc } 
  \hline
- cell1 & cell2 & cell3 \\ 
- cell4 & cell5 & cell6 \\ 
- cell7 & cell8 & cell9 \\ 
+ Parameter    & Value \\ 
  \hline
+ $\bar\tau_d$ & 0.12 \\ 
+ $\tau_i$     & 0.29 \\ 
+ $\tau_c^+$   & 0.40 \\ 
+ $\tau_c^-$   & 0.20 \\ 
+ $r$          & 0.025 \\
+ $\delta$     & 0.15 \\
+ \hline 
 \end{tabular}
 \end{center}
-\begin{table}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Moments Selection}
+\small
+\begin{itemize}
+\item Production function curvature $\alpha$
+\begin{itemize}
+\item Hello
+\end{itemize}
+\item Fixed, linear, and quadratic external equity issuance costs $\lambda_0, \lambda_1, \lambda_2$
+\begin{itemize}
+\item Hello
+\end{itemize}
+\item Bankruptcy deadweight cost $\xi$
+\begin{itemize}
+\item Hello
+\end{itemize}
+\item Shareholder tax liability curvature $\phi$
+\begin{itemize}
+\item Hello
+\end{itemize}
+\item Productivity shock variance and productivity persistence  $\sigma_\epsilon, \rho$
+\begin{itemize}
+\item Hello
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Moments and Estimated Parameters}
+\scriptsize
+\begin{center}
+\begin{tabular}{ ccc } 
+ \hline
+ Parameter            & Estimates (HW) & SE (HW) \\ 
+ \hline
+ $\alpha$             & 0.627 &(0.219) \\ 
+ $\lambda_0$          & 0.598 &(0.233) \\ 
+ $\lambda_1$          & 0.091 &(0.026) \\ 
+ $\lambda_2$          & 0.0004 &(0.0008) \\ 
+ $\xi$                & 0.104 &(0.059) \\
+ $\phi$               & 0.732 &(0.844) \\
+ $\sigma_\varepsilon$ & 0.118 &(0.042) \\
+ $\rho$               & 0.684 &(0.349) \\
+ \hline 
+\end{tabular}
+\end{center}
+
+\begin{center}
+\csvautotabular{table_1.csv}
+\end{center}
+\end{frame}
+
+
 
 
 

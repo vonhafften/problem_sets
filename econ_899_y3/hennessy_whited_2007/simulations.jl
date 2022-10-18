@@ -89,19 +89,19 @@ function compute_moments(P::Primitives, S::Simulation_Results)
     cf_ta = (exp.(S.lz) .* S.k .^P.α - broadcast(y -> T_C(y, P), y) .+ S.q .* S.b) ./ S.k
 
     # tobin's q
-    tobin_q = (S.mv .+ S.q .* S.b) ./ S.k
+    tobin_q = (S.mv .+ S.b) ./ S.k
 
     # operating income over book real assets
     oi_ta = exp.(S.lz) .* S.k .^ P.α ./ S.k
 
     # debt over market value real assets
-    d_mv = S.b[:, 2:end] ./ (S.mv[:, 1:(end-1)] .+ S.b[:, 2:end])
+    d_mv = S.b[:, 2:end] ./ (S.mv[:, 1:(end-1)] .+ S.q[:, 2:end] .* S.b[:, 2:end])
 
     # equity inssurance over book real assets
-    ei_ta = max.(-(S.k[:,2:end] .- S.w[:,1:(end-1)] .- S.b[:,2:end]) ./ S.k[:,1:(end-1)], 0.0)
+    ei_ta = max.(-(S.k[:,2:end] .- S.w[:,1:(end-1)] .- S.q[:, 2:end] .* S.b[:,2:end]) ./ S.k[:,1:(end-1)], 0.0)
 
     # cash distribution over book real assets
-    div_ta = max.((S.k[:,2:end] .- S.w[:,1:(end-1)] .- S.b[:,2:end]) ./ S.k[:,1:(end-1)], 0.0)
+    div_ta = max.((S.k[:,2:end] .- S.w[:,1:(end-1)] .- S.q[:, 2:end] .* S.b[:,2:end]) ./ S.k[:,1:(end-1)], 0.0)
 
     # create long data for covariances and correlations
     long_data = zeros((S.T-1)*S.N, 10)
