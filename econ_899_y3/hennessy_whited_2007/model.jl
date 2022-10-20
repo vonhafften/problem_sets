@@ -9,7 +9,7 @@ include("structures.jl")
 include("helper_functions.jl")
 
 # applies bellman operator
-function apply_Bellman!(P::Primitives, G::Grids, R::Results)
+function apply_bellman!(P::Primitives, G::Grids, R::Results)
 
     # interpolate interest rates and value
     vf_interp = LinearInterpolation((G.grid_w, G.grid_lz), R.vf)
@@ -27,9 +27,9 @@ function apply_Bellman!(P::Primitives, G::Grids, R::Results)
             # bond price
             q = R.q[i_k_p, i_b_p, i_lz]
 
-            candidate = w + q*b_p - k_p           # cash dividend if positive and equity issuance if negative
-            candidate -= T_d(w + q*b_p - k_p, P)  # cash dividend tax
-            candidate -= Λ(-(w + q*b_p - k_p), P) # equity issuance cost
+            candidate = w + q * b_p - k_p           # cash dividend if positive and equity issuance if negative
+            candidate -= T_d(w + q * b_p - k_p, P)  # cash dividend tax
+            candidate -= Λ(-(w + q * b_p - k_p), P) # equity issuance cost
  
             # add continuation value
             for (i_lz_p, lz_p) = enumerate(G.grid_lz)
@@ -61,7 +61,7 @@ function solve_vf!(P::Primitives, G::Grids, R::Results; show_progress::Bool = tr
         if show_progress
             println(err)
         end
-        vf_next = apply_Bellman!(P, G, R)
+        vf_next = apply_bellman!(P, G, R)
         err = maximum(abs.(vf_next - R.vf))
         R.vf = vf_next
         if err < tolerence
@@ -150,20 +150,16 @@ function compute_q!(P::Primitives, G::Grids, R::Results)
                 if lz_p >= R.lz_d[i_k_p, i_b_p, i_lz]
                     nondefault_mass += G.Π_lz[i_lz, i_lz_p]
                 else
-                    recovery_value = (1-P.ξ)*(1-P.δ)*k_p + exp(lz_p) * k_p^P.α - T_C(exp(lz_p) * k_p^P.α - P.δ * k_p, P) - R.w_bar[i_lz_p]
-                    if recovery_value < 0.0
-                        println(R.w_bar[i_lz_p])
-                        error("recovery value negative")
-                    end
-                recovery_return += recovery_value / b_p * G.Π_lz[i_lz, i_lz_p]
-                
+                    # recovery_value = (1-P.ξ)*(1-P.δ)*k_p + exp(lz_p) * k_p^P.α - T_C(exp(lz_p) * k_p^P.α - P.δ * k_p, P) - R.w_bar[i_lz_p]
+                    recovery_value = 0.0
+                    recovery_return += recovery_value / b_p * G.Π_lz[i_lz, i_lz_p]
                 end
             end
             # compute interest rate
             r_tilde_next = (1/(1-P.τ_i)) * ((1 + P.r * (1 - P.τ_i) - recovery_return)/nondefault_mass - 1)
 
             # convert to bond price
-            q_next[i_k_p, i_b_p, i_lz] = max(min(1/(1+r_tilde_next), 1/(1+P.r)), 0.0)
+            q_next[i_k_p, i_b_p, i_lz] = 1/(1+r_tilde_next)
         end
     end
     return q_next

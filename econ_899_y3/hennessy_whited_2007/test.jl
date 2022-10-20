@@ -38,12 +38,12 @@ P = Initialize_Primitives()
 G = Initialize_Grids(P)
 R = Initialize_Results(P, G)
 
-Solve_vf!(P, G, R)
+solve_vf!(P, G, R)
 
-plot(R.grid_w, R.vf)
-plot(R.grid_w, R.pf_b)
-plot(R.grid_w, R.pf_k)
-plot!(R.grid_w, R.grid_w)
+plot(G.grid_w, R.vf)
+plot(G.grid_w, R.pf_b)
+plot(G.grid_w, R.pf_k)
+plot!(G.grid_w, G.grid_w)
 
 ########################################################
 # test model.jl
@@ -59,42 +59,42 @@ P = Initialize_Primitives()
 G = Initialize_Grids(P)
 R = Initialize_Results(P, G)
 
-Solve_vf!(P, G, R)
+solve_vf!(P, G, R)
 compute_default_states!(P, G, R)
 q_next = compute_q!(P, G, R)
-err = sum(abs.(R.q - q_next))
-R.q = 0.9 .* R.q .+ 0.1 .* q_next
+err = maximum(abs.(R.q - q_next))
+R.q = 0.5 .* R.q .+ 0.5 .* q_next
 
-R.grid_w = compute_w_grid(R.q, R.N_w, P, G)
-R.min_w  = minimum(R.grid_w)
-R.max_w  = maximum(R.grid_w)
+plot(G.grid_k, R.q[:,G.N_b,:])
+
+solve_vf!(P, G, R)
+compute_default_states!(P, G, R)
+q_next = compute_q!(P, G, R)
+err = maximum(abs.(R.q - q_next))
+R.q = 0.5 .* R.q .+ 0.5 .* q_next
 
 plot(G.grid_k, R.q[:,G.N_b,:])
 
 
 
-Solve_vf!(P, G, R)
+
+
+
+solve_vf!(P, G, R)
 compute_default_states!(P, G, R)
 q_next = compute_q!(P, G, R)
-err = sum(abs.(R.q - q_next))
+err = maximum(abs.(R.q - q_next))
 R.q = q_next;
 
-Solve_vf!(P, G, R2)
-compute_default_states!(P, G, R2)
-q_next = compute_q!(P, G, R2)
-err = sum(abs.(R2.q - q_next))
-R2.q = q_next;
+solve_vf!(P, G, R)
+compute_default_states!(P, G, R)
+q_next = compute_q!(P, G, R)
+err = maximum(abs.(R.q - q_next))
+R.q = q_next;
 
-R1.q .-R2.q
-plot(G.grid_lz, R.w_bar)
-plot!(G.grid_lz, R2.w_bar)
-
-
-plot(R1.grid_w, R.vf)
-plot!(R2.grid_w, R2.vf)
+plot(G.grid_w, R.vf)
 
 plot(G.grid_k, R.lz_d[:,G.N_b,:])
-plot!(G.grid_k, R2.lz_d[:,G.N_b,:])
 
 plot(G.grid_k, R2.q[:,G.N_b,:])
 
