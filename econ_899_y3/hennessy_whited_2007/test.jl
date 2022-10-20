@@ -159,23 +159,52 @@ cash_dividends =  max.(G.grid_w * ones(G.N_lz)' + R.pf_b - R.pf_k, 0.0)
 # calculate equity issuance
 equity_issuance =  max.(R.pf_k - G.grid_w * ones(G.N_lz)' - R.pf_b, 0.0)
 
-plot(G.grid_w, R.vf)
-plot(G.grid_w, R.pf_b)
-plot(G.grid_lz, R.pf_b', legend = :topleft, label = round.(G.grid_w')) # on second pass this is weird. Low productivity firms choose more capital.
-plot(G.grid_w, R.pf_k) # on second pass this is weird. Low productivity firms choose more capital.
+plot(G.grid_w, R.vf, label = round.(G.grid_lz'; digits=2), legend =:bottomright)
+xlabel!("Net Worth")
+title!("Value Function by Productivity")
+savefig("vf.png")
+
+plot(G.grid_w, R.pf_b, label = round.(G.grid_lz'; digits=2))
+xlabel!("Net Worth")
+title!("Debt by Productivity")
+savefig("pf_b.png")
+
+
+plot(G.grid_w, R.pf_k, label = round.(G.grid_lz'; digits=2)) # on second pass this is weird. Low productivity firms choose more capital.
+xlabel!("Net Worth")
+title!("Capital by Productivity")
+savefig("pf_k.png")
+
 plot(G.grid_lz, R.pf_k', legend = :topleft, label = round.(G.grid_w')) # on second pass this is weird. Low productivity firms choose more capital.
-plot(G.grid_w, cash_dividends)
+plot(G.grid_w, cash_dividends, label = round.(G.grid_lz'; digits=2), legend = :topleft)
+xlabel!("Net Worth")
+title!("Dividends by Productivity")
+savefig("dividends.png")
+
 plot(G.grid_lz, cash_dividends')
-plot(G.grid_w, equity_issuance)
+plot(G.grid_w, equity_issuance, label = round.(G.grid_lz'; digits=2))
+xlabel!("Net Worth")
+title!("Equity Issuance by Productivity")
+savefig("issuance.png")
+
 plot(G.grid_lz, equity_issuance')
-plot(G.grid_lz, R.w_bar) # on second pass this is weird. Low productivity firms choose more capital.
+plot(G.grid_lz, R.w_bar, legend = false) # on second pass this is weird. Low productivity firms choose more capital.
+xlabel!("ln Productivity")
+ylabel!("Net Worth")
+title!("Net Worth Default Cutoff")
+savefig("w_bar.png")
 
 plot(G.grid_k, R.lz_d[:,G.N_b,:])
 plot(G.grid_k, R.lz_d[:,G.N_b-1,:])
 plot(G.grid_k, R.lz_d[:,G.N_b-2,:])
 plot(G.grid_k, R.lz_d[:,G.N_b-3,:])
 plot(G.grid_k, R.lz_d[:,G.N_b-4,:])
-plot(G.grid_k, R.lz_d[:,G.N_b-5,:])
+plot(G.grid_k, R.lz_d[:,G.N_b-5,:], label = round.(G.grid_lz'; digits=2))
+xlabel!("Capital")
+ylabel!("Productivity Cutoff")
+title!("Productivity Cutoff Holding Debt Constant by Productivity")
+savefig("z_d.png")
+
 plot(G.grid_k, R.lz_d[:,G.N_b-6,:])
 plot(G.grid_k, R.lz_d[:,G.N_b-7,:])
 plot(G.grid_k, R.lz_d[:,G.N_b-8,:])
@@ -201,7 +230,12 @@ plot(G.grid_k, R.q[:,6,:])
 plot(G.grid_k, R.q[:,7,:])
 plot(G.grid_k, R.q[:,8,:])
 plot(G.grid_k, R.q[:,9,:])
-plot(G.grid_k, R.q[:,10,:])
+plot(G.grid_k, R.q[:,10,:], label = round.(G.grid_lz'; digits=2))
+xlabel!("Capital")
+ylabel!("Bond Price")
+title!("Bond Price Holding Debt Constant by Productivity")
+savefig("q.png")
+
 plot(G.grid_k, R.q[:,11,:])
 plot(G.grid_k, R.q[:,12,:])
 plot(G.grid_k, R.q[:,13,:])

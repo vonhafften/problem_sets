@@ -1,0 +1,116 @@
+setwd("/Users/vonhafften/Documents/UW Madison/problem_sets/econ_899_y3/hennessy_whited_2007/")
+
+library(xlsx)
+library(tidyverse)
+library(DescTools)
+library(plm)
+options(scipen=999)
+
+raw_data <- read_csv("compustat_data_oct17.csv")
+
+data <- raw_data %>%
+  filter(!is.na(at + ppegt + capxv + sppe + ib + dp + sstk + dltt+ dlc + dvp + dvc + prstkc + che + sale)) %>% # remove missing data
+  filter(at > 0) %>% # remove 0 or negative at
+  filter(ppegt > 0) %>% # remove 0 or negative ppegt
+  filter(sale > 0) %>% # remove 0 or negative sale
+  group_by(gvkey) %>% 
+  mutate(count = n())%>% 
+  ungroup() %>%
+  filter(count >= 2) %>% # remove firms with 1 observation
+  filter(sic < 4900 | sic > 4999) %>% # drop firms based on sic
+  filter(sic < 6000 | sic > 6999) %>%
+  filter(sic < 9000) %>%
+  mutate(inv = capxv - sppe,
+         cf = ib + dp,
+         lt_debt = dltt + dlc,
+         dividends = dvp + dvc + prstkc,
+         net_debt = dltt + dlc - che,
+         ei_at = sstk / at,
+         inv_at = inv / at,
+         ei_pos = sstk > 0.0,
+         dividend_pos = dividends > 0.0,
+         neg_debt = net_debt < 0.0,
+         div_at = dividends / at,
+         debt_at = net_debt / at,
+         income_at = sale / at)%>%
+  mutate(hw_sample = fyear >= 1988 & fyear <= 2001) %>%
+  mutate(updated_sample = fyear >= 2009 & fyear <= 2019)
+
+hist(data$ei_at)
+hist(data$inv_at)
+hist(data$div_at)
+hist(data$debt_at)
+hist(data$income_at)
+
+data %>% 
+  select(ei_at, inv_at, div_at, debt_at, income_at) %>%
+  summarise_all(quantile, prob = 0.98)
+
+data %>% 
+  select(ei_at, inv_at, div_at, debt_at, income_at) %>%
+  summarise_all(quantile, prob = 0.02)
+
+
+data_trimmed <- data %>% # trim variables 
+  mutate(ei_at_trim = (ei_at >= quantile(data$ei_at, prob = 0.98)),
+         inv_at_trim = (inv_at >= quantile(data$inv_at, prob = 0.98))|(inv_at <= quantile(data$inv_at, prob = 0.02)),
+         div_at_trim = (div_at >= quantile(data$div_at, prob = 0.98)),
+         debt_at_trim = (debt_at >= quantile(data$debt_at, prob = 0.98))|(debt_at <= quantile(data$debt_at, prob = 0.02)),
+         income_at_trim = (income_at >= quantile(data$income_at, prob = 0.98))|(income_at <= quantile(data$income_at, prob = 0.02))) %>%
+  filter(!ei_at_trim) %>%
+  filter(!inv_at_trim) %>%
+  filter(!div_at_trim) %>%
+  filter(!debt_at_trim) %>%
+  filter(!income_at_trim) 
+  
+data_trimmed %>%
+  group_by(fyear) %>%
+  summarise(count = n()) %>%
+  ggplot() +
+  geom_line(aes(x=fyear, y=count))
+
+hist(data_trimmed$ei_at)
+hist(data_trimmed$inv_at)
+hist(data_trimmed$div_at)
+hist(data_trimmed$debt_at)
+hist(data_trimmed$income_at)
+
+compute_moments <- function(df) {
+  pdata <- df %>%
+    transmute(gvkey, fyear, income_at) %>%
+    pdata.frame(index = c("gvkey", "fyear"), drop.index = TRUE)
+  
+  ar_1 <- plm(income_at ~ lag(income_at), data = pdata, model = "within", effect = "twoways")
+  
+  result <- df %>%
+    summarize(mean_ei_at = mean(ei_at),
+              var_ei_at = var(ei_at),
+              var_inv_at = var(inv_at),
+              freq_ei = mean(ei_pos),
+              payout_ratio = mean(dividend_pos),
+              freq_neg_debt = mean(neg_debt),
+              var_div_at = var(div_at),
+              mean_debt_at = mean(debt_at),
+              cov_inv_ei = cov(inv_at, ei_at),
+              cov_inv_lev = cov(inv_at, debt_at)) %>%
+    bind_cols(serial_cor_inc_at = ar_1$coefficients[1],
+              sd_inc_at_shock = sd(residuals(ar_1))) %>%
+    t()
+  
+  return(result)
+}
+
+# hw_sample
+hw_moments <- data_trimmed %>%
+  filter(hw_sample) %>%
+  compute_moments()
+
+# updated sample
+updated_moments <- data_trimmed %>%
+  filter(updated_sample) %>%
+  compute_moments()
+
+result <- data.frame(cbind(hw_moments, updated_moments))
+names(result) <- c("1988-2002", "2010-2019")
+
+write_csv(result, "replicated_data_moments.csv")

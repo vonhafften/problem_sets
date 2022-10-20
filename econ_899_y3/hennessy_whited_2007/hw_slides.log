@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  17 OCT 2022 19:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  19 OCT 2022 17:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1077,49 +1077,115 @@ thkerncmss.
 
 ] [3
 
-] [4
+] (./hw_slides.toc) [4
 
 ] [5
 
-]
-Overfull \hbox (7.1687pt too wide) detected at line 161
-[]
- []
-
-
-Overfull \vbox (7.71277pt too high) detected at line 161
- []
-
-[6
+] [6
 
 ]
-Overfull \hbox (7.1687pt too wide) detected at line 175
+Overfull \hbox (7.1687pt too wide) detected at line 154
 []
  []
 
 [7
 
-] [8
-
-] [9
-
 ]
-Overfull \hbox (6.30779pt too wide) detected at line 243
+Overfull \hbox (7.1687pt too wide) detected at line 168
 []
  []
 
-[10
+[8
 
-] [11
+] [9
+
+] [10
+
+] (./hw_slides.toc) [11
 
 ] [12
 
+] [13
+
+] [14
+
+] (./hw_slides.toc) [15
+
 ]
-Overfull \hbox (6.00613pt too wide) in paragraph at lines 317--317
- [] 
+Overfull \hbox (6.30779pt too wide) detected at line 326
+[]
  []
 
-[13
+[16
+
+] [17
+
+]
+<vf.png, id=173, 602.25pt x 401.5pt>
+File: vf.png Graphic file (type png)
+<use vf.png>
+Package pdftex.def Info: vf.png  used on input line 351.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [18
+
+ <./vf.png>]
+<pf_b.png, id=180, 602.25pt x 401.5pt>
+File: pf_b.png Graphic file (type png)
+<use pf_b.png>
+Package pdftex.def Info: pf_b.png  used on input line 357.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [19
+
+ <./pf_b.png>]
+<pf_k.png, id=188, 602.25pt x 401.5pt>
+File: pf_k.png Graphic file (type png)
+<use pf_k.png>
+Package pdftex.def Info: pf_k.png  used on input line 363.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [20
+
+ <./pf_k.png>]
+<dividends.png, id=195, 602.25pt x 401.5pt>
+File: dividends.png Graphic file (type png)
+<use dividends.png>
+Package pdftex.def Info: dividends.png  used on input line 370.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [21
+
+ <./dividends.png>]
+<issuance.png, id=202, 602.25pt x 401.5pt>
+File: issuance.png Graphic file (type png)
+<use issuance.png>
+Package pdftex.def Info: issuance.png  used on input line 376.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [22
+
+ <./issuance.png>]
+<w_bar.png, id=209, 602.25pt x 401.5pt>
+File: w_bar.png Graphic file (type png)
+<use w_bar.png>
+Package pdftex.def Info: w_bar.png  used on input line 382.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [23
+
+ <./w_bar.png>]
+<z_d.png, id=216, 602.25pt x 401.5pt>
+File: z_d.png Graphic file (type png)
+<use z_d.png>
+Package pdftex.def Info: z_d.png  used on input line 388.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [24
+
+ <./z_d.png>]
+<q.png, id=223, 602.25pt x 401.5pt>
+File: q.png Graphic file (type png)
+<use q.png>
+Package pdftex.def Info: q.png  used on input line 394.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [25
+
+ <./q.png>]
+[26
 
 ]
 \tf@nav=\write7
@@ -1133,16 +1199,16 @@ Overfull \hbox (6.00613pt too wide) in paragraph at lines 317--317
 
  (./hw_slides.aux)
 Package rerunfilecheck Info: File `hw_slides.out' has not changed.
-(rerunfilecheck)             Checksum: 5C616A2E90C93E0CACD5CF670D17E239;264.
+(rerunfilecheck)             Checksum: 9B96B40422E000D7E195DD0EAFBD0D02;362.
  ) 
 Here is how much of TeX's memory you used:
- 21642 strings out of 478994
- 404685 string characters out of 5858184
- 709344 words of memory out of 5000000
- 38615 multiletter control sequences out of 15000+600000
+ 21806 strings out of 478994
+ 407504 string characters out of 5858184
+ 711882 words of memory out of 5000000
+ 38736 multiletter control sequences out of 15000+600000
  412995 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 131i,18n,132p,432b,618s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 131i,18n,132p,432b,644s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.
 pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.p
@@ -1160,10 +1226,10 @@ al/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local
 exlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/tex
 live/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texli
 ve/2021/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on hw_slides.pdf (13 pages, 184589 bytes).
+Output written on hw_slides.pdf (26 pages, 486613 bytes).
 PDF statistics:
- 191 PDF objects out of 1000 (max. 8388607)
- 149 compressed objects within 2 object streams
- 30 named destinations out of 1000 (max. 500000)
- 73 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 307 PDF objects out of 1000 (max. 8388607)
+ 241 compressed objects within 3 object streams
+ 57 named destinations out of 1000 (max. 500000)
+ 133 words of extra memory for PDF output out of 10000 (max. 10000000)
 

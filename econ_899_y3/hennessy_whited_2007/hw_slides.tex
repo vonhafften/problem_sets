@@ -67,9 +67,17 @@
 \end{itemize}
 \bigskip
 \item HW (2007) estimate parameters describing production technology and financial frictions using simulated method of moments (SMM)
+\bigskip
+\item HW (2007) is seminal paper that uses SMM in corporate finance
 \end{itemize}
 \end{frame}
 
+\AtBeginSection[ ]
+{
+\begin{frame}{Outline}
+    \tableofcontents[currentsection]
+\end{frame}
+}
 
 \section{Model}
 
@@ -108,22 +116,22 @@ y \equiv z k^\alpha - \delta k - \tilde r(k, b, z^-) b
 $$
 \item Corporate tax schedule has ``kink" around zero
 $$
-T^C(x) \equiv 
+T^C(y) \equiv 
 \begin{cases} 
-\tau_c^+ x, & \text{if }x > 0 \\
-\tau_c^- x, & \text{if }x \le 0
+\tau_c^+ y, & \text{if }y > 0 \\
+\tau_c^- y, & \text{if }y \le 0
 \end{cases}
 $$
 \item Shareholder tax liability on dividend:
 $$
-T^d(X) = \int_0^X \tau_d(x) dx \text{ where } \tau_d(x) \equiv \bar \tau_d * [1 - e^{-{\color{red}\phi} x}]
+T^d(div) = \int_0^{div} \tau_d(x) dx \text{ where } \tau_d(x) \equiv \bar \tau_d * [1 - e^{-{\color{red}\phi} x}]
 $$
 \item Firm pays fixed, linear, and quadratic costs for external equity issuance:
 $$
-\Lambda(x) \equiv 
+\Lambda(iss) \equiv 
 \begin{cases} 
-{\color{red}\lambda_0} + {\color{red}\lambda_1} x + {\color{red}\lambda_2} x^2, & \text{if }x > 0 \\
-0, & \text{if }x \le 0
+{\color{red}\lambda_0} + {\color{red}\lambda_1} iss + {\color{red}\lambda_2} iss^2, & \text{if }iss > 0 \\
+0, & \text{if }iss \le 0
 \end{cases}
 $$
 \end{itemize}
@@ -141,22 +149,7 @@ V(k, b, z, z^-) =
 &+ \frac{1}{1+r(1-\tau_i)} E\Big[\underbrace{\max\{ V(k', b', z', z), 0\}}_{\text{if }V(\cdot) \text{ is } (-) \implies\text{ default}}\Big] \Bigg\} \\
 \text{where }
 \underbrace{y}_{\text{taxable corporate income}} &\equiv \underbrace{z k^\alpha}_{\text{operating profits}} - \underbrace{\delta k}_{\text{depreciation}} - \underbrace{\tilde r(k, b, z^-) b}_{\text{interest on debt}} \\
-\underbrace{w}_{\text{realized net worth}} &\equiv \underbrace{y - T^C(y)}_{\text{after-tax corporate income}}+ \underbrace{k}_{\text{capital}}  - \underbrace{b}_{\text{debt principal}} \\
-\underbrace{T^C(x)}_{\text{corporate income tax bill}} &\equiv 
-\begin{cases} 
-\tau_c^+ x, & \text{if }x > 0 \\
-\tau_c^- x, & \text{if }x \le 0
-\end{cases}\\
-\underbrace{T^d(x)}_{\text{taxes on cash dividend}} &\equiv 
-\begin{cases}
-\frac{\bar \tau_d}{{\color{red}\phi}}({\color{red}\phi} x + e^{-{\color{red}\phi} x} - 1), & \text{if }x > 0 \\
-0,& \text{if } x \le 0
-\end{cases} \\
-\underbrace{\Lambda(x)}_{\text{equity issuance cost}} &\equiv 
-\begin{cases} 
-{\color{red}\lambda_0} + {\color{red}\lambda_1} x + {\color{red}\lambda_2} x^2, & \text{if }x > 0 \\
-0, & \text{if }x \le 0
-\end{cases}
+\underbrace{w}_{\text{realized net worth}} &\equiv \underbrace{y - T^C(y)}_{\text{after-tax corporate income}}+ \underbrace{k}_{\text{capital}}  - \underbrace{b}_{\text{debt principal}} 
 \end{align*}
 \end{frame}
 
@@ -216,32 +209,6 @@ R(k', z') &= \underbrace{(1-{\color{red}\xi}) (1-\delta)k'}_{\text{depreciated c
 \end{frame}
 
 
-
-\begin{frame}
-\frametitle{Computation Issues}
-\small
-\begin{enumerate}
-\item Discount bond prices are bounded whereas interest rates are not:
-\scriptsize
-\begin{align*}
-V(w, z) =
-\max_{(k', b')} \Bigg\{ 
-& \underbrace{w + b'q(k',b',z) - k'}_{\text{dividend if } (+) \text{ or equity issuance if } (-)} - \underbrace{T^d(w + b'q(k',b',z) - k')}_{\text{taxes on dividend}} \\
-- &\underbrace{\Lambda(-(w + b'q(k',b',z) - k'))}_{\text{equity issuance cost}} + \frac{1}{1+r(1-\tau_i)} E\Big[\underbrace{\max\{ V(w', z'), 0\}}_{\text{if }V \text{ is } (-) \text{, default}}| z\Big] \Bigg\} \\
-\text{where }
-\underbrace{y'}_{\text{taxable income}} &\equiv \underbrace{z' (k')^\alpha}_{\text{operating profits}} - \underbrace{\delta k'}_{\text{depreciation}} - \underbrace{(1-q(k',b',z)) b'}_{\text{interest on debt}} \\
-\underbrace{w'}_{\text{realized net worth}} &\equiv \underbrace{y' - T^C(y')}_{\text{after-tax corporate income}}+ \underbrace{k'}_{\text{capital}}  - \underbrace{q(k',b',z)b'}_{\text{debt principal}}
-\end{align*}
-\small
-\item What is the $w$ grid?
-\begin{itemize}
-\item HW (2007) are specific about $z$, $b$, $k$ grids, but quiet about the $w$ grid
-\item My solution: Loop over $z$, $b$, $k$ grids and solve $w$ for $q = 0$ and $q = 1/(1+r)$, then linear interpolate between min and max
-\end{itemize}
-\item No contraction mapping for bond prices $\implies$ update $q$ guess slowly
-\end{enumerate}
-\end{frame}
-
 \section{Estimation}
 
 \begin{frame}
@@ -261,38 +228,45 @@ V(w, z) =
  \hline 
 \end{tabular}
 \end{center}
+\begin{itemize}
+\item Notice $\tau_c^+ > \tau_c^- \implies$ corporate taxes larger on positive income than rebate for corporate losses 
+\end{itemize}
 \end{frame}
 
 
 \begin{frame}
 \frametitle{Moments Selection}
-\small
+\scriptsize
+\begin{center}
+\begin{tabular}{ lll } 
+ \hline
+ Parameter            & Description & Moments \\ 
+ \hline
+ $\alpha$             & Profit fn. curvature  & Var. of investment \\ 
+ $\lambda_i$          & Ex. equity iss. costs & Freq. negative debt \\ 
+                      &                       &  Cov. equity iss. and inv. \\ 
+ $\lambda_0$          & Fixed cost &Freq. and mean equity iss. \\ 
+ $\lambda_2$          & Quadratic cost &Var. of equity iss. \\ 
+ $\xi$                & Bankruptcy deadweight cost & Mean net debt-to-assets \\
+                      &                            & Cov. of lev. and inv.\\
+ $\phi$               & Shareholder tax liab. curvature & Payout ratio \\
+                      &                                 & Var. of dividends \\
+ $\sigma_\varepsilon$ & Productivity shock var. & SD of shock to inc.-to-assets \\
+ $\rho$               & Productivity persistence & Serial cor. of inc.-to-assets \\
+ \hline 
+\end{tabular}
+\end{center}
 \begin{itemize}
-\item Production function curvature $\alpha$
-\begin{itemize}
-\item Hello
-\end{itemize}
-\item Fixed, linear, and quadratic external equity issuance costs $\lambda_0, \lambda_1, \lambda_2$
-\begin{itemize}
-\item Hello
-\end{itemize}
-\item Bankruptcy deadweight cost $\xi$
-\begin{itemize}
-\item Hello
-\end{itemize}
-\item Shareholder tax liability curvature $\phi$
-\begin{itemize}
-\item Hello
-\end{itemize}
-\item Productivity shock variance and productivity persistence  $\sigma_\epsilon, \rho$
-\begin{itemize}
-\item Hello
-\end{itemize}
+\item High $\lambda_0 \implies$ fewer larger equity issuances
+\item Freq. negative debt $\implies$ precautionary motion for saving
+\item Cov. of equity iss. and investment informs about equity position in pecking order
+\item Cov. of lev. and investment informs about debt position in pecking order 
+
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Moments and Estimated Parameters}
+\frametitle{Moments and Estimated Parameters using SMM}
 \scriptsize
 \begin{center}
 \begin{tabular}{ ccc } 
@@ -312,11 +286,142 @@ V(w, z) =
 \end{center}
 
 \begin{center}
-\csvautotabular{table_1.csv}
+\csvautotabular{table_hw.csv}
+\end{center}
+
+\begin{itemize}
+\item Good fit, but biggest problem is overestimate of variance of dividends (consistent with lit.)
+\end{itemize}
+\end{frame}
+
+\section{Replication}
+
+
+\begin{frame}
+\frametitle{Replication Issues}
+\scriptsize
+\begin{enumerate}
+\item Discount bond prices are bounded whereas interest rates are not:
+\scriptsize
+\begin{align*}
+V(w, z) =
+\max_{(k', b')} \Bigg\{ 
+& \underbrace{w + b'q(k',b',z) - k'}_{\text{dividend if } (+) \text{ or equity issuance if } (-)} - \underbrace{T^d(w + b'q(k',b',z) - k')}_{\text{taxes on dividend}} \\
+- &\underbrace{\Lambda(-(w + b'q(k',b',z) - k'))}_{\text{equity issuance cost}} + \frac{1}{1+r(1-\tau_i)} E\Big[\underbrace{\max\{ V(w', z'), 0\}}_{\text{if }V \text{ is } (-) \text{, default}}| z\Big] \Bigg\} \\
+\text{where }
+\underbrace{y'}_{\text{taxable income}} &\equiv \underbrace{z' (k')^\alpha}_{\text{operating profits}} - \underbrace{\delta k'}_{\text{depreciation}} - \underbrace{(1-q(k',b',z)) b'}_{\text{interest on debt}} \\
+\underbrace{w'}_{\text{realized net worth}} &\equiv \underbrace{y' - T^C(y')}_{\text{after-tax corporate income}}+ \underbrace{k'}_{\text{capital}}  - \underbrace{q(k',b',z)b'}_{\text{debt principal}}
+\end{align*}
+\small
+\item What is the $w$ grid?
+\begin{itemize}
+\scriptsize
+\item HW (2007) are specific about $z$, $b$, $k$ grids, but quiet about the $w$ grid
+\item My solution: Loop over $z$, $b$, $k$ grids and solve $w$ for $q = 0$ and $q = 1/(1+r)$, then linear interpolate between min and max
+\end{itemize}
+\item No contraction mapping for bond prices $\implies$ update $q$ guess slowly
+\item Compustat data revisions
+\item Unclear data appendix: number of obs. were either 2x or 0.5x
+\end{enumerate}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Model Replication}
+\small
+\begin{itemize}
+\item I coded up model and solved it using HW (2007) estimated parameters
+\end{itemize}
+\scriptsize
+\begin{center}
+\csvautotabular{table_replication_model.csv}
+\end{center}
+\small
+\begin{itemize}
+\item Too much equity issuance and too little dividends
+\item Too much negative debt (e.g., corporate savings)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale = 0.5]{vf.png}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale = 0.5]{pf_b.png}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale = 0.5]{pf_k.png}
 \end{center}
 \end{frame}
 
 
+\begin{frame}
+\begin{center}
+\includegraphics[scale = 0.5]{dividends.png}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale = 0.5]{issuance.png}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale = 0.5]{w_bar.png}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale = 0.5]{z_d.png}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale = 0.5]{q.png}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Data Replication}
+\scriptsize
+\begin{itemize}
+\item I recomputed data moments for original period and recent period
+\end{itemize}
+\tiny
+\begin{center}
+\csvautotabular{table_replication_data.csv}
+\end{center}
+\scriptsize
+\begin{itemize}
+\item Comparing column 1 and column 2:
+\begin{itemize}
+\scriptsize
+\item Var of equity iss./asset too small
+\item Too much equity issuance and too high payout ratio
+\item Cov. of inv. and lev. changes sign
+\item Serial cor. of inc./assets too high and sd of shocks too high
+\end{itemize}
+
+\item Comparing column 2 and column 3:
+\begin{itemize}
+\scriptsize
+\item Higher dividend variance $\implies$ change in $\phi$?
+\item Lower mean debt-to-assets ratio and cov. of inv. and lev. changed sign $\implies$ change in $\xi$?
+\end{itemize}
+\end{itemize}
+\end{frame}
 
 
 

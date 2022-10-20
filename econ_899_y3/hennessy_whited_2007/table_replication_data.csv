@@ -1,0 +1,14 @@
+﻿,Data Moments (HW),Data Moments (AHV),Data Moments (AHV)
+Sample Period,(1988-2001),(1988-2001),(2010-2019)
+Mean Equity Iss./Assets,0.0892,0.0734,0.0546
+Var of Equity Iss./Assets,0.0911,0.0325,0.0229
+Var of Inv./Assets,0.0068,0.0035,0.0024
+Freq of Equity Iss.,0.1751,0.6446,0.683
+Payout Ratio,0.2226,0.4979,0.5906
+Freq of Negative Debt,0.3189,0.3519,0.4565
+Var of Dividends,0.0013,0.0012,0.0022
+Mean Debt-Assets Ratio,0.1204,0.1158,0.0362
+Cov of Inv. and Equity Iss.,0.0004,0.0004,-0.0001
+Cov of Inv. and Lev.,-0.0018,0.0008,0.0024
+Serial Cor of Inc./Assets,0.5121,0.3924,0.4132
+SD of Inc./Assets Shocks,0.1185,0.2582,0.2034
