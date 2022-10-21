@@ -1,0 +1,211 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{bm}
+\usepackage{multicol}
+\usepackage{soul}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{accents}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+\usepackage{setspace}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lfn}{\mathcal{L}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+
+\usepackage{amsthm}
+
+\newtheorem{manualtheoreminner}{Proposition}
+\newenvironment{manualtheorem}[1]{%
+  \renewcommand\themanualtheoreminner{#1}%
+  \manualtheoreminner
+}{\endmanualtheoreminner}
+
+\title{ECON 736A: Problem Set 2}
+\author{Alex von Hafften}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Acharya and Dogra (2020)}
+
+\begin{enumerate}
+
+\item \textit{Carefully prove Proposition 1 in the paper}
+
+\begin{manualtheorem}{1} 
+
+Individual decision problem: Given a sequence of real interest rates, aggregate output, and idiosyncratic risk $\{r_t, y_t, \sigma_{y, t}\}$, household $i$'s consumption decision can be expressed as
+
+\begin{align}
+c_t^i = \C_t + \mu_t (a_t^i + y_t^i)
+\end{align}
+
+where $a_t^i = A_t^i / P_t$ is real net worth at the state of date $t$ and $\C_t$ and $\mu_t$ solve the following recursions:
+
+\begin{align}
+\C_t [1 + \mu_{t+1} (1 + r_t)] &= - \frac{1}{\gamma} \ln \beta (1 +r_t) + \C_{t+1} + \mu_{t+1} \bar y_{t+1} - \frac{\gamma \mu_{t+1}^2 \sigma_{y,t+1}^2}{2}\\
+\mu_t &= \frac{\mu_{t+1}(1+r_t)}{1 + \mu_{t+1} (1+r_t)}
+\end{align}
+
+\end{manualtheorem}
+
+\bigskip
+
+We prove with guess and verify. With CARA utility, the household Euler equation is
+
+$$
+e^{-\gamma c_t^i} = \beta (1 + r_t) E_t e^{-\gamma c_{t+1}^i}
+$$
+
+Taking logs of both sides
+
+$$
+-\gamma c_t^i = \ln \beta (1 + r_t) + \ln E_t e^{-\gamma c_{t+1}^i}
+$$
+
+Guess consumption decision rule is 
+
+$$
+c_t^i = \C_t + \mu_t (a_t^i + y_t^i)
+$$
+
+where $\C_t$ and $\mu_t$ are deterministic. Using the HH budget constraint and the guessed consumption decision rule, we can get $c_{t+1}^i$:
+
+\begin{align*}
+a_{t+1}^i &= (1+r_t) (1 - \mu_t)(a_t^i + y_t^i) - (1 + r_t) \C_t\\
+\implies
+c_{t+1}^i 
+&= \C_{t+1} + \mu_{t+1} [a_{t+1}^i + y_{t+1}^i]\\
+&= \C_{t+1} + \mu_{t+1} [(1+r_t) (1 - \mu_t)(a_t^i + y_t^i) - (1 + r_t) \C_t + y_{t+1}^i]\\
+\end{align*}
+
+All terms in $c_{t+1}^i$ are known at $t$ except for $y_{t+1}^i$ which is normal, so $c_{t+1}^i$ is normal with
+
+\begin{align*}
+E_t[c_{t+1}^i] &= \C_{t+1} + \mu_{t+1} [(1+r_t) (1 - \mu_t)(a_t^i + y_t^i) - (1 + r_t) \C_t + \bar y_{t+1}]\\
+Var_t[c_{t+1}^i] &= \mu_{t+1}^2 \sigma_{y,t+1}^2
+\end{align*}
+
+Applying MGF of normal distributions,
+
+\begin{align*}
+\ln E_t[e^{-\gamma c_{t+1}^i}] 
+&= E_t[-\gamma c_{t+1}^i] + \frac{Var_t[-\gamma c_{t+1}^i]}{2}\\
+&= -\gamma E_t[c_{t+1}^i] + \frac{\gamma^2Var_t[ c_{t+1}^i]}{2}\\
+&= -\gamma \C_{t+1}  -\gamma  \mu_{t+1} [(1+r_t) (1 - \mu_t)(a_t^i + y_t^i) - (1 + r_t) \C_t + \bar y_{t+1}] + \frac{\gamma^2 \mu_{t+1}^2 \sigma_{y,t+1}^2}{2}
+\end{align*}
+
+Substituting into the logged Euler equation,
+
+\begin{align*}
+-\gamma [\C_t + \mu_t (a_t^i + y_t^i)] = \ln \beta (1 + r_t) -\gamma \C_{t+1}  -\gamma  \mu_{t+1} [(1+r_t) (1 - \mu_t)(a_t^i + y_t^i) - (1 + r_t) \C_t + \bar y_{t+1}] + \frac{\gamma^2 \mu_{t+1}^2 \sigma_{y,t+1}^2}{2}
+\end{align*}
+
+Matching coefficients on $(a_t^i + y_t^i)$:
+
+\begin{align*}
+-\gamma \mu_t &= -\gamma \mu_{t+1}(1+r_t)(1-\mu_t)\\
+ \mu_t(1 + \mu_{t+1}(1+r_t)) &= \mu_{t+1}(1+r_t)\\
+ \mu_t &= \frac{\mu_{t+1}(1+r_t)}{1 + \mu_{t+1}(1+r_t)}
+\end{align*}
+
+Matching constant coefficients:
+
+\begin{align*}
+-\gamma \C_t  &= \ln \beta (1 + r_t) -\gamma \C_{t+1}  +\gamma  \mu_{t+1} (1 + r_t) \C_t + \gamma\bar y_{t+1} + \frac{\gamma^2 \mu_{t+1}^2 \sigma_{y,t+1}^2}{2}\\
+\C_t [1 + \mu_{t+1} (1 +r_t)] &= -\frac{1}{\gamma} \ln \beta (1+r_t) + \C_{t+1} + \mu_{t+1} \bar y_{t+1} - \frac{\gamma \mu_{t+1}^2 \sigma_{y, t+1}^2}{2} 
+\end{align*}
+
+\pagebreak
+\item \textit{Carefully derive equations 4.1-4.4 in the paper.}
+
+Linearizing (3.3), (3.5), (3.6), and (2.2)
+
+\begin{align}
+\mu_t &= \frac{\mu_{t+1}(1+r_t)}{1 + \mu_{t+1}(1+r_t)}\\
+y_t &= y_{t+1} - \frac{\ln \beta (1+r_t)}{\gamma} - \frac{\gamma \mu_{t+1}^2 \sigma_{y,t+1}^2}{2} + g_t - g_{t+1}\\
+\Psi \Pi_t(\Pi_t -1) &= 1 - \theta (1 - mc_t) + \Psi (\Pi_{t+1} - 1) \Pi_{t+1} \Bigg[ \frac{1}{1+r_t} \frac{x_{t+1}}{x_t} \Bigg]\\
+1+i_t &= (1+r)\Pi_t^{\Phi_\pi} \ge 1
+\end{align}
+
+around the flexible price level of output $y^* = 1$, $\mu = \frac{r}{1+r}$, and $\Pi = 1$, we get
+
+\begin{align}
+\hat y_t &= \Theta \hat y_{t+1} - \frac{1}{\gamma} (i_t - \pi_{t+1}) - \Lambda \hat \mu_{t+1} \\ 
+\hat \mu_t &= \tilde \beta \hat \mu_{t+1} + \tilde \beta (i_t - \pi_{t+1}) \\
+\pi_t &= \tilde \beta \pi_{t+1} + \kappa \hat y_t\\
+i_t &= \Phi_\pi \pi_t
+\end{align}
+
+where
+
+\begin{align*}
+\Theta &= 1 - \frac{\gamma \mu^2}{2} \frac{d \bm{\sigma}^2 (y^*)}{dy} \\
+\Lambda &= \gamma \mu^2 \bm{\sigma}_y^2 ( y^*) \\
+\tilde \beta &= \frac{1}{1 + r}
+\end{align*}
+
+$\kappa$ denotes the slope of the linearized Phillips curve, and $\hat y_t$, $\hat \mu_t$, $i_t$, and $\pi_t$ denote the log deviation of $y_t$, $\mu_t$, $1+i_t$, and $\Pi_t$ from their steady state values.
+
+\end{enumerate}
+
+\pagebreak
+
+\section{Werning (2015)}
+
+\begin{enumerate}
+
+\item Carefully derive Proposition 5 in the paper.
+
+\begin{manualtheorem}{5} 
+Suppose utilities satisfy (14) with $\sigma = 1$, household income satisfies (15) and borrowing constraints satisfy (17). In addition, suppose initial bond holdings are zero $b^i_0 = 0$ forall households. Then $\{C_t, R_t\}$ is part of an equilibrium if and only if
+
+$$
+U'(C_t) = \beta_t R_t U'(C_{t+1})
+$$
+
+for some sequence of discount factors $\{\beta_t\}$, independent of both $\{R_t\}$ and $\{C_t\}$
+
+\end{manualtheorem}
+
+
+
+
+\end{enumerate}
+
+\end{document}
+
+
+
+
