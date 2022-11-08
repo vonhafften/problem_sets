@@ -52,6 +52,7 @@ mutable struct Results
     Δ_a::Float64                # step size
 end
 
+# 
 # initialize Results structure
 function Initialize(r::Float64, bc::Float64)
     P = Primitives()

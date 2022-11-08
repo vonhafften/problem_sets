@@ -17,7 +17,7 @@ using Plots
 
 results = Initialize();
 
-Solve_model(results)
+@time Solve_model(results)
 
 # value function at equilibrium price
 plot(a_grid, results.value_function, labels = ["Employed" "Unemployed"])

@@ -1,0 +1,334 @@
+\documentclass[usenames,dvipsnames, handout, aspectratio=169]{beamer}
+\usetheme{Boadilla}
+\usepackage{graphicx}
+\usepackage{soul}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{csvsimple}
+
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+\newcommand{\Lfn}{\mathcal{L}}
+\newcommand{\one}{\mathbbm{1}}
+
+\title[Firm Default with Long-Term Debt]{Firm Default with Long-Term Debt}
+\author{Alex von Hafften}
+\institute{UW-Madison}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}[label = motivation]
+\frametitle{Motivation}
+\small
+\begin{itemize}
+\item Firm bankruptcy is important for firm dynamics through debt prices
+
+\item Corbae and D'Erasmo (2021) extend structural corporate finance models {\color{gray}(i.e., Gomes (2001), and Hennessy and Whited (2007))} by adding Ch. 7 liquidation and Ch. 11 reorganization bankruptcy
+
+\item All debt in CD (2021) is short-term in the sense that it matures before new debt can be issued
+
+\item Long-term debt allows debt dilution; issuing new debt reduces value of existing debt obligations
+
+\item But long-term debt increases computational complexity {\color{gray}(i.e., adds state variable)}
+
+\item Arellano (2008) sovereign default model is related to Corbae and D'Erasmo (2021) \hyperlink{equilibirum_default_models}{\beamerbutton{More}}
+
+\item Bornstein (2020) recasts Arellano (2008) in continuous time, uses methods of Achdou et al (2022), and then adds long-term debt a la Chatterjee and Eyigungor (2012)
+
+\item I want to apply Bornstein (2020) approach to Corbae and D'Erasmo (2021)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[label = cts_time_methods]
+\frametitle{Continuous Time Methods and Incomplete Markets}
+\small
+\begin{itemize}
+\item Growing use of continuous time methods to incomplete-markets models
+\begin{itemize}
+{
+\color{gray}
+\item Financial frictions (Brunnermeier and Sannikov 2014)
+\item Dynamics of inequality (Gabaix et al 2016)
+}
+\end{itemize}
+
+\item Achdou et al (2022) develop efficient and portable algorithm to solve Aiyagari-Bewley-Huggett style models in continuous time
+
+\item Recent applications of Achdou et al (2022) methods
+\begin{itemize}
+{
+\color{gray}
+\item Monetary policy with heterogeneous agents (Kaplan et al 2016)
+\item Mortgage refinancing (Laibson et al 2020)
+\item Durable consumption (McKay and Wieland 2021)
+\item Precautionary savings with housing (Guerrieri et al 2020)
+\item Marital wage premia (Pilossoph and Wee 2021)
+}
+\end{itemize}
+
+\item Bornstein (2020) is only strategic equilibrium default model to use Achdou et al (2022) methods
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[label = achdou_summary]
+\frametitle{Achdou et al (2022) Summary \hyperlink{achdou_details_1}{\beamerbutton{Details}}}
+\small
+\begin{itemize}
+\item Recast Aiyagari-Bewley-Huggett in continuous time 
+\item Key advantages over discrete time: 
+\begin{enumerate}
+\item Optimal for assets to evolve continuously
+\item Simultaneous change in asset and change in earning state is measure 0 event
+\end{enumerate}
+\item From (1), agent in interior knows she will reoptimize before hitting BC. So given guess of HJB, BC ``disappears" for agents in interior and can ``brute force" asset decision at BC
+\item From (1) and (2), in an instant in the future,  agent at $(a, y)$ can be in at most four states
+\begin{itemize}
+\item One asset grid point higher and same earning state: $(a + \Delta a , y)$
+\item Same level of assets and same earning state: $(a, y)$
+\item One asset grid point lower and same earning state: $(a - \Delta a, y)$
+\item Same level of assets and different earning state: $(a, \tilde y)$
+\end{itemize}
+So, transition matrix is sparse and near block diagonal $\implies$ easy to invert 
+\item Anecdotal experience: 
+\begin{itemize}
+\item My discrete time Huggett (from ECON 899) took about 40 seconds
+\item My version of Achdou et al (2022) took about 0.1 second
+\item Achdou et al (2022) is ``less robust"
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[label = bornstein_summary_1]
+\frametitle{Bornstein (2022) with Short-Term Debt}
+\small
+\begin{itemize}
+\item  As in Arellano (2008), a sovereign faces fluctuations in domestic output and can borrow or save a constant world interest rate to smooth domestic consumption
+\item At any time, the sovereign can default on debt obligations and be excluded from world financial markets for a stochastic period of time and face output losses
+\item Sovereign problem is close to Achdou et al (2022) but no BC and $r$ depends on state variables
+\begin{align*}
+E_0 \int_0^\infty & e^{-\rho t} u(c_t) dt \\
+\text{s.t. } 
+\dot a_t &= y_t  - c_t + r(y_t, a_t) a_t & \text{out of financial autarky}\\
+0 &= y_t  - \phi(y_t) - c_t & \text{in financial autarky}
+\end{align*}
+where $y_t$ follows compound Poisson process with arrival rate and distribution $F(y', y)$ and $\phi(\cdot)$ is output loss in autarky
+\item  Jumps are critical for endowment process for sovereigns (or productivity process for firms)
+\begin{itemize}
+\item  Endowment process is diffusion $\implies$ probability of default on default frontier is one $\implies$ interest rate on default frontier is infinity $\implies$ sovereign never defaults in equilibrium
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label = bornstein_summary_2]
+\frametitle{Bornstein (2022) with Short-Term Debt (con't) }
+\small
+\begin{itemize}
+\item  HJB of sovereign in autarky
+\begin{align*}
+\rho w(y) = u(y-\phi(y)) + \lambda_y\int_0^\infty (w(y')-w(y)) f(y', y) dy' + \lambda_D [v(0,y) - w(y)]
+\end{align*}
+where sovereign gets out of autarky with Poisson intensity $\lambda_D$
+\item HJB of sovereign out of autarky
+\begin{align*}
+\rho v(a, y) = \max_c \Bigg\{ \rho w(y), u(c) + v_a(a, y) [y - c + r(a, y)a] + \lambda_y\int_0^\infty (v(a,y')-v(a,y)) f(y', y) dy'\Bigg\}
+\end{align*}
+\item Zero profit condition for outside investor
+$$
+r(a, y) - \lambda_y \int_0^\infty D(a, y') f(y',y) dy' = r^f
+$$
+where $D(a, y')$ indicates whether sovereign defaults 
+\item Follow combination of Achdou et al (2022) and Hennessy and Whited (2007) algorithms to solve
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[label = bornstein_summary_3]
+\frametitle{Why is long-term debt pricing easier in continuous time?}
+\small
+\begin{itemize}
+\item Bornstein (2020) sets up problem with long-term debt a la Chatterjee and Eyigungor (2012)
+\item Long-term bonds mature with Poisson intensity $\lambda_b$ and pays flow payment $z$ before maturing
+\item Flow budget constraint 
+\begin{align*}
+c_t  + q(a_t, y_t) \lambda_b a_t + q(a_t, y_t) \dot a_t &= y_t + za_t + \lambda_b a_t\\
+\implies
+s_t \equiv \dot a_t &= \frac{y_t + (z + \lambda_b) a_t - c_t}{q(y_t, a_t)} - \lambda_b a_t
+\end{align*}
+\item Zero profit condition
+\begin{align*}
+q(a, y) = \frac{1}{r^f}\Bigg[z + \lambda_b(1-q(a, y)) + \lambda_y \int_0^\infty [q(a, y') - q(a, y)] dF(y'|y) + s(a, y) q_a(a, y) \Bigg]
+\end{align*}
+\item In discrete time, we have to solve a fixed point problem
+\item In continuous time, we can use finite differences and sparse matrix inversion
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[label = conclusion]
+\frametitle{Conclusion}
+\small
+\begin{itemize}
+\item Today, I discussed recent methods for continuous time incomplete-markets models
+\item I discussed how these methods are applied in equilibrium sovereign default models
+\item Long-term debt is easier to work with in these models
+\item My plan going forward is to try to implement this approach in a model looking at firm dynamics/bankruptcy/liquidation/reorganization problem
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label = equilibirum_default_models]
+\frametitle{Equilibrium Strategic Default Models}
+\small
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+ &&\\
+ \textbf{Topic}    & \textbf{Discrete Time}     & \textbf{Continuous Time} \\ 
+ &&\\
+ \hline
+ &&\\
+ Consumer Default  & Chatterjee et al (2007)    & --- \\ 
+ &&\\
+ \hline
+ &&\\
+ Sovereign Default & Arellano (2008)            & Bornstein (2020) \\
+  & Chatterjee and Eyigungor (2012)            &  \\
+ &&\\ 
+ \hline
+ &&\\
+ Firm Default      & Corbae and D'Erasmo (2021) & --- \\ 
+ &&\\
+ \hline
+\end{tabular}
+\end{center}
+\hyperlink{motivation}{\beamerbutton{Back}}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[label = achdou_details_1]
+\frametitle{Achdou et al (2022) Details}
+\small
+\begin{itemize}
+\item HH maximize lifetime expected utility subject to exogenous BC
+\begin{align*}
+E_0 \int_0^\infty & e^{-\rho t} u(c_t) dt \\
+\text{s.t. } \dot a_t &= y_t  - c_t + r a_t\\
+a_t &\ge \underline a
+\end{align*}
+where $y_t$ follows Poisson process with two states $y_L<y_H$ with arrival rate $\lambda$
+\item Stationary Hamilton-Jacob-Bellman equation
+\begin{align*}
+\rho V(a, y) =& \max_c \{u(c) + \dot a V_a(a, y) \} + \lambda [V(a, \tilde y) - V(a, y)]
+\end{align*}
+\item FOC: $u_c(c) =V_a(a, y) \implies c(a, y) = (u_c)^{-1}(V_a(a, y))$
+\end{itemize}
+\hyperlink{achdou_summary}{\beamerbutton{Back}}
+\end{frame}
+
+
+\begin{frame}[label = achdou_details_2]
+\frametitle{Achdou et al (2022) (con't) Details}
+\small
+\begin{itemize}
+\item Discretize $\implies V_{i,j}$ is HJB and $\partial V_{i,j}$ is partial derivative of HJB wrt $a$ at grid point $(a_i, y_j)$
+\item Given $V_{i,j}$, approximate derivative using finite forward and backward differences
+\begin{align*}
+\partial V_{i,j}^F &\equiv \frac{V_{i,j} - V_{i+1,j}}{\Delta a},  \;\;\;
+\partial V_{i,j}^B \equiv \frac{V_{i,j} - V_{i-1,j}}{\Delta a}
+\end{align*}
+\item FOCs implies asset drift for each finite difference
+\begin{align*}
+\dot a_{i,j}^F = y_i + ra_i - (u_c)^{-1}(\partial V_{i,j}^F),  \;\;\;
+\dot a_{i,j}^B = y_i + ra_i - (u_c)^{-1}(\partial V_{i,j}^B)
+\end{align*}
+\item $V,u$ are concave $\implies \partial V_{i,j}^F < \partial V_{i,j}^B \implies \dot a_{i,j}^F < \dot a_{i,j}^B$
+\item Use ``upwinding" rule to chose which finite difference:
+\begin{align*}
+\partial V_{i,j} \equiv 
+\begin{cases} 
+\partial V_{i,j}^F,  &\text{if } \dot a^B_{i,j} > \dot a^F_{i,j} > 0\\
+\partial V_{i,j}^B,  &\text{if } 0 > \dot a^B_{i,j} > \dot a^F_{i,j}\\
+\partial V_{i,j}^0,  &\text{if } \dot a^B_{i,j} \ge 0 \ge \dot a^F_{i,j}
+\end{cases}
+\end{align*}
+where $\dot a_{i,j}^0 \equiv 0 \implies c_{i,j}^0 = y_j + ra_i \implies \partial V_{i,j}^0 \equiv u_c(y_j + r a_i)$
+\item Brute force at BC $\implies \partial V_{1,j}^B = u_c(y_j + r a_1)$
+\end{itemize}
+\hyperlink{achdou_summary}{\beamerbutton{Back}}
+\end{frame}
+
+\begin{frame}[label = achdou_details_3]
+\frametitle{Achdou et al (2022) (con't) Details}
+\small
+\begin{itemize}
+\item How to update HJB guess? Intuition is to update nonstationary HJB until it converges:
+\begin{align*}
+\frac{\partial V(t,a,y)}{\partial t} + \rho V(t, a, y) =& \max_c \{u(c) + \dot a V_a(t, a, y) \} + \lambda [V(t, a, \tilde y) - V(t, a, y)]
+\end{align*}
+\item Natural first guess $\implies$ the ``explicit method"
+\begin{align*}
+\frac{V_{i,j}^{n+1} - V_{i,j}^n}{\Delta} + \rho V_{i,j}^n = u(c_{i,j}^n) + \dot a_{i,j}^n \partial V_{i,j}^n + \lambda [V_{i,-j}^n - V_{i,j}^n]
+\end{align*}
+However, explicit method is ``badly behaved"
+\item ``Implicit method" works better
+\begin{align*}
+\frac{V_{i,j}^{n+1} - V_{i,j}^n}{\Delta} + \rho V_{i,j}^{n+1} = u(c_{i,j}^n) + \dot a_{i,j}^n \partial V_{i,j}^{n+1} + \lambda [V_{i,-j}^{n+1} - V_{i,j}^{n+1}]
+\end{align*}
+\end{itemize}
+\hyperlink{achdou_summary}{\beamerbutton{Back}}
+\end{frame}
+
+
+\begin{frame}[label = achdou_details_4]
+\frametitle{Achdou et al (2022) (con't) Details}
+\small
+\begin{itemize}
+\item Implicit method results in closed form expression for updating HJB:
+\begin{align*}
+\frac{V^{n+1} - V^n }{\Delta} + \rho V^{n+1} &= u^n + \mathbf{A}^n V^{n+1}\\
+\text{where } 
+V^n &= [V_{1,1}^n, ..., V_{N,1}^n, V_{1,2}^n, ..., V_{N,2}^n]^T \\
+u^n &= [u(c_{1,1}^n), ..., u(c_{N,1}^n), u(c_{1,2}^n), ..., u(c_{N,2}^n)]^T\\
+\mathbf{A}^n &=
+\begin{bmatrix}
+y_{1,1} & z_{1,1} & 0       & ... & 0      & 0 & \lambda & 0       & ... & 0\\
+x_{2,1} & y_{2,1} & z_{2,1} & ... & 0      & 0 & 0       & \lambda & ... & 0\\ 
+\vdots  & \vdots  & \vdots  &     & \vdots & \vdots  &\vdots  & \vdots  &     & \vdots  \\
+0       & 0       &  0       &  ...  & x_{N_a,1} & y_{N_a,1}  & 0  &  0   &...& \lambda \\
+\lambda & 0       & 0 &... & 0 & 0 &y_{1,2} & z_{1,2} & ...       & 0      \\
+0       & \lambda & 0 &... & 0 & 0 &x_{2,2} & y_{2,2} & ... & 0      \\ 
+\vdots  & \vdots  & \vdots& \vdots  &    & \vdots & \vdots  &\vdots  &   &   \vdots  \\
+0       &  0      & 0 &  ...& 0 & \lambda       & 0       &  0       &  ...  & y_{N_a,2} 
+\end{bmatrix}
+\end{align*}
+\item $\mathbf{A}^n$ is large but it is sparse with at most 4 nonzero entries per row
+\item Solving for the stationary distribution essentially boils down to inverting $A^n$
+\end{itemize}
+\hyperlink{achdou_summary}{\beamerbutton{Back}}
+\end{frame}
+
+
+
+\end{document}
+

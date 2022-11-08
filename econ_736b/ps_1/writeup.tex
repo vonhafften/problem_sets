@@ -1,0 +1,163 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{soul}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{accents}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+\usepackage{setspace}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Lfn}{\mathcal{L}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+
+\setlength\parindent{0pt}
+
+\title{ECON 736A: Problem Set 1}
+\author{Alex von Hafften}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Prompt:} Write a model of something.
+
+\section*{Firm Bankruptcy and Dynamics with Long-Term Debt}
+
+\subsection*{Idea}
+
+\begin{itemize}
+
+\item Long-term debt likely plays an important role in firm bankruptcy, and thus firm dynamics, because of debt dilution, which is that issuing new debt reduces the value of current outstanding debt obligations.
+
+\item Corbae and D'Erasmo (2021) is an important recent paper on firm bankruptcy, but all debt in Corbae and D'Erasmo (2021) is short-term in the sense that all debt obligations mature before any new debt is issued. Thus, their paper abstracts away from long-term debt and debt dilution. Introducing long-term debt increases the computational complexity.
+
+\item Corbae and D'Erasmo (2021) builds on Chatterjee et al (2007), which is a quantitative model of strategic consumer default. Arellano (2008) also builds on Chatterjee et al (2007) and applies the framework to sovereign default.
+
+\item The only quantitative model of strategic default in continuous time, Bornstein (2020) recasts Arellano (2008) in continuous time, uses solution methods from Achdou et al (2022), and extends the model to long-term debt a la Chatterjee and Eyigungor (2012). Quantitive and quantitative results from Bornstein (2020) are roughly similar to Arellano (2008) and Chatterjee and Eyigungor (2012), but computation is much improved (e.g., between 2 and 50 times faster) and using continuous time greatly simplifies the pricing of long-term debt.
+
+\item Since Bornstein (2020) is the only quantitative model of strategic default in continuous time and there are computational benefits of moving from discrete time to continuous time, it seems like there are ripe arbitrage opportunities in applying his framework to firm and consumer default.  In particular, since Corbae and D'Erasmo (2021) omits long-term debt, long-term debt introduces debt dilution, and there are particular benefits to modeling long-term debt in continuous time, it seems like this might be a contribution to the firm bankruptcy and firm dynamics literature.
+
+\end{itemize}
+
+\pagebreak
+
+\subsection*{Setup}
+
+\begin{itemize}
+
+\item In this section, I recast a standard firm dynamics model like Corbae and D'Erasmo (2021) or Hennessy and Whited (2007) in continuous time following Bornstein (2020).
+
+\item Time is continuous and infinite. Small open economy $\implies$ risk-free rate $r$ is given.
+
+\item At time $t$, a risk-neutral firm's state variables are capital $k_t$, short-term net debt $b_t$, and stochastic productivity $z_t$.
+
+\item Firm can issue short-term debt, which matures every instance. If $b_t > 0$, then $b_t$ represents cash holding that pays interest rate $r$ and, if $b_t < 0$, then $b_t$ represents defaultable debt with interest rate $r(k_t, b_t, z_t)$.
+
+\item $z_t$ follows a compound Poisson process with arrival rate $\lambda_z$. That is, the probability of a productivity shock hitting the firm in time interval $dt$ is $\lambda_z dt$. When the firm is hit by a productivity shock, its new productivity is drawn from the conditional distribution $F(z, z^-)$ where $z^-$ is the productivity level just before the shock.  
+
+\item This choice of productivity process follows the stochastic endowment process in Bornstein (2020). He explains that it is critical that for the endowment process to feature jumps. If it were a diffusion, the default of an agent at the default frontier is certain, so they would face an infinite interest rate. Thus, the interest rate schedule enforces that the agent is never at the default threshold and thus there would be no defaults in equilibrium.
+
+\item The firm maximizes present discounted value of dividend stream $[d_t]_{t=0}^\infty$ at risk-free interest rate $r$.
+
+\item The firm paying a negative dividend means a seasoned equity issuance, which is associated with a fixed/linear/quadratic equity issuance cost $\lambda(d_t)$.
+
+\item The firm accounts for the taxes shareholders pay on positive dividends.
+
+\begin{align*}
+\max E_0 \Bigg[& \int_0^\infty \exp^{-rt} [d_t - T_d(d_t)] dt\Bigg]\\
+\text{s.t. } \dot k_t + \dot b_t &= z_t k_t^\alpha - d_t - \lambda(d_t) + r(z_t, k_t, b_t) b_t\\
+\text{where } \lambda(d_t) &= \begin{cases} 0 & \text{, if } d_t \ge 0 \\ \lambda_0 + \lambda_1 |d_t| + \lambda_2 d_t^2 & \text{, if } d_t < 0 \end{cases},\\
+T_d(d_t) &= \begin{cases} \tau_d d_t & \text{, if } d_t \ge 0 \\ 0 & \text{, if } d_t < 0 \end{cases}
+\end{align*}
+
+\item Other features that are common in firm dynamics models: kinked corporate taxes, capital adjustment costs (might be required to assure that capital and debt most continuously). 
+
+\item Need to add what default is for firms...
+
+\item HJB is something like...
+
+\begin{align*}
+r V(z, k, b) &= \max \{ 0, \max_{d} \{d + (\dot b + \dot k)[V_k(z, k, b) + V_b(z, k, b)] \}\} \\
+&+ \lambda_z \int_0^\infty [V(z', k, b) - V(z, k, b)]f(z', z) dz'
+\end{align*}
+
+\item Zero profit condition for risk-neutral investor between holding risk-free bond and risky firm debt:
+
+$$
+b r(z, k, b) - \lambda_z \int_0^\infty k (1 - \xi)D(z',k, b) f(z,z') dz'= r_f b
+$$
+
+for all $z$, $k$, $b$. Where $\xi$ is the resource loss of bankruptcy and $D(z', k, b) = 1$ if the $(z', k, b)$ firm defaults.
+
+\end{itemize}
+
+\subsection*{References}
+
+Achdou, Yves, Jeiqun Han, Jean-Michel Lasry, Pierre-Louis Lions, and Benjamin Moll (2022). ``Income and Wealth Distribution in Macroeconomics: A Continuous-Time Approach" Review of Economic Studies.
+
+\smallskip
+
+Arellano, Cristina (2008). ``Default Risk and Income Fluctuations in Emerging Economies." American Economic Review.
+
+\smallskip
+
+Bornstein, Gideon (2020). ``A Continuous-Time Model of Sovereign Debt." Journal of Economic Dynamics \& Control.
+
+\smallskip
+
+Chatterjee, Satyajit, and Burcu Eyigungor (2012). ``Maturity, Indebtness, and Default Risk." American Economic Review.
+
+\smallskip
+
+Chatterjee, Satyajit, Dean Corbae, Makoto Nakajima, and Jose-Victor Rios-Rull (2007). ``A Quantitative Theory of Unsecured Consumer Credit with Risk of Default." Econometrica.
+
+\smallskip
+
+Corbae, Dean, and Pablo D'Erasmo (2021). ``Reorganization or Liquidation: Bankruptcy Choice and Firm Dynamics." Review of Economic Studies. 
+
+\section*{Other Ideas}
+
+\begin{itemize}
+
+\item How does the countercyclical capital buffer (CCyB) work if the policy maker has to learn about whether there is a banking crisis or not? A part of the Dodd-Frank Act, the CCyB is a bank regulation that requires that banks hold more capital is boom and less capital is busts.  Faria e Castro (2019) is a quantitative analysis of the CCyB and finds large positive effects (e.g., it would reduce the frequencies of crisis by half). In Faria e Castro (2019), the policy maker can observe the aggregate state of the economy and so knows perfectly when to raise and lower the CCyB, but a big question in practice is when should it be raised and lower. For example, the U.S. has yet to raised it; even though it was formally adopted in 2016. What if the policy maker cannot observe the aggregate state of the economy and must infer the aggregate state from depositor behavior? 
+
+\item How does house price volatility impact labor dynamism? For example, if house prices drop in area A and there are better job prospects in area B, then workers in area A might not be able to move to area B because their wealth is tied up in their house and they have to realize a loss to move.
+
+\item What are the intergenerational effects of informal family long-term care insurance? In general, there seems to be under-utilization of formal long-term care insurance (Tonetti et al 2022). Mommaerts (2022) discusses the importance of long-term care provided by children for their parents, i.e. ``informal family insurance". When adult children provide care of their ailing parents, they are likely at or close the highest point in their earnings profile when it is most expensive for adult children to deliver care.
+
+\end{itemize}
+
+\end{document}
+
+
+
+

@@ -1,0 +1,216 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{bm}
+\usepackage{multicol}
+\usepackage{soul}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{accents}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+\usepackage{setspace}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lfn}{\mathcal{L}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+
+\usepackage{amsthm}
+
+\newtheorem{manualtheoreminner}{Proposition}
+\newenvironment{manualtheorem}[1]{%
+  \renewcommand\themanualtheoreminner{#1}%
+  \manualtheoreminner
+}{\endmanualtheoreminner}
+
+\title{ECON 736A: Problem Set 3}
+\author{Alex von Hafften}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Atkeson, Chari, and Kehoe (2007)}
+
+\begin{enumerate}
+
+\item \textit{Prove Propositions 2 and 3.}
+
+
+\begin{manualtheorem}{2}[Determinacy of Equilibrium and the Taylor Principle]
+The linear equilibria with interest rate rules of the Taylor rule form $i_t = \bar \iota + a x_t$ have outcomes
+of the form
+\begin{align*}
+x_{t+1} &= i_t + c\eta_t\\
+\pi_t &= x_t + (1 + \sigma c)\eta_t\\
+y_t &= (1 + \sigma c)\eta_t
+\end{align*}
+For every $a < 1$ and $\bar i$, the economy has a continuum of equilibria indexed by the parameter
+$c$. For every $a \ge 1$ and $\bar i$, within the class of bounded linear equilibria, the economy has
+$a$ unique equilibrium with $c = 0$.
+\end{manualtheorem}
+
+\bigskip
+
+\textbf{Proof:} First, verify that the candidate equilibrium satisfies the equilibrium conditions in the lemma:
+\begin{align*}
+E[y_t|h_{t-1}] 
+&= E[(1+\sigma c)\eta_t|h_{t-1}]\\
+&= (1+\sigma c)E[\eta_t|h_{t-1}]\\
+&= 0\\
+E[\pi_{t+1}|h_{t-1}] 
+&= E[ x_{t+1} + (1 + \sigma c)\eta_{t+1}|h_{t-1}]\\
+&= E[ i_t + c\eta_t|h_{t-1}] + (1 + \sigma c) E[\eta_{t+1}|h_{t-1}]\\
+&= i_t + cE[ \eta_t|h_{t-1}]\\
+&= i_t \\
+\end{align*}
+Second, verify that the candidate equilibrium satisfies the Phillips curve and the Euler equation:
+\begin{align*}
+y_t &= \pi_t - x_t\\
+\implies
+[(1+\sigma c)\eta_t] &= [x_t + (1+\sigma c)\eta_t] - x_t\\
+\implies
+(1+\sigma c)\eta_t &= (1+\sigma c)\eta_t\\
+y_t &= E[y_{t+1}|h_t] - \sigma ( i_t - E[\pi_{t+1}|h_t]) + \eta_t \\
+\implies 
+(1+\sigma c) \eta_t 
+&= - \sigma ( i_t - E[\pi_{t+1}|h_t]) + \eta_t\\
+&= - \sigma ( i_t - E[x_{t+1} + (1+\sigma c) \eta_{t+1}|h_t]) + \eta_t\\
+&= - \sigma ( i_t - E[x_{t+1}|h_t]) + \eta_t \\
+&= - \sigma ( i_t - E[i_t + c \eta_t|h_t]) + \eta_t \\
+&= - \sigma ( -c \eta_t) + \eta_t \\
+&= (1+\sigma c) \eta_t 
+\end{align*}
+Finally, we can derive a first order difference equation for $x$ using lemma, the Taylor rule, and agent optimize and representativeness $x_t(h_{t-1}) = z_t(h_{t-1}) = E[\pi_t|h_{t-1}]$:
+\begin{align*}
+E[\pi_{t+1}|h_{t-1}] 
+&= i_t\\
+&= \bar \iota + a x_t(h_{t-1})\\
+\implies 
+x_{t+1}(h_t) 
+&= \bar \iota + a x_t(h_{t-1})
+\end{align*}
+A solution to the first order difference equation for $x$ is
+\begin{align*}
+x_t = a^{(t-s)} \Bigg(x_s - \frac{\bar \iota}{1-a}\Bigg) + \frac{\bar \iota}{1-a}
+\end{align*}
+for some $s < t$. For an equilibrium to exist, $x_t$ must not diverge. If $a < 1$, $x_t \to \frac{\bar \iota}{1-a}$, so for any $c$, an equilibrium exists. If $a > 1$, for $x_t$ not to diverge, the following must hold:
+\begin{align*}
+x_s - \frac{\bar\iota}{1-a} &= 0
+\end{align*}
+for all $s$. Thus, $x_{s+1} = x_s$, so
+\begin{align*}
+x_{s+1}  
+&= \bar\iota + ax_{s+1} \\
+&= \bar\iota + ax_{s}\\
+&= i_s\\
+\implies
+c &= 0
+\end{align*}
+
+\pagebreak
+
+\begin{manualtheorem}{3}[Rules Satisfying the Taylor Principle are Inefficient]
+The outcomes under a Taylor rule of the form $i_t = \bar\iota + a x_t$ with $a > 1$ are dominated by the outcomes of an equilibrium with $a = 0$ and $\bar \iota = 0$.
+\end{manualtheorem}
+
+\bigskip
+
+\textbf{Proof:} By Proposition 2, the outcome under the Taylor rule of the form $i_t = \bar\iota + a x_t$ with $a > 1$ is unique:
+
+\begin{align*}
+x_{t+1} &= i_t = \frac{\bar\iota}{1-a}\\
+\pi_t &= x_t + \eta_t\\
+y_t &= \eta_t
+\end{align*}
+
+Thus, representative agent expected payoff is
+
+\begin{align*}
+E\Bigg[r^A\Bigg(\frac{\bar\iota}{1-a}, \frac{\bar\iota}{1-a}, \frac{\bar\iota}{1-a} + \eta_t\Bigg)\Bigg] 
+&=
+-\frac{1}{2} E\Bigg[ \Bigg(\frac{\bar\iota}{1-a} - \Bigg(\frac{\bar\iota}{1-a} + \eta_t\Bigg)\Bigg)^2 + (\eta_t - \bar y)^2 + \Bigg(\frac{\bar\iota}{1-a} + \eta_t\Bigg)^2\Bigg]\\
+&=
+-\frac{1}{2} E\Bigg[ \eta_t^2 + (\eta_t^2 - 2\bar y\eta_t + \bar y^2) + \Bigg(\frac{\bar\iota}{1-a}\Bigg)^2 + 2 \frac{\bar\iota}{1-a} \eta_t+ \eta_t^2)\Bigg]\\
+&=
+-\frac{1}{2}\Bigg[ 2E[ \eta_t^2] - 2\bar yE[\eta_t] + \bar y^2 + \Bigg(\frac{\bar\iota}{1-a}\Bigg)^2 + 2 \Bigg(\frac{\bar\iota}{1-a}\Bigg) E[\eta_t]+ E[\eta_t^2] \Bigg]\\
+&=
+-\frac{1}{2}\Bigg[ 3\sigma_\eta^2+ \bar y^2 + \Bigg(\frac{\bar\iota}{1-a}\Bigg)^2\Bigg]
+\end{align*}
+
+If $\bar \iota = a = 0$, then $i_t = 0$, but the equilibrium is not unique and for every $c$, the following is an equilibrium. Thus, there is an equilibrium for $c = 0$ where
+
+\begin{align*}
+x_{t+1} &= 0\\
+\pi_t &= \eta_t\\
+y_t &=\eta_t
+\end{align*}
+
+And the representative agent expected payoff in that equilibrium is:
+
+\begin{align*}
+E[r^A(0, 0,  \eta_t)]
+&=
+-\frac{1}{2} E[ \eta_t^2 + (\eta_t - \bar y)^2 + \eta_t^2]\\
+&=
+-\frac{1}{2} \Bigg[E[ \eta_t^2] + E[\eta_t^2] - 2\bar yE[\eta_t] + \bar y^2 + E[\eta_t^2]\Bigg]\\
+&=
+-\frac{1}{2} \Bigg[3 \sigma_\eta^2 + \bar y^2 \Bigg]
+\end{align*}
+
+The equilibrium associated Taylor principle is not optimal, if there exists a $c$ such that the representative agent is better off:
+
+\begin{align*}
+E[r^A(0, 0,  \eta_t)] &> E\Bigg[r^A\Bigg(\frac{\bar\iota}{1-a}, \frac{\bar\iota}{1-a}, \frac{\bar\iota}{1-a} + \eta_t\Bigg)\Bigg] \\
+\iff
+-\frac{1}{2} \Bigg[3 \sigma_\eta^2 + \bar y^2 \Bigg] &> -\frac{1}{2}\Bigg[ 3\sigma_\eta^2+ \bar y^2 + \Bigg(\frac{\bar\iota}{1-a}\Bigg)^2\Bigg]\\
+\iff 0  &<  \Bigg(\frac{\bar\iota}{1-a}\Bigg)^2
+\end{align*}
+
+Which holds for $a > 1$ and $\bar\iota > 0$.
+
+\pagebreak
+
+\item \textit{Consider a slight extension of the environment we saw in class.
+There, we assumed that the agents did not observe the money growth
+rate but only observed the inflation rate (which was a noisy signal of
+the money growth rate). Now suppose that in addition to observing the
+inflation, agents observe the true money growth rate choice but with a
+lag. In particular, suppose that $\mu_{t-1}$ is observable in period $t$ after wages
+are chosen. Is transparency valuable in this case? More specifically, prove
+the analog of Proposition 6 in the paper for this environment.}
+
+\end{enumerate}
+
+\end{document}
+
+
+
+

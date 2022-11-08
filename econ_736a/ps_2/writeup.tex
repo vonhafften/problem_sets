@@ -148,7 +148,8 @@ Matching constant coefficients:
 \end{align*}
 
 \pagebreak
-\item \textit{Carefully derive equations 4.1-4.4 in the paper.}
+
+\item \textit{Carefully derive equations 4.1-4.4 in the paper.}
 
 Linearizing (3.3), (3.5), (3.6), and (2.2)
 
@@ -186,20 +187,54 @@ $\kappa$ denotes the slope of the linearized Phillips curve, and $\hat y_t$, $\h
 
 \begin{enumerate}
 
-\item Carefully derive Proposition 5 in the paper.
+\item \textit{Carefully derive Proposition 5 in the paper.}
 
 \begin{manualtheorem}{5} 
-Suppose utilities satisfy (14) with $\sigma = 1$, household income satisfies (15) and borrowing constraints satisfy (17). In addition, suppose initial bond holdings are zero $b^i_0 = 0$ forall households. Then $\{C_t, R_t\}$ is part of an equilibrium if and only if
+Suppose utilities satisfy are log utility, household income satisfies $\gamma_t^i (s, Y) = \tilde \gamma_t^i(s) Y$ (i.e., proportional to aggregate income) and borrowing constraints satisfy $B_t^i(s, Y) = \tilde B_t^i (s) Y$ (i.e., also proportional to aggregate income. In addition, suppose initial bond holdings are zero $b^i_0 = 0$ for
+all households. Then $\{C_t, R_t\}$ is part of an equilibrium if and only if
 
-$$
-U'(C_t) = \beta_t R_t U'(C_{t+1})
-$$
+\begin{align}
+U'(C_t) = \beta_t R_t U'(C_{t+1}) \label{w_eq}
+\end{align}
 
-for some sequence of discount factors $\{\beta_t\}$, independent of both $\{R_t\}$ and $\{C_t\}$
+for some sequence of discount factors $\{\beta_t\}$, independent of both $\{R_t\}$ and $\{C_t\}$.
 
 \end{manualtheorem}
 
+\bigskip
 
+I follow Werning's discussion following the proposition.
+
+First, we can construct the discount factors $\beta_t$ and household allocation by considering a ``reference" equilibrium where aggregate income is constant $\tilde Y_t = 1$. This equilibrium includes interest rates $\{\tilde R_t\}$, household consumption and wealth $\{\tilde c(s^t;a_0), \tilde a(s^t; a_0)\}$, and asset prices are the discounted value of future dividends $\tilde q_t = \sum_{s=0}^\infty (\tilde R_t \tilde R_{t+1} ... \tilde R_{t+1})^{-1} \tilde d_{t+1+s}$. Define $\beta_t \equiv \frac{1}{\tilde R_t}$.  The aggregate euler equation (\ref{w_eq}) holds trivially:
+
+\begin{align*}
+U'(\tilde C_t) &= \beta_t \tilde R_t U'(\tilde C_{t+1}) \\
+\iff
+U'(\tilde Y_t) &= \frac{1}{\tilde R_t} \tilde R_t U'(\tilde Y_{t+1}) \\
+\iff
+U'(1) &= U'(1)
+\end{align*}
+
+We can now consider another sequence $\{C_t, R_t\}$ that satisfies (\ref{w_eq}) and guess the equilibrium objects and verify that equilibrium conditions hold. We can guess that household $i$ consumption and wealth, interest rates, and asset prices are the following:
+
+\begin{align*}
+c^i(s^t; a_0) &\equiv \tilde c^i(s^t; a_0) C_t\\
+a^i(s^t; a_0) &\equiv \tilde a^i(s^t; a_0) C_t\\
+R_t &\equiv \tilde R_t \frac{C_{t+1}}{C_t}\\
+q_t &\equiv \tilde q_t C_t
+\end{align*}
+
+For the household Euler equation, start with the household Euler equation in the reference equilibrium:
+
+\begin{align*}
+U'(\tilde c^i(s^t; a_0)) &\ge \beta \tilde R_t E_t[U'(\tilde c^i(s^{t+1}; a_0))]\\
+\iff
+U'(\tilde c^i(s^t; a_0))\frac{C_t}{C_t} &\ge \beta \tilde R_t E_t\Bigg[U'(\tilde c^i(s^{t+1}; a_0))\frac{C_{t+1}}{C_{t+1}}\Bigg]\\
+\iff
+U'( c^i(s^t; a_0)) &\ge \beta \frac{\tilde R_t C_{t+1}}{C_t} E_t\Bigg[U'( c^i(s^{t+1}; a_0))\Bigg]\\
+\iff
+U'( c^i(s^t; a_0)) &\ge \beta  R_t E_t [U'( c^i(s^{t+1}; a_0))]
+\end{align*}
 
 
 \end{enumerate}

@@ -17,14 +17,14 @@ using Parameters, Interpolations, Optim, LinearAlgebra
 
 # Primitive structure
 @with_kw struct Primitives
-    β::Float64                = 0.9932                           # Discount rate
-    α::Float64                = 1.5                              # Coefficient of relative risk aversion
-    S::Array{Float64, 1}      = [1.0, 0.5]                       # Earning states
+    β::Float64                = 0.9821                           # Discount rate
+    α::Float64                = 2.5                              # Coefficient of relative risk aversion
+    S::Array{Float64, 1}      = [0.03, 0.01]                       # Earning states
     S_length::Int64           = length(S)                        # Number of earning states
-    Π::Array{Float64, 2}      = [[0.97, 0.5] [0.03, 0.5]]        # Employment transition matrix
-    a_min::Int64              = -2.0                             # Lower bound of savings grid
-    a_max::Int64              = 5.0                              # Upper bound of savings grid
-    a_length::Int64           = 1000                             # Number of points on asset grid
+    Π::Array{Float64, 2}      = [[0.95, 0.05] [0.95, 0.05]]        # Employment transition matrix
+    a_min::Float64              = -0.3                             # Lower bound of savings grid
+    a_max::Float64              = 5.0                              # Upper bound of savings grid
+    a_length::Int64           = 1001                             # Number of points on asset grid
     a_grid_srl                = range(a_min, a_max;length = a_length)      # Savings grid step range
     a_grid::Array{Float64, 1} = collect(a_grid_srl)               # Savings grid array
 end
