@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  7 NOV 2022 21:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  9 NOV 2022 21:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -639,15 +639,44 @@ Overfull \hbox (13.25063pt too wide) detected at line 305
 []
  []
 
-[6] [7] [8] [9] [10] [11] [12] [13] (./writeup.aux)
+[6] [7]
+<plot_alpha.png, id=57, 602.25pt x 401.5pt>
+File: plot_alpha.png Graphic file (type png)
+<use plot_alpha.png>
+Package pdftex.def Info: plot_alpha.png  used on input line 346.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+<plot_I.png, id=58, 602.25pt x 401.5pt>
+File: plot_I.png Graphic file (type png)
+<use plot_I.png>
+Package pdftex.def Info: plot_I.png  used on input line 348.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [8 <./plot_alpha.png>]
+<plot_p.png, id=65, 602.25pt x 401.5pt>
+File: plot_p.png Graphic file (type png)
+<use plot_p.png>
+Package pdftex.def Info: plot_p.png  used on input line 350.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+<plot_q_tilde.png, id=66, 602.25pt x 401.5pt>
+File: plot_q_tilde.png Graphic file (type png)
+<use plot_q_tilde.png>
+Package pdftex.def Info: plot_q_tilde.png  used on input line 352.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [9 <./plot_I.png> <./plot_p.png>]
+<plot_R.png, id=71, 602.25pt x 401.5pt>
+File: plot_R.png Graphic file (type png)
+<use plot_R.png>
+Package pdftex.def Info: plot_R.png  used on input line 354.
+(pdftex.def)             Requested size: 301.12425pt x 200.7495pt.
+ [10 <./plot_q_tilde.png> <./plot_R.png>] [11] [12] [13] [14] [15] (./writeup.a
+ux)
 Package rerunfilecheck Info: File `writeup.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 12088 strings out of 478994
- 173197 string characters out of 5858184
- 511181 words of memory out of 5000000
- 29363 multiletter control sequences out of 15000+600000
+ 12122 strings out of 478994
+ 173681 string characters out of 5858184
+ 511026 words of memory out of 5000000
+ 29388 multiletter control sequences out of 15000+600000
  411941 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  71i,17n,74p,632b,448s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -667,10 +696,10 @@ ive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive
 2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/20
 21/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2021
 /texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on writeup.pdf (13 pages, 182001 bytes).
+Output written on writeup.pdf (15 pages, 306295 bytes).
 PDF statistics:
- 140 PDF objects out of 1000 (max. 8388607)
- 108 compressed objects within 2 object streams
- 24 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 155 PDF objects out of 1000 (max. 8388607)
+ 116 compressed objects within 2 object streams
+ 27 named destinations out of 1000 (max. 500000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

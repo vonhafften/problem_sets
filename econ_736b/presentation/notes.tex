@@ -1,0 +1,199 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{setspace,enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{bbm}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{soul}
+\usepackage{geometry}
+\usepackage{accents}
+\usepackage{accents}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!90!black},
+	citecolor={red!90!black},
+	urlcolor={blue!90!black}
+}
+\usepackage{setspace}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Lfn}{\mathcal{L}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\one}{\mathbbm{1}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\bbf}{\mathbf{b}}
+\newcommand{\Ebf}{\mathbf{E}}
+\setlength\parindent{0pt}
+
+\title{Notes on Farhi and Werning (2016): Section 5.1}
+\author{Alex von Hafften}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{itemize}
+
+\section{Environment}
+\subsection{Timing}
+\item Three periods $t \in \{0,1,2\}$
+\item Two goods: consumption and labor
+\subsection{Agents}
+\subsubsection{Households}
+\item Two types of agents $i \in \{1, 2\}$ with fractions $\phi^1 + \phi^2 = 1$ 
+\item Type 1 agents are savers and type 2 agents are borrowers
+\item Type $i$ agents have preferences over consumption $C_t^i$ and labor $N_t^i$
+$$
+\sum_{t=0}^2 \beta_i^t [u(C_t^i) - v(N_t^i)]
+$$
+\item $\beta_1 \ge \beta_2 \implies$ type 1 agents (savers) are more patient than type 2 agents (borrowers)
+\item Budget constraint of type $i$ agents is
+$$
+P_t C_t^i + B_t^i + \tau_t^i \le W_t N_t^i + \frac{1}{1 + i_t} B_{t+1}^i
+$$
+where $B_t^i$ is nominal debt holdings, $i_t$ is nominal interest rate, $\tau_t^i$ is lump-sum taxes (nonzero only in $t=0$), and $W_t$ is nominal wage
+\item Initial bond holdings are zero, $B_1^i = 0$, and final period bond holdings are zero, $B_3^i = 0$
+\item Exogenous borrowing constraint on type-2 agents (borrowers) in period 1:
+$$
+B_2^2 \le P_2 \bar B_2
+$$
+\subsubsection{Government}
+\item Government can implement borrowing constraint on type-2 agents (borrowers) in $t=0$:
+$$
+B_1^2 \le P_1 \bar B_1
+$$
+\item Government chooses nonnegative nominal interest rates $i_t\ge 0$ in all $t$
+\item Government levies lump-sum taxes in period 0 subject to government budget constraint
+$$
+\phi^1\tau^1_0 + \phi^2\tau^2_0 = 0
+$$
+\subsection{Technology}
+\subsubsection{Production}
+\item Final good is produced by competitive firms with production function
+$$
+Y_t = A N_t
+$$
+\subsubsection{Sticky wages and rationing}
+\item Wages are sticky: $W_t = W$ for all $t$
+\item Work is equally rationed across types: $N_t^1 = N_t^2 = N_t$ for all $t$
+\subsection{Info Structure}
+\item All objects are public information
+\section{Equilibrium}
+\item An allocation $x$ is output $\{Y_t\}$ consumption $\{C_t^i\}$, labor supply, $\{N_t^i\}$, and debt holding $\{B_t^i\}$ for all $i$ and $t$
+\item A policy $\pi$ is nominal interest rates $\{i_t\}$ for all $t$, borrowing constraint on type-2 agents in period 0 $\bar B_1$, period-0 lump-sum taxes $\{\tau^i_0\}$
+\item A price system $q$ is prices $\{P_t\}$ and wages $\{W_t\}$ for all $t$
+\item An equilibrium is an allocation $x$, policy $\pi$, and price system $q$ such that
+\begin{itemize}
+\item Given $\pi$ and $q$, type-$i$ agents choose $\{C_t^i, N_t^i, B_t^i\}$ for all $t$ to solve their problem
+\begin{align*}
+\max_{\{C_t^i, N_t^i, B_t^i\}} \sum_{t=0}^2 \beta_i^t [u(C_t^i) &- v(N_t^i)]\\
+\text{s.t. } P_t C_t^i + B_t^i + \tau_t^i &\le W_t N_t^i + \frac{1}{1 + i_t} B_{t+1}^i\\
+B_1^2 &\le P_1 \bar B_1\\
+B_2^2 &\le P_2 \bar B_2\\
+\end{align*}
+where $B_3^i = 0$
+\item Given $\pi$ and $q$, firms choose $N_t^i$ to solve their problem
+$$
+\max_{N_t} P_t A N_t - W N_t
+$$
+\item GBC holds
+$$
+\phi^1\tau^1_0 + \phi^2\tau^2_0 = 0
+$$
+\item Markets clear for all $t$:
+\begin{align*}
+\sum_{i=1}^2 \phi^i C_t^i &= \sum_{i=1}^2 \phi^i Y_t & [\text{Goods}]\\
+\phi^1 B_t^1 + \phi^2 B_t^2 &= 0  & [\text{Bonds}]
+\end{align*}
+\item Wages are sticky $W_t = W$ for all $t$
+\item Equal rationing of labor $N_t^1 = N_t^2 = N_t$
+\end{itemize}
+\section{Solution}
+\subsection{Implementability}
+\item Notice that government choosing lump-sum taxes is equivalent to choosing (possibly nonzero) initial levels of debt holding subject to bond market clearing
+\item Given nominal wage $W$, firm solves
+$$
+\max_{N_t} P_t A N_t - W N_t \implies P_t = \frac{W}{A}
+$$
+\item Type 1 agents (savers) problem implies Euler equation for $t=0, 1$:
+\begin{align*}
+\frac{1}{1 + i_t} \frac{P_{t+1}}{P_t} &= \frac{\beta_1 u'(C_{t+1}^1)}{u'(C_t^1)}\\
+\implies
+u'(C_t^1) &= \beta_1 (1+i_t) u'(C_{t+1}^1)
+\end{align*}
+\item Type 2 agents (borrowers) problem implies Euler equation for $t=0, 1$:
+\begin{align*}
+\frac{1}{1 + i_t} \frac{P_{t+1}}{P_t} &\ge \frac{\beta_2 u'(C_{t+1}^2)}{u'(C_t^2)}\\
+\implies
+u'(C_t^2) &\ge \beta_2 (1+i_t) u'(C_{t+1}^2)
+\end{align*}
+with equality if borrowing constraint in $t$ is slack
+\item Combining $t=3$ budget constraint of type-2 agent and the exogenous borrowing constraint
+\begin{align*}
+P_2 C_2^2 + B_2^2 &= (AP_2) N_2 \implies B_2^2 = W N_2 - P_2 C_2^2\\
+B_2^2 &\le P_2 \bar B_2\\
+\implies
+AP_2 N_2 - P_2 C_2^2 &\le P_2 \bar B_2\\
+\implies
+C_2^2 &\ge A N_2 - \bar B_2
+\end{align*}
+\item Combine borrower Euler equation and borrowing constraint to get complimentary slackness condition
+$$
+(C_2^2 - A N_2 + \bar B_2)[u'(C_t^1) - \beta_2 (1 +i_1)u'(C_2^2) ] = 0 
+$$
+\item These conditions are necessary and sufficient for implementation
+\section{Ramsey Problem}
+\item Given Pareto weights $\lambda^i$, Ramsey planner maximizes weight average of utilities:
+\begin{align*}
+\max_{\{C_t^i, N_t, i_t\}} \sum_{i=1}^2 \sum_{t=0}^2 \lambda^i \phi^i \beta^t_i [u(C_t^i) &- v(N_t)]\\
+\text{s.t. }
+\sum_{i=1}^2 \phi^i C_t^i &= \sum_{i=1}^2 \phi^i A N_t, \forall t & \text{(RC)} \\
+C_2^2 &\ge  AN_2 - \bar B_2 & \text{(BC)}\\
+u'(C_t^1) &= \beta_1 (1+i_t) u'(C_{t+1}^1), \forall t & \text{(EE 1)}\\
+u'(C_t^2) &\ge \beta_2 (1+i_t) u'(C_{t+1}^2), \forall t & \text{(EE 2)}\\
+(C_2^2 - A N_2 + \bar B_2)[u'(C_1^2) - \beta_2 (1 +i_1)u'(C_2^2) ] &= 0 & \text{(CS 2)}\\
+i_t &\ge 0, \forall t & \text{(ZLB)}
+\end{align*}
+\item Case of interest:
+\begin{itemize}
+\item Borrower is borrowing constrained in period 1 $\implies$ (BC) holds with equality and (EE 2) in period 1 holds with strict inequality
+\item Assume ZLB is slack in period 0
+\end{itemize}
+\item Thus, the Ramsey problem for this case of interest is
+\begin{align*}
+\max_{\{C_t^i, N_t, i_t\}} \sum_{i=1}^2 \sum_{t=0}^2 \lambda^i_t \phi^i [u(C_t^i) &- v(N_t)]\\
+\text{s.t. }
+\sum_{i=1}^2 \phi^i C_t^i &= \sum_{i=1}^2 \phi^i A N_t, \forall t & \text{(RC)} \\
+C_2^2 &=  A N_2 - \bar B_2 & \text{(BC)}\\
+u'(C_0^1) &= \beta_1 (1+i_0) u'(C_{1}^1) & \text{(EE 1, 0)}\\
+u'(C_1^1) &= \beta_1 (1+i_1) u'(C_{2}^1) & \text{(EE 1, 1)}\\
+u'(C_0^2) &\ge \beta_2 (1+i_0) u'(C_{1}^2) & \text{(EE 2, 0)}\\
+u'(C_1^2) &> \beta_2 (1+i_1) u'(C_{2}^2) & \text{(EE 2, 1)}\\
+i_1 &\ge 0 & \text{(ZLB)}
+\end{align*}
+where $\lambda_t^i \equiv \lambda^i \beta_i^t$
+
+\end{itemize}
+
+\end{document}
+

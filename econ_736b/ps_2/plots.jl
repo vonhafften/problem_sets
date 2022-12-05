@@ -1,5 +1,7 @@
 using Plots
 
+cd(@__DIR__)
+
 grid_p = 0.5:0.02:0.9
 grid_q_tilde = 0.9:0.005:0.99
 grid_R = 1.1:0.1:3.0
@@ -67,6 +69,7 @@ plot!(grid_p, π_4_results[:, j_q_tilde, j_R, j_α, j_I], label = "Produce if ε
 title!(string("p = ", grid_p[j_p], ", q̃ = ", grid_q_tilde[j_q_tilde], ", R = ", grid_R[j_R], ", α = ", grid_α[j_α], ", I = ", grid_I[j_I]))
 xaxis!("p")
 yaxis!("π")
+savefig("plot_p.png")
 
 plot(grid_q_tilde, π_2_results[j_p, :, j_R, j_α, j_I], label = "Produce if ε = R²")
 plot!(grid_q_tilde, π_3_results[j_p, :, j_R, j_α, j_I], label = "Produce if ε ≥ R")
@@ -74,13 +77,15 @@ plot!(grid_q_tilde, π_4_results[j_p, :, j_R, j_α, j_I], label = "Produce if ε
 title!(string("p = ", grid_p[j_p], ", q̃ = ", grid_q_tilde[j_q_tilde], ", R = ", grid_R[j_R], ", α = ", grid_α[j_α], ", I = ", grid_I[j_I]))
 xaxis!("q̃")
 yaxis!("π")
+savefig("plot_q_tilde.png")
 
 plot(grid_R, π_2_results[j_p, j_q_tilde, :, j_α, j_I], label = "Produce if ε = R²")
 plot!(grid_R, π_3_results[j_p, j_q_tilde, :, j_α, j_I], label = "Produce if ε ≥ R")
 plot!(grid_R, π_4_results[j_p, j_q_tilde, :, j_α, j_I], label = "Produce if ε ≥ 1")
 title!(string("p = ", grid_p[j_p], ", q̃ = ", grid_q_tilde[j_q_tilde], ", R = ", grid_R[j_R], ", α = ", grid_α[j_α], ", I = ", grid_I[j_I]))
-xaxis!("q̃")
+xaxis!("R")
 yaxis!("π")
+savefig("plot_R.png")
 
 plot(grid_α, π_2_results[j_p, j_q_tilde, j_R, :, j_I], label = "Produce if ε = R²")
 plot!(grid_α, π_3_results[j_p, j_q_tilde, j_R, :, j_I], label = "Produce if ε ≥ R")
@@ -88,6 +93,7 @@ plot!(grid_α, π_4_results[j_p, j_q_tilde, j_R, :, j_I], label = "Produce if ε
 title!(string("p = ", grid_p[j_p], ", q̃ = ", grid_q_tilde[j_q_tilde], ", R = ", grid_R[j_R], ", α = ", grid_α[j_α], ", I = ", grid_I[j_I]))
 xaxis!("α")
 yaxis!("π")
+savefig("plot_alpha.png")
 
 plot(grid_I, π_2_results[j_p, j_q_tilde, j_R, j_α, :], label = "Produce if ε = R²")
 plot!(grid_I, π_3_results[j_p, j_q_tilde, j_R, j_α, :], label = "Produce if ε ≥ R")
@@ -95,3 +101,4 @@ plot!(grid_I, π_4_results[j_p, j_q_tilde, j_R, j_α, :], label = "Produce if ε
 title!(string("p = ", grid_p[j_p], ", q̃ = ", grid_q_tilde[j_q_tilde], ", R = ", grid_R[j_R], ", α = ", grid_α[j_α], ", I = ", grid_I[j_I]))
 xaxis!("I")
 yaxis!("π")
+savefig("plot_I.png")
