@@ -52,7 +52,7 @@
 
 \maketitle
 
-My notes follow the organization of the paper. Initial focus particularly on sections 3, 4, and 5.
+My notes follow the organization of the paper. Initial focus particularly on sections 3, 4, and 5. Appendix has notes from Job's lecture on related papers, Heathcote, Storesletten, and Violante (2014) and Boerma and Karabarbounis (2021).
 
 
 
@@ -62,18 +62,18 @@ My notes follow the organization of the paper. Initial focus particularly on sec
 
 \begin{itemize}
 \item What is the optimal degree of progressivity of tax/transfer system?
-\item Reasons for more progressivity:
+\item Reasons for more progressivity
 \begin{itemize}
-\item Counteract inequality in initial conditions.
-\item Substitute for imperfect private insurance against idiosyncratic earnings risk.
+\item Counteracts inequality in initial conditions
+\item Substitutes for imperfect private insurance against idiosyncratic earnings risk
 \end{itemize}
-\item Reasons for less progressivity:
+\item Reasons for less progressivity
 \begin{itemize}
-\item Reduces incentives to work.
-\item Reduces incentives to invest in skills.
+\item Reduces incentives to work
+\item Reduces incentives to invest in skills
 \end{itemize}
 \item Develop general equilibrium model with these four trade-offs
-\item Results for US calibration:
+\item Results for U.S. calibration:
 \begin{itemize}
 \item Baseline model indicates current system is too progressive
 \item Adding that poverty constrains skill investment indicates the current system is close to optimal
@@ -415,7 +415,7 @@ $$
 \begin{align}
 \log h(\varphi, \varepsilon; \tau) = \log H^{RA}(\tau) - \varphi + \frac{1}{\hat{\sigma}} \varepsilon - \frac{1}{\hat \sigma (1- \tau)} \M (v_\varepsilon; \tau)
 \end{align}
-where $\M ( v_\varepsilon; \tau) = \frac{(1-\tau)}{1 - \tau(1+\hat \sigma))}{\hat \sigma} \frac{v_\varepsilon}{2}$. The consumption allocation is 
+where $\M ( v_\varepsilon; \tau) = \frac{(1-\tau)(1 - \tau(1+\hat \sigma))}{\hat \sigma} \frac{v_\varepsilon}{2}$. The consumption allocation is 
 \begin{align}
 \log c(\varphi, \alpha, s; g, \tau) = \log [C^{RA}(\tau)\vartheta(\tau)] + (1 - \tau) [\log p(s; \tau) + \alpha - \varphi] + \M (v_\varepsilon; \tau)
 \end{align}
@@ -438,39 +438,95 @@ where $\vartheta(\tau)$ is common across agents.
 \item Island-specific resource constraint is island-aggregate consumption equals island-aggregate after-tax income:
 \begin{align*}
 \int_E c(\varepsilon) dF_\varepsilon 
-&= \lambda \int_E [ \exp (p(s)+ \alpha + \varepsilon) h(\varepsilon)]^{1-\tau} dF_\varepsilon\\
-&= \lambda \int_E \exp [(1-\tau)(p(s)+ \alpha + \varepsilon)] h(\varepsilon)^{1-\tau} dF_\varepsilon\\
+&= \lambda \int_E [ p(s)\exp (\alpha + \varepsilon) h(\varepsilon)]^{1-\tau} dF_\varepsilon\\
+&= \lambda \int_E \exp [(1-\tau)(\log p(s)+ \alpha + \varepsilon)] h(\varepsilon)^{1-\tau} dF_\varepsilon\\
+&= \lambda \exp [(1-\tau)(\log p(s)+ \alpha)] \int_E \exp [(1-\tau) \varepsilon] h(\varepsilon)^{1-\tau} dF_\varepsilon
 \end{align*}
 \item Taking $(\varphi, s, \alpha)$, $(G, \lambda, \tau)$, and $p(s)$ as given, the island planner problem is
 \begin{align*}
 \max_{\{c(\varepsilon), h(\varepsilon)\}} \int_E \Bigg\{ \log c(\varepsilon) &- \frac{\exp[(1+\sigma)\varphi]}{1 + \sigma} h(\varepsilon)^{1+\sigma} + \chi \log G \Bigg\} dF_\varepsilon\\
 \text{s.t. } \int_E c(\varepsilon) dF_\varepsilon 
-&= \lambda \int_E \exp [(1-\tau)(p(s)+ \alpha + \varepsilon)] h(\varepsilon)^{1-\tau} dF_\varepsilon
+&= \lambda \exp [(1-\tau)(\log p(s)+ \alpha)] \int_E \exp [(1-\tau) \varepsilon] h(\varepsilon)^{1-\tau} dF_\varepsilon
 \end{align*}
 \item Let $\gamma$ be the multiplier on the resource constraint. The lagrangian is
 \begin{align*}
 \Lfn = \int_E \Bigg\{ \log c(\varepsilon) &- \frac{\exp[(1+\sigma)\varphi]}{1 + \sigma} h(\varepsilon)^{1+\sigma} + \chi \log G \Bigg\} dF_\varepsilon \\
-&+ \gamma \Bigg[\lambda \int_E \exp [(1-\tau)(p(s)+ \alpha + \varepsilon)] h(\varepsilon)^{1-\tau} dF_\varepsilon - \int_E c(\varepsilon) dF_\varepsilon \Bigg]
+&+ \gamma \Bigg[\lambda \exp [(1-\tau)(\log p(s)+ \alpha)] \int_E \exp [(1-\tau) \varepsilon] h(\varepsilon)^{1-\tau} dF_\varepsilon - \int_E c(\varepsilon) dF_\varepsilon \Bigg]
 \end{align*}
 \item FOC wrt $c(\varepsilon)$:
 \begin{align*}
 \frac{1}{c(\varepsilon)} = \gamma \implies c(\varepsilon) = c = \frac{1}{\gamma} \;\;\; \forall \varepsilon
 \end{align*}
-Thus, consumption is the same across agents on an island regardless of their realization of $\varepsilon \implies$ perfect consumption risk sharing. The resource constraint can be expressed as
-\begin{align*}
-c
-&= \lambda \int_E \exp [(1-\tau)(p(s)+ \alpha + \varepsilon)] h(\varepsilon)^{1-\tau} dF_\varepsilon \\
-1
-&= \gamma\lambda \int_E \exp [(1-\tau)(p(s)+ \alpha + \varepsilon)] h(\varepsilon)^{1-\tau} dF_\varepsilon \\
-\end{align*}
-
+Thus, consumption is the same across agents on an island regardless of their realization of $\varepsilon \implies$ perfect consumption risk sharing
 \item FOC wrt $h(\varepsilon)$:
 \begin{align*}
-\exp[(1+\sigma) \varphi] h(\varepsilon)^{\sigma} &= \gamma \lambda (1-\tau)\exp[(1-\tau)(p(s) + \alpha + \varepsilon)]h(\varepsilon)^{-\tau}\\
+\exp[(1+\sigma) \varphi] h(\varepsilon)^{\sigma} &= \gamma \lambda (1-\tau) \exp [(1-\tau)(\log p(s)+ \alpha)]  \exp [(1-\tau) \varepsilon] h(\varepsilon)^{-\tau} \\
 \implies
-h(\varepsilon)^{\sigma + \tau} &= \gamma \lambda (1-\tau) \exp[(1-\tau)(p(s) + \alpha + \varepsilon)-(1+\sigma) \varphi]
+h(\varepsilon)^{\sigma+\tau} &= \gamma \lambda (1-\tau) \exp [(1-\tau)(\log p(s)+ \alpha)-(1+\sigma) \varphi]  \exp [(1-\tau) \varepsilon] \\
+\implies
+h(\varepsilon) &= \gamma^{\frac{1}{\sigma+\tau}} [\lambda (1-\tau)]^{\frac{1}{\sigma+\tau}} \exp \Bigg[\frac{1-\tau}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{1+\sigma}{\sigma+\tau} \varphi \Bigg]  \exp  \Bigg[\frac{1-\tau}{\sigma+\tau} \varepsilon  \Bigg]
 \end{align*}
 \item Substituting both conditions into the resource constraint
+The resource constraint can be expressed as
+\begin{align*}
+c
+&= \lambda \exp [(1-\tau)(\log p(s)+ \alpha)] \int_E \exp [(1-\tau) \varepsilon] h(\varepsilon)^{1-\tau} dF_\varepsilon \\
+\implies
+\gamma^{-1}
+&= \lambda \exp [(1-\tau)(\log p(s)+ \alpha)] \\
+&\cdot \int_E \exp [(1-\tau) \varepsilon]  \gamma^{\frac{1 - \tau}{\sigma+\tau}} [\lambda (1-\tau)]^{\frac{1 - \tau}{\sigma+\tau}} \exp \Bigg[\frac{(1-\tau)^2}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{(1+\sigma)(1-\tau)}{\sigma+\tau} \varphi \Bigg]  \exp  \Bigg[\frac{(1-\tau)^2}{\sigma+\tau} \varepsilon  \Bigg] dF_\varepsilon\\
+\implies
+\gamma^{\frac{-\sigma -1 }{\sigma+\tau}}
+&= \lambda^{\frac{1+\sigma}{\sigma +\tau}}  (1-\tau)^{\frac{1 - \tau}{\sigma+\tau}} \exp [(1-\tau)( \log p(s)+ \alpha)]   \exp \Bigg[\frac{(1-\tau)^2}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{(1+\sigma)(1-\tau)}{\sigma+\tau} \varphi \Bigg]\\
+&\cdot \int_E  \exp  \Bigg[\Bigg(\frac{(1-\tau)^2 + (1 -\tau)(\sigma+\tau)}{\sigma+\tau} \Bigg) \varepsilon  \Bigg] dF_\varepsilon\\
+\gamma^{\frac{-\sigma -1 }{\sigma+\tau}}
+&= \lambda^{\frac{1+\sigma}{\sigma +\tau}}  (1-\tau)^{\frac{1 - \tau}{\sigma+\tau}}  \exp \Bigg[\frac{(1-\tau)(1+\sigma)}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{(1+\sigma)(1-\tau)}{\sigma+\tau} \varphi \Bigg]\\
+&\cdot \int_E  \exp  \Bigg[\Bigg(\frac{(1-\tau)(1+\sigma)}{\sigma+\tau} \Bigg) \varepsilon  \Bigg] dF_\varepsilon
+\end{align*}
+\item Focusing in on the last term, we can solve using MGF of normal distribution:\footnote{If $X \sim N(\mu, \sigma^2)$, then $E[\exp(aX)] = \exp(a\mu + \frac{a^2\sigma^2}{2})$.}
+\begin{align*}
+\int_E  \exp  \Bigg[\frac{(1-\tau)(1+\sigma)}{\sigma+\tau}  \varepsilon  \Bigg] dF_\varepsilon
+&= \exp  \Bigg[ \frac{(1-\tau)(1+\sigma)}{\sigma+\tau}\frac{-v_\varepsilon}{2} +   \frac{1}{2}\frac{(1-\tau)^2(1+\sigma)^2}{(\sigma+\tau)^2} v_\varepsilon \Bigg]\\
+&= \exp  \Bigg[\frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)^2(1+\sigma)^2}{(\sigma+\tau)^2} - \frac{(1-\tau)(1+\sigma)}{\sigma+\tau}\Bigg) \Bigg]\\
+&= \exp  \Bigg[\frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)^2(1+\sigma)^2 - (1-\tau)(1+\sigma)(\sigma+\tau)}{(\sigma+\tau)^2}\Bigg) \Bigg]\\
+&= \exp  \Bigg[\frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)(1+\sigma)[(1-\tau)(1+\sigma) - (\sigma+\tau)]}{(\sigma+\tau)^2}\Bigg) \Bigg]\\
+&= \exp  \Bigg[\frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)(1+\sigma)(1-2\tau-\tau\sigma)}{(\sigma+\tau)^2}\Bigg) \Bigg]
+\end{align*}
+Plugging back into resource constraint:
+\begin{align*}
+\gamma^{\frac{-\sigma -1 }{\sigma+\tau}}
+&= \lambda^{\frac{1+\sigma}{\sigma +\tau}}  (1-\tau)^{\frac{1 - \tau}{\sigma+\tau}}  \exp \Bigg[\frac{(1-\tau)(1+\sigma)}{\sigma +\tau}(\log p(s)+ \alpha - \varphi) \Bigg]\\
+&\cdot \exp  \Bigg[\frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)(1+\sigma)(1-2\tau-\tau\sigma)}{(\sigma+\tau)^2}\Bigg) \Bigg]\\
+\implies
+\gamma^{-1}
+&= \lambda (1-\tau)^{\frac{1 - \tau}{1+\sigma}}  \exp \Bigg[(1-\tau)(\log p(s)+ \alpha -\varphi) \Bigg] \exp  \Bigg[\frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)(1-2\tau-\tau\sigma)}{(\sigma+\tau)}\Bigg) \Bigg]\\
+\log c &= \log \lambda + \frac{1-\tau}{1 +\sigma}\log(1-\tau) + (1-\tau)[\log p(s) + \alpha - \varphi] + \frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)(1-2\tau-\tau\sigma)}{(\sigma+\tau)}\Bigg)
+\end{align*}
+Defining the last term as $\M ( v_\varepsilon; \tau)$:
+\begin{align*}
+\M ( v_\varepsilon; \tau) 
+&= \frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)(1-2\tau-\tau\sigma)}{(\sigma+\tau)}\Bigg)\\
+&= \frac{v_\varepsilon}{2}\Bigg( \frac{1-2\tau-\tau\sigma}{\hat \sigma}\Bigg)\\
+&= \frac{v_\varepsilon}{2}\Bigg( \frac{1-\tau-\tau(1+\sigma)}{\hat \sigma}\Bigg)\\
+&= \frac{(1-\tau)(1 - \tau(1+\hat \sigma))}{\hat \sigma} \frac{v_\varepsilon}{2}
+\end{align*}
+Turning back to the intratemporal FOC and taking logs and substituting in consumption:
+\begin{align*}
+\log h(\varepsilon) 
+&= \frac{1}{\sigma+\tau}\log\gamma + \frac{1}{\sigma+\tau} \log \lambda + \frac{1}{\sigma+\tau} \log(1-\tau) + \frac{1-\tau}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{1+\sigma}{\sigma+\tau} \varphi   +  \frac{1-\tau}{\sigma+\tau} \varepsilon  \\
+&= \frac{-1}{\sigma+\tau}\Bigg[ \log \lambda + \frac{1-\tau}{1 +\sigma}\log(1-\tau) + (1-\tau)[\log p(s) + \alpha - \varphi] + \M ( v_\varepsilon; \tau) \Bigg] \\
+&+ \frac{1}{\sigma+\tau} \log \lambda + \frac{1}{\sigma+\tau} \log(1-\tau) + \frac{1-\tau}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{1+\sigma}{\sigma+\tau} \varphi   +  \frac{1-\tau}{\sigma+\tau} \varepsilon\\
+&= \Bigg[\frac{-1}{\sigma + \tau} + \frac{1}{\sigma + \tau}  \Bigg] \log \lambda
++ \Bigg[\frac{-1(1-\tau)}{(\sigma + \tau)(1+\sigma)} + \frac{1}{\sigma + \tau}\Bigg] \log (1-\tau)
+\\&+ \Bigg[\frac{-(1-\tau)}{(\sigma + \tau)} + \frac{(1-\tau)}{(\sigma+\tau)}\Bigg] [\log p(s) + \alpha]
++ \Bigg[\frac{-1(1-\tau)}{\sigma+\tau} -\frac{1+\sigma}{\sigma+\tau} \Bigg] \varphi
++ \frac{1-\tau}{\sigma+\tau} \varepsilon
+- \frac{1}{\sigma+\tau} \M ( v_\varepsilon; \tau)\\
+&=  \frac{1}{1+\sigma} \log (1-\tau) - \varphi
++ \frac{1-\tau}{\sigma+\tau} \varepsilon
+- \frac{1}{\sigma+\tau} \M ( v_\varepsilon; \tau)
+\end{align*}
+
 \end{itemize}
 
 {
@@ -600,9 +656,15 @@ h(\varepsilon)^{\sigma + \tau} &= \gamma \lambda (1-\tau) \exp[(1-\tau)(p(s) + \
 
 \pagebreak
 
-\section*{Appendix: Notes on HSV (2014) and BK (2021) from Lecture}
+\section*{Appendix: Lecture Notes on HSV (2014) and BK (2021)}
 
-We have data on consumption, hours, and wages $\{c, h, w\}_i$; can we perfectly rationalize these data
+Job presented a simplified version of HSV (2014) and BK (2021), which are closely related papers. I have included these lecture notes because I found them helpful in understanding the more complicated HSV (2017). 
+
+\bigskip
+
+\textbf{Question:} We have data on consumption, hours, and wages $\{c_i, h_i, w_i\}_i$. Can we perfectly rationalize these data?
+
+\subsection*{Environment}
 
 \begin{enumerate}
 
@@ -622,13 +684,17 @@ We have data on consumption, hours, and wages $\{c, h, w\}_i$; can we perfectly 
 \begin{align*}
 E_j \sum_{t=j}^\infty (\beta \delta)^{t-j} u^j(c_t^j, h_t^j) 
 &= 
-E_j \sum_{t=j}^\infty (\beta \delta)^{t-j} \Bigg[\frac{(c_t^j)^{1-\gamma}-1}{1-\gamma} - \frac{(\exp(B^j) h_t^j)^{1+\frac{1}{\eta}}}{1+\frac{1}{\eta}} \Bigg]
+E_j \sum_{t=j}^\infty (\beta \delta)^{t-j} \Bigg[\frac{(c_t^j)^{1-\gamma}-1}{1-\gamma} - \frac{[\exp(B^j) h_t^j]^{1+\frac{1}{\eta}}}{1+\frac{1}{\eta}} \Bigg]
 \end{align*}
-
 \begin{itemize}
 \item $\eta$ is the Frisch elasticity of labor supply
-\item Largely focus on $\gamma \to 1 \implies \log$ preferences over consumption
+\item Here, we generally focus on $\gamma \to 1 \implies \log$ preferences over consumption
 \end{itemize}
+\begin{align*}
+u^j(c_t^j, h_t^j) 
+&= 
+\log c_t^j - \frac{[\exp(B^j) h_t^j]^{1+\frac{1}{\eta}}}{1+\frac{1}{\eta}}
+\end{align*}
 
 \item Technology
 
@@ -656,7 +722,7 @@ E_j \sum_{t=j}^\infty (\beta \delta)^{t-j} \Bigg[\frac{(c_t^j)^{1-\gamma}-1}{1-\
 \item Agents can also trade one-period bonds across islands. Arrow securities with corresponding prices $q_x(\zeta_{t+1}^j)$  where $\zeta_t^j := \varepsilon_t^j$
 \item HH problem:
 \begin{align*}
-\max_{\{c_t^j, h_t^j, b^\ell(s_{t+1}^j, x (\zeta_{t+1}^j)\}_{t=j}^\infty} & E_j \sum_{t=j}^\infty (\beta \delta)^{t-j} u^j(c_t^j, h_t^j)\\
+\max_{\{c_t^j, h_t^j, b^\ell(s_{t+1}^j), x (\zeta_{t+1}^j)\}_{t=j}^\infty} & E_j \sum_{t=j}^\infty (\beta \delta)^{t-j} u^j(c_t^j, h_t^j)\\
 \text{s.t. } c_t^j + \int_{s_{t+1}^j} q_b^\ell(s_{t+1}^j) b^\ell(s_{t+1}^j) ds_{t+1}^j &+ \int_{\zeta_{t+1}^j} q_x(s_{t+1}^j) x(\zeta_{t+1}^j) d\zeta_{t+1}^j \le y_t^j + b^\ell(s_t^j) + x(\zeta_t^j)
 \end{align*}
 \item An equilibrium is an allocation is $x_j$ and prices $\{q_b^\ell(s_{t+1}^j\}_{\ell, t}$ and $\{q_x(\zeta_{t+1}^j\}_t$ such that
@@ -671,7 +737,7 @@ E_j \sum_{t=j}^\infty (\beta \delta)^{t-j} \Bigg[\frac{(c_t^j)^{1-\gamma}-1}{1-\
 \item Steps: (1) formulate auxiliary problem (island planner problem) and (2) verify that this auxiliary problem satisfy the conditions of an competitive equilibrium
 \end{itemize}
 
-\item Island planner problem
+\subsection*{Island planner problem (auxiliary problem)}
 
 \begin{itemize}
 \item For every island $\ell$, the island planner solves static problem
@@ -692,8 +758,66 @@ Thus, there is perfect insurance on an island
 Thus, hours change with $\varepsilon_t^j$. High $\varepsilon_t^j$ work more.
 \item The RC and consumption FOC imply
 \begin{align*}
-\frac{1}{\lambda} = \int z^{1 + \eta} \lambda^\eta \exp(-(1+\eta)B) d \Phi
+\frac{1}{\lambda} 
+&= \int z^{1 + \eta} \lambda^\eta \exp(-(1+\eta)B) d \Phi\\
+&= \lambda^\eta \exp(-(1+\eta) B) \exp((1+\eta)\alpha) \int \exp((1+\eta)\varepsilon) d \Phi\\
+\implies
+1 &= \lambda \exp(-B) \exp(\alpha) \Bigg[\int \exp((1 + \eta)\varepsilon)d\Phi \Bigg]^{\frac{1}{1+\eta}}\\
+\implies
+c &= \exp(\alpha - B) \underbrace{\Bigg[\int \exp((1 + \eta)\varepsilon)d\Phi \Bigg]^{\frac{1}{1+\eta}}}_{\equiv \mathcal{C}}\\
+\exp((1+\eta)B)h(\varepsilon) &= [\exp(\alpha + \varepsilon - \alpha + B)]^\eta / \mathcal{C}^\eta\\
+h(\varepsilon) &= \frac{\varepsilon \eta}{\mathcal{C}^\eta \exp(B)}
 \end{align*}
+\item Comparative statistics:$\uparrow \varepsilon \implies \uparrow h(\varepsilon)$ and $\uparrow B \implies \downarrow h(\varepsilon)$
+\item $\alpha$ doesn't show up in $h$ (kind of weird). Why? Income and substitution effects perfectly cancel out.
+\begin{align*}
+q_\ell(\varepsilon_{t+1}^j) 
+&= \frac{u_c(c_{t+1}(\varepsilon_{t+1}^j))}{u_c(c_{t}(\varepsilon_{t}^j))} \beta \delta \underbrace{\pi_t(\varepsilon_{t+1})}_{\text{Doesn't vary by islands}}\\
+&= \frac{c_t^j(\varepsilon_t^j)}{c_{t+1}^j(\varepsilon_{t+1}^j)} \beta \delta \pi_t(\varepsilon_{t+j})\\
+&= \exp(\alpha - B -\alpha + B) \frac{\mathcal{C}_t}{\mathcal{C}_{t+1}} \beta \delta \pi_t(\varepsilon_{t+1})\\
+&= \frac{\mathcal{C}_t}{\mathcal{C}_{t+1}} \beta \delta \pi_t(\varepsilon_{t+1})
+\end{align*}
+Price is the same across islands.
+\item Risk-free asset price (let $\mathcal{E}_{t+1}$ be the support of $\varepsilon_{t+1}^j$):
+\begin{align*}
+q_\ell(\mathcal{E}_{t+1}) 
+&= \int \frac{u_c^j(c_{t+1}^j(\varepsilon_{t+1}^j))}{u_c^j(c_{t}^j(\varepsilon_{t}^j))} \beta \delta d \Phi_j^\varepsilon\\
+&= \beta \delta \frac{\mathcal{C}_t}{\mathcal{C}_{t+1}}
+\end{align*}
+
+\subsection*{Equilibrium Characterization}
+\item From the equilibrium conditions, we can map data on wages, hours, and consumption $(\hat w_i, \hat h_i, \hat c_i)$ to structural parameters $(\alpha_i, \varepsilon_i, B_i)$:
+\begin{align*}
+\underbrace{\hat w_i}_{\text{data}} &= \underbrace{\exp(\alpha_i + \varepsilon_i)}_{\text{fn of structural  parameter}}\\
+\underbrace{\hat h_i}_{\text{data}} &= \underbrace{\frac{\exp(\eta \varepsilon_i)}{\mathcal{C}^\eta \exp(B_i)} }_{\text{fn of structural  parameter}}\\
+\underbrace{\hat c_i}_{\text{data}} &= \underbrace{\exp(\alpha_i - B_i) \mathcal{C}}_{\text{fn of structural  parameter}}
+\end{align*}
+\item We can rewrite structural parameters $(\alpha_i, \varepsilon_i, B_i)$ as functions of data $(\hat w_i, \hat h_i, \hat c_i)$:
+\begin{align}
+\frac{\hat c_i\hat w_i^\eta}{\hat h_i} &= \frac{\exp(\alpha_i - B_i) \exp(\eta(\alpha_i + \varepsilon_i)
+)}{\exp(-B_i)\exp(\eta \varepsilon_i)} \nonumber \\
+&= \exp((1+\eta)\alpha_i) \nonumber \\
+\implies
+\underbrace{\frac{1}{1+\eta} \log\Bigg[\frac{\hat c_i \hat w_i^\eta}{\hat h_i}\Bigg]}_{\text{fn of data}} &= \underbrace{\alpha_i}_{\text{structural parameter}} \\
+\log (\hat w_i) - \alpha_i &= \varepsilon_i \nonumber \\
+\implies
+\underbrace{\log (\hat w_i) - \frac{1}{1+\eta} \log\Bigg[\frac{\hat c_i \hat w_i^\eta}{\hat h_i}\Bigg]}_{\text{fn of data}} &= \underbrace{\varepsilon_i}_{\text{structural parameter}} \\
+\log(\hat c_i) &= \alpha_i - B_i + \log(\mathcal{C}) \nonumber \\
+\implies
+\underbrace{\frac{1}{1+\eta} \log\Bigg[\frac{\hat c_i \hat w_i^\eta}{\hat h_i}\Bigg] + \log(\mathcal{C}) - \log(\hat c_i)}_{\text{fn of data}}  &=  \underbrace{B_i}_{\text{structural parameter}} \label{B_mapping}
+\end{align}
+\item We can use common estimates of the Frisch elasticity of labor supply $\eta$ from the literature
+\item (\ref{B_mapping}) Recall that 
+\begin{align*}
+\mathcal{C} = \Bigg[\int \exp((1 + \eta)\varepsilon)d\Phi \Bigg]^{\frac{1}{1+\eta}}
+\end{align*}
+Which can be estimated as
+\begin{align*}
+\mathcal{C} 
+&\approx \Bigg[ \frac{1}{n} \sum \exp((1 + \eta)\varepsilon_i) \Bigg]^{\frac{1}{1+\eta}}\\
+&= \Bigg[ \frac{1}{n} \sum \exp\Bigg((1 + \eta) \Bigg( \log (\hat w_i) - \frac{1}{1+\eta} \log\Bigg[\frac{\hat c_i \hat w_i^\eta}{\hat h_i}\Bigg] \Bigg) \Bigg) \Bigg]^{\frac{1}{1+\eta}}
+\end{align*}
+
 
 \end{itemize}
 
