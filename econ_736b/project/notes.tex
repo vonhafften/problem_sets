@@ -287,7 +287,7 @@ In words, the marginal disutility of skill investment must equal the present dis
 \end{align*}
 Combining
 \begin{align}
-\Bigg(\frac{s_i}{\kappa_i}\Bigg)^{\frac{1}{\psi}} = (1 - \beta \delta) E_0 \sum_{a = 0}^\infty (\beta \delta)^a \frac{\partial u_i(c_{ia}, h_{ia}, G)}{\partial s_i}
+\Bigg(\frac{s_i}{\kappa_i}\Bigg)^{\frac{1}{\psi}} = (1 - \beta \delta) E_0 \sum_{a = 0}^\infty (\beta \delta)^a \frac{\partial u_i(c_{ia}, h_{ia}, G)}{\partial s_i} \label{optimal_skills}
 \end{align}
 \item At $a > 0$, timing is: 
 \begin{enumerate}
@@ -430,8 +430,6 @@ where $\vartheta(\tau)$ is common across agents.
 
 \textbf{Proof of Proposition 1:} 
 
-
-
 \begin{itemize}
 \item The roadmap of the proof is to (1) separate the economy into ``island" for each $(\varphi, s, \alpha)$, (2) solve the static ``island planner problem", and (3) verify that this allocation satisfies the conditions of the CE. The intuition behind this result is that, since the market is complete wrt to $\varepsilon$, so the CE allocation is efficient, so it can be computed as the solution to an island-specific planner problem. 
 \item Since each island transfers zero net financial wealth between periods and preferences are time separable, each island-specific planner problem is static.
@@ -483,7 +481,7 @@ c
 &= \lambda^{\frac{1+\sigma}{\sigma +\tau}}  (1-\tau)^{\frac{1 - \tau}{\sigma+\tau}}  \exp \Bigg[\frac{(1-\tau)(1+\sigma)}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{(1+\sigma)(1-\tau)}{\sigma+\tau} \varphi \Bigg]\\
 &\cdot \int_E  \exp  \Bigg[\Bigg(\frac{(1-\tau)(1+\sigma)}{\sigma+\tau} \Bigg) \varepsilon  \Bigg] dF_\varepsilon
 \end{align*}
-\item Focusing in on the last term, we can solve using MGF of normal distribution:\footnote{If $X \sim N(\mu, \sigma^2)$, then $E[\exp(aX)] = \exp(a\mu + \frac{a^2\sigma^2}{2})$.}
+\item Focusing in on the last term, we can solve using MGF of normal distribution:\footnote{If $X \sim N(\mu, \sigma^2)$, then $E[\exp(aX)] = \exp(a\mu + \frac{a^2\sigma^2}{2})$ (Casella and Berger, \textit{Statistical Inference}).}
 \begin{align*}
 \int_E  \exp  \Bigg[\frac{(1-\tau)(1+\sigma)}{\sigma+\tau}  \varepsilon  \Bigg] dF_\varepsilon
 &= \exp  \Bigg[ \frac{(1-\tau)(1+\sigma)}{\sigma+\tau}\frac{-v_\varepsilon}{2} +   \frac{1}{2}\frac{(1-\tau)^2(1+\sigma)^2}{(\sigma+\tau)^2} v_\varepsilon \Bigg]\\
@@ -540,17 +538,209 @@ $$
 $$
 $\square$
 
+\item With log utility and zero wealth, income and substitution effects on labor supply from different $\alpha$ and $s$ exactly offset, so hours are independent of $\alpha$ and $s$
+
+\item Decompose hours into four terms:
+\begin{align*}
+\log h(\varphi, \varepsilon; \tau) 
+= 
+\underbrace{\log H^{RA}(\tau)}_{\text{rep agent hours}} 
+- 
+\underbrace{\varphi}_{\text{idiosyncratic disutiltiy of work}}
++
+\underbrace{\frac{1}{\hat{\sigma}} \varepsilon }_{\text{insurable shock}}
+- 
+\underbrace{\frac{1}{\hat \sigma (1- \tau)} \M (v_\varepsilon; \tau)}_{\text{effect of insurable wage variation}}
+\end{align*}
+Notice that the insurable shock $\varepsilon$ has no income effect (because insurable) and is mediated by $\hat \sigma^{-1}$ which is lowered by more progressivity. The idea with the last term is that insurable wage variation means that agents are able to work more when they are productive and take more leisure when unproductive; this raises average productivity.
+
+\item Decompose consumption into five terms:
+\begin{align*}
+\log c(\varphi, \alpha, s; g, \tau) 
+&= 
+\underbrace{\log [C^{RA}(\tau)\vartheta(\tau)]}_{\text{rep agent}} 
++
+\underbrace{(1 - \tau) \log p(s; \tau)}_{\text{$c$ is inc. in skill/skill price}} 
++
+\underbrace{(1 - \tau) \alpha }_{\text{$c$ is inc. in uninsurable productivity}}\\
+&- 
+\underbrace{(1 - \tau) \varphi }_{\text{$h$ is dec. in disutility of work, so $c$ is too}}
++ 
+\underbrace{\M (v_\varepsilon; \tau)}_{\text{effect of insurable wage variation}}
+\end{align*}
+Notice that more progressivity (higher $\tau$) reduces passthrough of skills (skill prices), uninsurable labor productivity, and disutility of work
+
 \end{itemize}
 
 {
-\proposition Hello
-
+\proposition In equilibrium, skill prices are given by
+\begin{align}
+\log p(s; \tau) &= \pi_0(\tau) + \pi_1(\tau) \cdot s(\kappa; \tau) \text{, where} \label{prop2_s}\\
+\pi_1(\tau) &= \Bigg( \frac{\eta}{\theta} \Bigg)^{\frac{1}{1+\psi}}(1-\tau)^{-\frac{\psi}{1+\psi}} \label{prop2_pi1}\\
+\pi_0(\tau) &= \frac{1}{\theta-1} \Bigg\{ \frac{1}{1+\psi} \Bigg[\psi \log \Bigg( \frac{1-\tau}{\theta}\Bigg) - \log (\eta)\Bigg] + \log\Bigg(\frac{\theta}{\theta - 1}\Bigg) \Bigg\} \label{prop2_pi0}
+\end{align} 
+The skill investment allocation is given by
+\begin{align}
+s(\kappa;\tau) = [(1-\tau)\pi_1(\tau)]^{\psi} \cdot \kappa = \Bigg[ \frac{\eta}{\theta}(1-\tau) \Bigg]^{\frac{\psi}{1+\psi}}\cdot \kappa 
+\label{prop2_s}
+\end{align} 
+and the equilibrium skill density $m(s)$ is exponential with parameter $\eta^{\frac{1}{1+\psi}} [\frac{\theta}{1-\tau}]^{\frac{\psi}{1+\psi}}$.
 }
+
+\pagebreak
+
+\textbf{Proof of Proposition 2:} 
+\begin{itemize}
+\item Recall from (\ref{disutility_skill}) that the disutility of the initial skill investment is
+\begin{align*}
+v(s) = \frac{\psi}{1 + \psi} \kappa^{-\frac{1}{\psi}} s^\frac{1 + \psi}{\psi} 
+\end{align*}
+where $\kappa \sim \exp(\eta)$.
+\item Recall from (\ref{optimal_skills}) that the optimality condition for skill investment is
+\begin{align*}
+\frac{\partial v(s)}{\partial s} =\Bigg(\frac{s}{\kappa}\Bigg)^{\frac{1}{\psi}} = (1 - \beta \delta) E_0 \sum_{a = 0}^\infty (\beta \delta)^a \frac{\partial u(c(\varphi, \alpha, s;g, \tau), h(\varphi, \varepsilon; \tau), g)}{\partial s}
+\end{align*}
+\item Using the hours and consumption solutions from Proposition 1,
+\begin{align*}
+\frac{\partial }{\partial s}  u(c(\varphi, \alpha, s;g, \tau), h(\varphi, \varepsilon; \tau), g)
+&= 
+\frac{\partial }{\partial s}\Bigg[\log c(\varphi, \alpha, s;g, \tau) - \frac{\exp [(1+\sigma) \varphi_i] }{1 + \sigma} (h(\varphi, \varepsilon; \tau))^{1 + \sigma} + \chi \log G\Bigg] \\
+&= 
+\frac{\partial }{\partial s} \Bigg[\log [C^{RA}\vartheta] + (1 - \tau) [\log p(s; \tau) + \alpha - \varphi] + \M (v_\varepsilon; \tau)\Bigg]\\
+&= (1-\tau) \frac{\partial \log p(s; \tau)}{\partial s}
+\end{align*}
+\item Plugging to the above optimality condition,
+\begin{align*}
+\Bigg(\frac{s}{\kappa}\Bigg)^{\frac{1}{\psi}} 
+&= (1 - \beta \delta) E_0 \sum_{a = 0}^\infty (\beta \delta)^a  \Bigg[ (1-\tau)\frac{\partial \log p(s; \tau)}{\partial s} \Bigg] \\
+&= \Bigg[ (1-\tau)\frac{\partial \log p(s; \tau)}{\partial s} \Bigg](1 - \beta \delta) E_0 \sum_{a = 0}^\infty (\beta \delta)^a   \\
+&= \Bigg[ (1-\tau)\frac{\partial \log p(s; \tau)}{\partial s} \Bigg](1 - \beta \delta) (1 - \beta \delta)^{-1}   \\
+&= (1-\tau)\frac{\partial \log p(s; \tau)}{\partial s}
+\end{align*}
+\item Guess that 
+$$
+\log p(s; \tau) = \pi_0(\tau) + \pi_1(\tau) \cdot s \implies \frac{\partial \log p(s; \tau)}{\partial s} = \pi_1(\tau)  
+$$
+for some $\pi_0(\tau)$ and $\pi_1(\tau)$
+\item Thus, the guess implies that
+\begin{align*}
+\Bigg(\frac{s}{\kappa}\Bigg)^{\frac{1}{\psi}} &= (1-\tau)\pi_1(\tau) \implies s(\kappa;\tau) = [(1-\tau) \pi_1(\tau)]^{\psi} \cdot \kappa
+\end{align*}
+\item Since $\kappa \sim Exp(\eta) \implies s(\kappa; \tau) \sim Exp(\zeta)$ where $\zeta \equiv \eta [(1-\tau)\pi_1(\tau)]^{-\psi}$ with density $m(s) = \zeta \exp(-\zeta s)$.\footnote{In general, if $X \sim Exp(\lambda)$ then $aX \sim Exp(\frac{\lambda}{a})$ (Casella and Berger, \textit{Statistical Inference}).}
+\item Turning to production side of economy, Proposition 1 implies that effective hours worked $N(s)$ are independent of skill type $s$, so $N(s) = N$ for all $s$, so aggregate output is
+$$
+Y = \Bigg( \int_0^\infty [N \cdot m(s)]^{\frac{\theta - 1}{\theta}} ds \Bigg)^{\frac{\theta}{\theta - 1}} 
+$$
+Equilibrium requires that $p(s)$ is the value of the marginal product of effective hours of skill type $s$:
+\begin{align*}
+p(s) 
+&= \Bigg[\frac{Y}{N \cdot m(s)}\Bigg]^{\frac{1}{\theta}} \\
+\implies \log p(s) 
+&= \frac{1}{\theta} \log\Bigg(\frac{Y}{N}\Bigg) - \frac{1}{\theta}\log(m(s))\\
+&= \frac{1}{\theta} \log\Bigg(\frac{Y}{N}\Bigg) - \frac{1}{\theta}\log[\zeta \exp(-\zeta s)]\\
+&= \frac{1}{\theta} \log\Bigg(\frac{Y}{N\zeta}\Bigg) + \frac{\zeta}{\theta} s\\
+\end{align*}
+\item Matching coefficients, we can derive $\pi_1(\tau)$
+\begin{align*}
+\pi_1(\tau) 
+&= \frac{\zeta}{\theta} \\
+&= \frac{\eta}{\theta[(1-\tau)\pi_1(\tau)]^{\psi}} \\
+\implies
+[\pi_1(\tau)]^{1+\psi} 
+&= \frac{\eta}{\theta(1-\tau)^{\psi}} \\
+\implies
+\pi_1(\tau) &= \Bigg(\frac{\eta}{\theta}\Bigg)^{\frac{1}{1+\psi}} (1-\tau)^{\frac{-\psi}{1+\psi}}
+\end{align*}
+Thus, we get (\ref{prop2_pi1})
+\item Thus, $\zeta$ is
+\begin{align*}
+\zeta 
+&= \eta [(1-\tau)\pi_1(\tau)]^{-\psi}\\
+&= \eta (1-\tau)^{-\psi} \Bigg(\frac{\eta}{\theta}\Bigg)^{\frac{-\psi}{1+\psi}} (1-\tau)^{\frac{-\psi^2}{1+\psi}}\\
+&= \eta^{\frac{1}{1+\psi}} \Bigg(\frac{\theta}{1- \tau}\Bigg)^{\frac{\psi}{1+\psi}}
+\end{align*}
+\item Plugging into $m(s)$, we get
+\begin{align*}
+m(s) 
+&= \zeta \exp(-\zeta s)\\
+&= \eta^{\frac{1}{1+\psi}} \Bigg(\frac{\theta}{1- \tau}\Bigg)^{\frac{\psi}{1+\psi}} \exp \Bigg(-\eta^{\frac{1}{1+\psi}} \Bigg(\frac{\theta}{1- \tau}\Bigg)^{\frac{\psi}{1+\psi}} s\Bigg)
+\end{align*}
+\item Furthermore, we get $s(\kappa; \tau)$
+\begin{align*}
+s(\kappa; \tau) 
+&= [(1-\tau) \pi_1(\tau)]^{\psi} \cdot \kappa\\
+&= \Bigg[(1-\tau) \Bigg(\frac{\eta}{\theta}\Bigg)^{\frac{1}{1+\psi}} (1-\tau)^{\frac{-\psi}{1+\psi}}\Bigg]^{\psi} \cdot \kappa\\
+&= \Bigg[\frac{\eta}{\theta} (1-\tau)\Bigg]^{\frac{\psi}{1+\psi}} \cdot \kappa\\
+\end{align*}
+Thus, we get (\ref{prop2_s}).
+\item Again matching coefficients, we get derive $\pi_0(\tau)$ in terms of aggregate output and effective hours:
+\begin{align*}
+\pi_0(\tau) 
+&= \frac{1}{\theta} \log\Bigg(\frac{Y}{N\zeta}\Bigg)\\
+&= \frac{1}{\theta} \log\Bigg(\frac{Y}{N}\Bigg) - \frac{1}{\theta(1+\psi)} \log\Bigg(\frac{\eta}{\theta}\Bigg) + \frac{\psi}{\theta(1+\psi)} \log(1-\tau)
+\end{align*}
+Using $Y = \frac{\theta}{\theta - 1} \exp(\pi_0(\tau)) N$ from Corollary 2 below, we get
+\begin{align*}
+\pi_0(\tau) 
+&= \frac{1}{\theta} \log\Bigg(\frac{\frac{\theta}{\theta - 1} \exp(\pi_0(\tau)) N}{N}\Bigg) - \frac{1}{\theta(1+\psi)} \log\Bigg(\frac{\eta}{\theta}\Bigg) + \frac{\psi}{\theta(1+\psi)} \log(1-\tau) \\
+&= \frac{1}{\theta} \pi_0(\tau) + \frac{1}{\theta}\log\Bigg(\frac{\theta}{\theta - 1} \Bigg) - \frac{1}{\theta(1+\psi)} \log\Bigg(\frac{\eta}{\theta}\Bigg) + \frac{\psi}{\theta(1+\psi)} \log(1-\tau)\\
+\implies
+\frac{\theta - 1}{\theta} \pi_0(\tau) 
+&=\frac{1}{\theta}\log\Bigg(\frac{\theta}{\theta - 1} \Bigg) - \frac{1}{\theta(1+\psi)} \log\Bigg(\frac{\eta}{\theta}\Bigg) + \frac{\psi}{\theta(1+\psi)} \log(1-\tau)\\
+\implies
+\pi_0(\tau) 
+&=\frac{1}{\theta-1}\log\Bigg(\frac{\theta}{\theta - 1} \Bigg) - \frac{1}{(\theta-1)(1+\psi)} \log\Bigg(\frac{\eta}{\theta}\Bigg) + \frac{\psi}{(\theta-1)(1+\psi)} \log(1-\tau)\\
+&=\frac{1}{(\theta- 1)(1+\psi)}\Bigg[\psi \log\Bigg(\frac{1-\tau}{\theta} - \log (\eta) \Bigg)\Bigg] + \frac{1}{\theta - 1}\log\Bigg(\frac{\theta}{\theta-1}\Bigg)
+\end{align*}
+Thus, we get (\ref{prop2_pi0})
+\end{itemize}
+$\square$
+
+\begin{itemize}
+\item Notice ``Mincerian" form of log equilibrium skill price (i.e., affine function of $s$): 
+\begin{align*}
+\log p(s; \tau) &= \underbrace{\pi_0(\tau)}_{\text{base log-price of lowest skill level}} + \underbrace{\pi_1(\tau)}_{\text{pretax marginal return to skill}} \cdot s(\kappa; \tau)
+\end{align*}
+\item Notice from (\ref{prop2_s}) that higher progressivity reduces the after-tax returns to investing in skills $\implies$ depresses skill investment
+\item Notice from (\ref{prop2_pi1}) that progressivity increases the equilibrium pretax marginal return to skill. Stiglitz effect: Higher $\tau$ means more compressed skill distribution toward zero, so high skills are more scarce $\implies$ imperfect substitutability in production drives up the pretax return to skills.
+\end{itemize}
 
 {
-\corollary Hello
-
+\corollary The distribution of log skill premia $\pi_1(\tau) \cdot s(\kappa;\tau)$ is exponential with parameter $\theta$. Thus, the variance of log skill prices is 
+$$
+var(\log p(s;\tau)) = \frac{1}{\theta^2}
+$$
+The distribution of skill prices $p(s; \tau)$ is levels is Pareto with scale (lower ound parameter $\exp(\pi_0(\tau))$ and Pareto parameter $\theta$.
 }
+
+\pagebreak
+
+\textbf{Proof of Corollary 1:}
+
+\begin{itemize}
+\item The log of the skill premium for an agent with ability $\kappa$ is
+\begin{align*}
+\pi_1(\tau) \cdot s(\kappa; \tau) 
+&= \pi_1(\tau)[(1-\tau)\pi_1(\tau)]^{\psi} \cdot \kappa\\
+&= [\pi_1(\tau)]^{1+\psi}(1-\tau)^{\psi} \cdot \kappa\\
+&= \Bigg(\frac{\eta}{\theta}\Bigg) (1-\tau)^{-\psi}(1-\tau)^{\psi} \cdot \kappa\\
+&= \frac{\eta}{\theta} \cdot \kappa\\
+\end{align*}
+using results from Proposition 2.
+\item Therefore, since $\kappa \sim Exp(\eta) \implies \pi_1(\tau) \cdot s(\kappa; \tau)  \sim Exp(\theta)$
+\item The variance of log skill prices is\footnote{If $X \sim Exp(\lambda)$, then $var(X) = \frac{1}{\lambda^2}$ (Casella and Berger, \textit{Statistical Inference}).}
+$$
+var(\log p(s;\tau)) = var(\pi_0(\tau) + \pi_1(\tau) \cdot s(\kappa;\tau)) = var(\pi_1(\tau) \cdot s(\kappa;\tau)) = \frac{1}{\theta^2}
+$$
+\item Since the log skill premia are exponentially distributed, skill prices in levels are distributed Pareto with lower bound parameter (or scale) $\exp(\pi_0(\tau))$ and Pareto parameter (or shape) is $\theta$.\footnote{In general, if $X \sim Exp(\lambda)$, $k \exp(X) \sim Pareto(k, \lambda)$ (Casella and Berger, \textit{Statistical Inference}).}
+\begin{align*}
+\pi_1(\tau) \cdot s(\kappa;\tau) &\sim Exp(\theta) \\
+\implies \exp(\pi_0(\tau)+ \pi_1(\tau) \cdot s(\kappa;\tau)) = \exp(\pi_0(\tau)) \exp(\pi_1(\tau) \cdot s(\kappa;\tau)) &\sim Pareto(\exp(\pi_0(\tau)), \theta)
+\end{align*}
+\end{itemize}
+$\square$
+
+
 
 {
 \corollary Hello
