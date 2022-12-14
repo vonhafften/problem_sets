@@ -413,11 +413,11 @@ $$
 {
 \proposition The equilibrium hours-worked allocation is
 \begin{align}
-\log h(\varphi, \varepsilon; \tau) = \log H^{RA}(\tau) - \varphi + \frac{1}{\hat{\sigma}} \varepsilon - \frac{1}{\hat \sigma (1- \tau)} \M (v_\varepsilon; \tau)
+\log h(\varphi, \varepsilon; \tau) = \log H^{RA}(\tau) - \varphi + \frac{1}{\hat{\sigma}} \varepsilon - \frac{1}{\hat \sigma (1- \tau)} \M (v_\varepsilon; \tau) \label{prop1_h}
 \end{align}
 where $\M ( v_\varepsilon; \tau) = \frac{(1-\tau)(1 - \tau(1+\hat \sigma))}{\hat \sigma} \frac{v_\varepsilon}{2}$. The consumption allocation is 
 \begin{align}
-\log c(\varphi, \alpha, s; g, \tau) = \log [C^{RA}(\tau)\vartheta(\tau)] + (1 - \tau) [\log p(s; \tau) + \alpha - \varphi] + \M (v_\varepsilon; \tau)
+\log c(\varphi, \alpha, s; g, \tau) = \log [C^{RA}(\tau)\vartheta(\tau)] + (1 - \tau) [\log p(s; \tau) + \alpha - \varphi] + \M (v_\varepsilon; \tau) \label{prop1_c}
 \end{align}
 where $\vartheta(\tau)$ is common across agents.
 }
@@ -474,7 +474,7 @@ c
 \implies
 \gamma^{-1}
 &= \lambda \exp [(1-\tau)(\log p(s)+ \alpha)] \\
-&\cdot \int_E \exp [(1-\tau) \varepsilon]  \gamma^{\frac{1 - \tau}{\sigma+\tau}} [\lambda (1-\tau)]^{\frac{1 - \tau}{\sigma+\tau}} \exp \Bigg[\frac{(1-\tau)^2}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{(1+\sigma)(1-\tau)}{\sigma+\tau} \varphi \Bigg]  \exp  \Bigg[\frac{(1-\tau)^2}{\sigma+\tau} \varepsilon  \Bigg] dF_\varepsilon\\
+&\cdot \int_E \exp [(1-\tau) \varepsilon]  \gamma^{\frac{1 - \tau}{\sigma+\tau}} [\lambda (1-\tau)]^{\frac{1 - \tau}{\sigma+\tau}} \\&\exp \Bigg[\frac{(1-\tau)^2}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{(1+\sigma)(1-\tau)}{\sigma+\tau} \varphi \Bigg]  \exp  \Bigg[\frac{(1-\tau)^2}{\sigma+\tau} \varepsilon  \Bigg] dF_\varepsilon\\
 \implies
 \gamma^{\frac{-\sigma -1 }{\sigma+\tau}}
 &= \lambda^{\frac{1+\sigma}{\sigma +\tau}}  (1-\tau)^{\frac{1 - \tau}{\sigma+\tau}} \exp [(1-\tau)( \log p(s)+ \alpha)]   \exp \Bigg[\frac{(1-\tau)^2}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{(1+\sigma)(1-\tau)}{\sigma+\tau} \varphi \Bigg]\\
@@ -502,7 +502,7 @@ Plugging back into resource constraint:
 &= \lambda (1-\tau)^{\frac{1 - \tau}{1+\sigma}}  \exp \Bigg[(1-\tau)(\log p(s)+ \alpha -\varphi) \Bigg] \exp  \Bigg[\frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)(1-2\tau-\tau\sigma)}{(\sigma+\tau)}\Bigg) \Bigg]\\
 \log c &= \log \lambda + \frac{1-\tau}{1 +\sigma}\log(1-\tau) + (1-\tau)[\log p(s) + \alpha - \varphi] + \frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)(1-2\tau-\tau\sigma)}{(\sigma+\tau)}\Bigg)
 \end{align*}
-Defining the last term as $\M ( v_\varepsilon; \tau)$:
+\item Defining the last term as $\M ( v_\varepsilon; \tau)$:
 \begin{align*}
 \M ( v_\varepsilon; \tau) 
 &= \frac{v_\varepsilon}{2}\Bigg( \frac{(1-\tau)(1-2\tau-\tau\sigma)}{(\sigma+\tau)}\Bigg)\\
@@ -510,7 +510,12 @@ Defining the last term as $\M ( v_\varepsilon; \tau)$:
 &= \frac{v_\varepsilon}{2}\Bigg( \frac{1-\tau-\tau(1+\sigma)}{\hat \sigma}\Bigg)\\
 &= \frac{(1-\tau)(1 - \tau(1+\hat \sigma))}{\hat \sigma} \frac{v_\varepsilon}{2}
 \end{align*}
-Turning back to the intratemporal FOC and taking logs and substituting in consumption:
+\item Recall that $\log C^{RA} = \log (1 - g) +  \frac{1}{1 + \sigma} \log ( 1 - \tau)$, so we can rewrite consumption as
+\begin{align*}
+\log c = \log [C^{RA}\vartheta] + (1 - \tau) [\log p(s) + \alpha - \varphi] + \M (v_\varepsilon; \tau)
+\end{align*}
+where $\log \vartheta \equiv \log \lambda - \log(1-g) - \frac{\tau}{1+\sigma} \log(1-\tau)$. This equation matches (\ref{prop1_c}).
+\item Turning back to the intratemporal FOC and taking logs and substituting in consumption:
 \begin{align*}
 \log h(\varepsilon) 
 &= \frac{1}{\sigma+\tau}\log\gamma + \frac{1}{\sigma+\tau} \log \lambda + \frac{1}{\sigma+\tau} \log(1-\tau) + \frac{1-\tau}{\sigma +\tau}(\log p(s)+ \alpha)-\frac{1+\sigma}{\sigma+\tau} \varphi   +  \frac{1-\tau}{\sigma+\tau} \varepsilon  \\
@@ -526,6 +531,14 @@ Turning back to the intratemporal FOC and taking logs and substituting in consum
 + \frac{1-\tau}{\sigma+\tau} \varepsilon
 - \frac{1}{\sigma+\tau} \M ( v_\varepsilon; \tau)
 \end{align*}
+\item Recall that $\log H^{RA}(\tau) = \frac{1}{1 + \sigma} \log ( 1 - \tau)$, so this equation can be rewritten to match (\ref{prop1_h}):
+$$
+\log h(\varepsilon) 
+=  \log H^{RA}(\tau) - \varphi
++ \frac{1-\tau}{\sigma+\tau} \varepsilon
+- \frac{1}{\sigma+\tau} \M ( v_\varepsilon; \tau)
+$$
+$\square$
 
 \end{itemize}
 
