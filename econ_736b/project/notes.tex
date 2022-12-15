@@ -44,6 +44,11 @@
 \newcommand{\Ebf}{\mathbf{E}}
 \setlength\parindent{0pt}
 
+\newtheorem{innercustomthm}{Proposition}
+\newenvironment{customthm}[1]
+  {\renewcommand\theinnercustomthm{#1}\innercustomthm}
+  {\endinnercustomthm}
+
 \title{Notes on Heathcote, Storesletten, and Violante (2017)}
 \author{Alex von Hafften}
 \date{\today}
@@ -52,7 +57,7 @@
 
 \maketitle
 
-My notes follow the organization of the paper. Initial focus particularly on sections 3, 4, and 5. Appendix has notes from Job's lecture on related papers, Heathcote, Storesletten, and Violante (2014) and Boerma and Karabarbounis (2021).
+My notes follow the organization of the paper. Particular focus is on sections 3, 4, and 5. In creating these notes, I used the online appendix for the original paper. The appendix has notes from Job's lecture on related papers, Heathcote, Storesletten, and Violante (2014) and Boerma and Karabarbounis (2021).
 
 
 
@@ -726,13 +731,12 @@ The distribution of skill prices $p(s; \tau)$ is levels is Pareto with scale (lo
 &= \Bigg(\frac{\eta}{\theta}\Bigg) (1-\tau)^{-\psi}(1-\tau)^{\psi} \cdot \kappa\\
 &= \frac{\eta}{\theta} \cdot \kappa\\
 \end{align*}
-using results from Proposition 2.
 \item Therefore, since $\kappa \sim Exp(\eta) \implies \pi_1(\tau) \cdot s(\kappa; \tau)  \sim Exp(\theta)$
 \item The variance of log skill prices is\footnote{If $X \sim Exp(\lambda)$, then $var(X) = \frac{1}{\lambda^2}$ (Casella and Berger, \textit{Statistical Inference}).}
 $$
 var(\log p(s;\tau)) = var(\pi_0(\tau) + \pi_1(\tau) \cdot s(\kappa;\tau)) = var(\pi_1(\tau) \cdot s(\kappa;\tau)) = \frac{1}{\theta^2}
 $$
-\item Since the log skill premia are exponentially distributed, skill prices in levels are distributed Pareto with lower bound parameter (or scale) $\exp(\pi_0(\tau))$ and Pareto parameter (or shape) is $\theta$.\footnote{In general, if $X \sim Exp(\lambda)$, $k \exp(X) \sim Pareto(k, \lambda)$ (Casella and Berger, \textit{Statistical Inference}).}
+\item Since log skill premia are exponentially distributed, skill prices in levels are distributed Pareto with lower bound parameter (or scale) $\exp(\pi_0(\tau))$ and Pareto parameter (or shape) is $\theta$.\footnote{In general, if $X \sim Exp(\lambda)$, $k \exp(X) \sim Pareto(k, \lambda)$ (Casella and Berger, \textit{Statistical Inference}).}
 \begin{align*}
 \pi_1(\tau) \cdot s(\kappa;\tau) &\sim Exp(\theta) \\
 \implies \exp(\pi_0(\tau)+ \pi_1(\tau) \cdot s(\kappa;\tau)) = \exp(\pi_0(\tau)) \exp(\pi_1(\tau) \cdot s(\kappa;\tau)) &\sim Pareto(\exp(\pi_0(\tau)), \theta)
@@ -740,32 +744,234 @@ $$
 \end{itemize}
 $\square$
 
-
+\begin{itemize}
+\item Notice that inequality in skill prices is independent of progressivity $\tau$. Why? Two forces perfectly offset: (1) Stiglitz effect and (2) higher progressivity compresses skill distribution.
+\item Skill prices are Pareto and other stochastic components of wages are log normal, so wages and earnings have Pareto right tails, which is well supported empirically (e.g. Atkinson, Piketty, and Saez 2011). Consumption also has Pareto right tails (consistent with Toda 2015).
+\end{itemize}
 
 {
-\corollary Hello
-
+\corollary Average hours worked $H(\tau)$ and average effective hours $N(\tau)$ are independent of skill type $s$. $H(\tau)$, $N(\tau)$, and output $Y(\tau)$ are given by
+\begin{align}
+H(\tau) &= E[h(\varphi, \varepsilon; \tau)] = (1-\tau)^{\frac{1}{1+\sigma}} \cdot \exp\Bigg[\Bigg(\frac{\tau(1+\hat \sigma)}{\hat \sigma^2} - \frac{1}{\hat\sigma}\Bigg)\frac{v_\varepsilon}{2}\Bigg] \label{cor2_h}\\
+N(\tau) &= E[\exp(\alpha + \varepsilon) h(\varphi, \varepsilon; \tau)] = H(\tau) \exp\Bigg(\frac{1}{\hat\sigma} v_\varepsilon\Bigg) \label{cor2_n}\\
+Y(\tau) &= E[p(s; \tau) \exp(\alpha + \varepsilon) h(\varphi, \varepsilon; \tau)] = N(\tau) E[p(s; \tau) ]\label{cor2_y}
+\end{align}
+where $E[p(s; \tau)] = \exp(\pi_0(\tau)) \cdot \frac{\theta}{\theta - 1}$. Aggregate labor productivity is 
+$\frac{Y(\tau)}{H(\tau)} = \frac{Y(\tau)}{N(\tau)} \cdot \frac{N(\tau)}{H(\tau)} = E[p(s; \tau) ]\exp(\frac{1}{\hat\sigma} v_\varepsilon)$
 }
+
+\pagebreak
+
+\textbf{Proof of Corollary 2:}
+
+\begin{itemize}
+\item Aggregate hours is 
+\begin{align*}
+H(\tau) 
+&= \int \int h(\varphi, \varepsilon; \tau) dF_\varphi dF_\varepsilon\\
+&= \int \int \exp\Bigg[\frac{1}{1+\sigma}\log(1 - \tau) - \varphi + \frac{1}{\hat\sigma} \varepsilon - \frac{1}{\hat \sigma(1-\tau)} \Bigg( \frac{(1-\tau)(1-\tau(1+\hat\sigma))}{\hat \sigma}\frac{v_\varepsilon}{2} \Bigg)\Bigg] dF_\varphi dF_\varepsilon\\
+&= \exp\Bigg[\frac{1}{1+\sigma}\log(1 - \tau) - \frac{1}{\hat \sigma(1-\tau)} \Bigg( \frac{(1-\tau)(1-\tau(1+\hat\sigma))}{\hat \sigma}\frac{v_\varepsilon}{2} \Bigg)\Bigg]
+\int \exp[ - \varphi] dF_\varphi \int \exp\Bigg[ \frac{1}{\hat\sigma} \varepsilon \Bigg]dF_\varepsilon \\
+&= (1 - \tau)^{ \frac{1}{1+\sigma}}  \exp\Bigg[- \frac{1}{\hat \sigma(1-\tau)} \Bigg( \frac{(1-\tau)(1-\tau(1+\hat\sigma))}{\hat \sigma}\frac{v_\varepsilon}{2} \Bigg)\Bigg]
+\exp\Bigg[ - \frac{v_\varphi}{2} + \frac{v_\varphi}{2} \Bigg] \exp\Bigg[ -\frac{v_\varepsilon}{2\hat\sigma} +\frac{v_\varepsilon}{2\hat\sigma^2}  \Bigg]  \\
+&= (1 - \tau)^{ \frac{1}{1+\sigma}} \exp\Bigg[ - \frac{1}{\hat \sigma(1-\tau)} \Bigg( \frac{(1-\tau)(1-\tau(1+\hat\sigma))}{\hat \sigma}\frac{v_\varepsilon}{2} \Bigg) -\frac{v_\varepsilon}{2\hat\sigma} +\frac{v_\varepsilon}{2\hat\sigma^2}  \Bigg]  \\
+&= (1-\tau)^{\frac{1}{1+\sigma}} \exp\Bigg( \frac{\tau(1+\hat\sigma) - \hat \sigma}{\hat \sigma^2}\frac{v_\varepsilon}{2}\Bigg)
+\end{align*}
+Thus, we get (\ref{cor2_h}).
+\item Aggregate effective hours is
+\begin{align*}
+N(\tau) 
+&= \int \int \int \exp(\alpha + \varepsilon) h(\varphi, \varepsilon; \tau) dF_\varphi dF_\alpha dF_\varepsilon\\
+&=\int \int \int \exp\Bigg[\alpha + \varepsilon +\frac{1}{1+\sigma}\log(1 - \tau) - \varphi + \frac{1}{\hat\sigma} \varepsilon - \frac{1}{\hat \sigma(1-\tau)} \Bigg( \frac{(1-\tau)(1-\tau(1+\hat\sigma))}{\hat \sigma}\frac{v_\varepsilon}{2} \Bigg)\Bigg] dF_\varphi dF_\alpha dF_\varepsilon\\
+&= \exp\Bigg[\frac{1}{1+\sigma}\log(1 - \tau) - \frac{1}{\hat \sigma(1-\tau)} \Bigg( \frac{(1-\tau)(1-\tau(1+\hat\sigma))}{\hat \sigma}\frac{v_\varepsilon}{2} \Bigg)\Bigg] \int \exp(\alpha) dF_\alpha \int \exp(-\varphi) dF_\varphi \\ &\cdot \int \exp\Bigg[ \frac{\hat \sigma + 1}{\hat\sigma} \varepsilon \Bigg] dF_\varepsilon\\
+&= (1 - \tau)^{\frac{1}{1+\sigma}}\exp \Bigg[- \frac{1}{\hat \sigma(1-\tau)} \Bigg( \frac{(1-\tau)(1-\tau(1+\hat\sigma))}{\hat \sigma}\frac{v_\varepsilon}{2} \Bigg)\Bigg]   \exp\Bigg[ \frac{\hat \sigma + 1}{\hat\sigma} \frac{-v_\varepsilon}{2} + \frac{(\hat \sigma + 1)^2}{\hat\sigma^2}\frac{v_\varepsilon}{2} \Bigg]\\
+&= (1-\tau)^{\frac{1}{1+\sigma}} \exp\Bigg(\frac{\tau(1 + \hat \sigma) + \hat \sigma}{\hat \sigma^2}\frac{v_\varepsilon}{2}\Bigg)\\
+&= H(\tau) \exp\Bigg(\frac{1}{\hat\sigma} v_\varepsilon\Bigg)
+\end{align*}
+Thus, we get (\ref{cor2_n}). 
+\item Aggregate output is equal to aggregate labor earnings:\footnote{If $X \sim Pareto(x_m, \alpha)$, then $E[X] =\frac{\alpha}{\alpha-1} x_m$ (Casella and Berger, \textit{Statistical Inference})}
+\begin{align*}
+Y(\tau) 
+&= \int \int \int \int p(s, \tau)\exp(\alpha + \varepsilon)h(\varphi, \varepsilon; \tau) dF_s dF_\varphi dF_\alpha dF_\varepsilon\\
+&= \int p(s, \tau) dF_s\int \int \int \exp(\alpha + \varepsilon)h(\varphi, \varepsilon; \tau)  dF_\varphi dF_\alpha dF_\varepsilon\\
+&= \int p(s, \tau) dF_s N(\tau)\\
+&= \frac{\theta}{\theta-1} \exp(\pi_0(\tau)) \cdot N(\tau)
+\end{align*}
+Thus, we get (\ref{cor2_y}). 
+\end{itemize}
+$\square$
 
 \subsection{Efficiency}
 
-{
-\proposition Hello
+\begin{itemize}
+\item $\tau = 0$ (i.e., flat taxes or no progressivity) is generally not efficient for two reasons: (1) there are no private markets to insure $\alpha$ shocks and (2) there's a free-riding problem, in the sense, higher labor supply means more tax revenue and higher $g$, but private agents take $g$ as exogenous, so labor supply is too low.
+\item Proposition 3 proves that without $\alpha$ shocks (i.e., $v_\omega = 0$) and without free-riding problem (i.e., $\chi = 0$), then $\tau = 0$ is efficient. The associated Pareto weights put more weight on agents with higher learning ability $\kappa$ and lower disutility of work effort $\varphi$.
+\end{itemize}
 
-}
+\pagebreak
 
 \section{Welfare Effects of Tax Reform}
 
-
+\begin{itemize}
+\item Here, we compare steady state equilibria (one associated with $(g_{-1}, \tau_{-1})$ and one associated with $(g, \tau)$) and assuming away transitional dynamics (or, ``skill investment is reversible"). The paper considers polar opposite of this with ``irreversible skill investment" in section 6.3.
+\end{itemize}
 
 \subsection{Social Welfare Function}
 
+\begin{itemize}
+\item Baseline is utilitarian social paper who cares equally about the utility of all agents
+\item Assume that planner discounts the lifetime utility of future generations at rate $\gamma$
+\item Social welfare evaluated as of date 0 is
+\begin{align}
+\mathcal{W}(g, \tau; \tau_{-1}) \equiv (1-\gamma) \Gamma \sum_{j = -\infty}^\infty \gamma^y U_{j,0} (g, \tau; \tau_{-1}) \label{swf}
+\end{align}
+where $U_{j,0} (g, \tau; \tau_{-1})$ is remaining expected lifetime utility as of date 0 for the cohort that entered the economy at date $j$ (discounted back to date of birth) and $\Gamma \equiv \frac{\gamma - \beta \sigma}{\gamma(1-\beta\delta)}$ provides convenient normalization.
+\end{itemize}
+
+\begin{customthm}{4}\label{prop4}
+In the model with fully reversible investment, when the social welfare function is given by (\ref{swf}), welfare from implementing policy $(g, \tau)$ is
+\begin{align}
+\mathcal{W}(g, \tau; \tau_{-1}) =
+\begin{cases}
+\log(1-g) + \chi \log g + (1+\chi) \frac{\log(1-\tau)}{(1+\hat\sigma)(1-\tau)}- \frac{1}{1+\hat\sigma} 
+& (a)\\
++(1+\chi)\frac{1}{(1+\psi)(\theta-1)} [ \phi \log(1-\tau) + \log ( \frac{1}{\eta\theta^\psi} ( \frac{\theta}{\theta - 1} )^{\theta(1+\psi)} ) ]
+& (b)\\
+-\frac{\psi}{(1+\psi)\theta} [ (1-\tau) - \frac{\beta\delta}{\gamma} \frac{(1-\gamma)}{(1-\beta\delta)}(1-\tau_{-1}) ]
+& (c)\\
+-[ - \log(1-(\frac{1-\tau}{\theta})) - (\frac{1-\tau}{\theta}) ]
+& (d)\\
+-(1-\tau)^2\frac{v_\varphi}{2}
+& (e)\\
+-[(1-\tau)(\frac{\beta\delta}{\gamma - \beta\delta})\frac{v_{\omega}}{2} - \log(\frac{1-\delta \exp(\frac{-\tau(1-\tau)}{2}v_\omega)}{1-\delta})]
+& (f)\\
++ (1 + \chi) [\frac{1}{\hat\sigma} v_\varepsilon - \sigma \frac{1}{\hat \sigma^2}\frac{v_\varepsilon}{2}]
+& (g)
+\end{cases}
+\label{cf_swf}
+\end{align}
+\end{customthm}
+
+\bigskip
+
+\textbf{Proof of Proposition 4:}
+
+\begin{itemize}
+\item Two steps: (1) derive a closed-form solution for the residual fiscal instrument $\lambda$ and (2) substitute allocations into social welfare function to derive (\ref{cf_swf})
+\item \textbf{Step 1}
+\item Starting from government budget constraint (\ref{gbc}),
+\begin{align*}
+gY &= \int_0^1 (y_i - \lambda y_i^{1-\tau}) di\\
+&= \int_0^1 y_i di - \lambda \int_0^1y_i^{1-\tau} di\\
+&= Y - \lambda \tilde Y\\
+\implies
+\lambda &= \frac{(1-g) Y}{\tilde Y}
+\end{align*}
+where $\tilde Y \equiv \int_0^1 y_i^{1-\tau}di$
+\item To compute $\tilde Y$, it is useful to aggregate by age group. Let $\tilde Y^a$ be average per capita disposable income for agents in age group $a$:
+\begin{align*}
+\tilde Y^a
+&= \int \int \int \int [y(s, \varphi, \varepsilon, \alpha)]^{1-\tau} m(s) ds dF_\alpha^a dF_\varphi dF_\varepsilon\\
+&= \int \int \int \int [ \exp(\log h(\varepsilon)+ \log p(s) + \alpha_a + \varepsilon)]^{1-\tau} m(s) ds dF_\alpha^a dF_\varphi dF_\varepsilon\\
+&= \int \int \int \int \Bigg[ \exp\Bigg(\Big(\frac{1}{1 + \sigma} \log ( 1 - \tau) - \varphi + \frac{1}{\hat{\sigma}} \varepsilon - \frac{1}{\hat \sigma (1- \tau)} \M \Big)+  \pi_0(\tau) + \pi_1(\tau)  s + \alpha_a + \varepsilon\Bigg)\Bigg]^{1-\tau} \\ 
+&\cdot\zeta \exp (-\zeta s ) ds dF_\alpha^a dF_\varphi dF_\varepsilon\\
+&= (1-\tau)^{\frac{1-\tau}{1+\sigma}} \exp\Big(-\frac{1}{\hat\sigma} \M\Big)\exp((1-\tau)\pi_0(\tau))
+\int \exp(-\varphi(1-\tau)) dF_\varphi  \\
+& \cdot\int \exp\Big(\frac{(1+\hat\sigma)(1-\tau)}{\hat \sigma} \varepsilon\Big) dF_\varepsilon  \int \exp((1-\tau)\alpha_a) dF_\alpha^a \int \exp[  \pi_1(\tau)  (1-\tau)s ] m(s)ds  \\
+&= (1-\tau)^{\frac{1-\tau}{1+\sigma}} \exp\Big(-\frac{1}{\hat\sigma} \M\Big)\exp((1-\tau)\pi_0(\tau))
+\exp\Big(-\tau(1-\tau)\frac{v_\varphi}{2}\Big) \\
+& \cdot \exp\Big( \Big( \frac{(1-\tau)(1+\hat\sigma)}{\hat \sigma}\Big(\frac{(1-\tau)(1+\hat\sigma)}{\hat \sigma} - 1 \Big)\Big) \frac{v_\varepsilon}{2} \Big)  \exp\Big( -\tau(1-\tau) \frac{v_{\alpha}^a}{2} \Big) \cdot \frac{\theta}{\theta - 1 + \tau} 
+\end{align*}
+because
+\begin{align*}
+\int \exp[  \pi_1(\tau)  (1-\tau)s ] m(s)ds 
+&= \int \exp[  \pi_1(\tau)  (1-\tau)s ] \zeta \exp(-\zeta s) ds \\
+&= \int \zeta \exp[(\pi_1(\tau)  (1-\tau)-\zeta) s] ds \\
+&= \int \zeta \exp\Bigg[\Bigg(\Bigg( \frac{\eta}{\theta} \Bigg)^{\frac{1}{1+\psi}}(1-\tau)^{-\frac{\psi}{1+\psi}}  (1-\tau)-\Big[(1-\tau)\Bigg( \frac{\eta}{\theta} \Bigg)^{\frac{1}{1+\psi}}(1-\tau)^{-\frac{\psi}{1+\psi}}\Big]^{-\psi}\Bigg) s\Bigg] ds \\
+&= \int \zeta \exp\Bigg[\Bigg(\Bigg( \frac{\eta}{\theta} \Bigg)^{\frac{1}{1+\psi}}(1-\tau)^{\frac{1}{1+\psi}}  -\Bigg( \frac{\eta}{\theta} \Bigg)^{\frac{-\psi}{1+\psi}}(1-\tau)^{\frac{ - \psi}{1+\psi}}\Bigg) s\Bigg] ds \\
+&= \int \zeta \exp\Bigg[- \frac{\theta - 1 + \tau}{\theta}\eta[(1-\tau)\pi_1(\tau)]^{-\psi} s\Bigg] ds \\
+&= \int \zeta \exp\Bigg[- \frac{\theta - 1 + \tau}{\theta}\zeta s\Bigg] ds \\
+&= \frac{\theta}{\theta - 1 + \tau} \int \frac{\theta - 1 + \tau}{\theta}\zeta \exp\Bigg[- \frac{\theta - 1 + \tau}{\theta}\zeta s\Bigg] ds \\
+&= \frac{\theta}{\theta - 1 + \tau} \cdot 1
+\end{align*}
+\item Note that $v_\alpha^a = Var(\alpha_a) = Var(\alpha_0 + \omega_{1} + ... +\omega_{a}) = v_\alpha^0 + a v_\omega$. (I thought everyone started at $\alpha_0 = 0$, so $v_\alpha^0 = 0$, but they keep it around in the proof, so I'll keep it too.)
+\item Define $\mathcal{K}$ such that
+\begin{align*}
+\tilde Y^a &= \mathcal{K} \cdot \exp \Big(-\tau(1-\tau)\frac{v_\alpha^a}{2}\Big)\\
+\mathcal{K}  &\equiv  (1-\tau)^{\frac{1-\tau}{1+\sigma}} \exp\Big(-\frac{1}{\hat\sigma} \M\Big)\exp((1-\tau)\pi_0(\tau))
+\exp\Big(-\tau(1-\tau)\frac{v_\varphi}{2}\Big) \\
+& \cdot \exp\Big( \Big( \frac{(1-\tau)(1+\hat\sigma)}{\hat \sigma}\Big(\frac{(1-\tau)(1+\hat\sigma)}{\hat \sigma} - 1 \Big)\Big) \frac{v_\varepsilon}{2} \Big)  \frac{\theta}{\theta - 1 + \tau}\\
+\implies
+\log \mathcal{K} &=  \frac{1-\tau}{1+\sigma} \log(1-\tau) -\frac{1}{\hat\sigma} \M + (1-\tau)\pi_0(\tau) -\tau(1-\tau)\frac{v_\varphi}{2} \\
+& + \Big( \frac{(1-\tau)(1+\hat\sigma)}{\hat \sigma}\Big(\frac{(1-\tau)(1+\hat\sigma)}{\hat \sigma} - 1 \Big)\Big) \frac{v_\varepsilon}{2} + \log\Bigg(  \frac{\theta}{\theta - 1 + \tau}\Bigg)
+\end{align*}
+\item Now sum across age groups
+\begin{align*}
+\tilde Y 
+&= (1-\delta) \sum_{a = 0}^\infty \delta^a \tilde Y^a\\
+&= (1-\delta) \sum_{a = 0}^\infty \delta^a \cdot \mathcal{K} \cdot \exp \Big(-\tau(1-\tau)\frac{v_\alpha^a}{2}\Big)\\
+&= \mathcal{K} \cdot (1-\delta) \sum_{a = 0}^\infty \delta^a \cdot \exp \Big(-\tau(1-\tau)\frac{v_\alpha^0 +  av_\omega}{2}\Big)\\
+&= \mathcal{K} \cdot (1-\delta) \exp \Big(-\tau(1-\tau)\frac{v_\alpha^0}{2}\Big) \sum_{a = 0}^\infty \cdot \exp \Big(a \Big[\log(\delta)-\tau(1-\tau)\frac{v_\omega}{2} \Big] \Big)\\
+&= \mathcal{K} \cdot (1-\delta) \exp \Big(-\tau(1-\tau)\frac{v_\alpha^0}{2}\Big) \frac{1}{1-\exp \Big(\Big[\log(\delta)-\tau(1-\tau)\frac{v_\omega}{2} \Big] \Big)}\\
+&= \mathcal{K} \cdot  \frac{(1-\delta) \exp \Big(-\tau(1-\tau)\frac{v_\alpha^0}{2}\Big)}{1-\delta\exp \Big(-\tau(1-\tau)\frac{v_\omega}{2} \Big)}\\
+\implies
+\log \tilde Y
+&= \log \mathcal{K} + \log(1-\delta) - \tau(1-\tau)\frac{v_\alpha^0}{2} - \log\Big[ 1 - \delta \exp\Big( \frac{-\tau(1-\tau)}{2}v_\omega \Big) \Big]\\
+&= \frac{1-\tau}{1+\sigma} \log(1-\tau) -\frac{1}{\hat\sigma} \M + (1-\tau)\pi_0(\tau) -\tau(1-\tau)\frac{v_\varphi}{2} \\
+& + \Big( \frac{(1-\tau)(1+\hat\sigma)}{\hat \sigma}\Big(\frac{(1-\tau)(1+\hat\sigma)}{\hat \sigma} - 1 \Big)\Big) \frac{v_\varepsilon}{2} + \log\Bigg(  \frac{\theta}{\theta - 1 + \tau}\Bigg) \\&+ \log(1-\delta) - \tau(1-\tau)\frac{v_\alpha^0}{2} - \log\Big[ 1 - \delta \exp\Big( \frac{-\tau(1-\tau)}{2}v_\omega \Big) \Big]
+\end{align*}
+\item Recall that $Y$ from Corollary 2:
+\begin{align*}
+Y &= (1-\tau)^{\frac{1}{1+\sigma}} \exp\Bigg( \frac{\tau(1+\hat\sigma) - \hat \sigma}{\hat \sigma^2}\frac{v_\varepsilon}{2}\Bigg)\cdot \exp\Bigg(\frac{1}{\hat\sigma} v_\varepsilon\Bigg)\cdot \Bigg(\frac{\theta}{\theta-1}\Bigg)^{\frac{\theta}{\theta-1}} \eta^{\frac{-1}{(\theta-1)(1+\psi)}} \Bigg( \frac{1-\tau}{\theta}\Bigg)^{\frac{\psi}{(\theta-1)(1+\psi}} \\ 
+\implies
+\log Y &=\frac{1}{1+\sigma} \log (1-\tau) + \frac{\tau(1+\hat\sigma) - \hat \sigma}{\hat \sigma^2}\frac{v_\varepsilon}{2} + \frac{1}{\hat\sigma} v_\varepsilon + \frac{\theta}{\theta-1}\log\Big( \frac{\theta}{\theta-1} \Big) + \frac{-1}{(\theta-1)(1+\psi)} \log \eta\\ &+ \frac{\psi}{(\theta-1)(1+\psi} \log \Big( \frac{1-\tau}{\theta} \Big)
+\end{align*}
+\item Substituting into the modified GBC:
+\begin{align*}
+\log \lambda 
+&= \log (1-g) + \log Y - \log \tilde Y\\
+&= \log (1-g) + \frac{1}{1+\sigma} \log (1-\tau) + \frac{\tau(1+\hat\sigma) - \hat \sigma}{\hat \sigma^2}\frac{v_\varepsilon}{2} + \frac{1}{\hat\sigma} v_\varepsilon + \frac{\theta}{\theta-1}\log\Big( \frac{\theta}{\theta-1} \Big) + \frac{-1}{(\theta-1)(1+\psi)} \log \eta\\ &+ \frac{\psi}{(\theta-1)(1+\psi} \log \Big( \frac{1-\tau}{\theta} \Big) - \frac{1-\tau}{1+\sigma} \log(1-\tau) + \frac{1}{\hat\sigma} \M - (1-\tau)\pi_0(\tau) + \tau(1-\tau)\frac{v_\varphi}{2} \\
+& - \Big( \frac{(1-\tau)(1+\hat\sigma)}{\hat \sigma}\Big(\frac{(1-\tau)(1+\hat\sigma)}{\hat \sigma} - 1 \Big)\Big) \frac{v_\varepsilon}{2} - \log\Bigg(  \frac{\theta}{\theta - 1 + \tau}\Bigg) \\
+&- \log(1-\delta) + \tau(1-\tau)\frac{v_\alpha^0}{2} + \log\Big[ 1 - \delta \exp\Big( \frac{-\tau(1-\tau)}{2}v_\omega \Big) \Big]\\
+&= \log (1-g) + \frac{\tau(1-\tau)}{\sigma + \tau} \Big( \frac{1+\sigma}{\sigma + \tau} + 2 + \sigma \Big)\frac{v_\varepsilon}{2} + \frac{\tau}{1+\sigma} \log(1-\tau) + \tau(1-\tau)\frac{v_\varphi}{2} - \log(1-\delta) + \tau(1-\tau)\frac{v_\alpha^0}{2} \\
+&+ \log \Big[ 1 - \delta \exp\Big( \frac{-\tau(1-\tau)}{2}v_\omega \Big) \Big] + \frac{\psi}{1+\psi}\frac{\tau}{\theta-1}\log \Big( \frac{1-\tau}{\theta}\Big) - \frac{1}{1+\psi}\frac{\tau}{\theta-1} \log \eta + \frac{\theta + \tau - 1}{\theta - 1} \log \Big( \frac{\theta}{\theta - 1} \Big) \\
+&+ \log \Big( \frac{\theta - 1 + \tau}{\theta} \Big)
+\end{align*}
+Thus, we have an expression for $\lambda$.
+\pagebreak
+\item \textbf{Step 2}
+\item Period utility at age $a \ge 0$ is
+\begin{align*}
+u(c_a, h, G) 
+&= 
+\log c_a - \frac{\exp[(1+\sigma)\varphi]}{1+\sigma} h^{1+\sigma} + \chi \log G\\
+&= \Bigg[ \log \lambda + \frac{1-\tau}{1+\sigma} \log (1-\tau) + (1-\tau)[\log p(s) + \alpha_a - \varphi] + \M \Bigg]\\
+&+\frac{\exp[(1+\sigma)\varphi]}{1+\sigma} \exp\Big( (1+\sigma) \log h \Big) + \chi \log G\\
+&=  \log \lambda + \frac{1-\tau}{1+\sigma} \log (1-\tau) + (1-\tau)[\pi_0(\pi) + \pi_1(\tau)s] + (1-\tau)(\alpha - \varphi) + \M \\
+&+\frac{\exp[(1+\sigma)\varphi]}{1+\sigma} \exp\Big(  \log (1-\tau) - (1+\sigma)\varphi
++ \frac{(1-\tau)(1+\sigma)}{\sigma+\tau} \varepsilon
+- \frac{(1+\sigma)}{(\sigma+\tau)} \M \Big) + \chi \log G\\
+&=  \log \lambda + \frac{1-\tau}{1+\sigma} \log (1-\tau) + (1-\tau)\Bigg[ \frac{1}{(\theta- 1)(1+\psi)}\Bigg[\psi \log\Bigg(\frac{1-\tau}{\theta} - \log (\eta) \Bigg)\Bigg] + \frac{1}{\theta - 1}\log\Bigg(\frac{\theta}{\theta-1}\Bigg)\Bigg] \\&+ (1-\tau)\frac{\eta}{\theta}\kappa + (1-\tau)(\alpha_a - \varphi) + \M \\
+&+\frac{1-\tau}{1+\sigma} \exp\Big( \frac{(1-\tau)(1+\sigma)}{\sigma+\tau} \varepsilon
+- \frac{(1+\sigma)}{(\sigma+\tau)} \M \Big) + \chi \log G\\
+&=  \log \lambda + \frac{1-\tau}{1+\sigma} \log (1-\tau)   - (1-\tau)\varphi + \frac{1-\tau}{(\theta- 1)(1+\psi)} \Bigg[\psi \log(1-\tau) + \log\Bigg(\frac{\theta}{\eta (\theta - 1)^{1+\psi}}\Bigg)\Bigg] + \M\\
+&- \frac{1-\tau}{1+\sigma}\exp\Bigg(-\frac{1+\sigma}{\hat \sigma(1-\tau)} \M \Bigg) \exp\Bigg(\frac{1+\sigma}{\hat\sigma} \varepsilon \Bigg) + (1-\tau) \kappa \frac{\eta}{\theta}+ \chi \log G + (1-\tau)\alpha_a
+\end{align*}
+\item Denote average utility at age $a$ with $\bar u_a$:
+\begin{align*}
+\bar u_a = \int \int \int \int u(c_a, g, G) dF_\kappa dF_\varepsilon dF_\varphi dF_\alpha^a
+\end{align*}
+\item Disutility from skill investment
+\begin{align*}
+v(s(\kappa)) 
+&= \frac{-\kappa^{-1/\psi}}{1+\frac{1}{\psi}} s(\kappa,\tau)^{1+1/\psi}\\
+&= \frac{-\kappa^{-1/\psi}}{1+\frac{1}{\psi}}\Bigg[\Big( \frac{\eta}{\theta}(1-\tau)\Big)^{\frac{\psi}{1 + \psi}}\kappa \Bigg]^{1+1/\psi}\\
+&= -(1-\tau)\kappa\frac{\eta}{(1+\frac{1}{\psi})\theta}
+\end{align*}
+\end{itemize}
 
 
-{
-\proposition Hello
-
-}
+$\square$
 
 {
 \corollary Hello
@@ -801,10 +1007,9 @@ $\square$
 
 \subsubsection{Welfare of the Representative Agent}
 
-{
-\proposition Hello
-
-}
+\begin{customthm}{5}\label{prop5}
+Hello
+\end{customthm}
 
 \subsubsection{Welfare from Skill Investment}
 
@@ -812,13 +1017,11 @@ $\square$
 
 \subsubsection{Welfare from Insurable Wage Risk}
 
-
 \subsection{When Should Taxes Be Progressive?}
 
-{
-\proposition Hello
-
-}
+\begin{customthm}{6}\label{prop6}
+Hello
+\end{customthm}
 
 \subsection{Optimal Marginal Tax Rate at the Top}
 
@@ -834,22 +1037,7 @@ $\square$
 
 \subsection{Inequality Aversion}
 
-{
-\proposition Hello
-
-}
-
 \subsection{Political-Economic Determination of Progressivity}
-
-{
-\proposition Hello
-
-}
-
-{
-\proposition Hello
-
-}
 
 \section{Skill Investment Constraints}
 
