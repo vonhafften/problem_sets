@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  15 DEC 2022 11:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.27)  15 DEC 2022 14:33
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**notes.tex
-(./notes.tex
+**hsv2017_notes.tex
+(./hsv2017_notes.tex
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-02-18>
 (/usr/local/texlive/2021/texmf-dist/tex/latex/base/article.cls
@@ -499,12 +499,8 @@ File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count312
 \l__pdf_internal_box=\box100
 )
-(./notes.aux
-
-LaTeX Warning: Label `prop2_s' multiply defined.
-
-)
-\openout1 = `notes.aux'.
+No file hsv2017_notes.aux.
+\openout1 = `hsv2017_notes.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 56.
 LaTeX Font Info:    ... okay on input line 56.
@@ -524,7 +520,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 56.
 LaTeX Font Info:    ... okay on input line 56.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 56.
 LaTeX Font Info:    ... okay on input line 56.
- (/usr/local/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+(/usr/local/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count313
 \scratchdimen=\dimen197
@@ -563,12 +559,10 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 56.
 LaTeX Info: Redefining \pageref on input line 56.
 LaTeX Info: Redefining \nameref on input line 56.
- (./notes.out) (./notes.out)
 \@outlinefile=\write3
-\openout3 = `notes.out'.
+\openout3 = `hsv2017_notes.out'.
 
-
-(/usr/local/texlive/2021/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+ (/usr/local/texlive/2021/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/lscape.sty
@@ -623,8 +617,19 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
- [4] [5]
-[6]
+ [4]
+
+LaTeX Warning: Reference `utility' on page 5 undefined on input line 285.
+
+
+LaTeX Warning: Reference `disutility_skill' on page 5 undefined on input line 2
+89.
+
+[5] [6]
+
+LaTeX Warning: Reference `c_ra_lambda' on page 7 undefined on input line 362.
+
+
 Overfull \hbox (13.77692pt too wide) in paragraph at lines 402--403
 []$\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 '; ; "; []B\OT1/cmr/m/n/10 )$ for end-of-
 period con-sump-tion and la-bor sup-ply de-ci-sions where $[]\OML/cmm/m/it/10 B
@@ -632,7 +637,11 @@ period con-sump-tion and la-bor sup-ply de-ci-sions where $[]\OML/cmm/m/it/10 B
 r/m/n/10 ; \OML/cmm/m/it/10 '; ; s\OT1/cmr/m/n/10 )$ 
  []
 
-[7] [8]
+[7]
+
+LaTeX Warning: Reference `gbc' on page 8 undefined on input line 412.
+
+[8]
 Overfull \hbox (49.23686pt too wide) detected at line 488
 []
  []
@@ -643,9 +652,16 @@ Overfull \hbox (2.22981pt too wide) detected at line 507
  []
 
 [10]
+
+LaTeX Warning: Reference `prop1_c' on page 11 undefined on input line 520.
+
+
 Overfull \hbox (29.73839pt too wide) detected at line 536
 []
  []
+
+
+LaTeX Warning: Reference `prop1_h' on page 11 undefined on input line 537.
 
 [11]
 Overfull \hbox (25.99576pt too wide) detected at line 559
@@ -653,11 +669,38 @@ Overfull \hbox (25.99576pt too wide) detected at line 559
  []
 
 [12]
+
+LaTeX Warning: Reference `disutility_skill' on page 13 undefined on input line 
+599.
+
+
+LaTeX Warning: Reference `optimal_skills' on page 13 undefined on input line 60
+4.
+
+
 Overfull \hbox (26.57726pt too wide) detected at line 616
 []
  []
 
-[13] [14] [15] [16]
+[13]
+
+LaTeX Warning: Reference `prop2_pi1' on page 14 undefined on input line 659.
+
+[14]
+
+LaTeX Warning: Reference `prop2_s' on page 15 undefined on input line 680.
+
+[15]
+
+LaTeX Warning: Reference `prop2_pi0' on page 16 undefined on input line 700.
+
+
+LaTeX Warning: Reference `prop2_s' on page 16 undefined on input line 709.
+
+
+LaTeX Warning: Reference `prop2_pi1' on page 16 undefined on input line 710.
+
+[16]
 Overfull \hbox (27.75887pt too wide) in paragraph at lines 758--762
 \OT1/cmr/m/it/10 where $\OML/cmm/m/it/10 E\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 p\O
 T1/cmr/m/n/10 (\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 ; \OML/cmm/m/it/10 ^^\\OT1/cmr
@@ -680,11 +723,31 @@ Overfull \hbox (47.14009pt too wide) detected at line 779
  []
 
 
+LaTeX Warning: Reference `cor2_h' on page 18 undefined on input line 780.
+
+
 Overfull \hbox (68.47112pt too wide) detected at line 790
 []
  []
 
-[18] [19] [20]
+
+LaTeX Warning: Reference `cor2_n' on page 18 undefined on input line 791.
+
+[18]
+
+LaTeX Warning: Reference `cor2_y' on page 19 undefined on input line 800.
+
+[19]
+
+LaTeX Warning: Reference `swf' on page 20 undefined on input line 832.
+
+
+LaTeX Warning: Reference `cf_swf' on page 20 undefined on input line 860.
+
+
+LaTeX Warning: Reference `gbc' on page 20 undefined on input line 862.
+
+[20]
 Overfull \hbox (35.66983pt too wide) detected at line 884
 []
  []
@@ -709,21 +772,85 @@ Overfull \hbox (83.0501pt too wide) detected at line 959
 []
  []
 
-[24] [25] [26] [27] [28] [29] (./notes.aux)
 
-LaTeX Warning: There were multiply-defined labels.
+Overfull \hbox (86.5725pt too wide) detected at line 971
+[]
+ []
 
-Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: 36EDCF0864141347D10375548C4BC1CE;6457.
+[24]
+Overfull \hbox (34.0336pt too wide) detected at line 977
+[]
+ []
+
+
+Overfull \hbox (57.52374pt too wide) detected at line 986
+[]
+ []
+
+[25]
+Overfull \hbox (55.239pt too wide) detected at line 1007
+[]
+ []
+
+[26]
+Overfull \hbox (6.12589pt too wide) detected at line 1035
+[]
+ []
+
+
+Overfull \hbox (10.74792pt too wide) detected at line 1047
+[]
+ []
+
+[27]
+
+LaTeX Warning: Reference `cf_swf' on page 28 undefined on input line 1060.
+
+[28] [29]
+Overfull \hbox (53.37445pt too wide) detected at line 1151
+[]
+ []
+
+[30]
+
+LaTeX Warning: Reference `cf_swf' on page 31 undefined on input line 1219.
+
+
+LaTeX Warning: Reference `cf_swf' on page 31 undefined on input line 1225.
+
+
+Overfull \hbox (78.28244pt too wide) detected at line 1241
+[]
+ []
+
+[31] [32] [33] [34] [35]
+
+LaTeX Warning: Reference `B_mapping' on page 36 undefined on input line 1424.
+
+[36] (./hsv2017_notes.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `hsv2017_notes.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `hsv2017_notes.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  36EDCF0864141347D10375548C4BC1CE;6457.
  ) 
 Here is how much of TeX's memory you used:
- 12317 strings out of 478994
- 176000 string characters out of 5858184
- 521422 words of memory out of 5000000
- 29470 multiletter control sequences out of 15000+600000
+ 12280 strings out of 478994
+ 175494 string characters out of 5858184
+ 520359 words of memory out of 5000000
+ 29431 multiletter control sequences out of 15000+600000
  414577 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,19n,74p,483b,583s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,19n,74p,491b,583s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
@@ -746,14 +873,15 @@ ist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2021/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2021/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2021/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2021/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2021/texmf-dist/fonts
-/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2021/texmf-dist/f
-onts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2021/texmf-di
-st/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on notes.pdf (29 pages, 370720 bytes).
+ts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive/2021/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2021/texmf-dist/fonts/t
+ype1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2021/texmf-dist/fon
+ts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2021/texmf-dist
+/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on hsv2017_notes.pdf (36 pages, 400716 bytes).
 PDF statistics:
- 504 PDF objects out of 1000 (max. 8388607)
- 443 compressed objects within 5 object streams
- 135 named destinations out of 1000 (max. 500000)
- 297 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 407 PDF objects out of 1000 (max. 8388607)
+ 339 compressed objects within 4 object streams
+ 143 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
